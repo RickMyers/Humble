@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<controller name="module" use="Smarty3">
+    <actions>
+
+        <action name="create">
+            <description>Will create a new module </description>
+            <model namespace="humble" class="utility" id="module" method='createModule'>
+                <parameter name="uid"       source="session" default="" />
+                <parameter name="package"   source="post"    default="" />
+                <parameter name="module"    source="post"    default="" />
+                <parameter name="namespace" source="post"    default="" />
+                <parameter name="prefix"    source="post"    default="" />
+            </model>
+        </action>
+
+        <!-- ############################################################################ -->
+
+        <action name="documentation">
+            <description>Will regenerate the API documentation</description>
+            <entity namespace='humble' class='user_permissions' id='perms' method='load'>
+                <parameter name="uid"       source="session" default="" />
+            </entity>
+            <switch id="perms" method="getAdmin">
+                <case value='Y'>
+                    <model namespace="humble" class="utility" id="apigen" method="generateDocumentation" />
+                </case>
+                <case value='N'>
+                    <output text='Need to have administrator or higher permission to run this' />
+                </case>
+                <default>
+                    <output text='NOT AUTHORIZED' />
+                </default>
+            </switch>
+        </action>
+
+        <!-- ############################################################################ -->
+    </actions>
+</controller>

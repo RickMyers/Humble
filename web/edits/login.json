@@ -1,0 +1,45 @@
+{
+	"form":
+	{
+		"id":           "humble-login-form",
+		"drawme":		false,
+		"action":		"/core/user/login",
+		"method":		"post",
+		"style":		"",
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+		{
+			"active":		true,
+			"id": 			"user_name",
+			"longname":		"Your Login Name",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent"
+		},
+		{
+			"active":		true,
+			"id": 			"user_password",
+			"longname":		"Your password",
+			"type":			"password",
+			"required":		true,
+			"force":		true,
+            "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent"
+		},
+		{
+			"active":		true,
+			"id":			"login-submit",
+			"longname":		"Submit Button",
+			"type":			"text",
+            "classname":    "login login-submit",
+            "style":        "background-color: #357AE8; cursor: pointer",
+            "onclick":      function () {
+                if (Edits['login'].validate()) {
+                    $E("humble-login-form").submit();
+                }
+            }
+		}
+	]
+}

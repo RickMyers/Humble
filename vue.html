@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link type="text/css" rel="stylesheet" href="/css/common" />
+        <link type="text/css" rel="stylesheet" href="/css/theme" />
+        <script type="text/javascript" src="/js/jquery"></script>
+        <script type="text/javascript" src="/js/common"></script>
+        <script type="text/javascript" src="/js/vue"></script>
+        <script type="text/javascript">
+            var Page = {
+                icons_column: {
+                    ref: false,
+                    app: false
+                },
+                apps_column: {
+                    ref: false,
+                    app: false
+                },
+                container_column: {
+                    ref: false,
+                    app: false
+                },
+                container: {
+                    ref: false,
+                    app: false
+                },
+                queryForm: {
+                    ref: false,
+                    app: false,
+                }
+            };
+            $(document).resize(function () {
+                $(Page.icons_column.ref).height($(window).height());
+                $(Page.container_column.ref).height($(document).height());
+                $(Page.apps_column.ref).height($(window).height());
+            });
+            $(document).ready(function () {
+                Page.icons_column.ref     = $E('icons-column');
+                Page.apps_column.ref      = $E('apps-column');
+                Page.container_column.ref = $E('container-column');
+                Page.queryForm.ref        = $E('api_test_form');
+                Page.icons_column.app     = new Vue({ el: '#icons', data: { message: "Hello!" } });
+                Page.apps_column.app      = new Vue({ el: '#apps', data: { message: "Hello!" } });
+                Page.queryForm.app        = new Vue({
+                   el:  '#testform',
+                   data:    {
+                       row_id: 9,
+                       column_name: '',
+                       column_value: '',
+                       method: 'delete'
+                   },
+                   methods: {
+                       queryTable: function () {
+                           var ao = new EasyAjax('/api/humble/members');
+                           ao.add('id',this.row_id).add(this.column_name,this.column_value).callback(function (response) {
+                               console.log(response);
+                           });
+                           switch (this.method) {
+                               case "put" :
+                                   ao.put();
+                                   break;
+                               case "get" :
+                                   ao.get();
+                                   break;
+                               case "post" :
+                                   ao.post();
+                                   break;
+                               case "delete" :
+                                   ao.delete();
+                                   break;
+                               default : alert('I dont do that');
+                                   break;
+                           }
+                       }
+                   }
+
+                });
+                $(document).resize();
+            });
+        </script>
+
+    </head>
+    <body style="width: 100%; height: 100%; overflow: hidden">
+        <div style="white-space: nowrap">
+
+            <div id="icons-column" style="vertical-align: top; width: 5%; min-width: 70px; display: inline-block; height: 100%; background-color: #bbb; margin: 0px; box-sizing: ">
+                <div id="icons">{{ message }}</div>
+            </div><div id="apps-column" style="vertical-align: top; width: 20%; min-width: 300px; display: inline-block; height: 100%; background-color: #ccc; margin: 0px; box-sizing: border-box">
+                <div id="apps">{{ message }}</div>
+            </div><div id="container-column" style="vertical-align: top; width: 75%; min-width: 600px; display: inline-block; height: 100%; background-color: #ddd; margin: 0px; box-sizing: border-box">
+
+                <div id="container">
+                    <div id="testform">
+                        <input placeholder="Row ID" v-model="row_id" /><br /><br />
+                        <input placeholder="Field Name" v-model="column_name" /> == <input placeholder="New Value" v-model="column_value" />
+                        <select v-model="method">
+                            <option value="get"> GET </option>
+                            <option value="put"> PUT </option>
+                            <option value="post"> POST </option>
+                            <option value="delete"> DELETE </option>
+                        </select><br /><br />
+
+                        <button v-on:click="queryTable">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

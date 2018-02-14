@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!--
+
+User related configurations
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/docs/controller.html
+-->
+<controller name="user" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+    <actions>
+
+        <action name="tries" passalong="windowId">
+            <description>Set number of tries before locking account</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="is" passalong="windowId">
+            <description>Sets who a user ought to be</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+            <entity namespace="humble" class="users" id="users" />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="list" passalong="windowId">
+            <description>Sets a group of uses who can do something</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+            <entity namespace="humble" class="users" id="users" />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="role" passalong="windowId">
+            <description>Allows a user to do something if they have a role that matches the role identified here </description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+            <entity namespace="humble" class="roles" id="roles" />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="roles" passalong="windowId">
+            <description>Allows a user to do something if they have one of the roles as identified here</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+            <entity namespace="humble" class="roles" id="roles" />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="redirect" passalong="windowId">
+            <description>Allows you to set the URL/URI the user will be directed to</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="information" passalong="windowId">
+            <description>Identifies which event field contains the userid you wish to load data from, and which event node to attach the information to</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+    </actions>
+</controller>

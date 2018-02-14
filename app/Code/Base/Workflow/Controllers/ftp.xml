@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+
+Workflow actions involving FTP 
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/internal/docs/controller.html
+-->
+<controller name="ftp" use="Smarty3" author="Richard Myers" email="rmyers@argusdentalvision.com">
+    <actions>
+        <action name="get" passalong="windowId">
+            <description>Retrieves files at sFTP site</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="put" passalong="windowId">
+            <description>Places files at sFTP site</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="list" passalong="windowId">
+            <description>Lists files at sFTP site</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+                        
+    </actions>
+</controller>

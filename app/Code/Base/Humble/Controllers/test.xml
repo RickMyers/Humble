@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<controller name="test" use="Twig">
+    <actions>
+        <action name="promote">
+            <description>Does a promotion from the test server to the production server</description>
+            <model namespace="humble" class="Utility" id='Utility'>
+                <parameter name='uid' source='session' value='uid' default='' />
+            </model>
+        </action>
+
+       <!-- ########################################################################################## -->
+
+        <action name="compiler" output="JSON" blocking="off" event="someRandomEvent" comment="all the fixings">
+            <description>Tests compiler</description>
+            <model namespace="humble" class="utility" id='util'>
+                <parameter name='uid' source='session' value='uid' default='' />
+            </model>
+            <switch id="util" method="someRandomMethod">
+                <case value="true">
+                    <entity namespace="humble" class="users" id="user" method="load">
+                        <parameter name='uid' source='session' value='uid' default='' required="true" />
+                        <parameter name='first_name' source='post' default='' optional="true"/>
+                    </entity>
+                </case>
+                <case value="false">
+                    <if id="util" method="getAge" gte="40">
+                        <then>
+                            <output text="Still Young" />
+                            <entity namespace="humble" class="users" id="mike" method="load">
+                                <parameter name='uid' source='session' value='uid' default='' required="true" />
+                                <parameter name='right_now' source='post' format="date" optional="true"/>
+                                <parameter name='last_name' store="true" source='post' optional="true"/>
+                                <parameter name='resume' source='file' default='' />
+                            </entity>
+                        </then>
+                        <else>
+                            <output text="Getting long in the tooth" />
+                        </else>
+                    </if>
+                </case>
+                <default>
+                    <redirect href="/elsewhere.html" />
+                </default>
+            </switch>
+        </action>
+
+    </actions>
+
+
+
+
+</controller>

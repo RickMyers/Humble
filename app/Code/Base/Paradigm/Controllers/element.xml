@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<controller name="element" use="Twig">
+    <actions>
+
+        <action name="create">
+            <description>Registers a workflow object and returns the id to use to save its information</description>
+            <model namespace='paradigm' class='element' id='element'>
+                <parameter name='namespace'     source='post' />
+                <parameter name='shape'         source='post' required='true' />
+                <parameter name='type'          source='post' required='true' />
+                <parameter name='configured'    source='post' default='0' />
+            </model>
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <action name="configure">
+            <description>Generates the configuration screen for a component</description>
+            <model namespace='paradigm' class='manager' id='manager'>
+                <parameter name='id'        source='post' required='true' default='' />
+                <parameter name='type'      source='post' required='true' default='' />
+                <parameter name='namespace' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
+            </model>
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <action name="update" passalong="window_id">
+            <description>Updates a configuration</description>
+            <model namespace='paradigm' class='manager' id='manager' method='updateElement'>
+                <parameter name='data'      source='post' required='true' default='' />
+            </model>
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <action name="remove">
+            <description>Removes a workflow element... this includes deleting the MongoDB element and any additional behavior depending on type of element</description>
+            <model namespace='paradigm' class='manager' method='removeElement' response='true'>
+                <parameter name='id' source='post' required='true' />
+            </model>
+        </action>
+    </actions>
+</controller>

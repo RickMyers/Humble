@@ -1,0 +1,7 @@
+---
+currentWeather  :
+  url             : http://weather.yahooapis.com/forecastrss
+  api-key         :
+  api-var         :
+  arguments       : [p]
+  method          : GET

@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<config>
+    <paradigm>
+        <version>0.0.1</version>
+        <title>Paradigm Workflow Editor</title>
+        <description>Workflow editor</description>
+        <author>
+            <name>Rick Myers</name>
+            <email>rick@enicity.com</email>
+        </author>
+        <module>
+            <name>Paradigm</name>
+            <use>Smarty3</use>
+            <package>Base</package>
+            <workflow>Y</workflow>
+            <weight>15</weight>
+            <required>Y</required>
+        </module>
+        <structure>
+            <models>
+                <source>Paradigm/Models</source>
+            </models>
+            <config>
+                <source>Paradigm/etc</source>
+            </config>
+            <helpers>
+                <source>Paradigm/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>Paradigm/Controllers</source>
+                <cache>Paradigm/Controllers/Cache</cache>
+            </controllers>
+            <schema>
+                <install>Paradigm/Schema/Install</install>
+                <update>Paradigm/Schema/Update</update>
+                <layout>Paradigm/Schema/DSL</layout>
+            </schema>
+            <configuration>
+                <source>Paradigm/etc</source>
+            </configuration>
+            <views>
+                <source>Paradigm/Views</source>
+                <cache>Paradigm/Views/Cache</cache>
+            </views>
+            <images>
+                <source>Paradigm/Images</source>
+                <cache>Paradigm/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>Paradigm/Entities</source>
+            </entities>
+            <RPC>
+                <source>Paradigm/RPC</source>
+            </RPC>
+        </structure>
+        <orm>
+            <prefix>paradigm_</prefix>
+            <mongodb>paradigm</mongodb>
+            <entities>
+                <events />
+                <event_log />
+                <import_sources />
+                <job_queue />
+                <scheduler_log />
+                <sensors />
+                <sensor_workflows />
+                <system_events />
+                <webservices />
+                <webservice_workflows />
+                <workflows />
+                <workflow_listeners />
+                <workflow_components />
+                <workflow_comments />
+            </entities>
+        </orm>
+        <events>
+        </events>
+        <web>
+            <edits>
+                <save>Paradigm/web/edits/save.json</save>
+                <new>Paradigm/web/edits/newform.json</new>
+                <namespaces>Paradigm/web/edits/namespaceList.json</namespaces>
+                <system>Paradigm/web/edits/system.json</system>
+            </edits>
+            <apptest>
+                <js>
+                    <source>Paradigm/web/js/test.js</source>
+                </js>
+            </apptest>
+            <app>
+                <js>
+                    <source>Paradigm/web/js/app.js</source>
+                </js>
+            </app>
+            <engine>
+                <js>
+                    <source weight='10'>Paradigm/web/js/Paradigm.js</source>
+                    <source weight='10'>Paradigm/web/js/Windows.js</source>
+                    <source weight='10'>Paradigm/web/js/Desktop.js</source>
+                    <source weight='12'>Paradigm/web/js/Actions.js</source>
+                    <source weight='16'>Paradigm/web/js/Console.js</source>
+                    <!--source weight='20'>Paradigm/web/js/perfect-scrollbar.js</source-->
+                </js>
+                <css>
+                    <source>Paradigm/web/css/Paradigm.css</source>
+                    <source weight='10'>Paradigm/web/css/Desktop.css</source>
+                    <!--source weight='20'>Paradigm/web/css/perfect-scrollbar.css</source-->
+                </css>
+            </engine>
+            <research>
+                <js>
+                    <source weight='10'>Paradigm/web/js/Research/Paradigm.js</source>
+                    <source weight='10'>Paradigm/web/js/Windows.js</source>
+                    <source weight='10'>Paradigm/web/js/Desktop.js</source>
+                    <source weight='12'>Paradigm/web/js/Actions.js</source>
+                    <source weight='16'>Paradigm/web/js/Research/Console.js</source>
+                    <!--source weight='20'>Paradigm/web/js/perfect-scrollbar.js</source-->
+                </js>
+                <css>
+                    <source>Paradigm/web/css/Paradigm.css</source>
+                    <source weight='10'>Paradigm/web/css/Desktop.css</source>
+                    <!--source weight='20'>Paradigm/web/css/perfect-scrollbar.css</source-->
+                </css>
+            </research>
+            <rtc>
+                <js>
+                    <source>Paradigm/web/js/rtc/dist/rtc.js</source>
+                </js>
+            </rtc>
+            <desktop>
+                <js>
+                    <source weight='5'>Paradigm/web/js/Paradigm.config.js</source>
+                    <source weight='10'>Paradigm/web/js/Windows.js</source>
+                    <source weight='10'>Paradigm/web/js/Desktop.js</source>
+                </js>
+                <css>
+                    <source weight='10'>Paradigm/web/css/Desktop.css</source>
+                </css>
+            </desktop>
+            <designer>
+                <js>
+                    <source weight='10'>Paradigm/web/js/Designer.js</source>
+                </js>
+                <css>
+                    <source weight='10'>Paradigm/web/css/Designer.css</source>
+                </css>
+            </designer>
+        </web>
+    </paradigm>
+</config>

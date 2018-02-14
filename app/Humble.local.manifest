@@ -1,0 +1,13 @@
+{
+    "merge": {
+    },
+    "ignore": {
+        "index.html": true,
+        "index.php": true,
+        "app/Humble.local.manifest": true
+    },
+    "alwaysSkip": {
+        ".git": true,
+        ".gitignore": true
+    }
+}

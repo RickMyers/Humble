@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<unit_tests>
+    <packages>
+        <framework>
+            <test class="MongoDB"   description="Tests the basic CRUD functionality with MongoDB" namespace='humble' />
+        </framework>
+    </packages>
+</unit_tests>

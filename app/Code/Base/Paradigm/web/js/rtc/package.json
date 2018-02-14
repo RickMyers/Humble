@@ -1,0 +1,44 @@
+{
+  "name": "rtc",
+  "version": "3.4.0",
+  "description": "Build WebRTC conferencing applications with easy using rtc.io. This package provides a super-friendly entry point for working with WebRTC, dive into underling rtc.io modules for more configuration and customization opportunities",
+  "main": "index.js",
+  "scripts": {
+    "browserify": "mkdir -p dist && browserify index.js -s RTC --debug | exorcist dist/rtc.js.map > dist/rtc.js",
+    "uglify": "uglifyjs --screw-ie8 --mangle --compress --in-source-map dist/rtc.js.map --source-map-include-sources --source-map dist/rtc.min.js.map --source-map-url rtc.min.js.map --output dist/rtc.min.js dist/rtc.js",
+    "build": "npm dedupe && npm run browserify && npm run uglify",
+    "prepublish": "npm run build",
+    "test": "zuul -- test/all.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rtc-io/rtc.git"
+  },
+  "keywords": [
+    "webrtc",
+    "rtc.io"
+  ],
+  "author": "Damon Oehlman <damon.oehlman@nicta.com.au>",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/rtc-io/rtc/issues"
+  },
+  "homepage": "https://github.com/rtc-io/rtc",
+  "dependencies": {
+    "cog": "^1.0.0",
+    "fdom": "^1.0.0",
+    "kgo": "^2.0.0",
+    "rtc-attach": "^2.0.1",
+    "rtc-capture": "^1.0.1",
+    "rtc-quickconnect": "^4.1.0",
+    "whisk": "^1.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "exorcist": "^0.3.0",
+    "mocha": "^2.1.0",
+    "uglify-js": "^2.4.15",
+    "uuid": "^2.0.1",
+    "zuul": "^2.0.0"
+  }
+}

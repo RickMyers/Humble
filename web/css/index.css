@@ -1,0 +1,235 @@
+body {
+   background-color:rgba(100,100,100,0.5); background-image: url("/web/images/metal_background.jpg"); box-sizing: border-box; position: relative;
+
+
+}
+.index-center-display {
+     height: 100%; margin-left: auto; margin-right: auto; border: 0px 2px 0px 2px; padding: 40px
+}
+/*#95A5A6
+*/
+.humble-display-option {
+    width: 600px; padding: 30px 40px; font-size: 1.5em; background-color: ghostwhite; color: #3B536A; text-align: center; border: 1px solid #666;
+   border-radius: 5px; margin-bottom: 45px; opacity: .6
+}
+.humble-display-option:hover {
+    opacity: 1.0; cursor: pointer
+}
+.flat-brick {
+    height: 20px; width: 20%; float: left;
+}
+/* A replacement for the clearfix hack for modern browsers */
+.cf:before,
+.cf:after {
+  content:"";
+  display:table;
+}
+
+.cf:after {
+clear:both;
+}
+
+/* For IE 6/7 (triggers hasLayout) */
+.cf {
+  *zoom:1;
+}
+.cancelButton {
+   border-color: 1px solid #ddd;
+   background-color: #ff4444;
+
+   padding: 0px 0px;
+   -webkit-border-radius: 2px;
+   border-radius: 2px;
+   border-radius: 2px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   text-align: center;
+   color: white;
+   padding: 1px 3px 1px 3px;
+   font-size: 8px;
+   font-family: Tahoma, Arial, Sans-Serif;
+   text-decoration: none;
+   vertical-align: middle;
+   font-weight: bold;
+   cursor: pointer;
+   }
+.cancelButton:hover {
+   background-color: #FF1111;
+   color: #fff;
+   cursor: pointer;
+   }
+.cancelButton:active {
+   border-top-color: #5c1b1b;
+   background-color: #FF0000;
+   }
+.headerGradient {
+     background: rgb(35,83,138); /* Old browsers */
+     background: -moz-linear-gradient(top, rgba(35,83,138,1) 0%, rgba(167,207,223,1) 100%); /* FF3.6+ */
+     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(35,83,138,1)), color-stop(100%,rgba(167,207,223,1))); /* Chrome,Safari4+ */
+     background: -webkit-linear-gradient(top, rgba(35,83,138,1) 0%,rgba(167,207,223,1) 100%); /* Chrome10+,Safari5.1+ */
+     background: -o-linear-gradient(top, rgba(35,83,138,1) 0%,rgba(167,207,223,1) 100%); /* Opera 11.10+ */
+     background: -ms-linear-gradient(top, rgba(35,83,138,1) 0%,rgba(167,207,223,1) 100%); /* IE10+ */
+     background: linear-gradient(top, rgba(35,83,138,1) 0%,rgba(167,207,223,1) 100%);
+     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#23538a', endColorstr='#a7cfdf',GradientType=0 ); /* IE6-9 */
+}
+.confirmButton {
+   border-top: 1px solid #f2f8fc;
+   background: #23b521;
+   background: -webkit-gradient(linear, left top, left bottom, from(#1b7a2c), to(#23b521));
+   background: -webkit-linear-gradient(top, #1b7a2c, #23b521);
+   background: -moz-linear-gradient(top, #1b7a2c, #23b521);
+   background: -ms-linear-gradient(top, #1b7a2c, #23b521);
+   background: -o-linear-gradient(top, #1b7a2c, #23b521);
+   padding: 5px 10px;
+   -webkit-border-radius: 6px;
+   -moz-border-radius: 6px;
+   border-radius: 6px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 10px;
+   font-family: Tahoma, Arial, sans-serif;
+   text-decoration: none;
+   vertical-align: middle;
+   cursor: pointer;
+   }
+.confirmButton:hover {
+   border-top-color: #2eb027;
+   background: #2eb027;
+   color: #ccc;
+   }
+.confirmButton:active {
+   border-top-color: #065e13;
+   background: #065e13;
+   }
+.closeButton {
+   border-top: 1px solid #0f4e73;
+   background: #061f30;
+   background: -webkit-gradient(linear, left top, left bottom, from(#01080d), to(#061f30));
+   background: -webkit-linear-gradient(top, #01080d, #061f30);
+   background: -moz-linear-gradient(top, #01080d, #061f30);
+   background: -ms-linear-gradient(top, #01080d, #061f30);
+   background: -o-linear-gradient(top, #01080d, #061f30);
+   padding: 4.5px 9px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 14px;
+   font-family: Georgia, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   cursor: pointer;
+   }
+.closeButton:hover {
+   border-top-color: #192b38;
+   background: #192b38;
+   color: #f2f2f2;
+   }
+.closeButton:active {
+   border-top-color: #3d4245;
+   background: #3d4245;
+   }
+
+.settingsButton {
+	-moz-box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5) );
+	background:-moz-linear-gradient( center top, #79bbff 5%, #378de5 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5');
+	background-color:#79bbff;
+	border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	color:#ffffff;
+    cursor: pointer;
+	font-family:arial;
+	font-size:10px;
+	font-weight:normal;
+	padding:0px 4px;
+	text-decoration:none;
+}
+.settingsButton:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) );
+	background:-moz-linear-gradient( center top, #378de5 5%, #79bbff 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff');
+	background-color:#378de5;
+    }
+.settingsButton:active {
+	position:relative;
+	top:1px;
+}
+.shadowButton {
+   border-top: 1px solid #a3a3a3;
+   background: #191a1a;
+   background: -webkit-gradient(linear, left top, left bottom, from(#051824), to(#191a1a));
+   background: -webkit-linear-gradient(top, #051824, #191a1a);
+   background: -moz-linear-gradient(top, #051824, #191a1a);
+   background: -ms-linear-gradient(top, #051824, #191a1a);
+   background: -o-linear-gradient(top, #051824, #191a1a);
+   padding: 5px 10px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 9pt;
+   font-family: Helvetica, Arial, Sans-Serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.shadowButton:hover {
+   border-top-color: #787b7d;
+   background: #787b7d;
+   color: #ccc;
+   }
+.shadowButton:active {
+   border-top-color: #37434a;
+   background: #37434a;
+   }
+
+.humble_silver_button {
+   border-top: 1px solid #969696;
+   background: #adb4b8;
+   background: -webkit-gradient(linear, left top, left bottom, from(#8c8f91), to(#adb4b8));
+   background: -webkit-linear-gradient(top, #8c8f91, #adb4b8);
+   background: -moz-linear-gradient(top, #8c8f91, #adb4b8);
+   background: -ms-linear-gradient(top, #8c8f91, #adb4b8);
+   background: -o-linear-gradient(top, #8c8f91, #adb4b8);
+   padding: 5px 10px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 14px;
+   font-family: Georgia, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.humble_silver_button:hover {
+   border-top-color: #c4cbcf;
+   background: #c4cbcf;
+   color: #918c91;
+   }
+.humble_silver_button:active {
+   border-top-color: #abacad;
+   background: #abacad;
+   }

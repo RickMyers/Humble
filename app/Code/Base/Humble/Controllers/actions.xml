@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<controller name="actions" use="Smarty3"><!-- Default templater uses Smarty-3, change to whatever you like -->
+    <actions>
+
+        <action name="open">
+            <description>This is the default action that is invoked when user double clicks your icon</description>
+
+            <!--The following entity markup establishes the relationship between the user who caused the event the action and the page the event occurred on -->
+            <entity namespace="desktop" class="permissions" id="permissions">
+                <parameter name="applid" source="post"    value="applid" default="" />
+                <parameter name="uid"    source="session" value="uid"    default="" />
+            </entity>
+
+            <!-- Your Entity, Model, or Helper declarations go here -->
+
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <action name="SomeOtherAction">
+            <description>This is just an example, do whatever you want with it</description>
+        </action>
+
+        <action name="test">
+            <description> Just a generic test page for experimentation </description>
+        </action>
+
+    </actions>
+</controller>

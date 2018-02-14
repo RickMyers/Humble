@@ -1,0 +1,35 @@
+.cloud-it-window-maximize       { visibility: inherit; float: right; height: 20px; margin-top: 4px; margin-right: 2px; }
+.cloud-it-window-close          { visibility: inherit; float: right; height: 19px; margin-top: 1px; margin-right: 2px; }
+.cloud-it-window-minimize       { visibility: inherit; float: right; height: 22px; margin-top: 2px; margin-right: 2px; }
+.cloud-it-nav-selected          { border-bottom: 1px solid #aaa; height: 24px;  }
+.cloud-it-nav-unselected        { border-bottom: 1px dotted #bbb; height: 24px; }
+.cloud-it-desktop-window-content {
+    position: relative;  z-index: 5;	font-family: sans-serif; font-size: 9pt; color: black; overflow: hidden; display: inherit; color: black; font-family: sans-serif;
+	box-sizing: border-box;         /* Opera/IE 8+ */
+}.cloud-it-desktop-window-titlebar {
+background-color: #2c3e50;
+    color: #eeeeee;
+    display: inherit;
+    font-family: verdana;
+    font-size: 12pt;
+    height: 28px;
+    padding-top: 3px;
+    position: relative;
+    visibility: inherit;
+    z-index: inherit;
+
+}
+.cloud-it-desktop-window-frame {
+    background-color: ghostwhite;
+    border-color: #2c3e50;
+    border-image: none;
+    border-radius: 3px;
+    border-style: ridge;
+    border-width: 4px 3px 3px;
+    box-shadow: 3px 3px 4px #aaaaaa;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    overflow: hidden;
+    display: none;
+    z-index: 4;
+}

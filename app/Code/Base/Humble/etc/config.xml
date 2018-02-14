@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<config>
+    <core>
+        <version>0.0.1</version>
+        <title>Framework</title>
+        <description>This is the module that contains the base framework classes and components</description>
+        <author>
+            <name>Rick Myers</name>
+            <email>rick@enicity.com</email>
+        </author>
+        <module>
+            <name>Core</name>
+            <weight>10</weight>
+            <required>Y</required>
+            <workflow>Y</workflow>
+            <package>Base</package>
+            <use>Smarty3</use>
+        </module>
+        <structure>
+            <models>
+                <source>Core/Models</source>
+            </models>
+            <config>
+                <source>Core/etc</source>
+            </config>
+            <helpers>
+                <source>Core/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>Core/Controllers</source>
+                <cache>Core/Controllers/Cache</cache>
+            </controllers>
+            <schema>
+                <install>Core/Schema/Install</install>
+                <update>Core/Schema/Update</update>
+                <layout>Core/Schema/DSL</layout>
+            </schema>
+            <configuration>
+                <source>Core/etc</source>
+            </configuration>
+            <views>
+                <source>Core/Views</source>
+                <cache>Core/Views/Cache</cache>
+            </views>
+            <images>
+                <source>Core/Images</source>
+                <cache>Core/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>Core/Entities</source>
+            </entities>
+            <RPC>
+                <source>Core/RPC</source>
+            </RPC>
+        </structure>
+        <orm>
+            <prefix>core_</prefix>
+            <mongodb>core</mongodb>
+            <entities>
+                <categories />
+                <chronicle />
+                <controllers />
+                <css />
+                <edits />
+                <entities />
+                <entity_columns />
+                <ftp_log />
+                <js />
+                <log />
+                <modules />
+                <packages />
+                <pages />
+                <templaters />
+                <templates />
+                <userlog />
+                <users />
+                <user_identification polyglot='Y' />
+                <user_permissions />
+            </entities>
+        </orm>
+        <events>
+            
+        </events>
+        <web>
+            <edits>
+                <login>Core/web/edits/login.json</login>
+            </edits>
+            <common>
+                <js>
+                    <source>Core/web/js/Humble.js</source>
+                    <source>Core/web/js/EasyAjax.js</source>
+                    <source>Core/web/js/EasyEdit.js</source>
+                    <source>Core/web/js/EasyForm.js</source>
+                    <source>Core/web/js/absurdjs.js</source>
+                </js>
+                <css>
+                    <source>Core/web/css/Normalize.css</source>
+                </css>
+            </common>
+            <vue>
+                <js>
+                    <source>Core/web/js/vue.js</source>
+                    <source>Core/web/js/vuerouter.js</source>
+                </js>
+            </vue>
+            <sockets>
+                <js>
+                    <source>Core/web/js/socket.io.2.0.4.js</source>
+                </js>
+            </sockets>
+            <widgets>
+                <js>
+                    <source weight='5'>Core/web/js/widgets.js</source>
+                    <source weight="6">Core/web/js/EasyTabs.js</source>
+                    <source weight="7">Core/web/js/Sliders.js</source>
+                    <source weight="7">Core/web/js/moment.js</source>
+                    <source weight="8">Core/web/js/EasyRTE.js</source>
+                    <source weight="8">Core/web/js/Pagination.js</source>
+                    <source weight="8">Core/web/js/jquery-ui.js</source>
+                    <source weight="8">Core/web/js/jquery.filthypillow.min.js</source>
+                </js>
+                <css>
+                    <source weight="9">Core/web/css/jquery.scrollbar.css</source>
+                    <source weight="8">Core/web/css/jquery-ui.css</source>
+                    <source weight="8">Core/web/css/jquery.filthypillow.css</source>
+                </css>
+            </widgets>
+            <bootstrap>
+                <js>
+                    <source>Core/web/bootstrap-3.3.7/js/bootstrap.min.js</source>
+                    <source>Core/web/js/handlebars-v4.0.5.js</source>
+                </js>
+                <css>
+                    <source>Core/web/bootstrap-3.3.7/css/bootstrap.css</source>
+                    <source>Core/web/htmlcss/css/glyphicons.css</source>
+                </css>
+            </bootstrap>
+            <bootstrap-theme>
+                <css>
+                    <source>Core/web/bootstrap-3.3.7/css/bootstrap-theme.css</source>
+                </css>
+            </bootstrap-theme>
+            <admin>
+                <css>
+                    <source>Core/web/css/cssmenu.css</source>
+                </css>
+                <js>
+                    <source>Core/web/js/absurdjs.js</source>
+                    <source>Core/web/js/Admin.js</source>
+                    <source>Core/web/js/cssmenu.js</source>
+                </js>
+            </admin>
+            <admintheme>
+                <css>
+                    <source>Core/web/css/admintheme.css</source>
+                </css>
+            </admintheme>
+            <jquery>
+                <js>
+                    <source>Core/web/js/jquery-3.1.0.min.js</source>
+                </js>
+            </jquery>
+        </web>
+    </core>
+</config>

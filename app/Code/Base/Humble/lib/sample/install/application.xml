@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<application>
+    <name>{$name}</name>
+    <version>{$version}</version>
+    <status>
+        <enabled>{$enabled}</enabled>           <!-- Switch to 0 to take the application offline -->
+        <quiescing>{$quiescing}</quiescing>     <!-- switch to 1 to being the process of taking the system offline -->
+        <polling>{$polling}</polling>           <!-- Switch to 0 to disable the single poll operation -->
+        <interval>{$interval}</interval>        <!-- Number of seconds between polls -->
+        <installer>{$installer}</installer>     <!-- switch to 0 after installation to prevent accidental execution of the install script -->
+        <caching>{$caching}</caching>            <!-- Indicates whether memcached is available to store or retrieve data -->
+        <SSO>
+            <enabled>{$SSO}</enabled>           <!-- Switch to 0 to use local authentication -->
+            <IDP>{$idp}</IDP>
+        </SSO>
+        <authorization>                         <!-- Enable or disable service level authorization checking, turn off temporarily in the event of serious issues -->
+            <enabled>{$authorized}</enabled>
+        </authorization>
+    </status>
+</application>

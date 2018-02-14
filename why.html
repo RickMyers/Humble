@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+            p {
+                font-family: sans-serif; 
+            }
+            li {
+                font-family: sans-serif;
+            }
+            .center-column {
+                margin-left: auto; margin-right: auto; padding-left: 20px; padding-right: 20px; width: 1080px; border-left: 3px solid rgba(200,200,200,.4); border-right: 3px solid rgba(200,200,200,.4);
+            }
+            .answer {
+                font-size: .95em; font-weight: bolder
+            }
+            .answer-description {
+                list-style: none; font-size: .85em; margin-top: 6px; margin-bottom: 6px; font-weight: normal
+            }
+        </style>
+        <script type="text/javascript" src="/js/jquery"></script>
+    </head>
+    <body>
+        <div class="center-column">
+            <p>
+                In this day and age, using a framework, and really any framework, comes down to a few simple question:<br /><br />
+                Why would I want to use this thing, and what does it offer me?<br /><br />
+                Here are a few reasons why you might want to take a look a bit further:<br /><br />
+            </p>
+            <ul>
+                <li class="answer"> You understand Separation of Concerns
+                    <ul>
+                        <li class="answer-description">
+                            With Humble, Controllers are written in XML, Models in PHP, and Views in any of a list of templating language.  Also, those REST/SOAP calls are implemented using yaml, so complicated coding isn't required.  This establishes clear demarcation between
+                            each tier of the application, and allows delineation of responsibilities based upon the underlying technology.
+                        </li>
+                    </ul>
+                </li>
+                <li class="answer"> You understand convention over configuration
+                    <ul>
+                        <li class="answer-description">
+                            With Humble, conventions are strictly enforced, so you only need to provide the parts of the application that make your application unique.  Follow conventions and "magic" things happen.
+                        </li>
+                    </ul>
+                </li>
+                <li class="answer"> You realize the best code is no code
+                    <ul>
+                        <li  class="answer-description">
+                            Humble uses abstraction, code generators, and conventions to make common tasks easy, even "magical".  This means that the developer does not have to provide code for
+                            every little thing.  The less code you have to write to implement something, the less time will be taken supporting it, and fewer bugs will find their way into your application.
+                            Humble also documents, catalogs, and categorizes your code, which assists with reusability of components.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>

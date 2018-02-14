@@ -1,0 +1,1 @@
+{$diagram->load()|json_encode}

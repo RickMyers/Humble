@@ -1,0 +1,111 @@
+({
+    form:
+    {
+        id: 		"email-management-form-&id&",
+        drawme:		false,
+        action:		"",
+        onload:         function () {
+        },
+        method:		"post",
+        style:		"",
+        onenterkey:	"send"
+    },
+    fields:
+    [
+        {
+            active:         true,
+            id:             "email-category-&id&",
+            longname:       "Email Category",
+            title:          "Category of email to send",
+            onchange:       function (evt) {
+                if (evt.target.value) {
+                    (new EasyAjax('/argus/email/templates')).add('category',evt.target.value).callback(function (response) {
+                        EasyEdits.populateSelectBox($E('email-template-&id&'),eval(response));
+                    }).post();
+                }
+            },
+            type:           "combo",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border-radius: 2px; padding: 2px; width: 400px; height: 25px"
+        },
+        {
+            active:         true,
+            id:             "email-category-&id&_combo",
+            longname:       "",
+            title:          "Category of email to send",
+            type:           "text",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          "border-radius: 2px; padding: 2px; width: 400px;  height: 23px"
+        },        
+        {
+            active:         true,
+            id:             "email-template-&id&",
+            longname:       "Email Templates",
+            title:          "An email template",
+            type:           "combo",
+            onchange:       function (evt) {
+                (new EasyAjax('/argus/email/template')).add('id',$('#email-template-&id&').val()).callback(function (response) {
+                    CKEDITOR.instances['email-editor-&id&'].setData(response);
+                }).post();
+            },
+            required:       true,
+            force:          true,
+            eitheror:       "new-email-template-&id&,email-template-&id&",
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            id:             "email-template-&id&_combo",
+            longname:       "",
+            title:          "An email template",
+            type:           "text",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          "border-radius: 2px; padding: 2px; width: 400px;  height: 20px"
+        },           
+        {
+            active:         true,
+            id:             "new-email-template-&id&",
+            type:           "text",
+            required:       true,
+            force:          true,
+            eitheror:       "new-email-template-&id&,email-template-&id&",
+            longname:       "New Email Template",
+            title:          "Description for the new email template",
+            classname:      "",
+            style:          "border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+        },
+        {
+            active:         true,
+            id:             "email-template-save-&id&",
+            longname:       "Save Template",
+            title:          "Template Save",
+            type:           "button",
+            required:       false,
+            force:          false,
+            value:          "Save",
+            onclick:        function (evt) {
+                if (Edits['email_template_form_&id&'].validate()) {
+                    var description = $('#new-email-template-&id&').val();
+                    if (description.trim()) {
+                        (new EasyAjax('/workflow/email/add')).add('categoryId',$('#email-category-&id&').val()).add('template',CKEDITOR.instances['email-editor-&id&'].getData()).add('description',description).callback(function (response) {
+                            alert(response);
+                        }).post();
+                    } else {
+                        (new EasyAjax('/workflow/email/save')).add('id',$('#email-template-&id&').val()).add('template',CKEDITOR.instances['email-editor-&id&'].getData()).callback(function (response) {
+                            alert(response);
+                        }).post();
+                    }
+                }
+            },
+            classname:      "settingsButton",
+            style:          "font-size: 1em; padding: 2px 5px"
+        }
+    ]
+})

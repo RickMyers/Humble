@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+
+Unit Test Harness
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/internal/docs/controller.html
+-->
+<controller name="unittests" use="Smarty3" author="Richard Myers" email="rick@enicity.com">
+    <actions>
+
+        <action name="open" passalong="window_id">
+            <description>Main Test Harness page</description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="load" passalong="window_id">
+            <description>Builds the list of unit tests that will be run</description>
+            <helper namespace='humble' class='unittest' id='unit_tests'>
+                <parameter name='source' source='post' required='true' />
+                <parameter name='window_id' source='post' required='true' />
+            </helper>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="run" passalong="window_id">
+            <description>Runs the unit tests and displays the results</description>
+            <helper namespace='humble' class='unittest' id='unit_tests' method='run'>
+                <parameter name='source' source='post' required='true' />
+                <parameter name='window_id' source='post' required='true' />
+            </helper>
+        </action>
+
+    </actions>
+</controller>

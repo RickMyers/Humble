@@ -1,0 +1,19 @@
+#first you *MUST* install Node.js, and make sure the bin directory is on the path
+
+#npm is the "node package manager"
+
+#create a node project by typing "npm init" at the command line, that will create the package.json for the project
+
+#The package installation command is as follows:
+
+npm install <package-name> --save-dev   //do this for the following packages
+
+grunt
+grunt-contrib-concat
+grunt-contrib-jshint
+grunt-contrib-watch
+grunt-php
+grunt-shell
+grunt-simple-watch
+
+#that's it!  You are ready to run grunt at the /app/ command line

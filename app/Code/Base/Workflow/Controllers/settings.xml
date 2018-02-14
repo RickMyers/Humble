@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+
+Manages the saving of settings and customizations for components
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/docs/controller.html
+-->
+<controller name="settings" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+    <actions>
+        <action name="save">
+            <description>Saves the settings array</description>
+            <model namespace="workflow" class="settings" id="settings" method="save">
+                <parameter name="id" source="post" default="" />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="load">
+            <description>Fetches the current settings</description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="reset">
+            <description>Resets settings back to init</description>
+        </action>
+
+    </actions>
+</controller>

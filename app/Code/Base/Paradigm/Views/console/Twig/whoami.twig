@@ -1,0 +1,6 @@
+{% set me = user.data() %}
+{% if (me.last_name) %}
+{{ me.last_name }}, {{ me.first_name }} [{{ me.nick_name }}] - {{ me.email }}
+{% else %}
+Why don't you log in first and I will tell you.
+{% endif %}

@@ -1,0 +1,205 @@
+{
+	"form":
+	{
+		"id":           "installer-form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+		{
+			"active":		true,
+			"id": 			"email",
+			"longname":		"E-mail address of the administrator",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "width: 275px"
+		},
+		{
+			"active":		true,
+			"id": 			"pwd",
+			"longname":		"Administrator login password",
+			"type":			"password",
+			"required":		true,
+            "verify":       "confirm",
+			"force":		true,
+            "style":        ""
+		},
+		{
+			"active":		true,
+			"id": 			"confirm",
+			"longname":		"Confirm password",
+			"type":			"password",
+			"required":		true,
+			"force":		true,
+            "style":        ""
+		},
+		{
+			"active":		true,
+			"id":			"username",
+			"longname":		"Administrator's login name",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"firstname",
+			"longname":		"Administrator's first name",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"lastname",
+			"longname":		"Administrator's last name",
+			"required":		true,
+			"force":		true,
+			"type":			"text",
+            "style":        "",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"dbhost",
+			"longname":		"The Address or DNS of the Database",
+			"required":		true,
+			"force":		true,
+			"type":			"text",
+            "style":        "width: 275px",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"db",
+			"longname":		"The name of the database to use",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"userid",
+			"longname":		"The userid to use to access the database",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"password",
+			"longname":		"The password to use to access the database",
+			"type":			"text",
+            "style":        "",
+			"required":		false,
+			"force":		false,
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"mongo",
+            "longname":     "Mongo DB Host",
+			"title":		"The location of the Mongo DB",
+			"type":			"text",
+            "style":        "",
+			"required":		true,
+			"force":		true,
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"mongo_userid",
+            "longname":     "MongoDB User ID",
+			"title":		"Optional MongoDB User Id",
+			"type":			"text",
+            "style":        "",
+			"required":		false,
+			"force":		false,
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"mongo_password",
+            "longname":     "Mongo DB Password",
+			"title":		"Optional MongoDB Password",
+			"type":			"password",
+            "style":        "",
+			"required":		false,
+			"force":		false,
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"cache",
+            "longname":     "Caching Server Location",
+			"title":		"The location of the Cache Server",
+			"type":			"text",
+            "style":        "",
+			"required":		false,
+			"force":		false,
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"install-test",
+			"longname":		"Submit Button",
+			"type":			"text",
+            "style":        "font-family: sans-serif; font-size: .8em; padding: 2px 4px",
+            "classname":    "confirmButton",
+            "value":        "",
+            "onclick":        function () {
+                (new EasyAjax('/installtest.php')).add('dbhost',$("#dbhost").val()).add('db',$("#db").val()).add('userid',$("#userid").val()).add('password',$("#password").val()).callback(function (response) {
+                    alert(response);
+                }).post();
+            }
+		},
+		{
+			"active":		true,
+			"id":			"mongo-test",
+			"longname":		"Mongo Test Button",
+			"type":			"button",
+            "style":        "font-family: sans-serif; font-size: .8em; padding: 2px 4px",
+            "classname":    "confirmButton",
+            "value":        "",
+            "onclick":        function () {
+                (new EasyAjax('/mongotest.php')).add('mongo',$("#mongo").val()).add('mongo_userid',$('#mongo_userid').val()).add('mongo_password',$('#mongo_password').val()).callback(function (response) {
+                    alert(response);
+                }).post();
+            }
+		},
+		{
+			"active":		true,
+			"id":			"install-submit",
+			"longname":		"Submit Button",
+			"type":			"text",
+            "style":        "font-family: sans-serif; font-size: .9em; padding: 2px 5px",
+            "classname":    "settingsButton",
+            "value":        "",
+            onclick:        function () {
+                if (Edits['install-form'].validate()) {
+                    $("#installer-form").submit();
+                }
+            }
+		}
+	]
+}

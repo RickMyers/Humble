@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<unit_tests>
+    <packages>
+
+        <framework>
+            <test class="MongoDB"   description="Tests the basic CRUD functionality with MongoDB" namespace='humble' />
+            <test class="MySQL"     description="Tests the basic CRUD functionality with MySQL" namespace='humble' />
+            <test class="Polyglot"  description="Tests polyglot functionality" namespace='humble' />
+            <test class="RPC"       description="Tests a simple remote REST call" namespace='humble' />
+        </framework>
+        <api depends="framework">
+            <test class="User"      description="Tests retrieval of user data" namespace='humble' />
+        </api>
+    </packages>
+</unit_tests>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<controller name="console" use="Twig">
+    <actions>
+
+        <action name="init">
+            <description>Lays out the console, intializing it</description>
+            
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <action name="time">
+            <description>returns the time and date on the server</description>
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <action name='status'>
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <action name='whoami'>
+            <entity namespace='humble' class='users' id='user'>
+                <parameter name='id' value='uid' source='session' default='' />
+            </entity>
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <action name='search'>
+            <helper namespace='paradigm' class='data' id='data'>
+                <parameter name='term' value='term' source='post' default='stupid' />
+            </helper>
+        </action>
+
+
+    </actions>
+</controller>

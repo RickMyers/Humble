@@ -1,0 +1,40 @@
+({
+	form:
+	{
+		id: 		"workflow-namespace-list-form",
+		drawme:		false,
+		action:		"",
+        onload:     function () {
+            //when form is loaded, do something
+        },
+		method:		"post",
+		style:		"",
+		onenterkey:	"send"
+	},
+	fields:
+	[
+		{
+			active:			true,
+			id: 			"workflow-namespace-list",
+			longname:		"Namespace",
+			title:			"Select a namespace to view the workflows associated to that client",
+            type:           "select",
+            populator:      function () {
+                (new EasyAjax('/workflow/component/namespaces')).callback(function (response) {
+                    EasyEdits.populateSelectBox('workflow-namespace-list',response);
+                }).post();
+            },
+			required:		true,
+			force:			true,
+            onchange:       function () {
+                var selection = $('#workflow-namespace-list').val();
+                if (selection) {
+                    Paradigm.actions.set.namespace(selection);
+                    Workflows.fetch(selection,1);
+                }
+            },
+			classname:		"",
+			style:			"width: 225px; border: 1px solid #aaf; padding: 3px; border-radius: 3px; color: #222"
+		}
+	]
+})

@@ -1,0 +1,12 @@
+        var data = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {$datasets}
+            ]
+        };
+        var ctx = $("#{$layer}").get(0).getContext("2d");
+        var options =   {
+                            pointLabelFontColor : "#F7F7F7",
+                            scaleFontColor: "#F7F7F7"
+                        };
+        var myLineChart = new Chart(ctx).Line(data, options);

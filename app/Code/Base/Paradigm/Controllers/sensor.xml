@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+Sensor related stuff
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/internal/docs/controller.html
+-->
+<controller name="sensor" use="Smarty3" author="Richard Myers" email="rick@enicity.com">
+    <actions>
+        <action name="listen" passalong="windowId" >
+            <description>Listens for ping from the detector</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

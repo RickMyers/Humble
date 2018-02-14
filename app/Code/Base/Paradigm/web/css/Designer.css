@@ -1,0 +1,34 @@
+/* #############################################################################
+ * # PARADIGM DESIGNER
+ * #############################################################################
+ */
+body {
+  /*  overflow: hidden; /* turn off scrolling */
+}
+#designer-page {
+    margin: 0px; padding: 0px; width: 100%; height: 100%
+}
+#designer-left-column {
+    width: 24%; margin-right: .5%; float: left;
+}
+#designer-right-column {
+    width: 24%; margin-right: .5%; float: right;
+}
+#designer-container {
+    width: 50%; margin-right: .5%; min-width: 1000px; display: inline-block; overflow: hidden
+}
+#designer-header {
+    background-color: #333; font-size: 1.5em; color: ghostwhite; font-family: monospace; letter-spacing: 3px
+}
+#designer-controls {
+    background-color: ghostwhite; font-size: 1em; color: #333; font-family: sans-serif; padding: 5px
+}
+#designer-footer {
+    background-color: #333; font-size: .8em; color: ghostwhite; font-family: sans-serif;
+}
+#designer-canvas-container {
+    background-image: url(/images/paradigm/bg_graph.png)
+}
+#designer-canvas {
+     border: 1px solid red
+}

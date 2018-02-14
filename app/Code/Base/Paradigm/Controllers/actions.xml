@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<controller name="actions" use="Smarty3">
+    <actions>
+        <action name="open">
+            <description>Main landing for the workflow editor</description>
+            <entity namespace="humble" class="user_permissions" id="permissions" method="load">
+                <parameter name="uid" source="session" required="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="designer">
+
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="research">
+
+        </action>
+    </actions>
+
+
+
+
+</controller>

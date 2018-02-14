@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+
+Login related workflow configuration action
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/internal/docs/controller.html
+-->
+<controller name="login" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+    <actions>
+
+        <action name="message">
+            <description>Sets a login message... usually an error</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+            <helper namespace="workflow" class='data' id='helper'>
+                <parameter name="windowId" source="post" default="" required="true" />
+            </helper>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

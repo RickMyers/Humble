@@ -1,0 +1,56 @@
+{
+    "namespaces": {
+        "somens": {
+               "description": "this is a practice controller",
+               "reason": "just because"
+        }
+    },
+    "controllers": {
+        "/my/controller": {
+               "description": "this is a practice controller",
+               "reason": "just because"
+        }
+    },
+    "routes": {
+        "/core/user/login": {
+           "reason":   "This needs exposed because the user's credentials won't be validated until after this call",
+           "description": "The service that validates the user id and password.  The session will not be created until after they login so this needs to be exposed to the public"
+       },
+       "/core/user/enrollForm": {
+           "reason":   "The user is not in our system yet but has been invited to self-enroll",
+           "description": "The form that allows invited users to self-enroll"
+       },
+       "/core/user/recoverForm": {
+           "reason":   "The user has forgotten their credentials and needs to start the process of recovery",
+           "description": "The form that starts the process of password recovery"
+       },
+       "/core/user/emailcheck": {
+           "reason":   "Validator to check if an email is in our system",
+           "description": "Part of the password recovery process"
+       },
+       "/core/user/recoveremail": {
+           "reason":   "Sends the email to the person to recover their password",
+           "description": "Part of the password recovery process"
+       },
+       "/core/user/resetform": {
+           "reason":   "Sends the email to the person to recover their password",
+           "description": "Part of the password recovery process"
+       },
+       "/core/user/newpassword": {
+           "reason":   "This changes the users password",
+           "description": "Part of the password recovery process"
+       },
+       "/core/system/active": {
+           "reason":   "Heartbeat poll needs to run even when the system is down",
+           "description": "See Reason"
+       },
+       "/paradigm/workflow/import": {
+           "reason":   "Remote update of critical workflows when not able to log in",
+           "description": "This will update and install workflows remotely"
+       },
+       "/paradigm/actions/designer": {
+           "reason":   "because",
+           "description": "yes"
+       }
+    }
+}

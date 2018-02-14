@@ -1,0 +1,228 @@
+<?php
+//---------------------------------------------------------------------------------------------
+//RabbitMQ Integration -- we will enable these later
+//use PhpAmqpLib\Connection\AMQPStreamConnection;
+//use PhpAmqpLib\Message\AMQPMessage;
+/**
+ * Manages singleton classes
+ *
+ * PHP version 7.2+
+ *
+ * LICENSE:
+ *
+ * @category   Framework
+ * @package    Core
+ * @author     Original Author <rick@enicity.com>
+ * @copyright  2007-Present, Rick Myers <rick@enicity.com>
+ * @license    https://license.enicity.com
+ * @version    1.0.1
+ * @since      File available since Version 1.0.1
+ */
+class Singleton
+{
+    private static $mySQLAdapter     = null;
+    private static $mongoAdapter     = null;
+    private static $settings         = null;
+    private static $environment      = null;
+    private static $helper           = array();
+    private static $firephp          = null;
+    private static $compiler         = null;
+    private static $installer        = null;
+    private static $updater          = null;
+    private static $refresher        = null;
+    private static $translationTable = null;
+    private static $MQConnection     = null;
+    private static $MQChannel        = null;
+    private static $mappings         = null;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+
+    }
+
+    /**
+     * Daisy-chain call to the static classes destruct method
+     */
+    public function __destruct() {
+        Singleton::destruct();
+    }
+
+    /**
+     * Put code here to release any allocated resources
+     */
+    public static function destruct() {
+        if (self::$MQChannel) {
+            self::$MQChannel->close();
+        }
+        if (self::$MQConnection) {
+            self::$MQConnection->close();
+        }
+    }
+    /**
+     *
+     */
+    public static function getMySQLAdapter()  {
+        if (!isset(self::$mySQLAdapter)) {
+            self::$mySQLAdapter = new \Code\Base\Core\Models\MySQL();
+        }
+        return self::$mySQLAdapter;
+    }
+
+    public static function getMQConnection() {
+        if (!isset(self::$MQConnection)) {
+            self::$MQConnection = new AMQPStreamConnection('localhost',5672,'guest','guest');
+        }
+        return self::$MQConnection;
+
+    }
+
+    public static function getMQChannel() {
+        if (!isset(self::$MQChannel)) {
+            self::$MQChannel = self::getMQConnection()->channel();
+        }
+        return self::$MQChannel;
+    }
+
+    /**
+     *
+     */
+    public static function getMongoAdapter()  {
+        if (!isset(self::$mongoAdapter)) {
+            self::$mongoAdapter = new \Code\Base\Core\Models\Mongo();
+        }
+        return self::$mongoAdapter;
+    }
+
+    public static function getTranslationTable() {
+        if (!isset(self::$translationTable)) {
+            /*
+             * Now load the translation table
+             */
+        }
+        return self::$translationTable;
+    }
+    /**
+     *
+     */
+    public static function getFirePHP()  {
+        if (!isset(self::$firephp)) {
+            if (isset($_SERVER['JARVIS_IS_DEVELOPER_MODE']) && (strtoupper($_SERVER['JARVIS_IS_DEVELOPER_MODE']) == "TRUE") && (php_sapi_name !== 'cli')) {
+                self::$firephp = new \Code\Base\Core\Helpers\FirePHP();
+            } else {
+                self::$firephp = new \Code\Base\Core\Helpers\FirePlacebo();
+                //self::$firephp = new Core_Helper_FirePlacebo(); //@TODO: When we go "live", swap these comments
+            }
+        }
+        return self::$firephp;
+    }
+
+    /**
+     *
+     */
+    public static function getCompiler()
+    {
+        if (!isset(self::$compiler)) {
+            self::$compiler = new \Code\Base\Core\Helpers\Compiler();
+        }
+        return self::$compiler;
+    }
+
+    /**
+     *
+     */
+    public static function getInstaller()
+    {
+        if (!isset(self::$installer)) {
+            self::$installer = new \Code\Base\Core\Helpers\Installer();
+        }
+        return self::$installer;
+    }
+
+    /**
+     *
+     */
+    public static function getUpdater()
+    {
+        if (!isset(self::$updater)) {
+            self::$updater = new \Code\Base\Core\Helpers\Updater();
+        }
+        return self::$updater;
+    }
+
+    /**
+     *
+     */
+    public static function getRefresher()
+    {
+        if (!isset(self::$refresher)) {
+            self::$refresher = new \Code\Base\Core\Helpers\Refresher();
+        }
+        return self::$refresher;
+    }
+
+    /**
+     *
+     */
+    public static function getHelper($base,$name='Data')
+    {
+        //hit namespace for helper location.... then go after it
+        if (!isset(self::$helper[$name])) {
+            $helperClass = $base.'_'.$name.'.php';
+            $helperClass = (file_exists($helperClass)) ? $helperClass : '\Code\Base\Core\Helper\Object' ;
+            self::$helper[$name] = new $helperClass();
+        }
+        return self::$helper[$name];
+    }
+
+    /**
+     * Use this one
+     */
+    public static function getSettings()    {
+        if (!isset(self::$settings)) {
+            self::$settings = new \Settings();
+        }
+        return self::$settings;
+    }
+
+    /**
+     *
+     */
+    public static function setSettings($node,$values=array())
+    {
+        return self::$settings[$node] = $values;
+    }
+
+    /**
+     *
+     */
+    public static function getEnvironment()
+    {
+        if (!isset(self::$environment)) {
+            self::$environment = new \Settings();
+        }
+        return self::$environment;
+    }
+
+    public static function mappings($mappings = null) {
+        if ($mappings !== null) {
+            self::$mappings = $mappings;
+        }
+        return self::$mappings;
+
+    }
+
+    /**
+     *
+     */
+    public function __clone()        {        }
+    public function __wakeup()       {        }
+}
+
+//So, what am I doing here?  Well, I allocate some resources using a static class, but the __destruct method is not
+//called when a static class is destroyed, so I take an instance of it here as an instantiatied class, and thus I
+//now get __destruct() behavior when this class is destroyed
+$SINGLETON = new Singleton();
+?>

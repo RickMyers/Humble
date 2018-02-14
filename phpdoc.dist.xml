@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+  <parser>
+    <target>/var/www/Docs/Humble</target>
+  </parser>
+  <transformer>
+    <target>/var/www/Docs/Humble</target>
+  </transformer>
+  <files>
+    <directory>/var/www/Humble</directory>
+    <ignore>lib/*</ignore>
+    <ignore>vendor/*</ignore>
+    <ignore>sample/*</ignore>
+    <ignore>Cache/*</ignore>
+    <ignore>dist/*</ignore>
+    <ignore>Workflows/*</ignore>
+    <ignore>tests/*</ignore>
+    <ignore>install/*</ignore>
+    <ignore>node_modules/*</ignore>
+  </files>
+</phpdoc>

@@ -1,0 +1,10 @@
+**/Cache/*
+**/cache/*
+/docs/
+/images/*
+/app/vendor/*
+/app/node_modules/*
+/app/Workflows/*
+**/DSL/*
+/Humble.project
+/nbproject/private/

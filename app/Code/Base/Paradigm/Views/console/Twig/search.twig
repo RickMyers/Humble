@@ -1,0 +1,8 @@
+{% set definition = data.search() %}
+{% set text = definition.getText() %}
+{% if (text) %}
+{{ text }}
+{% else %}
+    {% set suggestions = definition.getSuggestions() %}
+Suggestions: {{ suggestions }}
+{% endif %}

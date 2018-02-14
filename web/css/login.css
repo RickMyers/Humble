@@ -1,0 +1,15 @@
+.humble-logo {
+    width: 400px; height: 400px; background-color: #4e8dc0; border: 1px solid transparent; border-radius: 200px;
+}
+.logo-text {
+    font-size: 72px; font-family: sans-serif; color: #dbdad6; font-weight: bold; letter-spacing: -4px
+}
+.logo-text-o {
+    font-size: 36px; color: black; font-weight: bold; font-style: italic; font-family: sans-serif; letter-spacing: -4px; position: relative; left: -4px
+}
+.login-field-desc {
+    font-size: .7em; font-family: sans-serif; padding: 0px; margin: 0px; margin-bottom: 10px; text-align: left; color: white
+}
+#login-error {
+    font-size: 1.1em; font-weight: bold; font-family: sans-serif; color: #F99;
+}

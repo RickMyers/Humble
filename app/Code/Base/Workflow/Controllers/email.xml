@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+
+All things relating to managing and creating email notifications
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/internal/docs/controller.html
+-->
+<controller name="email" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+    <actions>
+
+        <action name="templates" output="json">
+            <description>Lists the templates available</description>
+            <entity namespace="humble" class="email_templates" fields="id,description" id='templates'>
+                <parameter name="categoryId" value="category" source="post" default="" optional="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="save">
+            <description>Saves an email template</description>
+            <entity namespace="humble" class="email_templates" id='templates' method='save'>
+                <parameter name="id" source="post" default="" required="true" />
+                <parameter name="template" source="post" default="" required="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="template">
+            <description>Fetches the text of an email template</description>
+            <entity namespace="humble" class="email_templates" id='template' method='load'>
+                <parameter name="id" source="post" default="" required="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="add">
+            <description>Adds a new template</description>
+            <entity namespace="humble" class="email_templates" id='templates' method='add'>
+                <parameter name="categoryId" source="post" default="" />
+                <parameter name="template" source="post" default="" />
+                <parameter name="description" source="post" default="" />
+            </entity>
+        </action>
+
+    </actions>
+</controller>

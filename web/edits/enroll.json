@@ -1,0 +1,163 @@
+{
+	"form":
+	{
+		"id":           "enroll-form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+		{
+			"active":		true,
+			"id": 			"email",
+			"longname":		"E-mail address of the administrator",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "width: 275px"
+		},
+		{
+			"active":		true,
+			"id": 			"password",
+			"longname":		"Your login password",
+			"type":			"password",
+			"required":		true,
+            "verify":       "confirm",
+			"force":		true,
+            "style":        ""
+		},
+		{
+			"active":		true,
+			"id": 			"confirm",
+			"longname":		"Confirm password",
+			"type":			"password",
+			"required":		true,
+			"force":		true,
+            "style":        ""
+		},
+		{
+			"active":		true,
+			"id":			"user_name",
+			"longname":		"Your login name",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "onchange":     function () {
+                (new EasyAjax('/core/user/check')).add('user_name',this.value).callback(function (response) {
+                    console.log(response);
+                }).post();
+            },
+            "style":        "",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"first_name",
+			"longname":		"Your first name",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"last_name",
+			"longname":		"Yourlast name",
+			"required":		true,
+			"force":		true,
+			"type":			"text",
+            "style":        "",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"name",
+			"longname":		"Your preferred name",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"use_preferred",
+			"longname":		"Use Nick Name",
+            "title":        "Select if you wish to be referred to by your preferred name",
+            "dependencies": "name",
+			"type":			"checkbox",
+            "style":        "",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"address1",
+			"longname":		"Street Address 1",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"address2",
+			"longname":		"Street Address 2",
+			"type":			"text",
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"city",
+			"longname":		"Your City",
+			"type":			"text",
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"state",
+			"longname":		"Your State",
+			"type":			"select",
+            "style":        "",
+            "populator":    EasyEdits.stateList,
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"zip_code",
+			"longname":		"Your Zip Code",
+            "mask":         "#####-####",
+			"type":			"text",
+            "maxlength":    10,
+            "style":        "width: 80px",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"enroll-submit",
+			"longname":		"Submit Button",
+			"type":			"text",
+            "value":        "enroll",
+            "style":        "font-family: sans-serif; font-size: .9em; padding: 2px 5px",
+            "classname":    "settingsButton",
+            "value":        " Enroll ",
+            onclick:        function () {
+                if (Edits['enroll-form'].validate()) {
+                    $E("enroll-form").submit();
+                }
+            }
+		}
+	]
+}

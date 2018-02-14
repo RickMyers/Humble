@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+&&DESCRIPTION&&
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/internal/docs/controller.html
+-->
+<controller name="&&NAME&&" use="&&ENGINE&&" author="&&AUTHORNAME&&" email="&&AUTHOREMAIL&&">
+    <actions>
+        <action name="&&ACTION&&">
+            <description>&&ACTIONDESCRIPTION&&</description>
+            <entity namespace="humble" class="users" id='user'>
+                <parameter name='uid' source='session' value='uid' default='' />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

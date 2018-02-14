@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!--
+
+System functions such as status and installation enabled
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/docs/controller.html
+-->
+<controller name="system" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+    <actions>
+
+        <action name="status">
+            <description>Displays the status of the system from the application.xml file, and allows the user to change the values if they have super-user role</description>
+            <model namespace="humble" class="system" id='system' />
+            <entity namespace="humble" class="user_permissions" id="permissions" method="load">
+                <parameter name="uid" source="session" default="" />
+            </entity>
+            <switch id="permissions" method="getSuperUser">
+                <case value="Y">
+                    <view name="edit" />
+                </case>
+                <default>
+                    <view name="browse" />
+                </default>
+            </switch>
+        </action>
+
+        <!-- ########################################################################################## -->
+
+        <action name="save">
+            <description>Will save the system settings if the user has the proper role</description>
+            <entity namespace="humble" class="user_permissions" id="permissions" method="load">
+                <parameter name="uid" source="session" default="" />
+            </entity>
+            <switch id="permissions" method="getSuperUser">
+                <case value="Y">
+                    <model namespace="humble" class="system" method="save" id="system">
+                        <parameter name="name"      source="post" required="true" />
+                        <parameter name="version"   source="post" required="true" />
+                        <parameter name="enabled"   source="post" default="false" />
+                        <parameter name="authorization"   source="post" default="false" />
+                        <parameter name="quiescing" source="post" default="false" />
+                        <parameter name="installer" source="post" default="false" />
+                        <parameter name="landing"   source="post" default="false" />
+                        <parameter name="login"     source="post" default="false" />
+                        <parameter name="logout"    source="post" default="false" />
+                        <parameter name="sso"       source="post" default="false" />
+                    </model>
+                </case>
+                <default>
+                    <redirect href="/index.html?m=You do not have permission to alter system settings" />
+                </default>
+            </switch>
+        </action>
+
+        <!-- ########################################################################################## -->
+
+        <action name="active">
+            <description>Is the system active</description>
+            <model namespace="humble" class="system" id='system'>
+            </model>
+        </action>
+
+        <!-- ########################################################################################## -->
+
+        <action name="quiesce">
+            <description>Sets the "quiesce" bit which signals all connected clients that the system is about to shutdown...</description>
+            <entity namespace="humble" class="user_permissions" method="load" id="permissions">
+                <parameter name="uid" source="session" required="true" />
+            </entity>
+            <switch id="permissions" method="getSuperUser">
+                <case value="Y">
+                    <model namespace="humble" class="system" id='system' method='quiesce'>
+                        <parameter name='value' source='post' required='true' />
+                    </model>
+                </case>
+                <default>
+                    <redirect href="/index.html?m=You lack the authority to quiesce the system" />
+                </default>
+            </switch>
+        </action>
+
+        <!-- ########################################################################################## -->
+
+        <action name="offline">
+            <description>Sets the "disabled" bit which signals all connected clients that the system is now offline...</description>
+            <entity namespace="humble" class="user_permissions" method="load" id="permissions">
+                <parameter name="uid" source="session" required="true" />
+            </entity>
+            <switch id="permissions" method="getSuperUser">
+                <case value="Y">
+                    <model namespace="humble" class="system" id='system' method='offline'>
+                        <parameter name='value' source='post' required='true' />
+                    </model>
+                </case>
+                <default>
+                    <redirect href="/index.html?m=You lack the authority to disable the system" />
+                </default>
+            </switch>
+        </action>
+    </actions>
+</controller>

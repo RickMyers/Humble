@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+
+Diagram/Workflow basic actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/docs/controller.html
+-->
+<controller name="diagram" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+    <actions>
+        <!-- ################################################################################################# -->
+
+        <action name="save">
+            <description>Performs the actual save of the diagram</description>
+            <model namespace='paradigm' class='manager' id='manager'>
+                <parameter name="id"          source='post'  default="" />
+                <parameter name="diagram"     source='post'  default="" />
+                <parameter name="name"        source='post'  optional="true" />
+                <parameter name="description" source='post'  optional="true" />
+            </model>
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <actions name="update">
+            <description>Updates the MySQL DB with the MongoDB ID of the entry point of the workflow.  For all practical purposes, during execution the workflow is referenced by the MongoDB ID of the 'Start' component/glyph.</description>
+            <entity namespace='paradigm' class='workflows' method='save'>
+                <parameter name="id"          source='post'  default="" />
+                <parameter name="workflow_id" source='post'  default="" />
+            </entity>
+        </actions>
+
+        <!-- ################################################################################################# -->
+
+        <action name="new">
+            <description>Builds the dialog for creating a new workflow diagram </description>
+            <entity namespace='humble' class='modules' id='clients' orderby="weight" />
+        </action>
+
+        <!-- ################################################################################################# -->
+
+        <action name="create">
+            <description>Performs the actual save of the diagram</description>
+            <model namespace='paradigm' class='manager' id='manager' method='save' response='true'>
+                <parameter name="description" source='post'  optional='true' default="" />
+                <parameter name="namespace"   source='post'  optional='true' default="" />
+                <parameter name="title"       source='post'  optional='true' default="" />
+                <parameter name="partial"     source='post'  optional='true' default="" />
+                <parameter name="creator"     source='session' value='uid' required='true' />
+                <parameter name="major_version"   source='post'  optional='true' default="" />
+                <parameter name="minor_version"   source='post'  optional='true' default="" />
+            </model>
+        </action>
+
+        <!-- ################################################################################################# -->
+    </actions>
+</controller>

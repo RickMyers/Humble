@@ -1,0 +1,81 @@
+#######################################################################################
+#                                                                                     #
+# This file contains the list of files and folders that belong to the Humble project. #
+#                                                                                     #
+# These files will be used to construct a zip file for installation and updates.      #
+#                                                                                     #
+#######################################################################################
+^/cache/
+^/Cache/
+^.project
+^.tmp
+^.bak
+^.project
+^.well-known/
+.htaccess
+LICENSE
+README.md
+api.php
+iapi.php
+mapi.php
+debug.php
+fallback.php
+favicon.png
+install.php
+installtest.php
+mongotest.php
+loader.php
+phpdoc.dist.xml
+lib/*
+web/css/*
+web/js/*
+web/edits/*
+web/images/tabs/*
+web/images/404_yo.jpg
+web/images/check.png
+web/images/clear.png
+web/images/compile.gif
+web/images/downarrow.png
+web/images/fail.jpg
+web/images/flame_ribbon_background.jpg
+web/images/install.png
+web/images/oops.jpg
+web/images/redx.gif
+web/images/refresh_icon.png
+web/images/uninstall.png
+web/images/update.png
+dist/*
+favicon/*
+app/install/index.php index.php
+app/install/index.html index.html
+app/Humble.local.manifest
+app/Code/Base/Core/*
+app/Code/Base/Paradigm/*
+app/Code/Base/Workflow/*
+app/Exceptions/*
+app/lib/*
+app/tests/*
+app/autoload.php
+app/AuthorizationEngine.php
+app/Compatibility.php
+app/Constants.php
+app/Environment.php
+app/Launcher.php
+app/launch.php
+app/Trigger.php
+app/Scheduler.php
+app/Event.php
+app/Gruntfile.js
+app/Harness.bat
+app/Harness.php
+app/Humble.bat
+app/Humble.php
+app/HumbleException.php
+app/Log.php
+app/Module.php
+app/humble.sh
+app/Singleton.php
+app/allowed.json
+app/composer.json
+app/grunt_instructions.txt
+app/package.json

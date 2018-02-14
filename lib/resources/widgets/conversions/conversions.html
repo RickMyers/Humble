@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">	
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>Conversion Calculator</title>
+<link rel="stylesheet" type="text/css" href="/css/conversions.css" />
+<style type="text/css">
+	.slideSEC	{ border: 1px solid #333; -moz-border-radius: 3px; background-image: url(/images/ruler.jpeg) }
+	.stopSEC	{ font-family: sans-serif; font-size: 14pt }
+	.labelSEC	{ font-family: sans-serif; font-size: 9pt }
+	.widgetsHeading { font-family: sans-serif; padding: 5px; background-color: #444; color: ghostwhite; font-size: 10pt  }
+	.widgetGroup	{ font-family: sans-serif; font-size: 12pt;  }
+	#matrix	{ background-color: #f0f0f0; width: 304px; height: 250px; border: 1px solid #999; font-family: arial; font-size: 8pt; }
+	#to		{ background-color: #f0f0f0; width: 80px; height: 14px; border: 1px solid #aaa; padding: 2px }
+</style>
+
+<script type="text/javascript" src="/js/EasyAjax.js"></script>
+<script type="text/javascript" src="/js/EasyEdit.js"></script>
+<script type="text/javascript" src="/js/EasyEffects.js"></script>
+<script type="text/javascript" src="/js/Slider.js"></script>
+<script type="text/javascript" src="/js/EasyTabs.js"></script>
+<script type="text/javascript">
+var ao = null;
+var JSON = null;
+var fromUnit 	= null;
+var toUnit	 	= null;
+var units		= null;
+var system		= null;
+var type		= null;
+function goForIt()
+{
+	units = "";
+	for (var i=0; i<JSON[system][type].length; i++)
+	{
+		if ((JSON[system][type][i].from == fromUnit) && (JSON[system][type][i].to == toUnit))
+			units = JSON[system][type][i].units;
+	}
+	if ((fromUnit) && (toUnit) && ($("from").value.trim() != ""))
+	{
+		var factor = null; var ctr = 0;
+		while ((!factor) && (ctr<JSON[system][type].length))
+		{
+			if ((JSON[system][type][ctr].from == fromUnit) && (JSON[system][type][ctr].to == toUnit))
+				factor = JSON[system][type][ctr].factor;
+			ctr++;
+		}
+		if (factor)
+		{
+			if (typeof(factor) == "string")
+			{
+				if (factor.substr(0,3) == "eq=")
+				{
+					var equation = factor.substr(3);
+					$("to").innerHTML = (Math.round(eval(equation.replace(/&val/g,$("from").value.trim())) * 10000000)/10000000) + units;
+				}
+			}
+			else
+				$("to").innerHTML = (Math.round($("from").value.trim() * factor * 10000000)/10000000) + units;
+		}
+		else
+			alert("Don't seem to be able to do that");
+	}
+}
+function setFrom(radioObj)
+{
+	fromUnit = radioObj.value;
+	if ((fromUnit) && (toUnit))
+		goForIt();	
+}
+function setTo(radioObj)
+{
+	toUnit = radioObj.value;
+	if ((fromUnit) && (toUnit))
+		goForIt();
+}
+function loadUnits(whichOne)
+{
+	var ao = new EasyAjax("nohref");
+	system 	= ao.getValue($("system_0"));
+	fromUnit = null; toUnit = null;
+	type 	= whichOne;
+	var check = []; var froms = ""; var tos = "";
+	check["from"] = [];
+	check["to"] = [];
+	for (var i=0; i<JSON[system][type].length; i++)
+	{
+		if (!(check["from"][JSON[system][type][i].from]))
+		{
+			froms = (froms) ? froms+","+JSON[system][type][i].from : JSON[system][type][i].from;
+			check["from"][JSON[system][type][i].from] = true;
+		}
+		if (!(check["to"][JSON[system][type][i].to]))
+		{
+			tos = (tos) ? tos+","+JSON[system][type][i].to : JSON[system][type][i].to;
+			check["to"][JSON[system][type][i].to] = true;
+		}		
+	}
+	var froms 	= froms.split(",");	var HTML = "";
+	for (var i=0; i<froms.length; i++)
+		HTML += '<input type="radio" name="fromWhat" id="fromWhat_'+i+'" value="'+froms[i]+'" onchange="setFrom(this)" />'+froms[i]+'<br />';
+	$("fromOptions").innerHTML = HTML;	
+	var tos		= tos.split(","); var HTML = "";	
+	for (var i=0; i<tos.length; i++)
+		HTML += '<input type="radio" name="toWhat" id="toWhat_'+i+'" value="'+tos[i]+'" onchange="setTo(this)" />'+tos[i]+'<br />';
+	$("toOptions").innerHTML = HTML;
+}
+function processTable(json)
+{
+	JSON = eval(json);
+	var HTML = "<table><tr>";
+	for (var i in JSON.customary)
+	{
+		HTML += '<td style="background-color: silver; padding: 2px 10px 2px 10px; color: blue" onclick="loadUnits(\''+i+'\')">'+i+'</td>';
+	}
+	HTML += "</tr></table>";
+	$("conversionControls").innerHTML = HTML;
+	
+}
+function initPage()
+{
+	ao = new EasyAjax("/edits/conversiontable.json");
+	ao.callback(function () {
+		processTable(ao.getResponse());
+	});
+	ao.get();
+  	new EasyEdits("/edits/conversionwidget.json");
+}
+</script>
+</head>
+<body onload="initPage()" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px">
+<div id="hiddenSizingLayer" style="position: absolute; top: -100px; left: -100px; overflow: auto; width: 1px; white-space: nowrap; z-index: 1; visibility: hidden"></div>
+<form name="matrixForm" id="matrixForm" action="null" onsubmit="return false">
+<div id="conversionsSlider" style="height: 50px; margin-left: 34px; margin-right: 24px">
+</div>
+<div id="matrix">
+<div id="">
+<input type="radio" value="customary" id="system_0" name="system" checked /> US-&gt;Metric &nbsp &nbsp;
+<input type="radio" value="metric" id="system_1" name="system" /> Metric-&gt;US
+<table>
+	<tr>
+		<td><input type="text" name="from" id="from" size="8" /></td>
+		<td><div id="to" ></div></td>
+		<td><input type="button" onclick="goForIt()" value=" Go " /></td>
+	</tr>
+	<tr>
+		<td style="font-family: arial; font-size: 8pt; vertical-align: top; height: 25px"><sub>From</sub></td>
+		<td style="font-family: arial; font-size: 8pt; vertical-align: top; height: 25px"><sub>To</sub></td>
+	</tr>	
+</table>
+</div>
+<div id="conversionControls" style="text-align: center; width: 100%">
+</div>
+<div id="options">
+<div id="fromOptions" style="width: 150px; float: left; height: 130px; border: 1px solid #999">
+</div>
+<div id="toOptions"style="width: 150px; height: 130px; float: right; border: 1px solid #999">
+</div>
+</div>
+<span style="color: #990000; font-family: arial; font-size: 8pt">Rounded to 8 decimal positions</span>
+</div>
+</form>
+<script type="text/javascript">
+	sliderControl.init();
+	var s=new Slider("conversionsSlider",500,20,"conversionsSlider");
+	//s.setOnSlide(Primivista.preferences.icon.onSlide);
+	//s.setOnSlideStop(Primivista.preferences.icon.slideStop);
+	s.addStop("stop_1","English<br />to<br />English","E2E");
+	s.addStop("stop_2","English<br />to<br />Metric","E2M");
+	s.addStop("stop_3","Metric<br />to<br />English","M2E")
+	s.addStop("stop_4","Metric<br />to<br />Metric","M2M")
+	s.setInclusive(true).setSnap(true);
+	s.setStopText("&bull;").setSlideClass("slideSEC");
+	s.setLabelClass("labelSEC").setStopClass("stopSEC")
+	s.addPointer("sec_{$icon.id}_arrow","/images/slider.gif").render();
+	//s.setSliderToValue("{$icon.accesslevel}",false);
+</script>
+</body>
+</html>

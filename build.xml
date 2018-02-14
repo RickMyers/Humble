@@ -1,0 +1,300 @@
+<project name="HumbleFramework" default="default" basedir=".">
+    <description>
+            ______ _     _        _ _           _   _
+            |  _  (_)   | |      (_) |         | | (_)
+            | | | |_ ___| |_ _ __ _| |__  _   _| |_ _  ___  _ __
+            | | | | / __| __| '__| | '_ \| | | | __| |/ _ \| '_ \
+            | |/ /| \__ \ |_| |  | | |_) | |_| | |_| | (_) | | | |
+            |___/ |_|___/\__|_|  |_|_.__/ \__,_|\__|_|\___/|_| |_|
+                        _____           _       _
+                       /  ___|         (_)     | |
+                       \ `--.  ___ _ __ _ _ __ | |_
+                        `--. \/ __| '__| | '_ \| __|
+                       /\__/ / (__| |  | | |_) | |_
+                       \____/ \___|_|  |_| .__/ \__|
+                                         | |
+                                         |_|
+    </description>
+<!--############################################################################################
+    #                                                                                          #
+    # MAKE SURE YOU PUT THE PROPERTIES CONFIGURATION FILE IN A PlACE NOT OFF OF THE ROOT SINCE #
+    #          THE CONFIGURATION FILE HAS CONFIDENTIAL INFORMATION IN IT!!!!!!!!!!!            #
+    #                                                                                          #
+    #       THERE IS A SAMPLE 'config.properties' FILE INCLUDED WITH THE JARVIS PROJECT        #
+    #                                                                                          #
+    ############################################################################################-->
+    <property file="../config.humble.properties"/>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #           THESE DETERMINES WHICH ENVIRONMENT IS THE DISTRIBUTION TARGET               #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="constants" description="Sets default properties for all destination targets">
+            <property name="alias"  value="${application.alias}" />
+            <tstamp>
+                <format property="timestamp" pattern="yyyyMMdd_HHmmss" />
+            </tstamp>
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         SETS THE PROD ENVIRONMENT VALUES                                              #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="prod" description="Distributes to the Prod Server">
+            <property name="server" value="${server.prod.ip}"  />
+            <property name="uid"    value="${server.prod.uid}" />
+            <property name="pwd"    value="${server.prod.pwd}" />
+            <property name="rpwd"   value="${server.prod.root_password}" />
+            <property name="base"   value="${server.prod.base}" />
+            <property name="dbuser" value="${server.prod.dbuser}" />
+            <property name="dbpass" value="${server.prod.dbpass}" />
+            <property name="root"   value="${server.prod.root}" />
+            <property name="back"   value="${server.prod.back}" />
+            <property name="php"    value="${server.prod.php}" />
+            <echo message="Distributing ${server}" />
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         SETS THE TEST ENVIRONMENT VALUES                                              #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="test" description="Distributes to the Test Server">
+            <property name="server" value="${server.test.ip}"  />
+            <property name="uid"    value="${server.test.uid}" />
+            <property name="pwd"    value="${server.test.pwd}" />
+            <property name="rpwd"   value="${server.test.root_password}" />
+            <property name="base"   value="${server.test.base}" />
+            <property name="dbuser" value="${server.test.dbuser}" />
+            <property name="dbpass" value="${server.test.dbpass}" />
+            <property name="root"   value="${server.test.root}" />
+            <property name="back"   value="${server.test.back}" />
+            <property name="php"    value="${server.test.php}" />
+            <echo message="Distributing ${server}" />
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         SETS THE REMOTE ENVIRONMENT VALUES                                            #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="remote" description="Distributes to the Test Server">
+            <property name="server" value="${server.rmte.ip}"  />
+            <property name="uid"    value="${server.rmte.uid}" />
+            <property name="pwd"    value="${server.rmte.pwd}" />
+            <property name="rpwd"   value="${server.rmte.root_password}" />
+            <property name="base"   value="${server.rmte.base}" />
+            <property name="dbuser" value="${server.rmte.dbuser}" />
+            <property name="dbpass" value="${server.rmte.dbpass}" />
+            <property name="root"   value="${server.rmte.root}" />
+            <property name="back"   value="${server.rmte.back}" />
+            <property name="php"    value="${server.rmte.php}" />
+            <echo message="Distributing ${server}" />
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         RESETS MODE AND OWNER TO CODESHIP:WWW-DATA                                    #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="open" depends="create" description="Resets permissions and ownership on relevant directories">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="root"
+                  password="${rpwd}"
+                  command="/home/codeship/build.sh open ${alias}" />
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         CREATES THE REMOTE DIRECTORY TO UPLOAD TO                                     #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="create" description="Creates the timestamped remote directory">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh create ${alias} ${timestamp}" />
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         DELETES THE _old PROJECT DIRECTORY IF IT EXISTS                               #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="remove" description="Removes the previous '_old' directory">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh remove ${alias} ${timestamp}" />
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         RENAMES THE EXISTING PROJECT DIRECTORY TO _old                                #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="retain" depends="deploy" description="Renames the current project to have an old suffix">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh retain ${alias} ${timestamp}" />
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         RENAMES TIMESTAMP DIRECTORY TO PROJECT DIRECTORY                              #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="rename" depends="retain" description="Renames the timestamp directory to the project directory">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh rename ${alias} ${timestamp}" />
+
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         Runs the composer update						                                #
+        #                                                                                       #
+        #########################################################################################-->
+		<target name="composer" depends="rename" description="Runs composer">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh composer ${alias} ${timestamp}"/>
+		</target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         Updates the humble based application                                          #
+        #                                                                                       #
+        #########################################################################################-->
+		<target name="update" depends="rename" description="Runs the humble based application update script">
+			<sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh update ${alias} ${timestamp}"/>    <!-- Runs the post code deployment update scripts -->
+		</target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         BACKS UP THE CURRENT CODE AND DATABASES IN THE TARGET ENVIRONMENT             #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="backup" description="Backups the current project">
+            <sshexec host="${server}"
+                  trust="true"
+                  verbose="false"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="tar -czf ${back}${alias}.${timestamp}.tar.gz ${root}" />
+            <sshexec host="${server}"
+                  trust="true"
+                  username="root"
+                  password="${rpwd}"
+                  command="/home/codeship/build.sh backup ${alias} ${timestamp}" />    <!-- Backsup databases and what not... non code stuff -->
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #  REMOVES MORE THAN A CERTAIN NUMBER OF ARCHIVED BACKUPS FROM THE TARGET ENVIRONMENT   #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="cleanup" depends="backup" description="Removes any backups older than a week">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="root"
+                  password="${rpwd}"
+                  command="/home/codeship/build.sh cleanup ${alias} ${timestamp}" />  <!-- Tailor this using the configuration file in the cleanup script directory -->
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #  CREATES THE MECHANICALLY GENERATED API DOCUMENTATION                                 #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="document" depends="deploy" description="Runs phpDocumentor2 against the project that was just deployed">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh document ${alias} ${timestamp}" />
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #  CREATES A DOWNLOADABLE PACKAGE DISTRO BASED ON CURRENT VERSION OF FRAMEWORK          #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="increment" depends="prod" description="Generates a new package for deployment">
+            <exec dir="app" executable="cmd.exe" >
+                <arg value="/c humble --increment" />
+            </exec>
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #  CREATES A DOWNLOADABLE PACKAGE DISTRO BASED ON CURRENT VERSION OF FRAMEWORK          #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="package" depends="prod" description="Generates a new package for deployment">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh package ${alias} ${timestamp}" />  <!-- Tailor this using the configuration file in the cleanup script directory -->
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #  DEPLOYS FILES TO TARGET ENVIRONMENT AND RUNS THE JARVIS UPDATE APPLICATION SCRIPT    #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="deploy" depends="remove" description="Sends the development code to the production server">
+            <!-- ARGTPANX-WS-01 -->
+            <scp todir="${uid}:${pwd}@${server}:${base}${alias}_${timestamp}" trust="true" verbose="false">
+                <fileset dir=".">
+                    <include name="**/*.*"/>
+                    <exclude name="**/vendor/" />
+                    <exclude name="**/Cache/" />
+                    <exclude name="**/SDSF/" />
+                    <exclude name=".git" />
+                    <exclude name=".gitignore" />
+                    <exclude name="build.xml" />
+                </fileset>
+            </scp>
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #                 SETS THE TARGET ENVIRONMENT TO THE PROD SERVER                        #
+        #                                                                                       #
+        #          ONLY JARVIS FRAMEWORK SHOULD CALL 'INCREMENT' AND 'PACKAGE' STEPS            #
+        #                                                                                       #
+        #########################################################################################-->
+
+        <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package,document"   description="Distributes to the Prod Server" />
+        <target name="distrmte" depends="constants,remote,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package,document"   description="Distributes to the Prod Server" />
+        <!--target name="disttest" depends="constants,test,open,create,backup,cleanup,remove,deploy,retain,composer,update,document,increment,package"   description="Distributes to the Test Server" /-->
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #                    YOU MUST SELECT AN ENVIRONMENT TO DEPLOY TO                        #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="default" description="You need to specify target environment">
+            <echo message=" " />
+            <echo message="Please specify either 'test', or 'prod' to choose where to deploy code to." />
+            <echo message=" " />
+        </target>
+</project>

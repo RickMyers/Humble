@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<unit_tests>
+    <packages standup="humble" teardown="humble">
+
+        <framework>
+            <test class="MongoDB"       description="Tests the basic CRUD functionality with MongoDB"   namespace='humble'        sequence='2' />
+            <test class="MySQL"         description="Tests the basic CRUD functionality with MySQL"     namespace='humble'        sequence='1' />
+            <test class="Polyglot"      description="Tests polyglot functionality"                      namespace='humble'        sequence='*' />
+            <test class="RPC"           description="Tests simple remote REST/Soap calls"               namespace='humble'        sequence='*' />
+        </framework>
+        <helpers  depends="framework" dependency='hard'>
+            <test class="Log"           description="Tests logging of errors and retrieval"             namespace="humble"        sequence="3" />
+        </helpers>
+        <reports  depends="entities"  dependency='hard'>
+            <test class="Reportico"     description="Tests retrieval of user data"                      namespace='humble'       sequence='*' />
+        </reports>
+    </packages>
+</unit_tests>

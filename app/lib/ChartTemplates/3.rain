@@ -1,0 +1,5 @@
+        var data = [
+            {$datasets}
+        ];
+        var ctx = $("#{$layer}").get(0).getContext("2d");
+        var myPieChart = new Chart(ctx).Pie(data,options);

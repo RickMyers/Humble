@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<controller name="admin" use="Twig">
+    <actions>
+
+        <!-- ############################################################### -->
+
+        <action name='home'>
+            <description>The Humble administration home page</description>
+            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
+                <parameter name='uid'  source='session' required='true' />
+            </entity>
+            <switch id='permissions' method='getAdmin'>
+                <case value='Y'>
+                    <entity namespace='humble' class='modules'    id='available_module' orderby='package=ASC,namespace=ASC' />
+                    <helper namespace='humble' class='installer' id='installer' />
+                    <helper namespace='humble' class='admin'  id='directory' />
+                    <helper namespace='humble' class='directory'  id='packages' />
+                </case>
+                <default>
+                    <redirect href='/index.html?m=Insufficient privilege' />
+                </default>
+            </switch>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="compile">
+            <description>Compiles (generates) the controllers of a module</description>
+            <model namespace="humble" class="Utility" id='Utility'>
+                <parameter name='uid' source='session' value='uid' default='' />
+                <parameter name='package' source='post' value='package' default='' />
+                <parameter name='namespace' source='post' default='' />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="install">
+            <description>Runs the install script on a config.xml file</description>
+            <model namespace="humble" class="Utility" id='Utility'>
+                <parameter name='package' source='post' default='' />
+                <parameter name='xml' source='post' default='' />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="enable">
+            <description>Activates or deactivates a module</description>
+            <entity namespace="humble" class="modules" id='mod'>
+                <parameter name='namespace' source='post' default='' />
+                <parameter name='enabled' source='post' default='' />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="create">
+            <description>Creates a directory inside a module structure</description>
+            <model namespace="humble" class="Utility" id='admin'>
+                <parameter name='uid' source='session' value='uid' default='' />
+                <parameter name='directory' source='post' default='' />
+                <parameter name='package' source='post'   default='' />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="log" passalong='log,window_id'>
+            <description>Gets the view for the administration log that is passed in</description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="mongo">
+            <description>Routes to the mongo admin utility</description>
+            <entity namespace="humble" class="user_permissions" id="permission" method="load">
+                <parameter name="uid" source="session" default='' />
+            </entity>
+            <switch id="permission" method="getAdmin">
+                <case value="Y">
+                    <redirect href="/mongo/admin" />
+                </case>
+                <default>
+                    <redirect href="/index.html?m=You are not authorized to access that resource" />
+                </default>
+            </switch>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="newpackage">
+            <description>Creates a new directory</description>
+            <helper namespace="humble" class='directory' method='create'>
+                <parameter name="directory" value="package" source="post" required="true" />
+            </helper>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="addpackage">
+            <description>Adds a doc block package, don't confuse this with adding a module package (directory)</description>
+            <entity namespace="humble" class="packages" method="save">
+                <parameter name="text" value="package" source="post" required="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="addcategory">
+            <description>Adds a doc block category</description>
+            <entity namespace="humble" class="categories" method="save">
+                <parameter name="text" value="category" source="post" required="true" />
+            </entity>
+        </action>
+
+    </actions>
+</controller>
