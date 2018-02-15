@@ -1,4 +1,4 @@
-JARVIS.&&namespace&& = {
+HUMBLE.&&namespace&& = {
     action1: function () {
 
     },

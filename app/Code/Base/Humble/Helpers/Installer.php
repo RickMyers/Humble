@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Helpers;
+namespace Code\Base\Humble\Helpers;
 use SimpleXMLElement;
 use Humble;
 use Log;
@@ -62,7 +62,7 @@ class Installer extends Directory
         $clause = '';
         $namespace  = ($namespace !== false) ? $namespace : $this->namespace;
         $query  = <<<SQL
-            delete from core_modules
+            delete from humble_modules
              where namespace    = '{$namespace}'
 SQL;
         $this->_db->query($query);
@@ -75,17 +75,17 @@ SQL;
     protected function unInstallEntities($namespace=false)    {
         $namespace  = ($namespace !== false) ? $namespace : $this->namespace;
         $query  = <<<SQL
-            delete from core_entities
+            delete from humble_entities
              where namespace    = '{$namespace}'
 SQL;
         $this->_db->query($query);
         $query  = <<<SQL
-            delete from core_entity_keys
+            delete from humble_entity_keys
              where namespace    = '{$namespace}'
 SQL;
         $this->_db->query($query);
         $query  = <<<SQL
-            delete from core_entity_columns
+            delete from humble_entity_columns
              where namespace    = '{$namespace}'
 SQL;
         $this->_db->query($query);
@@ -161,7 +161,7 @@ SQL;
         $description    = addslashes($this->description);
         $installed      = date('Y-m-d H:i:s');
         $query = <<<SQL
-            insert into core_modules
+            insert into humble_modules
                 (`title`,namespace, module, package, installed, configuration, controller, `version`, description, templater, schema_install, schema_update, schema_layout, models, prefix, mongodb, entities, controller_cache, views, views_cache, helpers, rpc_mapping, images, images_cache, enabled,required,weight)
             values
                 ('{$title}','{$this->namespace}','{$moduleName}','{$package}','{$installed}','{$configuration}','{$controller}','{$this->version}','{$description}','{$use}','{$s_install}','{$s_update}','{$s_layout}','{$models}','{$prefix}','{$this->mongodb}','{$entities}','{$controllerCache}','{$views}','{$viewsCache}','{$helpers}','{$RPC}','{$images}','{$imagesCache}','{$enabled}','{$required}','{$weight}')
@@ -425,7 +425,7 @@ SQL;
             $data = $entity->attributes();
             $polyglot = isset($data['polyglot']) ? $data['polyglot'] : 'N';
             $query = <<<SQL
-                    insert into core_entities
+                    insert into humble_entities
                         (namespace, entity, polyglot)
                     values
                         ('{$this->namespace}','{$name}','{$polyglot}')
@@ -443,7 +443,7 @@ SQL;
                 $data = $this->_db->query($query);
                 $inc = ($data[0]['extra']=="auto_increment") ? 'Y' : 'N';
                 $query = <<<SQL
-                       insert into core_entity_keys
+                       insert into humble_entity_keys
                           (namespace,entity,`key`,auto_inc)
                        values
                           ('{$this->namespace}','{$name}','{$col}','{$inc}')
@@ -458,7 +458,7 @@ SQL;
                 if ($results) {
                     foreach ($results as $row) {
                         $query = <<<SQL
-                             insert into core_entity_columns
+                             insert into humble_entity_columns
                                 (namespace, entity, `column`)
                              values
                                 ('{$this->namespace}','{$name}','{$row['Field']}')
@@ -535,29 +535,29 @@ FIELD;
             $clause = "and package   = '{$package}'";
         }
         $query = <<<SQL
-            delete from core_js
+            delete from humble_js
              where namespace = '{$namespace}'
                {$clause}
 SQL;
         $this->_db->query($query); //remove JS
         $query = <<<SQL
-            delete from core_css
+            delete from humble_css
              where namespace = '{$namespace}'
                {$clause}
 SQL;
         $this->_db->query($query); //remove CSS
         $query = <<<SQL
-            delete from core_edits
+            delete from humble_edits
              where namespace = '{$namespace}'
 SQL;
         $this->_db->query($query); //remove Edits
         $query = <<<SQL
-            delete from core_pages
+            delete from humble_pages
              where namespace = '{$namespace}'
 SQL;
         $this->_db->query($query); //remove Static web pages
         $query = <<<SQL
-            delete from core_templates
+            delete from humble_templates
              where namespace = '{$namespace}'
 SQL;
         $this->_db->query($query); //remove JS Templates
@@ -568,7 +568,7 @@ SQL;
      */
     protected function registerWebComponent($type,$package,$namespace,$weight,$file)    {
         $query = <<<SQL
-            insert into core_{$type}
+            insert into humble_{$type}
                 (namespace,package,source,weight)
             values
                 ('{$namespace}','{$package}','{$file}','{$weight}')
@@ -581,7 +581,7 @@ SQL;
      */
     protected function registerWebEdit($namespace,$form,$source)    {
         $query = <<<SQL
-            insert into core_edits
+            insert into humble_edits
                 (namespace,form,source)
             values
                 ('{$namespace}','{$form}','{$source}')
@@ -594,7 +594,7 @@ SQL;
      */
     protected function registerWebPage($namespace,$page,$source)    {
         $query = <<<SQL
-            insert into core_pages
+            insert into humble_pages
                 (namespace,page,source)
             values
                 ('{$namespace}','{$page}','{$source}')

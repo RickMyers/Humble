@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Models;
+namespace Code\Base\Humble\Models;
 use Humble;
 use Log;
 use Environment;

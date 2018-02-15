@@ -17,7 +17,7 @@ namespace Code\Base\Workflow\Entities;
  * @version    <INSERT VERSIONING MECHANISM HERE />
  * @since      File available since Version 1.0.1
  */
-class Entity extends \Code\Base\Core\Entity\BaseObject {
+class Entity extends \Code\Base\Humble\Entity\BaseObject {
 
 }
 ?>

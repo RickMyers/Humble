@@ -37,7 +37,7 @@ class Workflows extends Entity
         $query = <<<SQL
         select a.*, b.first_name, b.last_name
           from paradigm_workflows as a
-         inner join core_user_identification as b
+         inner join humble_user_identification as b
              on a.creator = b.id
          where namespace = '{$this->getNamespace()}'
 SQL;
@@ -60,7 +60,7 @@ SQL;
                 ON  a.workflow_id = b.`workflow_id`
               LEFT  OUTER JOIN paradigm_webservice_workflows AS c
                 ON  a.workflow_id = c.`workflow_id`
-              LEFT  OUTER JOIN core_user_identification AS d
+              LEFT  OUTER JOIN humble_user_identification AS d
                 ON  a.creator = d.id
 SQL;
         return $this->query($query);

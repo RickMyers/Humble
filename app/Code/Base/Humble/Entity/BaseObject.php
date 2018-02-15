@@ -1,9 +1,9 @@
 <?php
-namespace Code\Base\Core\Entity;
+namespace Code\Base\Humble\Entity;
 use Humble;
 use Environment;
 use Log;
-class BaseObject extends \Code\Base\Core\Model\BaseObject
+class BaseObject extends \Code\Base\Humble\Model\BaseObject
 {
     protected $_entity        = null;
     protected $_keys          = [];
@@ -1026,8 +1026,8 @@ SQL;
         if (!$primary) {
 
             $query = <<<SQL
-                select a.key, a.auto_inc, b.polyglot from core_entity_keys as a
-                 inner join core_entities as b
+                select a.key, a.auto_inc, b.polyglot from humble_entity_keys as a
+                 inner join humble_entities as b
                     on a.namespace = b.namespace
                    and a.entity = b.entity
                  where a.namespace = '{$namespace}'
@@ -1041,8 +1041,8 @@ SQL;
                  *  and load that one instead
                  */
                 $query = <<<SQL
-                    select * from core_entity_keys as a
-                     inner join core_entities as b
+                    select * from humble_entity_keys as a
+                     inner join humble_entities as b
                         on a.namespace  = b.namespace
                        and a.entity     = b.entity
                      where a.namespace  = 'core'
@@ -1051,7 +1051,7 @@ SQL;
                 $primary    = $this->_db->query($query);
                 if (count($primary)!==0) {
                     $this->_namespace('core');  //Mark that we got this from core
-                    $this->_prefix('core_');
+                    $this->_prefix('humble_');
                 }
             }
             Humble::cache('entity_keys-'.$namespace.'/'.$entity,$primary);
@@ -1075,7 +1075,7 @@ SQL;
         $columns   = ($useCache) ? Humble::cache('entity_columns-'.$namespace.'/'.$entity) : false;
         if (!$columns) {
             $query = <<<SQL
-                select * from core_entity_columns
+                select * from humble_entity_columns
                  where namespace = '{$namespace}'
                    and entity    = '{$entity}'
 SQL;
@@ -1089,14 +1089,14 @@ SQL;
                  * Not sure if this is a good idea yet...
                  */
                 $query = <<<SQL
-                    select * from core_entity_columns
+                    select * from humble_entity_columns
                      where namespace = 'core'
                        and entity    = '{$entity}'
 SQL;
                 $columns    = $this->_db->query($query);
                 if (count($columns)!==0) {
                     $this->_namespace('core');  //Mark that we got this from core
-                    $this->_prefix('core_');
+                    $this->_prefix('humble_');
                 }
             }
             Humble::cache('entity_columns-'.$namespace.'/'.$entity,$columns);
@@ -1421,7 +1421,7 @@ SQL;
      * Should we run the translations against what is returned
      *
      * @param type $arg
-     * @return \\Code\Base\Core\Entity\BaseObject
+     * @return \\Code\Base\Humble\Entity\BaseObject
      */
     public function withTranslation($arg=false) {
         $this->_translation = $arg;
@@ -1439,7 +1439,7 @@ SQL;
      * This sets whether to remove MongoDB _id references from the result set.  The default is to do just that
      *
      * @param type $arg
-     * @return \\Code\Base\Core\Entity\BaseObject
+     * @return \\Code\Base\Humble\Entity\BaseObject
      */
     public function _clean($arg=null) {
         if ($arg!==null) {
@@ -1485,7 +1485,7 @@ SQL;
      * We have to remove the variable from the general data array as well as the fields array
      *
      * @param type $name
-     * @return \Code\Base\Core\Entity\BaseObject
+     * @return \Code\Base\Humble\Entity\BaseObject
      */
     protected function _unset($name=false) {
         parent::_unset($name);

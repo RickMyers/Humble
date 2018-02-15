@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Models;
+namespace Code\Base\Humble\Models;
 use Humble;
 use MongoDB;
 
@@ -68,7 +68,7 @@ class Mongo  {
     /**
      * Allows this to be reused... returns a itself to a pristine state
      *
-     * @return \Code\Base\Core\Models\Mongo
+     * @return \Code\Base\Humble\Models\Mongo
      */
     public function reset() {
         $this->_data = [];

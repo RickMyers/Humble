@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Helpers;
+namespace Code\Base\Humble\Helpers;
 class Compiler extends Directory
 {
     private $xml            = null;
@@ -547,7 +547,7 @@ PHP;
     //--------------------------------------------------------------------------------------------------
     private function processRedirect($node) {
         $redirect = "";
-        print($this->tabs().'$_SESSION["JARVIS_REDIRECT_HEADERS"] = headers_list();'."\n");
+        print($this->tabs().'$_SESSION["HUMBLE_REDIRECT_HEADERS"] = headers_list();'."\n");
         if (isset($node['post']) && $node['post']==true) {
             $txt = '    $vars = [];
                         foreach ($_POST as $key => $val) {
@@ -925,7 +925,7 @@ PHP;
     private function stampIt($identifier,$stamp)   {
         $module = explode('/',$identifier);
         $query = <<<SQL
-            insert into core_controllers
+            insert into humble_controllers
                 (namespace,controller,compiled)
             values
                 ('{$module[0]}','{$module[1]}','{$stamp}')

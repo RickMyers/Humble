@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Event;
+namespace Code\Base\Humble\Event;
 use Humble;
 /**
  *
@@ -106,7 +106,7 @@ class BaseObject  {
     /**
      * Builds the event header and serializes the magic method data
      *
-     * @return \Code\Base\Core\Models\Mongo
+     * @return \Code\Base\Humble\Models\Mongo
      */
      public function save() {
         $ref = $this->_ref();

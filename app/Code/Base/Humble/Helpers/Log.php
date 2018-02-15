@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Helpers;
+namespace Code\Base\Humble\Helpers;
 use Environment;
 /**
  *

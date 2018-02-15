@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Models;
+namespace Code\Base\Humble\Models;
 use Humble;
 use Environment;
 /**
@@ -20,7 +20,7 @@ use Environment;
  * @since      File available since Version 1.0.1
  */
 class User extends Model {
-    use \Code\Base\Core\Event\Handler;
+    use \Code\Base\Humble\Event\Handler;
 
     public function __construct() {
         parent::__construct();

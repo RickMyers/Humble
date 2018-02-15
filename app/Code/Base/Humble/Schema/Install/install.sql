@@ -178,9 +178,10 @@ CREATE TABLE `humble_pages` (
 CREATE TABLE `humble_templaters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `templater` char(64) DEFAULT NULL,
+  `extension` char(16) DEFAULT NULL,
   `description` char(64) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_templates` */
 

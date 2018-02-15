@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Helpers;
+namespace Code\Base\Humble\Helpers;
 class Image extends Helper
 {
     private $image          = null;

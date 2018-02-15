@@ -24,7 +24,7 @@ class Workflow extends Model
 {
 
     private $exporter = false;
-    use \Code\Base\Core\Event\Handler;
+    use \Code\Base\Humble\Event\Handler;
 
 	/**
      * Constructor

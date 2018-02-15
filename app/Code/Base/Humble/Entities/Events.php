@@ -1,10 +1,10 @@
 <?php
-namespace Code\Base\Core\Entities;
+namespace Code\Base\Humble\Entities;
 use Humble;
 use Log;
 use Environment;
 /**
- * 
+ *
  * Core Event Queries
  *
  * see title
@@ -32,7 +32,7 @@ class Events extends Entity
 
     public function uniqueNamespaces() {
         $query = <<<SQL
-            select distinct namespace from core_events
+            select distinct namespace from paradigm_events
               order by namespace
 SQL;
         return $this->query($query);

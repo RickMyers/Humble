@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Models;
+namespace Code\Base\Humble\Models;
 /**    
  *
  * An iterator for managing result sets

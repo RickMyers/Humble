@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Event;
+namespace Code\Base\Humble\Event;
 use Humble;
 use Event;
 use Environment;

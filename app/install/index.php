@@ -162,11 +162,11 @@ if (!$module) {
     //If this call was the result of a redirect, then we rebuild the global
     //variables from the JSON array passed
     if (isset($_GET['redirect'])) {
-        if (isset($_SESSION['JARVIS_REDIRECT_HEADERS'])) {
-            foreach ($_SESSION['JARVIS_REDIRECT_HEADERS'] as $header) {
+        if (isset($_SESSION['HUMBLE_REDIRECT_HEADERS'])) {
+            foreach ($_SESSION['HUMBLE_REDIRECT_HEADERS'] as $header) {
                 header($header);
             }
-            unset($_SESSION['JARVIS_REDIRECT_HEADERS']);
+            unset($_SESSION['HUMBLE_REDIRECT_HEADERS']);
         }
         if (isset($_SESSION[$_GET["POST"]])) {
             $data = json_decode($_SESSION[$_GET["POST"]],true);

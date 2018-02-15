@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Models;
+namespace Code\Base\Humble\Models;
 /**
  * Short description for file
  *
@@ -17,7 +17,7 @@ namespace Code\Base\Core\Models;
  * @version    <INSERT VERSIONING MECHANISM HERE />
  * @since      File available since Version 1.0.1
  */
-class Model extends \Code\Base\Core\Model\BaseObject {
+class Model extends \Code\Base\Humble\Model\BaseObject {
 
 }
 ?>

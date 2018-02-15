@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Model;
+namespace Code\Base\Humble\Model;
 use Humble;
 use Log;
 /**
@@ -650,7 +650,7 @@ SOAP;
                         }
                     }
                 } else {
-                    if (!($this instanceof \Code\Base\Core\Entity\BaseObject)) {
+                    if (!($this instanceof \Code\Base\Humble\Entity\BaseObject)) {
                         //Entities are allowed to have bogus getters
                         \Log::console("Could not resolve how to 'GET': ".$name." invoked from ".$this->getClassName());
                     }

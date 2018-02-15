@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config>
-    <core>
+    <humble>
         <version>0.0.1</version>
         <title>Framework</title>
         <description>This is the module that contains the base framework classes and components</description>
@@ -9,7 +9,7 @@
             <email>rick@enicity.com</email>
         </author>
         <module>
-            <name>Core</name>
+            <name>Humble</name>
             <weight>10</weight>
             <required>Y</required>
             <workflow>Y</workflow>
@@ -18,44 +18,44 @@
         </module>
         <structure>
             <models>
-                <source>Core/Models</source>
+                <source>Humble/Models</source>
             </models>
             <config>
-                <source>Core/etc</source>
+                <source>Humble/etc</source>
             </config>
             <helpers>
-                <source>Core/Helpers</source>
+                <source>Humble/Helpers</source>
             </helpers>
             <controllers>
-                <source>Core/Controllers</source>
-                <cache>Core/Controllers/Cache</cache>
+                <source>Humble/Controllers</source>
+                <cache>Humble/Controllers/Cache</cache>
             </controllers>
             <schema>
-                <install>Core/Schema/Install</install>
-                <update>Core/Schema/Update</update>
-                <layout>Core/Schema/DSL</layout>
+                <install>Humble/Schema/Install</install>
+                <update>Humble/Schema/Update</update>
+                <layout>Humble/Schema/DSL</layout>
             </schema>
             <configuration>
-                <source>Core/etc</source>
+                <source>Humble/etc</source>
             </configuration>
             <views>
-                <source>Core/Views</source>
-                <cache>Core/Views/Cache</cache>
+                <source>Humble/Views</source>
+                <cache>Humble/Views/Cache</cache>
             </views>
             <images>
-                <source>Core/Images</source>
-                <cache>Core/Images/Cache</cache>
+                <source>Humble/Images</source>
+                <cache>Humble/Images/Cache</cache>
             </images>
             <entities>
-                <source>Core/Entities</source>
+                <source>Humble/Entities</source>
             </entities>
             <RPC>
-                <source>Core/RPC</source>
+                <source>Humble/RPC</source>
             </RPC>
         </structure>
         <orm>
-            <prefix>core_</prefix>
-            <mongodb>core</mongodb>
+            <prefix>humble_</prefix>
+            <mongodb>humble</mongodb>
             <entities>
                 <categories />
                 <chronicle />
@@ -79,87 +79,87 @@
             </entities>
         </orm>
         <events>
-            
+
         </events>
         <web>
             <edits>
-                <login>Core/web/edits/login.json</login>
+                <login>Humble/web/edits/login.json</login>
             </edits>
             <common>
                 <js>
-                    <source>Core/web/js/Humble.js</source>
-                    <source>Core/web/js/EasyAjax.js</source>
-                    <source>Core/web/js/EasyEdit.js</source>
-                    <source>Core/web/js/EasyForm.js</source>
-                    <source>Core/web/js/absurdjs.js</source>
+                    <source>Humble/web/js/Humble.js</source>
+                    <source>Humble/web/js/EasyAjax.js</source>
+                    <source>Humble/web/js/EasyEdit.js</source>
+                    <source>Humble/web/js/EasyForm.js</source>
+                    <source>Humble/web/js/absurdjs.js</source>
                 </js>
                 <css>
-                    <source>Core/web/css/Normalize.css</source>
+                    <source>Humble/web/css/Normalize.css</source>
                 </css>
             </common>
             <vue>
                 <js>
-                    <source>Core/web/js/vue.js</source>
-                    <source>Core/web/js/vuerouter.js</source>
+                    <source>Humble/web/js/vue.js</source>
+                    <source>Humble/web/js/vuerouter.js</source>
                 </js>
             </vue>
             <sockets>
                 <js>
-                    <source>Core/web/js/socket.io.2.0.4.js</source>
+                    <source>Humble/web/js/socket.io.2.0.4.js</source>
                 </js>
             </sockets>
             <widgets>
                 <js>
-                    <source weight='5'>Core/web/js/widgets.js</source>
-                    <source weight="6">Core/web/js/EasyTabs.js</source>
-                    <source weight="7">Core/web/js/Sliders.js</source>
-                    <source weight="7">Core/web/js/moment.js</source>
-                    <source weight="8">Core/web/js/EasyRTE.js</source>
-                    <source weight="8">Core/web/js/Pagination.js</source>
-                    <source weight="8">Core/web/js/jquery-ui.js</source>
-                    <source weight="8">Core/web/js/jquery.filthypillow.min.js</source>
+                    <source weight='5'>Humble/web/js/widgets.js</source>
+                    <source weight="6">Humble/web/js/EasyTabs.js</source>
+                    <source weight="7">Humble/web/js/Sliders.js</source>
+                    <source weight="7">Humble/web/js/moment.js</source>
+                    <source weight="8">Humble/web/js/EasyRTE.js</source>
+                    <source weight="8">Humble/web/js/Pagination.js</source>
+                    <source weight="8">Humble/web/js/jquery-ui.js</source>
+                    <source weight="8">Humble/web/js/jquery.filthypillow.min.js</source>
                 </js>
                 <css>
-                    <source weight="9">Core/web/css/jquery.scrollbar.css</source>
-                    <source weight="8">Core/web/css/jquery-ui.css</source>
-                    <source weight="8">Core/web/css/jquery.filthypillow.css</source>
+                    <source weight="9">Humble/web/css/jquery.scrollbar.css</source>
+                    <source weight="8">Humble/web/css/jquery-ui.css</source>
+                    <source weight="8">Humble/web/css/jquery.filthypillow.css</source>
                 </css>
             </widgets>
             <bootstrap>
                 <js>
-                    <source>Core/web/bootstrap-3.3.7/js/bootstrap.min.js</source>
-                    <source>Core/web/js/handlebars-v4.0.5.js</source>
+                    <source>Humble/web/bootstrap-3.3.7/js/bootstrap.min.js</source>
+                    <source>Humble/web/js/handlebars-v4.0.5.js</source>
                 </js>
                 <css>
-                    <source>Core/web/bootstrap-3.3.7/css/bootstrap.css</source>
-                    <source>Core/web/htmlcss/css/glyphicons.css</source>
+                    <source>Humble/web/bootstrap-3.3.7/css/bootstrap.css</source>
+                    <source>Humble/web/htmlcss/css/glyphicons.css</source>
                 </css>
             </bootstrap>
             <bootstrap-theme>
                 <css>
-                    <source>Core/web/bootstrap-3.3.7/css/bootstrap-theme.css</source>
+                    <source>Humble/web/bootstrap-3.3.7/css/bootstrap-theme.css</source>
                 </css>
             </bootstrap-theme>
             <admin>
                 <css>
-                    <source>Core/web/css/cssmenu.css</source>
+                    <source>Humble/web/css/cssmenu.css</source>
                 </css>
                 <js>
-                    <source>Core/web/js/absurdjs.js</source>
-                    <source>Core/web/js/Admin.js</source>
-                    <source>Core/web/js/cssmenu.js</source>
+                    <source>Humble/web/js/absurdjs.js</source>
+                    <source>Humble/web/js/Admin.js</source>
+                    <source>Humble/web/js/cssmenu.js</source>
                 </js>
             </admin>
             <admintheme>
                 <css>
-                    <source>Core/web/css/admintheme.css</source>
+                    <source>Humble/web/css/admintheme.css</source>
                 </css>
             </admintheme>
             <jquery>
                 <js>
-                    <source>Core/web/js/jquery-3.1.0.min.js</source>
+                    <source>Humble/web/js/jquery-3.1.0.min.js</source>
                 </js>
             </jquery>
         </web>
-    </core>
+    </humble>
 </config>

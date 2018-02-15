@@ -133,7 +133,7 @@
          * Returns either the specific requested instance of an entity of the parent class of all entities as a "Virtual" entity
          *
          * @param string $identifier
-         * @return \Code\Base\Core\Entity\Entity
+         * @return \Code\Base\Humble\Entity\Entity
          */
         public static function getEntity($identifier) {
             $instance   = null;
@@ -155,7 +155,7 @@
                 $str        = "Code/{$module['package']}/{$dir}";
                 $class      = file_exists($str.".php") ? $str : false;
                 if (!$class) {
-                    $instance = new class(str_replace('/','\\','\\'.$str)) extends Code\Base\Core\Entity\BaseObject {
+                    $instance = new class(str_replace('/','\\','\\'.$str)) extends Code\Base\Humble\Entity\BaseObject {
                         private $anon_class = null;
                         public function __construct($a) {
                             parent::__construct();
@@ -175,31 +175,40 @@
         }
 
         /**
-         * 
+         * Returns the contents of the project file of false if the project hasn't been created yet
+         *
+         * @return object
+         */
+        public static function getProject() {
+            return (file_exists('../Humble.project')) ? json_decode(file_get_contents('../Humble.project'),true) : false;
+        }
+
+        /**
+         *
          */
         public static function getProjectConfiguration($module=false) {
             $xml    = null;
             $data   = null;
             if ($module) {
-                //get module info and 
+                //get module info and
             } else {
                 $data   = Environment::getProject();
             }
-            
-            $res    = Humble::getEntity('core/modules')->setNamespace($data->namespace)->load();
+
+            $res    = Humble::getEntity('humble/modules')->setNamespace($data->namespace)->load();
             $source = 'Code/'.$res['package'].'/'.$res['configuration'].'/config.xml';
             if (file_exists($source)) {
                 $xml =  new \SimpleXMLElement(file_get_contents($source));
             }
             return $xml;
-            
+
         }
-        
+
         /**
          * Returns a reference to the a MongoDB Collection
          *
          * @param type $identifier
-         * @return \Code\Base\Core\Models\MongoDB
+         * @return \Code\Base\Humble\Models\MongoDB
          */
         public static function getCollection($identifier) {
             $instance   = null;
@@ -211,7 +220,7 @@
             $module     = self::getModule($entity[0]);
             if ($module) {
                 if ($module['mongodb']) {
-                    $instance   = new \Code\Base\Core\Models\Mongo($module['mongodb']);
+                    $instance   = new \Code\Base\Humble\Models\Mongo($module['mongodb']);
                     if (isset($entity[1])) {
                         $instance->_collection($entity[1]);
                     }
@@ -238,7 +247,7 @@
                 $str        = "Code/{$module['package']}/{$dir}/{$className}";
                 $class      = file_exists($str.".php") ? $str : false;
                 if (!$class) {
-                    $instance = new class(str_replace('/','\\',$str)) extends Code\Base\Core\Model\BaseObject {
+                    $instance = new class(str_replace('/','\\',$str)) extends Code\Base\Humble\Model\BaseObject {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
@@ -380,7 +389,7 @@
                 $str        = "Code/{$module['package']}/{$dir}/{$className}";
                 $class      = file_exists($str.".php") ? $str : false;
                 if (!$class) {
-                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Core\Helper\BaseObject {
+                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Helper\BaseObject {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
@@ -444,7 +453,7 @@
          * Caching is implemented here in the factory so that it can be easily switched out to another product (Redis, APC, etc) should it be necessary
          *
          * 'cacheFailed' is set if we tried to connect to memcached but it wasn't available.  It prevents trying multiple times
-         * 
+         *
          * @param string $key
          * @param mixed $value
          * @return mixed
@@ -470,7 +479,7 @@
                     } else {
                         $retval = self::$cache->get($key);
                     }
-                }                
+                }
             }
             return $retval;
         }
@@ -478,17 +487,17 @@
         /**
          * To protect yourself from bad impulses, access to the DB is restricted to instances of Entity the object or a short list of privileged classes.  This is to encourage DAO style development
          *
-         * @param \Code\Base\Core\Entity\BaseObject $callingClass
+         * @param \Code\Base\Humble\Entity\BaseObject $callingClass
          * @return mixed
          */
         public static function getDatabaseConnection($callingClass=false)        {
-            if (!($conn = ($callingClass instanceof \Code\Base\Core\Entity\BaseObject))) {
+            if (!($conn = ($callingClass instanceof \Code\Base\Humble\Entity\BaseObject))) {
                 if ($callingClass) {
                     $name = $callingClass->getClassName();
                 } else {
                     $name = (!isset($this)) ? self::getClassName() : null;
                 }
-                $shortList  = array('Humble','Code\Base\Core\Helpers\Installer','Code\Base\Core\Helpers\Updater','Code\Base\Core\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
+                $shortList  = array('Humble','Code\Base\Humble\Helpers\Installer','Code\Base\Humble\Helpers\Updater','Code\Base\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
                 $conn       = in_array($name,$shortList);
             }
             return $conn ? Singleton::getMySQLAdapter() : $conn;
@@ -604,10 +613,10 @@ SQL;
          * Boxes a normal scalar string
          *
          * @param type $string
-         * @return \Code\Base\Core\Helpers\HumbleString
+         * @return \Code\Base\Humble\Helpers\HumbleString
          */
         public static function string($string) {
-            return new \Code\Base\Core\Helpers\HumbleString($string);
+            return new \Code\Base\Humble\Helpers\HumbleString($string);
         }
 
         /**

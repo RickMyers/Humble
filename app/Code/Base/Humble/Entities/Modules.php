@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Entities;
+namespace Code\Base\Humble\Entities;
 use Humble;
 /**    
  *
@@ -35,7 +35,7 @@ class Modules extends Entity
      */
     public function fetchNonBase() {
         $query = <<<SQL
-                select * from core_modules where package != 'Base'
+                select * from humble_modules where package != 'Base'
 SQL;
         return $this->query($query);
     }

@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Helpers;
+namespace Code\Base\Humble\Helpers;
 /**
  * *** BEGIN LICENSE BLOCK *****
  *
@@ -434,7 +434,7 @@ class FirePHP extends Helper {
 
     } else {
 
-      $this->fb($code, 'Assertion Failed', \Code\Base\Core\Helpers\FirePHP::ERROR, array('File'=>$file,'Line'=>$line));
+      $this->fb($code, 'Assertion Failed', \Code\Base\Humble\Helpers\FirePHP::ERROR, array('File'=>$file,'Line'=>$line));
 
     }
   }
@@ -486,7 +486,7 @@ class FirePHP extends Helper {
       }
     }
 
-    return $this->fb(null, $Name, \Code\Base\Core\Helpers\FirePHP::GROUP_START, $Options);
+    return $this->fb(null, $Name, \Code\Base\Humble\Helpers\FirePHP::GROUP_START, $Options);
   }
 
   /**
@@ -496,97 +496,97 @@ class FirePHP extends Helper {
    * @throws Exception
    */
   public function groupEnd() {
-    return $this->fb(null, null, \Code\Base\Core\Helpers\FirePHP::GROUP_END);
+    return $this->fb(null, null, \Code\Base\Humble\Helpers\FirePHP::GROUP_END);
   }
 
   /**
    * Log object with label to firebug console
    *
-   * @see \Code\Base\Core\Helpers\FirePHP::LOG
+   * @see \Code\Base\Humble\Helpers\FirePHP::LOG
    * @param mixes $Object
    * @param string $Label
    * @return true
    * @throws Exception
    */
   public function log($Object, $Label=null) {
-    return $this->fb($Object, $Label, \Code\Base\Core\Helpers\FirePHP::LOG);
+    return $this->fb($Object, $Label, \Code\Base\Humble\Helpers\FirePHP::LOG);
   }
 
   /**
    * Log object with label to firebug console
    *
-   * @see \Code\Base\Core\Helpers\FirePHP::INFO
+   * @see \Code\Base\Humble\Helpers\FirePHP::INFO
    * @param mixes $Object
    * @param string $Label
    * @return true
    * @throws Exception
    */
   public function info($Object, $Label=null) {
-    return $this->fb($Object, $Label, \Code\Base\Core\Helpers\FirePHP::INFO);
+    return $this->fb($Object, $Label, \Code\Base\Humble\Helpers\FirePHP::INFO);
   }
 
   /**
    * Log object with label to firebug console
    *
-   * @see \Code\Base\Core\Helpers\FirePHP::WARN
+   * @see \Code\Base\Humble\Helpers\FirePHP::WARN
    * @param mixes $Object
    * @param string $Label
    * @return true
    * @throws Exception
    */
   public function warn($Object, $Label=null) {
-    return $this->fb($Object, $Label, \Code\Base\Core\Helpers\FirePHP::WARN);
+    return $this->fb($Object, $Label, \Code\Base\Humble\Helpers\FirePHP::WARN);
   }
 
   /**
    * Log object with label to firebug console
    *
-   * @see \Code\Base\Core\Helpers\FirePHP::ERROR
+   * @see \Code\Base\Humble\Helpers\FirePHP::ERROR
    * @param mixes $Object
    * @param string $Label
    * @return true
    * @throws Exception
    */
   public function error($Object, $Label=null) {
-    return $this->fb($Object, $Label, \Code\Base\Core\Helpers\FirePHP::ERROR);
+    return $this->fb($Object, $Label, \Code\Base\Humble\Helpers\FirePHP::ERROR);
   }
 
   /**
    * Dumps key and variable to firebug server panel
    *
-   * @see \Code\Base\Core\Helpers\FirePHP::DUMP
+   * @see \Code\Base\Humble\Helpers\FirePHP::DUMP
    * @param string $Key
    * @param mixed $Variable
    * @return true
    * @throws Exception
    */
   public function dump($Key, $Variable) {
-    return $this->fb($Variable, $Key, \Code\Base\Core\Helpers\FirePHP::DUMP);
+    return $this->fb($Variable, $Key, \Code\Base\Humble\Helpers\FirePHP::DUMP);
   }
 
   /**
    * Log a trace in the firebug console
    *
-   * @see \Code\Base\Core\Helpers\FirePHP::TRACE
+   * @see \Code\Base\Humble\Helpers\FirePHP::TRACE
    * @param string $Label
    * @return true
    * @throws Exception
    */
   public function trace($Label) {
-    return $this->fb($Label, \Code\Base\Core\Helpers\FirePHP::TRACE);
+    return $this->fb($Label, \Code\Base\Humble\Helpers\FirePHP::TRACE);
   }
 
   /**
    * Log a table in the firebug console
    *
-   * @see \Code\Base\Core\Helpers\FirePHP::TABLE
+   * @see \Code\Base\Humble\Helpers\FirePHP::TABLE
    * @param string $Label
    * @param string $Table
    * @return true
    * @throws Exception
    */
   public function table($Label, $Table) {
-    return $this->fb($Table, $Label, \Code\Base\Core\Helpers\FirePHP::TABLE);
+    return $this->fb($Table, $Label, \Code\Base\Humble\Helpers\FirePHP::TABLE);
   }
 
   /**

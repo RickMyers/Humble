@@ -1,4 +1,4 @@
-JARVIS.config = {
+HUMBLE.config = {
     action1: function () {
 
     },

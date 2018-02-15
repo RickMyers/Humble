@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Entities;
+namespace Code\Base\Humble\Entities;
 /**
  * Localized reference to the base object, it makes hierarchy a bit cleaner
  *
@@ -17,7 +17,7 @@ namespace Code\Base\Core\Entities;
  * @version    <INSERT VERSIONING MECHANISM HERE />
  * @since      File available since Version 1.0.1
  */
-class Entity extends \Code\Base\Core\Entity\BaseObject {
+class Entity extends \Code\Base\Humble\Entity\BaseObject {
 
 }
 ?>

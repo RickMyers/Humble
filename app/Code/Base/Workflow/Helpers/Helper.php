@@ -17,7 +17,7 @@ namespace Code\Base\Workflow\Helpers;
  * @version    <INSERT VERSIONING MECHANISM HERE />
  * @since      File available since Version 1.0.1
  */
-class Helper extends \Code\Base\Core\Helper\BaseObject {
+class Helper extends \Code\Base\Humble\Helper\BaseObject {
 
 }
 ?>

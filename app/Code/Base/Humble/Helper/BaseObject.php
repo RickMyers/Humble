@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Helper;
+namespace Code\Base\Humble\Helper;
 /**
  * The base class from which all other helpers derive
  *
@@ -16,7 +16,7 @@ namespace Code\Base\Core\Helper;
  * @see        NetOther, Net_Sample::Net_Sample()
  * @since      File available since Version 1.0.1
  */
-class BaseObject extends \Code\Base\Core\Model\BaseObject {
+class BaseObject extends \Code\Base\Humble\Model\BaseObject {
     private $xml            = null;
     protected $errors       = null;
     protected $isVirtual    = false;

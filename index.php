@@ -90,31 +90,29 @@ if (!$module) {
     //@TODO: change this to throw an exception
     die('The module/feature (ns='.$namespace.',cn='.$controller.',mt='.$method.') you are trying to access either does not exist or is disabled');
 } else {
-    $core            = \Humble::getModule('core');    //A reference to the core functionality held in the Core module
+    $core            = \Humble::getProject();    //A reference to the core functionality held in the Core module
     $include         = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller_cache']).'/'.$controller.'Controller.php';
     $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']).'/'.$controller.'.xml';
 
     //###########################################################################
-    //We first look for the controller that contains the service in the module
-    //identified by the namespace.  If we don't find the controller, we go check
-    //if there is a controller of that name in our default core module, which has
-    //our standard set of services.  This gives the chance for a client module to
-    //override a core service
+    //We first look for the controller that contains the action in the module identified by the namespace used on the URL.
+    //If we don't find the controller, we go check in the module that is identified as the base module for the application.
+    //If we find a controller in our base module, with an action that matches the URL, we use that.
     if (file_exists($include)) {
         $info        = \Humble::getController($namespace.'/'.$controller);
         $recompile   = ($info['compiled'] != date("F d Y, H:i:s", filemtime($source)));
     } else if (file_exists($source)) {
-        $recompile   = true;
+        $recompile   = true;                                                    //The controller source code exists but it is not currently compiled so flag it for compiling
     } else {
-        //now lets look for it in the default controllers [SET TO THE DEFAULT MODULE]
-        $include         = 'Code/Base/Humble/Controllers/Cache/'.$controller.'Controller.php';
-        $source          = 'Code/Base/Humble/Controllers/'.$controller.'.xml';
+        //No specific controller exists to match request, so let's go look for it in the base application module
+        $include         = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/Cache/'.$controller.'Controller.php';
+        $source          = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/'.$controller.'.xml';
         if (file_exists($include)) {
-            $ns          = 'core';   //we mark that we are in fact using the default namespace action without specifically changing the official namespace
+            $ns          = $core['namespace'];   //we mark that we are in fact using the default namespace action without specifically changing the official namespace
             $info        = \Humble::getController($ns.'/'.$controller);
             $recompile   = ($info['compiled'] != date("F d Y, H:i:s", filemtime($source)));
         } else if (file_exists($source)) {
-            $ns          = 'core';
+            $ns          = $core['namespace'];
             $info        = \Humble::getController($ns.'/'.$controller);
             $recompile   = true;
         } else {
@@ -132,8 +130,8 @@ if (!$module) {
             $identifier = $ns.'/'.$controller;
             $compiler   = \Environment::getCompiler();
             $compiler->setController($controller);
-            if ($ns === 'core') {
-                $compiler->setInfo($core);
+            if ($ns === $core['namespace']) {
+                $compiler->setInfo(\Humble::getModule($core['namespace']));
                 $compiler->setSource($core['package'].'/'.str_replace('_','/',$core['controller']));
                 $compiler->setDestination($core['package'].'/'.str_replace('_','/',$core['controller_cache']));
             } else {
@@ -155,11 +153,11 @@ if (!$module) {
     //If this call was the result of a redirect, then we rebuild the global
     //variables from the JSON array passed
     if (isset($_GET['redirect'])) {
-        if (isset($_SESSION['JARVIS_REDIRECT_HEADERS'])) {
-            foreach ($_SESSION['JARVIS_REDIRECT_HEADERS'] as $header) {
+        if (isset($_SESSION['HUMBLE_REDIRECT_HEADERS'])) {
+            foreach ($_SESSION['HUMBLE_REDIRECT_HEADERS'] as $header) {
                 header($header);
             }
-            unset($_SESSION['JARVIS_REDIRECT_HEADERS']);
+            unset($_SESSION['HUMBLE_REDIRECT_HEADERS']);
         }
         if (isset($_SESSION[$_GET["POST"]])) {
             $data = json_decode($_SESSION[$_GET["POST"]],true);

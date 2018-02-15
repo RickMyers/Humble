@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Models;
+namespace Code\Base\Humble\Models;
 use Humble;
 use Environment;
 use Log;
@@ -23,7 +23,7 @@ use Log;
 class Utility extends Model
 {
 
-    use \Code\Base\Core\Event\Handler;
+    use \Code\Base\Humble\Event\Handler;
 
     public function __construct()
     {
@@ -231,15 +231,15 @@ class Utility extends Model
      * Create a new controller
      */
     public function createController($useLanding=false) {
+        //$exts = Humble::getEntity('humble/templaters')->available();
         $exts = array(
-            'Smarty2' => 'tpl',
             'Twig'    => 'twig',
             'Smarty3' => 'tpl',
             'PHP'     => 'php',
             'PHPTAL'  => 'php',
-            'Rain2'   => 'rain',
             'Rain3'   => 'rain',
-            'TBS'     => 'tbs'
+            'TBS'     => 'tbs',
+            'Mustache' => 'mustache'
         );
         $data           = Humble::getEntity('core/users')->setUid($this->getUid())->load();
         $user           = Humble::getEntity('core/user_identification')->setId($this->getUid())->load();

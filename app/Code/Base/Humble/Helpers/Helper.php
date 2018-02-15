@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Core\Helpers;
+namespace Code\Base\Humble\Helpers;
 /**
  * Localized reference to the base object, it makes hierarchy a bit cleaner
  *
@@ -17,7 +17,7 @@ namespace Code\Base\Core\Helpers;
  * @version    <INSERT VERSIONING MECHANISM HERE />
  * @since      File available since Version 1.0.1
  */
-class Helper extends \Code\Base\Core\Helper\BaseObject {
+class Helper extends \Code\Base\Humble\Helper\BaseObject {
 
 }
 ?>

@@ -39,7 +39,7 @@ class Log extends \Code\Base\Paradigm\Entities\Entity
         $query = <<<SQL
         SELECT a.mongo_id AS id, a.`event`, a.user_id, date_format(a.modified,'%m/%d/%Y %H:%i:%s') as `date`, b.last_name, b.first_name
           FROM paradigm_event_log AS a
-          LEFT OUTER JOIN core_user_identification AS b
+          LEFT OUTER JOIN humble_user_identification AS b
             ON a.user_id = b.id
 SQL;
         return $this->query($query);
