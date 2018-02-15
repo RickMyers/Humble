@@ -999,7 +999,7 @@ SQL;
     public function compileFile($file=false) {
        if ($file) {
            $parts = explode('/',$file);
-           $module = \Humble::getEntity('core/modules')->setModule($parts[2])->load(true);
+           $module = \Humble::getEntity('humble/modules')->setModule($parts[2])->load(true);
            $controller = explode('.',$parts[count($parts)-1]);
            print('Compiling controller '.$file."\n");
            $this->compile($module['namespace'].'/'.$controller[0]);

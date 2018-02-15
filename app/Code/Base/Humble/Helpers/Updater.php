@@ -92,7 +92,7 @@ class Updater extends Installer
         }
     }
     public function updateStructure($namespace,$structure,$module_data) {
-        $module = Humble::getEntity('core/modules')->setNamespace($namespace);
+        $module = Humble::getEntity('humble/modules')->setNamespace($namespace);
         $module->load();
         $module->setRequired(isset($module_data->required) ? $module_data->required : "N");
         $module->setTemplater($module_data->use);
@@ -191,7 +191,7 @@ class Updater extends Installer
                     if (isset($contents->structure->frontend)) {
                        // $this->moveFrontEnd($contents->structure->frontend->source);
                     }
-                    $ent = Humble::getEntity('core/modules');
+                    $ent = Humble::getEntity('humble/modules');
                     $ent->setNamespace($this->namespace);
                     $now = date('Y-m-d H:i:s');
                     $dat = $ent->load();

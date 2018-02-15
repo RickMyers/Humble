@@ -43,7 +43,7 @@ class System extends Model
     public function templates() {
         $templates = [];
         $dir = Humble::getHelper('core/directory');
-        foreach (Humble::getEntity('core/modules')->setEnabled('Y')->fetch() as $module) {
+        foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             $templates[$module['namespace']] = [];
             if (is_dir('Code/'.$module['package'].'/'.$module['module'].'/web/app')) {
                 $d = $dir->contents('Code/'.$module['package'].'/'.$module['module'].'/web/app',true);

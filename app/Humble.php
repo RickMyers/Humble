@@ -516,7 +516,7 @@
                 $db     = Humble::getDatabaseConnection();
                 $module = explode('/',$identifier);
                 $query = <<<SQL
-                    select * from core_modules
+                    select * from humble_modules
                       where namespace = '{$module[0]}'
 SQL;
                 $data = $db->query($query);
@@ -591,7 +591,7 @@ SQL;
             if ($package) {
                 $db    = Humble::getDatabaseConnection();
                 $query = <<<SQL
-                    select namespace from core_modules where package = '{$package}' and enabled = 'Y'
+                    select namespace from humble_modules where package = '{$package}' and enabled = 'Y'
 SQL;
                 foreach ($db->query($query) as $idx => $result) {
                     $namespaces[] = $result['namespace'];

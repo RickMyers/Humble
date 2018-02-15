@@ -783,7 +783,7 @@ SOAP;
         if (isset($this->_modules[$module['type']])) {
             $ok =  ($this->_modules[$module['type']]['enabled'] == 'Y');
         } else {
-            $ref = Humble::getEntity('core/modules');
+            $ref = Humble::getEntity('humble/modules');
             if (isset($module['type'])) {
                 $ref->setNamespace($module['type']);
                 $mod = $this->_modules[$module['type']]= $ref->load();
