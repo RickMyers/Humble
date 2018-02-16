@@ -27,7 +27,7 @@ trait Handler {
         if (!$uid) {
             //if no user id, see if this is the login event, and if so, find user based on username
             if ($user_name = $cleanEvent->data('user_name')) {
-                $user   = Humble::getEntity('core/users')->setUserName($user_name)->load(true);
+                $user   = Humble::getEntity('humble/users')->setUserName($user_name)->load(true);
                 $uid    = isset($user['uid']) ? $user['uid'] : 0;  //why not 0?
             }
         }

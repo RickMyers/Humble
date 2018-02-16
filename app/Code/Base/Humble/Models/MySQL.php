@@ -114,6 +114,7 @@ class MySQL  {
             $this->_state = $this->_dbref->sqlstate;
             if (($this->_dbref->sqlstate != "00000")) {
                 if ($this->_dbref->errno!=1062) {
+                    print_r(debug_backtrace());
                     $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";
                     $errorstring .= "\t<class> ".$this->_environment->getDBHost()." </class>\n";
                     $errorstring .= "\t<sqlstate> ".$this->_dbref->sqlstate."</sqlstate>\n";

@@ -147,9 +147,9 @@ class Utility extends Model
      * Create a new module
      */
     public function createModule() {
-        $user   = Humble::getEntity('core/users');
+        $user   = Humble::getEntity('humble/users');
         $user->setUid($this->getUid())->load();
-        $data   = Humble::getEntity('core/user_identification')->setId($this->getUid())->load();
+        $data   = Humble::getEntity('humble/user_identification')->setId($this->getUid())->load();
         $cmd    = 'php Module.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' prefix='.$this->getPrefix().' author="'.$data['first_name'].' '.$data['last_name'].'"';
         \Log::console($cmd);
         return shell_exec($cmd);
@@ -159,8 +159,8 @@ class Utility extends Model
      * Create a new component
      */
     public function createComponent() {
-        $data           = Humble::getEntity('core/users')->setUid($this->getUid())->load();
-        $user           = Humble::getEntity('core/user_identification')->setId($this->getUid())->load();
+        $data           = Humble::getEntity('humble/users')->setUid($this->getUid())->load();
+        $user           = Humble::getEntity('humble/user_identification')->setId($this->getUid())->load();
         $project        = Environment::getProject();
         $custom_root    = 'Code/'.$project->package.'/'.$project->module.'/lib/sample/component';
         $templates      = [];
@@ -241,8 +241,8 @@ class Utility extends Model
             'TBS'     => 'tbs',
             'Mustache' => 'mustache'
         );
-        $data           = Humble::getEntity('core/users')->setUid($this->getUid())->load();
-        $user           = Humble::getEntity('core/user_identification')->setId($this->getUid())->load();
+        $data           = Humble::getEntity('humble/users')->setUid($this->getUid())->load();
+        $user           = Humble::getEntity('humble/user_identification')->setId($this->getUid())->load();
         //need to look for other custom controller template as well...
         $template       = 'Code/Base/Humble/lib/sample/component/controller.xml';
         $module         = Humble::getModule($this->getNamespace());

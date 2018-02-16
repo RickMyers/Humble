@@ -34,6 +34,18 @@ CREATE TABLE `paradigm_event_log` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8;
 
+/*Table structure for table `paradigm_events` */
+
+CREATE TABLE `paradigm_events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `namespace` char(32) DEFAULT NULL,
+  `event` char(128) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `paradigm_events_uidx` (`namespace`,`event`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+
 /*Table structure for table `paradigm_import_sources` */
 
 CREATE TABLE `paradigm_import_sources` (
@@ -150,7 +162,7 @@ CREATE TABLE `paradigm_workflow_comments` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `namespace` (`namespace`,`class`,`method`)
-) ENGINE=InnoDB AUTO_INCREMENT=1244 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1274 DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_workflow_components` */
 

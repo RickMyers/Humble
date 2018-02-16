@@ -176,6 +176,7 @@ switch ($method) {
         <?php
         break;
     case "INSTALL"      :
+        print("<pre>");
         $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']    : false;
         $uid    = isset($_POST['userid'])           ? $_POST['userid']    : false;
         $pwd    = isset($_POST['password'])         ? $_POST['password']  : false;
@@ -200,23 +201,26 @@ switch ($method) {
         $util   = \Environment::getInstaller();
         foreach (\Environment::getRequiredModuleConfigurations() as $etc) {
             print('###########################################'."\n");
-            print('Installing '.$etc."/n");
+            print('Installing '.$etc."\n");
             print('###########################################'."\n\n");
             $util->install($etc);
         }
-        $user    = \Humble::getEntity('core/users')->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']));
+        //
+        // ###NOW RUN UPDATE ON EACH MODULE!!!!#######
+        //
+        $user    = \Humble::getEntity('humble/users')->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']));
         $uid     = $user->add();
         $user->commit();
-        $user    = \Humble::getEntity('core/user_identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
-        $perms   = \Humble::getEntity('core/user_permissions')->setUid($uid)->setAdmin('Y')->setSuperUser('Y')->save();
+        $user    = \Humble::getEntity('humble/user_identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
+        $perms   = \Humble::getEntity('humble/user_permissions')->setUid($uid)->setAdmin('Y')->setSuperUser('Y')->save();
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing = explode('/',$landing_page);
-        $ins     = Humble::getModel('core/utility');
+        $ins     = Humble::getModel('humble/utility');
         shell_exec("php Module.php --i ".$project->namespace." Code/".$project->package."/".$project->module."/etc/config.xml");
         shell_exec("php Module.php --e ".$project->namespace);
         $ins->setUid($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
         if (!$cache) {
-            
+
         }
         session_start();
         $_SESSION['uid'] = $uid;

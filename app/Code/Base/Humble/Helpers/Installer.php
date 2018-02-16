@@ -178,7 +178,7 @@ SQL;
         $controller = $module['controller'];
         $source     = $module['package'].'/'.str_replace('_','/',$controller);
         $dest       = $source.'/Cache';
-        $files      = \Humble::getHelper('core/directory')->listDirectory('Code/'.$source,false); //this is weird... where do I prepend 'Code' to the name already?
+        $files      = \Humble::getHelper('humble/directory')->listDirectory('Code/'.$source,false); //this is weird... where do I prepend 'Code' to the name already?
         $compiler   = \Environment::getCompiler();
         $compiler->setSource($source);
         $compiler->setDestination($dest);
@@ -680,7 +680,7 @@ SQL;
      */
     public function uninstall($source=false) {
         $source = ($source!==false) ? $source : $this->getSource();
-        $helper = Humble::getHelper('core/data');
+        $helper = Humble::getHelper('humble/data');
         if (file_exists($source)) {
           //  \Log::console('Starting uninstallation of: '.$source);
             if ($helper->isValidXML($xml = file_get_contents($source))) {
@@ -715,7 +715,7 @@ SQL;
      */
     public function install($source=false)  {
         $source = ($source!==false) ? $source : $this->getSource();
-        $helper = Humble::getHelper('core/data');
+        //$helper = Humble::getHelper('humble/data');
         if (file_exists($source)) {
             //if ($helper->isValidXML($xml = file_get_contents($source))) {
             if ($xml = file_get_contents($source)) {
@@ -761,9 +761,9 @@ SQL;
                     if (isset($contents->structure->images)) {
                         $this->installImages($this->prefix,$contents->structure,$contents->module);
                     }
-                    if (isset($contents->events)) {
-                        $this->registerEvents($contents->events);
-                    }
+                //    if (isset($contents->events)) {
+                 ///       $this->registerEvents($contents->events);  //can't do this on install, since paradigm won't exist yet.  after install, run update
+                 //   }
                     if (isset($contents->web)) {
                         $this->registerWebComponents($contents->web,$contents->module);
                     }
@@ -795,7 +795,7 @@ SQL;
         $modules = [];
         $root    = "Code/";
         $entries = dir($root);
-        $helper  = Humble::getHelper('core/data');
+        $helper  = Humble::getHelper('humble/data');
         while (($entry = $entries->read()) !== false) {
             if (($entry == '.') || ($entry == '..')) {
                 continue;

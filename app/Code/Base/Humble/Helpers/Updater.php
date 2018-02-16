@@ -73,7 +73,7 @@ class Updater extends Installer
         if (!$module) {
             $module['last_updated'] = 0;
         }
-        $helper = Humble::getHelper('core/directory');
+        $helper = Humble::getHelper('humble/directory');
         if (!is_dir($path)) {
             @mkdir($path,0775,true);
         }
@@ -133,7 +133,7 @@ class Updater extends Installer
      */
     public function update($source=false)  {
         $source = ($source!==false) ? $source : $this->getSource();
-        $helper = Humble::getHelper('core/data');
+        $helper = Humble::getHelper('humble/data');
         $xml = '';
         if (file_exists($source)) {
           //  \Log::console('Starting Update Of: '.$source);

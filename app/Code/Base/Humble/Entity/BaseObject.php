@@ -776,7 +776,7 @@ SQL;
                 }
             }
         }
-        return Humble::getModel('core/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
+        return Humble::getModel('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
     }
 
     /**
@@ -1203,7 +1203,7 @@ SQL;
                 if (isset($data['revision_history'])) {
                     unset($data['revision_history']);
                 }
-                $user       = Humble::getEntity('core/user_identification')->setId(Environment::whoAmI())->load();
+                $user       = Humble::getEntity('humble/user_identification')->setId(Environment::whoAmI())->load();
                 $revisions[] = [
                     'date'      => date('Y-m-d H:i:s'),
                     'user_id'   => $_SESSION['login'],

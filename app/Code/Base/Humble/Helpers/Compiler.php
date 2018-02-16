@@ -23,7 +23,7 @@ class Compiler extends Directory
     public function __construct()   {
         parent::__construct();
         $this->_db = \Humble::getDatabaseConnection($this);
-        $this->helper = \Humble::getHelper('core/data');
+        $this->helper = \Humble::getHelper('humble/data');
     }
 
     /**
