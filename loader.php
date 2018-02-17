@@ -16,7 +16,7 @@
     ob_start();
     chdir('app');                               //always start in this directory
     require_once('Humble.php');                   //our friend
-    $orm = \Humble::getEntity('core/'.$_GET['type']);
+    $orm = \Humble::getEntity('humble/'.$_GET['type']);
     $orm->setNamespace('');                     //clear the namespace
     $packages = array();
 

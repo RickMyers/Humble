@@ -5,6 +5,7 @@
     <head>
         <link rel='stylesheet' type='text/css' href='/web/css/index.css' />
         <style type="text/css">
+            /* url(/images/paradigm/bg_graph.png)*/
             body {
                 height: 100%; box-sizing: border-box;  background-size: cover;
             }
@@ -21,13 +22,13 @@
                 font-size: .6em; font-family: sans-serif; margin-bottom: 10px
             }
             .installer-form-field {
-                border-radius: 3px; padding: 3px 4px; border: 1px solid #aaf; background-color: #eee
+                border-radius: 3px; padding: 3px 4px; border: 1px solid #aaf; background-color: #eee; width: 70%
             }
             .installer-form-field:focus {
                 background-color: white
             }
             .installer-form-div {
-                width: 400px; padding: 20px 30px; border: 1px solid #aaf; background-color: #e0e0e0;
+                width: 705px; padding: 20px 30px; border: 1px solid #aaf; background-color: #e0e0e0;
             }
         </style>
         <script type="text/javascript" src="/web/js/jquery.js"></script>
@@ -40,13 +41,30 @@
                 init: function () {
                     Installer.resize();
                 },
+                start: function () {
+                    window.setTimeout(Installer.update,500);
+                },
+                update: function () {
+                    (new EasyAjax('/install_status.json')).callback(function (response) {
+                        console.log(response)
+                        var progress = JSON.parse(response);
+                        if (progress) {
+                            $('#install-status-stage').html(progress.stage);
+                            $('#install-status-step').html(progress.step);
+                            $('#install-status-bar').css('width',progress.percent+'%');
+                            if (progress.percent < 100) {
+                                window.setTimeout(Installer.update,500);
+                            }
+                        }
+                    }).get();
+                },
                 resize: function () {
                         Installer.width = window.innerWidth ||
-                                    document.documentElement.clientWidth ||
-                                    document.body.clientWidth;
+                            document.documentElement.clientWidth ||
+                            document.body.clientWidth;
                         Installer.height = window.innerHeight ||
-                                     document.documentElement.clientHeight ||
-                                     document.body.clientHeight;
+                            document.documentElement.clientHeight ||
+                            document.body.clientHeight;
                         $("#installer-area").css('height', Installer.height + "px");
                 }
             }
@@ -89,7 +107,7 @@ $method = (isset($_POST['method'])) ? $_POST['method'] : "INIT";
 switch ($method) {
     case "INIT"         :
         ?>
-            <table id="installer-area" width='100%' cellspacing='0' cellpadding='0'>
+            <table id="installer-area" style="width: 100%; height: 100%" cellspacing='0' cellpadding='0'>
                 <tr style="height: 20px">
                     <td>
                         <div class="flat-brick" style="background-color: #0A2327"></div>
@@ -102,35 +120,51 @@ switch ($method) {
                 </tr>
                 <tr>
                     <td align='center' valign='middle'>
-                        <div class='installer-form-div' style='text-align: left; width: 400px'>
+                        <div id="installer-wait-div" style="display: none">
+                            <div id="install-status-stage" style="font-size: 2em; color: #333; font-family: sans-serif; margin-bottom: 15px">
+                                &nbsp;
+                            </div>
+                            <img src="/web/images/wait.gif" alt="Please Wait..." style="height: 120px" />
+                            <div style="margin-right: auto; margin-left: auto; height: 30px; width: 400px; position: relative; border: 1px solid #333; text-align: left; margin-top: 15px">
+                                <div id="install-status-bar" style="width: 30%; height: 100%; background-color: rgba(80,80,80,.5)">
+
+                                </div>
+                                <div id="install-status-step" style="position: absolute; top: 6px; left: 4px; color: blue; font-family: sans-serif;">
+                                    &nbsp;
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class='installer-form-div' id="installer-form-div" style='text-align: left; position: relative; display: block;'>
                             <div style="padding: 10px; color: white; font-size: 1em; font-family: sans-serif; margin-bottom: 20px; text-align: center; background-color: #0033CC">
                                 Welcome to the Installation for <?=$xml->name?>
                             </div>
                             <form name='installer-form' method='post' id='installer-form' onsubmit="" action="">
                                 <input type="hidden" name="method" id="method" value="INSTALL" />
 
-                                <fieldset><legend>Administrator Information</legend>
-                                <input type='text' class='installer-form-field' id='email' name='email' />
-                                <div class='installer-field-description'>E-Mail</div>
+                                <fieldset style="float: left; width: 250px; position: relative" id="div_1"><legend>Administrator Information</legend>
+                                    <input type='text' class='installer-form-field' id='email' name='email' />
+                                    <div class='installer-field-description'>E-Mail</div>
 
-                                <input type='text' class='installer-form-field' id='username' name='username' />
-                                <div class='installer-field-description'>User Login Id</div>
+                                    <input type='text' class='installer-form-field' id='username' name='username' />
+                                    <div class='installer-field-description'>User Login Id</div>
 
-                                <input type='password' class='installer-form-field' id='pwd' name='pwd' />
-                                <div class='installer-field-description'>Password</div>
+                                    <input type='password' class='installer-form-field' id='pwd' name='pwd' />
+                                    <div class='installer-field-description'>Password</div>
 
-                                <input type='password' class='installer-form-field' id='confirm' name='confirm' />
-                                <div class='installer-field-description'>Confirm Password</div>
+                                    <input type='password' class='installer-form-field' id='confirm' name='confirm' />
+                                    <div class='installer-field-description'>Confirm Password</div>
 
-                                <input type='text' class='installer-form-field' id='firstname' name='firstname' />
-                                <div class='installer-field-description'>First Name</div>
+                                    <input type='text' class='installer-form-field' id='firstname' name='firstname' />
+                                    <div class='installer-field-description'>First Name</div>
 
-                                <input type='text' class='installer-form-field' id='lastname' name='lastname' />
-                                <div class='installer-field-description'>Last Name</div>
+                                    <input type='text' class='installer-form-field' id='lastname' name='lastname' />
+                                    <div class='installer-field-description'>Last Name</div>
+                                    <input type="button" id="install-submit" name="install-submit" value=" Install " />
                                 </fieldset>
 
-                                <fieldset><legend>Database Information</legend>
-                                <input type='text' class='installer-form-field' id='dbhost' name='dbhost' /> <input type='button' value=' Test ' id='install-test' name='install-test' />
+                                <fieldset style="display: inline-block; width: 350px; position: relative" id="div_2"><legend>Database Information</legend>
+                                <input type='text' placeholder="127.0.0.1:3306" class='installer-form-field' id='dbhost' name='dbhost' /><input type='button' value=' Test ' id='install-test' name='install-test' />
                                 <div class='installer-field-description'>MySQL Host (localhost:port or leave out port for default)</div>
 
                                 <input type='text' class='installer-form-field' id='db' name='db' />
@@ -142,7 +176,7 @@ switch ($method) {
                                 <input type='password' class='installer-form-field' id='password' name='password' />
                                 <div class='installer-field-description'>MySQL Password</div>
 
-                                <input type='text' class='installer-form-field' id='mongo' name='mongo' /><input type="button" value=" Test " id='mongo-test' name='mongo-test' />
+                                <input type='text' placeholder="127.0.0.1:27017" class='installer-form-field' id='mongo' name='mongo' /><input type="button" value=" Test " id='mongo-test' name='mongo-test' />
                                 <div class='installer-field-description'>MongoDB Host</div>
 
                                 <input type='text' class='installer-form-field' id='mongo_userid' name='mongo_userid' />
@@ -151,10 +185,10 @@ switch ($method) {
                                 <input type='text' class='installer-form-field' id='mongo_password' name='mongo_password' />
                                 <div class='installer-field-description'>MongoDB Password</div>
 
-                                <input type='text' class='installer-form-field' id='cache' name='cache' />
+                                <input type='text' placeholder="127.0.0.1:11211" class='installer-form-field' id='cache' name='cache' />
                                 <div class='installer-field-description'>Cache Server </div>
                                 </fieldset>
-                                <input type="button" id="install-submit" name="install-submit" value=" Install " />
+                                <div style="clear: both"></div>
                             </form>
                         </div>
                     </td>
@@ -172,11 +206,14 @@ switch ($method) {
             </table>
             <script type="text/javascript">
                 new EasyEdits('/web/edits/install.json','install-form');
+                $('#div_1').height($('#div_2').height());
             </script>
         <?php
         break;
     case "INSTALL"      :
-        print("<pre>");
+        ob_start();
+        $step    = 0;
+        file_put_contents('install_status.json','{ "stage": "Preparing",  "step": "Initializing...", "percent": 0 }');
         $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']    : false;
         $uid    = isset($_POST['userid'])           ? $_POST['userid']    : false;
         $pwd    = isset($_POST['password'])         ? $_POST['password']  : false;
@@ -196,18 +233,31 @@ switch ($method) {
         file_put_contents("../Settings/".$project->namespace."/Settings.php",str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/Settings.php')));
         chdir('app');
         require_once('Humble.php');
+        $util    = \Environment::getInstaller();
+        $modules = \Environment::getRequiredModuleConfigurations();
+        $percent = (count($modules)*2)+4;
+        file_put_contents('../install_status.json','{ "stage": "Starting", "step": "Building Application Module", "percent": '.(++$step*$percent).' }');
         $cmd = 'php Module.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_';
         exec($cmd);
-        $util   = \Environment::getInstaller();
-        foreach (\Environment::getRequiredModuleConfigurations() as $etc) {
+        foreach ($modules as $idx => $etc) {
+            file_put_contents('../install_status.json','{ "stage": "Installing", "step": "Installing '.$etc.'", "percent": '.(++$step*$percent).' }');
             print('###########################################'."\n");
             print('Installing '.$etc."\n");
             print('###########################################'."\n\n");
             $util->install($etc);
         }
+        $util = \Environment::getUpdater();
+        foreach ($modules as $idx => $etc) {
+            file_put_contents('../install_status.json','{ "stage": "Updating", "step": "Updating '.$etc.'", "percent": '.(++$step*$percent).' }');
+            print('###########################################'."\n");
+            print('Updating '.$etc."\n");
+            print('###########################################'."\n\n");
+            $util->update($etc);
+        }
         //
         // ###NOW RUN UPDATE ON EACH MODULE!!!!#######
         //
+        file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
         $user    = \Humble::getEntity('humble/users')->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']));
         $uid     = $user->add();
         $user->commit();
@@ -216,6 +266,7 @@ switch ($method) {
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing = explode('/',$landing_page);
         $ins     = Humble::getModel('humble/utility');
+        file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
         shell_exec("php Module.php --i ".$project->namespace." Code/".$project->package."/".$project->module."/etc/config.xml");
         shell_exec("php Module.php --e ".$project->namespace);
         $ins->setUid($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
@@ -224,8 +275,8 @@ switch ($method) {
         }
         session_start();
         $_SESSION['uid'] = $uid;
-
-        header('Location: /index.html?m=Welcome home!');
+        file_put_contents('../install_status.json','{ "stage": "Complete", "step": "Finished", "percent": 100 }');
+        file_put_contents('../install.log',ob_get_flush());
         break;
     default             :
         die("I'm not sure what you want, but I'm pretty sure I don't do that");

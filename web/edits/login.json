@@ -3,7 +3,7 @@
 	{
 		"id":           "humble-login-form",
 		"drawme":		false,
-		"action":		"/core/user/login",
+		"action":		"/humble/user/login",
 		"method":		"post",
 		"style":		"",
 		"onenterkey":	"send"
