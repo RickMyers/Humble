@@ -283,7 +283,7 @@
         #                                                                                       #
         #########################################################################################-->
 
-        <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package,document"   description="Distributes to the Prod Server" />
+        <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package"   description="Distributes to the Prod Server" />
         <target name="distrmte" depends="constants,remote,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package,document"   description="Distributes to the Prod Server" />
         <!--target name="disttest" depends="constants,test,open,create,backup,cleanup,remove,deploy,retain,composer,update,document,increment,package"   description="Distributes to the Test Server" /-->
 

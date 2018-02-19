@@ -2,9 +2,6 @@
     function recurseDirectory($path=null) {
         $files = [];
         if ($path !== null) {
-   //         if ($path === '.') {
-     //           $path = getcwd();
-      //      }
             $dir = dir($path);
             while (($entry = $dir->read())!==false ) {
                 if (($entry == '.') || ($entry == '..') || ($entry == '.git')) {

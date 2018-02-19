@@ -109,7 +109,7 @@ class Singleton
      */
     public static function getFirePHP()  {
         if (!isset(self::$firephp)) {
-            if (isset($_SERVER['HUMBLE_IS_DEVELOPER_MODE']) && (strtoupper($_SERVER['HUMBLE_IS_DEVELOPER_MODE']) == "TRUE") && (php_sapi_name !== 'cli')) {
+            if (isset($_SERVER['HUMBLE_IS_DEVELOPER_MODE']) && (strtoupper($_SERVER['HUMBLE_IS_DEVELOPER_MODE']) == "TRUE") && (php_sapi_name() !== 'cli')) {
                 self::$firephp = new \Code\Base\Humble\Helpers\FirePHP();
             } else {
                 self::$firephp = new \Code\Base\Humble\Helpers\FirePlacebo();

@@ -1,19 +1,18 @@
 <?php
 namespace Code\Base\Workflow\Models;
-use Jarvis;
+use Humble;
 /**
  * Contains the communication options
  *
  * Emails, texts, etc, from a workflow
  *
- * PHP version 5.5+
+ * PHP version 7.2+
  *
  * LICENSE: http://www.enicity.com/license.txt
  *
  * @category   Component
- * @package    Application
- * @author     Original Author <author@example.com>
- * @see        NetOther, Net_Sample::Net_Sample()
+ * @package    Base
+ * @author     Original Author <rick@enicity.com>
  * @since      File available since Release 1.0.0
  */
 class Notification extends Model {
@@ -31,13 +30,6 @@ class Notification extends Model {
         return __CLASS__;
     }
 
-    /**
-     * Advanced variable substitution from the EVENT values tree
-     * 
-     * @param type $text
-     * @param type $values
-     * @return type
-     */
     protected function substitute($text,$values) {
         $retval = '';
         foreach (explode('%%',$text) as $idx => $section) {
@@ -62,7 +54,7 @@ class Notification extends Model {
         }
         return $retval;
     }
-    
+
     /**
      * Sends a desktop notification/alert
      *
@@ -70,7 +62,7 @@ class Notification extends Model {
      */
     public function alert($EVENT=false) {
         $alerted = false;
-        $string  = Jarvis::getHelper('core/string');
+        $string  = Humble::getHelper('core/string');
         if ($EVENT) {
             $mydata = $EVENT->fetch();
             $alert = $string->translate($mydata['message'],$EVENT->load());
@@ -79,7 +71,7 @@ class Notification extends Model {
         }
         return $alerted;
     }
-    
+
     /**
      * Sends a desktop notification/alert
      *
@@ -104,17 +96,16 @@ class Notification extends Model {
         $emailed = false;
         if ($EVENT) {
             $data   = $EVENT->load();   //get the original event data, it should have information by now
-            $data['some']   = ['message'=>['here'=>'Ok, this worked']];
             $cfg    = $EVENT->fetch();
-            if ($recipients = isset($cfg['recipient_type']) && ($cfg['recipient_type']=='value') ? $data['recipient'] : ((isset($data[$cfg['recipient']]) && $data[$cfg['recipient']]) ? $data[$cfg['recipient']] : false)) {
-                $subject    = isset($cfg['subject_type']) && ($cfg['subject_type']=='value')   ? $data['subject'] : ((isset($data[$cfg['subject']]) && $data[$cfg['subject']]) ? $data[$cfg['subject']] : '');
+            if ($recipients = isset($cfg['recipient_type']) && ($cfg['recipient_type']=='value') ? $cfg['recipients'] : ((isset($data[$cfg['recipients']]) && $data[$cfg['recipients']]) ? $data[$cfg['recipients']] : false)) {
+                $subject    = isset($cfg['subject_type']) && ($cfg['subject_type']=='value')   ? $cfg['subject'] : ((isset($data[$cfg['subject']]) && $data[$cfg['subject']]) ? $data[$cfg['subject']] : '');
                 $from       = isset($cfg['from_type'])    && ($cfg['from_type']=='value')      ? $cfg['from']     : ((isset($data[$cfg['from']])    && $data[$cfg['from']])    ? $data[$cfg['from']]    : false);
                 $message    = $this->substitute(isset($cfg['message_field']) && ($cfg['message_field'] && isset($data[$cfg['message_field']]))  ? $data[$cfg['message_field']] : $cfg['email_message'],$data);
                 if (count($recipients = explode(';',$recipients)) && $message) {
-                    $emailed = Jarvis::getHelper('core/email')->sendEmail($recipients,$subject,$message,$from);                
+                    $emailed = Humble::getHelper('core/email')->sendEmail($recipients,$subject,$message,$from);
                 }
-                
-            }                
+
+            }
 
         }
         return ($emailed !== false);
@@ -141,7 +132,7 @@ class Notification extends Model {
 	}
 
     /**
-     * Returns a message as a response, through the response method on our Jarvis factory
+     * Returns a message as a response, through the response method on our Humble factory
      *
      * @workflow use(notification) configuration(/workflow/notification/response)
      * @param type $EVENT
@@ -151,7 +142,7 @@ class Notification extends Model {
         if ($EVENT) {
             $mydata = $EVENT->fetch();
             if (isset($mydata['response'])) {
-                Jarvis::response($mydata['response']);
+                Humble::response($mydata['response']);
                 $responded = true;
             }
         }

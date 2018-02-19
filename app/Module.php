@@ -100,7 +100,7 @@ HELP;
     function checkNamespaceAvailability($args) {
         $ns = fetchParameter('namespace',processArgs($args));
         if ($ns) {
-            $check = \Humble::getEntity('core/modules');
+            $check = \Humble::getEntity('humble/modules');
             $check->setNamespace($ns);
             $mod = $check->load();
             if ($mod) {
@@ -119,7 +119,7 @@ HELP;
     function checkPrefixAvailability($args) {
         $px = fetchParameter('prefix',processArgs($args));
         if ($px) {
-            $check = \Humble::getEntity('core/modules');
+            $check = \Humble::getEntity('humble/modules');
             $check->setPrefix($px);
             $mod = $check->fetch();
             if ($mod && count($mod)>0) {
@@ -221,7 +221,7 @@ TXT;
     function enableModule($args) {
         $ns = $args[0];
         print("Enabling ".$ns."\n\n");
-        $mod = \Humble::getEntity("core/modules");
+        $mod = \Humble::getEntity("humble/modules");
         $mod->setNamespace($ns);
         $mod->setEnabled('Y');
         $mod->save();
@@ -230,7 +230,7 @@ TXT;
     function disableModule($args) {
         $ns = $args[0];
         print("Disabling ".$ns."\n\n");
-        $mod = \Humble::getEntity("core/modules");
+        $mod = \Humble::getEntity("humble/modules");
         $mod->setNamespace($ns);
         $mod->setEnabled('N');
         $mod->save();
@@ -288,7 +288,7 @@ TXT;
             $module = \Humble::getModule($ns,true);
             print_r($module);
             if ($module) {
-                $utility = \Humble::getModel('core/utility');
+                $utility = \Humble::getModel('humble/utility');
                 $utility->setPackage($module['package']);
                 $utility->setNamespace($module['namespace']);
                 if ($utility->uninstall()) {
@@ -305,7 +305,7 @@ TXT;
 
     //--------------------------------------------------------------------------
     function updateIndividualModule($namespace) {
-        $module = Humble::getEntity('core/modules')->setNamespace($namespace);
+        $module = Humble::getEntity('humble/modules')->setNamespace($namespace);
         $data   = $module->load(true);
         if (isset($data['configuration']) && $data['configuration']) {
             $etc     = 'Code/'.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
@@ -324,7 +324,7 @@ TXT;
         }
         if ($namespace) {
             if ($namespace==='*') {
-                foreach (\Humble::getEntity('core/modules')->setEnabled('Y')->fetch() as $module) {
+                foreach (\Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
                     updateIndividualModule($module['namespace']);
                 }
             } else {
@@ -395,7 +395,7 @@ TXT;
         $package = strtolower($parts[1]);
         $root    = $parts[2]."/".$parts[3];
         print($root);
-        $data    = \Humble::getEntity('core/modules')->setModels($root)->fetch();
+        $data    = \Humble::getEntity('humble/modules')->setModels($root)->fetch();
         if ($data) {
             $data = $data->pop();
             $namespace = $data['namespace'];
@@ -516,7 +516,7 @@ TXT;
         }
         print('Attempting to copy: '.$directory."\n");
         if ($directory) {
-            $util       = Humble::getHelper('core/directory');
+            $util       = Humble::getHelper('humble/directory');
             $directory  = (substr($directory,0,1)==='/') ? substr($directory,1) : $directory;  //convert from absolute to relative path
             if (is_dir('../'.$directory)) {
                 @mkdir('../../'.$directory,0775,true);
@@ -537,7 +537,7 @@ TXT;
         }
         print('Attempting to restore: '.$directory."\n");
         if ($directory) {
-            $util       = Humble::getHelper('core/directory');
+            $util       = Humble::getHelper('humble/directory');
             $directory  = (substr($directory,0,1)==='/') ? substr($directory,1) : $directory;  //convert from absolute to relative path
             if (is_dir('../../'.$directory)) {
                 @mkdir('../'.$directory,0775,true);
@@ -843,7 +843,7 @@ TXT;
         $canonical = json_decode(file_get_contents($project['framework_url']."/distro/version"),true);
         $canon_version = (int)str_replace(".","",(string)$canonical['version']);
         $local_version = (int)str_replace(".","",(string)$app->version);
-        $helper = Humble::getHelper('core/directory');
+        $helper = Humble::getHelper('humble/directory');
         print("\n\nRunning patching report on core framework to version ".$canonical['version'].", please wait...\n\n");
         $distro = 'distro_'.$canonical['version'];
         ob_flush();

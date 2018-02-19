@@ -20,8 +20,8 @@
                 <b>Please don't forget to hit &lt;<u>Save</u>&gt; to set the trigger date and time!
             </div>
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
-                <form name='humble-paradigm-config-system-event-form' id='humble-paradigm-config-system-event-form-{$id}' onsubmit='return false'>
-                <input type="hidden" id="humble-paradigm-config-system-event-form-id-{$id}" name="id" value="{$id}" />
+                <form name='jarvis-paradigm-config-system-event-form' id='jarvis-paradigm-config-system-event-form-{$id}' onsubmit='return false'>
+                <input type="hidden" id="jarvis-paradigm-config-system-event-form-id-{$id}" name="id" value="{$id}" />
                 <input type="hidden" name="workflow_id" id="workflow_id-{$id}" value="" />
                 <input type="hidden" name="window_id" id="window_id-{$id}" value="{$window_id}" />
                 <input type="hidden" name="windowId" id="windowId-{$id}" value="{$window_id}" />
@@ -32,7 +32,7 @@
                 <div style="height: 290px; "></div>
                 <div style="clear: both"></div>
                 <input type="checkbox" value='Y' {if (isset($data.recurring_flag))} {if ($data.recurring_flag == 'Y')}checked{/if}{/if} name="recurring_flag" id="event_recurring_flag-{$id}" /> Repeatable Event
-                <input style='margin-left: 40px' type="checkbox" value='Y' {if (isset($data.active_flag))} {if ($data.active_flag == 'Y')}checked{/if}{/if} name="active_flag" id="event_active_flag-{$id}" /> Activate <br /><br />                
+                <input style='margin-left: 40px' type="checkbox" value='Y' {if (isset($data.active_flag))} {if ($data.active_flag == 'Y')}checked{/if}{/if} name="active_flag" id="event_active_flag-{$id}" /> Activate <br /><br />
                 <select name="period" id="recurring_event_period-{$id}">
                     <option value=""></option>
                     <option value="900">Every 15 Minutes</option>
@@ -48,7 +48,7 @@
                 <div class='form-field-description'>Period Of Occurrence</div>
                 <br />
                 <br />
-                
+
                 <input type="button" id="event_trigger-{$id}" name="event_trigger" value=" Set Event " />
                 <br />
                 </form>
@@ -62,7 +62,7 @@
     {/if}
     {if (isset($data.period))}
         $('#recurring_event_period-{$id}').val('{$data.period}');
-    {/if}        
+    {/if}
     $('#workflow_id-{$id}').val(Paradigm.actions.get.mongoWorkflowId());
     var id = '{$id}';
     var window_id   = '{$window_id}';
@@ -71,9 +71,9 @@
             exitOnBackgroundClick: false,
             {if (isset($data.event_date))}
                 initialDateTime:  function (m) {
-                                    return moment("{$data.event_date} {$data.event_time} YYYY-MM-DD HH:mm"); 
+                                    return moment("{$data.event_date} {$data.event_time}").format("YYYY-MM-DD HH:mm");
                                   },
-            {/if}            
+            {/if}
             calendar: {
                 isPinned: true
             },
@@ -84,8 +84,8 @@
               return moment( ).add( "days", 365 );
             }
     });
-    $( "#event-date-picker-{$id}" ).filthypillow( "show" );    
-    
+    $( "#event-date-picker-{$id}" ).filthypillow( "show" );
+
     $('#event-date-picker-{$id}').on("fp:save",function (e, stamp) {
         if (stamp) {
             $('#event_date-{$id}').val(stamp.format('YYYY-MM-DD'));
@@ -95,5 +95,5 @@
     var ee = new EasyEdits(null,'system_'+id);
     ee.fetch('/edits/paradigm/system');
     ee.process(ee.getJSON().replace(/&id&/g,id).replace(/&window_id&/g,window_id));
-    Form.intercept($('#humble-paradigm-config-system-event-form-{$id}').get(),'{$manager->getId()}','/paradigm/system/save',window_id);
+    Form.intercept($('#jarvis-paradigm-config-system-event-form-{$id}').get(),'{$manager->getId()}','/paradigm/system/save',window_id);
 </script>

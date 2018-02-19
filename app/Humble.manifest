@@ -49,7 +49,7 @@ favicon/*
 app/install/index.php index.php
 app/install/index.html index.html
 app/Humble.local.manifest
-app/Code/Base/Core/*
+app/Code/Base/Humble/*
 app/Code/Base/Paradigm/*
 app/Code/Base/Workflow/*
 app/Exceptions/*

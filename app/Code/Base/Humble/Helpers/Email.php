@@ -1,6 +1,6 @@
 <?php
-namespace Code\Base\Core\Helpers;
-use Argus;
+namespace Code\Base\Humble\Helpers;
+use Humble;
 use Log;
 use Environment;
 /**
@@ -13,8 +13,7 @@ use Environment;
  *
  * @category   Utility
  * @package    Other
- * @author     Richard Myers rmyers@argusdentalvision.com
- * @copyright  2005-present Argus Dashboard
+ * @author     Rick Myers 
  * @license    https://enicity.com/license.txt
  * @version    1.0.0
  * @link       https://enicity.com/docs/class-Email.html
@@ -38,7 +37,7 @@ class Email extends Helper
     public function getClassName() {
         return __CLASS__;
     }
-    
+
     /**
      * Sends an email through the default send method of the platform
      *

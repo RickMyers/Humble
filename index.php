@@ -86,6 +86,7 @@ $ns              = $namespace;      //save a copy, since this might change if th
 //Gets information about the module you are trying to interact with, by using
 //the namespace.  If nothing comes back, the module is disabled or does not exist
 $module          = \Humble::getModule($namespace);
+
 if (!$module) {
     //@TODO: change this to throw an exception
     die('The module/feature (ns='.$namespace.',cn='.$controller.',mt='.$method.') you are trying to access either does not exist or is disabled');
@@ -131,6 +132,7 @@ if (!$module) {
             $compiler   = \Environment::getCompiler();
             $compiler->setController($controller);
             if ($ns === $core['namespace']) {
+                $core   = \Humble::getModule($ns);
                 $compiler->setInfo(\Humble::getModule($core['namespace']));
                 $compiler->setSource($core['package'].'/'.str_replace('_','/',$core['controller']));
                 $compiler->setDestination($core['package'].'/'.str_replace('_','/',$core['controller_cache']));

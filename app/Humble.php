@@ -20,7 +20,7 @@
      * LICENSE:
      *
      * @category   Framework
-     * @package    Core
+     * @package    Base
      * @author     Original Author <rickmyers1969@gmail.com>
      * @copyright  2007-Present, Rick Myers <rick@enicity.com>
      * @license    http://license.humble.enicity.com
@@ -536,7 +536,7 @@ SQL;
             $db         = Humble::getDatabaseConnection();
             $controller = explode('/',$identifier);
             $query      = <<<SQL
-                select * from core_controllers
+                select * from humble_controllers
                   where namespace = '{$controller[0]}'
                     and controller = '{$controller[1]}'
 SQL;
