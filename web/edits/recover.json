@@ -17,7 +17,7 @@
 			"format":		"^(?:[a-zA-Z0-9_'^&amp;/+-])+(?:\\.(?:[a-zA-Z0-9_'^&amp;/+-])+)*@(?:(?:\\[?(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\]?)|(?:[a-zA-Z0-9-]+\\.)+(?:[a-zA-Z]){2,}\\.?)$",
 			"formaterr":	"The format of the email address is not acceptable",
             "validator":    function () {
-                (new EasyAjax('/core/user/emailcheck')).add('email',$('#email').val()).callback(function (response) {
+                (new EasyAjax('/humble/user/emailcheck')).add('email',$('#email').val()).callback(function (response) {
                     if (response.trim() !== 'TRUE') {
                         alert('The E-mail you entered is not in our system');
                         $E('email').value = '';

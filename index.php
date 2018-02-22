@@ -92,6 +92,7 @@ if (!$module) {
     die('The module/feature (ns='.$namespace.',cn='.$controller.',mt='.$method.') you are trying to access either does not exist or is disabled');
 } else {
     $core            = \Humble::getProject();    //A reference to the core functionality held in the Core module
+    $core            = \Humble::getModule($core['namespace']);
     $include         = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller_cache']).'/'.$controller.'Controller.php';
     $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']).'/'.$controller.'.xml';
 

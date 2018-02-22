@@ -46,7 +46,7 @@
 			"required":		true,
 			"force":		true,
             "onchange":     function () {
-                (new EasyAjax('/core/user/check')).add('user_name',this.value).callback(function (response) {
+                (new EasyAjax('/humble/user/check')).add('user_name',this.value).callback(function (response) {
                     console.log(response);
                 }).post();
             },

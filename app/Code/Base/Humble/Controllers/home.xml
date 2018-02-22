@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+Basic Controller
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/internal/docs/controller.html
+-->
+<controller name="home" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+    <actions>
+        <action name="page">
+            <description>The Home Page</description>
+            <entity namespace="humble" class="users" id='user'>
+                <parameter name='uid' source='session' value='uid' default='' />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

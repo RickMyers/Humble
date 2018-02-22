@@ -15,7 +15,7 @@
 			"id": 			"controller_namespace",
             "longname":     "Namespace",
 			"title":		"The namespace to attach the controller to",
-            "populator":    "/core/component/namespaces",
+            "populator":    "/humble/component/namespaces",
 			"type":			"select",
 			"required":		true,
 			"force":		true,
@@ -26,7 +26,7 @@
 			"id": 			"controller_templater",
             "longname":     "Templater",
 			"title":		"The templater to use",
-            "populator":    "/core/component/templaters",
+            "populator":    "/humble/component/templaters",
 			"type":			"select",
 			"required":		true,
 			"force":		true,
@@ -82,7 +82,7 @@
             "classname":    "settingsButton",
             "onclick":      function () {
                 if (Edits['newcontroller'].validate()) {
-                    var ao = new EasyAjax('/core/component/controller');
+                    var ao = new EasyAjax('/humble/component/controller');
                     ao.add('namespace',$('#controller_namespace').val());
                     ao.add('name',$('#controller_name').val());
                     ao.add('action',$('#action_name').val());

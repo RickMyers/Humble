@@ -1,6 +1,6 @@
-DirectoryIndex Main.html index.html
+DirectoryIndex Main.htmls index.html
 AddHandler application/x-httpd-php .html .htm
-Options +FollowSymlinks
+Options +FollowSymlinks +Includes
 RewriteEngine on
 RewriteBase /
 RewriteRule ^app/ - [L,NC]
