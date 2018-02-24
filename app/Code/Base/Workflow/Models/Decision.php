@@ -1,9 +1,9 @@
 <?php
 namespace Code\Base\Workflow\Models;
-use Argus;
+use Humble;
 use Log;
 use Environment;
-/**    
+/**
  *
  * Workflow Decision Components
  *
@@ -38,36 +38,36 @@ class Decision extends Model
     public function getClassName() {
         return __CLASS__;
     }
-    
+
     /**
      * Consults the global work flow return code to see if it has a value and has a specific value of true
-     * 
+     *
      * @workflow use(decision)
      * @global boolean $workflowRC
      * @return boolean
      */
     public function success($EVENT=false) {
         global $workflowRC;
-        
+
         return ($workflowRC === true);
     }
-    
+
     /**
      * Consults the global workflow return code to see if it has a value and has a specific value of false
-     * 
+     *
      * @workflow use(decision)
      * @global boolean $workflowRC
      * @return boolean
-     */    
+     */
     public function failed($EVENT=false) {
         global $workflowRC;
-        
-        return ($workflowRC === false);        
+
+        return ($workflowRC === false);
     }
 
     /**
      * Checks to see if the workflow that just completed has turned off bubbling, usually as a result of a serious error
-     * 
+     *
      * @workflow use(decision)
      * @global boolean $cancelBubble
      * @param type $EVENT
@@ -75,35 +75,35 @@ class Decision extends Model
      */
     public function canceled($EVENT=false) {
         global $cancelBubble;
-        
+
         return ($cancelBubbel === true);
     }
-    
+
     /**
      * Checks to see if the workflow that just completed still allows "bubbling" of events
-     * 
+     *
      * @workflow use(decision)
      * @global boolean $cancelBubble
      * @param type $EVENT
      * @return boolean
-     */    
+     */
     public function bubbling($EVENT=false) {
         global $cancelBubble;
-        
+
         return ($cancelBubbel === false);
-    }   
-    
+    }
+
     /**
      * Returns true if both the global workflow status variables have been set to worst case
-     * 
+     *
      * @workflow use(decision)
      * @global boolean $cancelBubble
      * @param type $EVENT
      * @return boolean
-     */    
+     */
     public function failedAndCanceled() {
         global $workflowRC, $cancelBubble;
-        
+
         return (($workflowRC === false) && ($cancelBubble === true));
     }
 }

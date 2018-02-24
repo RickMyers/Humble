@@ -162,24 +162,6 @@ SQL;
     }
 
     /**
-     * Runs a decrypt algorithm on a particular value
-     *
-     * @param binary $field
-     * @param string $key
-     * @return string
-     */
-    public function decrypt($field,$key=false,$source) {
-        $field = addslashes($field);
-        $query = <<<SQL
-            SELECT AES_DECRYPT({$field},'{$key}') as `field`
-              FROM argus_secure_data
-             where source = '{$source}'
-SQL;
-        $results = $this->query($query)->toArray();
-        return $results[0]['field'];
-    }
-
-    /**
      *
      */
     public function describe() {
@@ -938,10 +920,10 @@ SQL;
         $this->loadEntityColumns(false);
     }
 
-    
+
     /**
      * Gets rows from table where the ID is greater than a set amount
-     * 
+     *
      * @param type $id
      * @return type
      */
@@ -953,17 +935,17 @@ SQL;
                   from {$this->_prefix()}{$this->_entity()}
                  where id > {$id}
 SQL;
-            $results = $this->query($query);            
+            $results = $this->query($query);
         }
         return $results;
     }
-    
+
     /**
      * Gets rows from table where the ID is greater than or equal to a set amount
-     * 
+     *
      * @param type $id
      * @return type
-     */    
+     */
     public function greaterThanOrEqualTo($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
@@ -972,17 +954,17 @@ SQL;
                   from {$this->_prefix()}{$this->_entity()}
                  where id >= {$id}
 SQL;
-            $results = $this->query($query);            
+            $results = $this->query($query);
         }
         return $results;
-    }   
-    
+    }
+
     /**
      * Gets rows from table where the ID is less than a set amount
-     * 
+     *
      * @param type $id
      * @return type
-     */    
+     */
     public function lessThan($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
@@ -991,17 +973,17 @@ SQL;
                   from {$this->_prefix()}{$this->_entity()}
                  where id < {$id}
 SQL;
-            $results = $this->query($query);            
+            $results = $this->query($query);
         }
         return $results;
-    }    
+    }
 
     /**
      * Gets rows from table where the ID is less than or equal to a set amount
-     * 
+     *
      * @param type $id
      * @return type
-     */    
+     */
     public function lessThanOrEqualTo($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
@@ -1010,11 +992,11 @@ SQL;
                   from {$this->_prefix()}{$this->_entity()}
                  where id <= {$id}
 SQL;
-            $results = $this->query($query);            
+            $results = $this->query($query);
         }
         return $results;
-    }    
-    
+    }
+
     /**
      * We need to get those fields that are the keys, because they are treated differently than normal columns
      */

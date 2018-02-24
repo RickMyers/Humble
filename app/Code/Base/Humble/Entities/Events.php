@@ -13,7 +13,7 @@ use Environment;
  *
  * @category   Entity
  * @package    Framework
- * @author     Richard Myers rmyers@argusdentalvision.com
+ * @author     Richard Myers rick@enicity.com.com
  * @copyright  2005-Present Humble Project
  * @license    https://enicity.com/license.txt
  * @version    <INSERT VERSIONING MECHANISM HERE />

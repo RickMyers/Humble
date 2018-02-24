@@ -102,7 +102,7 @@ CREATE TABLE `humble_ftp_log` (
   `filesize` bigint(20) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `argus_ftp_log_idx` (`host`)
+  KEY `humble_ftp_log_idx` (`host`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_js` */
