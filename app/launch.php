@@ -14,7 +14,7 @@
  *
  */
 
-require "Humble.php";
+require "Jarvis.php";
 require 'Constants.php';
 ob_start();
 print("Launcher fired at ".date("H:i:s")."\n");
@@ -33,15 +33,15 @@ if (isset($args[1])) {
     }
 }
 $pid        = getmypid();
-$job        = Humble::getEntity('paradigm/job_queue')->setId($job_id);
+$job        = Jarvis::getEntity('paradigm/job_queue')->setId($job_id);
 $job->setId($job_id)->setStarted(date('Y-m-d H:i:s'))->setPid($pid)->save();                               //persist the PID of this run
 $job->reset()->setId($job_id)->load();                                          //reload the job
-$event_data = Humble::getEntity('paradigm/system_events')->setId($job->getSystemEventId())->load();
+$event_data = Jarvis::getEntity('paradigm/system_events')->setId($job->getSystemEventId())->load();
 $workflow   = ($event_data && isset($event_data['workflow_id']) && $event_data['workflow_id']) ? $event_data['workflow_id'] : false;
 if ($workflow) {
     if (file_exists('Workflows/'.$workflow.".php")) {
         print('Executing Workflow: '.$workflow."\n");
-        if ($event_data = Humble::getEntity('paradigm/workflows')->setWorkflowId($workflow)->load(true)) {
+        if ($event_data = Jarvis::getEntity('paradigm/workflows')->setWorkflowId($workflow)->load(true)) {
             $data['title']       = $event_data['title'];
             $data['description'] = $event_data['description'];
         }

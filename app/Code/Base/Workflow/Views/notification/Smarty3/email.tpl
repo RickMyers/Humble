@@ -48,6 +48,12 @@
                             <input type='hidden' name='id' id='id-{$window_id}' value='{$data.id}' />
                             <input type='hidden' name='email_message' id='email_message-{$data.id}' value='' />
                             <div>
+                                <input type="text" value="{if (isset($data.from) && ($data.from))}{$data.from}{/if}" class="email-field" name="from" id="email-from-{$window_id}" />
+                                <input type="radio" name="from_type" id="from_type_value-{$window_id}" value="field" {if (isset($data.from_type) && ($data.from_type=='field'))}checked{/if} /> Field
+                                <input type="radio" name="from_type" id="from_type_field-{$window_id}" value="value" {if (isset($data.from_type) && ($data.from_type=='value'))}checked{/if}/> Value
+                            </div>
+                            <div class="email-field-desc">From Party</div>
+                            <div>
                                 <input type="text" value="{if (isset($data.recipients) && ($data.recipients))}{$data.recipients}{/if}" class="email-field" name="recipients" id="email-recipients-{$window_id}" />
                                 <input type="radio" name="recipient_type" id="recipient_type_value-{$window_id}" value="field" {if (isset($data.recipient_type) && ($data.recipient_type=='field'))}checked{/if} /> Field
                                 <input type="radio" name="recipient_type" id="recipient_type_field-{$window_id}" value="value" {if (isset($data.recipient_type) && ($data.recipient_type=='value'))}checked{/if}/> Value
@@ -83,4 +89,5 @@
         }})(CKEDITOR.replace('email-editor-{$data.id}'))
     );
     Form.intercept($('#email-management-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+    Desktop.window.list['{$window_id}']._scroll(true);
 </script>

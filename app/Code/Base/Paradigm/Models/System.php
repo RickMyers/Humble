@@ -1,6 +1,6 @@
 <?php
 namespace Code\Base\Paradigm\Models;
-use Humble;
+use Jarvis;
 use Log;
 use Environment;
 /**
@@ -42,8 +42,8 @@ class System extends Model
      */
     public function templates() {
         $templates = [];
-        $dir = Humble::getHelper('humble/directory');
-        foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+        $dir = Jarvis::getHelper('core/directory');
+        foreach (Jarvis::getEntity('core/modules')->setEnabled('Y')->fetch() as $module) {
             $templates[$module['namespace']] = [];
             if (is_dir('Code/'.$module['package'].'/'.$module['module'].'/web/app')) {
                 $d = $dir->contents('Code/'.$module['package'].'/'.$module['module'].'/web/app',true);
@@ -65,11 +65,11 @@ class System extends Model
      */
     public function save() {
         $data           = json_decode($this->getData(),true);
-        $component      = Humble::getModel('workflow/manager');
+        $component      = Jarvis::getModel('workflow/manager');
         $component->setData($this->getData());
         $component->saveComponent();
         $this->setWindowId($data['window_id']); //passing on the window id so we can auto close the window
-        $system_event = \Humble::getEntity('paradigm/system_events');
+        $system_event = \Jarvis::getEntity('paradigm/system_events');
         $system_event->setWorkflowId($data['workflow_id']);
         $system_event->setEventStart($data['event_date'].' '.$data['event_time']);
         $system_event->setRecurring($data['recurring_flag']);
@@ -87,14 +87,14 @@ class System extends Model
     public function runScheduler() {
         //@TODO: Think about setting a sticky bit that flags the scheduler as running, so we don't launch this thing more than once
         $now             = strtotime(date('Y-m-d H:i:s'));
-        $job_queue       = Humble::getEntity('paradigm/job_queue');
-        $schedule_log    = Humble::getEntity('paradigm/scheduler_log')->setStarted(date('Y-m-d H:i:s'));    //Let's record when you started
+        $job_queue       = Jarvis::getEntity('paradigm/job_queue');
+        $schedule_log    = Jarvis::getEntity('paradigm/scheduler_log')->setStarted(date('Y-m-d H:i:s'));    //Let's record when you started
         $schedule_id     = $schedule_log->save();                                                        //And persist it
-        foreach (Humble::getEntity('paradigm/system_events')->setActive('Y')->fetch() as $event) {
+        foreach (Jarvis::getEntity('paradigm/system_events')->setActive('Y')->fetch() as $event) {
             //if your next execution cycle is within 5 minutes and you haven't been run in the last 10 minutes, you will be queued for execution
             if ((int)$event['period'] == $event['period']) {
                 if ((!$event['last_run']) || ($now - strtotime($event['last_run']) >= 600)) {
-                   //print($now - (strtotime($event['event_start']) + (floor(($now - strtotime($event['event_start'])) / $event['period']) * $event['period'])));
+                    //print($now - (strtotime($event['event_start']) + (floor(($now - strtotime($event['event_start'])) / $event['period']) * $event['period'])));
                     if (($now - (strtotime($event['event_start']) + (floor(($now - strtotime($event['event_start'])) / $event['period']) * $event['period']))) < 300) {
                         $queued = $job_queue->reset()->setSystemEventId($event['id'])->setStatus(NEW_EVENT_JOB)->load(true);
                         if (!$queued) {
@@ -115,18 +115,20 @@ class System extends Model
      * @return boolean
      */
     public function runLauncher() {
-        $queue  = Humble::getEntity('paradigm/job_queue');
+        $queue  = Jarvis::getEntity('paradigm/job_queue');
         $jobs   = $queue->setStatus(NEW_EVENT_JOB)->fetch();
         foreach ($jobs as $job) {
+            //$cmd = 'php launch.php '.$job['id']." > ../SDSF/job_".$job['id'].".txt 2>&1";
+            $cmd = 'php launch.php '.$job['id'];
+            print("Running launcher at ".date("H:i:s")."\n");
+            print($cmd."\n");
             if ($this->_isWindows) {
-                $cmd = 'php launch.php '.$job['id']." > ..\\SDSF\\job_".$job['id'].".txt 2>&1";
-                print("Running launcher at ".date("H:i:s")."\n");
-                print($cmd."\n");
                 pclose(popen("start ".$cmd,"r"));
-                print("Done at ".date("H:i:s")."\n");
             } else {
-
+                exec('/usr/bin/nohup '.$cmd.' 2>&1 &');
             }
+            print("Done at ".date("H:i:s")."\n");
+
         }
         return true;
     }

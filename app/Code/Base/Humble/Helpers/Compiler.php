@@ -183,7 +183,7 @@ class Compiler extends Directory
             print($this->tabs().'if (strlen('.$source."['".$field."'".']) < '.$minlength.') { throw new \Exceptions\ValidationDatatypeException("The value in the variable <i style=\'color: red\'>'.$field.'</i> is less than the minimum length ['.$minlength.']",10); }'."\n");
         }
         if (($maxlength)) {
-            print($this->tabs().'if (strlen('.$source."['".$field."'".']) > '.$maxlength.') { throw new \Exceptions\ValidationDatatypeException("The value in the variable <i style=\'color: red\'>'.$field.'</i> is greater than the maximum length ['.$maxlength.']",10); }'."\n");            
+            print($this->tabs().'if (strlen('.$source."['".$field."'".']) > '.$maxlength.') { throw new \Exceptions\ValidationDatatypeException("The value in the variable <i style=\'color: red\'>'.$field.'</i> is greater than the maximum length ['.$maxlength.']",10); }'."\n");
         }
         if ($optional) {
             print($this->tabs().'if (isset('.$source.'["'.$field.'"])) {'."\n");
@@ -773,10 +773,10 @@ PHP;
         $default    = false;
         foreach ($controller as $tag3 => $actions) {
             print("<?php\n");
-            print('$models["firePHP"] = \Log::getConsole();'."\n");
-            print('function processMethod($method) {'."\n");
-            $this->tabs(1);            
-            print($this->tabs().'global $models;'."\n");
+            print($this->tabs(1).'$models["firePHP"] = \Log::getConsole();'."\n");
+            print($this->tabs().'function processMethod($method) {'."\n");
+            ;
+            print($this->tabs(1).'global $models;'."\n");
             print($this->tabs().'global $view;'."\n");
             print($this->tabs().'global $views;'."\n");
             print($this->tabs().'global $chainActions;'."\n");

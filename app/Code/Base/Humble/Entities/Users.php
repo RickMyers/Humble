@@ -3,7 +3,7 @@ namespace Code\Base\Humble\Entities;
 use Humble;
 use Log;
 use Environment;
-/** 
+/**
  *
  * Core User table related methods
  *
@@ -60,5 +60,32 @@ class Users extends Entity
             $this->save();
         }
     }
+    /**
+     *
+     * @param int $id
+     * @return array
+     */
+    public function information($id=false) {
+        $id      = ($id!==false) ? $id : ($this->getId() ? $this->getId() : ($this->getUid())?$this->getUid() : false);
+        $results = [];
+        if ($id !== false) {
+            $query = <<<SQL
+                select
+                    a.user_name
+                    , a.email
+                    , a.logged_in
+                    , a.account_status
+                    , a.login_attempts
+                    , b.*
+                  from humble_users as a
+                  left outer join humble_user_identification as b
+                    on a.uid = b.id
+                 where a.uid = '{$id}'
+SQL;
+                 $results = $this->query($query)->toArray();
+        }
+        return isset($results[0]) ? $results[0] : $results;
+    }
+
 
 }
