@@ -15,6 +15,7 @@ use Humble;
  * @author     Original Author <rick@enicity.com>
  * @since      File available since Release 1.0.0
  */
+
 class Notification extends Model {
 
     public function __construct() {
@@ -62,7 +63,7 @@ class Notification extends Model {
      */
     public function alert($EVENT=false) {
         $alerted = false;
-        $string  = Humble::getHelper('core/string');
+        $string  = Humble::getHelper('humble/string');
         if ($EVENT) {
             $mydata = $EVENT->fetch();
             $alert = $string->translate($mydata['message'],$EVENT->load());
@@ -102,7 +103,7 @@ class Notification extends Model {
                 $from       = isset($cfg['from_type'])    && ($cfg['from_type']=='value')      ? $cfg['from']     : ((isset($data[$cfg['from']])    && $data[$cfg['from']])    ? $data[$cfg['from']]    : false);
                 $message    = $this->substitute(isset($cfg['message_field']) && ($cfg['message_field'] && isset($data[$cfg['message_field']]))  ? $data[$cfg['message_field']] : $cfg['email_message'],$data);
                 if (count($recipients = explode(';',$recipients)) && $message) {
-                    $emailed = Humble::getHelper('core/email')->sendEmail($recipients,$subject,$message,$from);
+                    $emailed = Humble::getHelper('humble/email')->sendEmail($recipients,$subject,$message,$from);
                 }
 
             }
@@ -132,7 +133,7 @@ class Notification extends Model {
 	}
 
     /**
-     * Returns a message as a response, through the response method on our Humble factory
+     * Returns a message as a response, through the response method on our Jarvis factory
      *
      * @workflow use(notification) configuration(/workflow/notification/response)
      * @param type $EVENT
@@ -142,7 +143,7 @@ class Notification extends Model {
         if ($EVENT) {
             $mydata = $EVENT->fetch();
             if (isset($mydata['response'])) {
-                Humble::response($mydata['response']);
+                Jarvis::response($mydata['response']);
                 $responded = true;
             }
         }
