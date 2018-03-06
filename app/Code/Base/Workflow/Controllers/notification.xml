@@ -70,6 +70,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name='component' source='post' required='true' default='' />
                 <parameter name='method' source='post' required='true' default='' />
             </helper>
+            <entity namespace="workflow" class="sms_carriers" id="carriers" />
         </action>
 
         <!-- ############################################################### -->

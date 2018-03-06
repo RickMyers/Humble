@@ -115,7 +115,7 @@ class Notification extends Model {
     /**
      * Sends a text, please don't do this while driving
      *
-     * @workflow use(notification) authorization(false) configuration(/workflow/notification/text)
+     * @workflow use(notification) configuration(/workflow/notification/text)
      */
     public function text($EVENT=false) {
         $texted = false;
