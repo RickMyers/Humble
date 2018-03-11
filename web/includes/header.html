@@ -18,10 +18,10 @@
                 background: rgba(202,202,202,.2)
             }
             .humble-headers {
-                background: rgba(0, 0, 0, 1) url("/web/images/grad.png") no-repeat fixed center center / cover; width: 100%; height: 550px;
+                background: rgba(0, 0, 0, 1) url("/web/images/grad.png") no-repeat fixed center center / cover; width: 100%;
             }
             .humble-image {
-                display: inline-block; width: 65%; overflow: hidden; border-radius: 20px; border: 1px solid transparent; 
+                display: inline-block; width: 65%; overflow: hidden; border-radius: 20px; border: 1px solid transparent;
             }
             .chunk {
                  width: 25%; height: 100%; float: left; margin: 0px; padding: 0px
@@ -34,7 +34,7 @@
             }
             .header-layer-1 {
                 display: flex; margin: auto;
-                flex-flow: row wrap;
+               /* flex-flow: row wrap;*/
                 justify-content: space-around;
                 text-align: center
             }
@@ -48,14 +48,17 @@
                     $('#humble-container').height(window.innerHeight - $E('humble-headers').offsetHeight - $E('bottom-chunk-row').offsetHeight - $E('humble-separator').offsetHeight);
                 }).resize();
             });
+
          </script>
     </head>
 
     <body>
         <div class="humble-headers" id="humble-headers">
-            <div style="background-color: rgba(50,50,50,.8); padding: 10px">
-                <img src="/web/images/djikstra_light.png" style="float: left; height: 50px; cursor: pointer" onclick="window.location.href = 'humble.html'"/>
-                <div class="header-layer-1"  style="margin-left: auto; margin-right: auto; width: 1248px">
+            <div style="background-color: rgba(50,50,50,.8); padding: 10px; display: flex; flex-wrap: nowrap">
+                <div style="display: inline-block;">
+                    <img src="/web/images/djikstra_light.png" alt="djikstra" style=" height: 50px; cursor: pointer" onclick="window.location.href = 'humble.html'"/>
+                </div>
+                <div class="header-layer-1"  style="margin-left: auto; margin-right: auto; width: 1248px; white-space: nowrap">
                     <div class="nav-button" style="padding-left: 70px" onclick="window.location.href = 'Main.htmls'">
                         Home
                     </div>
@@ -73,14 +76,6 @@
                     </div>
                 </div>
             </div>
-            <div class="header-layer header-layer-2">
-                <div class="humble-image">
-                <img src="/web/images/screengrabs/workflow_1.png" style="width: 100%" />
-                </div>
-            </div>
-            <div class="header-layer header-layer-3">
 
-            </div>
-        </div>
-        <div id="humble-separator" style="width: 100%; clear: both; height: 10px; background-color: rgba(50,50,50,.8);"></div>
-        <div id="humble-container" style="overflow: auto; position: relative">
+
+
