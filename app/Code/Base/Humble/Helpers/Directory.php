@@ -70,9 +70,9 @@ class Directory extends File
                 $s      = $source.'/'.$entry;
                 $d      = $destination.'/'.$entry;
                 if ($skipIfPresent && file_exists($d)) {
-                    \Log::console('Notice: skipping '.$d." since it is present in destination\n");
+                  //  print('Notice: skipping '.$d." since it is present in destination\n");
                 } else {
-                    \Log::console('copying: '.$s.' to '.$d."\n");
+                //    print('copying: '.$s.' to '.$d."\n");
                     copy($s,$d);
                 }
             }
