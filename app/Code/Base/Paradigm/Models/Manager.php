@@ -121,6 +121,10 @@ class Manager extends Model
                             break;
                         case    "external"      :
                             $configURL  = "/workflow/elements/external";
+                            break;
+                        case    "exception"     :
+                            $configURL  = "/workflow/elements/exception";
+                            break;
                         default                 :
                             break;
                     }

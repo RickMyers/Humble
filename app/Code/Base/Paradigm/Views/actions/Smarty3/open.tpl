@@ -255,6 +255,9 @@ Copyright Enicity.com, all rights reserved
                         case    "detector"  :
                             Paradigm.elements.detector.add($('#new-element-text').val());
                             break;
+                        case    "exception"  :
+                            Paradigm.elements.exception.add($('#new-element-text').val());
+                            break;
                         case    "external"  :
                             Paradigm.elements.external.add($('#new-element-text').val());
                             break;
@@ -569,6 +572,12 @@ Copyright Enicity.com, all rights reserved
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/event.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('alerts')"  /><br />
                             Notification
                         </div>
+                        <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                            <img class='flowchartGlyph' src='/images/paradigm/clipart/exception.png' style=' height: 40px; cursor: pointer' onclick="Workflows.prompt('exception')" /><br />
+                            Exception
+                        </div>
+                        <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+
                         <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/data.png' style='height: 40px; cursor: pointer'  onclick="Workflows.prompt('report')"/><br />
                             Report

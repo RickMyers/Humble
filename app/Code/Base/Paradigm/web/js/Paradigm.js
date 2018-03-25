@@ -55,6 +55,10 @@ var Paradigm = (function () {
             "detector": {
                 "src": "/images/paradigm/clipart/detector2.png",
                 "ref": false
+            },
+            "exception": {
+                "src": "/images/paradigm/clipart/exception.png",
+                "ref": false
             }
 
         },
@@ -108,6 +112,10 @@ var Paradigm = (function () {
             detector: {
                 label: 'Detector',
                 image: "/images/paradigm/clipart/detector2.png",
+            },
+            exception: {
+                label: 'Exception',
+                image: "/images/paradigm/clipart/exception.png",
             },
             system: {
                 label: 'System',
@@ -194,6 +202,12 @@ var Paradigm = (function () {
             detector: {
                 title: "Look for values present in the triggering event, possibly triggering other workflows",
                 image: "/images/paradigm/clipart/detector2.png",
+                default: "",
+                description: "Fill out the text below and click OK to add a new element to the workflow, or click [Cancel] to abort adding an element"
+            },
+            exception: {
+                title: "Generates an application exception, which has a return code, a short message, and a longer description",
+                image: "/images/paradigm/clipart/exception.png",
                 default: "",
                 description: "Fill out the text below and click OK to add a new element to the workflow, or click [Cancel] to abort adding an element"
             },
@@ -479,6 +493,7 @@ var Paradigm = (function () {
                 case "report"   :
                 case "operation":
                 case "input"    :
+                case "exception":
                 case "detector" :
                 case "rule"     :   return  function () { return false; };
                                     break;
@@ -1847,6 +1862,54 @@ var Paradigm = (function () {
                             Y:  Paradigm.default.start.y,
                             W:  60,
                             H:  60,
+                            Z:  z+1,
+                            isClosed: function () {
+                                //a function to determine when a shape is closed, as in no more connections are allowed
+                                return false;
+                            },
+                            win: null
+                        }
+                        Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
+                        Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
+                        Paradigm.redraw();
+                    }).post();
+                }
+            },
+            exception:  {
+                add: function (text) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','exception').callback(function (response) {
+                        if (!response) {
+                            alert('Please try again, failed to create element');
+                            return;
+                        }
+                        var z = Paradigm.elements.list.length;
+                        Paradigm.objects[response] = Paradigm.elements.list[z] = {
+                            id: response,
+                            type: 'image',
+                            active: true,
+                            element: 'exception',
+                            label: Paradigm.default.exception.label,
+                            text: Paradigm.console.add('Add [exception: &text&][ID:'+response+']',text,1),
+                            lines: {
+                                text: [],
+                                font: false,
+                                size: false,
+                                startX: false,
+                                startY: false
+                            },
+                            connectors: {
+                                'N': { X: '', Y:'', begin: false, end: false},
+                                'E': { X: '', Y:'', begin: false, end: false},
+                                'W': { X: '', Y:'', begin: false, end: false},
+                                'S': { X: '', Y:'', begin: false, end: false}
+                            },
+                            color: Paradigm.color(),
+                            fillStyle: '',
+                            rad: 0,
+                            X:  Paradigm.default.start.x,
+                            Y:  Paradigm.default.start.y,
+                            W:  80,
+                            H:  67,
                             Z:  z+1,
                             isClosed: function () {
                                 //a function to determine when a shape is closed, as in no more connections are allowed

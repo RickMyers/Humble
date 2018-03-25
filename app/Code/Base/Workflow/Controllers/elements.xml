@@ -173,6 +173,19 @@
 
         </action>
 
+        <!-- ################################################################################################# -->
+
+        <action name="exception" passalong="windowId">
+            <description>Allows you to pick an exception type and customize its parts</description>
+            <model namespace="workflow" class='manager' id='manager'>
+                <parameter name='namespace' source='post' required='true' default='' />
+                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='id' source='post' required='true' default='' />
+            </model>
+            <mongo namespace="paradigm" class="elements" id="component">
+                <parameter name='id' source='post' required='true' default='' />
+            </mongo>
+        </action>
 
         <!-- ################################################################################################# -->
 

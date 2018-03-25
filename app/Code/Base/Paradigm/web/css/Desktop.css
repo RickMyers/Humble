@@ -33,3 +33,27 @@ background-color: #2c3e50;
     display: none;
     z-index: 4;
 }
+.paradigm-window-layout-container {
+    flex-flow: row; width: 40px; background-color: transparent; height: 22px; float: left; display: flex; margin-right: 8px
+}
+.paradigm-window-left-layout {
+    border: 1px solid #999; width: 8px; height: 100%; margin-right: 1px;  display: flex; cursor: pointer; background-color: #FFF;
+}
+.paradigm-window-right-layout {
+    border: 1px solid #999; width: 8px; height: 100%;  display: flex; cursor: pointer; background-color: #FFF; margin-left: -1px
+}
+.paradigm-window-center-layout {
+    flex-flow: wrap;  width: 18px; background-color: transparent;  display: flex; margin-right: 1px;
+}
+.paradigm-window-top-left-layout {
+     width: 8px; height: 46%; border: 1px solid #999; margin-bottom: 1px; display: flex; margin-right: 1px; cursor: pointer; background-color: #FFF;
+}
+.paradigm-window-top-right-layout {
+     width: 8px; height: 46%; border: 1px solid #999; margin-bottom: 1px; display: flex; cursor: pointer; background-color: #FFF;
+}
+.paradigm-window-bottom-left-layout {
+     width: 8px; height: 46%; border: 1px solid #999; display: flex;  margin-right: 1px; cursor: pointer; background-color: #FFF;
+}
+.paradigm-window-bottom-right-layout {
+     width: 8px; height: 46%; border: 1px solid #999; display: flex; cursor: pointer; background-color: #FFF;
+}

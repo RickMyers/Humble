@@ -32,7 +32,7 @@ $workflowRC     = false;
 $cancelBubble   = false;
 //##############################################################################
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE');
+header('Access-Control-Allow-Methods: POST, GET, PUT');
 header('Access-Control-Allow-Headers: HTTP_X_REQUESTED_WITH');
 //##############################################################################
 //Dumps anything that any stages appended to the response
@@ -40,7 +40,7 @@ header('Access-Control-Allow-Headers: HTTP_X_REQUESTED_WITH');
 function outputResponse() {
     foreach (\Humble::response() as $response) {
         print($response);
-    }    
+    }
 }
 
 //##############################################################################
@@ -58,7 +58,7 @@ function castArgument($arg,$format='string') {
         case 'int'          :
             $arg = (int)$arg;
             break;
-        case 'boolean'      : 
+        case 'boolean'      :
             $arg = (bool)$arg;
             break;
         case 'float'        :
@@ -66,13 +66,13 @@ function castArgument($arg,$format='string') {
             break;
         case 'json'         :
             $arg = json_decode($arg,true);
-            break;     
+            break;
         case 'isodate'      :
             $arg = date('Y-m-d',strtotime($arg));
             break;
         case 'displaydate'  :
             $arg = date('m/d/Y',strtotime($arg));
-            break;        
+            break;
         default : break;
     }
     return $arg;
@@ -187,7 +187,7 @@ function createWorkflowEvent($criteria) {
                                                     "message" => "Session Expired",
                                                     "description" => "Five minutes after the last authentication call the current session will expire",
                                                     "remedy" => "Please call the authentication service again to recreate your session"
-                                                ]));
+                                                ],JSON_PRETTY_PRINT)));
                                                 outputResponse();
                                                 die();
                                             }
@@ -199,7 +199,7 @@ function createWorkflowEvent($criteria) {
                                             "message" => "Invalid Session ID",
                                             "description" => "The session ID either expired or is incorrect",
                                             "remedy" => "Obtain a new session ID by accessing the authentication service"
-                                        ]));
+                                        ],JSON_PRETTY_PRINT)));
                                         outputResponse();
                                         die();
                                     }
@@ -209,7 +209,7 @@ function createWorkflowEvent($criteria) {
                                         "message" => "Missing Session ID",
                                         "description" => "The session ID was not present in the POST",
                                         "remedy" => "Make sure you are passing the SessionID in the POST variable 'sessionId'"
-                                    ]));
+                                    ],JSON_PRETTY_PRINT));
                                     outputResponse();
                                     die();
                                 }

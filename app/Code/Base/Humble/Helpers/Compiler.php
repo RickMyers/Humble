@@ -630,9 +630,9 @@ PHP;
         } else if (isset($node['eqs'])) {
             $op = ' === '; $val = $node['eqs'];
         }
-        if (!((strtoupper($val) === 'TRUE') || (strtoupper($val) === 'FALSE'))) {
+      //  if (!((strtoupper($val) === 'TRUE') || (strtoupper($val) === 'FALSE'))) {
             $val = '"'.$val.'"';
-        }
+     //   }
         $args   = '';
         if (isset($node['arguments'])) {
             $args = "'".$node['arguments']."'";

@@ -264,15 +264,22 @@ function DesktopWindow(icon,refId) {
         if (this.open) {
             this.open(this);
         }
+        return this;
     };
+    this.moveTo = function (x,y) {
+        this.frame.style.left = x + "px";
+        this.frame.style.top  = y + "px";
+        return this;
+    }
     this.resizeTo = function (w,h) {
+        console.log(w+','+h);
         if (w) {
             this.frame.style.width  = w + "px";
         }
         if (h) {
             this.frame.style.height = h + "px";
         }
-        this._resize(this);
+        return this._resize(this);
     }
     this._reset = function () {
         this.resize = null;
@@ -280,11 +287,16 @@ function DesktopWindow(icon,refId) {
         this.open   = null;
         this._title('');
         this._scroll(false);
-        this._static(false);
+        return this._static(false);
     }
     return this;
 }
+DesktopWindow.corner = function () {
+    var positioner = '<div class="paradigm-window-layout-container"><div onclick="Desktop.window.align(this,\'L\')" class="paradigm-window-left-layout"></div><div class="paradigm-window-center-layout"><div onclick="Desktop.window.align(this,\'TL\')" class="paradigm-window-top-left-layout"></div><div onclick="Desktop.window.align(this,\'TR\')" class="paradigm-window-top-right-layout"></div><div onclick="Desktop.window.align(this,\'BL\')" class="paradigm-window-bottom-left-layout"></div><div onclick="Desktop.window.align(this,\'BR\')" class="paradigm-window-bottom-right-layout"></div></div><div onclick="Desktop.window.align(this,\'R\')" class="paradigm-window-right-layout"></div></div>'
+    var icon       = '<img src="'+ParadigmConfig.desktop.window.icon+'" style="margin-right: 8px; margin-left:4px;  position: relative; top: -3px" height="25" align="middle" /> '
+    return (ParadigmConfig.desktop.window.icon) ?  icon : positioner;     
 
+}
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
@@ -434,7 +446,7 @@ var Desktop = {
                 '<img desktop_id="&&w_id&&" style="cursor: pointer;" id="cloud-it-window-&&w_id&&-close" class="cloud-it-window-close" src="/images/paradigm/desktop/redx.png" alt="Close" title="Close this window" onmousedown="Desktop.stopPropagation(event)" />'+
                 '<img desktop_id="&&w_id&&" style="position: relative; top: -2px; cursor: pointer; height: 20px; width: 20px" id="cloud-it-window-&&w_id&&-maximize" class="cloud-it-window-maximize" src="/images/paradigm/desktop/maximize.gif" title="Expand window to fullest" alt="Zoom Page"  />'+
                 '<img desktop_id="&&w_id&&" style="position: relative; height: 20px; width: 20px; cursor: pointer;" id="cloud-it-window-&&w_id&&-minimize" class="cloud-it-window-minimize" src="/images/paradigm/desktop/minimize.gif" alt="Hide Window" title="Hide this window"  />'+
-                '<img src="'+((ParadigmConfig.desktop.window.icon) ? ParadigmConfig.desktop.window.icon : ParadigmConfig.desktop.default.window.icon)+'" style="margin-right: 8px; margin-left:4px;  position: relative; top: -3px" height="25" align="middle" /><span onclick="return false" desktop_id="&&w_id&&" id="cloud-it-window-&&w_id&&-title">&&title&&</span>'+
+                DesktopWindow.corner()+'<span onclick="return false" desktop_id="&&w_id&&" id="cloud-it-window-&&w_id&&-title">&&title&&</span>'+
                 '</div>'+
                 '<div class="cloud-it-desktop-window-content" id="cloud-it-window-&&w_id&&-content" desktop_id="&&w_id&&" onmousedown="Desktop.stopPropagation(event)" onmouseover="Desktop.stopPropagation(event)">'+
                 '</div></div>'
@@ -728,7 +740,6 @@ var Desktop = {
             var startFrom	= 80;
             var currentY	= startFrom;
             var currentX	= 30;
-
             for (var i=0; i<Desktop.elements.icons.length; i++) {
                 var icon = Desktop.elements.icons[i];
                 if (icon.image) {
@@ -813,6 +824,42 @@ var Desktop = {
     window: {
         list:       [],
         HTML:       "",
+        align: function (win,where) {
+            var desktop_id = null;
+            var w = window.innerWidth;
+            var h = window.innerHeight;
+            var hw = Math.round(w/2)-2;
+            var hh = Math.round(h/2)-2;
+            while (win.parentNode && !desktop_id) {
+                desktop_id = (win.getAttribute('desktop_id'));
+                win = win.parentNode;
+            }
+            if (desktop_id) {
+                win = Desktop.window.list[desktop_id];
+                switch (where) {
+                    case 'L' :
+                        win.moveTo(0,0).resizeTo(hw,h);
+                        break;
+                    case 'TR' :
+                        win.resizeTo(hw,hh).moveTo(hw+2,0);
+                        break;
+                    case 'TL' :
+                        win.resizeTo(hw,hh).moveTo(0,0);
+                        break;
+                    case 'BL' :
+                        win.resizeTo(hw,hh).moveTo(0,hh+2);
+                        break;
+                    case 'BR' :
+                        win.resizeTo(hw,hh).moveTo(hw+2,hh+2);
+                        break;
+                    case 'R' :
+                        win.resizeTo(hw,h).moveTo(hw+2,0);
+                        break;
+                    default  :
+                        break;
+                }
+             }
+        },
         add: function (icon) {
             Desktop.window.HTML += Desktop.templates.window.replace(/&&w_id&&/g,icon.id).replace(/&&title&&/g,icon.text);
         },

@@ -494,11 +494,11 @@ SOAP;
                 if (trim($val) != '') {
                     $args[$var] = $val;
                 } else {
-                    $method = 'get'.ucfirst($var);
+                    $method = 'get'.$this->underscoreToCamelCase($var);
                     $args[$var] = $this->$method();
                 }
             } else {
-                $method = 'get'.ucfirst($val);
+                $method = 'get'.$this->underscoreToCamelCase($val);
                 $args[$val] = $this->$method();
             }
         }

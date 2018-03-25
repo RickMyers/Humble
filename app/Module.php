@@ -777,7 +777,7 @@ TXT;
         print($report = ob_get_clean());
         file_put_contents('patch_report.txt',$report);
         print("\n\nIf you do not want some files updated, add those files to the Humble.local.manifest file and re-run this process.\n\nA copy of the patch review report shown above can be found in file 'patch_report.txt'.\n\n");
-        print("Do you wish to continue [yes/no]?");
+        print("Do you wish to continue [yes/no]? ");
         ob_flush();
         if (strtolower(scrub(fgets(STDIN))) === 'yes') {
             foreach ($changed as $file) {
@@ -799,6 +799,10 @@ TXT;
         if (file_exists('app/Humble.local.manifest')) {
             print("\n\n".'Found Local Manifest file...'."\n\n");
         }
+        if (!$local_manifest) {
+            die("\n\nERROR: Could not read Humble.local.manifest.  Check to see it exists or if there is a parsing issue with the file\n\n");
+        }
+
         file_put_contents('distro_'.$version.'/humble.zip',file_get_contents($project['framework_url'].'/distro/fetch'));                                               //Download the current source base
         $changed    = []; $insertions = []; $source = []; $contents = []; $ignore = []; $merge = []; $matched = 0;
         $distro     = new ZipArchive();
