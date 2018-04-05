@@ -542,124 +542,124 @@ SOAP;
         if (!is_array($name)) {
              if (isset($this->_data[$name])) {
                 $retval = $this->_data[$name];
-            } else if ($this->_RPC()) {
-                require_once('../lib/yaml/lib/sfYaml.php');
-                if (!\Singleton::mappings()) {
-                    \Singleton::mappings(\sfYaml::load(file_get_contents('Code/Base/Humble/RPC/mapping.yaml'))); //default mappings
+            }
+        }
+        return $retval;
+    }
+
+    protected function _remoteProcedureCall($name=false) {
+        $retval = null;
+        if ($name && $this->_RPC()) {
+            require_once('../lib/yaml/lib/sfYaml.php');
+            if (!\Singleton::mappings()) {
+                \Singleton::mappings(\sfYaml::load(file_get_contents('Code/Base/Humble/RPC/mapping.yaml'))); //default mappings
+            }
+            if (strtolower($this->_namespace()) !== 'core') {
+                $me = Humble::getModule($this->_namespace());
+                $mappingFile = 'Code/'.$me['package'].'/'.str_replace('_','/',$me['rpc_mapping']).'/mapping.yaml';
+                if (file_exists($mappingFile)) {
+                    //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
+                    \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings() ,\sfYaml::load(file_get_contents($mappingFile))) : \sfYaml::load(file_get_contents($mappingFile))));
                 }
-                if (strtolower($this->_namespace()) !== 'core') {
-                    $me = Humble::getModule($this->_namespace());
-                    $mappingFile = 'Code/'.$me['package'].'/'.str_replace('_','/',$me['rpc_mapping']).'/mapping.yaml';
-                    if (file_exists($mappingFile)) {
-                        //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
-                        \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings() ,\sfYaml::load(file_get_contents($mappingFile))) : \sfYaml::load(file_get_contents($mappingFile))));
-                    }
-                }
-                if (isset(\Singleton::mappings()[$name])) {
-                    $call   = \Singleton::mappings()[$name];
-                    $args   = [];
-                    if (isset($call['authentication'])) {
-                        switch (strtoupper($call['authentication'])) {
-                            case "OAUTH"    :
-                                                break;
-                            case "OAUTH2"   :
-                                                break;
-                            case "BASIC"    :
-                                                break;
-                            default         :   break;
-                        }
-                    } else {
-                        if (isset($call['method']) && (strtoupper($call['method'])!=='SOAP')) {
-                            if (isset($call['api-var']) && $call['api-var']) {
-                                $args[$call['api-var']] = $call['api-key'];
-                            }
-                            if (is_string($call['arguments']) && (substr($call['url'],strlen($call['url'])-1,1)=='+')) {
-                                $method      = 'get'.ucfirst($call['arguments']);
-                                $call['url'] = substr($call['url'],0,strlen($call['url'])-1).'/'.$this->$method();
-                            } else {
-                                $args        = array_merge($args,$this->_processArguments($call));
-                            }
-                            $userid = (isset($call['userid'])   && $call['userid'])     ? $call['userid']   : false;
-                            $passwd = (isset($call['password']) && $call['password'])   ? $call['password'] : false;
-                            $secure = (isset($call['secure'])   && $call['secure'])     ? $call['secure']   : false;
-                            //$retval = $this->_curl($call['url'],$args,$call['method'],$secure,$userid,$passwd);
-
-                            $retval = $this->_hurl($call['url'],$args,$call,$secure,$userid,$passwd);  //going to use _hurl until curl starts working again
-                        } else {
-                            //lather it up...
-                            $secure     = (isset($call['secure'])   && $call['secure'])     ? $call['secure']    : false;
-                            $wsdl       = (isset($call['wsdl'])     && $call['wsdl'])       ? $call['wsdl']      : false;
-                            $url        = (isset($call['url'])      && $call['url'])        ? $call['url']       : false;
-                            $version    = (isset($call['version'])  && $call['version'])    ? (($call['version']=='1.1') ? SOAP_1_1 : SOAP_1_2) : false;
-                            $stamp      = (isset($call['timestamp']) && $call['timestamp']) ? $call['timestamp'] : false;
-                            $username   = (isset($call['username']) && $call['username'])   ? $call['username'] : false;
-                            $password   = (isset($call['password']) && $call['password'])   ? $call['password'] : false;
-                            $wss        = (isset($call['WSS'])      && $call['WSS']);
-                            //generateWSSecurityHeader
-                            $options = ['cache_wsdl'=>WSDL_CACHE_NONE, 'trace'=>1, 'debug'=> 1, 'exceptions'=>0];
-                            if ($url) {
-                                $options['location']    =   $url;
-                            }
-                            if ($version) {
-                                $options['soap_version']    =   $version;
-                            }
-                            if (isset($call['username']) && ($call['username'])) {
-                                $options['username'] = $call['username'];
-                            }
-                            if ((isset($call['password']) && $call['password'])) {
-                                $options['password'] = $call['password'];
-                            }
-                            //
-                            $headers = [];
-                            if (isset($call['method']) && (strtoupper($call['method']==='SOAP'))) {
-                                if (isset($call['client']) && ($call['client'])) {
-                                    $client = Humble::getClass($call['client'].'/SoapClient')->init($wsdl,$options);
-                                } else {
-                                    $client = new \SoapClient($wsdl,$options);
-                                }
-                                if ($wss) {
-                                    $headers[] = $this->generateWSSecurityHeader($username,$password,$stamp);
-                                }
-                                if (isset($call['header']) && count($call['header'])) {
-                                    foreach ($call['header'] as $hdr => $hdropts) {
-                                        $understand = (isset($hdropts['understand']) && $hdropts['understand']);
-                                        $headers[] = new \SoapHeader($hdropts['namespace'],
-                                            $hdr,
-                                            $hdropts['value'],
-                                            $understand);
-                                    }
-                                }
-                                if (isset($call['ws-addressing'])) {
-                                    $ns = (isset($call['ws-addressing']['Namespace']) && $call['ws-addressing']['Namespace']) ? $call['ws-addressing']['Namespace'] : 'ns2';
-                                    $headers[] = $this->generateWSAddressingHeader($call['ws-addressing']['Action'],$call['ws-addressing']['To'],$call['ws-addressing']['ReplyTo'],false,$ns);
-                                }
-                                if (count($headers)) {
-                                    $client->__setSoapHeaders($headers);
-                                }
-
-                                $args   = $this->_processSoapArguments($call['arguments'],(isset($call['uc-first']) && $call['uc-first']));
-
-                                if (isset($call['url']) && $call['url']) {
-                                    $retval = $client->__soapCall($call['operation'],$args);
-                                } else {
-                                    $retval = $client->{$call['operation']}($args);
-                                }
-                                //uncomment this next line to help in debugging
-                                $this->writeSoapHeaders($client,$call['operation'],$retval);
-                            }
-                        }
+            }
+            if (isset(\Singleton::mappings()[$name])) {
+                $call   = \Singleton::mappings()[$name];
+                $args   = [];
+                if (isset($call['authentication'])) {
+                    switch (strtoupper($call['authentication'])) {
+                        case "OAUTH"    :
+                                            break;
+                        case "OAUTH2"   :
+                                            break;
+                        case "BASIC"    :
+                                            break;
+                        default         :   break;
                     }
                 } else {
-                    if (!($this instanceof \Code\Base\Humble\Entity\BaseObject)) {
-                        //Entities are allowed to have bogus getters
-                        \Log::console("Could not resolve how to 'GET': ".$name." invoked from ".$this->getClassName());
+                    if (isset($call['method']) && (strtoupper($call['method'])!=='SOAP')) {
+                        if (isset($call['api-var']) && $call['api-var']) {
+                            $args[$call['api-var']] = $call['api-key'];
+                        }
+                        if (is_string($call['arguments']) && (substr($call['url'],strlen($call['url'])-1,1)=='+')) {
+                            $method      = 'get'.ucfirst($call['arguments']);
+                            $call['url'] = substr($call['url'],0,strlen($call['url'])-1).'/'.$this->$method();
+                        } else {
+                            $args        = array_merge($args,$this->_processArguments($call));
+                        }
+                        $userid = (isset($call['userid'])   && $call['userid'])     ? $call['userid']   : false;
+                        $passwd = (isset($call['password']) && $call['password'])   ? $call['password'] : false;
+                        $secure = (isset($call['secure'])   && $call['secure'])     ? $call['secure']   : false;
+                        //$retval = $this->_curl($call['url'],$args,$call['method'],$secure,$userid,$passwd);
+
+                        $retval = $this->_hurl($call['url'],$args,$call,$secure,$userid,$passwd);  //going to use _hurl until curl starts working again
+                    } else {
+                        //lather it up...
+                        $secure     = (isset($call['secure'])   && $call['secure'])     ? $call['secure']    : false;
+                        $wsdl       = (isset($call['wsdl'])     && $call['wsdl'])       ? $call['wsdl']      : false;
+                        $url        = (isset($call['url'])      && $call['url'])        ? $call['url']       : false;
+                        $version    = (isset($call['version'])  && $call['version'])    ? (($call['version']=='1.1') ? SOAP_1_1 : SOAP_1_2) : false;
+                        $stamp      = (isset($call['timestamp']) && $call['timestamp']) ? $call['timestamp'] : false;
+                        $username   = (isset($call['username']) && $call['username'])   ? $call['username'] : false;
+                        $password   = (isset($call['password']) && $call['password'])   ? $call['password'] : false;
+                        $wss        = (isset($call['WSS'])      && $call['WSS']);
+                        //generateWSSecurityHeader
+                        $options = ['cache_wsdl'=>WSDL_CACHE_NONE, 'trace'=>1, 'debug'=> 1, 'exceptions'=>0];
+                        if ($url) {
+                            $options['location']    =   $url;
+                        }
+                        if ($version) {
+                            $options['soap_version']    =   $version;
+                        }
+                        if (isset($call['username']) && ($call['username'])) {
+                            $options['username'] = $call['username'];
+                        }
+                        if ((isset($call['password']) && $call['password'])) {
+                            $options['password'] = $call['password'];
+                        }
+                        //
+                        $headers = [];
+                        if (isset($call['method']) && (strtoupper($call['method']==='SOAP'))) {
+                            if (isset($call['client']) && ($call['client'])) {
+                                $client = Humble::getClass($call['client'].'/SoapClient')->init($wsdl,$options);
+                            } else {
+                                $client = new \SoapClient($wsdl,$options);
+                            }
+                            if ($wss) {
+                                $headers[] = $this->generateWSSecurityHeader($username,$password,$stamp);
+                            }
+                            if (isset($call['header']) && count($call['header'])) {
+                                foreach ($call['header'] as $hdr => $hdropts) {
+                                    $understand = (isset($hdropts['understand']) && $hdropts['understand']);
+                                    $headers[] = new \SoapHeader($hdropts['namespace'],
+                                        $hdr,
+                                        $hdropts['value'],
+                                        $understand);
+                                }
+                            }
+                            if (isset($call['ws-addressing'])) {
+                                $ns = (isset($call['ws-addressing']['Namespace']) && $call['ws-addressing']['Namespace']) ? $call['ws-addressing']['Namespace'] : 'ns2';
+                                $headers[] = $this->generateWSAddressingHeader($call['ws-addressing']['Action'],$call['ws-addressing']['To'],$call['ws-addressing']['ReplyTo'],false,$ns);
+                            }
+                            if (count($headers)) {
+                                $client->__setSoapHeaders($headers);
+                            }
+
+                            $args   = $this->_processSoapArguments($call['arguments'],(isset($call['uc-first']) && $call['uc-first']));
+
+                            if (isset($call['url']) && $call['url']) {
+                                $retval = $client->__soapCall($call['operation'],$args);
+                            } else {
+                                $retval = $client->{$call['operation']}($args);
+                            }
+                            //uncomment this next line to help in debugging
+                            //$this->writeSoapHeaders($client,$call['operation'],$retval);
+                        }
                     }
                 }
             }
         }
         return $retval;
     }
-
     /**
      * Returns a timestamp.  If the timestamp isn't set yet, it sets and stores it.
      *
@@ -767,7 +767,10 @@ SOAP;
                 $token{0}   = strtolower($token{0});
                 return $this->_unset($token);
             } else {
-                \Log::console("Undefined Method: ".$name." invoked from ".$this->getClassName().".");
+                if (($retval = $this->_remoteProcedureCall($name)) === null) {
+                    \Log::console("Undefined Method: ".$name." invoked from ".$this->getClassName().".");
+                }
+                return $retval;
             }
         }
     }

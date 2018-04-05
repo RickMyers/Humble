@@ -19,7 +19,7 @@ function WindowAttributeClass(id,x,y,w,h) {
     this.save   = function () {
          if (!virtualWindows.application.user)
             return false;   //no userid
-        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).callback(function () {}).post();
+        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).thenfunction () {}).post();
     };
     return  this;
 }
@@ -34,7 +34,7 @@ function IconAttributeClass(id,x,y) {
     this.save   = function () {
          if (!virtualWindows.application.user)
             return false;   //no userid
-        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).callback(function () {}).post();
+        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).thenfunction () {}).post();
     };
     return  this;
 }
@@ -170,7 +170,7 @@ function DesktopWindow(icon,refId) {
             this.splashScreen.style.zIndex = '9000';
             this.splashScreen.fadeIn();
             var splash = (typeof(this.splash) === "function") ? this.splash() : this.splash;
-            (new EasyAjax(splash)).callback(function (response) {
+            (new EasyAjax(splash)).thenfunction (response) {
                $(me.splashScreen).html(response);
                var tt = (function (screen) {
                     return function () {
@@ -289,12 +289,40 @@ function DesktopWindow(icon,refId) {
         this._scroll(false);
         return this._static(false);
     }
+    this.dock   = function (where) {
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+        var hw = Math.round(w/2)-2;
+        var hh = Math.round(h/2)-2;
+        switch (where) {
+            case 'L' :
+                this.moveTo(0,0).resizeTo(hw,h);
+                break;
+            case 'TR' :
+                this.resizeTo(hw,hh).moveTo(hw+2,0);
+                break;
+            case 'TL' :
+                this.resizeTo(hw,hh).moveTo(0,0);
+                break;
+            case 'BL' :
+                this.resizeTo(hw,hh).moveTo(0,hh+2);
+                break;
+            case 'BR' :
+                this.resizeTo(hw,hh).moveTo(hw+2,hh+2);
+                break;
+            case 'R' :
+                this.resizeTo(hw,h).moveTo(hw+2,0);
+                break;
+            default  :
+                break;
+        }
+    }
     return this;
 }
 DesktopWindow.corner = function () {
     var positioner = '<div class="paradigm-window-layout-container"><div onclick="Desktop.window.align(this,\'L\')" class="paradigm-window-left-layout"></div><div class="paradigm-window-center-layout"><div onclick="Desktop.window.align(this,\'TL\')" class="paradigm-window-top-left-layout"></div><div onclick="Desktop.window.align(this,\'TR\')" class="paradigm-window-top-right-layout"></div><div onclick="Desktop.window.align(this,\'BL\')" class="paradigm-window-bottom-left-layout"></div><div onclick="Desktop.window.align(this,\'BR\')" class="paradigm-window-bottom-right-layout"></div></div><div onclick="Desktop.window.align(this,\'R\')" class="paradigm-window-right-layout"></div></div>'
     var icon       = '<img src="'+ParadigmConfig.desktop.window.icon+'" style="margin-right: 8px; margin-left:4px;  position: relative; top: -3px" height="25" align="middle" /> '
-    return (ParadigmConfig.desktop.window.icon) ?  icon : positioner;     
+    return (ParadigmConfig.desktop.window.icon) ?  icon : positioner;
 
 }
 //------------------------------------------------------------------------------
@@ -429,7 +457,7 @@ var Desktop = {
         if (virtualWindows.application.user)	{
             Desktop.logoffOnReload  = false;
             Desktop.refreshing      = true;
-            (new EasyAjax("/desktop/actions/logoff")).callback(function () {
+            (new EasyAjax("/desktop/actions/logoff")).thenfunction () {
                 window.location.replace("/index.html");
                 return true;
             }).post(false);
@@ -450,7 +478,7 @@ var Desktop = {
                 '</div>'+
                 '<div class="cloud-it-desktop-window-content" id="cloud-it-window-&&w_id&&-content" desktop_id="&&w_id&&" onmousedown="Desktop.stopPropagation(event)" onmouseover="Desktop.stopPropagation(event)">'+
                 '</div></div>'
-               
+
     },
     isMobileDevice: function ()  {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -826,38 +854,13 @@ var Desktop = {
         HTML:       "",
         align: function (win,where) {
             var desktop_id = null;
-            var w = window.innerWidth;
-            var h = window.innerHeight;
-            var hw = Math.round(w/2)-2;
-            var hh = Math.round(h/2)-2;
             while (win.parentNode && !desktop_id) {
                 desktop_id = (win.getAttribute('desktop_id'));
                 win = win.parentNode;
             }
             if (desktop_id) {
                 win = Desktop.window.list[desktop_id];
-                switch (where) {
-                    case 'L' :
-                        win.moveTo(0,0).resizeTo(hw,h);
-                        break;
-                    case 'TR' :
-                        win.resizeTo(hw,hh).moveTo(hw+2,0);
-                        break;
-                    case 'TL' :
-                        win.resizeTo(hw,hh).moveTo(0,0);
-                        break;
-                    case 'BL' :
-                        win.resizeTo(hw,hh).moveTo(0,hh+2);
-                        break;
-                    case 'BR' :
-                        win.resizeTo(hw,hh).moveTo(hw+2,hh+2);
-                        break;
-                    case 'R' :
-                        win.resizeTo(hw,h).moveTo(hw+2,0);
-                        break;
-                    default  :
-                        break;
-                }
+                win.dock(where);
              }
         },
         add: function (icon) {
@@ -900,7 +903,7 @@ var Desktop = {
             var win = this;
             var ao = new EasyAjax('/'+this.namespace+'/actions/open');
             ao.add('appid',this.referenceId);
-            ao.callback(function (response) {
+            ao.thenfunction (response) {
                 $E(win.content.id).innerHTML = response;
                 ao.executeJavascript();
                 if (win.resize) {

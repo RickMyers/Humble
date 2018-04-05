@@ -4,7 +4,7 @@ var Humble = (function ($) {
     var defaultModule   = false;
     return {
         init: function () {
-            (new EasyAjax('/paradigm/templates/fetch')).callback(function (response) {
+            (new EasyAjax('/paradigm/templates/fetch')).thenfunction (response) {
                 var tpls = JSON.parse(response);
                 if (tpls) {
                     for (var namespace in tpls) {

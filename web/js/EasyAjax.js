@@ -346,7 +346,7 @@ EasyAjax.execute    = function (url,layer,args,callAfter,get) {
             }
         }
     }
-    ao.callback(function () {
+    ao.thenfunction () {
         if (typeof(layer) == 'string') {
             $E(layer).innerHTML = ao.getResponse();
         } else if (typeof(layer) == 'function') {

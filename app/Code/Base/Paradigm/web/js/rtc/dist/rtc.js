@@ -6019,7 +6019,7 @@ Zlib.prototype.write = function(flush, input, in_off, in_len, out, out_off, out_
   process.nextTick(function() {
     self.write_in_progress = false;
     var res = self._write(flush, input, in_off, in_len, out, out_off, out_len);
-    self.callback(res[0], res[1]);
+    self.thenres[0], res[1]);
     
     if (self.pending_close)
       self.close();

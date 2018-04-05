@@ -74,7 +74,7 @@ EasyAjax.prototype.getTargetURL= function() {
 	return this.targetUrl;
 };
 /* ----------------------------------------------------------------- */
-EasyAjax.prototype.callback = function(f) {
+EasyAjax.prototype.then = function(f) {
 	this.callbackFunction = f;
     return this;
 };
@@ -251,7 +251,7 @@ EasyAjax.prototype.executeJavascript = function (html) {
 }
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.getValue	= function (field,formName) {
-    var fieldValue = null; var fieldName = field;
+    var fieldValue = ''; var fieldName = field;
     if (typeof(field) === "string") {
         field = $E(field);
     }
@@ -261,13 +261,13 @@ EasyAjax.prototype.getValue	= function (field,formName) {
                 switch (field.type.toLowerCase()) {
                     case "hidden" :
                     case "password" :
-                    case "textarea" :	
+                    case "textarea" :
                     case "text"	:
                     	fieldValue = field.value;
                         break;
-                    case "checkbox" :	
-                        if (field.checked) { 
-                            fieldValue = field.value; 
+                    case "checkbox" :
+                        if (field.checked) {
+                            fieldValue = field.value;
                         }
                         break;
                     case "radio" :
@@ -304,7 +304,7 @@ EasyAjax.prototype.getValue	= function (field,formName) {
                         break;
                     case "file" :
                         break;
-                    default :	
+                    default :
                         break;
                 }
             } else {

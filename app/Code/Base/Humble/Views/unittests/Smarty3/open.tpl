@@ -33,17 +33,17 @@
                 var win = Landing.semaphore.checkout(true);
                 win._open();
                 win._title('Test Harness');
-                (new EasyAjax('/humble/unittests/open')).add('window_id',win.id).callback(function (response) {
+                (new EasyAjax('/humble/unittests/open')).add('window_id',win.id).thenfunction (response) {
                     win.set(response);
                 }).get();
             },
             load: function (window_id) {
-                (new EasyAjax('/humble/unittests/load')).add('window_id',window_id).add('source',$('#unit-test-harness-source-'+window_id).val()).callback(function (response) {
+                (new EasyAjax('/humble/unittests/load')).add('window_id',window_id).add('source',$('#unit-test-harness-source-'+window_id).val()).thenfunction (response) {
                     $('#unit-test-harness-content-{$window_id}').html(response);
                 }).post();
             },
             run: function (window_id) {
-                (new EasyAjax('/humble/unittests/run')).add('window_id',window_id).add('source',$('#unit-test-harness-source-'+window_id).val()).callback(function (response) {
+                (new EasyAjax('/humble/unittests/run')).add('window_id',window_id).add('source',$('#unit-test-harness-source-'+window_id).val()).thenfunction (response) {
                     $('#unit-test-harness-content-{$window_id}').html(response);
                 }).post();
             }

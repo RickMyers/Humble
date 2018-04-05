@@ -895,7 +895,7 @@ var Paradigm = (function () {
                     //if a window was allocated, we return that through the semaphore
                 }
                 //Rather than delete it immediately, let's queue the delete for later
-//              (new EasyAjax('/paradigm/element/remove')).add('id',element.id).callback(function (response) {
+//              (new EasyAjax('/paradigm/element/remove')).add('id',element.id).thenfunction (response) {
 //                  console.log(response);
 //              }).post();
                 //then we scrunch the list of elements
@@ -1065,7 +1065,7 @@ var Paradigm = (function () {
                     }
                     Desktop.window.list[element.win]._title(element.label+' ['+element.text+'] | Paradigm');
                     Desktop.window.list[element.win]._open("<table style='width: 100%; height: 100%'><tr><td align='center' valign='middle'><img src='/images/paradigm/clipart/loading_indicator.gif' /></td></tr></table>");
-                    (new EasyAjax('/paradigm/element/configure')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',element.win).add('id',element.id).add('type',element.element).callback(function (response) {
+                    (new EasyAjax('/paradigm/element/configure')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',element.win).add('id',element.id).add('type',element.element).thenfunction (response) {
                         Desktop.window.list[element.win]._open(response);
                     }).post();
                 }
@@ -1311,13 +1311,13 @@ var Paradigm = (function () {
 
             start: {
                 add: function () {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','circle').add('type','begin').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','circle').add('type','begin').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
                         }
                         var z       = Paradigm.elements.list.length;
-                        (new EasyAjax('/paradigm/diagram/update')).add('id',Paradigm.actions.get.currentDiagramId()).add('workflow_id',response).callback(function (response) {
+                        (new EasyAjax('/paradigm/diagram/update')).add('id',Paradigm.actions.get.currentDiagramId()).add('workflow_id',response).thenfunction (response) {
                             //Paradigm.actions.set.currentDiagram('')
                         }).post();
                         Paradigm.objects[response] = Paradigm.elements.list[z] = {
@@ -1360,7 +1360,7 @@ var Paradigm = (function () {
             },
             external:    {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','polygon1').add('type','external').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','polygon1').add('type','external').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1404,7 +1404,7 @@ var Paradigm = (function () {
             },
             alerts: {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','triangle').add('type','alerts').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','triangle').add('type','alerts').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1452,7 +1452,7 @@ var Paradigm = (function () {
             },
             actor:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','actor').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','actor').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1498,7 +1498,7 @@ var Paradigm = (function () {
             },
             system:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','system').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','system').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1544,7 +1544,7 @@ var Paradigm = (function () {
             },
             webservice:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','webservice').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','webservice').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1590,7 +1590,7 @@ var Paradigm = (function () {
             },
             process:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','rectangle').add('type','process').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','rectangle').add('type','process').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1637,7 +1637,7 @@ var Paradigm = (function () {
             },
             decision:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','diamond').add('type','decision').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','diamond').add('type','decision').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1683,7 +1683,7 @@ var Paradigm = (function () {
             },
             rule:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','rule').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','rule').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1732,7 +1732,7 @@ var Paradigm = (function () {
             },
             sensor:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','sensor').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','sensor').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1781,7 +1781,7 @@ var Paradigm = (function () {
 
             trigger:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','trigger').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','trigger').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1829,7 +1829,7 @@ var Paradigm = (function () {
             },
             detector:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','detector').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','detector').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1877,7 +1877,7 @@ var Paradigm = (function () {
             },
             exception:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','exception').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','exception').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1925,7 +1925,7 @@ var Paradigm = (function () {
             },
             connector:  {
                 add: function () {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','arrow').add('type','connector').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','arrow').add('type','connector').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1968,7 +1968,7 @@ var Paradigm = (function () {
             },
             report:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','parallelogram').add('type','report').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','parallelogram').add('type','report').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -2017,7 +2017,7 @@ var Paradigm = (function () {
             },
             operation:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','trapezoid').add('type','operation').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','trapezoid').add('type','operation').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -2066,7 +2066,7 @@ var Paradigm = (function () {
             },
             input:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','polygon2').add('type','input').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','polygon2').add('type','input').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -2116,7 +2116,7 @@ var Paradigm = (function () {
             },
             terminus:  {
                 add: function () {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','roundedrectangle').add('type','terminus').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','roundedrectangle').add('type','terminus').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -2159,7 +2159,7 @@ var Paradigm = (function () {
             },
             label:  {
                 add: function () {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','roundedrectangle').add('type','label').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','roundedrectangle').add('type','label').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;

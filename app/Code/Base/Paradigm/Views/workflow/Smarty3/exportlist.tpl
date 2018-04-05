@@ -34,7 +34,7 @@
     })($);
     $('#paradigm-export-submit-{$windowId}').on('click',function () {
         if ($('#export-target-{$windowId}').val()) {
-            (new EasyAjax('/paradigm/workflow/export')).add('id','{$id}').add('windowId','{$windowId}').add('destination_id',$('#export-target-{$windowId}').val()).callback(function (response) {
+            (new EasyAjax('/paradigm/workflow/export')).add('id','{$id}').add('windowId','{$windowId}').add('destination_id',$('#export-target-{$windowId}').val()).thenfunction (response) {
                 alert((response) ? response : "Exported, I think...");
                 Desktop.window.list['{$windowId}']._close();
             }).post();

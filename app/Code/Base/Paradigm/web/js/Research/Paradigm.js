@@ -641,7 +641,7 @@ var Paradigm = (function () {
                     //if a window was allocated, we return that through the semaphore
                 }
                 //Rather than delete it immediately, let's queue the delete for later
-//              (new EasyAjax('/paradigm/element/remove')).add('id',element.id).callback(function (response) {
+//              (new EasyAjax('/paradigm/element/remove')).add('id',element.id).thenfunction (response) {
 //                  console.log(response);
 //              }).post();
                 //then we scrunch the list of elements
@@ -811,7 +811,7 @@ var Paradigm = (function () {
                     }
                     Desktop.window.list[element.win]._title(element.label+' ['+element.text+'] | Paradigm');
                     Desktop.window.list[element.win]._open("<table style='width: 100%; height: 100%'><tr><td align='center' valign='middle'><img src='/images/paradigm/clipart/loading_indicator.gif' /></td></tr></table>");
-                    (new EasyAjax('/paradigm/element/configure')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',element.win).add('id',element.id).add('type',element.element).callback(function (response) {
+                    (new EasyAjax('/paradigm/element/configure')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',element.win).add('id',element.id).add('type',element.element).thenfunction (response) {
                         Desktop.window.list[element.win]._open(response);
                     }).post();
                 }
@@ -921,7 +921,7 @@ var Paradigm = (function () {
 
             actor:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','actor').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','actor').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -967,7 +967,7 @@ var Paradigm = (function () {
             },
             connector:  {
                 add: function () {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','arrow').add('type','connector').callback(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','arrow').add('type','connector').thenfunction (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;

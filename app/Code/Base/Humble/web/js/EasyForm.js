@@ -51,7 +51,7 @@ var Form = (function ($) {
                 if (event.data.postprocess) {
                     event.data.postprocess(this,event,formData);
                 }
-                (new EasyAjax(URL)).add('data',JSON.stringify(formData)).callback(function (response) {
+                (new EasyAjax(URL)).add('data',JSON.stringify(formData)).thenfunction (response) {
                     if (callback) {
                         callback(response);
                     } else {

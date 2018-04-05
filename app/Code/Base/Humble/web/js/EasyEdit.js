@@ -100,7 +100,7 @@ function EasyEdits(source, ref)
         var async = callback ? true : false;
         var me    = this;
         if (JSONsource)	{
-            (new EasyAjax(JSONsource)).callback(function (response) {
+            (new EasyAjax(JSONsource)).thenfunction (response) {
                 me.editsJSON = response
                 if (callback) {
                     callback.apply(me,[response]);
@@ -129,7 +129,7 @@ EasyEdits.process = function (easy,json) {
 EasyEdits.load = function (JSONsource,easy){
     if (JSONsource)	{
         easy.source	= JSONsource;
-        (new EasyAjax(JSONsource)).callback(function(response)	{
+        (new EasyAjax(JSONsource)).thenfunction(response)	{
             if (response)	{
                     easy.editsJSON	= response;
                 try {
@@ -502,13 +502,13 @@ EasyEdits.execute	= function (easy){
                 /* -- Population of field				-- */
                 if ((typeof(easyField.populator) !== "undefined") && (easyField.populator)) {
                     if (typeof(easyField.populator) === "string") {
-                        (new EasyAjax(easyField.populator)).callback(function(response) {
+                        (new EasyAjax(easyField.populator)).thenfunction(response) {
                             if (response) {
                                 EasyEdits.populateSelectBox(this.field.id, JSON.parse(response),false);
                             }
                         }).get().field = easyField;  //graft an arbitrary field onto the edit ajax call
                     } else if (typeof(easyField.populator) === "object") {
-                        (new EasyAjax(easyField.populator.url)).callback(function(response) {
+                        (new EasyAjax(easyField.populator.url)).thenfunction(response) {
                             if (response) {
                                 EasyEdits.populateSelectBox(this.field.id, JSON.parse(response),this.field.populator.fieldmap);
                             }
@@ -523,7 +523,7 @@ EasyEdits.execute	= function (easy){
                         formField.onblur	= easyField.validator;
                     } else if (typeof(easyField.validator)=="string")	{
                         formField.onblur = function (evt) {
-                            (new EasyAjax(easyField.validator)).callback(function(response) {
+                            (new EasyAjax(easyField.validator)).thenfunction(response) {
                                 var enteredValue = JSON.parse(response);
                                 if (!enteredValue.isValid) {
                                     evt.target.focus();
@@ -926,7 +926,7 @@ EasyEdits.send	= function (easy,URL) {
             if (easy.sendHandler) {
                 ao.SCF = (typeof(easy.sendHandler) == "string") ? eval(easy.sendHandler) : easy.sendHandler;
             } else {
-                ao.callback(function () {  });
+                ao.thenfunction () {  });
             }
             response = (getMethod) ? ao.get() : ao.post();
 	} else	{
