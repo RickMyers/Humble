@@ -489,19 +489,22 @@ SOAP;
      */
     private function _processArguments($call) {
         $args = [];
+        $rpc  = $this->_RPC();  //capture current RPC state
+        $this->_RPC(false);     //turn off RPC or might fall into an infinite loop
         foreach ($call['arguments'] as $var => $val) {
             if (!is_numeric($var)) {
                 if (trim($val) != '') {
                     $args[$var] = $val;
                 } else {
-                    $method = 'get'.$this->underscoreToCamelCase($var);
+                    $method = 'get'.$this->ucfirst($var);
                     $args[$var] = $this->$method();
                 }
             } else {
-                $method = 'get'.$this->underscoreToCamelCase($val);
+                $method = 'get'.$this->ucfirst($val);
                 $args[$val] = $this->$method();
             }
         }
+        $this->_RPC($rpc);  //restore RPC state
         return $args;
     }
 
