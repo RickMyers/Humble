@@ -1,4 +1,4 @@
-DirectoryIndex Main.htmls index.html
+DirectoryIndex pages/Main.htmls index.html
 AddHandler application/x-httpd-php .html .htm
 Options +FollowSymlinks +Includes
 RewriteEngine on
