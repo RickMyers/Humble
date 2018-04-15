@@ -195,14 +195,14 @@
          */
         public static function getModel($identifier,$override=false)  {
             $instance       = null;
-            $model          = explode('/',$identifier);
-            if (count($model) === 1) {
-                $model[]    = $model[0];
-                $model[0]   = self::_namespace();
+            $identifier     = self::parseResource($identifier);
+            if (!$identifier['namespace']) {
+                $entity[0] = self::_namespace();
             }
-            $module         = self::getModule($identifier,$override);
+            $model          = explode('/',$identifier['resource']);
+            $module         = self::getModule($identifier['namespace'],$override);
             if ($module) {
-                $className  = ucfirst($model[1]);
+                $className  = ucfirst($model[0]);
                 $dir        = str_replace("_","/",$module['models']);
                 $str        = "Code/{$module['package']}/{$dir}/{$className}";
                 $class      = file_exists($str.".php") ? $str : false;
