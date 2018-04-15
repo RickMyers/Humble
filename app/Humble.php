@@ -122,7 +122,7 @@
                 ];
             } else {
                 $resource = [
-                    'namespace' => '',
+                    'namespace' => self::_namespace(),
                     'resource'  => str_replace('_','/',$resource)
                 ];
             }
@@ -154,22 +154,10 @@
          * @param string $identifier
          * @return \Code\Base\Humble\Entity\Entity
          */
-        public static function getEntity($identifier) {
-            $instance   = null;
-            $class      = false;
-            $virtual    = false;
-            $identifier = self::parseResource($identifier);
-            if (!$identifier['namespace']) {
-                $entity[0] = self::_namespace();
-            }
+        public static function getEntity($resource_identifier) {
+            $identifier = self::parseResource($resource_identifier);
             if ($module = self::getModule($identifier['namespace'])) {
-                $st         = explode('/',$identifier['resource']);
-                foreach ($st as $idx => $term) {
-                    $st[$idx] = ucfirst($term);
-                }
-                $ast        = implode('/',$st);
-                $dir        = str_replace("_","/",$module['entities'])."/".$ast;
-                $str        = "Code/{$module['package']}/{$dir}";
+                $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
                     $instance = new class(str_replace('/','\\','\\'.$str)) extends Code\Base\Humble\Entity\BaseObject {
                         private $anon_class = null;
@@ -177,15 +165,13 @@
                             parent::__construct();
                             $this->anon_class = $a;
                         }
-                        public function getClassName() {
-                            return $this->anon_class;
-                        }
+                        public function getClassName() {  return $this->anon_class; }
                     };
                 } else {
                     $class      = str_replace('/','\\','\\'.$str);
                     $instance   = new $class();
                 }
-                $instance->_prefix($module['prefix'])->_namespace($identifier['namespace'])->_entity($identifier['resource'])->_isVirtual(!$class);
+                $instance->_prefix($module['prefix'])->_namespace($identifier['namespace'])->_entity(str_replace('/','_',$identifier['resource']))->_isVirtual(!$class);
             }
             return $instance;
         }
@@ -193,35 +179,24 @@
         /**
          *
          */
-        public static function getModel($identifier,$override=false)  {
-            $instance       = null;
-            $identifier     = self::parseResource($identifier);
-            if (!$identifier['namespace']) {
-                $entity[0] = self::_namespace();
-            }
-            $model          = explode('/',$identifier['resource']);
-            $module         = self::getModule($identifier['namespace'],$override);
-            if ($module) {
-                $className  = ucfirst($model[0]);
-                $dir        = str_replace("_","/",$module['models']);
-                $str        = "Code/{$module['package']}/{$dir}/{$className}";
-                $class      = file_exists($str.".php") ? $str : false;
-                if (!$class) {
+        public static function getModel($resource_identifier,$override=false)  {
+            $identifier     = self::parseResource($resource_identifier);
+            if ($module = self::getModule($identifier['namespace'],$override)) {
+                $str   = "Code/{$module['package']}/".str_replace("_","/",$module['models'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
+                if (!$class = file_exists($str.".php") ? $str : false) {
                     $instance = new class(str_replace('/','\\',$str)) extends Code\Base\Humble\Model\BaseObject {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
                             parent::__construct();
                         }
-                        public function getClassName() {
-                            return $this->anon_class;
-                        }
+                        public function getClassName() {   return $this->anon_class; }
                     };
                 } else {
                     $class      = str_replace('/','\\','\\'.$class);
                     $instance   = new $class();
                 }
-                $instance->_prefix($module['prefix'])->_namespace($model[0])->_isVirtual(!$class);
+                $instance->_prefix($module['prefix'])->_namespace($identifier['namespace'])->_isVirtual(!$class);
             }
             return $instance;
         }
@@ -229,38 +204,24 @@
         /**
          *
          */
-        public static function getHelper($identifier)  {
-            $instance   = null;
-            $class      = false;
-            $helper     = explode('/',$identifier);
-            $virtual    = false;
-            if (count($helper) === 1) {
-                $helper[]  = $helper[0];
-                $helper[0] = self::_namespace();
-            }
-            $module     = self::getModule($helper[0]);
-            $helper[1]  = ($helper[1] == 'string') ? 'HumbleString' : $helper[1] ; //lil hack  PHP V7 doesn't allow for us to name a class "String"
-            if ($module) {
-                $className  = ucfirst($helper[1]);
-                $dir        = str_replace("_","/",$module['helpers']);
-                $str        = "Code/{$module['package']}/{$dir}/{$className}";
-                $class      = file_exists($str.".php") ? $str : false;
-                if (!$class) {
+        public static function getHelper($resource_identifier)  {
+            $identifier     = self::parseResource($resource_identifier);
+            if ($module = self::getModule($identifier['namespace'])) {
+                $str   = "Code/{$module['package']}/".str_replace("_","/",$module['helpers'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
+                if (!$class = file_exists($str.".php") ? $str : false) {
                     $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Helper\BaseObject {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
                             parent::__construct();
                         }
-                        public function getClassName() {
-                            return $this->anon_class;
-                        }
+                        public function getClassName() {  return $this->anon_class; }
                     };
                 } else {
                     $class      = str_replace('/','\\','\\'.$class);
                     $instance   = new $class();
                 }
-                $instance->_namespace($helper[0])->_isVirtual(!$class);
+                $instance->_namespace($identifier['namespace'])->_isVirtual(!$class);
             }
             return $instance;
         }
