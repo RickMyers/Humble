@@ -1,11 +1,6 @@
-
 <!--#include virtual="/web/includes/header.html" -->
 <!--#include virtual="/web/includes/banner.html" -->
-<div style="clear: both"></div>
-</div>
-
-        <div id="humble-separator" style="width: 100%; clear: both; height: 10px; background-color: rgba(50,50,50,.8);"></div>
-        <div id="humble-container" style="overflow: auto; position: relative">
+<!--#include virtual="/web/includes/container.html" -->
 <h3>Top</h3>
 <br /><br /><br /><br /><br />
 <br /><br /><br /><br /><br />

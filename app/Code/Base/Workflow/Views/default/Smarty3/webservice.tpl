@@ -131,7 +131,7 @@
 <script type="text/javascript">
     $('#webservice-enabled-{$windowId}').on("click",function () {
         var active = this.checked ? 'Y' : 'N';
-        (new EasyAjax('/paradigm/webservice/activate')).add('id','{$webservice->getId()}').add('active',(this.checked ? 'Y' : 'N')).thenfunction (response) {
+        (new EasyAjax('/paradigm/webservice/activate')).add('id','{$webservice->getId()}').add('active',(this.checked ? 'Y' : 'N')).then(function (response) {
             console.log(response);
         }).post();
     });

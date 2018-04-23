@@ -200,7 +200,7 @@ Copyright Enicity.com, all rights reserved
                 remove: function (workflow_id) {
                     Desktop.stopPropagation(window.event);
                     if (confirm('Are you sure you want to delete that workflow?')) {
-                        (new EasyAjax('/paradigm/workflow/delete')).add('id',workflow_id).thenfunction (response){
+                        (new EasyAjax('/paradigm/workflow/delete')).add('id',workflow_id).then(function (response){
                             Workflows.fetch($('#workflow-namespace-list').val(),1);
                         }).post();
                     }
@@ -334,7 +334,7 @@ Copyright Enicity.com, all rights reserved
                 load: function (id,namespace) {
                     Paradigm.actions.set.currentDiagramId(id);
                     Paradigm.actions.set.namespace(namespace);
-                    (new EasyAjax('/paradigm/workflow/load')).add('id',id).thenfunction (response) {
+                    (new EasyAjax('/paradigm/workflow/load')).add('id',id).then(function (response) {
                         var diagram = JSON.parse(response);
                         diagram.workflow = (diagram.workflow) ? JSON.parse(diagram.workflow) : { };
                         for (var i in diagram.workflow) {
@@ -383,7 +383,7 @@ Copyright Enicity.com, all rights reserved
                     page = (page) ? page : 1;
                     if (ns) {
                         Workflows.clear();
-                        (new EasyAjax('/paradigm/workflow/inventory')).add('page',page).add('namespace',ns).thenfunction (response) {
+                        (new EasyAjax('/paradigm/workflow/inventory')).add('page',page).add('namespace',ns).then(function (response) {
                             var workflows = eval('('+response+')');
                             var workflow;
                             var data = workflows.data;

@@ -100,7 +100,7 @@ function EasyEdits(source, ref)
         var async = callback ? true : false;
         var me    = this;
         if (JSONsource)	{
-            (new EasyAjax(JSONsource)).thenfunction (response) {
+            (new EasyAjax(JSONsource)).then(function (response) {
                 me.editsJSON = response
                 if (callback) {
                     callback.apply(me,[response]);
@@ -129,7 +129,7 @@ EasyEdits.process = function (easy,json) {
 EasyEdits.load = function (JSONsource,easy){
     if (JSONsource)	{
         easy.source	= JSONsource;
-        (new EasyAjax(JSONsource)).thenfunction(response)	{
+        (new EasyAjax(JSONsource)).then(function(response)	{
             if (response)	{
                     easy.editsJSON	= response;
                 try {
@@ -182,7 +182,7 @@ EasyEdits.execute	= function (easy){
     if (easy.edits.form.widgets){
         for (var widget in easy.edits.form.widgets)	{
             switch (widget)  {
-                case	"calendar" 	:   
+                case	"calendar" 	:
                     widget = easy.edits.form.widgets[widget];
                     EasyEdits.calendar = new DynamicCalendar();
                     $E(widget.layer).style.position = "absolute";
@@ -195,14 +195,14 @@ EasyEdits.execute	= function (easy){
                     EasyEdits.calendar.set(new Date().getMonth(),new Date().getFullYear());
                     EasyEdits.calendar.hide();
                     break;
-                case	"timepicker"	:   
+                case	"timepicker"	:
                     widget = easy.edits.form.widgets[widget];
                     EasyEdits.timepicker = new TimePicker(widget.layer);
                     $E(widget.layer).style.position = "absolute";
                     $E(widget.layer).style.width = "120px";
                     EasyEdits.timepicker.hide();
                     break;
-                default			:   
+                default			:
                     break;
             }
         }
@@ -296,7 +296,7 @@ EasyEdits.execute	= function (easy){
                     combo.style.padding = EasyEdits.getCSSValue(easyField.id, "padding");
                     combo.style.display = "none";
                     combo.setAttribute("comboPair",easyField.id);
-                    combo.onchange = function (evt) {	
+                    combo.onchange = function (evt) {
                         evt = (evt) ? evt : ((window.event) ? event : null);
                         evt.target.setAttribute("comboValue",evt.target.value);
                         $E(evt.target.getAttribute("comboPair")).onchange(evt,true);
@@ -344,7 +344,7 @@ EasyEdits.execute	= function (easy){
                     for (var rCtr= +range[0]; rCtr<= +range[1]; rCtr++)	{
                         if (easyField.rangewidth) {
                             rCtr = EasyEdits.copies(rCtr,"0",easyField.rangewidth);
-                        }   
+                        }
                         formField[formField.length] = new Option(rCtr,rCtr);
                     }
 		}
@@ -502,13 +502,13 @@ EasyEdits.execute	= function (easy){
                 /* -- Population of field				-- */
                 if ((typeof(easyField.populator) !== "undefined") && (easyField.populator)) {
                     if (typeof(easyField.populator) === "string") {
-                        (new EasyAjax(easyField.populator)).thenfunction(response) {
+                        (new EasyAjax(easyField.populator)).then(function(response) {
                             if (response) {
                                 EasyEdits.populateSelectBox(this.field.id, JSON.parse(response),false);
                             }
                         }).get().field = easyField;  //graft an arbitrary field onto the edit ajax call
                     } else if (typeof(easyField.populator) === "object") {
-                        (new EasyAjax(easyField.populator.url)).thenfunction(response) {
+                        (new EasyAjax(easyField.populator.url)).then(function(response) {
                             if (response) {
                                 EasyEdits.populateSelectBox(this.field.id, JSON.parse(response),this.field.populator.fieldmap);
                             }
@@ -523,7 +523,7 @@ EasyEdits.execute	= function (easy){
                         formField.onblur	= easyField.validator;
                     } else if (typeof(easyField.validator)=="string")	{
                         formField.onblur = function (evt) {
-                            (new EasyAjax(easyField.validator)).thenfunction(response) {
+                            (new EasyAjax(easyField.validator)).then(function(response) {
                                 var enteredValue = JSON.parse(response);
                                 if (!enteredValue.isValid) {
                                     evt.target.focus();
@@ -817,20 +817,20 @@ EasyEdits.getValue = function (form,field,easyField) {
     //if (!field.type) {
       //  return val; //you aren't a form element
    // }
-    
+
     try {
         var type = (easyField) ? easyField.type : field.type;
         switch (type.toLowerCase()) {
             case "text"			:
             	val = field.value;
                 break;
-            case "hidden"		:	
+            case "hidden"		:
                 val = field.value;
                 break;
-            case "textarea"		:	
+            case "textarea"		:
                 val = field.value;
                 break;
-            case "checkbox" 	:	
+            case "checkbox" 	:
                 if (field.checked) {
                     val = (field.value) ? field.value : "true";
                 }
@@ -840,10 +840,10 @@ EasyEdits.getValue = function (form,field,easyField) {
                     val = RTE[field.id].getText();
                 }
                 break;
-            case "password"		:	
+            case "password"		:
                 val = field.value;
 		break;
-            case "radio"		:   
+            case "radio"		:
                 var cbArray = form.elements[field.name]; var cbCtr = 0;
                 while ((cbCtr < cbArray.length) && (!val))	{
                         val = cbArray[cbCtr].checked ? cbArray[cbCtr].value : "";
@@ -926,7 +926,7 @@ EasyEdits.send	= function (easy,URL) {
             if (easy.sendHandler) {
                 ao.SCF = (typeof(easy.sendHandler) == "string") ? eval(easy.sendHandler) : easy.sendHandler;
             } else {
-                ao.thenfunction () {  });
+                ao.then(function () {  });
             }
             response = (getMethod) ? ao.get() : ao.post();
 	} else	{

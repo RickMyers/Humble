@@ -19,7 +19,7 @@ function WindowAttributeClass(id,x,y,w,h) {
     this.save   = function () {
          if (!virtualWindows.application.user)
             return false;   //no userid
-        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).thenfunction () {}).post();
+        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).then(function () {}).post();
     };
     return  this;
 }
@@ -34,7 +34,7 @@ function IconAttributeClass(id,x,y) {
     this.save   = function () {
          if (!virtualWindows.application.user)
             return false;   //no userid
-        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).thenfunction () {}).post();
+        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).then(function () {}).post();
     };
     return  this;
 }
@@ -170,7 +170,7 @@ function DesktopWindow(icon,refId) {
             this.splashScreen.style.zIndex = '9000';
             this.splashScreen.fadeIn();
             var splash = (typeof(this.splash) === "function") ? this.splash() : this.splash;
-            (new EasyAjax(splash)).thenfunction (response) {
+            (new EasyAjax(splash)).then(function (response) {
                $(me.splashScreen).html(response);
                var tt = (function (screen) {
                     return function () {
@@ -457,7 +457,7 @@ var Desktop = {
         if (virtualWindows.application.user)	{
             Desktop.logoffOnReload  = false;
             Desktop.refreshing      = true;
-            (new EasyAjax("/desktop/actions/logoff")).thenfunction () {
+            (new EasyAjax("/desktop/actions/logoff")).then(function () {
                 window.location.replace("/index.html");
                 return true;
             }).post(false);
@@ -903,7 +903,7 @@ var Desktop = {
             var win = this;
             var ao = new EasyAjax('/'+this.namespace+'/actions/open');
             ao.add('appid',this.referenceId);
-            ao.thenfunction (response) {
+            ao.then(function (response) {
                 $E(win.content.id).innerHTML = response;
                 ao.executeJavascript();
                 if (win.resize) {

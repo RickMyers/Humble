@@ -4,7 +4,7 @@ Administration = (function () {
                         package: function () {
                             var val = prompt("Please enter a new documentation package");
                             if (val) {
-                                (new EasyAjax('/humble/admin/addpackage')).add('package',val).thenfunction () {
+                                (new EasyAjax('/humble/admin/addpackage')).add('package',val).then(function () {
                                     window.location.reload();
                                 }).post();
                             }
@@ -12,7 +12,7 @@ Administration = (function () {
                         category: function () {
                             var val = prompt("Please enter a new documentation package");
                             if (val) {
-                                (new EasyAjax('/humble/admin/addcategory')).add('category',val).thenfunction () {
+                                (new EasyAjax('/humble/admin/addcategory')).add('category',val).then(function () {
                                     window.location.reload();
                                 }).post();
                             }
@@ -20,12 +20,12 @@ Administration = (function () {
                     },
                     status: {
                         check: function () {
-                            (new EasyAjax('/humble/system/status')).thenfunction (response) {
+                            (new EasyAjax('/humble/system/status')).then(function (response) {
                                 $('#humble_status').html(response);
                             }).post();
                         },
                         save: function () {
-                            (new EasyAjax('/humble/system/save')).add('authorization',$('#authorization-enabled').val()).add('logout',$('#system-logout').val()).add('login',$('#system-login').val()).add('sso',$('#sso-enabled').val()).add('landing',$('#system-landing').val()).add('name',$('#system-name').val()).add('version',$('#system-version').val()).add('enabled',$('#system-enabled').prop('checked')).add('installer',$('#system-installer').prop('checked')).thenfunction(response) {
+                            (new EasyAjax('/humble/system/save')).add('authorization',$('#authorization-enabled').val()).add('logout',$('#system-logout').val()).add('login',$('#system-login').val()).add('sso',$('#sso-enabled').val()).add('landing',$('#system-landing').val()).add('name',$('#system-name').val()).add('version',$('#system-version').val()).add('enabled',$('#system-enabled').prop('checked')).add('installer',$('#system-installer').prop('checked')).then(function(response) {
                                 alert(response);
                             }).post();
                         },
@@ -43,8 +43,8 @@ Administration = (function () {
                                     window.clearTimeout(Administration.status.quiesce.timer);
                                     $('#quiesce-status-countdown').html('00');
                                     $("#quiesce-box").fadeOut();
-                                    (new EasyAjax('/humble/system/offline')).add('value',0).thenfunction (response) {
-                                        (new EasyAjax('/humble/system/quiesce')).add('value',0).thenfunction (response) {
+                                    (new EasyAjax('/humble/system/offline')).add('value',0).then(function (response) {
+                                        (new EasyAjax('/humble/system/quiesce')).add('value',0).then(function (response) {
                                             window.location.href = '/index.html?m=The system is now offline';
                                         }).post();
                                     }).post();
@@ -53,7 +53,7 @@ Administration = (function () {
                             start:                             function () {
                                 Administration.status.quiesce.counter = Administration.status.quiesce.period;
                                 if (confirm("Do you wish to begin shutting down the system?")) {
-                                    (new EasyAjax('/humble/system/quiesce')).add('value','1').thenfunction (response) {
+                                    (new EasyAjax('/humble/system/quiesce')).add('value','1').then(function (response) {
                                         $("#quiesce-box").fadeIn();
                                         Administration.status.quiesce.countdown();
                                     }).post();
@@ -61,7 +61,7 @@ Administration = (function () {
                             },
                             cancel: function () {
                                 window.clearTimeout(Administration.status.quiesce.timer);
-                                (new EasyAjax('/humble/system/quiesce')).add('value','0').thenfunction (response) {
+                                (new EasyAjax('/humble/system/quiesce')).add('value','0').then(function (response) {
                                     Administration.status.quiesce.counter = Administration.status.quiesce.period;
                                     $('#quiesce-status-countdown').html('00');
                                     $("#quiesce-box").fadeOut();
@@ -73,7 +73,7 @@ Administration = (function () {
                         open: function () {
                             var win = Landing.semaphore.checkout(true);
                             win._open();
-                            (new EasyAjax('/focos/events/open')).add('window_id',win.id).thenfunction (response) {
+                            (new EasyAjax('/focos/events/open')).add('window_id',win.id).then(function (response) {
                                 win.set(response);
                                 win._title('Event Viewer');
                             }).get();
@@ -82,7 +82,7 @@ Administration = (function () {
                             var data = Pagination.get(win.paginationId);
                             page = page ? page : data.pages.current;
                             rows = rows ? rows : 30;
-                            (new EasyAjax('/focos/events/fetch')).add('page',page).add('rows',rows).thenfunction (response) {
+                            (new EasyAjax('/focos/events/fetch')).add('page',page).add('rows',rows).then(function (response) {
                                 if (response) {
                                     Pagination.set(win.paginationId,this.getPagination());
                                     $(win.eventList).html(Templater.load('/templates/focos/eventlist').parse('/templates/focos/eventlist', { "win": win, "rows": JSON.parse(response) } ));
@@ -91,7 +91,7 @@ Administration = (function () {
                         },
                         expand: function (win_id,id,name) {
                             var win         = Desktop.window.list[win_id];
-                            (new EasyAjax('/humble/event/expand')).add('id',id).add('name',name).thenfunction (response) {
+                            (new EasyAjax('/humble/event/expand')).add('id',id).add('name',name).then(function (response) {
                                 $(win.eventViewer).html(response);
                             }).post();
                         }
@@ -99,14 +99,14 @@ Administration = (function () {
                     events: {
                         template: false,
                         home: function () {
-                            (new EasyAjax('/humble/events/home')).add('page',1).add('rows',30).thenfunction (response) {
+                            (new EasyAjax('/humble/events/home')).add('page',1).add('rows',30).then(function (response) {
                                 $('#humble_events').html(response);
                             }).post()
                         },
                         fetch: function (page,rows) {
                             page = page ? page : 1;
                             rows = rows ? rows : 30;
-                            (new EasyAjax('/humble/events/fetch')).add('page',page).add('rows',rows).thenfunction (response) {
+                            (new EasyAjax('/humble/events/fetch')).add('page',page).add('rows',rows).then(function (response) {
                                 if (response) {
                                     Pagination.set('event-viewer',this.getPagination());
                                     Templater.load('/templates/humble/admineventlist');
@@ -118,14 +118,14 @@ Administration = (function () {
                             }).post();
                         },
                         expand: function (id,name) {
-                            (new EasyAjax('/humble/event/expand')).add('id',id).add('name',name).thenfunction (response) {
+                            (new EasyAjax('/humble/event/expand')).add('id',id).add('name',name).then(function (response) {
                                 $('#humble-event-detail').html(response);
                             }).post();
                         },
                         open: function () {
                             var win = Desktop.semaphore.checkout(true);
                             win._open();
-                            (new EasyAjax('/humble/events/open')).add('window_id',win.id).thenfunction (response) {
+                            (new EasyAjax('/humble/events/open')).add('window_id',win.id).then(function (response) {
                                 win.set(response);
                                 win._title('Event Viewer');
                             }).get();
@@ -133,40 +133,40 @@ Administration = (function () {
                     },
                     workflows: {
                         fetch: function () {
-                            (new EasyAjax('/humble/workflows/list')).thenfunction (response) {
+                            (new EasyAjax('/humble/workflows/list')).then(function (response) {
 
                             }).post();
                         },
                         generate: function () {
-                            (new EasyAjax('/humble/workflows/generate')).thenfunction (response) {
+                            (new EasyAjax('/humble/workflows/generate')).then(function (response) {
 
                             }).post();
                         },
                         remove: function () {
-                            (new EasyAjax('/humble/workflows/remove')).thenfunction (response) {
+                            (new EasyAjax('/humble/workflows/remove')).then(function (response) {
 
                             }).post();
                         },
                         activate: function () {
-                            (new EasyAjax('/humble/workflows/activate')).thenfunction (response) {
+                            (new EasyAjax('/humble/workflows/activate')).then(function (response) {
 
                             }).post();
                         },
                         deactivate: function () {
-                            (new EasyAjax('/humble/workflows/deactivate')).thenfunction (response) {
+                            (new EasyAjax('/humble/workflows/deactivate')).then(function (response) {
 
                             }).post();
                         }
                     },
                     users:      {
                         list:   function () {
-                            (new EasyAjax('/humble/users/list')).thenfunction (response) {
+                            (new EasyAjax('/humble/users/list')).then(function (response) {
                                 $E('user_list').innerHTML = response;
                             }).post();
                         },
                         remove: function (uid) {
                             var ss = prompt('Please enter the super secret pass phrase');
-                            (new EasyAjax('/humble/users/remove')).add('secret',ss).add('uid',uid).thenfunction (response) {
+                            (new EasyAjax('/humble/users/remove')).add('secret',ss).add('uid',uid).then(function (response) {
                                 $E('user_list').innerHTML = response;
                             }).post();
                         }
@@ -181,13 +181,13 @@ Administration = (function () {
                         }
                         $('#lightbox').css('display','block');
                         $('#actionStatus').html('Working...');
-                        (new EasyAjax(t)).thenfunction (response) {
+                        (new EasyAjax(t)).then(function (response) {
                             $('#actionStatus').html(response+"\n\nDone!\n");
                         }).post();
                     },
                     create:     function (directory,pkg) {
                         if (confirm('Would you like to create the path '+directory+' in the '+pkg+' package?')) {
-                            (new EasyAjax('/humble/admin/create')).add('package',pkg).add('directory',directory).thenfunction () {
+                            (new EasyAjax('/humble/admin/create')).add('package',pkg).add('directory',directory).then(function () {
                                 window.location.reload(true);
                             }).post();
                         }
@@ -223,7 +223,7 @@ Administration = (function () {
                         ao.add('module',module);
                         $('#lightbox').css('display','block');
                         $('#actionStatus').html('Working...');
-                        ao.thenfunction (response) {
+                        ao.then(function (response) {
                             $('#lightbox').html(response);
                         });
                         ao.post();
@@ -236,7 +236,7 @@ Administration = (function () {
                            ao.add('package',pkg);
                            $('#lightbox').css('display','block');
                            $('#actionStatus').html('Working...');
-                           ao.thenfunction (response) {
+                           ao.then(function (response) {
                                alert(response);
                                window.location.reload();
                            });
@@ -249,7 +249,7 @@ Administration = (function () {
                            ao.add('namespace',namespace);
                            ao.add('root',root);
                            ao.add('package',pkg);
-                           ao.thenfunction () {
+                           ao.then(function () {
                                window.location.reload();
                            });
                            ao.post();
@@ -263,7 +263,7 @@ Administration = (function () {
                            ao.add('package',pkg);
                            $('#lightbox').css('display','block');
                            $('#actionStatus').html('Working...');
-                           ao.thenfunction (response) {
+                           ao.then(function (response) {
                                $('#actionStatus').html(response+"\n\nDone!\n");
                            });
                            ao.post();
@@ -277,7 +277,7 @@ Administration = (function () {
                            ao.add('package',pkg);
                            $('#lightbox').css('display','block');
                            $('#actionStatus').html('Working...');
-                           ao.thenfunction (response) {
+                           ao.then(function (response) {
                                $('#actionStatus').html(response+"\n\nDone!\n");
                            });
                            ao.post();
@@ -291,7 +291,7 @@ Administration = (function () {
                            ao.add('package',pkg);
                            $('#lightbox').css('display','block');
                            $('#actionStatus').html('Working...');
-                           ao.thenfunction (response) {
+                           ao.then(function (response) {
                                $('#actionStatus').html(response+"\n\nDone!\n");
                            });
                            ao.post();
@@ -301,13 +301,13 @@ Administration = (function () {
                        if (confirm('This action will clear the cache for the module.\n\nAre you sure you wish to continue?')) {
                             $('#lightbox').css('display','block');
                             $('#actionStatus').html('Working...');
-                           (new EasyAjax('/humble/utilities/clear')).add('namespace',namespace).add('root',root).add('package',pkg).thenfunction (response) {
+                           (new EasyAjax('/humble/utilities/clear')).add('namespace',namespace).add('root',root).add('package',pkg).then(function (response) {
                                 $('#actionStatus').html(response+"\n\nDone!\n");
                            }).post();
                        }
                     },
                     enable: function (cb,module,pkg) {
-                       (new EasyAjax('/humble/admin/enable')).add('namespace',module).add('package',pkg).add('enabled',((cb.checked) ? "Y" : "N")).thenfunction () {
+                       (new EasyAjax('/humble/admin/enable')).add('namespace',module).add('package',pkg).add('enabled',((cb.checked) ? "Y" : "N")).then(function () {
                        }).post();
                     },
                     logs: {
@@ -321,13 +321,13 @@ Administration = (function () {
                             var win = Desktop.window.list[Administration.logs.windows[log]];
                             win._title(log+ ' Log | Humble')._open();
                             log = log.toLowerCase();
-                            (new EasyAjax('/humble/admin/log')).add('log',log).add('window_id',win.id).thenfunction (response) {
+                            (new EasyAjax('/humble/admin/log')).add('log',log).add('window_id',win.id).then(function (response) {
                                 win.set(response);
                             }).post();
                         },
                         clear: function (log) {
                             if (confirm('Clear the '+log.charAt(0).toUpperCase() + log.slice(1)+' log?')) {
-                                (new EasyAjax('/humble/log/clearlog')).add('log',log).thenfunction (response) {
+                                (new EasyAjax('/humble/log/clearlog')).add('log',log).then(function (response) {
                                     alert(response);
                                 }).post();
                             }
@@ -335,7 +335,7 @@ Administration = (function () {
                         fetch: function (log,win_id) {
                             var win = Desktop.window.list[win_id];
                             win.viewing = log;
-                            (new EasyAjax('/humble/log/fetch')).add('log',log.toLowerCase()).add('size',100000).thenfunction (response) {
+                            (new EasyAjax('/humble/log/fetch')).add('log',log.toLowerCase()).add('size',100000).then(function (response) {
                                 $(win.viewer).val(response);
                             }).post();
                         },

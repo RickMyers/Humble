@@ -36,7 +36,7 @@
         if ($('#sync-target-{$windowId}').val()) {
             Animate.run('sync-image');
             $('#paradigm-sync-submit-{$windowId}').attr('disabled','true');
-            (new EasyAjax('/paradigm/workflow/sync')).add('windowId','{$windowId}').add('destination_id',$('#sync-target-{$windowId}').val()).thenfunction (response) {
+            (new EasyAjax('/paradigm/workflow/sync')).add('windowId','{$windowId}').add('destination_id',$('#sync-target-{$windowId}').val()).then(function (response) {
                 Animate.stop();
                 $('#paradigm-sync-submit-{$windowId}').attr('disabled','false');
                 alert((response) ? response : "Synced, I think...");

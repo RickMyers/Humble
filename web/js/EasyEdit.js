@@ -136,7 +136,7 @@ EasyEdits.load = function (JSONsource,easy)
 {
 	if (JSONsource)	{
 		easy.source	= JSONsource;
-		(new EasyAjax(JSONsource)).thenfunction(response)	{
+		(new EasyAjax(JSONsource)).then(function(response)	{
 			if (response)	{
 				easy.editsJSON	= response;
                 try {
@@ -465,7 +465,7 @@ EasyEdits.execute	= function (easy){
 						var eao = new EasyAjax(targetUrl);
 						eao.field = easyField.id;
 						eao.setAsync(false);
-						eao.thenfunction() {
+						eao.then(function() {
 							EasyEdits.populateSelectBox(this.field, eval("("+ eao.getResponse() +")"));
 						});
 						eao.get();
@@ -485,7 +485,7 @@ EasyEdits.execute	= function (easy){
 							var eao = new EasyAjax(targetUrl);
 							eao.field = easyField.id;
 							eao.setAsync(false);
-							eao.thenfunction() {
+							eao.then(function() {
 								var enteredValue = eval("("+ eao.getResponse() +")");
 								if (!enteredValue.isValid) {
 									$E(eao.field).focus();
@@ -875,7 +875,7 @@ EasyEdits.send	= function (easy,URL)
 		if (easy.sendHandler)
 			ao.SCF = (typeof(easy.sendHandler) == "string") ? eval(easy.sendHandler) : easy.sendHandler;
 		else
-			ao.thenfunction () {alert(ao.getResponse()); });
+			ao.then(function () {alert(ao.getResponse()); });
 		if (getMethod)
 			ao.get();
 		else
