@@ -1,5 +1,109 @@
 <!--#include virtual="/web/includes/header.html" -->
 <!--#include virtual="/web/includes/container.html" -->
+<h1>Installation</h1>
+<hr />
+<br />
+<p class="humble-emphasis">
+Humble is partially opinionated. What this means is that some parts of the software stack are not fungible, such as you can not swap nginX for Apache since the framework relies heavily on htaccess files.
+Also the Unity ORM specifically joins MySQL and MongoDB queries, so those products are also not fungible.  However, whether you use the JSON API with a decoupled UI or use traditional server side rendering, that is up
+to each team to decide, and you can even use a combination of the two.
+</p>
+<br />
+<hr />
+<h3>Prerequisites</h3>
+<br />
+<h4>Required</h4>
+<ul>
+    <li>Apache 2.4+</li>
+    <li>PHP 7.1+</li>
+    <li>MySQL 5.4+</li>
+    <li>MongoDB 3.4+</li>
+    <li>PHP Composer</li>
+</ul>
+<br />
+<h4>Optional</h4>
+<ul>
+    <li><i>For performance optimization</i>
+        <ul>
+            <li>Memcached</li>
+        </ul>
+    </li>
+    <li><i>For support for code deployments</i>
+        <ul>
+            <li>Java JDK 1.8</li>
+            <li>Apache Ant 1.8+</li>
+        </ul>
+    </li>
+    <li><i>For support for developers</i>
+        <ul>
+            <li>Node.js</li>
+            <li>Grunt</li>
+        </ul>
+    </li>
+</ul>
+<hr />
+<h3>Before beginning installation</h3>
+<ol>
+    <li>Install the software listed above</li>
+    <li>Additionally:
+        <ul>
+            <li>Apache 2.4
+                <ul>
+                    <li>Enable Rewrite Module</li>
+                    <li>Enable SSL Module</li>
+                </ul>
+            </li>
+            <li>PHP 7.1+
+                <ul>
+                    <li>Add <a href='#' onclick='return false'>MongoDB Extension</a></li>
+                    <li>Add <a href='#' onclick='return false'>Memcache Extension</a></li>
+                    <li>Enable Mysqli Extension</li>
+                    <li>Enable Soap Extension</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ol>
+<br />
+<p>
+    <span style="font-size: 1.1em; color: red">*</span>
+    Your website must be configured (VHOST) and running before the installation takes place.
+</p>
+<br />
+
+<hr />
+<h3>Package Installer</h3>
+
+<p class='humble-emphasis'>
+    Humble uses its own program to manage installation and framework updates after installation.  We will need to download that program into the root of our application directory and instruct it to download the framework files.<br /><br />
+    First you will need to create the directory where you plan on installing Humble.<br /><br />
+    Then you will then need to download the initial package installer for your operating system into that directory.  Choose the appropriate package installer from the choices below:<br>
+</p>
+
+<br />
+<ul>
+    <li>Windows Installation
+        <ul>
+            <li> <a href='/app/install/Humble.php'>Humble.php</a></li>
+            <li> <a href='/app/install/humble.bat'>Humble.bat</a></li>
+        </ul>
+    </li>
+    <li>Linux Installation
+        <ul>
+            <li> <a href='/app/install/Humble.php'>Humble.php</a></li>
+            <li> <a href='/app/install/humble.sh'>Humble.sh</a></li>
+        </ul>
+    </li>
+
+</ul>
+<br />
+<p class='humble-emphasis'>
+Now you are ready to create a Humble project, run <span style='font-family: monospace'>humble --project</span> to create the new project.  This will guide the install process and will identify the canonical source location for any future updates of the framework.<br /><br />
+Finally, after the project is created you are ready to fetch and install the source.  Run <span style='font-family: monospace'>humble --fetch</span>, and you will be taken to the projects website to provide the run time configuration information.
+</p>
+
+This video can provide a walk-through:
+
+
 
 <!--#include virtual="/web/includes/footer.html" -->
-
