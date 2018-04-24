@@ -1,29 +1,14 @@
 <!--#include virtual="/web/includes/header.html" -->
 <!--#include virtual="/web/includes/banner.html" -->
 <!--#include virtual="/web/includes/container.html" -->
-<h3>Top</h3>
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
 
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
 
-<h3>Bottom</h3>
+<h1>Humble - the flexible, abstract, framework.</h1>
+
+<p class='humble-emphasis'>
+    Humble is an MVC (Model-View-Controller) framework where the Controllers are written in XML, the views can be written in any PHP templating language that is supported (Twig, Smarty3, Brainy, TBS, Mustache, etc),
+    and the models are written using Plain Old PHP Objects (POPO).  Further, integration is handled by crafting YaML files that describe the interchange (SOAP, REST, etc) between smart end points, or through an ESB (Enterprise Service Bus).
+    Database interaction is managed by a polyglot ORM called <i>Unity</i> that marries the best of MySQL and MongoDB together.  Finally, an event driven workflow engine called <i>Paradigm</i> catalogs your exposed public methods and
+    allows you to graphically orchestrate those methods into a dynamic workflow.
+</p>
 <!--#include virtual="/web/includes/footer.html" -->

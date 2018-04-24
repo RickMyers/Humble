@@ -12,7 +12,7 @@
             #humble-content-area {
             }
             .nav-button {
-                 cursor: pointer; overflow: hidden; padding: 8px; text-align: center; width: 200px; border-radius: 8px; display: flex; font-size: 1.5em; border: 2px solid silver; color: rgba(202,202,202,.8); font-weight: bolder; font-family: sans-serif;
+                 cursor: pointer; overflow: hidden; padding: 8px; text-align: center; width: 190px; border-radius: 8px; display: flex; font-size: 1.3em; border: 2px solid silver; color: rgba(202,202,202,.8); font-weight: bolder; font-family: sans-serif;
             }
             .nav-button:hover {
                 background: rgba(202,202,202,.2)
@@ -48,7 +48,7 @@
         <script type='text/javascript'>
             $(document).ready(function () {
                 $(window).resize(function () {
-                    $('#humble-container').height(window.innerHeight - $('#humble-headers').height()- (2*$('.humble-separator').height()));
+                    $('#humble-container').height(window.innerHeight - $('#humble-headers').height()- (0*$('.humble-separator').height()));
                 }).resize();
             });
 
@@ -65,17 +65,21 @@
                     <div class="nav-button" style="padding-left: 70px" onclick="window.location.href = 'Main.htmls'">
                         Home
                     </div>
-                    <div class="nav-button" style="padding-left: 30px" onclick="window.location.href = 'Pre.htmls'">
-                        Prerequisites
-                    </div>
-                    <div class="nav-button" style="padding-left: 40px" onclick="window.location.href = 'Inst.htmls'">
+
+                    <div class="nav-button" style="padding-left: 40px" onclick="window.location.href = '/pages/Install.htmls'">
                         Installation
                     </div>
-                    <div class="nav-button" style="padding-left: 22px" onclick="window.location.href = 'Docs.htmls'">
+                    <div class="nav-button" style="padding-left: 22px" onclick="window.location.href = '/pages/Documentation.htmls'">
                         Documentation
                     </div>
-                    <div class="nav-button" style="padding-left: 65px" onclick="window.location.href = 'About.htmls'">
+                    <div class="nav-button" style="padding-left: 42px" onclick="window.location.href = 'https://www.github.com/RickMyers/Humble'">
+                        Repository
+                    </div>
+                    <div class="nav-button" style="padding-left: 65px" onclick="window.location.href = '/pages/About.htmls'">
                         About
+                    </div>
+                    <div class="nav-button" style="padding-left: 70px" onclick="window.location.href = '/pages/Blog.htmls'">
+                        Blog
                     </div>
                 </div>
             </div>
