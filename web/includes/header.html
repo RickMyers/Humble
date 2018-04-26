@@ -41,14 +41,26 @@
                 justify-content: space-around;
                 text-align: center
             }
-        </style>
+            .article-title {
+                font-size: 2em; letter-spacing: 2px
+            }
+            .article-separator {
+                clear: both; margin-bottom: 30px; top: -20px; position: relative; left: -10px
+            }
+            .article-quote {
+                padding: 5px; font-style: italic; color: rgba(50,50,50,.8); background-color: rgba(202,202,202,.4)
+            }
+            .article {
+                font-size: 1em; font-family: sans-serif;
+            }
+</style>
         <script type='text/javascript' src='/js/jquery'></script>
         <script type='text/javascript' src='/js/common'></script>
         <script type="text/javascript" src='/js/bootstrap'></script>
         <script type='text/javascript'>
             $(document).ready(function () {
                 $(window).resize(function () {
-                    $('#humble-container').height(window.innerHeight - $('#humble-headers').height()- (0*$('.humble-separator').height()));
+                    $('#humble-container').height(window.innerHeight - $('#humble-headers').height()- (3*$('.humble-separator').height()));
                 }).resize();
             });
 

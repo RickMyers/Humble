@@ -2,6 +2,24 @@
 
 <!--#include virtual="/web/includes/header.html" -->
 <!--#include virtual="/web/includes/container.html" -->
+<div style='font-size: 4.5em'>The Humble Blog</div>
+<div style='font-size: 1em; letter-spacing: 3px'>Perspectives, thoughts, and the sometimes incoherent ramblings of Rick</div>
+<div class='article-separator'>
+<img src='/web/images/separator.png' />
+</div>
+<div class='article-title'>Fostering Innovation</div>
+<div class='article'>
+    <span style='font-size: 1.1em; letter-spacing: 1px'>Everyone wants it.  Everyone needs it.  But few know how to define it, or what it takes to make it.</span><br /><br />
+    You can't buy it, but you can borrow it.  You can't inherit it, or get it from a book, a seminar, a class, or an inspirational poster.  You have to grow it from within, but here's the catch:  No matter how much
+    desire you may have, "Innovation" may always allude you.
+    <br /><br />
+    But this isn't just my opinion, as this article from <a href='https://www.entrepreneur.com/article/238545' target='_BLANK'>Entrepreneur.com</a> perfectly states:<br /><br />
+    <p class='article-quote'>
+        It is important to understand where innovation doesn’t come from:  It doesn’t come from a blog, a book or an article. It doesn’t come from inspirational quotes and stories. It doesn’t come from LinkedIn Influencers or anyone you follow on Twitter. It doesn’t come from motivational speakers. And it most certainly doesn’t come from any kind of self-improvement or personal productivity
+        <br /><br />
+        Innovation comes from inside you. Ideas, inspiration and innovation only seem to come from outside you, but they don’t. They always come from inside you. The only exception is small teams...but only intimate groups in real time in the real world, never large-scale or online collaborations
+    </p>
 
+</div>
 <!--#include virtual="/web/includes/footer.html" -->
 
