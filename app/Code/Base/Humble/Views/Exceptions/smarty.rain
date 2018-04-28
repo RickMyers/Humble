@@ -54,7 +54,7 @@
                             </div>
                             <div style="white-space: pre; font-family: monospace; font-size: .8em; color: #777">{$dump}</div>
                         </div>
-                        <img src="/images/core/parsererror.png"  class="error-image" draggable="false" />
+                        <img src="/images/humble/parsererror.png"  class="error-image" draggable="false" />
                         <div class='bottom-copyright'>
                             &copy; Humble Project 2007-present, all rights reserved
                         </div>

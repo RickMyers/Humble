@@ -133,7 +133,7 @@ class Notification extends Model {
 	}
 
     /**
-     * Returns a message as a response, through the response method on our Jarvis factory
+     * Returns a message as a response, through the response method on our Humble factory
      *
      * @workflow use(notification) configuration(/workflow/notification/response)
      * @param type $EVENT
@@ -143,7 +143,7 @@ class Notification extends Model {
         if ($EVENT) {
             $mydata = $EVENT->fetch();
             if (isset($mydata['response'])) {
-                Jarvis::response($mydata['response']);
+                Humble::response($mydata['response']);
                 $responded = true;
             }
         }

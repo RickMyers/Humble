@@ -22,7 +22,7 @@
  * Released under the MIT license.
  * http://jquery.org/license
  *
- * http://api.jqueryui.com/category/ui-core/
+ * http://api.jqueryui.com/category/ui-humble/
  */
 
 

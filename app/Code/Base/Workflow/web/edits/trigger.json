@@ -20,7 +20,7 @@
             title:		"Choose a client or core for namespace",
             onchange:       function (evt) {
                 if (evt.target.value) {
-                    (new EasyAjax('/workflow/component/events')).add('namespace',evt.target.value).callback(function (response) {
+                    (new EasyAjax('/workflow/component/events')).add('namespace',evt.target.value).then(function (response) {
                         EasyEdits.populateSelectBox($E('humble-paradigm-config-trigger-form-events-&id&'),eval(response));
                     }).post();
                 } 

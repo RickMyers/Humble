@@ -112,7 +112,7 @@
                     ao.add('title',$('#short_description').val());
                     ao.add('description',$('#long_description').val());
                     ao.add('type',$('#component_type').val());
-                    ao.callback(function (response) {
+                    ao.then(function (response) {
                         alert(response);
                     }).post();
                 }

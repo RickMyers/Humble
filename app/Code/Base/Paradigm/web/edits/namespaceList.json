@@ -20,7 +20,7 @@
 			title:			"Select a namespace to view the workflows associated to that client",
             type:           "select",
             populator:      function () {
-                (new EasyAjax('/workflow/component/namespaces')).callback(function (response) {
+                (new EasyAjax('/workflow/component/namespaces')).then(function (response) {
                     EasyEdits.populateSelectBox('workflow-namespace-list',response);
                 }).post();
             },

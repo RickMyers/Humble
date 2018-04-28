@@ -31,7 +31,7 @@
             "value":        "",
             "onclick":        function () {
                 if (Edits['newuser'].validate()) {
-                    (new EasyAjax('/humble/user/invite')).add('email',$('#email').val()).callback(function () {
+                    (new EasyAjax('/humble/user/invite')).add('email',$('#email').val()).then(function () {
                         alert('Sent invite');
                         $('email').value = '';
                         configuration.tabs.click('Modules');

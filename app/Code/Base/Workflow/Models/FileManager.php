@@ -267,7 +267,7 @@ class FileManager extends Model
                 if (isset($cfg['extensions']) && $cfg['extensions']) {
                     $file_list = $this->screenFileList($file_list,$cfg['extensions']);
                 }
-                $log = Humble::getEntity('core/ftp_log');
+                $log = Humble::getEntity('humble/ftp_log');
                 @mkdir($cfg['local_dir'],0775,true);
                 foreach ($file_list as $filename){
                     $log->reset();

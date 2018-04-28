@@ -73,7 +73,7 @@
             /* tons of options can go here*/
             onclick:        function () {
                 if (Edits['designer-create-form'].validate()) {
-                    (new EasyAjax('/paradigm/designer/new')).packageForm('designer-create-form').callback(function (response) {
+                    (new EasyAjax('/paradigm/designer/new')).packageForm('designer-create-form').then(function (response) {
                         var form = JSON.parse(response);
                         if (form && form.id) {
                             Designer.form.load(form);

@@ -45,7 +45,7 @@
                     window.setTimeout(Installer.update,500);
                 },
                 update: function () {
-                    (new EasyAjax('/install_status.json')).callback(function (response) {
+                    (new EasyAjax('/install_status.json')).then(function (response) {
                         console.log(response)
                         var progress = JSON.parse(response);
                         if (progress) {

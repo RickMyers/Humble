@@ -51,7 +51,7 @@ class ReportManager extends Model
      */
     public function fetchProjects() {
         $dir      = 'reports/projects';
-        $util     = Humble::getHelper('core/directory');
+        $util     = Humble::getHelper('humble/directory');
         $projects = [];
         foreach ($util->listDirectory($dir) as $entry) {
             if (ctype_upper(substr($entry,0,1))) {

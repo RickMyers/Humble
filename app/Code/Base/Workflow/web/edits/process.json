@@ -20,7 +20,7 @@
 			title:			"Choose a client or core for namespace",
             onchange:       function (evt) {
                 if (evt.target.value) {
-                    (new EasyAjax('/workflow/component/objects')).add('namespace',evt.target.value).callback(function (response) {
+                    (new EasyAjax('/workflow/component/objects')).add('namespace',evt.target.value).then(function (response) {
                         EasyEdits.populateSelectBox($E('humble-paradigm-config-process-form-component-&id&'),eval(response));
                     }).post();
                 } 
@@ -38,7 +38,7 @@
 			title:			"title for mouse rollover",
             onchange:       function (evt) {
                 if (evt.target.value) {
-                    (new EasyAjax('/workflow/component/methods')).add('process','Y').add('namespace',$('#humble-paradigm-config-process-form-namespace-&id&').val()).add('component',evt.target.value).callback(function (response) {
+                    (new EasyAjax('/workflow/component/methods')).add('process','Y').add('namespace',$('#humble-paradigm-config-process-form-namespace-&id&').val()).add('component',evt.target.value).then(function (response) {
                         EasyEdits.populateSelectBox($E('humble-paradigm-config-process-form-method-&id&'),eval(response));
                     }).post();
                 } else {
@@ -65,7 +65,7 @@
                     ao.add('namespace',$('#humble-paradigm-config-process-form-namespace-&id&').val());
                     ao.add('class',$('#humble-paradigm-config-process-form-component-&id&').val());
                     ao.add('method',evt.target.value);
-                    ao.callback(function (response) {
+                    ao.then(function (response) {
                         if (response) {
                             $('#config-component-comment-&id&').css('display','block').html(response);
                         }
