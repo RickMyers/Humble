@@ -11,14 +11,15 @@
             }
             #humble-content-area {
             }
-            .nav-button {
-                 cursor: pointer; overflow: hidden; padding: 8px; text-align: center; width: 190px; border-radius: 8px; display: flex; font-size: 1.3em; border: 2px solid silver; color: rgba(202,202,202,.8); font-weight: bolder; font-family: sans-serif;
-            }
-            .nav-button:hover {
-                background: rgba(202,202,202,.2)
-            }
             .humble-headers {
                 background: rgba(0, 0, 0, 1) url("/web/images/grad.png") no-repeat fixed center center / cover; width: 100%;
+            }
+            .nav-text {
+                float: right; margin-right: 20px; font-size: 1.1em; color: ghostwhite; cursor: pointer; opacity: .7; letter-spacing: 0.5px
+            }
+            .nav-text:hover {
+
+                color: white; opacity: 1.0
             }
             .humble-image {
                 display: inline-block; width: 65%; overflow: hidden; border-radius: 20px; border: 1px solid transparent;
@@ -35,11 +36,14 @@
             .humble-separator {
                 width: 100%; clear: both; height: 10px; background-color: rgba(50,50,50,.8);
             }
+            .humble-container {
+                padding: 5px 10px; overflow: auto; position: relative; background-color: white; width: 1248px; border-left: 1px solid rgba(190,190,190,.7); border-right: 1px solid rgba(190,190,190,.7); margin-left: auto; margin-right: auto
+            }
             .header-layer-1 {
-                display: flex; margin: auto;
+              /*  display: flex; margin: auto;*/
                /* flex-flow: row wrap;*/
-                justify-content: space-around;
-                text-align: center
+               /* justify-content: space-around;
+                text-align: center*/
             }
             .article-title {
                 font-size: 2em; letter-spacing: 2px
@@ -70,28 +74,30 @@
     <body>
         <div class="humble-headers" id="humble-headers">
             <div style="background-color: rgba(50,50,50,.8); padding: 10px; display: flex; flex-wrap: nowrap">
-                <div style="display: inline-block;">
-                    <img src="/web/images/djikstra_light.png" alt="djikstra" style=" height: 50px; cursor: pointer" onclick="window.location.href = '/humble.html'"/>
-                </div>
-                <div class="header-layer-1"  style="margin-left: auto; margin-right: auto; width: 1248px; white-space: nowrap">
-                    <div class="nav-button" style="padding-left: 70px" onclick="window.location.href = 'Main.htmls'">
-                        Home
-                    </div>
 
-                    <div class="nav-button" style="padding-left: 40px" onclick="window.location.href = '/pages/Install.htmls'">
-                        Installation
+                <div class="header-layer-1"  style="margin-left: auto; margin-right: auto; width: 1248px; white-space: nowrap; ">
+                    <div style="display: inline-block; font-size: 1.7em; vertical-align: bottom; color: ghostwhite; opacity: .7">
+                        <img src="/web/images/djikstra_light.png" alt="djikstra" style=" height: 50px; cursor: pointer; margin-right: 2px" onclick="window.location.href = '/humble.html'"/>
+                        be humble.
                     </div>
-                    <div class="nav-button" style="padding-left: 22px" onclick="window.location.href = '/pages/Documentation.htmls'">
-                        Documentation
+                    <div class="nav-text" onclick="window.location.href = '/pages/Blog.htmls'">
+                        Blog
                     </div>
-                    <div class="nav-button" style="padding-left: 42px" onclick="window.location.href = 'https://www.github.com/RickMyers/Humble'">
-                        Repository
-                    </div>
-                    <div class="nav-button" style="padding-left: 65px" onclick="window.location.href = '/pages/About.htmls'">
+                    <div class="nav-text" onclick="window.location.href = '/pages/About.htmls'">
                         About
                     </div>
-                    <div class="nav-button" style="padding-left: 70px" onclick="window.location.href = '/pages/Blog.htmls'">
-                        Blog
+                    <div class="nav-text" onclick="window.location.href = 'https://www.github.com/RickMyers/Humble'">
+                        Repository <img src="/web/images/git_squid.png" style="height: 22px"/>
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/Documentation.htmls'">
+                        Documentation
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/Install.htmls'">
+                        Installation
+                    </div>
+
+                    <div class="nav-text" style="padding-left: 70px" onclick="window.location.href = 'Main.htmls'">
+                        Home
                     </div>
                 </div>
             </div>
