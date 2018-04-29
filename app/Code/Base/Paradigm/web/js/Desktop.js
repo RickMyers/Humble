@@ -497,14 +497,16 @@ var Desktop = {
         return (Desktop.isModern) ? window.pageYOffset : Desktop.ref.iebody.scrollTop;
     },
     on: function (obj,event,handler) {
+        var result = null;
         if (typeof obj == 'string') {
             obj = document.getElementById(obj);
         }
         if (Desktop.isModern) {
-            obj.addEventListener(event,handler,false);
+            result = obj.addEventListener(event,handler,false);
         } else {
-            obj.attachEvent('on'+event,handler);
+            result = obj.attachEvent('on'+event,handler);
         }
+        return result;
     },
     off: function (obj,event,handler) {
         if (typeof obj == 'string') {

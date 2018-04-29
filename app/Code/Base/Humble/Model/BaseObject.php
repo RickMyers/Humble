@@ -496,11 +496,11 @@ SOAP;
                 if (trim($val) != '') {
                     $args[$var] = $val;
                 } else {
-                    $method = 'get'.$this->ucfirst($var);
+                    $method = 'get'.ucfirst($var);
                     $args[$var] = $this->$method();
                 }
             } else {
-                $method = 'get'.$this->ucfirst($val);
+                $method = 'get'.ucfirst($val);
                 $args[$val] = $this->$method();
             }
         }
@@ -557,7 +557,7 @@ SOAP;
             if (!\Singleton::mappings()) {
                 \Singleton::mappings(\sfYaml::load(file_get_contents('Code/Base/Humble/RPC/mapping.yaml'))); //default mappings
             }
-            if (strtolower($this->_namespace()) !== 'core') {
+            if (strtolower($this->_namespace()) !== 'humble') {
                 $me = Humble::getModule($this->_namespace());
                 $mappingFile = 'Code/'.$me['package'].'/'.str_replace('_','/',$me['rpc_mapping']).'/mapping.yaml';
                 if (file_exists($mappingFile)) {

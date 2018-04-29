@@ -159,7 +159,7 @@ class Manager extends Model
                  * going to be "eating our own dogfood", we have to suspend this session so the service we are calling can
                  * have access to the shared session variable.
                  */
-                $config  = 'get'.ucfirst($results['type']).'Configuration';
+                $config  = $results['type'].'Configuration';
                 $this->setData(json_encode($results));
                 $this->setSessionId(true);  //enable session passing
                 $config = $this->$config();

@@ -464,7 +464,9 @@ Copyright Enicity.com, all rights reserved
         })();
         topctr = 0;
         $(document).ready(function () {
-            Desktop.on($E('canvas-container'),'keydown',Paradigm.remove);
+            //Desktop.on($E('canvas-container'),'keydown',Paradigm.remove);
+            Paradigm.container = $E('canvas-container');
+            Desktop.on(document,'keydown',Paradigm.remove);
             $('.insert_glyph').prop('disabled',true).css('color','rgba(90,90,90,.3)');
             $('.insert_glyph span:first-child').css('opacity','.3');
             $('#paradigm-save-option').prop('disabled',true).css('color','rgba(90,90,90,.3)');

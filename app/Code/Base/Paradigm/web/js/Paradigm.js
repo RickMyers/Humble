@@ -17,9 +17,6 @@ var Paradigm = (function () {
         /**
          * Configuration options are set in Paradigm.config.js
          */
-        canvas: false,
-        container: false,
-        label: false,
         config: {
 
         },
@@ -68,7 +65,7 @@ var Paradigm = (function () {
                 Paradigm.images[image].ref.onload = function () {
                     Paradigm.draw.drawImage(this,10,10,50,50);
                     Paradigm.draw.clearRect(0,0,Paradigm.canvas.width,Paradigm.canvas.height);
-                }
+                };
                 Paradigm.images[image].ref.src = Paradigm.images[image].src;
             }
         },
@@ -99,31 +96,31 @@ var Paradigm = (function () {
             },
             actor: {
                 label: 'Actor',
-                image: "/images/paradigm/clipart/person1.png",
+                image: "/images/paradigm/clipart/person1.png"
             },
             sensor: {
                 label: 'Sensor',
-                image: "/images/paradigm/clipart/sensor3.png",
+                image: "/images/paradigm/clipart/sensor3.png"
             },
             trigger: {
                 label: 'Event',
-                image: "/images/paradigm/clipart/event3.png",
+                image: "/images/paradigm/clipart/event3.png"
             },
             detector: {
                 label: 'Detector',
-                image: "/images/paradigm/clipart/detector2.png",
+                image: "/images/paradigm/clipart/detector2.png"
             },
             exception: {
                 label: 'Exception',
-                image: "/images/paradigm/clipart/exception.png",
+                image: "/images/paradigm/clipart/exception.png"
             },
             system: {
                 label: 'System',
-                image: "/images/paradigm/clipart/cron.png",
+                image: "/images/paradigm/clipart/cron.png"
             },
             webservice: {
                 label: 'Web Service',
-                image: "/images/paradigm/clipart/webservice.png",
+                image: "/images/paradigm/clipart/webservice.png"
             },
             process: {
                 label: 'Process'
@@ -253,6 +250,8 @@ var Paradigm = (function () {
         drag:       false,  /* a flag, if true an item is being dragged */
         resize:     false,  /* set when within 5px of the edge of an element */
         canvas:     null,   /* reference to the drawing canvas  */
+        container: false,   /* reference to the div containing the canvas */
+        label: false,
         draw:       null,   /* the canvase context */
         rect:       null,   /* for storing the bounding client rectangle */
         element:    false,  /* current element index number for the hashmap */
@@ -378,7 +377,7 @@ var Paradigm = (function () {
                 color: color,
                 font: baseFontFamily,
                 size: baseFontSize
-            }
+            };
         },
         /*  --------------------------------------------------------------------
          *  Places the text in the shape, respective of what kind of shape it is
@@ -413,7 +412,7 @@ var Paradigm = (function () {
                                                     break;
                 }
             } else {
-                alert('skipped')
+                alert('skipped');
             }
             Paradigm.draw.font = element.lines.size+'px '+element.lines.font;
             Paradigm.draw.fillStyle = (element.lines.color) ? element.lines.color : 'rgb(0,0,0)';
@@ -544,10 +543,10 @@ var Paradigm = (function () {
                                                     Paradigm.placeText(element);
                                                     break;
                         case    "diamond"       :   var radius = Math.round(element.D/2);
-                                                    var p0      = { x: element.X, y: element.Y }
-                                                    var p1      = { x: element.X+radius, y: element.Y+radius }
-                                                    var p2      = { x: element.X, y: element.Y+element.D }
-                                                    var p3      = { x: element.X-radius, y: element.Y+radius }
+                                                    var p0      = { x: element.X, y: element.Y };
+                                                    var p1      = { x: element.X+radius, y: element.Y+radius };
+                                                    var p2      = { x: element.X, y: element.Y+element.D };
+                                                    var p3      = { x: element.X-radius, y: element.Y+radius };
                                                     Paradigm.draw.fillStyle = Paradigm.gradient(element.X,element.Y,element.W,element.H);
                                                     Paradigm.draw.beginPath();
                                                     Paradigm.draw.moveTo(p0.x, p0.y);
@@ -564,9 +563,9 @@ var Paradigm = (function () {
                                                     Paradigm.placeText(element);
                                                     break;
                         case    "triangle"      :   var radius = Math.round(element.D/2);
-                                                    var p0 = { x: element.X, y: element.Y }
-                                                    var p1 = { x: element.X+radius, y: element.Y+radius }
-                                                    var p2 = { x: element.X-radius, y: element.Y+radius }
+                                                    var p0 = { x: element.X, y: element.Y };
+                                                    var p1 = { x: element.X+radius, y: element.Y+radius };
+                                                    var p2 = { x: element.X-radius, y: element.Y+radius };
                                                     Paradigm.draw.fillStyle = Paradigm.gradient(element.X,element.Y,element.W,element.H);
                                                     Paradigm.draw.beginPath();
                                                     Paradigm.draw.moveTo(p0.x, p0.y);
@@ -580,7 +579,7 @@ var Paradigm = (function () {
                                                     break;
                         case    "arrow"         :   arrows[arrows.length] = element;
                                                     break;
-                        case    "image"         :   var image   = Paradigm.images[element.element].ref
+                        case    "image"         :   var image   = Paradigm.images[element.element].ref;
                                                     Paradigm.draw.drawImage(image,element.X,element.Y,element.W,element.H);
                                                     Paradigm.applyLabel(element,element.X-2,element.Y);
                                                     Paradigm.placeText(element);
@@ -732,18 +731,18 @@ var Paradigm = (function () {
                                                     eligible    = eligible && ((Paradigm.mouseY > element.Y) && (Paradigm.mouseY < (element.Y + element.H)));
                                                     break;
                         case    "diamond"       :   var radius  = Math.round(element.D/2);
-                                                    var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY }
-                                                    var v1      = { x: element.X, y: element.Y }
-                                                    var v2      = { x: element.X+radius, y: element.Y+radius }
-                                                    var v3      = { x: element.X-radius, y: element.Y+radius }
+                                                    var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY };
+                                                    var v1      = { x: element.X, y: element.Y };
+                                                    var v2      = { x: element.X+radius, y: element.Y+radius };
+                                                    var v3      = { x: element.X-radius, y: element.Y+radius };
                                                     var b1      = (Paradigm.math.sign(pt, v1, v2) > 0.0);
                                                     var b2      = (Paradigm.math.sign(pt, v2, v3) > 0.0);
                                                     var b3      = (Paradigm.math.sign(pt, v3, v1) > 0.0);
                                                     eligible    = (b1 && b2 && b3);
                                                     if (!eligible) {
-                                                        v1      = { x: element.X, y: element.Y+element.D }
-                                                        v2      = { x: element.X+radius, y: element.Y+radius }
-                                                        v3      = { x: element.X-radius, y: element.Y+radius }
+                                                        v1      = { x: element.X, y: element.Y+element.D };
+                                                        v2      = { x: element.X+radius, y: element.Y+radius };
+                                                        v3      = { x: element.X-radius, y: element.Y+radius };
                                                         b1      = (Paradigm.math.sign(pt, v1, v2) < 0.0);
                                                         b2      = (Paradigm.math.sign(pt, v2, v3) < 0.0);
                                                         b3      = (Paradigm.math.sign(pt, v3, v1) < 0.0);
@@ -751,10 +750,10 @@ var Paradigm = (function () {
                                                     }
                                                     break;
                         case    "triangle"      :   var radius  = Math.round(element.D/2);
-                                                    var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY }
-                                                    var v1      = { x: element.X, y: element.Y }
-                                                    var v2      = { x: element.X+radius, y: element.Y+radius }
-                                                    var v3      = { x: element.X-radius, y: element.Y+radius }
+                                                    var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY };
+                                                    var v1      = { x: element.X, y: element.Y };
+                                                    var v2      = { x: element.X+radius, y: element.Y+radius };
+                                                    var v3      = { x: element.X-radius, y: element.Y+radius };
                                                     var b1      = (Paradigm.math.sign(pt, v1, v2) > 0.0);
                                                     var b2      = (Paradigm.math.sign(pt, v2, v3) > 0.0);
                                                     var b3      = (Paradigm.math.sign(pt, v3, v1) > 0.0);
@@ -773,12 +772,12 @@ var Paradigm = (function () {
                                                     break;
                         case    "polygon1"      :   var v_ray   = Math.round(element.H/2);
                                                     var h_ray   = Math.round(element.W/2);
-                                                    var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY }
-                                                    var v1      = { x: element.X, y: element.Y }
-                                                    var v2      = { x: element.X+element.W, y: element.Y }
-                                                    var v3      = { x: element.X+element.W, y: element.Y+v_ray }
-                                                    var v4      = { x: element.X+h_ray, y: element.Y+element.H }
-                                                    var v5      = { x: element.X, y: element.Y+v_ray }
+                                                    var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY };
+                                                    var v1      = { x: element.X, y: element.Y };
+                                                    var v2      = { x: element.X+element.W, y: element.Y };
+                                                    var v3      = { x: element.X+element.W, y: element.Y+v_ray };
+                                                    var v4      = { x: element.X+h_ray, y: element.Y+element.H };
+                                                    var v5      = { x: element.X, y: element.Y+v_ray };
                                                     var b1      = (Paradigm.math.sign(pt, v1, v2) > 0.0);
                                                     var b2      = (Paradigm.math.sign(pt, v2, v3) > 0.0);
                                                     var b3      = (Paradigm.math.sign(pt, v3, v4) > 0.0);
@@ -786,11 +785,11 @@ var Paradigm = (function () {
                                                     var b5      = (Paradigm.math.sign(pt, v5, v1) > 0.0);
                                                     eligible    = (b1 && b2 && b3 && b4 && b5);
                                                     break;
-                        case    "polygon2"      :   var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY }
-                                                    var v1      = { x: element.X, y: element.Y }
-                                                    var v2      = { x: element.X+element.W, y: element.Y-element.offset }
-                                                    var v3      = { x: element.X+element.W, y: element.Y+element.H }
-                                                    var v4      = { x: element.X, y: element.Y+element.H }
+                        case    "polygon2"      :   var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY };
+                                                    var v1      = { x: element.X, y: element.Y };
+                                                    var v2      = { x: element.X+element.W, y: element.Y-element.offset };
+                                                    var v3      = { x: element.X+element.W, y: element.Y+element.H };
+                                                    var v4      = { x: element.X, y: element.Y+element.H };
                                                     var b1      = (Paradigm.math.sign(pt, v1, v2) > 0.0);
                                                     var b2      = (Paradigm.math.sign(pt, v2, v3) > 0.0);
                                                     var b3      = (Paradigm.math.sign(pt, v3, v4) > 0.0);
@@ -798,11 +797,11 @@ var Paradigm = (function () {
                                                     eligible    = (b1 && b2 && b3 && b4);
                                                     break;
                         case    "trapezoid"     :
-                        case    "parallelogram" :   var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY }
-                                                    var v1      = { x: element.X+element.offset, y: element.Y }
-                                                    var v2      = { x: element.X+element.W+element.offset, y: element.Y }
-                                                    var v3      = { x: element.X+element.W, y: element.Y+element.H }
-                                                    var v4      = { x: element.X, y: element.Y+element.H }
+                        case    "parallelogram" :   var pt      = { x: Paradigm.mouseX, y: Paradigm.mouseY };
+                                                    var v1      = { x: element.X+element.offset, y: element.Y };
+                                                    var v2      = { x: element.X+element.W+element.offset, y: element.Y };
+                                                    var v3      = { x: element.X+element.W, y: element.Y+element.H };
+                                                    var v4      = { x: element.X, y: element.Y+element.H };
                                                     var b1      = (Paradigm.math.sign(pt, v1, v2) > 0.0);
                                                     var b2      = (Paradigm.math.sign(pt, v2, v3) > 0.0);
                                                     var b3      = (Paradigm.math.sign(pt, v3, v4) > 0.0);
@@ -825,7 +824,7 @@ var Paradigm = (function () {
             for (i=0; i<candidates.length; i++) {
                 if (Paradigm.elements.list[candidates[i]].Z > zIndex) {
                     candidate   = candidates[i];
-                    zIndex      = Paradigm.elements.list[candidates[i]].Z
+                    zIndex      = Paradigm.elements.list[candidates[i]].Z;
                 }
             }
             return candidate;
@@ -855,7 +854,7 @@ var Paradigm = (function () {
         },
         remove:         function (evt) {
             evt = (evt) ? evt : (event ? window.event : null);
-            if ((evt.keyCode == 46) && (Paradigm.lastElement !== false)) {
+            if ((evt.target === Paradigm.container) && (evt.keyCode === 46) && (Paradigm.lastElement !== false)) {
                 var element = Paradigm.elements.list[Paradigm.lastElement];
                 if (element.element === 'begin') {
                     alert("You can't delete the start, no matter how much you might want to");
@@ -963,7 +962,7 @@ var Paradigm = (function () {
                 if (Paradigm.drag && (Paradigm.element !== false )) {
                     $('#elementX').html(Paradigm.target.X);
                     $('#elementY').html(Paradigm.target.Y);
-                    if (Paradigm.target.type == "arrow") {
+                    if (Paradigm.target.type === "arrow") {
                         if ((Paradigm.target.from.id && Paradigm.objects[Paradigm.target.from.id]) && (Paradigm.target.to.id && Paradigm.objects[Paradigm.target.to.id])) {
                             //nop, you are already connected
                         } else if (Paradigm.target.dragStart) {
@@ -1019,7 +1018,7 @@ var Paradigm = (function () {
             up:        function (evt) {
                 evt = (evt) ? evt : ((window.event) ? event : null);
                 if (Workflows.snap) {
-                    //this didn't work as expected
+                    //this didn't work as expected, so I am not allowing snapping (for now)
                     var grid = 10;
                     var offsetX = Paradigm.target.X % grid;
                     var offsetY = Paradigm.target.Y % grid;
@@ -1043,7 +1042,7 @@ var Paradigm = (function () {
                 Desktop.on(Paradigm.canvas,"mousedown",Paradigm.mouse.down);
                 Desktop.off(Paradigm.canvas,"mousemove",Paradigm.mouse.move);
                 Desktop.off(document,"mouseup",Paradigm.mouse.up);
-                if (Paradigm.target.type == "arrow") {
+                if (Paradigm.target.type === "arrow") {
                     if (!(Paradigm.target.from.id && Paradigm.target.to.id)) {
                         Paradigm.elements.connectors.check(Paradigm.target);
                     }
@@ -1081,7 +1080,7 @@ var Paradigm = (function () {
                         var candidate, ctr, element, distance;
                         for (var i=0; i<Paradigm.elements.list.length; i++) {
                             element = Paradigm.elements.list[i];
-                            if (Paradigm.elements.list[i].type=='arrow') {
+                            if (Paradigm.elements.list[i].type === 'arrow') {
                                 continue;
                             }
                             //ok, somehow I have to figure out who a 'candidate' is to connect to, and whether they are already have reached their allowed number of connectoins
@@ -1126,7 +1125,7 @@ var Paradigm = (function () {
                             connector.Y = candidate.element.connectors[candidate.direction].Y;
                             connector.from.id = candidate.element.id;
                             connector.from.direction = candidate.direction;
-                            candidate.direction.arrow = connector
+                            candidate.direction.arrow = connector;
                             candidate.element.connectors[candidate.direction].begin = connector;
                         } else {
                             for (i=0; i<endCandidates.length; i++) {
@@ -1345,7 +1344,7 @@ var Paradigm = (function () {
                             Z:  z+1,
                             isClosed: null,
                             win: null
-                        }
+                        };
                         //#################################################################################################
                         //###                                !!!VERY IMPORTANT!!!                                       ###
                         //###    THE ID OF THE START GLYPH BECOMES THE INTERNAL NAME OF THE WORKFLOW TO ALL TRIGGERS    ###
@@ -1395,7 +1394,7 @@ var Paradigm = (function () {
                             Z:  z+1,
                             isClosed: null,
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1443,7 +1442,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1489,7 +1488,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1535,7 +1534,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1581,7 +1580,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1628,7 +1627,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1672,7 +1671,7 @@ var Paradigm = (function () {
                             Z:  z+1,
                             isClosed: null,
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1723,7 +1722,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1771,7 +1770,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1820,7 +1819,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1868,7 +1867,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1916,7 +1915,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -1960,7 +1959,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
                     }).post();
@@ -2008,7 +2007,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -2057,7 +2056,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -2106,7 +2105,7 @@ var Paradigm = (function () {
                                 return false;
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -2150,7 +2149,7 @@ var Paradigm = (function () {
 
                             },
                             win: null
-                        }
+                        };
                         Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
@@ -2222,7 +2221,7 @@ var Paradigm = (function () {
             for (var i in Desktop.window.list) {
                 if (Desktop.window.list[i].frame) {
                     $(Desktop.window.list[i].frame).on('keydown',function (evt) {
-                        if (evt.keyCode == 46) {
+                        if (evt.keyCode === 46) {
                             evt.stopPropagation();
                         }
                     });
@@ -2242,7 +2241,7 @@ var Paradigm = (function () {
 
             }
         }
-    }
+    };
 })();
 window.onload = Paradigm.init;
 $(document).ready(function () {
