@@ -533,10 +533,10 @@ Copyright Enicity.com, all rights reserved
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/event3.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('trigger')" /><br />
                             System Event
                         </div>
-                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-right: 20px" title='Triggered by the presence of specific data in a request'>
+                        <!--div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-right: 20px" title='Triggered by the presence of specific data in a request'>
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/sensor2.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('sensor')" /><br />
                             Sensor
-                        </div>
+                        </div-->
                     </fieldset>
 
                     <fieldset style="display: inline-block; position: relative; top: -5px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
@@ -551,25 +551,24 @@ Copyright Enicity.com, all rights reserved
                         </div>
                     </fieldset>
 
-                    <fieldset style="display: inline-block; position: relative; top: -5px; margin-left: 20px; padding: 0px 40px 0px 20px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
+                    <fieldset style="display: inline-block; white-space: nowrap;  position: relative; top: -5px; margin-left: 20px; padding: 0px 40px 0px 20px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
                         <legend style="font-family: sans-serif; font-size: .6em">Components</legend>
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/process.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('process')" /><br />
                             Process
-
-                        </div>
+                       </div>
                         <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/decision.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('decision')" /><br />
                             Decision
                         </div>
-                        <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                        <!--div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/business-rule.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('rule')" /><br />
                             Rule
-                        </div>
-                        <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                        </div-->
+                        <!--div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/detector2.png' style=' height: 40px; cursor: pointer' onclick="Workflows.prompt('detector')" /><br />
                             Detector
-                        </div>
+                        </div-->
                         <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/event.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('alerts')"  /><br />
                             Notification
@@ -578,8 +577,6 @@ Copyright Enicity.com, all rights reserved
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/exception.png' style=' height: 40px; cursor: pointer' onclick="Workflows.prompt('exception')" /><br />
                             Exception
                         </div>
-                        <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
-
                         <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/data.png' style='height: 40px; cursor: pointer'  onclick="Workflows.prompt('report')"/><br />
                             Report
@@ -734,7 +731,7 @@ Copyright Enicity.com, all rights reserved
             <div style='font-family: sans-serif; background-color: #333; color: white; font-size: 10px; box-style: border-box; position: relative' id="paradigm-footer">
                 <div style='float: right; margin-right: 10px; color: ghostwhite' id='paradigm-last-action'>
                 </div>
-                &copy; Humble Project, 2014-present
+                &copy; Humble Project, 2007-present
             </div>
         </div>
     </body>

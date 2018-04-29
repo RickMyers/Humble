@@ -33,6 +33,7 @@ Paradigm.console = (function () {
                     console_app.set(response);
                     Paradigm.console.ref        = $E('paradigmConsole');
                     Paradigm.console.ref.style.contentEditable = false;
+                    console_app._resize();
                 }).get();
             }
         },
@@ -42,7 +43,7 @@ Paradigm.console = (function () {
         ref:        null,
         messages:   [],
         active:     false,
-        heading:    "Humble Paradigm Console\nCopyright 2014-Present\nAll rights reserved\n\n$ Message: Paradigm is Online\n",
+        heading:    "Humble Paradigm Console\nCopyright 2007-Present\nAll rights reserved\n\n$ Message: Paradigm is Online\n",
         text:       "",
         command:    "",
         commands:   [],
