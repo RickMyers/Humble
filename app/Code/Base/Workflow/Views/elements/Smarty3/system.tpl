@@ -20,8 +20,8 @@
                 <b>Please don't forget to hit &lt;<u>Save</u>&gt; to set the trigger date and time!
             </div>
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
-                <form name='jarvis-paradigm-config-system-event-form' id='jarvis-paradigm-config-system-event-form-{$id}' onsubmit='return false'>
-                <input type="hidden" id="jarvis-paradigm-config-system-event-form-id-{$id}" name="id" value="{$id}" />
+                <form name='humble-paradigm-config-system-event-form' id='humble-paradigm-config-system-event-form-{$id}' onsubmit='return false'>
+                <input type="hidden" id="humble-paradigm-config-system-event-form-id-{$id}" name="id" value="{$id}" />
                 <input type="hidden" name="workflow_id" id="workflow_id-{$id}" value="" />
                 <input type="hidden" name="window_id" id="window_id-{$id}" value="{$window_id}" />
                 <input type="hidden" name="windowId" id="windowId-{$id}" value="{$window_id}" />
@@ -95,5 +95,5 @@
     var ee = new EasyEdits(null,'system_'+id);
     ee.fetch('/edits/paradigm/system');
     ee.process(ee.getJSON().replace(/&id&/g,id).replace(/&window_id&/g,window_id));
-    Form.intercept($('#jarvis-paradigm-config-system-event-form-{$id}').get(),'{$manager->getId()}','/paradigm/system/save',window_id);
+    Form.intercept($('#humble-paradigm-config-system-event-form-{$id}').get(),'{$manager->getId()}','/paradigm/system/save',window_id);
 </script>
