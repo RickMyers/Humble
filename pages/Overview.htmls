@@ -1,0 +1,28 @@
+<!--#include virtual="/web/includes/header.html" -->
+<!--#include virtual="/web/includes/container.html" -->
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+    <div class='humble-topic-header'>Overview Of Framework</div>
+    <img src='/pages/images/MVC.png' style='float: right; height: 180px; margin-left: 5px' />
+Humble is a Model-View-Controller (MVC) framework that abstracts away a great deal of what used to be complicated and complex code.  It does this by heavily making use of code generators and code compilers.
+<br /><br />
+In terms of abstraction and MVC, the Controllers are XML files that are compiled into PHP programs behind the scenes, and the views can be rendered using any of a number of different templating engines, or you can
+"run without a view" which then returns JSON to the requestor (more on that later).
+<br /><br />
+The framework uses reflection to read your Models and register publicly exposed methods that can then be incorporated into workflows (designed using a GUI) that implement complex business model logic.
+<div style='clear: both'></div>
+<br />
+
+Humble is a modular, <a href="https://www.php-fig.org/psr/psr-4/" target="_BLANK">PSR-4</a> compliant framework, with the framework having a base namespace of 'Humble', however, each module has its own internal namespace that
+is only visible to itself and other modules, and this allows for a great deal of encapsulation.<br /><br />
+All modules, classes, entities, helpers, etc are referenced by their internal namespace and accessed by a single static Factory class, as shown below:<br /><br />
+<ul>
+    <li class='humble-code-like'>$model   = MyBrand::getModel('acme/order/list');</li>
+    <li class='humble-code-like'>$table   = MyBrand::getEntity('acme/customers');</li>
+    <li class='humble-code-like'>$utility = MyBrand::getHelper('humble/image');</li>
+</ul><br />
+During the installation process, the installer will be able to re-brand the primary Factory class to a more convenient and identifiable name.  This gives users a place to create additional factories and other resources and code-constructs.<br /><br/>
+<img src='/pages/images/polyglot_orm.png' style='height: 300px; float: left; margin-right; 5px' />
+</div>
+<!--#include virtual="/web/includes/footer.html" -->
+
+
