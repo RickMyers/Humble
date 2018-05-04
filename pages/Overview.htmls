@@ -1,7 +1,7 @@
 <!--#include virtual="/web/includes/header.html" -->
 <!--#include virtual="/web/includes/container.html" -->
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-    <div class='humble-topic-header'>Overview Of Framework</div>
+    <div class='humble-topic-header'>Overview Of The Humble Framework</div>
     <img src='/pages/images/MVC.png' style='float: right; height: 180px; margin-left: 5px' />
 Humble is a Model-View-Controller (MVC) framework that abstracts away a great deal of what used to be complicated and complex code.  It does this by heavily making use of code generators and code compilers.
 <br /><br />
@@ -22,6 +22,18 @@ All modules, classes, entities, helpers, etc are referenced by their internal na
 </ul><br />
 During the installation process, the installer will be able to re-brand the primary Factory class to a more convenient and identifiable name.  This gives users a place to create additional factories and other resources and code-constructs.<br /><br/>
 <img src='/pages/images/polyglot_orm.png' style='height: 300px; float: left; margin-right; 5px' />
+Humble uses a <a href="https://en.wikipedia.org/wiki/Polyglot_(computing)" target="_BLANK">polyglot</a> ORM called <i>Unity</i> to make database access and persistence as simple as possible.<br /><br />
+<a href="http://www.jamesserra.com/archive/2015/07/what-is-polyglot-persistence/" target="_BLANK">Polyglot Persistence</a> typically means using more than one approach to persisting data in an organization, however,
+<i>Unity</i> goes a step further in that it merges disparate storage solutions into a single product.  In short, <i>Unity</i> merges MySQL (RDMS) and MongoDB (NoSQL) into a single persistence solution.<br /><br />
+<i>Unity</i> can interact with MySQL tables, MongoDB collections, or both concurrently, in any transaction.<br /><br />
+Polyglot persistence is here, and the Humble Framework makes leveraging <i>Unity</i> from any perspective.
+<div style="clear: both"></div><br />
+<img src="/pages/images/integration.png" style="float: right; height: 200px; margin-left: 5px"/>
+Today, having the means to integrate and exchange information isn't an option: it is a requirement<br /><br />
+Whether you are implementing a traditional Enterprise Service Bus (ESB), or creating a Microservices application, or just a REST API, Humble's XML controllers are up to the job, and again, make it incredibly easy.
+<br /><br />
+Humble uses YaML files define "Smart Endpoints" and so minimizes the need to write complicated code.  The XML files and the YaML files can even be crafted by a non-programmer to offload some of the work.<br /><br />
+The default data format internally and externally is JSON, so integrating with decoupled front ends written with JavaScript frameworks like Angular, Backbone, and React is second nature.
 </div>
 <!--#include virtual="/web/includes/footer.html" -->
 
