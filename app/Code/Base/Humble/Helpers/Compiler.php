@@ -78,6 +78,58 @@ class Compiler extends Directory
         $this->includes                 = $includes;
     }
 
+    private function processDefault() {
+
+    }
+    private function processRequired($required,$source,$field) {
+        $required   = ($required) ? ($required==='true' ? true : false) : false;
+        if ($required) {
+            print($this->tabs().'if (!isset('.$source."['".$field."'".'])) { throw new \Exceptions\ValidationRequiredException("A value has not been set for the variable <i style=\'color: red\'>'.$field.'</i>",12); }'."\n");
+        }
+    }
+    private function processFormat($format,$source,$field,$required=false,$default=false) {
+        if ($default && !$required && ($default !== '"now"')) {
+            print($this->tabs().'if (!isset('.$source.'["'.$field.'"])) {'."\n");
+            print($this->tabs().$source.'["'.$field.'"] = addslashes('.$default.');'."\n");
+            print($this->tabs()."}\n");
+        }
+        switch ($format) {
+            case "datestamp":
+            case "date" :
+                print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = date("Y-m-d",strtotime('.$source.'["'.$field.'"]'.'));'."\n");
+                print($this->tabs(-1)."}\n");
+                break;
+            case "timestamp" :
+                print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = date("Y-m-d H:i:s",strtotime('.$source.'["'.$field.'"]'.'));'."\n");
+                print($this->tabs(-1)."}\n");
+                break;
+            case "time" :
+                print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = date("H:i:s",strtotime('.$source.'["'.$field.'"]'.'));'."\n");
+                print($this->tabs(-1)."}\n");
+                break;
+            case "password" :
+                print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = MD5('.$source.'["'.$field.'"]'.');'."\n");
+                print($this->tabs(-1)."}\n");
+                break;
+            case "crypt" :
+                //need to think this through with a salt and all that
+                print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = crypt('.$source.'["'.$field.'"]'.');'."\n");
+                print($this->tabs(-1)."}\n");
+                break;
+            case "json" :
+                print('if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = json_decode('.$source.'["'.$field.'"]'.',true);'."\n");
+                print($this->tabs(-1)."}\n");
+                break;
+            default     :
+                break;
+        }
+    }
     /**
      *
      * @param type $parameter
@@ -125,7 +177,7 @@ class Compiler extends Directory
             $this->arguments[$source] = [];
         }
         $this->arguments[$source][$field] = (string)$parameter['name'];
-        $format     = isset($parameter['format']) ? strtolower((string)$parameter['format']) : false;
+        $format     = isset($parameter['format'])   ? strtolower((string)$parameter['format']) : false;
         $minlength  = isset($parameter['minlength']) ? (int)$parameter['minlength'] : false;
         $maxlength  = isset($parameter['maxlength']) ? (int)$parameter['maxlength'] : false;
         $timestamp  = false;
@@ -138,10 +190,7 @@ class Compiler extends Directory
             $time      = ($format   == 'time') ? 1 : 0;
         }
         $required   = (isset($parameter['required']) ? strtolower((string)$parameter['required']) : false);
-        $required   = ($required) ? ($required==='true' ? true : false) : false;
-        if ($required) {
-            print($this->tabs().'if (!isset('.$source."['".$field."'".'])) { throw new \Exceptions\ValidationRequiredException("A value has not been set for the variable <i style=\'color: red\'>'.$field.'</i>",12); }'."\n");
-        }
+        $this->processRequired($required,$source,$field);
         $optional   = (isset($parameter['optional']) ? strtolower((string)$parameter['optional']) : false);
         $optional   = ($optional) ? ($optional==='true' ? true : false) : false;
 
@@ -205,47 +254,7 @@ PHP;
            print($php);
         }
         if (isset($parameter['format'])) {
-            if ($default && !$required && ($default !== '"now"')) {
-                print($this->tabs().'if (!isset('.$source.'["'.$field.'"])) {'."\n");
-                print($this->tabs().$source.'["'.$field.'"] = addslashes('.$default.');'."\n");
-                print($this->tabs()."}\n");
-            }
-            switch ($parameter['format']) {
-                case "datestamp":
-                case "date" :
-                    print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                    print($this->tabs(1).$source.'["'.$field.'"] = date("Y-m-d",strtotime('.$source.'["'.$field.'"]'.'));'."\n");
-                    print($this->tabs(-1)."}\n");
-                    break;
-                case "timestamp" :
-                    print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                    print($this->tabs(1).$source.'["'.$field.'"] = date("Y-m-d H:i:s",strtotime('.$source.'["'.$field.'"]'.'));'."\n");
-                    print($this->tabs(-1)."}\n");
-                    break;
-                case "time" :
-                    print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                    print($this->tabs(1).$source.'["'.$field.'"] = date("H:i:s",strtotime('.$source.'["'.$field.'"]'.'));'."\n");
-                    print($this->tabs(-1)."}\n");
-                    break;
-                case "password" :
-                    print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                    print($this->tabs(1).$source.'["'.$field.'"] = MD5('.$source.'["'.$field.'"]'.');'."\n");
-                    print($this->tabs(-1)."}\n");
-                    break;
-                case "crypt" :
-                    //need to think this through with a salt and all that
-                    print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                    print($this->tabs(1).$source.'["'.$field.'"] = crypt('.$source.'["'.$field.'"]'.');'."\n");
-                    print($this->tabs(-1)."}\n");
-                    break;
-                case "json" :
-                    print('if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                    print($this->tabs(1).$source.'["'.$field.'"] = json_decode('.$source.'["'.$field.'"]'.',true);'."\n");
-                    print($this->tabs(-1)."}\n");
-                    break;
-                default     :
-                    break;
-            }
+            $this->processFormat(strtolower($parameter['format']),$source,$field,$required,$default);
         }
         if (($source == "GET") || ($source == "POST")) {
             $this->parameters[$source][] = $field;
@@ -519,9 +528,11 @@ PHP;
     private function processViews($node) {
         print($this->tabs().'$views['.(isset($node['order']) ? $node['order'] : '').']'." = '".$node['name']."';\n");
     }
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+
+    /**
+     *
+     * @param type $node
+     */
     private function processChain($node) {
         //nop
         foreach($node as $nIdx => $action) {
@@ -530,9 +541,10 @@ PHP;
 
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     *
+     * @param type $action
+     */
     private function processChainedAction($action) {
         print($this->tabs().'$chainActions[]'." = '".$action['name']."';\n");
         if (isset($action['controller'])){
@@ -542,9 +554,10 @@ PHP;
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     *
+     * @param type $node
+     */
     private function processRedirect($node) {
         $redirect = "";
         print($this->tabs().'$_SESSION["HUMBLE_REDIRECT_HEADERS"] = headers_list();'."\n");
@@ -674,9 +687,10 @@ PHP;
         print($this->tabs().'$abort = '.$node['value'].';'."\n");
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     *
+     * @param type $node
+     */
     private function processAssign($node) {
         if (isset($node['value'])) {
             print($this->tabs().'$'.$node['var'].' = $models["'.$node['var'].'"] = '.$node['value'].';'."\n");
@@ -688,7 +702,7 @@ PHP;
     }
 
     /**
-     * Since PHP establishes a lock on a session file, only one process at a time can write to it.  If there are multiple ajax requests hitting the server, they will
+     * Since PHP establishes a lock on a session file, only one process at a time can write to it.  If there are multiple AJAXS requests hitting the server, they will
      * end up blocking one another.  If your action or component doesn't need to write to the session, it is a good idea to release, or "unblock" the session
      * by setting 'blocking="off"' on your element
      *
@@ -696,10 +710,16 @@ PHP;
      */
     private function blockingStatement($statement) {
         switch (strtolower($statement)) {
-            case "off"  :
+            case "n"        :
+            case "false"    :
+            case "no"       :
+            case "off"      :
                 print($this->tabs()."Environment::unblock();\n");
                 break;
-            case "on"   :
+            case "y"        :
+            case "true"     :
+            case "on"       :
+            case "on"       :
                 print($this->tabs()."Environment::block();\n");
                 break;
             default : break;
@@ -775,7 +795,6 @@ PHP;
             print("<?php\n");
             print($this->tabs(1).'$models["firePHP"] = \Log::getConsole();'."\n");
             print($this->tabs().'function processMethod($method) {'."\n");
-            ;
             print($this->tabs(1).'global $models;'."\n");
             print($this->tabs().'global $view;'."\n");
             print($this->tabs().'global $views;'."\n");
@@ -816,14 +835,42 @@ PHP;
                 if (isset($action['blocking'])) {
                     $this->blockingStatement($action['blocking']);
                 }
+                //Handles options for the variables you want to "pass-along" to the view
                 if (isset($action['passalong'])) {
                     $fields = explode(",",$action['passalong']);
+                    $format = ''; $required = false; $default = '';
                     foreach ($fields as $field) {
+                        if (strpos($field,':')!==false) {
+                            $f = explode(':',$field);
+                            $field = $f[0]; $ll =count($f);
+                            for ($ii=1; $ii < $ll; $ii++) {
+                                $param = $f[$ii];
+                                $optval = true;
+                                if (strpos($param,'=')) {
+                                    $opt    = explode('=',$param);
+                                    $param  = $opt[0];
+                                    $optval = $opt[1];
+                                }
+                                switch (strtolower($param)) {
+                                    case "format"   :
+                                        $format = $optval;
+                                        $this->processFormat(strtolower($optval),'$_REQUEST',$field,$required,$default);
+                                        break;
+                                    case "default" :
+                                        break;
+                                    case "required" :
+                                        $required = $optval;
+                                        $this->processRequired($optval,'$_REQUEST',$field);
+                                        break;
+                                    default         : break;
+                                }
+                            }
+                        }
                         print($this->tabs().'$models[\''.$field.'\'] = isset($_REQUEST[\''.$field.'\']) ? $_REQUEST[\''.$field.'\'] : null;'."\n");
                     }
                 }
                 if (isset($action['required'])) {
-                    $fields = explode(",",$action['required']);
+                    $fields = explode(",",$action['required']);                 //I forgot I put this in there... must have been drinking and coding...
                     foreach ($fields as $field) {
                         print($this->tabs().'if (!isset($_REQUEST["'.$field.'"])) { throw new \Exceptions\ValidationRequiredException("A value has not been set for the variable <i style=\'color: red\'>'.$field.'</i>",12); }'."\n");
                     }
@@ -900,6 +947,7 @@ PHP;
             if ($default !== false) {
                 //handle default action here
                 print($this->tabs().'default :  $models["action"]=Humble::_action();'."\n");
+                print_r($default);
                 foreach ($default as $tag => $node) {
                     $this->tabs(1);
                     $this->processNode($tag,$node);

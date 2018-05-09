@@ -63,7 +63,6 @@ class MySQL  {
             $errorstring .= "\t<errortext> ".mysqli_connect_error()." </errortext>\n";
             $errorstring .= "</error>\n";
             \Log::mysql($errorstring);
-            print_r($this->_lastError($errorstring));
             $this->_connected = false;
 		} else {
 			@ $this->_dbref->select_db($this->_environment->getDatabase());
@@ -75,7 +74,6 @@ class MySQL  {
 				$errorstring .= "\t<errortext> ".$this->_dbref->error." </errortext>\n";
 				$errorstring .= "</error>\n";
                 \Log::mysql($errorstring);
-				print_r($this->_lastError($errorstring));
                 $this->_connected = false;
 			}
 		}
@@ -114,7 +112,6 @@ class MySQL  {
             $this->_state = $this->_dbref->sqlstate;
             if (($this->_dbref->sqlstate != "00000")) {
                 if ($this->_dbref->errno!=1062) {
-                    print_r(debug_backtrace());
                     $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";
                     $errorstring .= "\t<class> ".$this->_environment->getDBHost()." </class>\n";
                     $errorstring .= "\t<sqlstate> ".$this->_dbref->sqlstate."</sqlstate>\n";
@@ -131,7 +128,6 @@ class MySQL  {
                     $errorstring .= "\t</rowsreturned>\n";
                     $errorstring .= "</error>\n";
                     \Log::mysql($errorstring);
-                    print_r($this->_lastError($errorstring));
                 }
             }
         } else {
@@ -146,7 +142,6 @@ class MySQL  {
             $errorstring .= "\t</rowsreturned>\n";
             $errorstring .= "</error>\n";
             \Log::mysql($errorstring);
-            print_r($this->_lastError($errorstring));
         }
         if (is_object($resultSet) && $resultSet->num_rows) {
             $resultSet = $this->translateResultSet($resultSet);

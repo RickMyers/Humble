@@ -58,6 +58,7 @@
             <mongodb>paradigm</mongodb>
             <entities>
                 <events />
+                <event_listeners />
                 <event_log />
                 <import_sources />
                 <job_queue />

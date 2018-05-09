@@ -66,9 +66,30 @@ class Trigger  {
         return $this->notify($EVENT,$name);
     }
 
+
+    protected function runWorkflow($diagram = false,$cleanEvent) {
+        global $cancelBubble;
+        global $workflowRC;
+        if ($diagram && isset($diagram['active']) &&($diagram['active'] == 'Y')) {
+            $EVENT = clone $cleanEvent; //this event is dirty
+            $source = 'Workflows/'.$diagram['workflow_id'].'.php';
+            if (file_exists($source)) {
+                $workflowRC     = null;
+                $cancelBubble   = false;
+                include($source);
+                $ok = $ok && $workflowRC;
+            } else {
+                $this->_errors('The source file for workflow '.$source.' was not found');
+            }
+            $EVENT->_workflowStatus($workflowRC);
+            $EVENT->close();
+            $this->_event($EVENT);
+        }
+    }
+
     /**
      * Used when an event is identified on a controller... specifically calls those workflows just looking for a particular event name and not based on namespace/controller/method
-     * 
+     *
      * @param type $eventName
      */
     public function emit($eventName=false) {
@@ -78,7 +99,7 @@ class Trigger  {
         $uid        = \Environment::whoAmI();
         $cleanEvent = Event::get($eventName);
         $action     = 'set'.ucfirst($eventName);
-        $cleanEvent->$action($this->_arguments);        
+        $cleanEvent->$action($this->_arguments);
         if (!$uid) {
             //if no user id, see if this is the login event, and if so, find user based on username
             if ($user_name = $cleanEvent->data('user_name')) {
@@ -88,36 +109,33 @@ class Trigger  {
         }
         Humble::getEntity('paradigm/event_log')->setEvent($eventName)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
         if ($cleanEvent) {
+            $handled = false;
             foreach (Humble::getEntity('paradigm/workflow_listeners')->setNamespace($this->_namespace())->setMethod($eventName)->fetch() as $diagram) {
-                if ($diagram['active']==='Y') {
-                    $EVENT = clone $cleanEvent; //this event is dirty
-                    $source = 'Workflows/'.$diagram['workflow_id'].'.php';
-                    if (file_exists($source)) {
-                        $workflowRC     = null;
-                        $cancelBubble   = false;
-                        include($source);
-                        $ok = $ok && $workflowRC;
-                    } else {
-                        $this->_errors('The source file for workflow '.$source.' was not found');
-                    }
-                    $EVENT->_workflowStatus($workflowRC);
-                    $EVENT->close();
+                $handled = $this->runWorkflow($diagram,$cleanEvent);
+                if ($cancelBubble) {
+                    $this->_errors('bubbling was canceled');
+                    break;  //time to exit! No more workflow processing
+                }
+            }
+            if (!$handled) {
+                foreach (Humble::getEntity('paradigm/event/listeners')->setNamespace($this->_namespace())->setEvent($eventName)->fetch() as $diagram) {
+                    $handled = $this->runWorkflow($diagram,$cleanEvent);
                     if ($cancelBubble) {
                         $this->_errors('bubbling was canceled');
                         break;  //time to exit! No more workflow processing
                     }
-                    $this->_event($EVENT);
                 }
+                //we didn't find a listener for our event, lets try it another way
             }
         }
-        return $ok;        
+        return $ok;
     }
-    
+
     public function spawn($EVENT) {
-        
+
     }
-    
-    
+
+
     /**
      *
      * @return type
