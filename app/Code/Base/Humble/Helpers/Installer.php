@@ -773,15 +773,12 @@ SQL;
                     $install_file  = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnInstall.php";
                     $install_class = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnInstall";
                     if (file_exists($install_file) && class_exists($install_class)) {
-                        $i = Humble::getModel($namespace.'/OnInstall')->execute();
+                        $i = Humble::getModel($namespace.'/OnInstall',true)->execute();
                     }
                 }
             } else {
                 print_r($helper->getErrors());
-              //  \Log::console($helper->getErrors());
             }
-            //now set install time
-           // \Log::console('Did the installation for: '.$source);
         } else {
           //  \Log::console('Could not find source file for installation: '.$source);
         }

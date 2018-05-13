@@ -46,14 +46,13 @@
                 },
                 update: function () {
                     (new EasyAjax('/install_status.json')).then(function (response) {
-                        console.log(response)
                         var progress = JSON.parse(response);
                         if (progress) {
                             $('#install-status-stage').html(progress.stage);
                             $('#install-status-step').html(progress.step);
                             $('#install-status-bar').css('width',progress.percent+'%');
                             if (progress.percent < 100) {
-                                window.setTimeout(Installer.update,500);
+                                window.setTimeout(Installer.update,750);
                             }
                         }
                     }).get();
@@ -258,17 +257,23 @@ switch ($method) {
         // ###NOW RUN UPDATE ON EACH MODULE!!!!#######
         //
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
-        $user    = \Humble::getEntity('humble/users')->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']));
-        $uid     = $user->add();
-        $user->commit();
-        $user    = \Humble::getEntity('humble/user_identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
-        $perms   = \Humble::getEntity('humble/user_permissions')->setUid($uid)->setAdmin('Y')->setSuperUser('Y')->save();
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing = explode('/',$landing_page);
         $ins     = Humble::getModel('humble/utility');
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
         shell_exec("php Module.php --i ".$project->namespace." Code/".$project->package."/".$project->module."/etc/config.xml");
         shell_exec("php Module.php --e ".$project->namespace);
+        ob_start();
+        $user    = \Humble::getEntity('humble/users')->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']));
+        $uid     = $user->add();
+
+        $user->commit();
+        $results = ob_get_flush();
+        if (!$uid) {
+            file_put_contents('oops.txt',$results);
+        }
+        $user    = \Humble::getEntity('humble/user_identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
+        $perms   = \Humble::getEntity('humble/user_permissions')->setUid($uid)->setAdmin('Y')->setSuperUser('Y')->save();
         $ins->setUid($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
         if (!$cache) {
 

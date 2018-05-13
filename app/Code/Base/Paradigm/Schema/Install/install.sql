@@ -222,6 +222,18 @@ CREATE TABLE `paradigm_workflows` (
   UNIQUE KEY `paradigm_workflows_idx` (`workflow_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `paradigm_event_listeners` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `namespace` char(32) DEFAULT NULL,
+  `event` char(128) DEFAULT NULL,
+  `workflow_id` char(32) DEFAULT NULL,
+  `active` char(1) DEFAULT 'N',
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `event` (`event`),
+  KEY `event_2` (`event`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

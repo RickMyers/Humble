@@ -182,6 +182,7 @@
          */
         public static function getModel($resource_identifier,$override=false)  {
             $identifier     = self::parseResource($resource_identifier);
+            $instance       = null;
             if ($module = self::getModule($identifier['namespace'],$override)) {
                 $str   = "Code/{$module['package']}/".str_replace("_","/",$module['models'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {

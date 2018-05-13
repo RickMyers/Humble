@@ -94,7 +94,7 @@ EasyAjax.prototype.getTargetURL= function() {
 	return this.targetUrl;
 }
 /* ----------------------------------------------------------------- */
-EasyAjax.prototype.callback = function(f) {
+EasyAjax.prototype.then = function(f) {
 	this.callbackFunction = f;
     return this;
 }

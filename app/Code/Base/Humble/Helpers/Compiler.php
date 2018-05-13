@@ -790,7 +790,7 @@ PHP;
         print($this->includes['common_header']);
         print($this->includes['templater_header']);
         $controller = $xml[0];
-        $default    = false;
+        $defaultAction    = false;
         foreach ($controller as $tag3 => $actions) {
             print("<?php\n");
             print($this->tabs(1).'$models["firePHP"] = \Log::getConsole();'."\n");
@@ -804,7 +804,7 @@ PHP;
             print($this->tabs().'switch ($method) {'."\n");
             foreach ($actions as $tag2 => $action ) {
                 if ($action['name'] == 'default') {
-                    $default = $action;
+                    $defaultAction = $action;
                     continue;
                 }
                 print($this->tabs(1).'case "'.$action['name'].'":'."\n");
@@ -944,11 +944,10 @@ PHP;
                 }
                 print($this->tabs(-1)."break;\n");
             }
-            if ($default !== false) {
+            if ($defaultAction !== false) {
                 //handle default action here
                 print($this->tabs().'default :  $models["action"]=Humble::_action();'."\n");
-                print_r($default);
-                foreach ($default as $tag => $node) {
+                foreach ($defaultAction as $tag => $node) {
                     $this->tabs(1);
                     $this->processNode($tag,$node);
                     $this->tabs(-1);

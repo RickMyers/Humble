@@ -195,20 +195,16 @@ class Updater extends Installer
                     $ent->setNamespace($this->namespace);
                     $now = date('Y-m-d H:i:s');
                     $dat = $ent->load();
-                    print_r($dat);
-                    print('now we run'."\n");
-                    \Log::general($dat);
                     $ent->setLastUpdated($now);
                     if (!$dat['installed']) {
                         $ent->setInstalled($now);
                     }
                     $ent->save();
                     $this->compileControllers();
-                    die('Now here');
                     $update_file  = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnUpdate.php";
                     $update_class = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnUpdate";
                     if (file_exists($update_file) && class_exists($update_class)) {
-                        $i = Humble::getModel($namespace.'/OnUpdate')->execute();
+                        $i = Humble::getModel($namespace.'/OnUpdate',true)->execute();
                     }
                     print_r($ent->load());
                     //must log updated date
