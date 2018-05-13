@@ -6,7 +6,7 @@
         <description><!-- This will appear in the admin page --></description>
         <author>
             <name>&&author&&</name>
-            <email></email>
+            <email>&&email&&</email>
         </author>
         <module>
             <name>&&module&&</name>
@@ -71,7 +71,7 @@
             </entities>
         </orm>
         <events>
-            
+
         </events>
         <web>
             <!-- Edits are used for separating form validation from the form -->

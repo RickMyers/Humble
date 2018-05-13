@@ -1,8 +1,11 @@
-HUMBLE.&&namespace&& = {
-    action1: function () {
+HUMBLE.&&namespace&& = (function () {
+    //local variables and functions here
+    return {
+        foo: function () {
 
-    },
-    action2: function () {
+        },
+        bar: function () {
 
+        }
     }
-}
+})();

@@ -177,11 +177,11 @@ HELP;
                 $templates[] = "Code/Base/Humble/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
                 $templates[] = "Code/Base/Humble/lib/sample/module/RPC/mapping.yaml";                $out[] = "Code/".$pk."/".$md."/RPC/mapping.yaml";
                 $templates[] = "Code/Base/Humble/lib/sample/module/Views/actions/Smarty3/open.tpl";  $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty3/open.tpl";
-                $templates[] = "Code/Base/Humble/lib/sample/module/web/js/actions.js";               $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md)."js";
+                $templates[] = "Code/Base/Humble/lib/sample/module/web/js/actions.js";               $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
                 $templates[] = "Code/Base/Humble/lib/sample/module/web/css/template.css";            $out[] = "Code/".$pk."/".$md."/web/css/".ucfirst($md).".css";
-                $templates[] = "Code/Base/Humble/lib/sample/module/Models/Model.php.txt";                $out[] = "Code/".$pk."/".$md."/Models/Model.php";
-                $templates[] = "Code/Base/Humble/lib/sample/module/Helpers/Helper.php.txt";              $out[] = "Code/".$pk."/".$md."/Helpers/Helper.php";
-                $templates[] = "Code/Base/Humble/lib/sample/module/Entities/Entity.php.txt";             $out[] = "Code/".$pk."/".$md."/Entities/Entity.php";
+                $templates[] = "Code/Base/Humble/lib/sample/module/Models/Model.php.txt";            $out[] = "Code/".$pk."/".$md."/Models/Model.php";
+                $templates[] = "Code/Base/Humble/lib/sample/module/Helpers/Helper.php.txt";          $out[] = "Code/".$pk."/".$md."/Helpers/Helper.php";
+                $templates[] = "Code/Base/Humble/lib/sample/module/Entities/Entity.php.txt";         $out[] = "Code/".$pk."/".$md."/Entities/Entity.php";
                 $templates[] = "Code/Base/Humble/lib/sample/module/web/edits/template.json";         $out[] = "Code/".$pk."/".$md."/web/edits/sample_edit.json";
                 foreach ($templates as $idx => $template) {
                     file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)));
@@ -335,17 +335,6 @@ TXT;
         } else {
             print('I need the namespace of the module to update passed in [namespace=ns]');
         }
-    }
-    //--------------------------------------------------------------------------
-    function roboRunner($args) {
-        $tasks = fetchParameter('tasks',processArgs($args));
-        //if (file_exists($tasks)) {
-            require_once "vendor/autoload.php";
-            exec("php vendor/codegyre/robo/robo",$stuff);
-            print_r($stuff);
-        //} else {
-        //    print("\nThe task file does not exist [".$tasks."]\n");
-       // }
     }
     //--------------------------------------------------------------------------
     function processDocComment($md=false,$method=false) {
