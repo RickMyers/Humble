@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <application>
     <name>The Humble Project</name>
-    <version>0.7.7.7.6</version>
+    <version>0.7.7.7.9</version>
     <status>
         <enabled>1</enabled>           <!-- Switch to 0 to take the application offline -->
         <quiescing>0</quiescing>       <!-- switch to 1 to being the process of taking the system offline -->

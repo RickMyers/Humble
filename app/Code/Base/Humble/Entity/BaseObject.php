@@ -1403,7 +1403,7 @@ SQL;
      * Should we run the translations against what is returned
      *
      * @param type $arg
-     * @return \\Code\Base\Humble\Entity\BaseObject
+     * @return \\Code\Base\Humble\Entity\Unity
      */
     public function withTranslation($arg=false) {
         $this->_translation = $arg;
@@ -1421,7 +1421,7 @@ SQL;
      * This sets whether to remove MongoDB _id references from the result set.  The default is to do just that
      *
      * @param type $arg
-     * @return \\Code\Base\Humble\Entity\BaseObject
+     * @return \\Code\Base\Humble\Entity\Unity
      */
     public function _clean($arg=null) {
         if ($arg!==null) {
@@ -1467,7 +1467,7 @@ SQL;
      * We have to remove the variable from the general data array as well as the fields array
      *
      * @param type $name
-     * @return \Code\Base\Humble\Entity\BaseObject
+     * @return \Code\Base\Humble\Entity\Unity
      */
     protected function _unset($name=false) {
         parent::_unset($name);

@@ -1,6 +1,6 @@
 <?php
 namespace Code\&&package&&\&&module&&\Helpers;
-/**    
+/**
  *
  * Utility Base Transfer Class
  *
@@ -17,7 +17,7 @@ namespace Code\&&package&&\&&module&&\Helpers;
  * @license    https://license.enicity.com
  * @version    3.0.1
  */
-class Helper extends \Code\Base\Core\Helper\BaseObject
+class Helper extends \Code\Base\Humble\Helper\BaseObject
 {
 
 }

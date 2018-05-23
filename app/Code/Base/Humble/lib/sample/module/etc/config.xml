@@ -12,7 +12,7 @@
             <name>&&module&&</name>
             <weight>50</weight>
             <required>N</required>
-            <workflow>N</workflow>
+            <workflow>Y</workflow>
             <package>&&package&&</package>
             <use>Smarty3</use>
         </module>
