@@ -86,11 +86,15 @@ class User extends Model {
     }
 
     /**
+     * Looks in the Humble Project file for the landing page and routes the user to it.
      *
+     * @workflow use(process)
      */
     public function routeToHomePage($EVENT=false) {
         if ($EVENT) {
-
+            //just duplicating for now... not sure if I want special "polymorphic" behavior for this if passed an event
+            $project = Environment::getProject();
+            header('Location: '.$project->landing_page);
         } else {
             $project = Environment::getProject();
             header('Location: '.$project->landing_page);

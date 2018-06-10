@@ -27,15 +27,26 @@ Humble uses a <a href="https://en.wikipedia.org/wiki/Polyglot_(computing)" targe
 <a href="http://www.jamesserra.com/archive/2015/07/what-is-polyglot-persistence/" target="_BLANK">Polyglot Persistence</a> typically means using more than one approach to persisting data in an organization, however,
 <i>Unity</i> goes a step further in that it merges disparate storage solutions into a single product.  In short, <i>Unity</i> merges MySQL (RDMS) and MongoDB (NoSQL) into a single persistence solution.<br /><br />
 <i>Unity</i> can interact with MySQL tables, MongoDB collections, or both concurrently, in any transaction.<br /><br />
-Polyglot persistence is here, and the Humble Framework makes leveraging <i>Unity</i> from any perspective.
+Polyglot persistence is here, and the Humble Framework makes leveraging <i>Unity</i> simple whether you are doing traditional server side rendering or using one of the many JavaScript rendering frameworks.
 <div style="clear: both"></div><br />
-<div class="humble-section-header">Integration</div>
+<div class="humble-section-header">Integration, ESB, and Micro-Services</div>
 <img src="/pages/images/integration.png" style="float: right; height: 200px; margin-left: 5px"/>
 Today, having the means to integrate and exchange information isn't an option: it is a requirement<br /><br />
-Whether you are implementing a traditional Enterprise Service Bus (ESB), or building a Microservices Architecture, or even just a simple REST API, Humble's XML controllers are up to the job, and again, make it incredibly easy.
+Whether you are implementing a traditional Enterprise Service Bus (ESB), or building an application based on a Micro-services Architecture, or even just a simple REST API, Humble's XML controllers are up to the job, and again, make it incredibly easy.
 <br /><br />
-Humble uses YaML files define "Smart Endpoints" and so minimizes the need to write complicated code.  The XML files and the YaML files can even be crafted by a non-programmer to offload some of the work.<br /><br />
-The default data format internally and externally is JSON, so integrating with decoupled front ends written with JavaScript frameworks like Angular, Backbone, and React is second nature.
+Humble uses YaML files to define "Smart Endpoints" and so minimizes the need to write complicated code.  The XML files and the YaML files can even be crafted by a non-programmer to offload some of the work.<br /><br />
+Furthermore, the default data format internally and externally is JSON, so integrating with decoupled front ends written with JavaScript frameworks like Angular, Backbone, and React is simple and elegant.
+<div style="clear: both"></div><br />
+<div class="humble-section-header">Design-more/Write-less</div>
+<img src="/pages/images/workflow.png" style="float: left; height: 285px; margin-right: 5px"/>
+Humble is able to understand your application through annotations in your code and thus allows the developer to create functionality by drag-and-dropping the code components into workflows which are then compiled.
+<br /><br />
+By strictly crafting your methods to do one and only one action, you are in effect creating "Legos" that you can build into anything you want.  This "Lego" style of programming features a high degree of reuse, and
+Humble comes with a automatic documentation engine to help you manage all of those Legos.<br /><br />
+Over time, this approach lets the developers focus on new functionality only, while analysts can design new workflows and functionality only interacting with the development team when a new "Lego" needs to be created.<br /><br />
+Overall, this helps to manage your application's code complexity and actually fights <a href="https://en.wikipedia.org/wiki/Software_entropy" target="_BLANK">Software Entropy</a>.
+<div style="clear: both"></div><br />
+In the end, if you want to effect rapid development while maintaining code quality and <i><b>not</b></i> over-relying on your development staff, it is a good idea to keep it <i>Humble</i>.<br /><br /><br />
 </div>
 <!--#include virtual="/web/includes/footer.html" -->
 

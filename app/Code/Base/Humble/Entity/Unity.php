@@ -3,7 +3,7 @@ namespace Code\Base\Humble\Entity;
 use Humble;
 use Environment;
 use Log;
-class BaseObject extends \Code\Base\Humble\Model\BaseObject
+class Unity extends \Code\Base\Humble\Model\BaseObject
 {
     protected $_entity        = null;
     protected $_keys          = [];

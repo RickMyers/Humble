@@ -12,8 +12,8 @@
     </div>
     <ul class="humble-doc-section-topics">
         <li><a href="/pages/Overview.htmls">Overview</a></li>
-        <li>Concepts</li>
-        <li>The best code is no code</li>
+        <li><a href="/pages/Structure.htmls">Application Structure</a></li>
+        <li><a href="/pages/Configuration.htmls">Module Configuration</a></li>
     </ul>
     <div class="humble-doc-section">
         Model View Controller (MVC)

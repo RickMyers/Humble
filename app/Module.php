@@ -230,24 +230,21 @@ TXT;
     function disableModule($args) {
         $ns = $args[0];
         print("Disabling ".$ns."\n\n");
-        $mod = \Humble::getEntity("humble/modules");
-        $mod->setNamespace($ns);
-        $mod->setEnabled('N');
-        $mod->save();
+        \Humble::getEntity("humble/modules")->setNamespace($ns)->setEnabled('N')->save();
     }
     //--------------------------------------------------------------------------
     function incrementVersion($next=1) {
         print("CHANGING VERSION");
         $data   = getApplicationXML();
-        $v      = explode('.',(string)$data->version);
-        for ($i=count($v)-1; $i>=0; $i-=1) {                                              //This is one of those ridiculously evil things in computer science
+        $v      = explode('.',(string)$data->version->framework);
+        for ($i=count($v)-1; $i>=0; $i-=1) {                                    //This is one of those ridiculously evil things in computer science
             $v[$i] = (int)$v[$i]+$next;
             if ($next  = ($v[$i]===10)) {
                 $v[$i] = 0;
             }
         }
-        $data->version = (string)implode('.',$v);
-        print("\nSetting version to ".$data->version."\n\n");
+        $data->version->framework = (string)implode('.',$v);
+        print("\nSetting version to ".$data->version->framework."\n\n");
         file_put_contents('../application.xml',$data->asXML());
     }
 

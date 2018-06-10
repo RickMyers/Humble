@@ -50,7 +50,7 @@
         case    "version" :
             header("Content-Type: application/json");
             $xml        = simplexml_load_file('application.xml');
-            print('{ "version": "'.(string)$xml->version.'" }');
+            print('{ "version": "'.(string)$xml->version->framework.'" }');
             break;
         case    "verify" :
             ?>

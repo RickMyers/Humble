@@ -1,0 +1,12 @@
+<!--#include virtual="/web/includes/header.html" -->
+<!--#include virtual="/web/includes/container.html" -->
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Framework Structure In A Nutshell</div>
+
+Humble is a modular framework where custom modules are contained in packages. These packages are nothing more than directories/folders off of the application root and each application has 1-to-many packages containing 1-to-many modules.
+Each Module contains components, and these components are broken down into <i>Models</i> (Business Logic), <i>Entities</i> (Represent Tables/Collections), <i>Helpers</i> (Utility Classes), <i>Views</i> (Output Renderers), and <i>Web Elements</i> (JavaScript files, CSS, images, etc).
+<br /><br />
+Each Module has its own configuration file, and each Module lays claim to its own unique namespace. All elements within the Module are referenced using this namespace and appropriate Factory method or URI.
+</div>
+
+<!--#include virtual="/web/includes/footer.html" -->
