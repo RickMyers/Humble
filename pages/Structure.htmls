@@ -18,79 +18,127 @@ Each Module has its own configuration file, and each Module lays claim to its ow
 <div class="humble-section-header">Framework File Structure</div>
     <table width='100%'>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/</td>
+            <td class='humble-monospace' width='25%'>/</td>
             <td class=''>App base directory, APIs, unreachable by anything not covered by the .htaccess file</td>
         </tr>
         <tr class='humble-zebra-1'>
-            <td class='humble-monospace' width='35%'>/app/</td>
-            <td class=''>Application root directory, core application factories and key files are located here</td>
+            <td class='humble-monospace' width='25%'>/app/</td>
+            <td class='humble-sans-serif'>Application root directory, core application factories and key files are located here</td>
         </tr>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/app/Code/Base/</td>
-            <td class=''>The core framework files and classes.  Don't hack on core if that's not your job</td>
+            <td class='humble-monospace' width='25%'>/app/Code/Base/</td>
+            <td class='humble-sans-serif'>The core framework files and classes.  Don't hack on core if that's not your job</td>
         </tr>
         <tr class='humble-zebra-1'>
-            <td class='humble-monospace' width='35%'>/app/Code/<i>packages</i></td>
-            <td class=''>Your custom package (directory) that contains your custom modules</td>
+            <td class='humble-monospace' width='25%'>/app/Code/<i>packages</i></td>
+            <td class='humble-sans-serif'>Your custom package (directory) that contains your custom modules</td>
         </tr>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/app/Code/<i>package</i>/<i>modules</i></td>
-            <td class=''>Your custom modules that make up your application</td>
+            <td class='humble-monospace' width='25%'>/app/Code/<i>package</i>/<i>modules</i></td>
+            <td class='humble-sans-serif'>Your custom modules that make up your application</td>
+        </tr>
+    </table>
+<br /><br />
+<div class="humble-section-header">Framework Components</div>
+    <table width='100%'>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='25%'>/app/Humble.php</td>
+            <td class='humble-sans-serif'>The main framework factory. Gets extended in the installation step to create a branded factory</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='25%'>/app/Module.php</td>
+            <td class='humble-sans-serif'>Command Line Interface for the framework, see <a href="CLI.htmls">Command Line Interactions</a>.</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='25%'>/app/Environment.php</td>
+            <td class='humble-sans-serif'>Factory, returns information about the current run environment</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='25%'>/app/Log.php</td>
+            <td class='humble-sans-serif'>Application logger, can write logs to many places</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='25%'>/app/Event.php</td>
+            <td class='humble-sans-serif'>Internal Factory, manages Event instantiation and propagation</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='25%'>/app/Trigger.php</td>
+            <td class='humble-sans-serif'>Internal Factory, used to trigger events</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='25%'>/app/Constants.php</td>
+            <td class='humble-sans-serif'>Can define your constants (ENUM) here</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='25%'>/app/Scheduler.php</td>
+            <td class='humble-sans-serif'>Internal, used to prep jobs to run at certain times of day</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='25%'>/app/Launcher.php</td>
+            <td class='humble-sans-serif'>Internal, executes jobs that have been prepped by the Scheduler</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='25%'>/app/Singleton.php</td>
+            <td class='humble-sans-serif'>Internal Factory, used to manage static variables that shouldn't be instantiated more than once</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='25%'>/app/allowed.json</td>
+            <td class='humble-sans-serif'>Authorized list of routes that are reachable without authentication, see <a href="Routing.htmls#allowed">Routing, Allowed Overrides</a>.</td>
         </tr>
     </table>
 <br /><br />
 <div class="humble-section-header">Module File Structure</div>
     <table width='100%'>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/Controllers</td>
+            <td class='humble-monospace' width='25%'>/Controllers</td>
             <td class='humble-sans-serif'>XML Controllers, see <i>Anatomy of a Controller</i></td>
         </tr>
         <tr class='humble-zebra-1'>
-            <td class='humble-monospace' width='35%'>/Entities</td>
+            <td class='humble-monospace' width='25%'>/Entities</td>
             <td class='humble-sans-serif'>Database Access Objects named the same as the table to access</td>
         </tr>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/Helpers</td>
+            <td class='humble-monospace' width='25%'>/Helpers</td>
             <td class='humble-sans-serif'>Assorted helper classes</td>
         </tr>
         <tr class='humble-zebra-1'>
-            <td class='humble-monospace' width='35%'>/Images</td>
+            <td class='humble-monospace' width='25%'>/Images</td>
             <td class='humble-sans-serif'>Module Images (see <i><a href="Routing.htmls#LoadingResources">Loading Resources</a></i>)</td>
         </tr>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/Models</td>
+            <td class='humble-monospace' width='25%'>/Models</td>
             <td class='humble-sans-serif'>Business logic and workflow "Lego" components</td>
         </tr>
         <tr class='humble-zebra-1'>
-            <td class='humble-monospace' width='35%'>/RPC/mapping.yaml</td>
+            <td class='humble-monospace' width='25%'>/RPC/mapping.yaml</td>
             <td class='humble-sans-serif'>Defines "Smart Endpoints" for integration (see <i><a href="Integration.htmls">Integration</a></i>)</td>
         </tr>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/Schema</td>
+            <td class='humble-monospace' width='25%'>/Schema</td>
             <td class='humble-sans-serif'>SQL used during module installs and updates</td>
         </tr>
         <tr class='humble-zebra-1'>
-            <td class='humble-monospace' width='35%'>/Views/<i>renderer</i></td>
+            <td class='humble-monospace' width='25%'>/Views/<i>renderer</i></td>
             <td class='humble-sans-serif'>Server side rendering views in a variety of templating languages</td>
         </tr>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/etc/config.xml</td>
+            <td class='humble-monospace' width='25%'>/etc/config.xml</td>
             <td class='humble-sans-serif'>Module configuration file (see <i><a href="Configuration.htmls">Configuration</a></i>)</td>
         </tr>
         <tr class='humble-zebra-1'>
-            <td class='humble-monospace' width='35%'>/web/app</td>
+            <td class='humble-monospace' width='25%'>/web/app</td>
             <td class='humble-sans-serif'>Client-side JS templates (see <i>Decoupled UI</i>)</td>
         </tr>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/web/css</td>
+            <td class='humble-monospace' width='25%'>/web/css</td>
             <td class='humble-sans-serif'>Static CSS files (see <i><a href="Routing.htmls#LoadingResources">Loading Resources</a></i>)</td>
         </tr>
         <tr class='humble-zebra-1'>
-            <td class='humble-monospace' width='35%'>/web/edits</td>
+            <td class='humble-monospace' width='25%'>/web/edits</td>
             <td class='humble-sans-serif'>Form validation, possibly deprecated feature</td>
         </tr>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='35%'>/web/js</td>
+            <td class='humble-monospace' width='25%'>/web/js</td>
             <td class='humble-sans-serif'>Static JavaScript files (see <i><a href="Routing.htmls#LoadingResources">Loading Resources</a></i>)</td>
         </tr>
     </table>
