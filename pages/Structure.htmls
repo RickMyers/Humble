@@ -1,12 +1,100 @@
 <!--#include virtual="/web/includes/header.html" -->
 <!--#include virtual="/web/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="Configuration.htmls" title="Module Configuration" >Next</a></td>
+    </tr>
+</table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-<div class='humble-topic-header'>Framework Structure In A Nutshell</div>
+<div class='humble-topic-header'>Framework In A Nutshell</div>
 
-Humble is a modular framework where custom modules are contained in packages. These packages are nothing more than directories/folders off of the application root and each application has 1-to-many packages containing 1-to-many modules.
-Each Module contains components, and these components are broken down into <i>Models</i> (Business Logic), <i>Entities</i> (Represent Tables/Collections), <i>Helpers</i> (Utility Classes), <i>Views</i> (Output Renderers), and <i>Web Elements</i> (JavaScript files, CSS, images, etc).
+Humble is a modular framework where custom modules are contained in packages. These packages are nothing more than directories/folders off of the application root and each application has one-to-many packages containing one-to-many modules.
+Each Module contains components, and these components are broken down into <i>Controllers</i> (XML Files), <i>Models</i> (Business Logic), <i>Entities</i> (Represent Tables/Collections), <i>Helpers</i> (Utility Classes), <i>Views</i> (Output Renderers), and <i>Web Elements</i> (JavaScript files, CSS, images, etc).
 <br /><br />
 Each Module has its own configuration file, and each Module lays claim to its own unique namespace. All elements within the Module are referenced using this namespace and appropriate Factory method or URI.
+<br /><br />
+<div class="humble-section-header">Framework File Structure</div>
+    <table width='100%'>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/</td>
+            <td class=''>App base directory, APIs, unreachable by anything not covered by the .htaccess file</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='35%'>/app/</td>
+            <td class=''>Application root directory, core application factories and key files are located here</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/app/Code/Base/</td>
+            <td class=''>The core framework files and classes.  Don't hack on core if that's not your job</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='35%'>/app/Code/<i>packages</i></td>
+            <td class=''>Your custom package (directory) that contains your custom modules</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/app/Code/<i>package</i>/<i>modules</i></td>
+            <td class=''>Your custom modules that make up your application</td>
+        </tr>
+    </table>
+<br /><br />
+<div class="humble-section-header">Module File Structure</div>
+    <table width='100%'>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/Controllers</td>
+            <td class='humble-sans-serif'>XML Controllers, see <i>Anatomy of a Controller</i></td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='35%'>/Entities</td>
+            <td class='humble-sans-serif'>Database Access Objects named the same as the table to access</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/Helpers</td>
+            <td class='humble-sans-serif'>Assorted helper classes</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='35%'>/Images</td>
+            <td class='humble-sans-serif'>Module Images (see <i><a href="Routing.htmls#LoadingResources">Loading Resources</a></i>)</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/Models</td>
+            <td class='humble-sans-serif'>Business logic and workflow "Lego" components</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='35%'>/RPC/mapping.yaml</td>
+            <td class='humble-sans-serif'>Defines "Smart Endpoints" for integration (see <i><a href="Integration.htmls">Integration</a></i>)</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/Schema</td>
+            <td class='humble-sans-serif'>SQL used during module installs and updates</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='35%'>/Views/<i>renderer</i></td>
+            <td class='humble-sans-serif'>Server side rendering views in a variety of templating languages</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/etc/config.xml</td>
+            <td class='humble-sans-serif'>Module configuration file (see <i><a href="Configuration.htmls">Configuration</a></i>)</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='35%'>/web/app</td>
+            <td class='humble-sans-serif'>Client-side JS templates (see <i>Decoupled UI</i>)</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/web/css</td>
+            <td class='humble-sans-serif'>Static CSS files (see <i><a href="Routing.htmls#LoadingResources">Loading Resources</a></i>)</td>
+        </tr>
+        <tr class='humble-zebra-1'>
+            <td class='humble-monospace' width='35%'>/web/edits</td>
+            <td class='humble-sans-serif'>Form validation, possibly deprecated feature</td>
+        </tr>
+        <tr class='humble-zebra-0'>
+            <td class='humble-monospace' width='35%'>/web/js</td>
+            <td class='humble-sans-serif'>Static JavaScript files (see <i><a href="Routing.htmls#LoadingResources">Loading Resources</a></i>)</td>
+        </tr>
+    </table>
+<div class="humble-section-header"></div>
 </div>
 
 <!--#include virtual="/web/includes/footer.html" -->
