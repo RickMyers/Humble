@@ -19,6 +19,7 @@
         <li><a href="/pages/Overview.htmls">Overview</a></li>
         <li><a href="/pages/Structure.htmls">Application Structure</a></li>
         <li><a href="/pages/Configuration.htmls">Module Configuration</a></li>
+        <li><a href="/pages/Administration.htmls">Administration</a></li>
         <li><a href="/pages/Routing.htmls">Routing</a></li>
     </ul>
     <div class="humble-doc-section">
