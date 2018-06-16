@@ -1,0 +1,70 @@
+{
+    "xml": {
+            "longname":	 "ConfigurationXML",
+            "classes": {
+                "region":   "",
+                "row":      "",
+                "font":     "",
+                "zebra": {
+                    "odd":  "",
+                    "even": ""
+                }
+            },
+            "casesensitive":	false,
+            "chars":	" &|*^!+=-(){}/\\'\",.?:<>[];",
+            "comment":	{
+                "color":	"fuchsia",
+                "style":	"",
+                "EOL":"//",
+                "start":	"<!--",
+                "end":"-->"
+            },
+            "char":	  {
+                "-": {"color": "green"},
+                "?": {"color": "green"},
+                ".": {"color": "green"},
+                ",": {"color": "green"},
+                ";": {"color": "green"},
+                "|": {"color": "fuchsia"},
+                "+": {"color": "green"},
+                "/": {"color": "green"},
+                ":": {"color": "green"},
+                "{":  {"color": "red"},
+                "}": {"color": "red"},
+                "]": {"color": "red"},
+                "[": {"color": "red"},
+                "(": {"color": "red"},
+                "\\":{"color": "black", "swap": "&#92;"},
+                ")": {"color": "red"},
+                "<":{"color": "lightgreen", "swap": "&lt;"},
+                ">":{"color": "lightgreen", "swap": "&gt;"},
+                "&":{"color": "fuchsia",    "swap": "&amp;"},
+                "!":{"color": "green"},
+                "=":{"color": "red"},
+                "*": {"color": "lightcyan"}
+            },
+            "tokens":	 {
+                "action": {"color": "blue"},
+                "parameter": {"color": "blue"},
+                "xml":{"color": "orange"},
+                "true":{"color": "orange"},
+                "false":	{"color": "orange"},
+                "switch":	 {"color": "blue"},
+                "case":	 {"color": "blue"},
+                "default":	 {"color": "blue"},
+                "break":	 {"color": "blue"},
+                "if": {"color": "blue"},
+                "then": {"color": "blue"},
+                "else":	 {"color": "blue"},
+                "switch": {"color": "blue"},
+                "case": {"color": "blue"},
+                "source":	{"color": "teal"},
+                "entities":	{"color": "teal"},
+                "value":	{"color": "teal"},
+                "default":	{"color": "teal"},
+                "response":	{"color": "teal"},
+                "optional":	{"color": "teal"},
+                "format":	{"color": "teal"}
+            }
+        }
+}

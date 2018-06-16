@@ -10,7 +10,9 @@
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Module Configuration</div>
 
+    <div widget="codeBox" widgetScroll="50%" lang="xml" lexicon="/pages/js/lang/config_complete.json" source="/pages/code/config_complete.xmltxt" class="humble-code">
 
+    </div>
 
 </div>
 

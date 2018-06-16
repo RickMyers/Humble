@@ -40,6 +40,9 @@ Each Module has its own configuration file, and each Module lays claim to its ow
     </table>
 <br /><br />
 <div class="humble-section-header">Framework Components</div>
+In the /app/ directory are some key files to the framework, and most are what we call "<a href="https://en.wikipedia.org/wiki/Factory_method_pattern" target="_BLANK">Static Factories</a>".
+Other than the <a href="Factories.htmls#Environment">Environment</a> and  <a href="Factories.htmls#Log">Log</a> factory, you will not in normal application development ever need to call these, as most of the files
+here are for internal use.  There is a centralized file for declaring constants (Enums), so feel free to add your custom constants to the Constants.php file found here.<br /><br />
     <table width='100%'>
         <tr class='humble-zebra-0'>
             <td class='humble-monospace' width='25%'>/app/Humble.php</td>
@@ -88,6 +91,11 @@ Each Module has its own configuration file, and each Module lays claim to its ow
     </table>
 <br /><br />
 <div class="humble-section-header">Module File Structure</div>
+Each module is composed of directories where each directory represents some degree of functionality.  Since Humble is a solidly MVC (Model-View-Controller) framework, we have directories with those very names.
+We also have 'Entities', which are DAO (Database Access Objects) containing custom queries and functionality outside of the basic CRUD (Create-Read-Update-Delete) functionality that is implicit, and 'Helpers' which
+are utility classes.  The 'Images' directory holds images that are specific to the module, and the 'Schema' directory is broken down into two sub-directories: 'Install' and  'Update'.  Any SQL placed in the 'Install'
+folder will be run during the initial install, and any SQL placed in the 'Update' folder will be run on the next update if the timestamp for the file is greater than the last update run.  Finally we have the 'etc' folder
+which contains the application configuration file, 'RPC' (Remote Procedure Calls) which defines our "Smart Endpoints", and the 'web' folder that contains web components like JavaScript and CSS.<br /><br />
     <table width='100%'>
         <tr class='humble-zebra-0'>
             <td class='humble-monospace' width='25%'>/Controllers</td>
