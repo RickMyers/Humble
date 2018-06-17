@@ -1,0 +1,7 @@
+        <version>0.0.1</version>
+        <title>Framework</title>
+        <description>This is the module that contains the base framework classes and components </description>
+        <author>
+            <name>Rick Myers</name>
+            <email>rick@enicity.com</email>
+        </author>

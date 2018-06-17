@@ -1,0 +1,62 @@
+
+       <web>
+            <edits>
+            </edits>
+            <common>
+                <js>
+                    <source weight='10'>Humble/web/js/Humble.js</source>
+                    <source weight='11'>Humble/web/js/EasyAjax.js</source>
+                    <source weight='12'>Humble/web/js/EasyEdit.js</source>
+                    <source weight='13'>Humble/web/js/EasyForm.js</source>
+                    <source weight='14'>Humble/web/js/EasyTabs.js</source>
+                    <source weight="15">Humble/web/js/moment.js</source>
+                </js>
+                <css>
+                    <source>Humble/web/css/Normalize.css</source>
+                </css>
+            </common>
+            <widgets>
+                <js>
+                    <source weight="28">Humble/web/js/jquery-ui.js</source>
+                    <source weight="29">Humble/web/js/jquery.filthypillow.min.js</source>
+                </js>
+                <css>
+                    <source weight="28">Humble/web/css/jquery-ui.css</source>
+                    <source weight="29">Humble/web/css/jquery.filthypillow.css</source>
+                </css>
+            </widgets>
+            <bootstrap>
+                <js>
+                    <source>Humble/web/bootstrap-3.3.7/js/bootstrap.min.js</source>
+                </js>
+                <css>
+                    <source>Humble/web/bootstrap-3.3.7/css/bootstrap.css</source>
+                    <source>Humble/web/htmlcss/css/glyphicons.css</source>
+                </css>
+            </bootstrap>
+            <bootstrap-theme>
+                <css>
+                    <source>Humble/web/bootstrap-3.3.7/css/bootstrap-theme.css</source>
+                </css>
+            </bootstrap-theme>
+            <admin>
+                <css>
+                    <source>Humble/web/css/cssmenu.css</source>
+                </css>
+                <js>
+                    <source>Humble/web/js/Admin.js</source>
+                    <source>Humble/web/js/cssmenu.js</source>
+                </js>
+            </admin>
+            <admintheme>
+                <css>
+                    <source>Humble/web/css/admintheme.css</source>
+                </css>
+            </admintheme>
+            <jquery>
+                <js>
+                    <source>Humble/web/js/jquery-3.1.0.min.js</source>
+                </js>
+            </jquery>
+        </web>
+ 

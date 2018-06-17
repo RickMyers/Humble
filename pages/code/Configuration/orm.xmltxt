@@ -1,0 +1,25 @@
+
+        <orm>
+            <prefix>humble_</prefix>
+            <mongodb>humble</mongodb>
+            <entities>
+                <categories />
+                <chronicle />
+                <controllers />
+                <css />
+                <edits />
+                <entities />
+                <entity_columns />
+                <ftp_log />
+                <js />
+                <modules />
+                <packages />
+                <pages />
+                <templaters />
+                <templates />
+                <userlog />
+                <users />
+                <user_identification polyglot='Y' />
+                <user_permissions />
+            </entities>
+        </orm>

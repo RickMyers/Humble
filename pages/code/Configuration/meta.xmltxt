@@ -1,0 +1,8 @@
+        <module>
+            <name>Humble</name>
+            <weight>10</weight>
+            <required>Y</required>
+            <workflow>Y</workflow>
+            <package>Base</package>
+            <use>Smarty3</use>
+        </module>

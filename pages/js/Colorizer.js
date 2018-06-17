@@ -1,15 +1,26 @@
 
 /**
- *  Source Code Colorizer, author: Rick Myers <rickmyers1969@gmail.com>
+   _|_|_|                  _|
+ _|          _|_|      _|_|_|    _|_|
+ _|        _|    _|  _|    _|  _|_|_|_|
+ _|        _|    _|  _|    _|  _|
+   _|_|_|    _|_|      _|_|_|    _|_|_|
+
+   _|_|_|            _|                      _|
+ _|          _|_|    _|    _|_|    _|  _|_|      _|_|_|_|    _|_|    _|  _|_|
+ _|        _|    _|  _|  _|    _|  _|_|      _|      _|    _|_|_|_|  _|_|
+ _|        _|    _|  _|  _|    _|  _|        _|    _|      _|        _|
+   _|_|_|    _|_|    _|    _|_|    _|        _|  _|_|_|_|    _|_|_|  _|
  *
- *  @param {string} Default Language File
- *  @param {string} lang (optional)
- *  @param {string} src  (optional)
+ *  Highly flexible Code Colorizer
+ *
+ *  @author: Rick Myers <rickmyers1969@gmail.com>
+ *  @param {string} languageFile Default Language File
 */
 var Colorizer = (function (languageFile) {
     var Colorizers  = [];
     var Alphabet    = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    var colors      = {
+    var Colors      = {
         true:   "#ddd",
         false:  "#ccc",
         ln:     "#333",
@@ -23,18 +34,15 @@ var Colorizer = (function (languageFile) {
         return id;
     }
     let Prototype = {
-        id:         false,
-        type:       false,
-        lexicon:    false,
         language:   false,
         languages:  false,
-        codeBox:    false,
         source:     false,
         code:       false,
         isString:   false,
         inComment:  false,
+        box:        false,
+        rows:       false,
         init: function() {
-            console.log(this);
             this.codeBox = (typeof this.codeBox === 'string') ? $E(this.codeBox) : this.codeBox;
             if (!this.languages) {
                 var me = this;
@@ -51,34 +59,36 @@ var Colorizer = (function (languageFile) {
             return this.run();
         },
         run: function () {
-            var me = this;
-
+            var me    = this;
             if ((this.language !== false) && (this.languages !== false) && (this.code !== false)) {
                 var lines =  me.code.split("\n");
-                var nl   = "<div id='colorizer_code_source_"+this.id+"' style=' width: "+(this.codeBox.offsetWidth-48)+"px; height: "+(this.codeBox.offsetHeight-1)+"px; display: inline-block; overflow: auto'>";
-                var rows = "<div id='colorizer_code_rows_"+this.id+"' style='float: left; width: 45px; height: "+(this.codeBox.offsetHeight-1)+"px; overflow: hidden'>";
+                var nl    = "<div id='colorizer_code_source_"+this.id+"' style=' width: "+(this.codeBox.offsetWidth-58)+"px; height: "+(this.codeBox.offsetHeight-1)+"px; display: inline-block; vertical-align: top; overflow: auto'>";
+                var rows  = "<div id='colorizer_code_rows_"+this.id+"' style='float: left; width: 45px; height: 100%; overflow: hidden'>";
                 this.codeBox.innerHTML = "";
                 var rt = false;
                 for (var i=0; i<lines.length; i++) {
                     rt   = !rt;
-                    rows += '<div style="height: 1.2em; margin: 0px; padding: 0px 3px 0px 0px; width: 45px; white-space: nowrap; text-align: right; color: '+colors['num']+'; background-color: '+colors["ln"]+'; padding-right: 3px">'+(i+1)+'</div>';
-                    nl   += '<div style="height: 1.2em; background: '+colors[rt]+'; white-space: pre; clear:both;">'+this.colorSource(lines[i].replace(/\n/g,""))+'</div>';
+                    rows += '<div style="height: 1.2em; margin: 0px; padding: 0px 3px 0px 0px; width: 45px; white-space: nowrap; text-align: right; color: '+Colors['num']+'; background-color: '+Colors["ln"]+'; padding-right: 3px">'+(i+1)+'</div>';
+                    nl   += '<div class="'+this.id+'" style="height: 1.2em; background: '+Colors[rt]+'; white-space: pre; clear:both;">'+this.colorSource(lines[i].replace(/\n/g,""))+'</div>';
                 }
-                rows += '</div>'
-                nl += '</div>';
-                console.log(this.codeBox);
-                this.codeBox.innerHTML = rows+nl;
-      /*          if ($E("colorizer_code_source_"+this.id).scrollWidth > 0) {
-                    var newWidth = ($E("colorizer_code_source_"+this.id).scrollWidth) + "px"
-                    for (var i=1; i<lines.length; i++) {
-                        this.codeBox.style.width = newWidth;
-                    }
-                }*/
-                $("#colorizer_code_source_"+this.id).on('scroll',function () {
-                    $E("colorizer_code_rows_"+this.id).scrollTop = this.scrollTop;
+                this.codeBox.innerHTML = rows+'</div>'+nl+'</div>';
+                this.box    = $E("colorizer_code_source_"+this.id);
+                this.rows   = $E("colorizer_code_rows_"+this.id);
+                if (this.scroll) {
+                    var size = (this.scroll.indexOf('%') !== -1) ? Math.round(this.box.scrollHeight * (parseInt(this.scroll)/100)) : this.scroll;
+                    $(this.codeBox).height(size);
+                    $(this.rows).height(size);
+                    $(this.box).height(size);
+                }
+                if (this.box.scrollWidth > 0) {
+                    $(this.box).width(this.codeBox.offsetWidth-this.rows.offsetWidth-2);
+                    $('.'+this.id).width(this.box.scrollWidth);
+                }
+                $(this.box).on('scroll',function () {
+                    me.scrollTop = this.scrollTop;
                 });
             } else {
-                window.setTimeout(function () { console.log('trying'); me.run(); }, 50);
+                window.setTimeout(function () { me.run(); }, 50);
             }
             return this;
         },
@@ -87,24 +97,24 @@ var Colorizer = (function (languageFile) {
             var newLine = ((this.inComment) ? '<span style="color: '+this.language.comment.color+'">' : "");
             for (var i=0; i<=line.length; i++) {
                 if ((!this.inComment) && this.language.comment && this.language.comment.EOL) {
-                    if ((line.substr(i,this.language.comment.EOL.length) == this.language.comment.EOL)) {
+                    if ((line.substr(i,this.language.comment.EOL.length) === this.language.comment.EOL)) {
                         newLine+= (token+str+'<span style="color: '+this.language.comment.color+'">'+this.escapeHTML(line.substr(i))+'</span>');
                         break;
                     }
                 }
                 if (this.inComment) {
-                    if (line.substr(i,this.language.comment.end.length) == this.language.comment.end) {
+                    if (line.substr(i,this.language.comment.end.length) === this.language.comment.end) {
                         this.inComment = false; i=i+this.language.comment.end.length;
                         newLine   += (this.language.comment.end+"</span>");
                     }
                 }
                 if (!this.inComment && this.language.comment && this.language.comment.start) {
-                    this.inComment = (line.substr(i,this.language.comment.start.length) == this.language.comment.start);
+                    this.inComment = (line.substr(i,this.language.comment.start.length) === this.language.comment.start);
                     if (this.inComment) {
                         newLine += '<span style="color: '+this.language.comment.color+'">';
                     }
                 }
-                dispChar = chr = ((i == line.length) ? " " : line.substr(i,1));
+                dispChar = chr = ((i === line.length) ? " " : line.substr(i,1));
                 if ((this.language["char"][chr]) && (this.language["char"][chr].swap)) {
                     dispChar = this.language["char"][chr].swap;
                 }
@@ -114,13 +124,13 @@ var Colorizer = (function (languageFile) {
                     this.isString = false; str = ""; token="";
                 } else if ((!this.inComment) && (this.isString)) {
                     str += dispChar;
-                } else if ((!this.inComment) && ((chr == '"') || (chr == "'"))) {
+                } else if ((!this.inComment) && ((chr === '"') || (chr === "'"))) {
                     this.isString = true;
                     str += strChar = dispChar;
                 } else if (this.inComment) {
                     newLine += chr;
                 } else {
-                    isChar = (this.language["chars"].indexOf(chr) != -1);
+                    isChar = (this.language["chars"].indexOf(chr) !== -1);
                     if (token && isChar) {
                         newLine += (this.language["tokens"][token.trim()]) ? '<span style="color: '+this.language["tokens"][token.trim()].color+'">'+(this.language["tokens"][token.trim()].swap?this.language["tokens"][token.trim()].swap:token)+'</span>' : token;
                         token="";
@@ -137,7 +147,7 @@ var Colorizer = (function (languageFile) {
             }
             return newLine;
         }
-    }
+    };
     return {
         render: function (codeBox) {
             var options = {
@@ -174,5 +184,5 @@ var Colorizer = (function (languageFile) {
             }
 
         }
-   }
-})('/pages/js/ColorizerLanguages.json'); //Default colorizer
+   };
+})('/pages/js/ColorizerLanguages.json'); //Default colorizer lexicon

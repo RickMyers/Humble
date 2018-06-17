@@ -9,8 +9,43 @@
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Module Configuration</div>
+Every Module has its own configuration file, and this configuration file is consulted during installation and when running updates.  The configuration file is broken into different sections, and each section has a
+different purpose.  Here we will go through the various sections one at a time, and please note, the configuration file is created for you when you use the administration "Create Module" wizard.  For most things,
+you can run with the values provided by the wizard, but there are sections that do require more frequent changes than others.<br /><br />
+<div class="humble-section-header">Complete Configuration File</div>
+First, let's take a look at a complete configuration file:<br /><br />
+    <div widget="codeBox" widgetScroll="50%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/complete.xmltxt" class="humble-code">
 
-    <div widget="codeBox" widgetScroll="50%" lang="xml" lexicon="/pages/js/lang/config_complete.json" source="/pages/code/config_complete.xmltxt" class="humble-code">
+    </div>
+<br /><br />
+The first important thing is that on line 3 we are declaring the namespace for this module.  Henceforth when we want to access any component (Models, Vies, Controllers, Images, etc) we will need to pass
+the namespace along with the component name.  The namespace *is* everything.
+<div class="humble-section-header">Header Section</div>
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/header.xmltxt" class="humble-code">
+
+    </div>
+<div class="humble-section-header">Meta-Data Section</div>
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/meta.xmltxt" class="humble-code">
+
+    </div>
+
+<div class="humble-section-header">Structure Section</div>
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/structure.xmltxt" class="humble-code">
+
+    </div>
+
+<div class="humble-section-header">Persistence Section</div>
+    <div widget="codeBox" widgetScroll="50%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/orm.xmltxt" class="humble-code">
+
+    </div>
+
+<div class="humble-section-header">Event Section</div>
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/events.xmltxt" class="humble-code">
+
+    </div>
+
+<div class="humble-section-header">Web Section</div>
+    <div widget="codeBox" widgetScroll="40%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/web.xmltxt" class="humble-code">
 
     </div>
 
