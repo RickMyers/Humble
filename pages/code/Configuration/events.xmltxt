@@ -1,3 +1,5 @@
         <events>
-
+            <user_login  comment="A user has successfully logged in" />
+            <user_logout comment="A user has logged out" />
+            <user_locked comment="A user has had too many failed login attempts and gets locked out" />
         </events>

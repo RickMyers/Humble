@@ -85,7 +85,7 @@ var Colorizer = (function (languageFile) {
                     $('.'+this.id).width(this.box.scrollWidth);
                 }
                 $(this.box).on('scroll',function () {
-                    me.scrollTop = this.scrollTop;
+                    me.rows.scrollTop = this.scrollTop;
                 });
             } else {
                 window.setTimeout(function () { me.run(); }, 50);

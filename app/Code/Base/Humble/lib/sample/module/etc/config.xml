@@ -20,9 +20,6 @@
             <models>
                 <source>&&module&&/Models</source>
             </models>
-            <config>
-                <source>&&module&&/etc</source>
-            </config>
             <helpers>
                 <source>&&module&&/Helpers</source>
             </helpers>

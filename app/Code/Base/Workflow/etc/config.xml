@@ -21,9 +21,6 @@
             <models>
                 <source>Workflow/Models</source>
             </models>
-            <config>
-                <source>Workflow/etc</source>
-            </config>
             <helpers>
                 <source>Workflow/Helpers</source>
             </helpers>

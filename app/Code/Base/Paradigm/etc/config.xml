@@ -20,9 +20,6 @@
             <models>
                 <source>Paradigm/Models</source>
             </models>
-            <config>
-                <source>Paradigm/etc</source>
-            </config>
             <helpers>
                 <source>Paradigm/Helpers</source>
             </helpers>

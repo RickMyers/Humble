@@ -1,7 +1,4 @@
-
        <web>
-            <edits>
-            </edits>
             <common>
                 <js>
                     <source weight='10'>Humble/web/js/Humble.js</source>
@@ -59,4 +56,3 @@
                 </js>
             </jquery>
         </web>
- 

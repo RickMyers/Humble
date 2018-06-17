@@ -20,9 +20,6 @@
             <models>
                 <source>Humble/Models</source>
             </models>
-            <config>
-                <source>Humble/etc</source>
-            </config>
             <helpers>
                 <source>Humble/Helpers</source>
             </helpers>
@@ -81,8 +78,6 @@
 
         </events>
         <web>
-            <edits>
-            </edits>
             <common>
                 <js>
                     <source weight='10'>Humble/web/js/Humble.js</source>

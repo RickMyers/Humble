@@ -2,9 +2,6 @@
             <models>
                 <source>Humble/Models</source>
             </models>
-            <config>
-                <source>Humble/etc</source>
-            </config>
             <helpers>
                 <source>Humble/Helpers</source>
             </helpers>
@@ -35,4 +32,3 @@
                 <source>Humble/RPC</source>
             </RPC>
         </structure>
-

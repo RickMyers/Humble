@@ -17,9 +17,9 @@ First, let's take a look at a complete configuration file:<br /><br />
     <div widget="codeBox" widgetScroll="50%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/complete.xmltxt" class="humble-code">
 
     </div>
-<br /><br />
+<br />
 The first important thing is that on line 3 we are declaring the namespace for this module.  Henceforth when we want to access any component (Models, Vies, Controllers, Images, etc) we will need to pass
-the namespace along with the component name.  The namespace *is* everything.
+the namespace along with the component name.  The namespace *is* everything.<br /><br />
 <div class="humble-section-header">Header Section</div>
     <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/header.xmltxt" class="humble-code">
 
@@ -35,7 +35,7 @@ the namespace along with the component name.  The namespace *is* everything.
     </div>
 
 <div class="humble-section-header">Persistence Section</div>
-    <div widget="codeBox" widgetScroll="50%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/orm.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/orm.xmltxt" class="humble-code">
 
     </div>
 
@@ -45,7 +45,7 @@ the namespace along with the component name.  The namespace *is* everything.
     </div>
 
 <div class="humble-section-header">Web Section</div>
-    <div widget="codeBox" widgetScroll="40%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/web.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/web.xmltxt" class="humble-code">
 
     </div>
 
