@@ -11,44 +11,80 @@
 <div class='humble-topic-header'>Module Configuration</div>
 Every Module has its own configuration file, and this configuration file is consulted during installation and when running updates.  The configuration file is broken into different sections, and each section has a
 different purpose.  Here we will go through the various sections one at a time, and please note, the configuration file is created for you when you use the administration "Create Module" wizard.  For most things,
-you can run with the values provided by the wizard, but there are sections that do require more frequent changes than others.<br /><br />
+you can run with the values provided by the wizard, but there are sections that do require more frequent changes than others.
 <div class="humble-section-header">Complete Configuration File</div>
-First, let's take a look at a complete configuration file:<br /><br />
+First, let's take a look at a complete configuration file:
     <div widget="codeBox" widgetScroll="50%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/complete.xmltxt" class="humble-code">
 
     </div>
 <br />
 The first important thing is that on line 3 we are declaring the namespace for this module.  Henceforth when we want to access any component (Models, Vies, Controllers, Images, etc) we will need to pass
-the namespace along with the component name.  The namespace *is* everything.<br /><br />
+the namespace along with the component name.  The namespace <b><i>*is*</i></b> used for almost everything.
 <div class="humble-section-header">Header Section</div>
+The header section of the configuration file has information that is displayed on the <a href="Administration.htmls">Administration</a> page.  This information identifies the author, the name and purpose of the module, and
+any pertinent contact information.
     <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/header.xmltxt" class="humble-code">
 
     </div>
 <div class="humble-section-header">Meta-Data Section</div>
+The Meta-Data, or module section, contains information about the module, such as what package (directory) the module belongs to, the name of the module, which should be the name of the directory the module components are stored in.
+Which default templating engine to use, whether the module will rely on workflows (default "Yes"), whether it is a required module (meaning enabled by default), and the order of installation/updating in the weight.  The greater the weight,
+the lower in order (or later) the module will be installed or updated.
     <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/meta.xmltxt" class="humble-code">
 
     </div>
 
 <div class="humble-section-header">Structure Section</div>
+The structure section defines the layout of the module.  It is best to just run with the default structure (meaning no updating of this section is required), since not a whole lot of testing has been done with modules using different structures.
     <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/structure.xmltxt" class="humble-code">
 
     </div>
 
 <div class="humble-section-header">Persistence Section</div>
+This is where you configure what tables and collections are administered by this module.  All of the MySQL tables managed by this module will have a unique prefix prepended to their name. The convention is to name the
+prefix the same as the namespace, but with an underscore (_) appended to the end of the namespace, so a namespace of '<span style='font-family: courier new'>acme</span>' would yield a prefix of '<span style='font-family: courier new'>acme_</span>'.<br /><br />
+If polyglot behavior is desired, you will need to specify the MongoDB database, and the convention here is to use the namespace value.  Finally, for every table/collection you wish to manage under this module's namespace, an
+entry will have to be made in the entities section as shown below.  Just the name of the table/collection is required (without the prefix).  You can also set the flag for whether polyglot behavior is turned on by default (a value of 'Y' for the polyglot attribute).
+It should be noted that polyglot behavior can be turned on or off at any time, and this will be explained more in the <a href="Polyglot.htmls">Polyglot Persistence</a> documentation.
     <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/orm.xmltxt" class="humble-code">
 
     </div>
 
 <div class="humble-section-header">Event Section</div>
+This section is one of the three ways to register events that later you can set listeners for.  The other two ways are from a Model (PHP) and from a Controller (XML).  Here you can set the name of the event to listen for and a
+descriptive comment as to what the event is about.  Later, when defining a workflow, you will be able to set the events named here as a trigger for the workflow.
     <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/events.xmltxt" class="humble-code">
 
     </div>
 
 <div class="humble-section-header">Web Section</div>
-    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/web.xmltxt" class="humble-code">
+Modern day web applications can contain dozens, or even scores of web components like JavaScript files. Here we are able to register our web components to be loaded and assign them to a "hook".  A hook is an alias for
+a set of components and can be defined in any module.   For example, this hook:<br /><br />
 
-    </div>
+<p class="humble-code-like">
+    &lt;script type="text/javascript" src="/js/common" /&gt;
+</p><br />
+Will load the five JavaScript files as shown below, and any other JavaScript libraries defined in other modules, and the order in which they will be sent to the client is defined by their <i>weight</i> attribute.  The fuchsia
+colored XML tags below are the hooks:
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/web.json" source="/pages/code/Configuration/web.xmltxt" class="humble-code">
 
+    </div><br />
+<p>
+    The preceding section defined the following hooks, and any module in the application can attach more web components to these hooks:
+</p>
+
+<p class="humble-code-like" style="margin-bottom: 50px">
+    &lt;script type="text/javascript" src="/css/common" /&gt;<br />
+    &lt;script type="text/javascript" src="/css/widgets" /&gt;<br />
+    &lt;script type="text/javascript" src="/css/bootstrap-theme" /&gt;<br />
+    &lt;script type="text/javascript" src="/css/admintheme" /&gt;<br />
+    <br />
+    &lt;script type="text/javascript" src="/js/common" /&gt;<br />
+    &lt;script type="text/javascript" src="/js/widgets" /&gt;<br />
+    &lt;script type="text/javascript" src="/js/admin" /&gt;<br />
+    &lt;script type="text/javascript" src="/js/bootstrap" /&gt;<br />
+    &lt;script type="text/javascript" src="/js/jquery" /&gt;
+</p>
 </div>
 
 <!--#include virtual="/web/includes/footer.html" -->
