@@ -4,7 +4,7 @@
         <action name="compile">
             <description>Compiles a single controller</description>
             <entity namespace='humble' class='user_permissions' id='permissions'>
-                <parameter name='uid' source='session' default = '' />
+                <parameter name='id' value="uid" source='session' default = '' />
             </entity>
             <helper namespace='humble' class='directory' id='util'>
                 <parameter name='package'   source='post' default = '' />
@@ -18,7 +18,7 @@
         <action name="recompile">
             <description>Recompiles all active controllers, used when there was a new feature added to the compiler</description>
             <entity namespace="humble" class="user_permissions" id="permissions" method='load'>
-                <parameter name="uid"    source="session" default="" />
+                <parameter name='id' value="uid"    source="session" default="" />
             </entity>
         </action>
 
@@ -27,7 +27,7 @@
         <action name="install">
             <description>Runs all possible actions on a module</description>
             <entity namespace='humble' class='user_permissions' id='permissions'>
-                <parameter name='uid' source='session' default = '' />
+                <parameter name='id' value="uid" source='session' default = '' />
             </entity>
             <helper namespace='humble' class='directory' id='util'>
                 <parameter name='package'   source='post' default = '' />
@@ -55,7 +55,7 @@
         <action name="update">
             <description>Skips the install SQL as well as the copy of all images (only selectively copies images over)</description>
             <entity namespace='humble' class='user_permissions' id='permissions' method='load'>
-                <parameter name='uid' source='session' default = '' />
+                <parameter name='id' value="uid" source='session' default = '' />
             </entity>
             <switch id='permissions' method='getAdmin'>
                 <case value='Y'>
@@ -77,7 +77,7 @@
         <action name="refresh">
             <description>Skips the install SQL, does a full image copy as well as update</description>
             <entity namespace='humble' class='user_permissions' id='permissions'>
-                <parameter name='uid' source='session' default = '' />
+                <parameter name='id' value="uid" source='session' default = '' />
             </entity>
             <entity namespace='humble' class='modules' id='module'>
                 <parameter name='namespace' source='post' default='' />
@@ -94,7 +94,7 @@
         <action name="clear">
             <description>Clears out the controller cache and the view cache for the module</description>
             <entity namespace='humble' class='user_permissions' id='permissions'>
-                <parameter name='uid' source='session' default = '' />
+                <parameter name='id' value="uid" source='session' default = '' />
             </entity>
             <entity namespace='humble' class='modules' id='module'>
                 <parameter name='namespace' source='post' default='' />

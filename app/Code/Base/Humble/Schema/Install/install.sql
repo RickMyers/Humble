@@ -212,11 +212,11 @@ CREATE TABLE `humble_user_identification` (
 /*Table structure for table `humble_user_permissions` */
 
 CREATE TABLE `humble_user_permissions` (
-  `uid` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `admin` char(1) DEFAULT 'N',
   `super_user` char(1) DEFAULT 'N',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`uid`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_userlog` */

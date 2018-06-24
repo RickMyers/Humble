@@ -5,8 +5,8 @@
         <action name="fetch">
             <description>Fetches a certain number of rows from a specified log</description>
             <helper namespace='humble' class='log' id='log'>
-                <parameter name='size'   source='request' default = '' />
-                <parameter name='log'    source='request' default = '' />
+                <parameter name='size'   source='request' default='' />
+                <parameter name='log'    source='request' default='' />
             </helper>
         </action>
 
@@ -15,13 +15,13 @@
         <action name="clearlog">
             <description>Clears the log file</description>
             <helper namespace='humble' class='log' id='log'>
-                <parameter name='log'    source='request' default = '' />
+                <parameter name='log'    source='request' default='' />
             </helper>
             <entity namespace='humble' class='users' id='user' method='load'>
-                <parameter name='id'  value='uid'   source='session' default = '' />
+                <parameter name='id'  value='uid'   source='session' default='' />
             </entity>
             <entity namespace='humble' class='user_permissions' id='permissions' method='load'>
-                <parameter name='uid' source='session' default = '' />
+                <parameter name='id' value="uid" source='session' default='' />
             </entity>
         </action>
 

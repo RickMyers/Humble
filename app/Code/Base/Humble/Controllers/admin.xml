@@ -7,7 +7,7 @@
         <action name='home'>
             <description>The Humble administration home page</description>
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
-                <parameter name='uid'  source='session' required='true' />
+                <parameter name='id' value="uid"  source='session' required='true' />
             </entity>
             <switch id='permissions' method='getAdmin'>
                 <case value='Y'>
@@ -23,7 +23,7 @@
         </action>
 
         <!-- ############################################################### -->
- 
+
         <action name="compile">
             <description>Compiles (generates) the controllers of a module</description>
             <model namespace="humble" class="Utility" id='Utility'>
@@ -32,6 +32,26 @@
                 <parameter name='namespace' source='post' default='' />
             </model>
         </action>
+
+        <!-- ############################################################### -->
+
+        <action name="clone" event="templatesCloned" comment="Someone has made a copy of the default component templates">
+            <description>Clones the default component templates into the application default module</description>
+            <entity namespace="humble" class="user/permissions" method="load" id="permissions">
+                <parameter name='id' source='session' value='uid' default='' />
+            </entity>
+            <if id="permissions" method="getSuperUser" eq="Y">
+                <then>
+                    <model namespace="humble" class="Utility" method="clone">
+                    </model>
+                    <output text="Cloned It!" />
+                </then>
+                <else>
+                    <output text="Ain't happening" />
+                </else>
+            </if>
+        </action>
+
 
         <!-- ############################################################### -->
 
@@ -75,7 +95,7 @@
         <action name="mongo">
             <description>Routes to the mongo admin utility</description>
             <entity namespace="humble" class="user_permissions" id="permission" method="load">
-                <parameter name="uid" source="session" default='' />
+                <parameter name="id" value="id" source="session" default='' />
             </entity>
             <switch id="permission" method="getAdmin">
                 <case value="Y">

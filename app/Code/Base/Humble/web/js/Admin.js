@@ -18,6 +18,15 @@ Administration = (function () {
                             }
                         }
                     },
+                    templates: {
+                        clone: function () {
+                            if (confirm("Do you wish to clone a copy of the framework component templates so that you may customize them?\n\nIf so, they will be in the 'lib' directory of your main application module.")) {
+                                (new EasyAjax('/humble/admin/clone')).then(function (response) {
+                                    alert(response);
+                                }).post();
+                            }
+                        }
+                    },
                     status: {
                         check: function () {
                             (new EasyAjax('/humble/system/status')).then(function (response) {

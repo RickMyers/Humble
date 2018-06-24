@@ -70,7 +70,7 @@ colored XML tags below are the hooks:
 
     </div><br />
 <p>
-    The preceding section defined the following hooks, and any module in the application can attach more web components to these hooks:
+    The preceding section defined the following hooks, and any module in the application can create their own hooks in their own web section, and also can attach more web components to these hooks:
 </p>
 
 <p class="humble-code-like" style="margin-bottom: 50px">

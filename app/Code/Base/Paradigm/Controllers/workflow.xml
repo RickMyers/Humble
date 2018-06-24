@@ -3,7 +3,7 @@
 
 Manages the actions related to the workflow engine
 
-For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/pages/Controllers.htmls
 -->
 <controller name="workflow" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
     <actions>
@@ -158,7 +158,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="sync" event="workflowsSynced" comment="An inventory of workflows have been synced">
             <description>Will sync the remote workflows to the local repository</description>
             <entity namespace="humble" class="user_permissions" method="load" id="permissions">
-                <parameter name="uid" source="session" required="true" />
+                <parameter name='id' value="uid" source="session" required="true" />
             </entity>
             <switch id="permissions" method="getAdmin">
                 <case value="Y">

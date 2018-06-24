@@ -72,7 +72,7 @@
                 "bootstrap":   {"color": "fuchsia"},
                 "widgets":   {"color": "fuchsia"},
                 "admin":   {"color": "fuchsia"},
-                "bootstraptheme":   {"color": "fuchsia"},
+                "theme":   {"color": "fuchsia"},
                 "admintheme":   {"color": "fuchsia"},
                 "helpers":	{"color": "blue"},
                 "images":	{"color": "blue"},

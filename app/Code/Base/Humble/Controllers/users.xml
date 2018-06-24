@@ -1,40 +1,40 @@
 <?xml version="1.0"?>
 <controller name="users" use="Twig">
     <actions>
-        
+
         <action name="list">
             <description>Will generate a list of active users</description>
             <entity namespace="humble" class="user_permissions" id="permissions">
-                <parameter name="uid" source="session" default="" />
+                <parameter name="id" value="uid" source="session" default="" />
             </entity>
             <entity namespace="humble" class="users_aliases" id="alias">
-            </entity>            
+            </entity>
             <entity namespace="humble" class="users" id="users">
             </entity>
         </action>
-        
+
         <!-- ############################################################### -->
-        
+
         <action name="remove">
             <description>Will remove a user</description>
             <entity namespace="humble" class="user_permissions" id="user">
-                <parameter name="uid" source="session" default="" />
+                <parameter name="id" value="uid" source="session" default="" />
             </entity>
             <entity namespace="humble" class="users" id="users">
                 <parameter name="uid" source="post" default="" />
             </entity>
             <entity namespace="humble" class="users_aliases" id="alias">
                 <parameter name="uid" source="post" default="" />
-            </entity>       
+            </entity>
             <entity namespace="humble" class="user_permissions" id="permissions">
-                <parameter name="uid" source="post" default="" />
-            </entity> 
+                <parameter name="id" value="uid" source="post" default="" />
+            </entity>
             <helper namespace='humble' class='data' id='helper'>
                 <parameter name="secret" source="post" default="" />
             </helper>
             <chain>
                 <action name="list" />
-            </chain>   
+            </chain>
         </action>
     </actions>
 </controller>

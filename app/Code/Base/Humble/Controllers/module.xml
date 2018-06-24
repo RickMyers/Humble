@@ -18,7 +18,7 @@
         <action name="documentation">
             <description>Will regenerate the API documentation</description>
             <entity namespace='humble' class='user_permissions' id='perms' method='load'>
-                <parameter name="uid"       source="session" default="" />
+                <parameter name="id" value="uid"       source="session" default="" />
             </entity>
             <switch id="perms" method="getAdmin">
                 <case value='Y'>

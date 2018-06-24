@@ -16,9 +16,10 @@ if (isset($_SESSION['login']) && $_SESSION['login']) {
 }
 //COMMENT OUT NEXT LINE WHEN WE GO LIVE!!!
 $super_user = true;
+$project = \Environment::getProject();
 if ($super_user) {
     $_SESSION['uid'] = isset($_GET['uid']) ? $_GET['uid'] : 1;
-    header('Location: /core/home/page');
+    header('Location: '.$project->landing_page);
 } else {
     header('Location: /index.html?m=Having an identity crisis?');
 }

@@ -3,7 +3,7 @@
 
 System functions such as status and installation enabled
 
-For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/pages/Controllers.htmls
 -->
 <controller name="system" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
     <actions>
@@ -12,7 +12,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <description>Displays the status of the system from the application.xml file, and allows the user to change the values if they have super-user role</description>
             <model namespace="humble" class="system" id='system' />
             <entity namespace="humble" class="user_permissions" id="permissions" method="load">
-                <parameter name="uid" source="session" default="" />
+                <parameter name="id" value="uid" source="session" default="" />
             </entity>
             <switch id="permissions" method="getSuperUser">
                 <case value="Y">
@@ -29,7 +29,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="save">
             <description>Will save the system settings if the user has the proper role</description>
             <entity namespace="humble" class="user_permissions" id="permissions" method="load">
-                <parameter name="uid" source="session" default="" />
+                <parameter name="id" value="uid" source="session" default="" />
             </entity>
             <switch id="permissions" method="getSuperUser">
                 <case value="Y">
@@ -65,7 +65,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="quiesce">
             <description>Sets the "quiesce" bit which signals all connected clients that the system is about to shutdown...</description>
             <entity namespace="humble" class="user_permissions" method="load" id="permissions">
-                <parameter name="uid" source="session" required="true" />
+                <parameter name="id" value="uid" source="session" required="true" />
             </entity>
             <switch id="permissions" method="getSuperUser">
                 <case value="Y">
@@ -84,7 +84,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="offline">
             <description>Sets the "disabled" bit which signals all connected clients that the system is now offline...</description>
             <entity namespace="humble" class="user_permissions" method="load" id="permissions">
-                <parameter name="uid" source="session" required="true" />
+                <parameter name="id" value="uid" source="session" required="true" />
             </entity>
             <switch id="permissions" method="getSuperUser">
                 <case value="Y">

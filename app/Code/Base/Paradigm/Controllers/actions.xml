@@ -4,7 +4,7 @@
         <action name="open">
             <description>Main landing for the workflow editor</description>
             <entity namespace="humble" class="user_permissions" id="permissions" method="load">
-                <parameter name="uid" source="session" required="true" />
+                <parameter name='id' value="uid" source="session" required="true" />
             </entity>
         </action>
 
