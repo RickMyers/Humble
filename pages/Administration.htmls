@@ -10,9 +10,17 @@
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Framework Administration</div>
-
-
-
+From the administration page, the administrator can manage the modules in the application, view application and system level logs, and use the wizards to create module components like Models, Controllers, Entities, etc.<br /><br />
+Below is a sample administration page, with the three framework modules in the <span style='font-family: courier-new'>Base</span> package, and one application module in the <span style='font-family: courier-new'>Main</span> package.
+Please remember, a package is nothing more than a directory and is used to group related modules.
+<img src="images/admin_main.png" style="width: 100%" />
+<br />
+<p>
+We are now going to look at the sections of Administration page
+</p>
+    <div>
+        <img src='images/admin_logs.png' style='width: 40px' />
+    </div>
 </div>
 
 <!--#include virtual="/web/includes/footer.html" -->

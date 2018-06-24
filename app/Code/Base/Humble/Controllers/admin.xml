@@ -11,10 +11,10 @@
             </entity>
             <switch id='permissions' method='getAdmin'>
                 <case value='Y'>
-                    <entity namespace='humble' class='modules'    id='available_module' orderby='package=ASC,namespace=ASC' />
-                    <helper namespace='humble' class='installer' id='installer' />
-                    <helper namespace='humble' class='admin'  id='directory' />
-                    <helper namespace='humble' class='directory'  id='packages' />
+                    <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
+                    <helper namespace='humble' class='installer'    id='installer' />
+                    <helper namespace='humble' class='admin'        id='directory' />
+                    <helper namespace='humble' class='directory'    id='packages' />
                 </case>
                 <default>
                     <redirect href='/index.html?m=Insufficient privilege' />
