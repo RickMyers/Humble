@@ -2,6 +2,9 @@
 <application>
     <name>{$name}</name>
     <version>{$version}</version>
+    <msa>
+        <router>0</router>                      <!-- Switch to 1 to make this node the router for a MSA based application -->
+    </msa>
     <status>
         <enabled>{$enabled}</enabled>           <!-- Switch to 0 to take the application offline -->
         <quiescing>{$quiescing}</quiescing>     <!-- switch to 1 to being the process of taking the system offline -->

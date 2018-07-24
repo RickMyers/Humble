@@ -14,9 +14,12 @@
 ^.well-known/
 .htaccess
 LICENSE
+app/install/index.php index.php
+app/install/index.html index.html
 api.php
 iapi.php
 mapi.php
+msa.php
 debug.php
 fallback.php
 favicon.png
@@ -33,8 +36,6 @@ web/images/tabs/*
 web/images/*
 dist/*
 favicon/*
-app/install/index.php index.php
-app/install/index.html index.html
 app/Humble.local.manifest
 app/Code/Base/Humble/*
 app/Code/Base/Paradigm/*

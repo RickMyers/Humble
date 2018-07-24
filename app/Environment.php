@@ -20,6 +20,7 @@ class Environment {
     private static $settings    = false;
     private static $session_id  = false;
     private static $status      = false;
+    private static $application = false;
 
     /**
      * Constructor
@@ -76,6 +77,14 @@ class Environment {
         return $protocol.'://'.$host;
     }
 
+
+    public static function MSARouter() {
+        if (!self::$application) {
+            self::loadApplicationMetaData();
+        }
+        return ((self::$application->msa->router==1) || (self::$application->msa->router=='Y'));
+    }
+
     /**
      * We are using Rain 3 for internal "in-line" templating
      *
@@ -92,14 +101,19 @@ class Environment {
         return new \Rain\Tpl;
     }
 
+
+    private static function loadApplicationMetaData() {
+        return (self::$application) ? self::$application : (self::$application = simplexml_load_string((file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time.")));
+    }
+
+
     /**
      * Returns the application status XML in object form
      *
      * @return type
      */
     public static function status() {
-        $data = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time.");
-        return simplexml_load_string($data);
+        return self::loadApplicationMetaData();
     }
 
     /**
@@ -117,10 +131,10 @@ class Environment {
      * @return boolean
      */
     public static function cachingEnabled() {
-        if (!self::$status) {
-            self::$status  = simplexml_load_string(file_get_contents('../application.xml'));
+        if (!self::$application) {
+            self::loadApplicationMetaData();
         }
-        return isset(self::$status->caching) && self::$status->caching;
+        return (isset(self::$application->caching) && self::$application->caching);
     }
     /**
      * This is a wrapper for the session variable.  It will either set a session variable, return a session variable, or return the session array if no parameter is passed
@@ -171,30 +185,28 @@ class Environment {
         if (($namespace==='core') && ($controller==='system') && ($method==='active')) {
             return false;
         }
-        if (!self::$status) {
-            if ($data   = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : $status = "The application is inaccessible at this time.") {
-                self::$status  = simplexml_load_string($data);
-                if (!empty(self::$status)) {
-                    if (isset(self::$status->status)) {
-                        if (isset(self::$status->status->quiescing) && ((int)self::$status->status->quiescing)) {
-                            $status = "System is going offline...";
-                        } else if (isset(self::$status->status->enabled) && ((int)self::$status->status->enabled)) {
-                            //nop; everything is good
-                        } else {
-                            $status = "System is currently offline";
-                        }
+        if (!self::$application) {
+            self::loadApplicationMetaData();
+            if (!empty(self::$application)) {
+                if (isset(self::$application->status)) {
+                    if (isset(self::$application->status->quiescing) && ((int)self::$application->status->quiescing)) {
+                        $status = "System is going offline...";
+                    } else if (isset(self::$application->status->enabled) && ((int)self::$application->status->enabled)) {
+                        //nop; everything is good
                     } else {
-                        $status = "The application is not correctly configured.  Correct the application configuration file and try again";
+                        $status = "System is currently offline";
                     }
                 } else {
-                    $status = "There is an error in the application configuration file";
+                    $status = "The application is not correctly configured.  Correct the application configuration file and try again";
                 }
+            } else {
+                $status = "There is an error in the application configuration file";
             }
         }
         //Allows override if you are a super user
         if ($status) {
             if (isset($_SESSION['uid']) && $_SESSION['uid']) {
-                $user = \Humble::getEntity('core/user_permissions')->setUid($_SESSION['uid']);
+                $user = \Humble::getEntity('humble/user_permissions')->setId($_SESSION['uid']);
                 $user->load();
                 if ($user->getSuperUser() == 'Y') {
                     $status = false;
@@ -231,7 +243,7 @@ class Environment {
     public static function whoIs($id=false) {
         $user = false;
         if ($id) {
-            $user = Humble::getEntity('core/user_identification')->setId($id)->load();
+            $user = Humble::getEntity('humble/user_identification')->setId($id)->load();
         }
         return $user;
     }
@@ -388,8 +400,7 @@ class Environment {
     /**
      *
      */
-    public static function getCompiler()
-    {
+    public static function getCompiler()  {
         return new \Code\Base\Humble\Helpers\Compiler();
         //return Singleton::getCompiler();
     }
@@ -397,16 +408,14 @@ class Environment {
     /**
      *
      */
-    public static function getInstaller()
-    {
+    public static function getInstaller()  {
         return Singleton::getInstaller();
     }
 
     /**
      *
      */
-    public static function getUpdater()
-    {
+    public static function getUpdater()  {
         return Singleton::getUpdater();
     }
 

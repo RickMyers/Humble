@@ -12,15 +12,29 @@
 <div class='humble-topic-header'>Framework Administration</div>
 From the administration page, the administrator can manage the modules in the application, view application and system level logs, and use the wizards to create module components like Models, Controllers, Entities, etc.<br /><br />
 Below is a sample administration page, with the three framework modules in the <span style='font-family: courier-new'>Base</span> package, and one application module in the <span style='font-family: courier-new'>Main</span> package.
-Please remember, a package is nothing more than a directory and is used to group related modules.
+Please remember, a package is nothing more than a directory and is used to group related modules.<br />
 <img src="images/admin_main.png" style="width: 100%" />
-<br />
+<br /><br />
 <p>
 We are now going to look at the sections of Administration page
 </p>
     <div>
-        <img src='images/admin_logs.png' style='width: 40px' />
+        <img src='images/admin_logs.png' style='width: 40px; float: left; margin-right: 5px' />
+
+        <div class=humble-section-header>Apps &amp; Logs</div>
+        <br />
+        <p>
+            On the left hand column we have mini-apps.  The top most icon opens up documentation and training videos.  The second icon down open up the unit test runner (PHPUnit).  If you have set up unit tests, you
+            can select which unit tests to run, or run a comprehensive test.  The third icon down opens the Event Inspector.  This is a tool to view the application events and inspect their contents.<br /><br />
+            Next down are the six (soon to be seven) log file Icons.  Developers can write directly to the <i>General</i>, <i>Warning</i>, and <i>Error</i> logs, while the framework itself will write to the <i>Error</i>, <i>MySQL</i>, and <i>MongoDB</i> logs.  A future "User"
+            log file is planned, and each user of the system will be able to write to their own log.
+            <br /><br/>
+            The final log is the <i>System</i> log, and this is the application Syslog written to by the server.<br /><br />
+            <b>All application logs are written to in the order of most recent entries are at the top, while the <i>System</i> log has the most recent entries at the bottom</b>.
+        </p>
+
     </div>
+
 </div>
 
 <!--#include virtual="/web/includes/footer.html" -->

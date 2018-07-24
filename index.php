@@ -44,6 +44,15 @@ $bypass          = false;
 $headers         = getallheaders();
 
 //###########################################################################
+//If this application is deployed using a Micro-Services Architecture, then
+//one of the application nodes must be the router.  If this is the MSA Router,
+//include the Micro-Service Router and end.
+if (\Environment::MSARouter()) {
+    require_once("msa.php");
+    die();
+}
+
+//###########################################################################
 //Two phased login check.  If you are not logged in (determined by having a
 //variable called uid in the session, then load the list of services a person
 //can access without being logged in.  If the service you are trying to load
@@ -91,7 +100,7 @@ if (!$module) {
     //@TODO: change this to throw an exception
     die('The module/feature (ns='.$namespace.',cn='.$controller.',mt='.$method.') you are trying to access either does not exist or is disabled');
 } else {
-    $core            = \Humble::getProject();    //A reference to the core functionality held in the Core module
+    $core            = \Humble::getProject();    //A reference to the core functionality held in the applications primary module
     $core            = \Humble::getModule($core['namespace']);
     $include         = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller_cache']).'/'.$controller.'Controller.php';
     $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']).'/'.$controller.'.xml';

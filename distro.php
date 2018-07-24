@@ -20,10 +20,10 @@
     switch ($action) {
         case    "fetch" :
             $xml        = simplexml_load_file('application.xml');
-            $source     = "../packages/Humble-Distro-".(string)$xml->version.".zip";
+            $source     = "../packages/Humble-Distro-".(string)$xml->version->framework.".zip";
             if (!file_exists($source)) {
                 header("Content-Type: application/json");
-                print('{ "error": "Missing Distro For Version '.(string)$xml->version.'"');
+                print('{ "error": "Missing Distro For Version '.(string)$xml->version->framework.'"');
                 die();
             }
             $finfo      = finfo_open(FILEINFO_MIME_TYPE);

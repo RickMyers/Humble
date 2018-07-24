@@ -209,7 +209,7 @@ TXT;
     }
     //--------------------------------------------------------------------------
     function displayVersion($xml) {
-        print("\n\n".$xml->version."\n\n");
+        print("\n\n".$xml->version->framework."\n\n");
     }
     //--------------------------------------------------------------------------
     function getApplicationXML() {
@@ -712,7 +712,7 @@ TXT;
         }
         @mkdir('../packages/',0775);
         $xml        = simplexml_load_file('application.xml');
-        $archive    = '../packages/Humble-Distro-'.(string)$xml->version.'.zip';
+        $archive    = '../packages/Humble-Distro-'.(string)$xml->version->framework.'.zip';
         if (file_exists($archive)) {
             unlink($archive);
         }
@@ -832,7 +832,7 @@ TXT;
         }
         $canonical = json_decode(file_get_contents($project['framework_url']."/distro/version"),true);
         $canon_version = (int)str_replace(".","",(string)$canonical['version']);
-        $local_version = (int)str_replace(".","",(string)$app->version);
+        $local_version = (int)str_replace(".","",(string)$app->version->framework);
         $helper = Humble::getHelper('humble/directory');
         print("\n\nRunning patching report on core framework to version ".$canonical['version'].", please wait...\n\n");
         $distro = 'distro_'.$canonical['version'];
