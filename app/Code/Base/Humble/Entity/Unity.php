@@ -85,6 +85,42 @@ class Unity extends \Code\Base\Humble\Model\BaseObject
     }
 
     /**
+     * Because of the variable columns per row, we need to get a list of all columns across our dataset
+     *
+     * @param array $rows
+     * @return array
+     */
+    private function columns($rows) {
+        $columns    = [];
+        foreach ($rows as $row) {
+            foreach ($row as $column => $value) {
+                $columns[$column] = $column;
+            }
+        }
+        return $columns;
+    }
+    
+    /**
+     * Because of the variable number of columns per row in a polyglot entity, this method "normalizes" the result set, which means all rows will have the same number of columns
+     *
+     * @param iterator $iterator (optional
+     * @return iterator
+     */
+    public function normalize($iterator=false) {
+        $iterator = ($iterator) ? $iterator : $this->fetch();
+        $results  = $iterator->toArray();
+        $columns  = $this->columns($results);
+        foreach ($results as $idx => $row) {
+            $newRow = [];
+            foreach ($columns as $column) {
+                $newRow[$column] = isset($row[$column]) ? $row[$column] : '';
+            }
+            $results[$idx] = $newRow;
+        }
+        return $iterator->set($results);
+    }
+
+    /**
      *
      */
     public function clean()  {
