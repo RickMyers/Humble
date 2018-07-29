@@ -22,6 +22,25 @@
 
         <!-- ############################################################### -->
 
+        <action name="authentication" output="JSON">
+            <model namespace="humble" class="user" id="user">
+                <parameter name="user_name" source="post" default="" required='true' />
+                <parameter name="password"  source="post" value="user_password" format="password" required='true' />
+            </model>
+            <switch id='user' method='login'>
+                <case value='TRUE'>
+                    <model response="true" namespace='humble' class='user' method='outputSessionData'>
+
+                    </model>
+                </case>
+                <default>
+                    <output text='{ "error": "Authentication Failed", "RC": 12 }'  />
+                </default>
+            </switch>
+        </action>
+
+        <!-- ############################################################### -->
+
         <action name="new">
             <description>Prompts the user to enter their password for the first time</description>
             <model namespace="humble" class="user" id="user">

@@ -481,7 +481,7 @@ PHP;
     //--------------------------------------------------------------------------------------------------
     private function processOutput($node) {
         if (isset($node['text'])) {
-            print($this->tabs()."Humble::response(\"".$node['text']."\");\n");
+            print($this->tabs()."Humble::response(\"".addslashes($node['text'])."\");\n");
         }
     }
     //--------------------------------------------------------------------------------------------------

@@ -188,6 +188,24 @@ class User extends Model {
     }
 
     /**
+     * For authentication from remote sources, this method will return your current session information including session token for use in performing a certain set of allowable actions from a remote host
+     *
+     * @return JSON
+     */
+    public function outputSessiondata() {
+        $data = ['sessionId'=>false, 'RC'=>16, 'time'=>null, 'user'=> null];
+        if ($uid = Environment::whoAmI()) {
+            $data = [
+                'sessionId' => session_id(),
+                'RC' => 0,
+                'user' => Humble::getEntity('humble/user/identification')->setId($uid)->load()
+            ];
+        }
+        return json_encode($data);
+
+    }
+
+    /**
      * This is a redirect to another page, you may specify which page the user should be sent to
      *
      * @workflow use(process) configuration(workflow/user/redirect)
