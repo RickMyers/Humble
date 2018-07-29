@@ -14,8 +14,9 @@
 ^.well-known/
 .htaccess
 LICENSE
-app/install/index.php index.php
+index.php
 app/install/index.html index.html
+app/driver.bat
 api.php
 iapi.php
 mapi.php

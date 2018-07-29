@@ -273,14 +273,14 @@ switch ($method) {
             file_put_contents('oops.txt',$results);
         }
         $user    = \Humble::getEntity('humble/user_identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
-        $perms   = \Humble::getEntity('humble/user_permissions')->setUid($uid)->setAdmin('Y')->setSuperUser('Y')->save();
+        $perms   = \Humble::getEntity('humble/user_permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
         $ins->setUid($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
         if (!$cache) {
 
         }
         session_start();
         $_SESSION['uid'] = $uid;
-        copy('install/driver.bat',strtolower((string)$project->factory_name).'.bat');
+        rename('driver.bat',strtolower((string)$project->factory_name).'.bat');
         file_put_contents('../install_status.json','{ "stage": "Complete", "step": "Finished", "percent": 100 }');
         file_put_contents('../install.log',ob_get_flush());
         break;
