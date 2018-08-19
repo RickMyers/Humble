@@ -3,7 +3,7 @@
 
 All things relating to managing and creating email notifications
 
-For Controller reference, please see "Anatomy of a Controller" at https://humble-project.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
 -->
 <controller name="email" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
     <actions>

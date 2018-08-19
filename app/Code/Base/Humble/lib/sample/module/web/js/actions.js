@@ -1,4 +1,4 @@
-HUMBLE.&&namespace&& = (function () {
+Humble.&&namespace&& = (function () {
     //local variables and functions here
     return {
         foo: function () {

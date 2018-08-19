@@ -211,7 +211,6 @@ Administration = (function () {
                     init:   function () {
                         Desktop.init(Desktop.enable);
                         Desktop.semaphore.init();
-                        new EasyEdits('/web/edits/newuser.json','newuser');
                         new EasyEdits('/web/edits/newmodule.json','newmodule');
                         new EasyEdits('/web/edits/newcomponent.json','newcomponent');
                         new EasyEdits('/web/edits/newcontroller.json','newcontroller');
