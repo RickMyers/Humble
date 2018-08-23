@@ -99,7 +99,7 @@ class Unity extends \Code\Base\Humble\Model\BaseObject
         }
         return $columns;
     }
-    
+
     /**
      * Because of the variable number of columns per row in a polyglot entity, this method "normalizes" the result set, which means all rows will have the same number of columns
      *
@@ -384,10 +384,10 @@ SQL;
         $query = "select * from ".$this->_prefix().$this->_entity();
         $andFlag = false;
         foreach ($results as $field => $value) {
-            if ($andFlag == false) {
-                $query .= ' where ';
-            }
             if (isset($this->_keys[$field]) || isset($this->_column[$field])) {
+                if ($andFlag == false) {
+                    $query .= ' where ';
+                }
                 if ($value === null) {
                     $query .= ($andFlag ? " and `": "`").$field."` is NULL ";
                 } else {
