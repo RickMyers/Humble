@@ -653,7 +653,7 @@ PHP;
         if (isset($node['id'])) {
             print($this->tabs()."if ($".$node['id'].'->'.$node['method'].'('.$args.') '.$op." ".$val.") ");
         } else if (isset ($node['var'])) {
-            print($this->tabs().'if ($_REQUEST["'.$node['var'].'"] '.$op." ".$val.") ");
+            print($this->tabs().'if (isset($_REQUEST["'.$node['var'].'"]) && ($_REQUEST["'.$node['var'].'"] '.$op." ".$val.")) ");
         }
         foreach ($node as $nIdx => $case) {
             $nIdx = strtolower($nIdx);
