@@ -14,7 +14,7 @@ html.cke_copyformatting_active {
 .cke_copyformatting_disabled,
 .cke_copyformatting_disabled a,
 .cke_copyformatting_disabled .cke_editable {
-	cursor: url(../cursors/cursor-disabled.svg) 12 1, auto;
+	cursor: url(/ckeditor/cursors/cursor-disabled.svg) 12 1, auto;
 }
 
 .cke_copyformatting_disabled .cke_top a,
@@ -31,7 +31,7 @@ html.cke_copyformatting_active {
 .cke_copyformatting_active table,
 .cke_copyformatting_active div[data-cke-temp],
 .cke_copyformatting_tableresize_cursor div[data-cke-temp] {
-	cursor: url(../cursors/cursor.svg) 12 1, auto !important;
+	cursor: url(/ckeditor/cursors/cursor.svg) 12 1, auto !important;
 }
 
 .cke_screen_reader_only {
