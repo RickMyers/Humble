@@ -3,7 +3,8 @@
     },
     "ignore": {
         "index.html": true,
-        "app/Humble.local.manifest": true
+        "app/Humble.local.manifest": true,
+		"app/allowed.json": true
     },
     "alwaysSkip": {
         ".git": true,
