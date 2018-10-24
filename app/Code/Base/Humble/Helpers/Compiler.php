@@ -456,23 +456,20 @@ PHP;
             print($this->tabs().'$'.$node['id'].'->_retain();'."\n");
         }
         if (isset($node['method'])) {
-            $assign_str = '';
+            $assign_str = ''; $method_str = '$'.$node['id'].'->'.$node['method'].'()';
             if (isset($node['assign'])) {
                 $assign_str = '$'.$node['assign'].' = ';
             }
-            if (isset($node['response']) && (strtolower($node['response'])=='true')) {
-                if (isset($node['wrapper'])) {
-                    print($this->tabs().'Humble::response('.$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
-                } else {
-                    print($this->tabs().'Humble::response('.$assign_str.'$'.$node['id'].'->'.$node['method'].'());'."\n");
-                }
-            } else {
-                if (isset($node['wrapper'])) {
-                    print($this->tabs().$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'());'."\n");
-                } else {
-                    print($this->tabs().$assign_str.'$'.$node['id'].'->'.$node['method'].'();'."\n");
-                }
+            if (isset($node['normalize']) && (strtoupper($node['normalize'])=='Y')) {
+                $method_str = '$'.$node['id'].'->normalize('.$method_str.')';
             }
+            if (isset($node['wrapper'])) {
+                $method_str = $node['wrapper'].'('.$method_str.')';
+            }
+            if (isset($node['response']) && (strtolower($node['response'])=='true')) {
+                $method_str = 'Humble::response('.$method_str.')';
+            }
+            print($this->tabs().$assign_str.$method_str.";\n");
         }
     }
 

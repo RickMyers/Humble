@@ -38,6 +38,7 @@ class Unity extends \Code\Base\Humble\Model\BaseObject
     protected $_batchsql      = [];
     protected $_batch         = false;
     protected $_isVirtual     = false;
+    protected $_normalize     = false;
 
     /**
      * Initial constructor
@@ -47,8 +48,7 @@ class Unity extends \Code\Base\Humble\Model\BaseObject
      * the $this->_db->query() direct DB call, which bypasses mongodb
      *
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->_db = Humble::getDatabaseConnection($this);
     }
@@ -56,8 +56,7 @@ class Unity extends \Code\Base\Humble\Model\BaseObject
     /**
      *
      */
-    public function __destruct()
-    {
+    public function __destruct()  {
         //if pagination is set, store the page in the session
         if ($this->_page()) {
             if (!isset($_SESSION['pagination'])) {
@@ -776,16 +775,21 @@ SQL;
                         }
                         $id = isset($row[$mJoin]) ? $row[$mJoin] : false;
                         if ($id) {
-                            $int[$id] = $idx;
+                            if (!isset($int[$id])) {
+                                $int[$id] = [];
+                            }
+                            $int[$id][] = $idx;
                         }
                     }
                     if (count($int)) {
                         //And this craziness merges the document data with the mysql data, being careful not to overlay mysql field values with mongo field values if they both happen to have the same field
                         foreach ($rows as $row) {
                             if (isset($int[$row['id']])) {
-                                foreach ($row as $var => $val) {
-                                    if (!isset($results[$int[$row['id']]][$var])) {
-                                        $results[$int[$row['id']]][$var] = $val;
+                                foreach ($int[$row['id']] as $index) {
+                                    foreach ($row as $var => $val) {
+                                        if (!isset($results[$int[$row['id']][$index]][$var])) {
+                                            $results[$int[$row['id']][$index]][$var] = $val;
+                                        }
                                     }
                                 }
                             }
@@ -1464,6 +1468,21 @@ SQL;
             $this->_clean = $arg;
         } else {
             return $this->_clean;
+        }
+        return $this;
+    }
+
+    /**
+     * Whether to normalize the result set so each row has the same number of columns and in the same order
+     *
+     * @param boolean $arg
+     * @return $this
+     */
+    public function _normalize($arg=null) {
+        if ($arg !== null) {
+            $this->_normalize = $arg;
+        } else {
+            return $this->_normalize;
         }
         return $this;
     }
