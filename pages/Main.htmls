@@ -1,6 +1,6 @@
-<!--#include virtual="/web/includes/header.html" -->
-<!--#include virtual="/web/includes/banner.html" -->
-<!--#include virtual="/web/includes/container.html" -->
+<!--#include virtual="/Pages/includes/header.html" -->
+<!--#include virtual="/Pages/includes/banner.html" -->
+<!--#include virtual="/Pages/includes/container.html" -->
 
 
 <h1>Humble - the flexible, abstract, framework.</h1>
@@ -11,4 +11,4 @@
     Database interaction is managed by a polyglot ORM called <i>Unity</i> that marries the best of MySQL and MongoDB together.  Finally, an event driven workflow engine called <i>Paradigm</i> catalogs your exposed public methods and
     allows you to graphically orchestrate those methods into a dynamic workflow.
 </p>
-<!--#include virtual="/web/includes/footer.html" -->
+<!--#include virtual="/Pages/includes/footer.html" -->

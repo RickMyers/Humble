@@ -1,7 +1,7 @@
 
 
-<!--#include virtual="/web/includes/header.html" -->
-<!--#include virtual="/web/includes/container.html" -->
+<!--#include virtual="/Pages/includes/header.html" -->
+<!--#include virtual="/Pages/includes/container.html" -->
 <div style='font-size: 4.5em'>The Humble Blog</div>
 <div style='font-size: 1em; letter-spacing: 3px'>Perspectives, thoughts, and the sometimes incoherent ramblings of Rick</div>
 <div class='article-separator'>
@@ -81,5 +81,5 @@ For me personally, I've found tools like the <a href="http://www.myersbriggs.org
 where being innovative is required, and those who will excel in other roles not related to constant change.
 
 </div>
-<!--#include virtual="/web/includes/footer.html" -->
+<!--#include virtual="/Pages/includes/footer.html" -->
 
