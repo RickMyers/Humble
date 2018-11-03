@@ -6,9 +6,10 @@
 <h1>Humble - the flexible, abstract, framework.</h1>
 
 <p class='humble-emphasis'>
-    Humble is an MVC (Model-View-Controller) framework where the Controllers are written in XML, the views can be written in any PHP templating language that is supported (Twig, Smarty3, Brainy, TBS, Mustache, etc),
-    and the models are written using Plain Old PHP Objects (POPO).  Further, integration is handled by crafting YaML files that describe the interchange (SOAP, REST, etc) between smart end points, or through an ESB (Enterprise Service Bus).
-    Database interaction is managed by a polyglot ORM called <i>Unity</i> that marries the best of MySQL and MongoDB together.  Finally, an event driven workflow engine called <i>Paradigm</i> catalogs your exposed public methods and
-    allows you to graphically orchestrate those methods into a dynamic workflow.
+    Modern, Flexible, and Fast, Humble is an MVC framework for quickly developing Enterprise Class Applications.<br /><br />
+    Whether you are using server side rendering in <b>any</b> templating language (Twig, Mustache, Smarty, etc), or seeking simplified server side API handling using Angular, React, Vue, etc., Humble is there for you.<br /><br />
+    On top of that the Unity ORM and the Graphical Paradigm Workflow Engine drastically simplify the creation of server-side workflows.<br /><br />
+    Build your application as a monolith, but deploy it as a Micro-Servicer Architecture application with a simple click of a button.   Scaling has never been so easy.<br /><br />
+    Give Humble a try, and application development will never be the same, or so easy, again!<br /><br />
 </p>
 <!--#include virtual="/Pages/includes/footer.html" -->

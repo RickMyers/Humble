@@ -33,7 +33,9 @@
                                         }
                                         $packages[$file['namespace']] = $mod;
                                     }
-                                    if (substr($file['source'],0,4)=="http") {
+                                    if ((substr($file['source'],0,1)=='/')) {
+                                        print(file_get_contents($_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].$file['source']).';');
+                                    } else if (substr($file['source'],0,4)=="http") {
                                         print(file_get_contents($file['source']).'; ');
                                     } else {
                                         $file = 'Code/'.$packages[$file['namespace']]['package'].'/'.$file['source'];
