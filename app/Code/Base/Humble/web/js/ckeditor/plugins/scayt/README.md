@@ -8,7 +8,7 @@ SCAYT is a "installation-less", using the web-services of [WebSpellChecker.net](
 Installation
 ------------
 
-1. Clone/copy this repository contents in a new "plugins/scayt" folder in your CKEditor installation.
+1. Clone/copy this repository contents in a new "/ckeditor/plugins/scayt" folder in your CKEditor installation.
 2. Enable the "scayt" plugin in the CKEditor configuration file (config.js):
 
         config.extraPlugins = 'scayt';
