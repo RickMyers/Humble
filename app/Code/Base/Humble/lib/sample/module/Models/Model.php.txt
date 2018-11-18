@@ -17,7 +17,7 @@ namespace Code\&&package&&\&&module&&\Models;
  * @license    https://license.enicity.com
  * @version    3.0.1
  */
-class Model extends \Code\Base\Humble\Model\BaseObject
+class Model extends \Code\Base\Humble\Models\Model
 {
 
 }

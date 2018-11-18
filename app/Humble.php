@@ -211,7 +211,7 @@
             if ($module = self::getModule($identifier['namespace'])) {
                 $str   = "Code/{$module['package']}/".str_replace("_","/",$module['helpers'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Helper\BaseObject {
+                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Helpers\Helper {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
@@ -468,11 +468,11 @@
         /**
          * To protect yourself from bad impulses, access to the DB is restricted to instances of Entity the object or a short list of privileged classes.  This is to encourage DAO style development
          *
-         * @param \Code\Base\Humble\Entity\Unity $callingClass
+         * @param \Code\Base\Humble\Entities\Unity $callingClass
          * @return mixed
          */
         public static function getDatabaseConnection($callingClass=false)        {
-            if (!($conn = ($callingClass instanceof \Code\Base\Humble\Entity\Unity))) {
+            if (!($conn = ($callingClass instanceof \Code\Base\Humble\Entities\Unity))) {
                 if ($callingClass) {
                     $name = $callingClass->getClassName();
                 } else {

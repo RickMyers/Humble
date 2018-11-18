@@ -17,7 +17,7 @@ namespace Code\Base\Paradigm\Entities;
  * @version    <INSERT VERSIONING MECHANISM HERE />
  * @since      File available since Version 1.0.1
  */
-class Entity extends \Code\Base\Humble\Entity\Unity {
+class Entity extends \Code\Base\Humble\Entities\Unity {
 
 }
 ?>
