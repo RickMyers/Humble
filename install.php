@@ -28,11 +28,12 @@
                 background-color: white
             }
             .installer-form-div {
-                width: 705px; padding: 20px 30px; border: 1px solid #aaf; background-color: #e0e0e0;
+                width: 705px; padding: 20px 30px; border: 1px solid #aaf; border-top: 0px; background-color: #e0e0e0;
             }
         </style>
         <script type="text/javascript" src="/web/js/jquery.js"></script>
         <script type="text/javascript" src="/web/js/EasyAjax.js"></script>
+        <script type="text/javascript" src="/web/js/EasyTabs.js"></script>
         <script type="text/javascript" src="/web/js/EasyEdit.js"></script>
         <script type="text/javascript">
             var Installer = {
@@ -106,6 +107,8 @@ $method = (isset($_POST['method'])) ? $_POST['method'] : "INIT";
 switch ($method) {
     case "INIT"         :
         ?>
+
+            <div id="installation-data">
             <table id="installer-area" style="width: 100%; height: 100%" cellspacing='0' cellpadding='0'>
                 <tr style="height: 20px">
                     <td>
@@ -134,6 +137,7 @@ switch ($method) {
 
                             </div>
                         </div>
+                        <div id="installer-tabs" class='installer-form-div' style="height: auto; padding: 0px 30px; border: 1px solid #aaf; border-bottom: 0px;"></div>
                         <div class='installer-form-div' id="installer-form-div" style='text-align: left; position: relative; display: block;'>
                             <div style="padding: 10px; color: white; font-size: 1em; font-family: sans-serif; margin-bottom: 20px; text-align: center; background-color: #0033CC">
                                 Welcome to the Installation for <?=$xml->name?>
@@ -190,6 +194,20 @@ switch ($method) {
                                 <div style="clear: both"></div>
                             </form>
                         </div>
+                        <div id="installer-new-db" class='installer-form-div'>
+                            <table style="width: 100%; height: 100%"><tr><td>
+                                <form name="new-db-form" id="new-db-form">
+                                    New DB
+                                </form></td></tr>
+                            </table>
+                        </div>
+                        <div id="installer-new-mongodb" class='installer-form-div'>
+                            <table style="width: 100%; height: 100%"><tr><td>
+                                <form name="new-mongodb-form" id="new-mongodb-form">
+                                    New Mongo DB
+                                </form></td></tr>
+                            </table>
+                        </div>
                     </td>
                 </tr>
                 <tr style="height: 20px">
@@ -204,9 +222,18 @@ switch ($method) {
                 </tr>
             </table>
             <script type="text/javascript">
-                new EasyEdits('/web/edits/install.json','install-form');
-                $('#div_1').height($('#div_2').height());
+                (function () {
+                    new EasyEdits('/web/edits/install.json','install-form');
+                    $('#div_1').height($('#div_2').height());
+                    var tabs = new EasyTab('installer-tabs',125);
+                    tabs.add('Installation',null,'installer-form-div');
+                    tabs.add('New RDMS DB',null,'installer-new-db');
+                    tabs.add('New MongoDB',null,'installer-new-mongodb');
+                    tabs.tabClick(0);
+                })();
             </script>
+            </div>
+
         <?php
         break;
     case "INSTALL"      :
