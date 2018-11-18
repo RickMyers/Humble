@@ -1,5 +1,5 @@
-<!--#include virtual="/Pages/includes/header.html" -->
-<!--#include virtual="/Pages/includes/container.html" -->
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -87,4 +87,4 @@ colored XML tags below are the hooks:
 </p>
 </div>
 
-<!--#include virtual="/Pages/includes/footer.html" -->
+<!--#include virtual="/pages/includes/footer.html" -->

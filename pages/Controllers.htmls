@@ -1,5 +1,5 @@
 
-<!--#include virtual="/Pages/includes/header.html" -->
-<!--#include virtual="/Pages/includes/container.html" -->
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
 
-<!--#include virtual="/Pages/includes/footer.html" -->
+<!--#include virtual="/pages/includes/footer.html" -->

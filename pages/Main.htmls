@@ -1,6 +1,6 @@
-<!--#include virtual="/Pages/includes/header.html" -->
-<!--#include virtual="/Pages/includes/banner.html" -->
-<!--#include virtual="/Pages/includes/container.html" -->
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/banner.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
 
 
 <h1>Humble - the flexible, abstract, framework.</h1>
@@ -12,4 +12,4 @@
     Build your application as a monolith, but deploy it as a Micro-Servicer Architecture application with a simple click of a button.   Scaling has never been so easy.<br /><br />
     Give Humble a try, and application development will never be the same, or so easy, again!<br /><br />
 </p>
-<!--#include virtual="/Pages/includes/footer.html" -->
+<!--#include virtual="/pages/includes/footer.html" -->

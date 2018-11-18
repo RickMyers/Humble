@@ -160,7 +160,7 @@
             if ($module = self::getModule($identifier['namespace'])) {
                 $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\','\\'.$str)) extends Code\Base\Humble\Entity\Unity {
+                    $instance = new class(str_replace('/','\\','\\'.$str)) extends \Code\Base\Humble\Entities\Unity {
                         private $anon_class = null;
                         public function __construct($a) {
                             parent::__construct();
@@ -186,7 +186,7 @@
             if ($module = self::getModule($identifier['namespace'],$override)) {
                 $str   = "Code/{$module['package']}/".str_replace("_","/",$module['models'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\',$str)) extends Code\Base\Humble\Model\BaseObject {
+                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Models\Model {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;

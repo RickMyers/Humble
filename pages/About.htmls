@@ -1,6 +1,6 @@
 
-<!--#include virtual="/Pages/includes/header.html" -->
-<!--#include virtual="/Pages/includes/container.html" -->
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
 <div style='font-size: 4.5em;  margin-left: auto; margin-right: auto; margin-top: 50px;  text-align: center'>Humble.</div>
 <div style='font-size: 1em; letter-spacing: 0.5px; text-align: center; margin-top: 10px'>Dedicated to <a href="https://en.wikipedia.org/wiki/Edsger_W._Dijkstra" target="_BLANK" style="color: blue">Edsger Dijkstra</a>.</div>
 <div style='font-size: 1em; letter-spacing: 2px; text-align: center; margin-top: 20px'>by Rick Myers.</div>
@@ -19,5 +19,5 @@
     Finally I'd like to thank a few people that I've had the great pleasure to work with, starting with <a href="http://chir.ag" target="_BLANK">Chirag Mehta</a>, <a href="https://lh3.googleusercontent.com/-t8f_xmhIEEQ/AAAAAAAAAAI/AAAAAAAAFCM/Dc4fcOxM12o/s640/photo.jpg" target="_BLANK">Guilherme Birckan</a>, <a href="https://www.facebook.com/emran.ansari.96" target="_BLANK">Emran Ansari</a>, <a href="https://www.facebook.com/IqbalAddou" target="_BLANK">Iqbal Addou</a>, and <a href="https://www.facebook.com/kevin.marcum.564" target="_BLANK">Kevin Marcum</a>.
     </div>
 </div>
-<!--#include virtual="/Pages/includes/footer.html" -->
+<!--#include virtual="/pages/includes/footer.html" -->
 

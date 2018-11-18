@@ -263,24 +263,23 @@ switch ($method) {
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
         shell_exec("php Module.php --i ".$project->namespace." Code/".$project->package."/".$project->module."/etc/config.xml");
         shell_exec("php Module.php --e ".$project->namespace);
+        $util->disable();                                                       //Prevent accidental re-run
         ob_start();
-        $user    = \Humble::getEntity('humble/users')->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']));
-        $uid     = $user->add();
-
-        $user->commit();
+        $uid    = \Humble::getEntity('humble/users')->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']))->save();
         $results = ob_get_flush();
         if (!$uid) {
             file_put_contents('oops.txt',$results);
         }
-        $user    = \Humble::getEntity('humble/user_identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
-        $perms   = \Humble::getEntity('humble/user_permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
+        \Humble::getEntity('humble/user_identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
+        \Humble::getEntity('humble/user_permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
         $ins->setUid($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
         if (!$cache) {
 
         }
         session_start();
         $_SESSION['uid'] = $uid;
-        rename('driver.bat',strtolower((string)$project->factory_name).'.bat');
+        copy('install/driver.bat',strtolower((string)$project->factory_name).'.bat');
+        copy('install/humble.sh',strtolower((string)$project->factory_name).'.sh');
         file_put_contents('../install_status.json','{ "stage": "Complete", "step": "Finished", "percent": 100 }');
         file_put_contents('../install.log',ob_get_flush());
         break;

@@ -786,6 +786,15 @@ SQL;
     }
 
     /**
+     * Will turn installation off after a successful run...
+     */
+    public function disable() {
+        $xml = simplexml_load_file('../application.xml');
+        $xml->status->installer = 0;
+        file_put_contents('../application.xml',$xml->asXML());
+    }
+
+    /**
      *
      */
     public function getModules()   {
