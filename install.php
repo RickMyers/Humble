@@ -196,14 +196,25 @@ switch ($method) {
                         </div>
                         <div id="installer-new-db" class='installer-form-div'>
                             <table style="width: 100%; height: 100%"><tr><td>
-                                <form name="new-db-form" id="new-db-form">
-                                    New DB
+                                <form name="new-db-form" id="new-db-form" onsubmit="return false">
+                                    <fieldset style="padding: 10px 10px"><legend>New RDMS DB</legend>
+                                        If you haven't already created a DB (required), you can do that here.<br /><br />
+                                        <input type='text' name='host' id='rdms-host' class='installer-form-field' value="" /><br />
+                                        <div class='installer-field-description'>Host:Port</div>
+                                        <input type='text' name='userid' id='rdms-userid' class='installer-form-field' value="" /><br />
+                                        <div class='installer-field-description'>User ID</div>
+                                        <input type='text' name='password' id='rdms-password' class='installer-form-field' value="" /><br />
+                                        <div class='installer-field-description'>Password</div>
+                                        <input type='text' name='db' id='rdms-db' class='installer-form-field' value="" /><br />
+                                        <div class='installer-field-description'>New Database</div>
+                                        <input type='button' name='create-db-button' id='create-db-button' value=' Create DB ' /><br />
+                                    </fieldset>
                                 </form></td></tr>
                             </table>
                         </div>
                         <div id="installer-new-mongodb" class='installer-form-div'>
                             <table style="width: 100%; height: 100%"><tr><td>
-                                <form name="new-mongodb-form" id="new-mongodb-form">
+                                <form name="new-mongodb-form" id="new-mongodb-form" onsubmit="return false">
                                     New Mongo DB
                                 </form></td></tr>
                             </table>
@@ -223,6 +234,7 @@ switch ($method) {
             </table>
             <script type="text/javascript">
                 (function () {
+                    new EasyEdits('/web/edits/newdb.json','new-db');
                     new EasyEdits('/web/edits/install.json','install-form');
                     $('#div_1').height($('#div_2').height());
                     var tabs = new EasyTab('installer-tabs',125);

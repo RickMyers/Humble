@@ -1,0 +1,82 @@
+
+{
+	"form":
+	{
+		"id":           "new-db-form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+        "onload":       function () {
+        },
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+
+		{
+			"active":		true,
+			"id":			"rdms-host",
+			"longname":		"Database Host",
+            "value":        "",
+			"required":		true,
+			"force":		true,
+			"type":			"text",
+            "style":        "width: 275px",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"rdms-userid",
+			"longname":		"RDMS User Id",
+            "value":        "",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"rdms-password",
+			"longname":		"RDMS Password",
+            "value":        "",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"rdms-db",
+			"longname":		"The DB you will be creating",
+			"type":			"text",
+            "style":        "",
+			"required":		true,
+			"force":		true,
+            "classname":    "",
+            "value":        ""
+		},
+
+
+		{
+			"active":		true,
+			"id":			"create-db-button",
+			"longname":		"Submit Button",
+			"type":			"text",
+            "style":        "font-family: sans-serif; cursor: pointer; font-size: 1.4em; width: 155px; padding: 8px; background-color: #0033CC; color: white ",
+            "classname":    "",
+            "value":        "",
+            "onclick":        function () {
+                if (Edits['new-db'].validate()) {
+                    (new EasyAjax('/installtest.php')).add('action','new').add('dbhost',$('#rdms-host').val()).add('userid',$('#rdms-userid').val()).add('password',$('#rdms-password').val()).add('db',$('#rdms-db').val()).then(function (response) {
+                        alert(response);
+                    }).post();
+                }
+            }
+		}
+	]
+}
