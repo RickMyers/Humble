@@ -213,6 +213,7 @@
                 if (Edits['install-form'].validate()) {
                     Installer.start();
                     $('#installer-form-div').css('display','none');
+                    $('#installer-tabs').css('display','none');
                     $('#installer-wait-div').fadeIn();
                     (new EasyAjax('/install.php')).packageForm('installer-form').then(function (response) {
                         window.setTimeout(
