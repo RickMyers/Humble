@@ -1,10 +1,5 @@
 <?php
-        /* Development
-		$this->userid	 	= "&&USERID&&";
-		$this->password		= "&&PASSWORD&&";
-		$this->database		= "&&DATABASE&&";
-        $this->dbhost       = "&&HOST&&";
-        */
+
 
     $data = (file_exists('application.xml')) ? file_get_contents('application.xml') : die("Install is not possible at this time.");
     $xml  = simplexml_load_string($data);
@@ -21,9 +16,50 @@
     } else {
         die("There is an error in the application configuration file");
     }
-
-    $mongo = isset($_POST['mongo'])   ? $_POST['mongo']    : false;
-    if ($mongo) {
+    $action = isset($_POST['action']) ? $_POST['action']    : false;
+    $mongo  = isset($_POST['mongo'])   ? $_POST['mongo']    : false;
+    if ($action) {
+        $process    = isset($_POST['processname'])  ? $_POST['processname'] : false;
+        $port       = isset($_POST['port'])         ? $_POST['port']        : false;
+        $location   = isset($_POST['location'])     ? $_POST['location']    : false;
+        $datadir    = isset($_POST['datadir'])      ? $_POST['datadir']     : false;
+        switch ($action) {
+            case "new"      :
+                $rc = @mkdir($datadir,0775,true);
+                if (!$rc) {
+                    @mkdir($datadir.'/log',0775,true);
+                    @mkdir($datadir.'/data',0775,true);
+                    $message = [
+                       'rc' => 0,
+                       'txt' => 'Unable to create the directory: '.$datadir
+                    ];
+                    die(json_encode($message));
+                }
+                $cfg = <<<CONFIG
+systemLog:
+    destination: file
+    path: {$datadir}\log\mongo.log
+storage:
+    dbPath: {$datadir}\data
+net:
+   bindIp: 127.0.0.1
+   port: {$port}
+CONFIG;
+                file_put_contents($datadir.'/mongod.cfg',$cfg);
+                $cmd = <<<CMD
+sc.exe create {$process} binPath= "\"{$location}\" --service --config=\"{$datadir}\mongod.cfg\"" DisplayName= "{$process}" start= "auto"
+CMD;
+                $message = [
+                    'rc'  => 1,
+                    'txt' => 'To create the instance, you will need to copy and paste the line below into a windows command terminal that has administrator privileges',
+                    'cmd' => $cmd
+                ];
+                die(json_encode($message));
+                break;
+            default         :
+                break;
+        }
+    } else if ($mongo) {
         chdir('app');
         require 'vendor/autoload.php'; // include Composer's autoloader
 

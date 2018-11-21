@@ -1,0 +1,97 @@
+
+
+{
+	"form":
+	{
+		"id":           "new-db-form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+        "onload":       function () {
+        },
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+
+		{
+			"active":		true,
+			"id":			"mongo-datadir",
+			"longname":		"Data Directory",
+            "value":        "",
+			"required":		true,
+			"force":		true,
+			"type":			"text",
+            "style":        "",
+            "classname":    ""
+		},
+		{
+			"active":		true,
+			"id":			"mongo-port",
+			"longname":		"Port",
+            "value":        "",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"mongo-processname",
+			"longname":		"Process Name",
+            "value":        "",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+            "style":        "",
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"mongo-location",
+			"longname":		"Location",
+			"type":			"text",
+            "style":        "",
+			"required":		true,
+			"force":		true,
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"mongo-cmd",
+			"longname":		"Create Command",
+			"type":			"text",
+            "style":        "",
+			"required":		false,
+			"force":		false,
+            "classname":    "",
+            "value":        ""
+		},
+		{
+			"active":		true,
+			"id":			"create-mongodb-button",
+			"longname":		"Submit Button",
+			"type":			"button",
+            "style":        "font-family: sans-serif; cursor: pointer; font-size: 1.4em;  padding: 8px; background-color: #0033CC; color: white ",
+            "classname":    "",
+            "value":        "",
+            "onclick":        function () {
+                if (Edits['new-mongodb'].validate()) {
+                    (new EasyAjax('/mongotest.php')).add('action','new').add('port',$('#mongo-port').val()).add('processname',$('#mongo-processname').val()).add('location',$('#mongo-location').val()).add('datadir',$('#mongo-datadir').val()).then(function (response) {
+                        response = JSON.parse(response);
+                        alert(response.txt);
+                        if (response.rc) {
+                            $('#mongo-cmd').val(response.cmd);
+                        }
+
+                    }).post();
+                }
+            }
+		}
+	]
+}

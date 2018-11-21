@@ -215,7 +215,21 @@ switch ($method) {
                         <div id="installer-new-mongodb" class='installer-form-div'>
                             <table style="width: 100%; height: 100%"><tr><td>
                                 <form name="new-mongodb-form" id="new-mongodb-form" onsubmit="return false">
-                                    New Mongo DB
+                                    <fieldset style="padding: 10px 10px"><legend>New RDMS DB</legend>
+                                        You can create a new MongoDB instance here, assuming you already have it installed.  In this way, you can have a unique
+                                        instance of MongoDB (recommended) per application running on this machine<br /><br />
+                                        <input type='text' name='datadir' id='mongo-datadir' class='installer-form-field' value="" /><br />
+                                        <div class='installer-field-description'>Data Directory</div>
+                                        <input type='text' name='processname' id='mongo-processname' class='installer-form-field' value="" /><br />
+                                        <div class='installer-field-description'>Process Name</div>
+                                        <input type='text' name='port' id='mongo-port' class='installer-form-field' value="" placeholder="27017" /><br />
+                                        <div class='installer-field-description'>Mongo Port</div>
+                                        <input type='text' name='location' id='mongo-location' class='installer-form-field' value="c:\Program Files\Mongo\Server\3.2\bin\mongod.exe"  /><br />
+                                        <div class='installer-field-description'>Mongo Port</div><br />
+                                        <input type='text' name='cmd' id='mongo-cmd' class='installer-form-field' value="" placeholder="You will need to run this statment at an elevated command prompt"  /><br />
+                                        <div class='installer-field-description'>Create Mongo Instance Command</div><br /><br />
+                                        <input type='button' name='create-mongodb-button' id='create-mongodb-button' value=' Create Mongo Instance ' /><br />
+                                    </fieldset>
                                 </form></td></tr>
                             </table>
                         </div>
@@ -235,6 +249,7 @@ switch ($method) {
             <script type="text/javascript">
                 (function () {
                     new EasyEdits('/web/edits/newdb.json','new-db');
+                    new EasyEdits('/web/edits/newmongodb.json','new-mongodb');
                     new EasyEdits('/web/edits/install.json','install-form');
                     $('#div_1').height($('#div_2').height());
                     var tabs = new EasyTab('installer-tabs',125);
