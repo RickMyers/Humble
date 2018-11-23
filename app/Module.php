@@ -713,6 +713,7 @@ TXT;
         @mkdir('../packages/',0775);
         $xml        = simplexml_load_file('application.xml');
         $archive    = '../packages/Humble-Distro-'.(string)$xml->version->framework.'.zip';
+        print("Creating archive ".$archive."\n");
         if (file_exists($archive)) {
             unlink($archive);
         }
@@ -730,8 +731,9 @@ TXT;
             if ($exclude) {
                 continue;
             }
-            //print("Compressing ".$src."\n");
-            $zip->addFile($src, $dest);
+            if (file_exists($src) && is_file($src)) {
+                $zip->addFile($src, $dest);
+            }
         }
         //Now add manifest file in the form of a git ignore...
         $ignore = array_merge(['/images/*','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
