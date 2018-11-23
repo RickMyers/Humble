@@ -37,12 +37,16 @@ web/images/tabs/*
 web/images/*
 dist/*
 favicon/*
+app/install/*
 app/Humble.local.manifest
 app/Code/Base/Humble/*
 app/Code/Base/Paradigm/*
 app/Code/Base/Workflow/*
 app/Exceptions/*
-app/lib/*
+app/lib/ChartTemplates/*
+app/lib/Common/*
+app/lib/fonts/*
+app/lib/templaters/*
 app/tests/*
 app/autoload.php
 app/AuthorizationEngine.php

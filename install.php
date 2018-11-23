@@ -334,6 +334,9 @@ switch ($method) {
         $_SESSION['uid'] = $uid;
         copy('install/driver.bat',strtolower((string)$project->factory_name).'.bat');
         copy('install/humble.sh',strtolower((string)$project->factory_name).'.sh');
+        unlink('install/driver.bat');
+        unlink('install/humble.sh');
+        rmdir('install');
         file_put_contents('../install_status.json','{ "stage": "Complete", "step": "Finished", "percent": 100 }');
         file_put_contents('../install.log',ob_get_flush());
         break;

@@ -17,7 +17,7 @@
         o We consult the "ns/relationships" table to see if a relationship exists for that type
 */
 try {
-    $engine = \Humble::getEntity('core/services')->setNamespace($namespace)->setRouter($controller)->setService($method)->load(true);
+    $engine = \Humble::getEntity('humble/service/directory')->setNamespace($namespace)->setRouter($controller)->setService($method)->load(true);
     if (isset($engine['authorized']) && ($engine['authorized']==='Y'))  {
         //do the authorization check, how we do this is a TBD
         $authorized = true;

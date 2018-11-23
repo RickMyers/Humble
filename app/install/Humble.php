@@ -153,10 +153,8 @@ function initializeProject() {
                 $attributes['landing_page']            = scrub(fgets(STDIN));
             }
             $attributes['destination_folder']       = getcwd();
-            $srch = [",","{","}"];
-            $repl = [",\n\t","{\n\t","\n}"];
             @mkdir($attributes['destination_folder'],0775);
-            file_put_contents('Humble.project',str_replace($srch,$repl,json_encode($attributes,JSON_PRETTY_PRINT)));
+            file_put_contents('Humble.project',"/*\n".$hdr."*/\n".json_encode($attributes,JSON_PRETTY_PRINT));
             print("\n\nOk, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n");
             print("\n\nPlease run 'humble --fetch' to do the initial retrieval of the framework\n\n");
         } else {

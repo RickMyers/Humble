@@ -272,7 +272,9 @@ class Utility extends Model
         if (isset($exts[$this->getEngine()])) {
             file_put_contents($newDir.'/'.$this->getAction().'.'.$exts[$this->getEngine()],'');
             if ($useLanding) {
-                file_put_contents($newDir.'/'.$this->getAction().'.'.$exts[$this->getEngine()],file_get_contents('Code/Base/Humble/lib/sample/module/Views/actions/Smarty3/landing.tpl'));
+                $e = \Environment::getProject();
+                $loc = getcwd().$e->landing_page;
+                file_put_contents($newDir.'/'.$this->getAction().'.'.$exts[$this->getEngine()],str_replace('&&HOME&&',$loc,file_get_contents('Code/Base/Humble/lib/sample/module/Views/actions/Smarty3/landing.tpl')));
             }
         }
         file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)));
