@@ -188,7 +188,7 @@ Administration = (function () {
                         } else {
                             t = (action==='documentation') ? '/humble/module/documentation' : '/humble/utilities/'+action;
                         }
-                        $('#lightbox').css('display','block');
+                        $('#admin-lightbox').css('display','block');
                         $('#actionStatus').html('Working...');
                         (new EasyAjax(t)).then(function (response) {
                             $('#actionStatus').html(response+"\n\nDone!\n");
@@ -221,15 +221,14 @@ Administration = (function () {
                             $('#apps-column').height($(window).height() - $E('navigation-bar').offsetHeight - $E('humble-footer').offsetHeight);
                             $('#apps-column').css('overflow','auto');
                             $('#modules_list').width($(window).width() - $E('widgets-column').offsetWidth - $E('humble-creation-forms').offsetWidth -40);
-                        });
-                        $(window).resize();
-                        var win = Desktop.semaphore.checkout(true);
+                            $('#admin-lightbox').width($(document).width()).height($(document).height());
+                        }).resize();
                     },
                     action: function (action,pkg,module) {
                         var ao = new EasyAjax('/humble/admin/'+action);
                         ao.add('package',pkg);
                         ao.add('module',module);
-                        $('#lightbox').css('display','block');
+                        $('#admin-lightbox').css('display','block');
                         $('#actionStatus').html('Working...');
                         ao.then(function (response) {
                             $('#lightbox').html(response);
@@ -242,7 +241,7 @@ Administration = (function () {
                            ao.add('namespace',namespace);
                            ao.add('root',root);
                            ao.add('package',pkg);
-                           $('#lightbox').css('display','block');
+                           $('#admin-lightbox').css('display','block');
                            $('#actionStatus').html('Working...');
                            ao.then(function (response) {
                                alert(response);
@@ -269,7 +268,7 @@ Administration = (function () {
                            ao.add('namespace',namespace);
                            ao.add('root',root);
                            ao.add('package',pkg);
-                           $('#lightbox').css('display','block');
+                           $('#admin-lightbox').css('display','block');
                            $('#actionStatus').html('Working...');
                            ao.then(function (response) {
                                $('#actionStatus').html(response+"\n\nDone!\n");
@@ -279,16 +278,12 @@ Administration = (function () {
                     },
                     update: function (pkg,root,namespace) {
                        if (confirm('This action will update the module '+root+'.\n\nThis will run any recent update SQL statements.\n\nAre you sure you wish to continue?')) {
-                           var ao = new EasyAjax('/humble/utilities/update');
-                           ao.add('namespace',namespace);
-                           ao.add('root',root);
-                           ao.add('package',pkg);
-                           $('#lightbox').css('display','block');
-                           $('#actionStatus').html('Working...');
-                           ao.then(function (response) {
+                           $('#admin-lightbox-output').html('Working...');
+                           $('#admin-lightbox').css('display','block');
+                           (new EasyAjax('/humble/utilities/update')).add('namespace',namespace).add('root',root).add('package',pkg).then(function (response) {
+                               $('#admin-lightbox-output').html(response);
                                $('#actionStatus').html(response+"\n\nDone!\n");
-                           });
-                           ao.post();
+                           }).post();
                        }
                     },
                     compile: function (pkg,root,namespace) {
@@ -297,7 +292,7 @@ Administration = (function () {
                            ao.add('namespace',namespace);
                            ao.add('root',root);
                            ao.add('package',pkg);
-                           $('#lightbox').css('display','block');
+                           $('#admin-lightbox').css('display','block');
                            $('#actionStatus').html('Working...');
                            ao.then(function (response) {
                                $('#actionStatus').html(response+"\n\nDone!\n");
@@ -307,7 +302,7 @@ Administration = (function () {
                     },
                     clearcache: function (pkg,root,namespace) {
                        if (confirm('This action will clear the cache for the module.\n\nAre you sure you wish to continue?')) {
-                            $('#lightbox').css('display','block');
+                            $('#admin-lightbox').css('display','block');
                             $('#actionStatus').html('Working...');
                            (new EasyAjax('/humble/utilities/clear')).add('namespace',namespace).add('root',root).add('package',pkg).then(function (response) {
                                 $('#actionStatus').html(response+"\n\nDone!\n");

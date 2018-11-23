@@ -81,6 +81,21 @@
     <body style="overflow: hidden;">
         <!-- This hidden sizing layer is used to calculate the width of text... by fetching the "scrollAmount", we can determine the width of any block of text placed in the layer -->
         <div style="position: absolute; top: -100px; left: -200px; overflow: auto; width: 1px" id="hiddenSizingLayer"></div>
+        <div id="admin-lightbox" style="position: absolute; top: 0px; left: 0px; background-color: rgba(50,50,50,.6); display: none; z-index: 9999">
+            <table style="width: 100%; height: 100%;">
+                <tr>
+                    <td>
+                       <div style="margin: auto; height: 500px; width: 700px; padding: 10px; background-color: ghostwhite; border: 1px solid silver; border-radius: 10px">
+                           <div id="admin-lightbox-output" style="height: 455px; border: 1px solid silver; overflow: auto; background-color: lightcyan; white-space: pre">
+                           </div>
+                           <center>
+                           <button style="margin-left: auto; margin-right: auto; padding: 5px 10px; background-color: dodgerblue; font-family: sans-serif; letter-spacing: 2px; color: ghostwhite" onclick="$('#admin-lightbox').css('display','none')">Close</button>
+                           </center>
+                       </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div id="paradigm-virtual-desktop" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;">
 
             <div id='main-container'>
