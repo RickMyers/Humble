@@ -49,8 +49,8 @@ class Directory extends \Code\Base\Humble\Helpers\Directory
      */
     public function generate() {
         $packages     = \Humble::getPackages();
-        $service      = \Humble::getEntity('humble/services');
-        $serviceParms = \Humble::getEntity('humble/services/parameters');
+        $service      = \Humble::getEntity('humble/service/directory');
+        $serviceParms = \Humble::getEntity('humble/service/parameters');
         $service->truncate();
         $serviceParms->truncate();
         foreach ($packages as $package) {

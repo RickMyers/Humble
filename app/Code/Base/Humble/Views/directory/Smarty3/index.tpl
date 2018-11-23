@@ -42,14 +42,14 @@
                 loaded:     {},
                 page: {
                     goto: function (page) {
-                        (new EasyAjax('/focos/directory/services')).add('page',page).add('rows',$('#service-rows').val()).callback(function (response) {
+                        (new EasyAjax('/humble/directory/services')).add('page',page).add('rows',$('#service-rows').val()).then(function (response) {
                             $('#service-directory').html(response);
                         }).post();
                     }
                 },
                 parms: function (service_id) {
                     if (!Services.loaded[service_id]) {
-                        (new EasyAjax('/focos/directory/serviceparms')).add('service_id',service_id).callback(function (response) {
+                        (new EasyAjax('/humble/directory/serviceparms')).add('service_id',service_id).then(function (response) {
                             $('#service-'+service_id+'-parameters').html(response);
                             $('#service-'+service_id+'-parameters').slideToggle();
                             Services.loaded[service_id] = true;
@@ -80,7 +80,7 @@
                             </select>
                         </form>
                     </div>
-                    FOCoS Service Directory
+                    humble Service Directory
                 </div>
                 <div id="service-directory" class="service-display">
                     <!-- stuff goes here -->

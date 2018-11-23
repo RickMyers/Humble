@@ -9,7 +9,7 @@ Actions and views related to directory services
         <action name="generate">
             <description>Generates a list of services available as an HTML page</description>
             <entity namespace='humble' class='user/permissions' id='permissions' method='load'>
-                <parameter name='id' source='session' default='' />
+                <parameter name='id' value='uid' source='session' default='' />
             </entity>
             <switch id='permissions' method='getAdmin'>
                 <case value="Y">

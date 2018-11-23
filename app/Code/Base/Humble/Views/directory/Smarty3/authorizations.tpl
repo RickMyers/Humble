@@ -43,7 +43,7 @@
                                 x.roles[x.roles.length] = element.value;
                             }
                         }
-                        (new EasyAjax('/focos/services/save')).add('data',JSON.stringify(x)).callback(function (response) {
+                        (new EasyAjax('/humble/services/save')).add('data',JSON.stringify(x)).then(function (response) {
                             alert(response);
                         }).post();
                     }
@@ -81,8 +81,8 @@
                             {assign var=ctr value=$ctr+1}
                         {/foreach}
                         <div class="theboxes_{$ctr}" style="float: left; ">
-                            <img id="edit_{$service.id}" src="/images/focos/edit.png" style="margin-left: 5px; cursor: pointer; height: 15px" onclick="Services.activate('{$service.id}')" />
-                            <img id="save_{$service.id}" src="/images/focos/save.png" style="margin-left: 5px; cursor: pointer; height: 15px; display: none" onclick="Services.save('{$service.id}')" />
+                            <img id="edit_{$service.id}" src="/images/humble/edit.png" style="margin-left: 5px; cursor: pointer; height: 15px" onclick="Services.activate('{$service.id}')" />
+                            <img id="save_{$service.id}" src="/images/humble/save.png" style="margin-left: 5px; cursor: pointer; height: 15px; display: none" onclick="Services.save('{$service.id}')" />
                         </div>
                         </form>
                         <div style="clear: both"></div>
