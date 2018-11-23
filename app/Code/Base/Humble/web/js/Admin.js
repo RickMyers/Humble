@@ -188,10 +188,11 @@ Administration = (function () {
                         } else {
                             t = (action==='documentation') ? '/humble/module/documentation' : '/humble/utilities/'+action;
                         }
+                        alert(t);
                         $('#admin-lightbox').css('display','block');
-                        $('#actionStatus').html('Working...');
+                        $('#admin-lightbox-output').html('Working...');
                         (new EasyAjax(t)).then(function (response) {
-                            $('#actionStatus').html(response+"\n\nDone!\n");
+                            $('#admin-lightbox-output').html(response);
                         }).post();
                     },
                     create:     function (directory,pkg) {
@@ -229,9 +230,9 @@ Administration = (function () {
                         ao.add('package',pkg);
                         ao.add('module',module);
                         $('#admin-lightbox').css('display','block');
-                        $('#actionStatus').html('Working...');
+                        $('#admin-lightbox-output').html('Working...');
                         ao.then(function (response) {
-                            $('#lightbox').html(response);
+                            $('#admin-lightbox-output').html(response);
                         });
                         ao.post();
                     },
@@ -242,9 +243,8 @@ Administration = (function () {
                            ao.add('root',root);
                            ao.add('package',pkg);
                            $('#admin-lightbox').css('display','block');
-                           $('#actionStatus').html('Working...');
+                           $('#admin-lightbox-output').html('Working...');
                            ao.then(function (response) {
-                               alert(response);
                                window.location.reload();
                            });
                            ao.post();
@@ -252,28 +252,9 @@ Administration = (function () {
                     },
                     uninstall: function (pkg,root,namespace) {
                        if (confirm('This action will disable and uninstall the module.\n\nAre you sure you wish to continue?')) {
-                           var ao = new EasyAjax('/humble/utilities/uninstall');
-                           ao.add('namespace',namespace);
-                           ao.add('root',root);
-                           ao.add('package',pkg);
-                           ao.then(function () {
+                           (new EasyAjax('/humble/utilities/uninstall')).add('namespace',namespace).add('root',root).add('package',pkg).then(function () {
                                window.location.reload();
-                           });
-                           ao.post();
-                       }
-                    },
-                    refresh: function (pkg,root,namespace) {
-                       if (confirm('This action will refresh the module '+root+'.\n\nThis will update the module as well as copy new images.\n\nAre you sure you wish to continue?')) {
-                           var ao = new EasyAjax('/humble/utilities/refresh');
-                           ao.add('namespace',namespace);
-                           ao.add('root',root);
-                           ao.add('package',pkg);
-                           $('#admin-lightbox').css('display','block');
-                           $('#actionStatus').html('Working...');
-                           ao.then(function (response) {
-                               $('#actionStatus').html(response+"\n\nDone!\n");
-                           });
-                           ao.post();
+                           }).post();
                        }
                     },
                     update: function (pkg,root,namespace) {
@@ -282,30 +263,24 @@ Administration = (function () {
                            $('#admin-lightbox').css('display','block');
                            (new EasyAjax('/humble/utilities/update')).add('namespace',namespace).add('root',root).add('package',pkg).then(function (response) {
                                $('#admin-lightbox-output').html(response);
-                               $('#actionStatus').html(response+"\n\nDone!\n");
                            }).post();
                        }
                     },
                     compile: function (pkg,root,namespace) {
                        if (confirm('This action will compile the controllers for module '+root+'.\n\nAre you sure you wish to continue?')) {
-                           var ao = new EasyAjax('/humble/utilities/compile');
-                           ao.add('namespace',namespace);
-                           ao.add('root',root);
-                           ao.add('package',pkg);
                            $('#admin-lightbox').css('display','block');
-                           $('#actionStatus').html('Working...');
-                           ao.then(function (response) {
-                               $('#actionStatus').html(response+"\n\nDone!\n");
-                           });
-                           ao.post();
+                           $('#admin-lightbox-output').html('Working...');
+                           (new EasyAjax('/humble/utilities/compile')).add('namespace',namespace).add('root',root).add('package',pkg).then(function (response) {
+                               $('#admin-lightbox-output').html(response);
+                           }).post();
                        }
                     },
                     clearcache: function (pkg,root,namespace) {
                        if (confirm('This action will clear the cache for the module.\n\nAre you sure you wish to continue?')) {
-                            $('#admin-lightbox').css('display','block');
-                            $('#actionStatus').html('Working...');
+                           $('#admin-lightbox').css('display','block');
+                           $('#admin-lightbox-output').html('Working...');
                            (new EasyAjax('/humble/utilities/clear')).add('namespace',namespace).add('root',root).add('package',pkg).then(function (response) {
-                                $('#actionStatus').html(response+"\n\nDone!\n");
+                               $('#admin-lightbox-output').html(response);
                            }).post();
                        }
                     },
