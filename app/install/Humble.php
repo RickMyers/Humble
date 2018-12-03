@@ -20,7 +20,7 @@ function scrub($str) {
     return str_replace($srch,$repl,$str);
 }
 function humbleHeader() {
-    $h = <<<HDR
+    $header = <<<HDR
 
 
     |_   _    |_      ._ _  |_  |  _
@@ -28,7 +28,7 @@ function humbleHeader() {
 
 
 HDR;
-    print($h);
+    print($header);
 }
 /* ---------------------------------------------------------------------------------- */
 function fetchProject($version,$framework_url,$update=false) {
@@ -137,7 +137,7 @@ function initializeProject() {
                 $attributes['package']              = ucfirst(scrub(fgets(STDIN)));
             }
             while (!$attributes['module']) {
-                print("\n\tA Humble project contains one or more user defined modules.  The components in this module are 'special' in that they factor in an 'Invesion of Control' paradigm that is at the core of Humble.\n");
+                print("\n\tA Humble project contains one or more user defined modules.  The components in this module are 'special' in that they factor in an 'Inversion of Control' paradigm that is at the core of Humble.\n");
                 print("\tPlease see the training video on 'Inversion of Control' for more information.\n");
                 print("\tPlease enter the module name that will contain the core (base) classes: ");
                 $attributes['module']               = ucfirst(scrub(fgets(STDIN)));
@@ -154,7 +154,7 @@ function initializeProject() {
             }
             $attributes['destination_folder']       = getcwd();
             @mkdir($attributes['destination_folder'],0775);
-            file_put_contents('Humble.project',"/*\n".$hdr."*/\n".json_encode($attributes,JSON_PRETTY_PRINT));
+            file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
             print("\n\nOk, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n");
             print("\n\nPlease run 'humble --fetch' to do the initial retrieval of the framework\n\n");
         } else {
