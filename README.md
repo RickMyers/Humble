@@ -17,7 +17,7 @@ methods and allowing you to construct business logic by drag-and-dropping those 
 is then compiled.
 
 ### Paradigm Engine
-![Demo Workflow](https://humble.enicity.com/web/images/screengrabs/workflow_1.png "Demo Workflow")
+![Demo Workflow](https://humble.enicity.com/pages/images/screengrabs/workflow_1.png "Demo Workflow")
 
 The workflow shown above is composed of exposed methods contained within your models.  These methods are categorized by the type of functionality they perform, such
 as PROCESS, INPUT, NOTIFICATION (e-mail, text, pop-up alert...), DECISION, etc... which you identify using annotations in your code, as shown below:
@@ -51,7 +51,7 @@ as PROCESS, INPUT, NOTIFICATION (e-mail, text, pop-up alert...), DECISION, etc..
 Once a workflow has been built and all components (glyphs) have been mapped to the appropriate methods, you are able to compile the diagram into a working workflow
 as shown below:
 
-![Workflow Compiled](https://humble.enicity.com/web/images/screengrabs/workflow_2.png "Workflow Compiled")
+![Workflow Compiled](https://humble.enicity.com/pages/images/screengrabs/workflow_2.png "Workflow Compiled")
 
 ## Controllers
 
