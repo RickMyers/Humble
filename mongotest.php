@@ -26,7 +26,7 @@
         switch ($action) {
             case "new"      :
                 $rc = @mkdir($datadir,0775,true);
-                if (!$rc) {
+                if ($rc) {
                     @mkdir($datadir.'/log',0775,true);
                     @mkdir($datadir.'/data',0775,true);
                     $message = [

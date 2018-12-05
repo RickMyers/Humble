@@ -224,7 +224,7 @@ switch ($method) {
                                         <div class='installer-field-description'>Process Name</div>
                                         <input type='text' name='port' id='mongo-port' class='installer-form-field' value="" placeholder="27017" /><br />
                                         <div class='installer-field-description'>Mongo Port</div>
-                                        <input type='text' name='location' id='mongo-location' class='installer-form-field' value="c:\Program Files\Mongo\Server\3.2\bin\mongod.exe"  /><br />
+                                        <input type='text' name='location' id='mongo-location' class='installer-form-field' value="c:\Program Files\MongoDB\Server\3.2\bin\mongod.exe"  /><br />
                                         <div class='installer-field-description'>Mongo Port</div><br />
                                         <input type='text' name='cmd' id='mongo-cmd' class='installer-form-field' value="" placeholder="You will need to run this statment at an elevated command prompt"  /><br />
                                         <div class='installer-field-description'>Create Mongo Instance Command</div><br /><br />
@@ -332,7 +332,7 @@ switch ($method) {
         }
         session_start();
         $_SESSION['uid'] = $uid;
-        copy('install/driver.bat',strtolower((string)$project->factory_name).'.bat');
+        copy('install/humble.bat',strtolower((string)$project->factory_name).'.bat');
         copy('install/humble.sh',strtolower((string)$project->factory_name).'.sh');
      //   unlink('install/driver.bat');
       //  unlink('install/humble.sh');
