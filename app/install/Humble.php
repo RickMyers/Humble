@@ -249,8 +249,12 @@ function restoreProject() {
     chdir('app');
     exec('composer install');
     chdir('..');
-    @unlink('humble.bat');
-    @unlink('humble.sh');
+    if (file_exists('humble.bat')) {
+        @unlink('humble.bat');
+    }
+    if (file_exists('humble.sh')) {
+        @unlink('humble.sh');
+    }
     @unlink('Humble.php');
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('start '.$project->project_url.'/install.php');

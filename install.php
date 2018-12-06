@@ -337,10 +337,11 @@ switch ($method) {
         copy('install/humble.bat',strtolower((string)$project->factory_name).'.bat');
         copy('install/humble.sh',strtolower((string)$project->factory_name).'.sh');
         print("done with creating drivers\n\n");
-     //   unlink('install/driver.bat');
-      //  unlink('install/humble.sh');
-      //  rmdir('install');
+        unlink('install/driver.bat');
+        unlink('install/humble.sh');
+        rmdir('install');
         $log = ob_get_flush();
+        print($log);
         file_put_contents('../install_status.json','{ "stage": "Complete", "step": "Finished", "percent": 100 }');
         file_put_contents('../install.log',$log);
         break;
