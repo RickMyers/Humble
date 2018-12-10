@@ -252,10 +252,8 @@ TXT;
     function installModule($id) {
         $ns     = (isset($id[0])) ? $id[0] : false;
         $etc    = (isset($id[1])) ? $id[1] : false;
-
         if ($ns) {
-            $module = \Humble::getModule($ns);
-            if ($xml = file_get_contents($id[1])) {
+            if (file_exists($id[1]) && ($xml = file_get_contents($id[1]))) {
                 libxml_use_internal_errors(true);
                 $doc = new \DOMDocument('1.0', 'utf-8');
                 $doc->loadXML($xml);
@@ -268,10 +266,13 @@ TXT;
                         print("\t".$level[$error->level].": Line {$error->line}, column {$error->column} - ".$error->message);
                     }
                 } else {
+                    print("Installing...\n");
                     $utility = \Environment::getInstaller();
                     $utility->setSource($etc);
                     $utility->install();
                 }
+            } else {
+                print("Couldn't read the XML config file\n\n");
             }
         } else {
             print("\n\nRequired parameters are namespace and configuration file location\n\n");
