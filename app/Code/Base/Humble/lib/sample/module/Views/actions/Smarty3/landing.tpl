@@ -31,7 +31,7 @@
 		<div style="width: 30%; margin-left: auto; margin-right: auto; margin-top: 65px">
             Some useful locations...<br /><br />
             <ul>
-                <li> &&HOME&& - location for the main page of your SPA (Single Page Application)</li>
+                <li> &&HOME&& - location for the main page of your Single Page Application</li>
                 <li> <a style="color: blue" href="https://humble.enicity.com" target="_BLANK">https://humble.enicity.com</a> - website with extensive documentation and videos for the Humble framework</li>
                 <li> <a style="color: blue" href="/admin" target="_BLANK">/admin</a> - administration page for your application</li>
             </ul>

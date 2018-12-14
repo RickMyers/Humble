@@ -5,7 +5,7 @@ Basic Controller only used to route the person to the application home page
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
 -->
-<controller name="home" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+<controller name="home" use="Smarty3" author=" " email="">
     <actions>
         <action name="page">
             <description>The Home Page</description>
