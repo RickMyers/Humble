@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 
-Basic Controller
+Basic Controller only used to route the person to the application home page
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
 -->
@@ -9,9 +9,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
     <actions>
         <action name="page">
             <description>The Home Page</description>
-            <entity namespace="humble" class="users" id='user'>
-                <parameter name='uid' source='session' value='uid' default='' />
-            </entity>
+            <helper namespace="humble" class="admin" id='appHomePage' />
         </action>
 
         <!-- ############################################################### -->

@@ -72,4 +72,15 @@ class Admin extends Helper
         return $data;
     }
 
+    /**
+     * This is a short cut based on the URI /home... it will look up the apps home page and redirect there, making sure we don't cause a cyclical infinite loop if the URI points to the redirect URI
+     */
+    public function appHomePage() {
+        if ($project_data = \Environment::getProject()) {
+            if ($project_data->landing_page && !(($project_data->landing_page == "\/humble\/home\/page") || ($project_data->landing_page == "/humble/home/page"))) {
+                header("Location: ".$project_data->landing_page);
+            }
+        }
+    }
+
 }
