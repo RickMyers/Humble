@@ -5,14 +5,8 @@
     "chalk": "^1.0.0",
     "concat": "^1.0.0",
     "gaze": "^0.5.1",
-    "grunt": "^0.4.5",
-    "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "~0.5.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-php": "^1.5.0",
-    "grunt-simple-watch": "^0.1.2",
     "lodash": "^3.8.0",
     "tiny-lr-fork": "0.0.5"
   },
@@ -24,5 +18,16 @@
     "grunt-php": "^1.5.1",
     "grunt-shell": "^2.1.0",
     "grunt-simple-watch": "^0.1.3"
-  }
+  },
+  "description": "See Package Name",
+  "main": "Gruntfile.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }

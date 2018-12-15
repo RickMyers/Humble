@@ -852,9 +852,7 @@ EasyEdits.getValue = function (form,field,easyField) {
                 break;
             case "select"       :
             case "select-one"	:
-                console.log($E(field.id+"_combo"));
                 val = (field.getAttribute("combo")) ? $E(field.id+"_combo").getAttribute("comboValue") : field[field.selectedIndex].value;
-                console.log(val);
                 if ((field.getAttribute("removeMask") == "yes") && (field.getAttribute("combo"))) {
                     var newval = '';
                     var template = $E(field.id + "_combo").getAttribute("template");

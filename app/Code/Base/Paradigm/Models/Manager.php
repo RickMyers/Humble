@@ -125,6 +125,8 @@ class Manager extends Model
                         case    "exception"     :
                             $configURL  = "/workflow/elements/exception";
                             break;
+                        case    "trigger"       :
+                            $configURL  = "/workflow/trigger/options";
                         default                 :
                             break;
                     }

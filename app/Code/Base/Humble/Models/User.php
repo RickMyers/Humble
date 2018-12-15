@@ -1,7 +1,7 @@
 <?php
 namespace Code\Base\Humble\Models;
 use Humble;
-use Environment;
+use Environment; 
 /**
  *
  * Manages core user functions

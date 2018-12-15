@@ -104,13 +104,13 @@ class Trigger  {
             //if no user id, see if this is the login event, and if so, find user based on username
             if ($user_name = $cleanEvent->data('user_name')) {
                 $user   = Humble::getEntity('humble/users')->setUserName($user_name)->load(true);
-                $uid    = isset($user['uid']) ? $user['uid'] : 0;  //why not 0?
+                $uid    = isset($user['uid']) ? $user['uid'] : 0;  
             }
         }
-        Humble::getEntity('paradigm/event_log')->setEvent($eventName)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
+        Humble::getEntity('paradigm/event/log')->setEvent($eventName)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
         if ($cleanEvent) {
             $handled = false;
-            foreach (Humble::getEntity('paradigm/workflow_listeners')->setNamespace($this->_namespace())->setMethod($eventName)->fetch() as $diagram) {
+            foreach (Humble::getEntity('paradigm/workflow/listeners')->setNamespace($this->_namespace())->setMethod($eventName)->fetch() as $diagram) {
                 $handled = $this->runWorkflow($diagram,$cleanEvent);
                 if ($cancelBubble) {
                     $this->_errors('bubbling was canceled');
@@ -118,6 +118,8 @@ class Trigger  {
                 }
             }
             if (!$handled) {
+                $f = Humble::getEntity('paradigm/event/listeners');
+                $n = $this->_namespace();
                 foreach (Humble::getEntity('paradigm/event/listeners')->setNamespace($this->_namespace())->setEvent($eventName)->fetch() as $diagram) {
                     $handled = $this->runWorkflow($diagram,$cleanEvent);
                     if ($cancelBubble) {

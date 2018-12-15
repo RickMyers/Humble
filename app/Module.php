@@ -380,7 +380,7 @@ TXT;
         $file    = str_replace(['\\',"/"],["_","_"],$file[0]);
         $parts   = explode('_',$file);
         $package = strtolower($parts[1]);
-        $root    = $parts[2]."/".$parts[3];
+        $root    = strtolower($parts[2]."/".$parts[3]);
         print($root);
         $data    = \Humble::getEntity('humble/modules')->setModels($root)->fetch();
         if ($data) {
@@ -388,7 +388,7 @@ TXT;
             $namespace = $data['namespace'];
         }
         if (!$namespace) {
-            print("Could not resolve the namespace for the class: ".$file."\n");
+            print(" Could not resolve the namespace for the class: ".$file."\n");
             die();
         } else {
             //########################################################################
@@ -563,6 +563,7 @@ TXT;
     //--------------------------------------------------------------------------
     function compileController($args) {
         $file       = fetchParameter('file',processArgs($args));
+        print($file."\n");
         $compiler   = \Environment::getCompiler();
         $compiler->compileFile($file);
     }
@@ -859,6 +860,7 @@ TXT;
         die();
     }
     $args = array_slice($argv,1);
+    print_r($args);
     if ($args) {
         if (substr($args[0],0,2) == '--') {
             $cmd = substr($args[0],2);

@@ -26,9 +26,6 @@ module.exports = function (grunt)   {
                 files: ['web/clients/**/*.js','web/app.js','web/main.js','web/router.js','Code/**/*.js'],
                 tasks: ['jshint'],
             },
-            hbs: {
-                files: ['web/clients/**/*.hbs']
-            },
             xml: {
                 files: ['Code/**/config.xml','Code/**/Controllers/*.xml']
             },
@@ -55,8 +52,8 @@ module.exports = function (grunt)   {
     grunt.event.on('watch', function(action, filepath, target) {
         console.log(action+","+filepath+","+target);
         if (filepath.indexOf('.php') !== -1) {
-            if (filepath.indexOf('tpl.php') !== -1) {
-                console.log('Smarty view file... skipping ['+filepath+']');
+            if ((filepath.indexOf('Cache') !== -1) || (filepath.indexOf('cache') !== -1)) {
+                console.log('Generated file... skipping ['+filepath+']');
             } else {
                 exec('php Module.php --W '+filepath, function (error,stdout,stderr) {
                     console.log(stdout);
@@ -81,9 +78,7 @@ module.exports = function (grunt)   {
     grunt.loadNpmTasks('grunt-simple-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-handlebars-compiler');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-php');
     grunt.registerTask('default', ['watch']);
-    grunt.loadNpmTasks('grunt-contrib-handlebars');
 };

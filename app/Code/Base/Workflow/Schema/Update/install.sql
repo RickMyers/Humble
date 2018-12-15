@@ -16,7 +16,7 @@ MySQL - 5.5.15 : Database - humble
 
 insert  into `workflow_sms_carriers`(`id`,`carrier`,`sms_domain`,`mms_domain`,`modified`) values 
 (1,'AllTel(NULL)','message.alltel.com','mms.alltelwireless.com','2018-03-03 17:30:31'),
-(2,'AT&amp;T','txt.att.net','mms.att.net','2018-03-03 17:30:48'),
+(2,'AT&T','txt.att.net','mms.att.net','2018-03-03 17:30:48'),
 (3,'Boost Mobile','myboostmobile.com','myboostmobile.com','2018-03-03 17:31:18'),
 (4,'Cricket Wireless',NULL,'mms.cricketwireless.net','2018-03-03 17:31:35'),
 (5,'Project Fi',NULL,'msg.fi.google.com','2018-03-03 17:31:47'),

@@ -8,16 +8,16 @@
                 <parameter name="user_name" source="post" default="" required='true' />
                 <parameter name="password"  source="post" value="user_password" format="password" required='true' />
             </model>
-            <switch id='user' method='login'>
+            <!--switch id='user' method='login'>
                 <case value='TRUE'>
-                    <model namespace='humble' class='user' method='routeToHomePage'>
-
-                    </model>
+                    <model namespace='humble' class='user' method='routeToHomePage' />
                 </case>
                 <default>
                     <redirect href='/index.html?m=Invalid Login Attempt' />
                 </default>
-            </switch>
+                   
+            </switch-->
+             
         </action>
 
         <!-- ############################################################### -->

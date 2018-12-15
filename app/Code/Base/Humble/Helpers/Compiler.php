@@ -1033,7 +1033,7 @@ SQL;
             throw new \Exceptions\MissingControllerXMLException("The Controller XML [".$source."] was not found.",20);
             print("Could not find source file: ".$source);
         }
-    }
+    } 
 
     /**
      *
@@ -1042,10 +1042,10 @@ SQL;
      */
     public function compileFile($file=false) {
        if ($file) {
-           $parts = explode('/',$file);
+           $parts = explode(DIRECTORY_SEPARATOR,$file);
            $module = \Humble::getEntity('humble/modules')->setModule($parts[2])->load(true);
            $controller = explode('.',$parts[count($parts)-1]);
-           print('Compiling controller '.$file."\n");
+           print("\n".'Compiling controller '.$file."\n\n");
            $this->compile($module['namespace'].'/'.$controller[0]);
        }
     }
