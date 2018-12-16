@@ -860,7 +860,6 @@ TXT;
         die();
     }
     $args = array_slice($argv,1);
-    print_r($args);
     if ($args) {
         if (substr($args[0],0,2) == '--') {
             $cmd = substr($args[0],2);

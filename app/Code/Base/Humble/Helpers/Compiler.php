@@ -1,5 +1,22 @@
 <?php
 namespace Code\Base\Humble\Helpers;
+/**
+ * 
+    __                    
+   /   _  _ |_ _ _ || _ _ 
+   \__(_)| )|_| (_)||(-|  
+
+    __                    
+   /   _  _  _ .| _ _     
+   \__(_)||||_)||(-|      
+            |             
+
+   Compiles an XML file into a controller program
+   
+   Part of the Humble Project.
+ * 
+ * 
+ */
 class Compiler extends Directory
 {
     private $xml            = null;
@@ -43,6 +60,12 @@ class Compiler extends Directory
         $this->arguments            = [];
     }
 
+    /**
+     * Provides the structured indentation.  Keeps track of the current number of tabs being used
+     * 
+     * @param type $num
+     * @return type
+     */
     private function tabs($num=false) {
         if ($num!==false) {
             $this->tabs     = $this->tabs + $num;
@@ -78,15 +101,34 @@ class Compiler extends Directory
         $this->includes                 = $includes;
     }
 
+    /**
+     * @TODO: this
+     */
     private function processDefault() {
 
     }
+    
+    /**
+     * 
+     * @param type $required
+     * @param type $source
+     * @param type $field
+     */
     private function processRequired($required,$source,$field) {
         $required   = ($required) ? ($required==='true' ? true : false) : false;
         if ($required) {
             print($this->tabs().'if (!isset('.$source."['".$field."'".'])) { throw new \Exceptions\ValidationRequiredException("A value has not been set for the variable <i style=\'color: red\'>'.$field.'</i>",12); }'."\n");
         }
     }
+    
+    /**
+     * 
+     * @param type $format
+     * @param type $source
+     * @param type $field
+     * @param type $required
+     * @param type $default
+     */
     private function processFormat($format,$source,$field,$required=false,$default=false) {
         if ($default && !$required && ($default !== '"now"')) {
             print($this->tabs().'if (!isset('.$source.'["'.$field.'"])) {'."\n");
@@ -298,9 +340,10 @@ PHP;
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param string $node
+     */
     private function processModel($node) {
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
@@ -332,9 +375,10 @@ PHP;
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param string $node
+     */
     private function processMongo($node) {
         $collection = (isset($node['class']) ? $node['class'] : (isset($node['collection']) ? $node['collection'] : "" ));
        /* if ($collection) {
@@ -368,9 +412,10 @@ PHP;
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param string $node
+     */
     private function processMongoServer($node) {
 
         print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getCollectionServer("'.$node['namespace'].'");'."\n");
@@ -396,9 +441,10 @@ PHP;
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param string $node
+     */
     private function processEntity($node) {
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
         if (!isset($node['id'])) {
@@ -456,7 +502,21 @@ PHP;
             print($this->tabs().'$'.$node['id'].'->_retain();'."\n");
         }
         if (isset($node['method'])) {
-            $assign_str = ''; $method_str = '$'.$node['id'].'->'.$node['method'].'()';
+            $arglist = '';
+            if (isset($node['argument']) || isset($node['arguments'])) {
+                $list = (isset($node['arguments'])) ? $node['arguments'] : $node['argument'];
+                foreach ($explode(',',$list) as $arg) {
+                    if (is_numeric($arg) || (strtolower($arg)=='true') || (strtolower($arg)=='false')) {
+                        $arglist = (($arglist) ? ',':'').$arg;
+                    } else if (false) {
+                        //@TODO: argument is in the models array
+                    } else {
+                        //pull from the $_REQUEST
+                        $arglist = (($arglist) ? ',':'').'$_REQUEST['."'".$arg."']";
+                    }
+                }
+            }
+            $assign_str = ''; $method_str = '$'.$node['id'].'->'.$node['method'].'('.$arglist.')';
             if (isset($node['assign'])) {
                 $assign_str = '$'.$node['assign'].' = ';
             }
@@ -473,17 +533,20 @@ PHP;
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param string $node
+     */
     private function processOutput($node) {
         if (isset($node['text'])) {
             print($this->tabs()."Humble::response(\"".addslashes($node['text'])."\");\n");
         }
     }
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    
+    /**
+     * 
+     * @param string $node
+     */
     private function processHelper($node) {
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
@@ -512,16 +575,18 @@ PHP;
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param string $node
+     */
     private function processView($node) {
         print($this->tabs().'$view'." = '".$node['name']."';\n");
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param string $node
+     */
     private function processViews($node) {
         print($this->tabs().'$views['.(isset($node['order']) ? $node['order'] : '').']'." = '".$node['name']."';\n");
     }
@@ -722,9 +787,7 @@ PHP;
             default : break;
         }
     }
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+
     /**
      * For each XML DOM node encountered, routes to the proper handler
      *
@@ -771,9 +834,10 @@ PHP;
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param string $xml
+     */
     private function generateController($xml)    {
         $this->controller = $xml['name'];
         $info             = $this->getInfo();
@@ -963,9 +1027,11 @@ PHP;
         }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param type $identifier
+     * @param type $stamp
+     */
     private function stampIt($identifier,$stamp)   {
         $module = explode('/',$identifier);
         $query = <<<SQL
@@ -979,9 +1045,13 @@ SQL;
        $this->_db->query($query);
     }
 
-    //--------------------------------------------------------------------------------------------------
-    //
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * 
+     * @param string $identifier
+     * @param type $force
+     * @throws \Exceptions\MalformedXMLException
+     * @throws \Exceptions\MissingControllerXMLException
+     */
     public function compile($identifier=false,$force=true)    {
         if ($identifier===false) {
             $source          = $this->getFile();
@@ -1050,9 +1120,10 @@ SQL;
        }
     }
 
-    //--------------------------------------------------------------------------------------------------
-    // Getters/Setters
-    //--------------------------------------------------------------------------------------------------
+    /**
+     * Accessors and Mutators
+     * 
+     */
     public function getXML()  {
         return $this->xml;
     }
