@@ -30,6 +30,7 @@
             <form name="config-trigger-form" id="config-trigger-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
                 <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />
+                <input type="hidden" name="workflow_id" id="workflow_id_{$data.id}" value="" />
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
                     This event won't be triggerable until it is enabled.  Click the checkbox below to enable it.<br /><br />
                 Event Enabled:
@@ -46,5 +47,6 @@
 </table>
 <script type="text/javascript">
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
+    $('#workflow_id_{$data.id}').val(Paradigm.actions.get.mongoWorkflowId());
     Form.intercept($('#config-trigger-form-{$data.id}').get(),'{$data.id}','/workflow/trigger/save',"{$windowId}");
 </script>

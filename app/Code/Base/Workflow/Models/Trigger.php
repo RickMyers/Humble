@@ -41,6 +41,9 @@ class Trigger extends Model
 
     public function execute() {
         $el = $this->getElement();
+        $data = json_decode($this->getData(),true);
+        $d = $el->setId($data['id'])->load();
+        $e = \Humble::getEntity('paradigm/system/events');
         $event_listener = Humble::getEntity('paradigm/event/listeners');
 
     }
