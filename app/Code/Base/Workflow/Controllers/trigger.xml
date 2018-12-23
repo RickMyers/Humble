@@ -20,5 +20,6 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <description>Saves the event status, and creates a MySQL reference for the event if it doesn't exist.  Note that we are employing the rarely used 'execute' feature off of the action statement</description>
             <mongo namespace="paradigm" class="elements" id='element' />
         </action>
+        
     </actions>
 </controller>

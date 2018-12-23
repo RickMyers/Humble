@@ -32,10 +32,10 @@
                 <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />
                 <input type="hidden" name="workflow_id" id="workflow_id_{$data.id}" value="" />
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
-                    This event won't be triggerable until it is enabled.  Click the checkbox below to enable it.<br /><br />
+                    This event won't be triggerable until it is enabled.  Click the checkbox below to enable it, and then click save.<br /><br />
                 Event Enabled:
-                <input type="checkbox" name="event_enabled" id="event_enabled_{$data.id}" value="Y"
-                       {if (isset($data.event_enabled) && ($data.event_enabled == "Y"))}
+                <input type="checkbox" name="enabled" id="enabled_{$data.id}" value="Y"
+                       {if (isset($data.enabled) && ($data.enabled == "Y"))}
                                checked
                        {/if}
                 /> <br />

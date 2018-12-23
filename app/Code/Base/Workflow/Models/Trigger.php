@@ -38,13 +38,16 @@ class Trigger extends Model
     public function getClassName() {
         return __CLASS__;
     }
-
+    
+    /**
+     * We need to deviate from normal Mongo Paradigm element saving.  We are going to save the Mongo element and also register the listener for the workflow event
+     */
     public function execute() {
-        $el = $this->getElement();
-        $data = json_decode($this->getData(),true);
-        $d = $el->setId($data['id'])->load();
-        $e = \Humble::getEntity('paradigm/system/events');
-        $event_listener = Humble::getEntity('paradigm/event/listeners');
-
+        $el         = $this->getElement();
+        $data       = json_decode($this->getData(),true);
+        $d          = $el->setId($data['id'])->load();
+        $enabled    = (isset($data['enabled']) && ($data['enabled']==='Y')) ? 'Y' : 'N';
+        $el->setEnabled($enabled)->save();
+        $listen_id  = \Humble::getEntity('paradigm/event/listeners')->setNamespace($d['namespace'])->setEvent($d['method'])->setWorkflowId($data['workflow_id'])->setActive($enabled)->save();
     }
 }
