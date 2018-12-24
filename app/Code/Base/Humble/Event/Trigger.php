@@ -70,7 +70,7 @@ class Trigger  {
     protected function runWorkflow($diagram = false,$cleanEvent) {
         global $cancelBubble;
         global $workflowRC;
-        if ($diagram && isset($diagram['active']) &&($diagram['active'] == 'Y')) {
+        if ($diagram && isset($diagram['active']) && ($diagram['active'] == 'Y')) {
             $EVENT = clone $cleanEvent; //this event is dirty
             $source = 'Workflows/'.$diagram['workflow_id'].'.php';
             if (file_exists($source)) {
@@ -120,7 +120,7 @@ class Trigger  {
             if (!$handled) {
                 $f = Humble::getEntity('paradigm/event/listeners');
                 $n = $this->_namespace();
-                foreach (Humble::getEntity('paradigm/event/listeners')->setNamespace($this->_namespace())->setEvent($eventName)->fetch() as $diagram) {
+                foreach (Humble::getEntity('paradigm/event/listeners')->setNamespace($this->_namespace())->setEvent($eventName)->setActive('Y')->fetch() as $diagram) {
                     $handled = $this->runWorkflow($diagram,$cleanEvent);
                     if ($cancelBubble) {
                         $this->_errors('bubbling was canceled');
