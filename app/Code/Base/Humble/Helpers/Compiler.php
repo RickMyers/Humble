@@ -901,7 +901,7 @@ PHP;
                     $fields = explode(",",$action['passalong']);
                     
                     foreach ($fields as $field) {
-                        $format = ''; $required = false; $default = ''; $value = ''; //Remember, "value" is the name of the field in the initial request object
+                        $format = ''; $required = false; $default = ''; $value = $field; //Remember, "value" is the name of the field in the initial request object
                         if (strpos($field,':')!==false) {
                             $f      = explode(':',$field);
                             $field  = $f[0]; 
