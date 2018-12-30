@@ -23,13 +23,23 @@ use Environment;
 class Users extends Entity
 {
 
+    private $alphabet = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789';
+    
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct();
     }
-
+    
+    public function salt($length=16) {
+        $salt = ''; $len = strlen($this->alphabet);
+        for ($i=0; $i<$length; $i++) {
+            $salt .= substr($this->alphabet,rand(0,$len),1);
+        }
+        return $salt;
+    }
+    
     /**
      * Assuming you passed in a token value, did it find it in the table?
      *

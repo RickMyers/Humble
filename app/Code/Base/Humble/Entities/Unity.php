@@ -1539,11 +1539,14 @@ SQL;
      * @param array $arguments
      * @return type
      */
-    public function __call($name, $arguments)
+    public function __call($name=false, $arguments=[])
     {
         $token      = substr($name,3);
         $token{0}   = strtolower($token{0});
         if (substr($name,0,3)=='set') {
+            if (!isset($arguments[0])) {
+                $arguments[0] = null;
+            }
             $token  = $name = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $token));
             if (array_key_exists($token,$this->_keys)) {
                 $this->_keys[$token] = $arguments[0]; //keep track of the keys we are using

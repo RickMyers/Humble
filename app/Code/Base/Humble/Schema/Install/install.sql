@@ -1,6 +1,6 @@
 /*
-SQLyog Enterprise v12.5.1 (64 bit)
-MySQL - 5.5.15 : Database - humble
+SQLyog Community v12.4.3 (64 bit)
+MySQL - 5.7.18-log : Database - humble
 *********************************************************************
 */
 
@@ -18,7 +18,7 @@ CREATE TABLE `humble_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` char(128) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_chronicle` */
 
@@ -154,7 +154,7 @@ CREATE TABLE `humble_modules` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `humble_modules_uidx` (`namespace`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_packages` */
 
@@ -162,7 +162,7 @@ CREATE TABLE `humble_packages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` char(128) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_pages` */
 
@@ -181,7 +181,7 @@ CREATE TABLE `humble_templaters` (
   `extension` char(16) DEFAULT NULL,
   `description` char(64) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_templates` */
 
@@ -229,16 +229,17 @@ CREATE TABLE `humble_userlog` (
   `currently_viewing` int(11) DEFAULT NULL,
   PRIMARY KEY (`uid`),
   KEY `userlog_idx` (`clientid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Table structure for table `humble_users` */
 
 CREATE TABLE `humble_users` (
   `uid` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` char(30) NOT NULL DEFAULT '',
-  `password` char(32) NOT NULL DEFAULT '',
-  `email` char(128) NOT NULL DEFAULT '',
-  `authenticated` char(1) NOT NULL DEFAULT 'N',
+  `user_name` char(30) DEFAULT '',
+  `password` char(13) DEFAULT '',
+  `salt` char(32) DEFAULT NULL,
+  `email` char(128) DEFAULT '',
+  `authenticated` char(1) DEFAULT 'N',
   `new_password_token` char(16) DEFAULT '',
   `reset_password_token` char(16) DEFAULT '',
   `authentication_token` char(16) DEFAULT '',
@@ -246,7 +247,7 @@ CREATE TABLE `humble_users` (
   `account_status` char(1) DEFAULT '',
   `login_attempts` int(11) DEFAULT '0',
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

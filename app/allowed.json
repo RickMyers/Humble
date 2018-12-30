@@ -30,6 +30,10 @@
            "reason":   "Sends the email to the person to recover their password",
            "description": "Part of the password recovery process"
        },
+       "/humble/user/expiredpassword": {
+           "reason":   "Expired Password Token Was Set",
+           "description": "Your password has expired and now you need to enter a new password"
+       },
        "/humble/user/newpassword": {
            "reason":   "This changes the users password",
            "description": "Part of the password recovery process"

@@ -70,6 +70,7 @@ class Trigger  {
     protected function runWorkflow($diagram = false,$cleanEvent) {
         global $cancelBubble;
         global $workflowRC;
+        $ok = false;
         if ($diagram && isset($diagram['active']) && ($diagram['active'] == 'Y')) {
             $EVENT = clone $cleanEvent; //this event is dirty
             $source = 'Workflows/'.$diagram['workflow_id'].'.php';

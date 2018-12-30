@@ -111,7 +111,7 @@ class User extends Model {
         $password   = $this->getPassword();
         $user_name  = $this->getUserName();
         $user       = Humble::getEntity('humble/users')->setUserName($user_name)->load(true);
-        if ($user && ($login = ($user['password'] === $this->getPassword()))) {
+        if ($user && ($login = ($user['password'] === cyrpt($this->getPassword(),$user['salt'])))) {
             Environment::session('uid',$user['uid']);
             Environment::session('login',$user['uid']);
             Environment::session('user',$user);
@@ -236,7 +236,7 @@ class User extends Model {
                 if (!session_id()) {
                     session_start();
                 }
-                if ($successful = ($user['password'] === $data['password'])) {
+                if ($successful = ($user['password'] === crypt($data['password'],$user['salt']))) {
                     $_SESSION['uid']    = $user['uid'];
                     $_SESSION['began']  = time();
                     $_SESSION['login']  = $user['uid']; //This is the id that was actually authenticated... it lets admins jump around posing as other users
@@ -299,7 +299,7 @@ class User extends Model {
                 $user   = Humble::getEntity('humble/users')->setUserName($data['user_name']);
                 if ($user->load(true)) {
                     $user->setLoginAttempts($user->getLoginAttempts()+1);
-                    $user->save();
+                    $x = $user->save();
                 }
             } else {
                 //throw an exception for insufficient data
