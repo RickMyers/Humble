@@ -12,7 +12,7 @@ Humble is a framework unlike any other.  Humble is an MVC framework where the Co
 the Views can be written in any templating language like Smarty3, TBS, Twig, PHPTAL, Mustache, etc... and the
 Models are either implied using a native Polyglot ORM, or written as Plain Old PHP Objects  (POPO).  Further,
 webservices and RPC are handled by crafting YAML files which define the interactions between the sources, and
-finally the Paradigm Engine, which is at the core of the framework, scans your Model classes cataloging your
+finally the Paradigm Engine, which is at the humble of the framework, scans your Model classes cataloging your
 methods and allowing you to construct business logic by drag-and-dropping those methods into a workflow  which
 is then compiled.
 
@@ -36,7 +36,7 @@ as PROCESS, INPUT, NOTIFICATION (e-mail, text, pop-up alert...), DECISION, etc..
         if ($EVENT) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
-                $user       = Humble::getEntity('core/users')->setUserName($data['user_name'])->load(true);
+                $user       = Humble::getEntity('humble/users')->setUserName($data['user_name'])->load(true);
                 $config     = $EVENT->fetch();
                 if (isset($config['tries']) && ($config['tries'])) {
                     $exceeded   = ((int)$user->getLoginAttempts() > (int)$config['tries']);
@@ -64,13 +64,13 @@ allocation, data verification, conditional processing, and routing.  A sample pa
 
         <action name="login" event='userLogin' comment='Triggers the login workflow'>
             <description>Launches the process that a person goes through to login</description>
-            <model namespace="core" class="user" id="user">
+            <model namespace="humble" class="user" id="user">
                 <parameter name="user_name" source="post" default="" required='true' />
                 <parameter name="password"  source="post" value="user_password" format="password" required='true' />
             </model>
             <switch id='user' method='login'>
                 <case value='TRUE'>
-                    <model namespace='core' class='user' method='routeToHomePage'>
+                    <model namespace='humble' class='user' method='routeToHomePage'>
 
                     </model>
                 </case>
@@ -84,7 +84,7 @@ allocation, data verification, conditional processing, and routing.  A sample pa
 
         <action name="new">
             <description>Prompts the user to enter their password for the first time</description>
-            <model namespace="core" class="user" id="user">
+            <model namespace="humble" class="user" id="user">
                 <parameter name="new_password_token" value='token' source="get" default="" />
             </model>
         </action>
@@ -93,7 +93,7 @@ allocation, data verification, conditional processing, and routing.  A sample pa
 
         <action name="default">
             <description>Default Action</description>
-            <model namespace="core" class="user" id="user" method="invite">
+            <model namespace="humble" class="user" id="user" method="invite">
                 <parameter name="email" source="request" default="" />
             </model>
         </action>
@@ -107,7 +107,7 @@ _/namespace/controller/view_
 
 Some examples:
 
->/core/home/admin
+>/humble/home/admin
 
 >/paradigm/actions/open
 
@@ -155,28 +155,28 @@ currentWeather  :
   arguments       : [p]
   method          : GET
 acmehealthAuthentication   :
-  wsdl            : https://acme.core.acmehealthplatform.com/ServicesARGUS/AuthenticationService.svc?wsdl  #production
+  wsdl            : https://acme.humble.acmehealthplatform.com/ServicesARGUS/AuthenticationService.svc?wsdl  #production
   version         : 1.2
   operation       : Login
   ws-addressing   :
     Namespace     : ns2
     Action        : http://www.Acmeation.com/Authentication/IAuthentication/Login
     ReplyTo       : http://www.w3.org/2005/08/addressing/anonymous
-    To            : https://acme.core.acmehealthplatform.com/ServicesARGUS/AuthenticationService.svc/Authentication
+    To            : https://acme.humble.acmehealthplatform.com/ServicesARGUS/AuthenticationService.svc/Authentication
   method          : SOAP
   arguments       :
     loginName     :
     loginPswd     :
     ipAddress     :
 unlockUser:
-  wsdl            : https://acme-uat.core.acmehealthplatform.com/ServicesARGUS/UserAccountService.svc?wsdl  #UAT
+  wsdl            : https://acme-uat.humble.acmehealthplatform.com/ServicesARGUS/UserAccountService.svc?wsdl  #UAT
   version         : 1.2
   operation       : ProviderUserAccountUnlock
   ws-addressing   :
     Namespace     : ns2
     Action        : http://www.Acmeation.com/Authentication/IAuthentication/ProviderUserAccountUnLock
     ReplyTo       : http://www.w3.org/2005/08/addressing/anonymous
-    To            : https://acme-uat.core.acmehealthplatform.com/ServicesARGUS/UserAccountService.svc/UserAccount
+    To            : https://acme-uat.humble.acmehealthplatform.com/ServicesARGUS/UserAccountService.svc/UserAccount
   method          : SOAP
   arguments       :
       ProviderUserAccountLockRequest :

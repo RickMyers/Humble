@@ -1,15 +1,176 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/banner.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
+<style type="text/css">
+    .humble-dmz {
+        clear: both; height: 70px
+    }
+    .feature {
+        width: 49%; margin-right: .2%; display: inline-block; padding: 5px
+    }
+    .feature-title {
+        font-weight: bolder; font-family: sans-serif; font-size: 1.3em; margin-bottom: 15px; 
+    }
+    .feature-text {
+        font-family: sans-serif; text-align: justify
+    }
+    .feature-slides {
+        
+    }
+    .learn-more-link {
+        margin-top: 15px; letter-spacing: 1.5px; font-weight: bolder; clear: both
+    }
+</style>
+<script type="text/javascript">
+    var f = function () {
+        var timer = null;
+        var roll  = -1;
+        var features = [{
+                "layer": "#feature-slides-1",
+                "current": 0,
+                "timing": 15,
+                "slides": [
+                    "/pages/images/MVC.png"
+                ]
+            },
+            {
+                "layer": "#feature-slides-2",
+                "current": 0,
+                "timing": 15,
+                "slides": [
+                    ""
+                ]
+            },
+            {
+                "layer": "#feature-slides-3",
+                "current": 0,
+                "timing": 15,
+                "slides": [
+                    ""
+                ]
+            },
+            {
+                "layer": "#feature-slides-4",
+                "current": 0,
+                "timing": 15,
+                "slides": [
+                    ""
+                ]
+            },
+            {
+                "layer": "#feature-slides-5",
+                "current": 0,
+                "timing": 15,
+                "slides": [
+                    ""
+                ]
+            }
+        ];
+        function RollSlides() {
+            roll    = (++roll >= features.length) ? 0 : roll;
+            var me  = this;
+            timer   = window.setTimeout(function () {
+                RollSlides.apply(me);
+            },2000);
+        }
+        return function () {
+            var me  = this;
+            timer   = window.setTimeout(function () {
+                RollSlides.apply(me);
+            },2000);
+        }
+    }
+    $(document).ready(f());
+</script>
+<div style="padding: 40px 0px; font-size: 1.8em; font-family: sans-serif;">
+    Some Key Features of The Humble Framework...
+</div>
 
+<div class="feature-row">
+    <div class="feature feature-text">
+        <div class="feature-title">
+            MVC
+        </div>
+        Humble is a Model-View-Controller framework where the Controllers are XML files, the Models can be written in PHP or implied (more on that later), and for the Views,
+        there is support for modern JavaScript libraries (i.e. Angular, React, or Vue) or server side rendering using any templating library you'd like (i.e. Twig, Smarty, Mustache, etc...)<br />
+        <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
+    </div>
+    <div class="feature feature-slides" id="feature-slides-1">
+        
+    </div>
+</div>
 
-<h1>Humble - the flexible, abstract, framework.</h1>
+<div class='humble-dmz'></div>
 
-<p class='humble-emphasis'>
-    Modern, Flexible, and Fast, Humble is an MVC framework for quickly developing Enterprise Class Applications.<br /><br />
-    Whether you are using server side rendering in <b>any</b> templating language (Twig, Mustache, Smarty, etc), or seeking simplified server side API handling using Angular, React, Vue, etc., Humble is there for you.<br /><br />
-    On top of that the Unity ORM and the Graphical Paradigm Workflow Engine drastically simplify the creation of server-side workflows.<br /><br />
-    Build your application as a monolith, but deploy it as a Micro-Servicer Architecture application with a simple click of a button.   Scaling has never been so easy.<br /><br />
-    Give Humble a try, and application development will never be the same, or so easy, again!<br /><br />
-</p>
+<div class="feature-row">
+    <div class="feature feature-slides" id="feature-slides-2">
+        
+    </div>
+    <div class="feature feature-text">
+        <div class="feature-title">
+            Design More, Write Less
+        </div>
+        At its heart, Humble uses an Event-Driven model that can trigger graphically designed workflows.  These workflows are composed of model objects that are cataloged and categorized as developers build them, creating a "Lego" style architecture.
+        Events can be User driven (such as form submission), Time/Date events for recurring daily, weekly, or monthly processes, or system events such as the arrival of files or other autonomous event.
+        <div class="learn-more-link">
+            <a href="#" onclick="return false">Learn More Here...</a>
+        </div>
+    </div>
+</div>
+
+<div class='humble-dmz'></div>
+
+<div class="feature-row">
+    <div class="feature feature-text">
+        <div class="feature-title">
+            Polglot ORM
+        </div>
+        Humble uses the Unity Polyglot ORM, which combines the functionality of MySQL and MongoDB.  This combination makes it easy to add columns on the fly, store hierarchical data alongside traditional 
+        schema based entities, keep the concept of Normalization and Joins while leveraging "Big-Data" features, and solves problems elegantly that used to require obtuse approaches like EAV (Entity-Attribute-Value). 
+        <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
+    </div>
+    <div class="feature feature-slides" id="feature-slides-3">
+        
+    </div>
+</div>
+
+<div class='humble-dmz'></div>
+
+<div class="feature-row">
+    <div class="feature feature-slides" id="feature-slides-4">
+        
+    </div>
+    <div class="feature feature-text">
+        <div class="feature-title">
+            Integration Abstraction
+        </div>
+        For the last 20 years, for an application to be "Enterprise" class it had to be able to integrate, both as a Producer and a Consumer, with external sources of functionality and data.
+        Gone are the days of the "One-Big-App".  Humble makes integration a feature of configuration, not coding, by abstracting Integration Points using YaML files to define the features of those
+        Integration Points.  Also, through the Paradigm Engine Workflow Editor, you can easily create an ESB (Enterprise Service Bus) that can broker the data you wish to share with others.  Integration
+        is integral to today's connected world, and is at the heart of the Humble framework.
+        <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
+    </div>
+</div>
+
+<div class='humble-dmz'></div>
+
+<div class="feature-row">
+    <div class="feature feature-text">
+        <div class="feature-title">
+            Easy Transition from Monolith to MicroService Architecture
+        </div>
+        Develop your application as a monolith but when you are ready for production, you can deploy it as a multi-server MicroService Architecture (MSA) application, with no specialized coding required.
+        Because Humble uses exceptionally "clean" URIs, the namespace component of each URI can be mapped to a dedicated server to handle all requests specific to that namespace.  Then all we need
+        to do is to designate one of the server "nodes" to be the MSA Router, and we can leverage the scalability and reliability that is native to MSA applications.  This phase of development/deployment
+        is referred to as "MicroService Mode", but it is so simple to effect that it might as well be called "Magic Mode".
+        <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
+    </div>
+    <div class="feature feature-slides" id="feature-slides-5">
+        
+    </div>
+    
+</div>
+
+<div class='humble-dmz'></div>
+
 <!--#include virtual="/pages/includes/footer.html" -->
