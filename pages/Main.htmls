@@ -3,19 +3,19 @@
 <!--#include virtual="/pages/includes/container.html" -->
 <style type="text/css">
     .humble-dmz {
-        clear: both; height: 70px
+        clear: both; height: 25px
     }
     .feature {
-        width: 49%; margin-right: .2%; display: inline-block; padding: 5px
+        display: inline-block; padding: 5px; position: relative
     }
     .feature-title {
         font-weight: bolder; font-family: sans-serif; font-size: 1.3em; margin-bottom: 15px; 
     }
     .feature-text {
-        font-family: sans-serif; text-align: justify
+        font-family: sans-serif; text-align: justify; width: 65%; margin-right: .2%
     }
     .feature-slides {
-        
+       overflow: hidden; vertical-align: top; text-align: center; width: 34%; margin-right: .2%
     }
     .learn-more-link {
         margin-top: 15px; letter-spacing: 1.5px; font-weight: bolder; clear: both
@@ -26,64 +26,86 @@
         var timer = null;
         var roll  = -1;
         var features = [{
-                "layer": "#feature-slides-1",
-                "current": 0,
+                "container": '#feature-slides-1',
+                "slide": "#feature-slide-1",
+                "current": -1,
                 "timing": 15,
                 "slides": [
-                    "/pages/images/MVC.png"
+                    "/pages/images/MVC.png",
+                    "/pages/images/mvc_architecture.png"
                 ]
             },
             {
-                "layer": "#feature-slides-2",
-                "current": 0,
+                "container": '#feature-slides-2',
+                "slide": "#feature-slide-2",
+                "current": -1,
                 "timing": 15,
                 "slides": [
-                    ""
+                    "/pages/images/workflow.png"
                 ]
             },
             {
-                "layer": "#feature-slides-3",
-                "current": 0,
+                "container": '#feature-slides-3',
+                "slide": "#feature-slide-3",
+                "current": -1,
                 "timing": 15,
                 "slides": [
-                    ""
+                    "/pages/images/polyglot_orm.png"
                 ]
             },
             {
-                "layer": "#feature-slides-4",
-                "current": 0,
+                "container": '#feature-slides-4',
+                "slide": "#feature-slide-4",
+                "current": -1,
                 "timing": 15,
                 "slides": [
-                    ""
+                    "/pages/images/integration.png"
                 ]
             },
             {
-                "layer": "#feature-slides-5",
-                "current": 0,
+                "container": '#feature-slides-5',
+                "slide": "#feature-slide-5",
+                "current": -1,
                 "timing": 15,
                 "slides": [
-                    ""
+                    "/pages/images/micro_services.png"
                 ]
             }
         ];
         function RollSlides() {
             roll    = (++roll >= features.length) ? 0 : roll;
             var me  = this;
+            var feature = features[roll];
+            $(feature.slide).on('load',function () {
+                var slide_w = $(feature.slide).width();
+                var slide_h = $(feature.slide).height();
+                var con_w   = $(feature.container).width();
+                var con_h   = $(feature.container).height();
+                slide_w = (slide_w > con_w) ? con_w : slide_w;
+                $(feature.slide).css('left',(con_w - slide_w)/2);
+                $(feature.slide).css('top',0);
+            }).attr('src',feature.slides[0]);
             timer   = window.setTimeout(function () {
                 RollSlides.apply(me);
             },2000);
         }
         return function () {
-            var me  = this;
-            timer   = window.setTimeout(function () {
-                RollSlides.apply(me);
-            },2000);
+            $('.feature-slides').height(($('.feature-slides').width()-100)*.75);
+            RollSlides.apply(this);
         }
     }
     $(document).ready(f());
 </script>
-<div style="padding: 40px 0px; font-size: 1.8em; font-family: sans-serif;">
-    Some Key Features of The Humble Framework...
+<div style="padding-top: 20px; font-size: 2em; font-family: sans-serif; font-weight: bold; color: rgba(50,50,50,.8)">
+    It Is Good To Be Humble...
+</div>
+<div style="padding: 20px 0px; font-size: 1em; font-family: sans-serif;">
+    The Humble Framework is all about easy application development, robust flexibility, and maintainability.  It is a framework that from the start was designed to actually fight Software Entropy, and that means lower cost
+    of maintenance and enhancements down the road.  But speed of application development doesn't mean that Humble sacrifices speed of execution... quite the opposite!  From its outset, Humble has been
+    designed to scale in breadth (services) and not depth (monolithic), and this has allowed Humble to evolve and shine in the realm of MicroService Architecture Application development.  On top of that, with a high
+    degree of abstraction, support for modern JavasScript frameworks like React and Vue, while also supporting a host of server-side rendering languages like Smarty, Twig, Mustache, etc... whatever your needs are, it is likely
+    that Humble can fill them.<br /><br />
+    Some Key Features of Humble...
 </div>
 
 <div class="feature-row">
@@ -96,7 +118,7 @@
         <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
     </div>
     <div class="feature feature-slides" id="feature-slides-1">
-        
+        <img id='feature-slide-1' src="" style="height:100%; position: absolute;" />
     </div>
 </div>
 
@@ -104,7 +126,7 @@
 
 <div class="feature-row">
     <div class="feature feature-slides" id="feature-slides-2">
-        
+        <img id='feature-slide-2' src="" style="height:100%; position: absolute;" />
     </div>
     <div class="feature feature-text">
         <div class="feature-title">
@@ -130,7 +152,7 @@
         <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
     </div>
     <div class="feature feature-slides" id="feature-slides-3">
-        
+        <img id='feature-slide-3' src="" style="height:100%; position: absolute;" />
     </div>
 </div>
 
@@ -138,7 +160,7 @@
 
 <div class="feature-row">
     <div class="feature feature-slides" id="feature-slides-4">
-        
+        <img id='feature-slide-4' src="" style="height:100%; position: absolute;" />
     </div>
     <div class="feature feature-text">
         <div class="feature-title">
