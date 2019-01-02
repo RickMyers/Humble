@@ -10,9 +10,10 @@
 
 Humble is a framework unlike any other.  Humble is an MVC framework where the Controllers are written in XML,
 the Views can be written in any templating language like Smarty3, TBS, Twig, PHPTAL, Mustache, etc... and the
-Models are either implied using a native Polyglot ORM, or written as Plain Old PHP Objects  (POPO).  Further,
+Models are either implied using a native Polyglot ORM, or written as Plain Old PHP Objects  (POPO). There is 
+also an API that makes integration with modern frameworks like Angular, React, or VUE a breeze.  Further,
 webservices and RPC are handled by crafting YAML files which define the interactions between the sources, and
-finally the Paradigm Engine, which is at the humble of the framework, scans your Model classes cataloging your
+finally the Paradigm Engine, which is at the heart of the framework, scans your Model classes cataloging your
 methods and allowing you to construct business logic by drag-and-dropping those methods into a workflow  which
 is then compiled.
 
