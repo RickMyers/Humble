@@ -8,11 +8,10 @@
                       /____/
 
     Supports client/partner integration
-
-//##############################################################################*/
-// Brings in the workflow if it exists
-//##############################################################################
-ob_start();
+ */
+/*
+ * Brings in the workflow if it exists
+ */
 function triggerWorkflow($EVENT,$workflow) {
     global $workflowRC;
     global $cancelBubble;
@@ -25,18 +24,9 @@ function triggerWorkflow($EVENT,$workflow) {
 function underscoreToCamelCase( $string, $first_char_caps = false) {
     return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
 }
-
-//##############################################################################
-$session_expire = 300;                  //Expire the session after five minutes#
-$workflowRC     = false;
-$cancelBubble   = false;
-//##############################################################################
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, GET, PUT');
-header('Access-Control-Allow-Headers: HTTP_X_REQUESTED_WITH');
-//##############################################################################
-//Dumps anything that any stages appended to the response
-//##############################################################################
+/*
+ * Dumps anything that any stages appended to the response
+ */
 function outputResponse() {
     foreach (\Humble::response() as $response) {
         print($response);
@@ -77,7 +67,6 @@ function castArgument($arg,$format='string') {
     }
     return $arg;
 }
-
 //##############################################################################
 // Creates an EVENT out of the webservice request
 //##############################################################################
@@ -123,128 +112,134 @@ function createWorkflowEvent($criteria) {
     return $EVENT;
 }
 //##############################################################################
+ob_start();
+$session_expire = 300;                  //Expire the session after five minutes#
+$workflowRC     = false;
+$cancelBubble   = false;
 
-    ob_start();
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, PUT');
+header('Access-Control-Allow-Headers: HTTP_X_REQUESTED_WITH');
 
-    chdir('app');
-    require_once('Humble.php');
-    require_once('Constants.php');
-    $request_method  = strtolower($_SERVER['REQUEST_METHOD']);
-    $error           = false;
-    $results         = false;
-    try {
-        $URI         = isset($_GET['uri']) ? $_GET['uri'] : false;
-        if ($URI) {
-            $webservice = Humble::getEntity('paradigm/webservices')->setUri($URI)->load(true);
-            if ($webservice) {
-                if ($webservice['active']==='Y') {
-                    $criteria        = Humble::getCollection('paradigm/elements')->setId($webservice['webservice_id'])->load();
-                    $workflows       = Humble::getEntity('paradigm/webservice_workflows');
-                    $workflows->setWebserviceId($webservice['id']);
-                    $workflows->setUri($URI);
-                    $security_scheme = isset($criteria['choose-security-scheme']) ? $criteria['choose-security-scheme'] : $criteria['security-scheme'];  //@TODO: remove in the future... just use security-scheme
-                    foreach ($workflows->fetchActiveWebserviceWorkflows() as $workflow) {
-                        switch ($security_scheme) {
-                            case 'none'     :
-                                triggerWorkflow(createWorkflowEvent($criteria),$workflow);
-                                break;
-                            case 'standard' :
-                                $userid     = isset($_REQUEST['userid'])    ? $_REQUEST['userid'] : false;
-                                $passwd     = isset($_REQUEST['password'])  ? $_REQUEST['password'] : false;
-                                if ($criteria['use-whitelist']==='on') {
-                                    $allowed = false;
-                                    foreach (explode("\n",$criteria['whitelist']) as $ip) {
-                                        if ($allowed = ($_SERVER['REMOTE_ADDR'] === $ip)) {
-                                            break;
-                                        }
-                                    }
-                                    if (!$allowed) {
-                                        throw new \Exceptions\WhitelistException('Invalid Requestor',99);
+chdir('app');
+require_once('Humble.php');
+require_once('Constants.php');
+$request_method  = strtolower($_SERVER['REQUEST_METHOD']);
+$error           = false;
+$results         = false;
+try {
+    $URI         = isset($_GET['uri']) ? $_GET['uri'] : false;
+    if ($URI) {
+        $webservice = Humble::getEntity('paradigm/webservices')->setUri($URI)->load(true);
+        if ($webservice) {
+            if ($webservice['active']==='Y') {
+                $criteria        = Humble::getCollection('paradigm/elements')->setId($webservice['webservice_id'])->load();
+                $workflows       = Humble::getEntity('paradigm/webservice_workflows');
+                $workflows->setWebserviceId($webservice['id']);
+                $workflows->setUri($URI);
+                $security_scheme = isset($criteria['choose-security-scheme']) ? $criteria['choose-security-scheme'] : $criteria['security-scheme'];  //@TODO: remove in the future... just use security-scheme
+                foreach ($workflows->fetchActiveWebserviceWorkflows() as $workflow) {
+                    switch ($security_scheme) {
+                        case 'none'     :
+                            triggerWorkflow(createWorkflowEvent($criteria),$workflow);
+                            break;
+                        case 'standard' :
+                            $userid     = isset($_REQUEST['userid'])    ? $_REQUEST['userid'] : false;
+                            $passwd     = isset($_REQUEST['password'])  ? $_REQUEST['password'] : false;
+                            if ($criteria['use-whitelist']==='on') {
+                                $allowed = false;
+                                foreach (explode("\n",$criteria['whitelist']) as $ip) {
+                                    if ($allowed = ($_SERVER['REMOTE_ADDR'] === $ip)) {
+                                        break;
                                     }
                                 }
-                                if ($userid && $passwd) {
-                                    if (($userid == $criteria['standard-userid']) && ($passwd === $criteria['standard-password'])) {
-                                        triggerWorkflow(createWorkflowEvent($criteria),$workflow);
-                                    } else {
-                                        throw new \Exceptions\CredentialsIncorrectException('Authorization Information Invalid',24);
-                                    }
+                                if (!$allowed) {
+                                    throw new \Exceptions\WhitelistException('Invalid Requestor',99);
+                                }
+                            }
+                            if ($userid && $passwd) {
+                                if (($userid == $criteria['standard-userid']) && ($passwd === $criteria['standard-password'])) {
+                                    triggerWorkflow(createWorkflowEvent($criteria),$workflow);
                                 } else {
-                                    throw new \Exceptions\CredentialsException('Credentials Missing',24);
+                                    throw new \Exceptions\CredentialsIncorrectException('Authorization Information Invalid',24);
                                 }
-                                break;
-                            case 'session':
-                                if ($sessionId = (isset($_POST['sessionId']) ? $_POST['sessionId'] : false)) {
-                                    session_id($sessionId);
-                                    session_start();
-                                    header('Content-Type: application/json');
-                                    if (isset($_SESSION['uid']) && isset($_SESSION['user'])) {
-                                        if (isset($_SESSION['began'])) {
-                                            if ((time() - (int)$_SESSION['began']) > $session_expire) {
-                                                session_destroy();
-                                                session_write_close();
-                                                \Humble::response(json_encode([
-                                                    "RC" => "12",
-                                                    "message" => "Session Expired",
-                                                    "description" => "Five minutes after the last authentication call the current session will expire",
-                                                    "remedy" => "Please call the authentication service again to recreate your session"
-                                                ],JSON_PRETTY_PRINT)));
-                                                outputResponse();
-                                                die();
-                                            }
+                            } else {
+                                throw new \Exceptions\CredentialsException('Credentials Missing',24);
+                            }
+                            break;
+                        case 'session':
+                            if ($sessionId = (isset($_POST['sessionId']) ? $_POST['sessionId'] : false)) {
+                                session_id($sessionId);
+                                session_start();
+                                header('Content-Type: application/json');
+                                if (isset($_SESSION['uid']) && isset($_SESSION['user'])) {
+                                    if (isset($_SESSION['began'])) {
+                                        if ((time() - (int)$_SESSION['began']) > $session_expire) {
+                                            session_destroy();
+                                            session_write_close();
+                                            \Humble::response(json_encode([
+                                                "RC" => "12",
+                                                "message" => "Session Expired",
+                                                "description" => "Five minutes after the last authentication call the current session will expire",
+                                                "remedy" => "Please call the authentication service again to recreate your session"
+                                            ],JSON_PRETTY_PRINT));
+                                            outputResponse();
+                                            die();
                                         }
-                                        triggerWorkflow(createWorkflowEvent($criteria),$workflow);
-                                    } else {
-                                        \Humble::response(json_encode([
-                                            "RC" => "12",
-                                            "message" => "Invalid Session ID",
-                                            "description" => "The session ID either expired or is incorrect",
-                                            "remedy" => "Obtain a new session ID by accessing the authentication service"
-                                        ],JSON_PRETTY_PRINT)));
-                                        outputResponse();
-                                        die();
                                     }
+                                    triggerWorkflow(createWorkflowEvent($criteria),$workflow);
                                 } else {
                                     \Humble::response(json_encode([
                                         "RC" => "12",
-                                        "message" => "Missing Session ID",
-                                        "description" => "The session ID was not present in the POST",
-                                        "remedy" => "Make sure you are passing the SessionID in the POST variable 'sessionId'"
+                                        "message" => "Invalid Session ID",
+                                        "description" => "The session ID either expired or is incorrect",
+                                        "remedy" => "Obtain a new session ID by accessing the authentication service"
                                     ],JSON_PRETTY_PRINT));
                                     outputResponse();
                                     die();
                                 }
-                                break;
-                            case 'api'  :
-                                break;
-                            default:
-                                print('Dont know much about history');
-                        }
+                            } else {
+                                \Humble::response(json_encode([
+                                    "RC" => "12",
+                                    "message" => "Missing Session ID",
+                                    "description" => "The session ID was not present in the POST",
+                                    "remedy" => "Make sure you are passing the SessionID in the POST variable 'sessionId'"
+                                ],JSON_PRETTY_PRINT));
+                                outputResponse();
+                                die();
+                            }
+                            break;
+                        case 'api'  :
+                            break;
+                        default:
+                            print('Unknown API Security Scheme: ['.$security_scheme.']');
                     }
-                    outputResponse();
-                } else {
-                    throw new \Exceptions\DisabledWebServiceException('Disabled Web Service',8);
                 }
+                outputResponse();
             } else {
-                throw new \Exceptions\UnknownWebServiceException('WebService Not Found',16);
+                throw new \Exceptions\DisabledWebServiceException('Disabled Web Service',8);
             }
         } else {
-            throw new \Exceptions\MissingURIException('URI Invalid or Not Set',24);
+            throw new \Exceptions\UnknownWebServiceException('WebService Not Found',16);
         }
-    } catch (\Exceptions\WhitelistException $e) {
-        HumbleException::standard($e,'IP Address Not On Approved List','integration');
-    } catch (\Exceptions\CredentialsIncorrectException $e) {
-        HumbleException::standard($e,'Credentials Incorrect','integration');
-    } catch (\Exceptions\CredentialsException $e) {
-        HumbleException::standard($e,'Missing Credentials','integration');
-    } catch (\Exceptions\DisabledWebServiceException $e) {
-        HumbleException::standard($e,'Disabled Web Service','integration');
-    } catch (\Exceptions\MissingURIException $e) {
-        HumbleException::standard($e,'URI Missing','integration');
-    } catch (\Exceptions\UnknownWebServiceException $e) {
-        HumbleException::standard($e,'Unknown Webservice','integration');
-    } catch (\Exceptions\HumbleException $e) {
-        HumbleException::standard($e, "WebService  Error");
-    } catch (Exception $e) {
-        HumbleException::standard($e, "General Error");
+    } else {
+        throw new \Exceptions\MissingURIException('URI Invalid or Not Set',24);
     }
+} catch (\Exceptions\WhitelistException $e) {
+    HumbleException::standard($e,'IP Address Not On Approved List','integration');
+} catch (\Exceptions\CredentialsIncorrectException $e) {
+    HumbleException::standard($e,'Credentials Incorrect','integration');
+} catch (\Exceptions\CredentialsException $e) {
+    HumbleException::standard($e,'Missing Credentials','integration');
+} catch (\Exceptions\DisabledWebServiceException $e) {
+    HumbleException::standard($e,'Disabled Web Service','integration');
+} catch (\Exceptions\MissingURIException $e) {
+    HumbleException::standard($e,'URI Missing','integration');
+} catch (\Exceptions\UnknownWebServiceException $e) {
+    HumbleException::standard($e,'Unknown Webservice','integration');
+} catch (\Exceptions\HumbleException $e) {
+    HumbleException::standard($e, "WebService  Error");
+} catch (Exception $e) {
+    HumbleException::standard($e, "General Error");
+}
 ?>

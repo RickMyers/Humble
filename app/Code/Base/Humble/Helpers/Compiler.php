@@ -604,6 +604,18 @@ PHP;
     }
 
     /**
+     * 
+     * @param type $node
+     */
+    private function processHeader($node) {
+        $name   = (isset($node['name']))    ? $node['name']  : false;
+        $value  = (isset($node['value']))   ? $node['value'] : false;
+        if ($name && $value) {
+            print($this->tabs().'header("'.$name.': '.$value.'");'."\n");
+        }
+    }
+    
+    /**
      *
      * @param type $action
      */
@@ -828,6 +840,8 @@ PHP;
             case    "abort"         :   $this->processAbort($node);
                                         break;
             case    "assign"        :   $this->processAssign($node);
+                                        break;
+            case    "header"        :   $this->processHeader($nodw);
                                         break;
             default                 :   break;
 

@@ -31,6 +31,55 @@ HDR;
     print($header);
 }
 /* ---------------------------------------------------------------------------------- */
+function installedEextensionCheck() {
+
+    exec('php -m',$modules);
+
+    $required = [
+    'bcmath'=>false,
+    'bz2'=>false,
+    'curl'=>false,
+    'date'=>false,
+    'fileinfo'=>false,
+    'ftp'=>false,
+    'gd'=>false,
+    'json'=>false,
+    'libxml'=>false,
+    'mbstring'=>false,
+    'memcache'=>false,
+    'mongodb'=>false,
+    'mysqli'=>false,
+    'readline'=>false,
+    'Reflection'=>false,
+    'SimpleXML'=>false,
+    'soap'=>false,
+    'sqlsrv'=>false,
+    'standard'=>false,
+    'xml'=>false,
+    'xmlreader'=>false,
+    'xmlrpc'=>false,
+    'xmlwriter'=>false,
+    'xsl'=>false,
+    'zip'=>false
+    ];
+
+    $ok = true;
+    foreach ($required as $extension => $status) {
+        $ok = $ok && ($required[$extension] = extension_loaded($extension));
+    }
+    if (!$ok) {
+        print("The following extensions should/must be enabled within your php.ini file, please consult https://www.php.net to determine how to enable them\n\n\n");
+        $ctr = 0;
+        foreach ($required as $extension) {
+            if (!$required[$extension]) {
+                print(++$ctr.') '.$extension."\n");
+            }
+        }
+        print("\nAfter enabling, please re-attempt the installation.\n");
+        die();
+    }    
+}
+/* ---------------------------------------------------------------------------------- */
 function fetchProject($version,$framework_url,$update=false) {
     @mkdir('../extract',0775);  //going to test extraction to this location
     $distro = 'Humble-Distro.'.$version.'.zip';
@@ -269,6 +318,7 @@ function restoreProject() {
 if (PHP_SAPI === 'cli') {
     $args = array_slice($argv,1);
     if ($action = (($args && isset($args[0])) ? $args[0] : false)) {
+        installedEextensionCheck();
         $action = substr($action,2);
         switch ($action) {
             case "init"     :

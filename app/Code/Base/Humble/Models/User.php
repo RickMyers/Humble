@@ -111,7 +111,7 @@ class User extends Model {
         $password   = $this->getPassword();
         $user_name  = $this->getUserName();
         $user       = Humble::getEntity('humble/users')->setUserName($user_name)->load(true);
-        if ($user && ($login = ($user['password'] === cyrpt($this->getPassword(),$user['salt'])))) {
+        if ($user && ($login = ($user['password'] === crypt($this->getPassword(),$user['salt'])))) {
             Environment::session('uid',$user['uid']);
             Environment::session('login',$user['uid']);
             Environment::session('user',$user);
