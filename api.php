@@ -50,9 +50,9 @@
         }
     }
 
-    $table           = isset($_GET['t']) ? $_GET['t'] : false;
+    $table           = isset($_GET['t'])   ? $_GET['t'] : false;
     $action          = (isset($_GET['m'])) ? $_GET['m'] : ((isset($content['id']) && $content['id']) ? $content['id'] : false);
-    $namespace       = isset($_GET['n']) ? $_GET['n'] : false;
+    $namespace       = isset($_GET['n'])   ? $_GET['n'] : false;
     $module          = \Humble::getModule($namespace);
 
     /*

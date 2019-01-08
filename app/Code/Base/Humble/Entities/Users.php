@@ -32,6 +32,33 @@ class Users extends Entity
         parent::__construct();
     }
     
+    /**
+     * Creates a new user properly salting and encoding the password
+     * 
+     * @param type $user_name
+     * @param type $md5_password
+     * @param type $last_name
+     * @param type $first_name
+     * @return type
+     */
+    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='') {
+        $uname  = $user_name ? $user_name       : ($this->getUserName()  ? $this->getUserName()  : false);
+        $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
+        $fname  = $first_name ? $first_name     : ($this->getFirstName() ? $this->getFirstName() : '');
+        $lname  = $last_name ? $last_name       : ($this->getLastName()  ? $this->getLastName()            : '');
+        $uid    = null;
+        if ($uname && $pwd) {
+            $uid = $this->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setFirstName($fname)->setLastName($lname)->setUserName($uname)->save();
+        }
+        return $uid;
+    }
+    
+    /**
+     * Creates a salt token
+     * 
+     * @param type $length
+     * @return type
+     */
     public function salt($length=16) {
         $salt = ''; $len = strlen($this->alphabet);
         for ($i=0; $i<$length; $i++) {

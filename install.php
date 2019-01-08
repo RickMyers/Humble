@@ -275,6 +275,8 @@ switch ($method) {
         $mongop = isset($_POST['mongo_password'])   ? $_POST['mongo_password']     : false;
         $db     = isset($_POST['db'])               ? $_POST['db']        : false;
         $cache  = isset($_POST['cache'])            ? $_POST['cache']     : false;
+        $fname  = isset($_POST['firstname'])        ? $_POST['firstname'] : '';
+        $lname  = isset($_POST['lastname'])         ? $_POST['lastname'] : '';
         $srch   = array('&&USERID&&','&&PASSWORD&&','&&DATABASE&&','&&HOST&&','&&MONGO&&','&&CACHE&&','&&MONGOUSER&&','&&MONGOPWD&&');
         $repl   = array($uid,$pwd,$db,$host,$mongo,$cache,$mongou,$mongop);
         if (!file_exists('Humble.project')) {
@@ -319,7 +321,7 @@ switch ($method) {
         shell_exec("php Module.php --e ".$project->namespace);
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();
-        $uid    = \Humble::getEntity('humble/users')->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']))->save();
+        $uid    = \Humble::getEntity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']))->newUser();
         $results = ob_get_flush();
         if (!$uid) {
             file_put_contents('oops.txt',$results);
