@@ -21,16 +21,6 @@ ob_start();                  //Must do this to capture all headers before passin
 chdir('app');                //This is the root directory of the application
 require_once('Humble.php');  //This is the engine of the whole system
 
-$workflowRC   = null;        //Workflow global variables...
-$cancelBubble = false;       // These indicate whether the workflow completed
-//###########################################################################
-//In the case where we consume our own services, we need to pass the session
-//id in the request so that we aren't re-routed to the login screen
-if (isset($_REQUEST['sessionId'])) {
-    session_id($_REQUEST['sessionId']);
-}
-session_start();
-
 //###########################################################################
 //This checks to see if the system has been taken down for maintenance, and
 //if not, it returns us whether we are running with authorization checks in
@@ -51,6 +41,18 @@ if (\Environment::MSARouter()) {
     require_once("msa.php");
     die();
 }
+
+//###########################################################################
+$workflowRC   = null;        //Workflow global variables...
+$cancelBubble = false;       // These indicate whether the workflow completed
+
+//###########################################################################
+//In the case where we consume our own services, we need to pass the session
+//id in the request so that we aren't re-routed to the login screen
+if (isset($_REQUEST['sessionId'])) {
+    session_id($_REQUEST['sessionId']);
+}
+session_start();
 
 //###########################################################################
 //Two phased login check.  If you are not logged in (determined by having a
@@ -81,7 +83,6 @@ header('Access-Control-Expose-Headers: Errors, Warnings, Notices, Messages, Aler
 //identifying this service
 $recompile       = false;           //Do we need to recompile the controller
 $info            = array();         //Initialize the controller info array
-
 
 //###########################################################################
 //Primes the Humble Engine
@@ -183,12 +184,12 @@ if (!$module) {
 
     //###########################################################################
     if ($authorizationEngineEnabled && !$bypass) {          //This control is set in the application.xml root file
-        require_once "AuthorizationEngine.php";         //Call out to the authorization engine
+        require_once "AuthorizationEngine.php";             //Call out to the authorization engine
     }
 
     //###########################################################################
     if (file_exists('Constants.php')) {
-        require_once 'Constants.php';                   //Enumeration type stuff
+        require_once 'Constants.php';                       //Enumeration type stuff
     }
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {       //This is for handling function that windows PHP is missing
         require_once "Compatibility.php";

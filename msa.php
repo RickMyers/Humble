@@ -21,5 +21,10 @@
     o Ideally we will rely on a cache mechanism of some kind to store the xref information
  */
 
-$uri = "URI";
-print('Hello World: '.$uri);
+$secure     = (isset($_SERVER['HTTPS']) && (strtoupper($_SERVER['HTTPS'])=='ON'));
+$protocol   = $secure ? 'ssl' : 'http';
+$URL        = $secure ? 'https://'.$namespace.$_SERVER['HTTP_HOST'] : 'http://'.$namespace.$_SERVER['HTTP_HOST'];
+$HURL       = $URL.'/'.$namespace.'/'.$controller.'/'.$method;
+//file_put_contents('headers.txt',print_r($headers,true));
+//die();
+print(file_get_contents($HURL,false,stream_context_create($headers)));
