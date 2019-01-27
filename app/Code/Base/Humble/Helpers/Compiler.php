@@ -208,6 +208,7 @@ class Compiler extends Directory
                                     print("\n".$this->tabs().'$_REQUEST["'.(string)$parameter['name'] .'"] = (string)file_get_contents("php://input");'."\n");
                                     break;
             case    "JSON"      :   $source = '$_JSON';
+                                    break;
             case    "LOCAL"     :   $source = '$_REQUEST';
                                     print("\n".$this->tabs().'$_REQUEST["'.(string)$parameter['name'] .'"] = $'.(string)$parameter['name'].";\n");
                                     break;
@@ -912,11 +913,10 @@ PHP;
                 if (isset($action['input'])) {
                     switch (strtolower($action['input'])) {
                         case "json" :
-                            //Have to put this into teh controller...
-                            //$data        = (string)file_get_contents("php://input");
-                            //$content     = json_decode($data,true);                            
+                            print($this->tabs().'$_JSON = json_decode((string)file_get_contents("php://input"),true);'."\n");
                             break;
                         case "xml"  : 
+                            //@TODO: do something here7
                             break;
                     }
                 }
