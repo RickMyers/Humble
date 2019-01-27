@@ -99,6 +99,22 @@
     </head>
 
     <body>
+        <div style="display: none; position: absolute; top: 0px; width: 100%; height: 100%; overflow: hidden; background-color: rgba(50,50,50,.5); z-index: 9" id="humble_video_layer">
+            <table style="width: 100%; height: 100%">
+                <tr>
+                    <td>
+                        <div style="width: 822px; padding: 0px 10px 10px 10px; border: 1px solid #333; background-color: ghostwhite; margin-left: auto; margin-right: auto; border-radius: 10px">
+                            <div style="float: right; color: #aaa; font-weight: bold; cursor: pointer; font-size: 1.4em" onclick="$('#humble_video_layer').css('display','none'); $('#humble_video_player').attr('src','/pages/blank.html')">&times;</div>
+                            <div style="clear: both; text-align: right"></div>
+                            <iframe controls id="humble_video_player"
+                                src=""
+                                width="800" height="600" frameborder="0">
+                            </iframe>                            
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div class="humble-headers" id="humble-headers">
             <div style="background-color: rgba(50,50,50,.8); padding: 10px; display: flex; flex-wrap: nowrap">
 

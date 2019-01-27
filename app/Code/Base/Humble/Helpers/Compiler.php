@@ -207,6 +207,7 @@ class Compiler extends Directory
             case    "STREAM"    :   $source = '$_REQUEST';
                                     print("\n".$this->tabs().'$_REQUEST["'.(string)$parameter['name'] .'"] = (string)file_get_contents("php://input");'."\n");
                                     break;
+            case    "JSON"      :   $source = '$_JSON';
             case    "LOCAL"     :   $source = '$_REQUEST';
                                     print("\n".$this->tabs().'$_REQUEST["'.(string)$parameter['name'] .'"] = $'.(string)$parameter['name'].";\n");
                                     break;
@@ -282,7 +283,7 @@ class Compiler extends Directory
         }
         if ($timestamp || $datestamp || $time) {
             $php = <<<PHP
-if (!isset({$source}["{$field}"]) || (!{$source}["{$field}"])) {
+                                if (!isset({$source}["{$field}"]) || (!{$source}["{$field}"])) {
                                     if ({$datestamp}) {
                                         {$source}["{$field}"] = date('Y-m-d');
                                     } else if ({$timestamp}) {
@@ -793,7 +794,7 @@ PHP;
             case "y"        :
             case "true"     :
             case "on"       :
-            case "on"       :
+            case "yes"      :
                 print($this->tabs()."Environment::block();\n");
                 break;
             default : break;
@@ -859,7 +860,7 @@ PHP;
         $this->verifyIncludesExist($templater);
         print($this->includes['banner']);
         print("<?php\n");
-        print($this->tabs().'$templater =  '."'".$templater."';"."\n");
+        print($this->tabs().'$templater  =  '."'".$templater."';"."\n");
         print($this->tabs().'$controller =  '."'".$this->controller."';"."\n");
         print("?>\n");
         print($this->includes['common_header']);
@@ -905,6 +906,18 @@ PHP;
                                             break;
                         default         :   die('Unknown type of output requested ('.$action['output'].')');
                                             break;
+                    }
+                }
+                //Handles if we are receiving raw json data...
+                if (isset($action['input'])) {
+                    switch (strtolower($action['input'])) {
+                        case "json" :
+                            //Have to put this into teh controller...
+                            //$data        = (string)file_get_contents("php://input");
+                            //$content     = json_decode($data,true);                            
+                            break;
+                        case "xml"  : 
+                            break;
                     }
                 }
                 if (isset($action['blocking'])) {
@@ -1152,9 +1165,9 @@ SQL;
      */
     public function compileFile($file=false) {
        if ($file) {
-           $parts = explode(DIRECTORY_SEPARATOR,$file);
-           $module = \Humble::getEntity('humble/modules')->setModule($parts[2])->load(true);
-           $controller = explode('.',$parts[count($parts)-1]);
+           $parts       = explode(DIRECTORY_SEPARATOR,$file);
+           $module      = \Humble::getEntity('humble/modules')->setModule($parts[2])->load(true);
+           $controller  = explode('.',$parts[count($parts)-1]);
            print("\n".'Compiling controller '.$file."\n\n");
            $this->compile($module['namespace'].'/'.$controller[0]);
        }

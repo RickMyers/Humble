@@ -22,7 +22,7 @@
     }
 </style>
 <script type="text/javascript">
-    var f = function () {
+    var Main = (function () {
         var timer = null;
         var roll  = -1;
         var features = [{
@@ -30,6 +30,7 @@
                 "slide": "#feature-slide-1",
                 "current": -1,
                 "timing": 15,
+                "video": "https://www.youtube.com/embed/uQ76MrdEDzA",
                 "slides": [
                     "/pages/images/MVC.png",
                     "/pages/images/mvc_architecture.png"
@@ -40,6 +41,7 @@
                 "slide": "#feature-slide-2",
                 "current": -1,
                 "timing": 15,
+                "video": "https://www.youtube.com/embed/Uxu6EYcF71U",
                 "slides": [
                     "/pages/images/workflow.png"
                 ]
@@ -49,6 +51,7 @@
                 "slide": "#feature-slide-3",
                 "current": -1,
                 "timing": 15,
+                "video": "",
                 "slides": [
                     "/pages/images/polyglot_orm.png"
                 ]
@@ -57,6 +60,7 @@
                 "container": '#feature-slides-4',
                 "slide": "#feature-slide-4",
                 "current": -1,
+                "video": "",
                 "timing": 15,
                 "slides": [
                     "/pages/images/integration.png"
@@ -76,25 +80,38 @@
             roll    = (++roll >= features.length) ? 0 : roll;
             var me  = this;
             var feature = features[roll];
-            $(feature.slide).on('load',function () {
-                var slide_w = $(feature.slide).width();
-                var slide_h = $(feature.slide).height();
-                var con_w   = $(feature.container).width();
-                var con_h   = $(feature.container).height();
-                slide_w = (slide_w > con_w) ? con_w : slide_w;
-                $(feature.slide).css('left',(con_w - slide_w)/2);
-                $(feature.slide).css('top',0);
-            }).attr('src',feature.slides[0]);
+            $(feature.slide).attr('src',feature.slides[0]);
             timer   = window.setTimeout(function () {
                 RollSlides.apply(me);
             },2000);
+        }        
+        return {
+            prime: function () {
+                return function () {
+                    $('.feature-slides').height(($('.feature-slides').width()-100)*.75);
+                    for (topic in features) {
+                        let feature = features[topic];
+                        $(features[topic].slide).on('load',function () {
+                            var slide_w = $(feature.slide).width();
+                            var con_w   = $(feature.container).width();
+                            slide_w = (slide_w > con_w) ? con_w : slide_w;
+                            $(feature.slide).css('left',(con_w - slide_w)/2);
+                            $(feature.slide).css('top',0);
+                        });
+                    }
+                    for (topic in features) {
+                        $(features[topic].slide).attr('src',features[topic].slides[0])
+                    }
+                    RollSlides.apply(this);
+                }
+            },
+            video: function (whichOne) {
+                $('#humble_video_layer').css('display','block');
+                $('#humble_video_player').attr('src',features[whichOne].video);
+            }
         }
-        return function () {
-            $('.feature-slides').height(($('.feature-slides').width()-100)*.75);
-            RollSlides.apply(this);
-        }
-    }
-    $(document).ready(f());
+    })();
+    $(document).ready(Main.prime());
 </script>
 <div style="padding-top: 20px; font-size: 2em; font-family: sans-serif; font-weight: bold; color: rgba(50,50,50,.8)">
     It Is Good To Be Humble...
@@ -115,7 +132,7 @@
         </div>
         Humble is a Model-View-Controller framework where the Controllers are XML files, the Models can be written in PHP or implied (more on that later), and for the Views,
         there is support for modern JavaScript libraries (i.e. Angular, React, or Vue) or server side rendering using any templating library you'd like (i.e. Twig, Smarty, Mustache, etc...)<br />
-        <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
+        <div class="learn-more-link"><a href="#" onclick="Main.video(0); return false">Learn More Here...</a></div>
     </div>
     <div class="feature feature-slides" id="feature-slides-1">
         <img id='feature-slide-1' src="" style="height:100%; position: absolute;" />
@@ -135,7 +152,7 @@
         At its heart, Humble uses an Event-Driven model that can trigger graphically designed workflows.  These workflows are composed of model objects that are cataloged and categorized as developers build them, creating a "Lego" style architecture.
         Events can be User driven (such as form submission), Time/Date events for recurring daily, weekly, or monthly processes, or system events such as the arrival of files or other autonomous event.
         <div class="learn-more-link">
-            <a href="#" onclick="return false">Learn More Here...</a>
+            <a href="#" onclick="Main.video(1); return false">Learn More Here...</a>
         </div>
     </div>
 </div>
@@ -145,11 +162,11 @@
 <div class="feature-row">
     <div class="feature feature-text">
         <div class="feature-title">
-            Polglot ORM
+            Polyglot ORM
         </div>
         Humble uses the Unity Polyglot ORM, which combines the functionality of MySQL and MongoDB.  This combination makes it easy to add columns on the fly, store hierarchical data alongside traditional 
         schema based entities, keep the concept of Normalization and Joins while leveraging "Big-Data" features, and solves problems elegantly that used to require obtuse approaches like EAV (Entity-Attribute-Value). 
-        <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
+        <div class="learn-more-link"><a href="#" onclick="Main.video(2); return false">Learn More Here...</a></div>
     </div>
     <div class="feature feature-slides" id="feature-slides-3">
         <img id='feature-slide-3' src="" style="height:100%; position: absolute;" />
@@ -170,7 +187,7 @@
         Gone are the days of the "One-Big-App".  Humble makes integration a feature of configuration, not coding, by abstracting Integration Points using YaML files to define the features of those
         Integration Points.  Also, through the Paradigm Engine Workflow Editor, you can easily create an ESB (Enterprise Service Bus) that can broker the data you wish to share with others.  Integration
         is integral to today's connected world, and is at the heart of the Humble framework.
-        <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
+        <div class="learn-more-link"><a href="#" onclick="Main.video(3); return false">Learn More Here...</a></div>
     </div>
 </div>
 
@@ -185,7 +202,7 @@
         Because Humble uses exceptionally "clean" URIs, the namespace component of each URI can be mapped to a dedicated server to handle all requests specific to that namespace.  Then all we need
         to do is to designate one of the server "nodes" to be the MSA Router, and we can leverage the scalability and reliability that is native to MSA applications.  This phase of development/deployment
         is referred to as "MicroService Mode", but it is so simple to effect that it might as well be called "Magic Mode".
-        <div class="learn-more-link"><a href="#" onclick="return false">Learn More Here...</a></div>
+        <div class="learn-more-link"><a href="#" onclick="Main.video(4); return false">Learn More Here...</a></div>
     </div>
     <div class="feature feature-slides" id="feature-slides-5">
         
