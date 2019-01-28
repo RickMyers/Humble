@@ -1,0 +1,15 @@
+{
+    "namespaces": {
+
+    },
+    "controllers": {
+
+    },
+    "routes": {
+        "/humble/user/login": {
+           "reason":   "This needs exposed because the user's credentials won't be validated until after this call",
+           "description": "The service that validates the user id and password.  The session will not be created until after they login so this needs to be exposed to the public"
+       }
+    }
+}
+

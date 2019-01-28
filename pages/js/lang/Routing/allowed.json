@@ -1,0 +1,44 @@
+{
+    "json": {
+            "longname":	 "Javascript",
+            "classes": {
+                "region":   "",
+                "row":      "",
+                "font":     "",
+                "zebra": {
+                    "odd":  "",
+                    "even": ""
+                }
+            },
+            "casesensitive":	true,
+            "chars":	" {}:[];",
+            "comment":	{
+                "color":	"fuchsia",
+                "style":	"",
+                "EOL":"",
+                "start":	"/*",
+                "end":"*/"
+            },
+            "char":	  {
+                "-": {"color": "green"},
+                "?": {"color": "green"},
+                ".": {"color": "green"},
+                ",": {"color": "green"},
+                ";": {"color": "green"},
+                "|": {"color": "fuchsia"},
+                "+": {"color": "green"},
+                "/": {"color": "green"},
+                ":": {"color": "green"},
+                "{":  {"color": "blue"},
+                "}": {"color": "blue"},
+                "]": {"color": "blue"},
+                "[": {"color": "blue"}
+            },
+            "tokens":	 {
+                "function": {"color": "orange"},
+                "null":{"color": "blue"},
+                "true":{"color": "blue"},
+                "false":{"color": "blue"}
+            }
+        }
+}

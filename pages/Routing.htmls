@@ -9,12 +9,43 @@
     </tr>
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-<div class='humble-topic-header'>Request Routing</div>
+<div class='humble-topic-header'>Basic Request Routing</div>
+Humble is heavily dependent on .htaccess file functionality provided by Apache.<br /><br />All URI requests that contain three segments (ex: /<i>segment1</i>/<i>segment2</i>/<i>segment3</i>) are routed
+to the /<span style="font-style: italic; color: #55F">index.php</span> Front Controller (FC) to be handled.  This Front Controller will route the request to the appropriate module located in the /app/Code/<i>package</i>/ directory.
+<br /><br/>
+The following image explains the segments of the request URI:<br /><br />
+<img src="/pages/images/routing_uri.png" alt="Front Controller Routing URI" title="Front Controller Managed Routing URI" /><br /><br />
+Example URI: <b>/acme/customer/list</b><br /><br />
+In the above example, this URI, because it has three segments, would be routed to the Front Controller (FC) where the FC will do a lookup on what module is registered using
+the 'acme' namespace, fetch that namespace's <i>Package</i> (remember, package=directory), and then look in the /app/Code/<i>package</i>/Acme/Controllers/ directory for the 
+'customer.xml' controller.  Within that XML Controller it will branch to an action called 'list' and will perform the instructions contained there.  Next the FC will forward on 
+to the view contained in the /app/Code/<i>package</i>/Acme/Views/customer/<i>templater</i>/list (unless overridden,the name of the action from the controller (in this case 'list')
+is used as the name of the view) .  The <i>templater</i> token is the name of the Server-Side renderer you are using, such as 'Twig', 'Smarty3', 'Mustache', etc...<br /><br />
 
+
+
+<div style="clear: both; margin-top: 15px"></div>
 <a href="#" onclick="return false" class="humble-section-header" name="AllowedOverrides">Routing using allowed.json.</a>
-<br /><br /><br /><br /><br />
+<br /><br />
+By default, <span style="color: #f66">the Humble framework is programmed to route all FC requests to the login page if the requestor is not logged in</span>. By this logic, there really are only a
+few "public" facing pages (like index.html).<br /><br />
+To register modules, controllers, or individual action/views as "public-facing", we use an override file that is in JSON format, and is located here:<br /><br />
+<ul>
+    <span style="color: #66F">/app/allowed.json</span>
+</ul><br />
+This file contains the routes that are "open to anonymous/public" viewing.  You can designate an entire module/namespace as public, a controller or controllers in a module as public, or list
+the specific individual actions/views that are public.<br /><br />
+
+The example below demonstrates setting a specific URI, controller, and namespace to be public:
+
+    <div widget="codeBox" widgetScroll="100%" lang="json" lexicon="/pages/js/lang/Routing/allowed.json" source="/pages/code/Routing/allowed.jsontxt" class="humble-code">
+
+    </div>
+<br /><br /><br />
 <a href="#" onclick="return false" class="humble-section-header" name="LoadingResources">Loading Resources</a>
 
+<br /><br />
+For more advanced information on routing options, please read our <a href="/pages/MicroServices.htmls">From Monolith To MicroServices</a> page.
 <br /><br /><br /><br /><br />
 
 
