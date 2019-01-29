@@ -1,9 +1,23 @@
 {
     "namespaces": {
-
+        "/ns1": {
+           "reason":   "We need a public module",
+           "description": "All actions and views owned by namespace 'ns1' will be publicly viewable"
+        }
     },
     "controllers": {
-
+        "/ns2/cntrlr1": {
+           "reason":   "All views related to namespace 'ns2', controller 'ctrlr1' will be made publicly viewable",
+           "description": "This is a public controller"
+        },
+        "/ns3/cntrlr2": {
+           "reason":   "All views related to namespace 'ns3', controller 'ctrlr2' will be made publicly viewable",
+           "description": "This is a public controller"
+        },
+        "/ns3/cntrlr3": {
+           "reason":   "All views related to namespace 'ns3', controller 'ctrlr3' will be made publicly viewable",
+           "description": "This is a public controller"
+        }
     },
     "routes": {
         "/humble/user/login": {
