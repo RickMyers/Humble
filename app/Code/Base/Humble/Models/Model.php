@@ -82,22 +82,30 @@ class Model implements HumbleComponent
             foreach ($this->_errors() as $error) {
                 $list .= (($list)?",":"").'"'.addslashes($error).'"';
             }
-            header('Errors: ['.$list.']');
+            if ($list) {
+                header('Errors: ['.$list.']');
+            }
             $list = "";
             foreach ($this->_warnings() as $warning) {
                 $list .= (($list)?",":"").'"'.addslashes($warning).'"';
             }
-            header('Warnings: ['.$list.']');
+            if ($list) {
+                header('Warnings: ['.$list.']');
+            }
             $list = "";
             foreach ($this->_notices() as $notice) {
                 $list .= (($list)?",":"").'"'.addslashes($notice).'"';
             }
-            header('Notices: ['.$list.']');
+            if ($list) {
+                header('Notices: ['.$list.']');
+            }
             $list = "";
             foreach ($this->_messages() as $message) {
                 $list .= (($list)?",":"").'"'.addslashes($message).'"';
             }
-            header('Messages: ['.$list.']');
+            if ($list) {
+                header('Messages: ['.$list.']');
+            }
         }
     }
 

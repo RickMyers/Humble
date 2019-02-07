@@ -76,7 +76,7 @@ function parseAjaxUpload() {
         }
     }
     foreach ($vars as $var => $value) {
-        $_POST[$var] = $value;   //rebuilds the global post variable
+        $_REQUEST[$var] = $_POST[$var] = $value;   //rebuilds the global post/request variable
     }
     foreach ($files as $key => $data) {
         $_FILES[$key] = $data;
