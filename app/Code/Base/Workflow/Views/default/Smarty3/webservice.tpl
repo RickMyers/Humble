@@ -36,7 +36,7 @@
                             <div style='margin-left: auto; margin-right: auto; width: 660px; padding: 10px; background-color: #F0f0f0; color: black'>
                             <form nohref>
                                 <div style='width: 600px; padding: 10px 0px; font-family: sans-serif; font-size: 1.3em; font-weight: bold'>
-                                    Inbound Webservice: <i style='font-family: monospace'>/wapi/{$data['uri']}</i>
+                                    Inbound Webservice: <i style='font-family: monospace'>/esb/{$data['uri']}</i>
                                 </div>
                                 <div>
                                     <fieldset style="padding: 10px"><legend>Webservice Status</legend>
@@ -98,11 +98,11 @@
                                         </tr>
                                         <tr>
                                             <td style='background-color: #d0d0d0; color: black; padding: 2px; font-weight: bold;'>Creation URI:</td>
-                                            <td style='font-family: monospace; padding-left: 30px'>/wapi/{$data['enigma-create']}</td>
+                                            <td style='font-family: monospace; padding-left: 30px'>/esb/{$data['enigma-create']}</td>
                                         </tr>
                                         <tr>
                                             <td style='background-color: #d0d0d0; color: black; padding: 2px; font-weight: bold;'>Renewal URI:</td>
-                                            <td style='font-family: monospace; padding-left: 30px'>/wapi/{$data['enigma-renew']}</td>
+                                            <td style='font-family: monospace; padding-left: 30px'>/esb/{$data['enigma-renew']}</td>
                                         </tr>
                                         <tr>
                                             <td style='background-color: #d0d0d0; color: black; padding: 2px; font-weight: bold;'>Token Expires:</td>
