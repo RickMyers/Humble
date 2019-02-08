@@ -82,7 +82,7 @@ Administration = (function () {
                         open: function () {
                             var win = Landing.semaphore.checkout(true);
                             win._open();
-                            (new EasyAjax('/focos/events/open')).add('window_id',win.id).then(function (response) {
+                            (new EasyAjax('/humble/events/open')).add('window_id',win.id).then(function (response) {
                                 win.set(response);
                                 win._title('Event Viewer');
                             }).get();
@@ -91,10 +91,10 @@ Administration = (function () {
                             var data = Pagination.get(win.paginationId);
                             page = page ? page : data.pages.current;
                             rows = rows ? rows : 30;
-                            (new EasyAjax('/focos/events/fetch')).add('page',page).add('rows',rows).then(function (response) {
+                            (new EasyAjax('/humble/events/fetch')).add('page',page).add('rows',rows).then(function (response) {
                                 if (response) {
                                     Pagination.set(win.paginationId,this.getPagination());
-                                    $(win.eventList).html(Templater.load('/templates/focos/eventlist').parse('/templates/focos/eventlist', { "win": win, "rows": JSON.parse(response) } ));
+                                    $(win.eventList).html(Templater.load('/templates/humble/eventlist').parse('/templates/humble/eventlist', { "win": win, "rows": JSON.parse(response) } ));
                                 }
                             }).post();
                         },
