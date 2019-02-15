@@ -178,7 +178,7 @@
 			"id":			"install-test",
 			"longname":		"Submit Button",
 			"type":			"button",
-            "style":        "background-color: #0033CC; padding: 4px 8px; color: ghostwhite; cursor: pointer; font-size: .8em; font-family: sans-serif",
+            "style":        "background-color: #0F3F3F; padding: 4px 8px; color: ghostwhite; cursor: pointer; font-size: .8em; font-family: sans-serif",
             "classname":    "",
             "value":        "",
             "onclick":        function () {
@@ -192,7 +192,7 @@
 			"id":			"mongo-test",
 			"longname":		"Mongo Test Button",
 			"type":			"button",
-            "style":        "background-color: #0033CC; padding: 4px 8px; color: ghostwhite; cursor: pointer; font-size: .8em; font-family: sans-serif",
+            "style":        "background-color: #0F3F3F; padding: 4px 8px; color: ghostwhite; cursor: pointer; font-size: .8em; font-family: sans-serif",
             "classname":    "",
             "value":        "",
             "onclick":        function () {
@@ -206,7 +206,7 @@
 			"id":			"install-submit",
 			"longname":		"Submit Button",
 			"type":			"text",
-            "style":        "font-family: sans-serif; cursor: pointer; position: absolute; bottom: 10px; font-size: 2.4em; width: 275px; padding: 10px; background-color: #0033CC; color: white ",
+            "style":        "font-family: sans-serif; cursor: pointer; position: absolute; bottom: 10px; font-size: 2.4em; width: 275px; padding: 10px; background-color: #0F3F3F; color: white ",
             "classname":    "",
             "value":        "",
             "onclick":        function () {

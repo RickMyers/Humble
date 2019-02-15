@@ -47,11 +47,10 @@ class Email extends Helper
      * @return boolean
      */
     public function sendEmail($to=false,$subject=false,$body=false,$from=false,$reply=false,$attachment=false) {
-        $settings = \Environment::settings();
-        $from     = ($from ? $from : 'jarvis@jarvis.enicity.com');
-        $reply    = ($reply ? $reply : 'noreply@jarvis.enicity.com');
-        $mailer   = new \PHPMailer;
-        $to       = is_array($to) ? $to : [$to];                                //convert to an array
+        $settings = Environment::settings();
+        $from = ($from ? $from : 'humble@humble.enicity.com');
+        $reply = ($reply ? $reply : 'noreply@humble.enicity.com');
+        $mailer = new \PHPMailer;
         $mailer->isSMTP();
         $mailer->Host = $settings->getSmtpHost();
         $mailer->SMTPAuth = true;
@@ -60,16 +59,14 @@ class Email extends Helper
         $mailer->Password = $settings->getSmtpPassword();
         $mailer->SMTPSecure = 'tls';
         $mailer->setFrom($from,'');
-        foreach ($to as $address) {
-            $mailer->addAddress($address);
-        }
+        $mailer->addAddress($to);
         $mailer->Subject = $subject;
         $mailer->addReplyTo($reply);
         $mailer->isHTML(true);
         $mailer->Body = $body;
         if (!$mailer->send()) {
-            \Log::error("Failed Sending Email: ".$mailer->ErrorInfo."\n\nTo: ".implode(';',$to)."\n\nSubject: ".$subject."\n\nMesage: ".$body);
+            \Log::error("Failed Sending Email: ".$mailer->ErrorInfo);
         }
         return $mailer->ErrorInfo;
-    }
+    }    
 }

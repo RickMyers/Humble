@@ -7,7 +7,7 @@
         <style type="text/css">
             /* url(/images/paradigm/bg_graph.png)*/
             body {
-                height: 100%; box-sizing: border-box;  background-size: cover;
+                height: 100%; box-sizing: border-box;  background-image: url(/web/images/bg_graph.png);
             }
             body, div, table {
                 margin: 0px; padding: 0px; border: 0px; position: relative
@@ -112,11 +112,7 @@ switch ($method) {
             <table id="installer-area" style="width: 100%; height: 100%" cellspacing='0' cellpadding='0'>
                 <tr style="height: 20px">
                     <td>
-                        <div class="flat-brick" style="background-color: #0A2327"></div>
                         <div class="flat-brick" style="background-color: #0F3F3F"></div>
-                        <div class="flat-brick" style="background-color: #818D07"></div>
-                        <div class="flat-brick" style="background-color: #D39423"></div>
-                        <div class="flat-brick" style="background-color: #E74723"></div>
                         <div style="clear: both"></div>
                     </td>
                 </tr>
@@ -139,7 +135,7 @@ switch ($method) {
                         </div>
                         <div id="installer-tabs" class='installer-form-div' style="height: auto; padding: 0px 30px; border: 1px solid #aaf; border-bottom: 0px;"></div>
                         <div class='installer-form-div' id="installer-form-div" style='text-align: left; position: relative; display: block;'>
-                            <div style="padding: 10px; color: white; font-size: 1em; font-family: sans-serif; margin-bottom: 20px; text-align: center; background-color: #0033CC">
+                            <div style="padding: 10px; color: white; font-size: 1em; font-family: sans-serif; margin-bottom: 20px; text-align: center; background-color: #0F3F3F">
                                 Welcome to the Installation for <?=$xml->name?>
                             </div>
                             <form name='installer-form' method='post' id='installer-form' onsubmit="" action="">
@@ -189,7 +185,7 @@ switch ($method) {
                                 <div class='installer-field-description'>MongoDB Password</div>
 
                                 <input type='text' placeholder="127.0.0.1:11211" class='installer-form-field' id='cache' name='cache' />
-                                <div class='installer-field-description'>Cache Server </div>
+                                <div class='installer-field-description'>Memcached Server </div>
                                 </fieldset>
                                 <div style="clear: both"></div>
                             </form>
@@ -197,7 +193,7 @@ switch ($method) {
                         <div id="installer-new-db" class='installer-form-div'>
                             <table style="width: 100%; height: 100%"><tr><td>
                                 <form name="new-db-form" id="new-db-form" onsubmit="return false">
-                                    <fieldset style="padding: 10px 10px"><legend>New RDMS DB</legend>
+                                    <fieldset style="padding: 10px 10px; font-family: sans-serif; font-size: .9em"><legend>New MySQL DB</legend>
                                         If you haven't already created a DB (required), you can do that here.<br /><br />
                                         <input type='text' name='host' id='rdms-host' class='installer-form-field' value="" /><br />
                                         <div class='installer-field-description'>Host:Port</div>
@@ -215,7 +211,7 @@ switch ($method) {
                         <div id="installer-new-mongodb" class='installer-form-div'>
                             <table style="width: 100%; height: 100%"><tr><td>
                                 <form name="new-mongodb-form" id="new-mongodb-form" onsubmit="return false">
-                                    <fieldset style="padding: 10px 10px"><legend>New RDMS DB</legend>
+                                    <fieldset style="padding: 10px 10px; font-family: sans-serif; font-size: .9em"><legend>New NoSQL MongoDB Instance</legend>
                                         You can create a new MongoDB instance here, assuming you already have it installed.  In this way, you can have a unique
                                         instance of MongoDB (recommended) per application running on this machine<br /><br />
                                         <input type='text' name='datadir' id='mongo-datadir' class='installer-form-field' value="" /><br />
@@ -237,11 +233,7 @@ switch ($method) {
                 </tr>
                 <tr style="height: 20px">
                     <td>
-                        <div class="flat-brick" style="background-color: #0A2327"></div>
                         <div class="flat-brick" style="background-color: #0F3F3F"></div>
-                        <div class="flat-brick" style="background-color: #818D07"></div>
-                        <div class="flat-brick" style="background-color: #D39423"></div>
-                        <div class="flat-brick" style="background-color: #E74723"></div>
                         <div style="clear: both"></div>
                     </td>
                 </tr>
