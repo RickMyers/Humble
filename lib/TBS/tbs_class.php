@@ -1019,7 +1019,6 @@ public function Show($Render=false) {
 	if ($this->_PlugIns_Ok && isset($ArgLst) && isset($this->_piAfterShow)) $this->meth_PlugIn_RunAll($this->_piAfterShow,$ArgLst);
 	if ($this->_ErrMsgName!=='') $this->MergeField($this->_ErrMsgName, $this->ErrMsg);
 	if ($this->meth_Misc_IsMainTpl()) {
-            //WHAT THE FUCK!?!?
 		if (($Render & TBS_OUTPUT)==TBS_OUTPUT) echo $this->Source;
 		if (($Render & TBS_EXIT)==TBS_EXIT) exit;
 	} elseif ($this->OldSubTpl) {

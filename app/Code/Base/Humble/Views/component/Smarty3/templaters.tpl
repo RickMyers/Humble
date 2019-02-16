@@ -5,7 +5,7 @@
     }
 {foreach from=$templaters->fetch() item=engine}
     ,{
-        "text": "{$engine.description}",
+        "text": "[{$engine.templater}] {$engine.description}",
         "value": "{$engine.templater}"
     }
 {/foreach}

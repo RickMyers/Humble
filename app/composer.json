@@ -11,7 +11,8 @@
         "rain/raintpl": "~3.1.0",
         "latte/latte":  "~v3.0.0-alpha1",
         "phpmailer/phpmailer": "^5.2",
-	"michelf/php-markdown": "~1.7"
+	"michelf/php-markdown": "~1.7",
+        "jenssegers/blade": "^1.1"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "~2.0",
