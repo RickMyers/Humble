@@ -5,16 +5,18 @@
 function manageView($controller,$templater,$tpl) {
     
     global $module;
-    global $TBS;
+    global $models;
 
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
-    $template = 'Code/'.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/TBS/'.$tpl.'.tbs';
+    $template = 'Code/'.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/PHPTAL/'.$tpl.'.xhtml';
     if (file_exists($template))  {
-        $TBS->LoadTemplate($template);
-        global $models;
-        $TBS->show();
+        $template = new PHPTAL($template);
+        foreach ($models as $model => $obj) {
+            $template->$model = $obj;
+        }
+        print($template->execute());
     }
 }
 //------------------------------------------------------------------------------

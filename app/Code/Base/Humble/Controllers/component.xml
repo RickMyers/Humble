@@ -60,7 +60,7 @@
 
         <action name="templaters" output="json">
             <description>Will generate a list of templaters that are available  </description>
-            <entity namespace="humble" class="templaters" id="templaters">
+            <entity namespace="humble" class="templaters" id="templaters" orderby="description=ASC">
             </entity>
         </action>
     </actions>
