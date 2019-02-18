@@ -4,20 +4,21 @@
 //------------------------------------------------------------------------------
 function manageView($controller,$templater,$tpl) {
     global $models;
-    global $smarty;
-    global $original_template_directory;
+    global $Savant;
+    global $module;
 
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
-    $template = $smarty->template_dir[0].'/'.$tpl.'.tpl';
+    $templateDir = 'Code/'.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/'.$templater;
+    $template    = $templateDir.'/'.$tpl.'.tpl.php' ;
     if (file_exists($template))  {
+        $Savant->addPath('template',$templateDir);
         foreach ($models as $handle => $modelVar) {
-            $smarty->assign($handle,$modelVar);
+            $Savant->assign($handle,$modelVar);
         }
-        $smarty->display($tpl.'.tpl');
+        $Savant->display($tpl.'.tpl.php');
     }
-    $smarty->template_dir = $original_template_directory;
 }
 //------------------------------------------------------------------------------
 //If there are multiple requested views, process those, else look to see if 
