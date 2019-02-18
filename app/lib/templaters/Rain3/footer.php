@@ -3,7 +3,7 @@ function manageView($controller,$templater,$tpl) {
     global $models;
     global $module;
     global $rain;
-    global $core;
+
 	//***************************************************************************************
 	//Look to see if that action has a "view" template (MVC), if so, throws the model at it *
 	//***************************************************************************************
