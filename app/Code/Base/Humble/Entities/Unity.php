@@ -120,7 +120,9 @@ class Unity extends \Code\Base\Humble\Models\Model
     }
 
     /**
-     *
+     * Clears out the current state so that I can re-use this instance for possibly another entity
+     * 
+     * @return $this
      */
     public function clean()  {
         $this->_keys        = [];
@@ -135,7 +137,9 @@ class Unity extends \Code\Base\Humble\Models\Model
     }
 
     /**
-     *
+     * Reseting this instance so that I can use it for another read/write
+     * 
+     * @return $this
      */
     public function reset()  {
         $this->clean();
@@ -204,37 +208,6 @@ SQL;
           describe {$this->_prefix()}{$this->_entity()}
 SQL;
         return $this->_db->query($query);
-    }
-
-    /**
-     *
-     */
-    public function leftJoin($table=false,$field_l=false,$field_r=false) {
-        $table = explode('/',$table);
-        $success = false;
-        if (count($table)===2) {
-            $module = Humble::getModule($table[0]);
-             if (isset($module['prefix']) && ($module['prefix']!="")) {
-                $table = $module['prefix'].$table[1];
-                if ($table && $field_l && $field_r) {
-                    $success = true;
-                    $this->_joins[] = array("table" => $table, "field_l" => $field_l, "field_r" => $field_r);
-                }
-            }
-        }
-        return $success;
-    }
-
-    /**
-     *
-     */
-    protected function addJoins() {
-        $joinQuery = '';
-        foreach ($this->_joins as $idx => $data) {
-            $joinQuery .= " as L_{$idx} left outer join {$data["table"]} as R_{$idx} on L_{$idx}.{$data["field_l"]} = R_{$idx}.{$data["field_r"]} ";
-        }
-        return $joinQuery;
-
     }
 
     /**
@@ -315,7 +288,6 @@ SQL;
             }
             $countRowClause = ($this->_rows() && $this->_page()) ? " SQL_CALC_FOUND_ROWS " : "";
             $query   = "select {$countRowClause} * from {$this->_prefix()}{$this->_entity()}";
-            $query  .= $this->addJoins();
             $orFlag = false;
             foreach ($results as $field => $value) {
                 if ($results[$field]!="") {
@@ -506,7 +478,6 @@ SQL;
             }
         }
         $query   = "select SQL_CALC_FOUND_ROWS ". $this->_distinct() ." ".$this->_fieldList()." from ".$this->_prefix().$this->_entity();
-        $query  .= $this->addJoins();
         $query  .= $this->buildWhereClause($useKeys);
         $query  .= $this->buildOrderByClause();
         if (count($this->_groupBy) > 0) {

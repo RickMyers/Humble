@@ -16,12 +16,9 @@
                     <redirect href='/index.html?m=Invalid Login Attempt' />   
                 </default>
             </switch>
-                  
         </action>
 
-        <!-- ############################################################### -->
-
-        <action name="authentication" output="JSON">
+        <action name="authentication" output="JSON" blocking="Off">
             <model namespace="humble" class="user" id="user">
                 <parameter name="user_name" source="post" default="" required='true' />
                 <parameter name="password"  source="post" value="user_password" format="password" required='true' />
@@ -38,16 +35,12 @@
             </switch>
         </action>
 
-        <!-- ############################################################### -->
-
         <action name="new">
             <description>Prompts the user to enter their password for the first time</description>
             <model namespace="humble" class="user" id="user">
                 <parameter name="new_password_token" value='token' source="get" default="" />
             </model>
         </action>
-
-        <!-- ############################################################### -->
 
         <action name="logout" event="userLogout" comment="Triggers the logout workflow (if any)">
             <description>Destroys the session and logs you out...</description>
@@ -56,8 +49,6 @@
             </model>
             <redirect href="/index.html?m=Logout Successful" />
         </action>
-
-        <!-- ############################################################### -->
 
         <action name="default">
             <description>Default Action</description>

@@ -35,5 +35,27 @@ the descriptions, you will need to identify the default templating engine this c
         Available Templating Engines
     </div> 
 </div>
+After you have created your controller, there will be a new folder with the same name as the controller in the Views directory of the module identified by the namespace used during controller creation.
+In the new folder you will find a folder with the name of the templating engine selected, and an empty file with the name of the action you created, using the appropriate file extension.
+<div class='humble-section-header'>A Sample Controller</div>
+For reference, we are going to use this simple controller below:
+    <div widget="codeBox" widgetScroll="35%" lang="xml" lexicon="/pages/js/lang/Controllers/xml.json" source="/pages/code/Controllers/Sample.xmltxt" class="humble-code">
+
+    </div>
+A controller contains one to many actions.  Each action has at a minimum a name which constitutes the third segment in our routing URI scheme (see <a href='' target='_BLANK' href='/pages/Routing.htmls'>Routing Basics</a>).
+Each action may, or may not, have a dedicated view, which will be found in the Views folder, in a folder named the same as this controller. 
+By using the <span class="humble-code-like"> &lt;view name="<i>other_view</i>"&gt;</span> directive, you can override the default view handling.
+<br /><br />
+Here is an example of handling a request:  A URI of <span style='font-family: monospace'>/acme/customer/list</span> would look for the controller in the 'Controllers' directory of the module identified by the 'acme' namespace.
+Once found and compiled if necessary,the framework will then look for an action called 'list' in the compiled controller, execute the code found there, and then route to a view with the name of 'list'.
+<br /><br />
+So the request URI of <span style='font-family: monospace'>/acme/customer/list</span> would use the following two files:
+<ul>
+    <li>Controller: <span style='font-family: monospace'>/app/Code/<i>package</i>/Acme/Controllers/customer.xml</span></li>
+    <li>View File: <span style='font-family: monospace'>/app/Code/<i>package</i>/Acme/Views/customer/Twig/list.twig</span></li>
+</ul>
+The above example assumes you are using the Twig templating engine.  <br /><br />
+<br />
 </div>
+
 <!--#include virtual="/pages/includes/footer.html" -->

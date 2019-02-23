@@ -1,0 +1,33 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href=".htmls" title="" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Framework Concepts</div>
+
+<div class='humble-section-header'>Let's keep it simple...</div>
+Sometimes it is best to not over complicate things, so we are going to just make some statements about the Humble framework here
+<ul>
+    <li>Humble is an application building framework that, if all features are used, utilizes PHP, JavaScript, and Node.js.</li>
+    <li>Humble implements a Model-View-Controller approach, where the Models are (mostly) PHP classes, the Controllers are XML files, and the Views can be anything.</li>
+    <li>Humble is built to work with Linux or Windows, Apache, MySQL, MongoDB, and PHP.  Node.js isn't a hard requirement, but is needed for some of the advanced features.</li>
+    <li>For performance reasons, it is highly recommended to install memcached as well.</li>
+    <li>Database access is through a custom ORM called Unity, that is able to perform joins between MySQL and MongoDB.  This means you can still use a Relational approach to building your
+        schema while maintaining the flexibility of a dynamic schema.</li>
+    <li>Beyond the request handling as defined above, Humble is also event based, and events can be defined through XML or from within code.  Using a graphical workflow editor, it is
+        possible to define complex set of actions (called workflows) that "listen" for these events.  This event handling mechanism is called "The Paradigm Engine".</li>
+    <li>Remote Procedure Calls (REST,SOAP,XMLRPC) and "Smart-Endpoints" are done by describing these Integration Points using YaML files.  This powerful feature abstracts away the complexities
+        of integration and to the developer, the remote resource looks like a local function.</li>
+    <li>Humble adheres to the "Everything is a Service" philosophy, so when you are ready, it is simple to deploy your application as a MicroService based application, and this lets your 
+        application scale.</li>
+    <li>Through many layers of abstraction it is possible to build powerful applications without writing one line of PHP.  In fact, it would be fair to say that the Humble Framework is a
+        collection of conventions where if the developer follows them, they will be able to build more using less code than other frameworks.</li>
+</ul>
+
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->

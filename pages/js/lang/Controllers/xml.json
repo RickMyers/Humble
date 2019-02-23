@@ -1,0 +1,86 @@
+{
+    "xml": {
+            "longname":	 "ControllerXML",
+            "classes": {
+                "region":   "",
+                "row":      "",
+                "font":     "",
+                "zebra": {
+                    "odd":  "",
+                    "even": ""
+                }
+            },
+            "casesensitive":	false,
+            "chars":	" &|*^!+=-(){}/\\'\",.?:<>[];",
+            "comment":	{
+                "color":	"fuchsia",
+                "style":	"",
+                "EOL":"//",
+                "start":	"<!--",
+                "end":"-->"
+            },
+            "char":	  {
+                "-": {"color": "green"},
+                "?": {"color": "green"},
+                ".": {"color": "green"},
+                ",": {"color": "green"},
+                ";": {"color": "green"},
+                "|": {"color": "fuchsia"},
+                "+": {"color": "green"},
+                "/": {"color": "blue"},
+                ":": {"color": "green"},
+                "{":  {"color": "blue"},
+                "}": {"color": "blue"},
+                "]": {"color": "blue"},
+                "[": {"color": "blue"},
+                "(": {"color": "blue"},
+                "\\":{"color": "black", "swap": "&#92;"},
+                ")": {"color": "blue"},
+                "<":{"color": "blue", "swap": "&lt;"},
+                ">":{"color": "blue", "swap": "&gt;"},
+                "&":{"color": "fuchsia",    "swap": "&amp;"},
+                "!":{"color": "green"},
+                "=":{"color": "blue"},
+                "*": {"color": "lightcyan"}
+            },
+            "tokens":	 {
+                "author":    {"color": "fuchsia"},
+                "use":       {"color": "fuchsia"},
+                "description": {"color": "fuchsia"},
+                "name":      {"color": "blue"},
+                "xml":       {"color": "blue"},
+                "blocking":  {"color": "blue"},
+                "source":  {"color": "blue"},
+                "id":        {"color": "blue"},
+                "method":    {"color": "blue"},
+                "response":  {"color": "blue"},
+                "text":      {"color": "blue"},
+                "switch":    {"color": "navy"},
+                "case":      {"color": "navy"},
+                "href":      {"color": "blue"},
+                "format":    {"color": "blue"},
+                "required":  {"color": "blue"},
+                "if":        {"color": "navy"},
+                "namespace": {"color": "blue"},
+                "class":     {"color": "blue"},
+                "redirect": {"color": "blue"},
+                "chain":    {"color": "blue"},
+                "view":      {"color": "blue"},
+                "value":     {"color": "blue"},
+                "default":   {"color": "blue"},
+                "parameter": {"color": "green"},
+                "model":     {"color": "blue"},
+                "helper":    {"color": "blue"},
+                "entity":    {"color": "blue"},
+                "mongo":     {"color": "blue"},
+                "output":     {"color": "blue"},
+                "passalong": {"color": "blue"},
+                "event":     {"color": "orange"},
+                "comment":     {"color": "orange"},
+                "controller":   {"color": "red"},
+                "action":   {"color": "red"},
+                "actions":   {"color": "red"}
+
+            }
+        }
+}
