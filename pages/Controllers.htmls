@@ -1,5 +1,39 @@
-
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Models.htmls" title="" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Anatomy of a Controller</div>
+It is no exaggeration to say that in the Humble Framework, there's a lot going on in the controllers.<br /><br />
+The controllers are XML files that handle routing, data scrubbing, data validation, object allocations, and even event triggering.  These controllers get compiled to PHP
+programs and placed in the <span class='humble-snippet'>Cache</span> folder within the same directory that XML files reside.<br />
 
+
+<div class='humble-important'>Important!</div>
+When creating a controller, <i><b>Always</b></i> use the wizards in the admin section.  Do not create one from scratch.  
+<div class='humble-protip'>Pro-Tip: Customize your creations</div>
+<div class='humble-protip-text'>When you installed Humble, in your primary application module a <span class='humble-snippet'>lib</span> directory was copied from the base Humble module.
+    In this directory you will find the code skeletons that will be used when creating components and modules.  You can edit these skeletons to add comments, license information, ASCII art,
+    logos, etc...  In fact, when you create a component you have to identify the namespace that the component belongs to, and if the module managed by that namespace has a <span class='humble-snippet'>lib</span>  
+    folder, those skeletons will be used when creating the component, so it is possible to have different licensing, logo, or anything else per module.
+</div>
+<div class='humble-section-header'>Creating A Controller</div>
+In the administration section, there is a wizard at the bottom that allows you to create a controller, along with the first action in that controller.  Besides naming the controller and providing
+the descriptions, you will need to identify the default templating engine this controller will use, and you will need to do this even if you plan on only outputting JSON.
+<div style='white-space: nowrap; padding-top: 10px; padding-bottom: 10px'>
+    <div style='width: 45%; display: inline-block; text-align: center'>
+        <img src='/pages/images/admin_controller_creation.png' style='width: 360px' /><br />
+        Wizard
+    </div> 
+    <div style='width: 45%; display: inline-block; text-align: center'>
+        <img src='/pages/images/admin_controller_templaters.png' style='width: 360px' /><br />
+        Available Templating Engines
+    </div> 
+</div>
+</div>
 <!--#include virtual="/pages/includes/footer.html" -->

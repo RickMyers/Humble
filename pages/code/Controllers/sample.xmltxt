@@ -15,7 +15,6 @@
                 <default>
                     <redirect href='/index.html?m=Invalid Login Attempt' />   
                 </default>
-                   
             </switch>
                   
         </action>
@@ -48,24 +47,6 @@
             </model>
         </action>
 
-    <!-- ############################################################### -->
-
-        <action name="default">
-            <description>Default Action</description>
-            <model namespace="humble" class="user" id="user" method="invite">
-                <parameter name="email" source="request" default="" />
-            </model>
-        </action>
-
-        <!-- ############################################################### -->
-
-        <action name="reset">
-            <description>Password Reset</description>
-            <model namespace="humble" class="user" id="user">
-                <parameter name="email" value='userid' source="get" default="" />
-            </model>
-        </action>
-
         <!-- ############################################################### -->
 
         <action name="logout" event="userLogout" comment="Triggers the logout workflow (if any)">
@@ -74,6 +55,15 @@
                 <parameter name="uid" source="session" default="" />
             </model>
             <redirect href="/index.html?m=Logout Successful" />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="default">
+            <description>Default Action</description>
+            <model namespace="humble" class="user" id="user" method="invite">
+                <parameter name="email" source="request" default="" />
+            </model>
         </action>
 
     </actions>
