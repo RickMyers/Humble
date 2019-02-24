@@ -1,5 +1,10 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
+<style type="text/css">
+    li {
+        margin: 5px 0px 5px 0px
+    }
+</style>
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -10,8 +15,8 @@
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Framework Concepts</div>
 
-<div class='humble-section-header'>Let's keep it simple...</div>
-Sometimes it is best to not over complicate things, so we are going to just make some statements about the Humble framework here
+<div class='humble-section-header' style="margin-bottom: 10px">Let's keep it simple...</div>
+Sometimes it is best to not over complicate things, so we are going to just make some statements about the Humble framework here:
 <ul>
     <li>Humble is an application building framework that, if all features are used, utilizes PHP, JavaScript, and Node.js.</li>
     <li>Humble implements a Model-View-Controller approach, where the Models are (mostly) PHP classes, the Controllers are XML files, and the Views can be anything.</li>
