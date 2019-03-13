@@ -57,7 +57,7 @@
             </div>
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
                 <img src='/images/paradigm/clipart/webservice2.png' style='float: right; height: 100px;' />
-                /wapi/<input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" placeholder='your/URI/here' class='security-input-text' style='width: 265px' name='uri' id='humble-paradigm-config-webservice-uri-{$manager->getId()}' />
+                /esb/<input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" placeholder='your/URI/here' class='security-input-text' style='width: 265px' name='uri' id='humble-paradigm-config-webservice-uri-{$manager->getId()}' />
                 <div class='form-field-description'>Webservice URI</div><br />
                 <table cellspacing='1' cellpadding='2'>
                     <tr>
@@ -124,7 +124,7 @@
                             </td>
                         </tr>
                     </table>
-                </div>                                
+                </div>
                 <div id='humble-paradigm-config-webservice-security-standard-{$manager->getId()}' style='display: none; padding: 30px'>
                     <table cellspacing='1'>
                         <tr>
