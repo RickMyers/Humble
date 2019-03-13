@@ -3,6 +3,7 @@ namespace Code\Base\Humble\Models;
 use Humble;
 use Environment;
 use Log;
+use Symfony\Component\Yaml\Yaml;
 /**
  *
  * At a minimum, your custom classes should override this method...
@@ -116,9 +117,7 @@ class Model implements HumbleComponent
      * @return boolean
      */
     public function __isset($name=false)    {
-
-            return true;
-
+        return true;
     }
 
     /**
@@ -138,38 +137,6 @@ class Model implements HumbleComponent
      */
     public function IEFBR14() {
         //Don't delete this!
-    }
-
-    /**
-     * Sends an email through the default send method of the platform
-     *
-     * @param mixed $to
-     * @param string $subject
-     * @param string $body
-     * @return boolean
-     */
-    public function sendEmail($to=false,$subject=false,$body=false,$from=false,$reply=false,$attachment=false) {
-        $settings = Environment::settings();
-        $from = ($from ? $from : 'humble@humble.enicity.com');
-        $reply = ($reply ? $reply : 'noreply@humble.enicity.com');
-        $mailer = new \PHPMailer;
-        $mailer->isSMTP();
-        $mailer->Host = $settings->getSmtpHost();
-        $mailer->SMTPAuth = true;
-//        $mailer->SMTPDebug = 2;
-        $mailer->Username = $settings->getSmtpUserName();
-        $mailer->Password = $settings->getSmtpPassword();
-        $mailer->SMTPSecure = 'tls';
-        $mailer->setFrom($from,'');
-        $mailer->addAddress($to);
-        $mailer->Subject = $subject;
-        $mailer->addReplyTo($reply);
-        $mailer->isHTML(true);
-        $mailer->Body = $body;
-        if (!$mailer->send()) {
-            \Log::error("Failed Sending Email: ".$mailer->ErrorInfo);
-        }
-        return $mailer->ErrorInfo;
     }
 
     /**
@@ -562,16 +529,16 @@ SOAP;
     protected function _remoteProcedureCall($name=false) {
         $retval = null;
         if ($name && $this->_RPC()) {
-            require_once('../lib/yaml/lib/sfYaml.php');
+            //require_once('../lib/yaml/lib/sfYaml.php');
             if (!\Singleton::mappings()) {
-                \Singleton::mappings(\sfYaml::load(file_get_contents('Code/Base/Humble/RPC/mapping.yaml'))); //default mappings
+                \Singleton::mappings(Yaml::parseFile('Code/Base/Humble/RPC/mapping.yaml')); //default mappings
             }
             if (strtolower($this->_namespace()) !== 'humble') {
                 $me = Humble::getModule($this->_namespace());
                 $mappingFile = 'Code/'.$me['package'].'/'.str_replace('_','/',$me['rpc_mapping']).'/mapping.yaml';
                 if (file_exists($mappingFile)) {
                     //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
-                    \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings() ,\sfYaml::load(file_get_contents($mappingFile))) : \sfYaml::load(file_get_contents($mappingFile))));
+                    \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings() ,Yaml::parseFile($mappingFile)) : Yaml::parseFile($mappingFile)));
                 }
             }
             if (isset(\Singleton::mappings()[$name])) {
@@ -679,33 +646,6 @@ SOAP;
      */
     public function _getTimeStamp() {
         return ($this->_timestamp) ? $this->_timestamp : $this->_timestamp = microtime(true);
-    }
-
-    /**
-     * A general method for storing an uploaded file
-     *
-     * @param array $fileData The uploaded file data
-     * @param string $destination The folder to store the file in
-     */
-    public function storeFile($fileData=false,$destFolder=false) {
-        if ($fileData && $destFolder) {
-            if (is_array($fileData) && (count($fileData)==2)) {
-                if (isset($fileData['name']) && isset($fileData['path'])) {
-                    if (!is_dir($destFolder)) {
-                        \Log::console('Making directory: '.$destFolder);
-                        @mkdir($destFolder,0775,true);
-                    }
-                    if (substr($destFolder,strlen($destFolder)-1,1)!=='/') {
-                        $destFolder = $destFolder . '/';
-                    }
-                    if (is_dir($destFolder)) {
-                        copy($fileData['path'],$destFolder.$fileData['name']);
-                    } else {
-                        \Log::console('Failed to make directory: '.$destFolder);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -901,4 +841,3 @@ SOAP;
     }
 
 }
-?>

@@ -67,7 +67,7 @@
 			"id":			"create-db-button",
 			"longname":		"Submit Button",
 			"type":			"button",
-            "style":        "font-family: sans-serif; cursor: pointer; font-size: 1.4em; width: 155px; padding: 8px; background-color: #0033CC; color: white ",
+            "style":        "font-family: sans-serif; cursor: pointer; font-size: 1.4em; width: 155px; padding: 8px; background-color: #0F3F3F; color: white ",
             "classname":    "",
             "value":        "",
             "onclick":        function () {

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<controller name="user" use="Twig">
+    <actions>
+
+        <action name="login" passalong="user_name:required=true,user_password:format=password:required=true:value=password" event='userLogin' comment='Triggers the login workflow'>
+            <description>Launches the process that a person goes through to login</description>
+            <model namespace="humble" class="user" id="user">
+                <parameter name="user_name" source="post" default="" required='true' />
+                <parameter name="password"  source="post" value="user_password" format="password" required='true' />
+            </model>  
+            <switch id='user' method='login'>
+                <case value='TRUE'> 
+                    <model namespace='humble' class='user' method='routeToHomePage' />
+                </case>
+                <default>
+                    <redirect href='/index.html?m=Invalid Login Attempt' />   
+                </default>
+            </switch>
+        </action>
+
+        <action name="authentication" output="JSON" blocking="Off">
+            <model namespace="humble" class="user" id="user">
+                <parameter name="user_name" source="post" default="" required='true' />
+                <parameter name="password"  source="post" value="user_password" format="password" required='true' />
+            </model>
+            <switch id='user' method='login'>
+                <case value='TRUE'>
+                    <model response="true" namespace='humble' class='user' method='outputSessionData'>
+
+                    </model>
+                </case>
+                <default>
+                    <output text='{ "error": "Authentication Failed", "RC": 12 }'  />
+                </default>
+            </switch>
+        </action>
+
+        <action name="new">
+            <description>Prompts the user to enter their password for the first time</description>
+            <model namespace="humble" class="user" id="user">
+                <parameter name="new_password_token" value='token' source="get" default="" />
+            </model>
+        </action>
+
+        <action name="logout" event="userLogout" comment="Triggers the logout workflow (if any)">
+            <description>Destroys the session and logs you out...</description>
+            <model namespace="humble" class="user" id="user" method="logout">
+                <parameter name="uid" source="session" default="" />
+            </model>
+            <redirect href="/index.html?m=Logout Successful" />
+        </action>
+
+        <action name="default">
+            <description>Default Action</description>
+            <model namespace="humble" class="user" id="user" method="invite">
+                <parameter name="email" source="request" default="" />
+            </model>
+        </action>
+
+    </actions>
+</controller>

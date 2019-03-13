@@ -1,7 +1,14 @@
 ---
 currentWeather  :
-  url             : http://weather.yahooapis.com/forecastrss
+  url             : https://weather-ydn-yql.media.yahoo.com/forecastrss
   api-key         :
   api-var         :
   arguments       : [p]
   method          : GET
+openWeatherAPI  :
+  url             : http://weather.yahooapis.com/forecastrss
+  api-key         :
+  api-var         : appid
+  arguments       : [q]
+  method          : GET
+    

@@ -114,7 +114,7 @@
     $(document).ready(Main.prime());
 </script>
 <div style="padding-top: 20px; font-size: 2em; font-family: sans-serif; font-weight: bold; color: rgba(50,50,50,.8)">
-    It Is Good To Be Humble...
+    <div style="float: right; margin-right: 5px; font-size: .5em">(<a href="/pages/Concepts.htmls">Simplified...</a>)</div>It Is Good To Be Humble...
 </div>
 <div style="padding: 20px 0px; font-size: 1em; font-family: sans-serif;">
     The Humble Framework is all about easy application development, robust flexibility, and maintainability.  It is a framework that from the start was designed to actually fight Software Entropy, and that means lower cost

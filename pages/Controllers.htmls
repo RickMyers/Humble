@@ -1,5 +1,88 @@
-
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Models.htmls" title="" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Anatomy of a Controller</div>
+It is no exaggeration to say that in the Humble Framework, there's a lot going on in the controllers.<br /><br />
+The controllers are XML files that handle routing, data scrubbing, data validation, object allocations, and even event triggering.  These controllers get compiled to PHP
+programs and placed in the <span class='humble-snippet'>Cache</span> folder within the same directory that XML files reside.<br />
+
+
+<div class='humble-important'>Important!</div>
+When creating a controller, <i><b>Always</b></i> use the wizards in the admin section.  Do not create one from scratch.  
+<div class='humble-protip'>Pro-Tip: Customize your creations</div>
+<div class='humble-protip-text'>When you installed Humble, in your primary application module a <span class='humble-snippet'>lib</span> directory was copied from the base Humble module.
+    In this directory you will find the code skeletons that will be used when creating components and modules.  You can edit these skeletons to add comments, license information, ASCII art,
+    logos, etc...  In fact, when you create a component you have to identify the namespace that the component belongs to, and if the module managed by that namespace has a <span class='humble-snippet'>lib</span>  
+    folder, those skeletons will be used when creating the component, so it is possible to have different licensing, logo, or anything else per module.
+</div>
+<div class='humble-section-header'>Creating A Controller</div>
+In the administration section, there is a wizard at the bottom that allows you to create a controller, along with the first action in that controller.  Besides naming the controller and providing
+the descriptions, you will need to identify the default templating engine this controller will use, and you will need to do this even if you plan on only outputting JSON.
+<div style='white-space: nowrap; padding-top: 10px; padding-bottom: 10px'>
+    <div style='width: 45%; display: inline-block; text-align: center'>
+        <img src='/pages/images/admin_controller_creation.png' style='width: 360px' /><br />
+        Wizard
+    </div> 
+    <div style='width: 45%; display: inline-block; text-align: center'>
+        <img src='/pages/images/admin_controller_templaters.png' style='width: 360px' /><br />
+        Available Templating Engines
+    </div> 
+</div>
+After you have created your controller, there will be a new folder with the same name as the controller in the Views directory of the module identified by the namespace used during controller creation.
+In the new folder you will find a folder with the name of the templating engine selected, and an empty file with the name of the action you created, using the appropriate file extension.
+<div class='humble-section-header'>A Sample Controller</div>
+For reference, we are going to use this simple controller below:
+    <div widget="codeBox" widgetScroll="35%" lang="xml" lexicon="/pages/js/lang/Controllers/xml.json" source="/pages/code/Controllers/Sample.xmltxt" class="humble-code">
+
+    </div>
+A controller contains one to many actions.  Each action has at a minimum a name which constitutes the third segment in our routing URI scheme (see <a target='_BLANK' href='/pages/Routing.htmls'>Routing Basics</a>).
+Each action may, or may not, have a dedicated view, which will be found in the Views folder, in a folder named the same as this controller. 
+By using the <span class="humble-code-like"> &lt;view name="<i>other_view</i>"&gt;</span> directive, you can override the default view handling.
+<br /><br />
+Here is an example of handling a request:  A URI of <span style='font-family: monospace'>/acme/customer/list</span> would look for the controller in the 'Controllers' directory of the module identified by the 'acme' namespace.
+Once found and compiled if necessary,the framework will then look for an action called 'list' in the compiled controller, execute the code found there, and then route to a view with the name of 'list'.
+<br /><br />
+So the request URI of <span style='font-family: monospace'>/acme/customer/list</span> would use the following two files:
+<ul>
+    <li>Controller: <span style='font-family: monospace'>/app/Code/<i>package</i>/Acme/Controllers/customer.xml</span></li>
+    <li>View File: <span style='font-family: monospace'>/app/Code/<i>package</i>/Acme/Views/customer/Twig/list.twig</span></li>
+</ul>
+The above example assumes you are using the Twig templating engine.  <br /><br />
+<div class="humble-section-header">Actions defined</div>
+Each action begins with the XML tag "action" followed by the required "name" attributed, and 0 to many additional attributes.  These additional attributes control high-level features of the actions behavior.  A list of 
+additional attributes follows (in no particular order):
+<ul>
+    <li><b>output</b> - The Content-Type of the response. Default is HTML, but can identify JSON, PDF, CSV, or any valid mime-type.</li>
+    <li><b>blocking</b> - Values On/Off - whether this particular action will "block" on Session variables.  If you don't need to write to the session, turning blocking off can increase
+        performance significantly under many cases.</li>
+    <li><b>namespace/class</b> - This is an alternate way of processing, if you specify the namespace of a module, and the classname of a Model within that module, prior to being handed to the view,
+        a method named "execute()" in that Model will be called and that Model will have access to all resources that were defined in that action.  This kind of follows an old Java/Struts pattern.</li>
+    <li><b>event/comment</b> - This registers an event in the Paradigm Engine with the descriptive comment indicated.  From within the Paradigm Engine, you can then design workflows that "listen" 
+        for that event, and each time this action is called an Event of that event type will be emitted, a long with all the data that was identifed on the request with a parameter tab or passalong attribute. 
+        Request variables that were not in some way parameterized will not be passed with the Event.</li>
+</ul>
+<div class="humble-section-header">Action elements</div>
+The following are most (but not necessarily all) of the elements that can comprise an Action
+<ul>
+    <li><b>description</b> - A description of this actions purpose.  This description is used in a Searchable Directory so please include it and make meaningful.  The directory is available from the admin page.</li>
+    <li><b>model/helper/entity</b> - These are the primary resources of your application, and are covered later in this document</li>
+    <li><b>switch/if</b> - Two mechanisms for selective processing, covered later in this document.</li>
+    <li><b>view</b> - An override mechanism so you can share views between actions</li>
+    <li><b>chain</b> - Identifies a series of 1 or more actions to perform after this action.  This is how we achieve Daisy-Chaining of actions.</li>
+    <li><b>redirect</b> - When you need to go to an action in another controller, or access some resource not a component of the current namespace, then use a redirect. Otherwise use a "chain".</li>
+    <li><b>output</b> - Outputs some static text, used when a cheap and simple mechanism is all you need.  Don't make too much use of this...</li>
+    <li><b>abort</b> - Most often used with "switch/if", will force an abrupt end to processing and prevent any additional bubbling of events.</li>
+</ul>
+<div class="humble-section-header">Resources</div>
+
+<br />
+</div>
 
 <!--#include virtual="/pages/includes/footer.html" -->

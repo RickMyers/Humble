@@ -4,21 +4,14 @@
 //------------------------------------------------------------------------------
 function manageView($controller,$templater,$tpl) {
     global $models;
-    global $module;
     global $smarty;
-    global $core;
     global $original_template_directory;
 
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
     $template = $smarty->template_dir[0].'/'.$tpl.'.tpl';
-    $fe       = file_exists($template);
-    if (!$fe) {
-        $smarty->template_dir = 'Code/'.$core['package'].'/'.str_replace('_','/',$core["views"]).'/'.$controller.'/'.$templater;
-        $template = $smarty->template_dir[0].'/'.$tpl.'.tpl';
-    }
-    if ($fe || file_exists($template))  {
+    if (file_exists($template))  {
         foreach ($models as $handle => $modelVar) {
             $smarty->assign($handle,$modelVar);
         }

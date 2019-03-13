@@ -76,9 +76,5 @@
             <redirect href="/index.html?m=Logout Successful" />
         </action>
 
-        <!-- ############################################################### -->
-
-
-
     </actions>
 </controller>

@@ -142,6 +142,22 @@ class Utility extends Model
         print("\nCurrently not working\n\n");
     }
 
+    /**
+     * Returns the first location that exists out of an array of file location possibilities
+     * 
+     * @param array $paths
+     */
+    private function resolveLocation($paths=[]) {
+        $c      = count($paths);
+        $found  = false;
+        $i      = 0;
+        while (!$found && ($i<$c)) {
+            if (!$found = file_exists($paths[$i])) {
+                $i++;
+            }
+        }
+        return ($found) ? $paths[$i] : false;
+    }
 
     /**
      * Create a new module
@@ -226,28 +242,31 @@ class Utility extends Model
         //ADD A CHECK!
         file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)));
     }
-
+    
     /**
      * Create a new controller
      */
     public function createController($useLanding=false) {
-        //$exts = Humble::getEntity('humble/templaters')->available();
-        $exts = array(
-            'Twig'    => 'twig',
-            'Smarty3' => 'tpl',
-            'PHP'     => 'php',
-            'PHPTAL'  => 'php',
-            'Rain3'   => 'rain',
-            'TBS'     => 'tbs',
-            'Mustache' => 'mustache'
-        );
+        $templaters     = Humble::getEntity('humble/templaters')->fetch();
+        $exts           = []; //building an XREF for simplicity...
+        foreach ($templaters as $engine) {
+            $exts[$engine['templater']] = $engine['extension'];
+        }
         $data           = Humble::getEntity('humble/users')->setUid($this->getUid())->load();
-        $user           = Humble::getEntity('humble/user_identification')->setId($this->getUid())->load();
+        $user           = Humble::getEntity('humble/user/identification')->setId($this->getUid())->load();
         //need to look for other custom controller template as well...
-        $template       = 'Code/Base/Humble/lib/sample/component/controller.xml';
+        $project        = \Environment::getProject();
+        $templates      = [];
+        $main           = Humble::getModule($project->namespace);
+        $current        = Humble::getModule($this->_namespace());
+        $templates[]    = 'Code'.$current['package'].'/'.$current['module'].'/lib/sample/component/controller.xml';
+        $templates[]    = 'Code'.$main['package'].'/'.$main['module'].'/lib/sample/component/controller.xml';
+        $templates[]    = 'Code/Base/Humble/lib/sample/component/controller.xml';
+        $template       = $this->resolveLocation($templates);
+        
+        
         $module         = Humble::getModule($this->getNamespace());
         $dest           = 'Code/'.$module['package']."/".$module['controller'];
-        $class          = $module['controller'].'/'.$this->getName();
         $dest           = $dest.'/'.$this->getName().'.xml';
         $srch           = array(
             '&&NAME&&',
@@ -272,7 +291,6 @@ class Utility extends Model
         if (isset($exts[$this->getEngine()])) {
             file_put_contents($newDir.'/'.$this->getAction().'.'.$exts[$this->getEngine()],'');
             if ($useLanding) {
-                $e = \Environment::getProject();
                 $loc = getcwd().$newDir;
                 file_put_contents($newDir.'/'.$this->getAction().'.'.$exts[$this->getEngine()],str_replace('&&HOME&&',$loc,file_get_contents('Code/Base/Humble/lib/sample/module/Views/actions/Smarty3/landing.tpl')));
             }

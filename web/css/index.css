@@ -16,7 +16,7 @@ body {
     opacity: 1.0; cursor: pointer
 }
 .flat-brick {
-    height: 20px; width: 20%; float: left;
+    height: 20px; width: 100%; float: left;
 }
 /* A replacement for the clearfix hack for modern browsers */
 .cf:before,

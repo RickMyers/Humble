@@ -1,2 +1,2 @@
 #!/bin/bash
-php Module.php $1
+php Humble.php $1

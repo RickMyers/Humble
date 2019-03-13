@@ -9,6 +9,7 @@ $help = <<<HELP
  *  option:
  *      --help        This help
  *      --project     Creates the original project file
+ *      --init        Same as --project
  *      --fetch       Initial install of repository
  *      --restore     Restores the Humble framework into an existing (Humble based) project
  * -----------------------------------------------------------------------------
@@ -36,12 +37,9 @@ function installedEextensionCheck() {
     exec('php -m',$modules);
 
     $required = [
-    'bcmath'=>false,
     'bz2'=>false,
     'curl'=>false,
-    'date'=>false,
     'fileinfo'=>false,
-    'ftp'=>false,
     'gd'=>false,
     'json'=>false,
     'libxml'=>false,
@@ -49,17 +47,9 @@ function installedEextensionCheck() {
     'memcache'=>false,
     'mongodb'=>false,
     'mysqli'=>false,
-    'readline'=>false,
-    'Reflection'=>false,
     'SimpleXML'=>false,
     'soap'=>false,
-    'sqlsrv'=>false,
-    'standard'=>false,
     'xml'=>false,
-    'xmlreader'=>false,
-    'xmlrpc'=>false,
-    'xmlwriter'=>false,
-    'xsl'=>false,
     'zip'=>false
     ];
 
@@ -70,8 +60,8 @@ function installedEextensionCheck() {
     if (!$ok) {
         print("The following extensions should/must be enabled within your php.ini file, please consult https://www.php.net to determine how to enable them\n\n\n");
         $ctr = 0;
-        foreach ($required as $extension) {
-            if (!$required[$extension]) {
+        foreach ($required as $extension => $installed) {
+            if (!$installed) {
                 print(++$ctr.') '.$extension."\n");
             }
         }
