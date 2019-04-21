@@ -89,13 +89,14 @@ class System extends Model
         $now             = strtotime(date('Y-m-d H:i:s'));
         $job_queue       = Humble::getEntity('paradigm/job_queue');
         $schedule_log    = Humble::getEntity('paradigm/scheduler_log')->setStarted(date('Y-m-d H:i:s'));    //Let's record when you started
-        $schedule_id     = $schedule_log->save();                                                        //And persist it
-        foreach (Humble::getEntity('paradigm/system_events')->setActive('Y')->fetch() as $event) {
+        $schedule_id     = $schedule_log->save();   
+        $jobs            = Jarvis::getEntity('paradigm/system_events')->setActive('Y')->fetch();//And persist it
+        foreach ($jobs as $event) {
             //if your next execution cycle is within 5 minutes and you haven't been run in the last 10 minutes, you will be queued for execution
             if ((int)$event['period'] == $event['period']) {
                 if ((!$event['last_run']) || ($now - strtotime($event['last_run']) >= 600)) {
-                    //print($now - (strtotime($event['event_start']) + (floor(($now - strtotime($event['event_start'])) / $event['period']) * $event['period'])));
-                    if (($now - (strtotime($event['event_start']) + (floor(($now - strtotime($event['event_start'])) / $event['period']) * $event['period']))) < 300) {
+                    $int = ($event['period'] - ($now - strtotime($event['event_start'])) % $event['period']);
+                    if ($int <= 300) {
                         $queued = $job_queue->reset()->setSystemEventId($event['id'])->setStatus(NEW_EVENT_JOB)->load(true);
                         if (!$queued) {
                             //Don't queue it up if there's one run there already

@@ -54,6 +54,8 @@
             <prefix>paradigm_</prefix>
             <mongodb>paradigm</mongodb>
             <entities>
+                <api_projects />
+                <api_tests />
                 <events />
                 <event_listeners />
                 <event_log />
@@ -63,6 +65,8 @@
                 <sensors />
                 <sensor_workflows />
                 <system_events />
+                <webhooks />
+                <webhook_workflows />
                 <webservices />
                 <webservice_workflows />
                 <workflows />
@@ -90,6 +94,11 @@
                     <source>Paradigm/web/js/app.js</source>
                 </js>
             </app>
+            <api>
+                <js>
+                    <source>Paradigm/web/js/API.js</source>
+                </js>
+            </api>
             <engine>
                 <js>
                     <source weight='10'>Paradigm/web/js/Paradigm.js</source>

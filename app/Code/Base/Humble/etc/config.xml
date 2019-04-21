@@ -82,6 +82,9 @@
         <events>
 
         </events>
+        <webhooks>
+            <github format="json" active='Y' />
+        </webhooks>        
         <web>
             <edits>
             </edits>

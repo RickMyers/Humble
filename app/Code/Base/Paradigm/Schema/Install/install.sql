@@ -21,7 +21,7 @@ CREATE TABLE `paradigm_designer_forms` (
   `image_name` char(64) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_event_log` */
 
@@ -32,7 +32,7 @@ CREATE TABLE `paradigm_event_log` (
   `user_id` int(11) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_events` */
 
@@ -44,7 +44,7 @@ CREATE TABLE `paradigm_events` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `paradigm_events_uidx` (`namespace`,`event`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_import_sources` */
 
@@ -71,7 +71,7 @@ CREATE TABLE `paradigm_job_queue` (
   `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `paradigm_job_queue_idx` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_scheduler_log` */
 
@@ -82,7 +82,7 @@ CREATE TABLE `paradigm_scheduler_log` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `paradigm_scheduler_log_uidx` (`started`)
-) ENGINE=InnoDB AUTO_INCREMENT=4300 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_sensor_workflows` */
 
@@ -123,7 +123,19 @@ CREATE TABLE `paradigm_system_events` (
   `active` char(1) DEFAULT 'N',
   PRIMARY KEY (`id`),
   UNIQUE KEY `paradigm_system_events_uidx` (`workflow_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE paradigm_webhooks
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    namespace CHAR(32) DEFAULT NULL,
+    hook CHAR(64) DEFAULT NULL,
+    `format` CHAR(32) DEFAULT 'JSON',
+    active CHAR(01) DEFAULT 'N',
+    modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY (namespace, hook)
+);
 
 /*Table structure for table `paradigm_webservice_workflows` */
 
@@ -137,7 +149,7 @@ CREATE TABLE `paradigm_webservice_workflows` (
   UNIQUE KEY `paradigm_webservice_workflows_uidx` (`workflow_id`,`uri`),
   KEY `paradigm_webservice_workflows_uri_idx` (`uri`),
   KEY `paradigm_webservice_workflows_wid_idx` (`workflow_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_webservices` */
 
@@ -149,7 +161,7 @@ CREATE TABLE `paradigm_webservices` (
   `active` char(1) DEFAULT 'N',
   PRIMARY KEY (`id`),
   UNIQUE KEY `paradigm_webservices_idx` (`uri`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_workflow_comments` */
 
@@ -162,7 +174,7 @@ CREATE TABLE `paradigm_workflow_comments` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `namespace` (`namespace`,`class`,`method`)
-) ENGINE=InnoDB AUTO_INCREMENT=1274 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_workflow_components` */
 
@@ -197,7 +209,7 @@ CREATE TABLE `paradigm_workflow_listeners` (
   `active` char(1) DEFAULT 'N',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_workflows` */
 
@@ -220,7 +232,7 @@ CREATE TABLE `paradigm_workflows` (
   `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `paradigm_workflows_idx` (`workflow_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `paradigm_event_listeners` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
