@@ -206,7 +206,7 @@ SQL;
      */
     protected function registerEvents($event_node = false) {
         $this->deRegisterEvents();
-        if ($event_node!==false) {
+        if ($event_node) {
             foreach ($event_node as $events) {
                 foreach ($events as $event => $data) {
                     $event_comment = addslashes($data->attributes()->comment);
@@ -222,6 +222,22 @@ SQL;
         }
     }
 
+    
+    protected function deRegisterWebHooks() {
+        $query = <<<SQL
+            delete from paradigm_webhooks
+             where namespace = '{$this->namespace}'
+SQL;
+        $this->_db->query($query);
+    }
+    
+    protected function registerWebHooks($hook_node = false) {
+        $this->deRegisterWebHooks();
+        if ($hook_node) {
+            
+        }
+    }
+    
     /**
      *
      * @param type $prefix

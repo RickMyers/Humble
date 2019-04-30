@@ -246,6 +246,9 @@ Copyright Enicity.com, all rights reserved
                         case    "webservice"  :
                             Paradigm.elements.webservice.add($('#new-element-text').val());
                             break;
+                        case    "webhook"  :
+                            Paradigm.elements.webhook.add($('#new-element-text').val());
+                            break;                            
                         case    "sensor"  :
                             Paradigm.elements.sensor.add($('#new-element-text').val());
                             break;
@@ -529,6 +532,10 @@ Copyright Enicity.com, all rights reserved
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/webservice2.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('webservice')" /><br />
                             Service
                         </div>
+                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px;" title='A Reverse API (WebHook) Call'>
+                            <img class='flowchartGlyph' src='/images/paradigm/clipart/webhook_icon.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('webhook')" /><br />
+                            WebHook
+                        </div>                        
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-right: 20px" title='An event thrown by a batch or offline process'>
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/event3.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('trigger')" /><br />
                             System Event

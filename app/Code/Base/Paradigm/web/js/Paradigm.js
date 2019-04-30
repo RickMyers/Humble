@@ -37,6 +37,10 @@ var Paradigm = (function () {
                 "src": "/images/paradigm/clipart/webservice2.png",
                 "ref": false
             },
+            "webhook": {
+               "src": "/images/paradigm/clipart/webhook_icon.png",
+               "ref": false
+            },
             "rule": {
                 "src": "/images/paradigm/clipart/business-rule.png",
                 "ref": false
@@ -122,6 +126,10 @@ var Paradigm = (function () {
                 label: 'Web Service',
                 image: "/images/paradigm/clipart/webservice.png"
             },
+            webhook: {
+                label: 'Web Hook',
+                image: "/images/paradigm/clipart/webhook_icon.png"
+            },            
             process: {
                 label: 'Process'
             },
@@ -220,6 +228,12 @@ var Paradigm = (function () {
                 default: "",
                 description: "Fill out the text below and click OK to add a new element to the workflow, or click [Cancel] to abort adding an element"
             },
+            webhook: {
+                title: "Identify the inbound reverse API call (WebHook) that triggers the workflow",
+                image: "/images/paradigm/clipart/webhook_icon.png",
+                default: "",
+                description: "Fill out the text below and click OK to add a new element to the workflow, or click [Cancel] to abort adding an element"
+            },            
             external: {
                 title: "Add a connector to an external workflow",
                 image: "/images/paradigm/clipart/external.png",
@@ -481,7 +495,8 @@ var Paradigm = (function () {
                 case "sensor"   :
                 case "system"   :
                 case "webservice" :
-                case "trigger":
+                case "webhook"  :
+                case "trigger"  :
                 case "actor"    :   return  function () { return false; };
                                     break;
                 case "process"  :   return  function () { return false; };
@@ -1587,6 +1602,52 @@ var Paradigm = (function () {
                     }).post();
                 }
             },
+            webhook:  {
+                add: function (text) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','webservice').then(function (response) {
+                        if (!response) {
+                            alert('Please try again, failed to create element');
+                            return;
+                        }
+                        var z       = Paradigm.elements.list.length;
+                        Paradigm.objects[response] = Paradigm.elements.list[z] = {
+                            id: response,
+                            type: 'image',
+                            active: true,
+                            image: Paradigm.default.webhook.image,
+                            element: 'webhook',
+                            label: Paradigm.default.webhook.label,
+                            text: Paradigm.console.add('Add [webhook: &text&][ID:'+response+']',text,1),
+                            lines: {
+                                text: [],
+                                font: false,
+                                size: false,
+                                startX: false,
+                                startY: false
+                            },
+                            connectors: {
+                                'N': { X: '', Y:'', begin: false, end: false},
+                                'E': { X: '', Y:'', begin: false, end: false},
+                                'W': { X: '', Y:'', begin: false, end: false},
+                                'S': { X: '', Y:'', begin: false, end: false}
+                            },
+                            X:  Paradigm.default.start.x,
+                            Y:  Paradigm.default.start.y,
+                            W:  70,
+                            H:  70,
+                            Z:  z+1,
+                            isClosed: function () {
+                                //a function to determine when a shape is closed, as in no more connections are allowed
+                                return false;
+                            },
+                            win: null
+                        };
+                        Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
+                        Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
+                        Paradigm.redraw();
+                    }).post();
+                }
+            },            
             process:  {
                 add: function (text) {
                     (new EasyAjax('/paradigm/element/create')).add('shape','rectangle').add('type','process').then(function (response) {
