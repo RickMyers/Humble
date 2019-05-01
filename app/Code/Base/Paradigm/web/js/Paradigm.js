@@ -1604,7 +1604,7 @@ var Paradigm = (function () {
             },
             webhook:  {
                 add: function (text) {
-                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','webservice').then(function (response) {
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','webhook').then(function (response) {
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;

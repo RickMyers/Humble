@@ -110,6 +110,9 @@ class Manager extends Model
                         case    "webservice"    :
                             $configURL  = "/workflow/elements/webservice";
                             break;
+                        case    "webhook"       :
+                            $configURL  = "/workflow/elements/webhook";
+                            break;                        
                         case    "sensor"        :
                             $configURL  = "/workflow/elements/sensor";
                             break;

@@ -7,7 +7,7 @@
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
             </model>
-            <entity namespace="humble" class="workflow_components" id="core">
+            <entity namespace="humble" class="workflow/components" id="core">
                 <parameter name='process' source='request' default='Y' />
                 <parameter name='namespace' value='ns' source='post' required='true' default='core' /><!-- trick to set a variable to a different value... 'ns' isn't in the post, so it will take the default value -->
             </entity>
@@ -20,7 +20,7 @@
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
             </model>
-            <entity namespace="humble" class="workflow_components" id="core">
+            <entity namespace="humble" class="workflow/components" id="core">
                 <parameter name='process' source='request' default='Y' />
                 <parameter name='namespace' value='ns' source='post' required='true' default='core' /><!-- trick to set a variable to a different value... 'ns' isn't in the post, so it will take the default value -->
             </entity>
@@ -36,7 +36,7 @@
                 <parameter name='id' source='post' required='true' default='' />
                 <parameter name='data' source='post' default='' />
             </model>
-            <entity namespace="humble" class="workflow_components" id="components">
+            <entity namespace="humble" class="workflow/components" id="components">
                 <parameter name='begin'     source='request' default='Y' />
                 <parameter name='namespace' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
@@ -107,7 +107,7 @@
                 <parameter name='windowId' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
-            <entity namespace="humble" class="workflow_components" id="components">
+            <entity namespace="humble" class="workflow/components" id="components">
                 <parameter name='decision' source='request' default='Y' />
                 <parameter name='namespace' source='post' required='true' default='' />
             </entity>
@@ -163,16 +163,24 @@
             <mongo namespace="paradigm" class="elements" id="element">
                 <parameter name='id' source='post' required='true' default='' />
             </mongo>
-            <entity namespace="humble" class="workflow_components" id="components">
+            <entity namespace="humble" class="workflow/components" id="components">
                 <parameter name='decision' source='request' default='Y' />
                 <parameter name='namespace' source='post' required='true' default='' />
             </entity>
             <entity namespace="paradigm" class="webservices" id="webservice" method="nonkeysload">
                 <parameter name='webservice_id' value="id" source='post' required='true' default='' />
             </entity>
-
         </action>
+        
+        <!-- ################################################################################################# -->
 
+        <action name="webhook" passalong="windowId">
+            <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
+            <mongo namespace="paradigm" class="elements" id="element">
+                <parameter name='id' source='post' required='true' default='' />
+            </mongo>
+        </action>
+        
         <!-- ################################################################################################# -->
 
         <action name="exception" passalong="windowId">
