@@ -7,7 +7,7 @@
         //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
         //***************************************************************************************
         //
-        $template = ''.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.php';
+        $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.php';
         if (file_exists($template)) {
             foreach ($models as $model => $obj) {
                 $$model = $obj;

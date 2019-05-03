@@ -9,11 +9,11 @@ function manageView($controller,$templater,$tpl) {
 	//Look to see if that action has a "view" template (MVC), if so, throws the model at it *
 	//***************************************************************************************
 	//
-    $template = ''.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.twig';
-    $core_tpl = ''.$core['package'].'/'.str_replace('_','/',$core["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.twig';
+    $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.twig';
+    $core_tpl = 'Code/'.$core['package'].'/'.str_replace('_','/',$core["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.twig';
     if (file_exists($template) || file_exists($core_tpl)) {
-        $cache      =  ''.$module['package'].'/'.str_replace('_','/',$module["views_cache"]);
-        $t_plate   = file_exists($template) ? ''.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater : ''.$core['package'].'/'.str_replace('_','/',$core["views"]).'/'.$controller.'/'.$templater;
+        $cache      =  'Code/'.$module['package'].'/'.str_replace('_','/',$module["views_cache"]);
+        $t_plate   = file_exists($template) ? 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater : 'Code/'.$core['package'].'/'.str_replace('_','/',$core["views"]).'/'.$controller.'/'.$templater;
         $loader     = new Twig_Loader_Filesystem($t_plate);
         $twig       = new Twig_Environment($loader,array('cache'=> $cache, 'auto_reload'=>true));
         $template   = $twig->loadTemplate($tpl.".twig");

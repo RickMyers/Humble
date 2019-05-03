@@ -277,7 +277,7 @@ switch ($method) {
         $project = json_decode(file_get_contents('Humble.project'));
         @mkdir('../Settings/'.$project->namespace,0775,true);
         @mkdir('images',0775,true);
-        file_put_contents("../Settings/".$project->namespace."/Settings.php",str_replace($srch,$repl,file_get_contents('app/Base/Humble/lib/sample/install/Settings.php')));
+        file_put_contents("../Settings/".$project->namespace."/Settings.php",str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/Settings.php')));
         chdir('app');
         require_once('Humble.php');
         $util    = \Environment::getInstaller();
@@ -309,7 +309,7 @@ switch ($method) {
         $landing = explode('/',$landing_page);
         $ins     = Humble::getModel('humble/utility');
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
-        shell_exec("php Module.php --i ".$project->namespace." ".$project->package."/".$project->module."/etc/config.xml");
+        shell_exec("php Module.php --i ".$project->namespace." Code/".$project->package."/".$project->module."/etc/config.xml");
         shell_exec("php Module.php --e ".$project->namespace);
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();

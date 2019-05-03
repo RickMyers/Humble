@@ -51,8 +51,8 @@ Once found and compiled if necessary,the framework will then look for an action 
 <br /><br />
 So the request URI of <span style='font-family: monospace'>/acme/customer/list</span> would use the following two files:
 <ul>
-    <li>Controller: <span style='font-family: monospace'>/app/<i>package</i>/Acme/Controllers/customer.xml</span></li>
-    <li>View File: <span style='font-family: monospace'>/app/<i>package</i>/Acme/Views/customer/Twig/list.twig</span></li>
+    <li>Controller: <span style='font-family: monospace'>/app/Code/<i>package</i>/Acme/Controllers/customer.xml</span></li>
+    <li>View File: <span style='font-family: monospace'>/app/Code/<i>package</i>/Acme/Views/customer/Twig/list.twig</span></li>
 </ul>
 The above example assumes you are using the Twig templating engine.  <br /><br />
 <div class="humble-section-header">Actions defined</div>

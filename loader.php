@@ -38,7 +38,7 @@
                                     } else if (substr($file['source'],0,4)=="http") {
                                         print(file_get_contents($file['source']).'; ');
                                     } else {
-                                        $file = ''.$packages[$file['namespace']]['package'].'/'.$file['source'];
+                                        $file = 'Code/'.$packages[$file['namespace']]['package'].'/'.$file['source'];
                                         if (file_exists($file)) {
                                             print("\n\n// ***************** $file *************\n//\n\n");
                                             print(file_get_contents($file).'; ');
@@ -60,7 +60,7 @@
                                         }
                                         $packages[$file['namespace']] = $mod;
                                     }
-                                    $file = ''.$packages[$file['namespace']]['package'].'/'.$file['source'];
+                                    $file = 'Code/'.$packages[$file['namespace']]['package'].'/'.$file['source'];
                                     if (file_exists($file)) {
                                         print("\n\n/***************** $file *************/\n\n");
                                         print(file_get_contents($file).' ');
@@ -75,7 +75,7 @@
                                 $orm->load();
                                 $module = \Humble::getModule($_GET['n']);
                                 if ($module) {
-                                    $file = ''.$module['package'].'/'.$orm->getSource();
+                                    $file = 'Code/'.$module['package'].'/'.$orm->getSource();
                                     if (file_exists($file)) {
                                         print(file_get_contents($file));
                                     } else {
@@ -90,7 +90,7 @@
                                 if ($orm->getSource()) {
                                     $module = \Humble::getModule($_GET['n']);
                                     if ($module) {
-                                        $file = ''.$module['package'].'/'.$orm->getSource();
+                                        $file = 'Code/'.$module['package'].'/'.$orm->getSource();
                                         if (file_exists($file)) {
                                             print(file_get_contents($file));
                                         } else {
@@ -108,7 +108,7 @@
                                 if ($orm->getSource()) {
                                     $module = \Humble::getModule($_GET['n']);
                                     if ($module) {
-                                        $file = ''.$module['package'].'/'.$orm->getSource();
+                                        $file = 'Code/'.$module['package'].'/'.$orm->getSource();
                                         if (file_exists($file)) {
                                             print(file_get_contents($file));
                                         } else {

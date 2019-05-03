@@ -10,7 +10,7 @@ function manageView($controller,$templater,$tpl) {
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
-    $template = ''.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/PHPTAL/'.$tpl.'.xhtml';
+    $template = 'Code/'.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/PHPTAL/'.$tpl.'.xhtml';
     if (file_exists($template))  {
         $template = new PHPTAL($template);
         foreach ($models as $model => $obj) {

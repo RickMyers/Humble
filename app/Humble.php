@@ -152,15 +152,15 @@
          * Returns either the specific requested instance of an entity of the parent class of all entities as a "Virtual" entity
          *
          * @param string $identifier
-         * @return \Base\Humble\Entity\Entity
+         * @return \Code\Base\Humble\Entity\Entity
          */
         public static function getEntity($resource_identifier) {
             $identifier = self::parseResource($resource_identifier);
             $instance   = null;
             if ($module = self::getModule($identifier['namespace'])) {
-                $str  = "{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
+                $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\','\\'.$str)) extends \Base\Humble\Entities\Unity {
+                    $instance = new class(str_replace('/','\\','\\'.$str)) extends \Code\Base\Humble\Entities\Unity {
                         private $anon_class = null;
                         public function __construct($a) {
                             parent::__construct();
@@ -184,9 +184,9 @@
             $identifier     = self::parseResource($resource_identifier);
             $instance       = null;
             if ($module = self::getModule($identifier['namespace'],$override)) {
-                $str   = "{$module['package']}/".str_replace("_","/",$module['models'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
+                $str   = "Code/{$module['package']}/".str_replace("_","/",$module['models'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\',$str)) extends \Base\Humble\Models\Model {
+                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Models\Model {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
@@ -209,9 +209,9 @@
         public static function getHelper($resource_identifier)  {
             $identifier     = self::parseResource($resource_identifier);
             if ($module = self::getModule($identifier['namespace'])) {
-                $str   = "{$module['package']}/".str_replace("_","/",$module['helpers'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
+                $str   = "Code/{$module['package']}/".str_replace("_","/",$module['helpers'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\',$str)) extends \Base\Humble\Helpers\Helper {
+                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Helpers\Helper {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
@@ -252,7 +252,7 @@
             }
 
             $res    = Humble::getEntity('humble/modules')->setNamespace($data->namespace)->load();
-            $source = ''.$res['package'].'/'.$res['configuration'].'/config.xml';
+            $source = 'Code/'.$res['package'].'/'.$res['configuration'].'/config.xml';
             if (file_exists($source)) {
                 $xml =  new \SimpleXMLElement(file_get_contents($source));
             }
@@ -264,7 +264,7 @@
          * Returns a reference to the a MongoDB Collection
          *
          * @param type $identifier
-         * @return \Base\Humble\Models\MongoDB
+         * @return \Code\Base\Humble\Models\MongoDB
          */
         public static function getCollection($identifier) {
             $instance   = null;
@@ -276,7 +276,7 @@
             $module     = self::getModule($entity[0]);
             if ($module) {
                 if ($module['mongodb']) {
-                    $instance   = new \Base\Humble\Models\Mongo($module['mongodb']);
+                    $instance   = new \Code\Base\Humble\Models\Mongo($module['mongodb']);
                     if (isset($entity[1])) {
                         $instance->_collection($entity[1]);
                     }
@@ -319,7 +319,7 @@
             if ($namespace) {
                 $module = self::getModule($namespace);
                 if ($module) {
-                    $dir = str_replace('_','/',''.$module['package'].'_'.$module['models']);
+                    $dir = str_replace('_','/','Code/'.$module['package'].'_'.$module['models']);
                     if (is_dir($dir)) {
                         $models = self::recurseDirectory($dir);
                     }
@@ -346,7 +346,7 @@
             if ($namespace) {
                 $module = self::getModule($namespace);
                 if ($module) {
-                    $dir = str_replace('_','/',''.$module['package'].'_'.$module['entities']);
+                    $dir = str_replace('_','/','Code/'.$module['package'].'_'.$module['entities']);
                     if (is_dir($dir)) {
                         $entities = self::recurseDirectory($dir);
                     }
@@ -373,7 +373,7 @@
             if ($namespace) {
                 $module = self::getModule($namespace);
                 if ($module) {
-                    $dir = str_replace('_','/',''.$module['package'].'_'.$module['helpers']);
+                    $dir = str_replace('_','/','Code/'.$module['package'].'_'.$module['helpers']);
                     if (is_dir($dir)) {
                         $helpers = self::recurseDirectory($dir);
                     }
@@ -405,10 +405,10 @@
                 $data[0] = self::_namespace();
             }
             if ($module     = self::getModule($data[0])) {
-                $location = ''.$module['package'].'/'.$module['module'].'/Classes/'.$data[1].'.php';
+                $location = 'Code/'.$module['package'].'/'.$module['module'].'/Classes/'.$data[1].'.php';
                 if (file_exists($location)) {
                     include_once($location);
-                    $instance = '\\'.$module['package'].'\\'.$module['module'].'\\Classes\\'.$data[1];
+                    $instance = '\\Code\\'.$module['package'].'\\'.$module['module'].'\\Classes\\'.$data[1];
                     $instance = new $instance();
                 } else {
                     $instance = "\\".$data[1]();  //Work on this later...  need to find out how to pass a variable set of arguments if needed on constructor
@@ -468,17 +468,17 @@
         /**
          * To protect yourself from bad impulses, access to the DB is restricted to instances of Entity the object or a short list of privileged classes.  This is to encourage DAO style development
          *
-         * @param \Base\Humble\Entities\Unity $callingClass
+         * @param \Code\Base\Humble\Entities\Unity $callingClass
          * @return mixed
          */
         public static function getDatabaseConnection($callingClass=false)        {
-            if (!($conn = ($callingClass instanceof \Base\Humble\Entities\Unity))) {
+            if (!($conn = ($callingClass instanceof \Code\Base\Humble\Entities\Unity))) {
                 if ($callingClass) {
                     $name = $callingClass->getClassName();
                 } else {
                     $name = (!isset($this)) ? self::getClassName() : null;
                 }
-                $shortList  = array('Humble','Base\Humble\Helpers\Installer','Base\Humble\Helpers\Updater','Base\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
+                $shortList  = array('Humble','Code\Base\Humble\Helpers\Installer','Code\Base\Humble\Helpers\Updater','Code\Base\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
                 $conn       = in_array($name,$shortList);
             }
             return $conn ? Singleton::getMySQLAdapter() : $conn;
@@ -531,12 +531,12 @@ SQL;
          */
         public static function getPackages()  {
             $packages   = [];
-            $handler    = dir('');
+            $handler    = dir('Code/');
             while (($entry = $handler->read()) !== false) {
                 if (($entry == '.') || ($entry == '..')) {
                     continue;
                 }
-                if (is_dir(''.$entry)) {
+                if (is_dir('Code/'.$entry)) {
                     $packages[] = $entry;
                 }
             }
@@ -548,13 +548,13 @@ SQL;
          */
         public static function getModules($package) {
             $modules= array();
-            $directory = dir(''.$package);
+            $directory = dir('Code/'.$package);
 
             while (($entry = $directory->read()) !== false ) {
                 if (($entry == '.') || ($entry == '..')) {
                     continue;
                 }
-                $moduleDir = ''.$package.'/'.$entry;
+                $moduleDir = 'Code/'.$package.'/'.$entry;
                 if (is_dir($moduleDir)) {
                     if (file_exists($moduleDir.'/etc/config.xml')) {
                         $modules[] = $entry;
@@ -594,10 +594,10 @@ SQL;
          * Boxes a normal scalar string
          *
          * @param type $string
-         * @return \Base\Humble\Helpers\HumbleString
+         * @return \Code\Base\Humble\Helpers\HumbleString
          */
         public static function string($string) {
-            return new \Base\Humble\Helpers\HumbleString($string);
+            return new \Code\Base\Humble\Helpers\HumbleString($string);
         }
 
         /**

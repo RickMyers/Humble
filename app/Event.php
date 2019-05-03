@@ -60,7 +60,7 @@ class Event {
      * @return \Core\Event\Object
      */
     public static function get($identifier,$data=[]) {
-        $event = new \Base\Humble\Event\BaseObject($identifier);
+        $event = new \Code\Base\Humble\Event\BaseObject($identifier);
         $name  = 'set'.ucfirst($identifier);
         $event->$name($data);
         //DO I NEED THIS BELOW?
@@ -74,10 +74,10 @@ class Event {
     /**
      * Returns a reference to a generic event trigger
      *
-     * @return \Base\Humble\Event\Trigger
+     * @return \Code\Base\Humble\Event\Trigger
      */
     public static function getTrigger() {
-        return new \Base\Humble\Event\Trigger();
+        return new \Code\Base\Humble\Event\Trigger();
     }
 
     /**

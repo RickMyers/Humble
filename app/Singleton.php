@@ -66,7 +66,7 @@ class Singleton
      */
     public static function getMySQLAdapter()  {
         if (!isset(self::$mySQLAdapter)) {
-            self::$mySQLAdapter = new \Base\Humble\Models\MySQL();
+            self::$mySQLAdapter = new \Code\Base\Humble\Models\MySQL();
         }
         return self::$mySQLAdapter;
     }
@@ -91,7 +91,7 @@ class Singleton
      */
     public static function getMongoAdapter()  {
         if (!isset(self::$mongoAdapter)) {
-            self::$mongoAdapter = new \Base\Humble\Models\Mongo();
+            self::$mongoAdapter = new \Code\Base\Humble\Models\Mongo();
         }
         return self::$mongoAdapter;
     }
@@ -110,9 +110,9 @@ class Singleton
     public static function getFirePHP()  {
         if (!isset(self::$firephp)) {
             if (isset($_SERVER['HUMBLE_IS_DEVELOPER_MODE']) && (strtoupper($_SERVER['HUMBLE_IS_DEVELOPER_MODE']) == "TRUE") && (php_sapi_name() !== 'cli')) {
-                self::$firephp = new \Base\Humble\Helpers\FirePHP();
+                self::$firephp = new \Code\Base\Humble\Helpers\FirePHP();
             } else {
-                self::$firephp = new \Base\Humble\Helpers\FirePlacebo();
+                self::$firephp = new \Code\Base\Humble\Helpers\FirePlacebo();
                 //self::$firephp = new Core_Helper_FirePlacebo(); //@TODO: When we go "live", swap these comments
             }
         }
@@ -125,7 +125,7 @@ class Singleton
     public static function getCompiler()
     {
         if (!isset(self::$compiler)) {
-            self::$compiler = new \Base\Humble\Helpers\Compiler();
+            self::$compiler = new \Code\Base\Humble\Helpers\Compiler();
         }
         return self::$compiler;
     }
@@ -136,7 +136,7 @@ class Singleton
     public static function getInstaller()
     {
         if (!isset(self::$installer)) {
-            self::$installer = new \Base\Humble\Helpers\Installer();
+            self::$installer = new \Code\Base\Humble\Helpers\Installer();
         }
         return self::$installer;
     }
@@ -147,7 +147,7 @@ class Singleton
     public static function getUpdater()
     {
         if (!isset(self::$updater)) {
-            self::$updater = new \Base\Humble\Helpers\Updater();
+            self::$updater = new \Code\Base\Humble\Helpers\Updater();
         }
         return self::$updater;
     }
@@ -158,7 +158,7 @@ class Singleton
     public static function getRefresher()
     {
         if (!isset(self::$refresher)) {
-            self::$refresher = new \Base\Humble\Helpers\Refresher();
+            self::$refresher = new \Code\Base\Humble\Helpers\Refresher();
         }
         return self::$refresher;
     }
@@ -171,7 +171,7 @@ class Singleton
         //hit namespace for helper location.... then go after it
         if (!isset(self::$helper[$name])) {
             $helperClass = $base.'_'.$name.'.php';
-            $helperClass = (file_exists($helperClass)) ? $helperClass : '\Base\Humble\Helper\Object' ;
+            $helperClass = (file_exists($helperClass)) ? $helperClass : '\Code\Base\Humble\Helper\Object' ;
             self::$helper[$name] = new $helperClass();
         }
         return self::$helper[$name];

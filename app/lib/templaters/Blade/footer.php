@@ -11,8 +11,8 @@ function manageView($controller,$templater,$tpl) {
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
-    $templateDir = ''.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/Blade/';
-    $cacheDir    = ''.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/Cache/';
+    $templateDir = 'Code/'.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/Blade/';
+    $cacheDir    = 'Code/'.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/Cache/';
     $template    = $templateDir.$tpl.'.blade.php';
     if (file_exists($template))  {
         $Blade = new Blade($templateDir,$cacheDir);

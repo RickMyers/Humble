@@ -87,7 +87,7 @@ function initializeProject() {
 
             @mkdir('../Settings/humble',0775,true);
             @mkdir('images',0775,true);
-            file_put_contents("../Settings/humble/Settings.php",str_replace($srch,$repl,file_get_contents('app/Base/Humble/lib/sample/install/Settings.php')));            
+            file_put_contents("../Settings/humble/Settings.php",str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/Settings.php')));            
             chdir('app');
             exec('composer install');
             require "Humble.php";

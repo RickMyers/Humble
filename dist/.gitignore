@@ -17,7 +17,7 @@
 /favicon/*
 **/DSL/*
 **/Cache/*
-app/Base/*
+app/Code/Base/*
 app/Exceptions/*
 app/lib/*
 app/tests/*

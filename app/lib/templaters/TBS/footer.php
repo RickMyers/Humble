@@ -11,7 +11,7 @@ function manageView($controller,$templater,$tpl) {
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
-    $template = ''.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/TBS/'.$tpl.'.tbs';
+    $template = 'Code/'.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/TBS/'.$tpl.'.tbs';
     if (file_exists($template))  {
         $TBS->LoadTemplate($template);
         //WTF am I doing here?!?!
