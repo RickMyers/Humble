@@ -103,8 +103,8 @@ if (!$module) {
 } else {
     $core            = \Humble::getProject();    //A reference to the core functionality held in the applications primary module
     $core            = \Humble::getModule($core['namespace']);
-    $include         = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller_cache']).'/'.$controller.'Controller.php';
-    $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']).'/'.$controller.'.xml';
+    $include         = ''.$module['package'].'/'.str_replace('_','/',$module['controller_cache']).'/'.$controller.'Controller.php';
+    $source          = ''.$module['package'].'/'.str_replace('_','/',$module['controller']).'/'.$controller.'.xml';
 
     //###########################################################################
     //We first look for the controller that contains the action in the module identified by the namespace used on the URL.
@@ -117,8 +117,8 @@ if (!$module) {
         $recompile   = true;                                                    //The controller source code exists but it is not currently compiled so flag it for compiling
     } else {
         //No specific controller exists to match request, so let's go look for it in the base application module
-        $include         = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/Cache/'.$controller.'Controller.php';
-        $source          = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/'.$controller.'.xml';
+        $include         = ''.$core['package'].'/'.$core['module'].'/Controllers/Cache/'.$controller.'Controller.php';
+        $source          = ''.$core['package'].'/'.$core['module'].'/Controllers/'.$controller.'.xml';
         if (file_exists($include)) {
             $ns          = $core['namespace'];   //we mark that we are in fact using the default namespace action without specifically changing the official namespace
             $info        = \Humble::getController($ns.'/'.$controller);

@@ -10,7 +10,7 @@ function manageView($controller,$templater,$tpl) {
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
-    $templateDir = 'Code/'.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/'.$templater;
+    $templateDir = ''.$module['package'].'/'.$module['module'].'/Views/'.$controller.'/'.$templater;
     $template    = $templateDir.'/'.$tpl.'.tpl.php' ;
     if (file_exists($template))  {
         $Savant->addPath('template',$templateDir);

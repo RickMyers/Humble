@@ -230,7 +230,7 @@ FACTORY;
     //file_put_contents('index.php',str_replace($srch,$repl,file_get_contents('index.php')));  //replacing default Humble factory with the custom one you just created
     $srch = ['{$name}','{$version}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}'];
     $repl = [$project->project_name,$remote->version,1,0,15,1,0,0,0,'',1];
-    file_put_contents('application.xml',str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/application.xml')));
+    file_put_contents('application.xml',str_replace($srch,$repl,file_get_contents('app/Base/Humble/lib/sample/install/application.xml')));
     print("\n\n");
     print('Now running composer...'."\n");
     chdir('app');

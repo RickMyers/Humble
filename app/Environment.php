@@ -60,7 +60,7 @@ class Environment {
             $module = Humble::getModule($namespace);
             if ($module) {
                 $name = (strpos($module['models'],"_")) ? explode('_',$module['models']) : explode('/',$module['models']);
-                $root = 'Code/'.$module['package'].'/'.$name[0];
+                $root = ''.$module['package'].'/'.$name[0];
             }
         }
         return $root;
@@ -390,7 +390,7 @@ class Environment {
             if (($entry === '.') || ($entry === '..')) {
                 continue;
             }
-            if (is_dir('Code/'.$entry)) {
+            if (is_dir(''.$entry)) {
                 $pkgs[] = $entry;
             }
         }
@@ -401,7 +401,7 @@ class Environment {
      *
      */
     public static function getCompiler()  {
-        return new \Code\Base\Humble\Helpers\Compiler();
+        return new \Base\Humble\Helpers\Compiler();
         //return Singleton::getCompiler();
     }
 

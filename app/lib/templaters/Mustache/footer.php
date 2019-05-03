@@ -9,7 +9,7 @@ function manageView($controller,$templater,$tpl) {
     //Look to see if that action has a "view" template (MVC), if so, throw the models at it *
     //***************************************************************************************
     //
-    $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.mustache';
+    $template = ''.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.mustache';
     if (file_exists($template)) {
         //$template   = $mustache->loadTemplate($tpl.".mustache");
         $mustache->render($tpl,$models);

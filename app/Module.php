@@ -142,7 +142,7 @@ HELP;
         $md = fetchParameter('module',processArgs($args));
         $em = fetchParameter('email',processArgs($args));
         if ($ns && $pk && $px && $md) {
-            $base = 'Code/'.$pk;
+            $base = ''.$pk;
             $root = $base."/".$md;
             if (!is_dir($base)) {
                @mkdir($base,0775,true);
@@ -173,16 +173,16 @@ HELP;
                 $project     = file_exists('../Humble.project') ? json_decode(file_get_contents('../Humble.project'),true) : ["factory_name" => 'Humble'];
                 $srch        = array("&&namespace&&","&&prefix&&","&&author&&","&&module&&","&&package&&",'&&email&&','&&FACTORY&&');
                 $repl        = array($ns,$px,$au,$md,$pk,$em,$project['factory_name']);
-                $templates   = array("Code/Base/Humble/lib/sample/module/Controllers/actions.xml");  $out   = array("Code/".$pk."/".$md."/Controllers/actions.xml");
-                $templates[] = "Code/Base/Humble/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
-                $templates[] = "Code/Base/Humble/lib/sample/module/RPC/mapping.yaml";                $out[] = "Code/".$pk."/".$md."/RPC/mapping.yaml";
-                $templates[] = "Code/Base/Humble/lib/sample/module/Views/actions/Smarty3/open.tpl";  $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty3/open.tpl";
-                $templates[] = "Code/Base/Humble/lib/sample/module/web/js/actions.js";               $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
-                $templates[] = "Code/Base/Humble/lib/sample/module/web/css/template.css";            $out[] = "Code/".$pk."/".$md."/web/css/".ucfirst($md).".css";
-                $templates[] = "Code/Base/Humble/lib/sample/module/Models/Model.php.txt";            $out[] = "Code/".$pk."/".$md."/Models/Model.php";
-                $templates[] = "Code/Base/Humble/lib/sample/module/Helpers/Helper.php.txt";          $out[] = "Code/".$pk."/".$md."/Helpers/Helper.php";
-                $templates[] = "Code/Base/Humble/lib/sample/module/Entities/Entity.php.txt";         $out[] = "Code/".$pk."/".$md."/Entities/Entity.php";
-                $templates[] = "Code/Base/Humble/lib/sample/module/web/edits/template.json";         $out[] = "Code/".$pk."/".$md."/web/edits/sample_edit.json";
+                $templates   = array("Base/Humble/lib/sample/module/Controllers/actions.xml");  $out   = array("".$pk."/".$md."/Controllers/actions.xml");
+                $templates[] = "Base/Humble/lib/sample/module/etc/config.xml";                  $out[] = "".$pk."/".$md."/etc/config.xml";
+                $templates[] = "Base/Humble/lib/sample/module/RPC/mapping.yaml";                $out[] = "".$pk."/".$md."/RPC/mapping.yaml";
+                $templates[] = "Base/Humble/lib/sample/module/Views/actions/Smarty3/open.tpl";  $out[] = "".$pk."/".$md."/Views/actions/Smarty3/open.tpl";
+                $templates[] = "Base/Humble/lib/sample/module/web/js/actions.js";               $out[] = "".$pk."/".$md."/web/js/".ucfirst($md).".js";
+                $templates[] = "Base/Humble/lib/sample/module/web/css/template.css";            $out[] = "".$pk."/".$md."/web/css/".ucfirst($md).".css";
+                $templates[] = "Base/Humble/lib/sample/module/Models/Model.php.txt";            $out[] = "".$pk."/".$md."/Models/Model.php";
+                $templates[] = "Base/Humble/lib/sample/module/Helpers/Helper.php.txt";          $out[] = "".$pk."/".$md."/Helpers/Helper.php";
+                $templates[] = "Base/Humble/lib/sample/module/Entities/Entity.php.txt";         $out[] = "".$pk."/".$md."/Entities/Entity.php";
+                $templates[] = "Base/Humble/lib/sample/module/web/edits/template.json";         $out[] = "".$pk."/".$md."/web/edits/sample_edit.json";
                 foreach ($templates as $idx => $template) {
                     file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)));
                 }
@@ -306,7 +306,7 @@ TXT;
         $module = Humble::getEntity('humble/modules')->setNamespace($namespace);
         $data   = $module->load(true);
         if (isset($data['configuration']) && $data['configuration']) {
-            $etc     = 'Code/'.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
+            $etc     = ''.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
             print('Running Update on '.$etc."\n");
             $updater = \Environment::getUpdater();
             $updater->update($etc);

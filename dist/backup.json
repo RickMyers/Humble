@@ -1,8 +1,8 @@
 {
         "save": {
                 "vision":
-                        { "/var/www/dashboard/app/Code/Main/Vision/lib/forms": "/var/www/save",
-                         "/var/www/dashboard/app/Code/Main/Vision/lib/attachments": "/var/www/save"}
+                        { "/var/www/dashboard/app/Main/Vision/lib/forms": "/var/www/save",
+                         "/var/www/dashboard/app/Main/Vision/lib/attachments": "/var/www/save"}
                 ,
                 "argus":
                         { "/var/www/dashboard/images/argus/avatars":  "/var/www/save" }
@@ -10,8 +10,8 @@
         },
         "restore": {
                 "vision":
-                       { "/var/www/save/forms": "/var/www/dashboard/app/Code/Main/Vision/lib",
-                         "/var/www/save/attachments": "/var/www/dashboard/app/Code/Main/Vision/lib" }
+                       { "/var/www/save/forms": "/var/www/dashboard/app/Main/Vision/lib",
+                         "/var/www/save/attachments": "/var/www/dashboard/app/Main/Vision/lib" }
                 ,
                 "argus":
                        { "/var/www/save/avatars": "/var/www/dashboard/images/argus" }

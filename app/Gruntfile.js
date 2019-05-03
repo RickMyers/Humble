@@ -23,14 +23,14 @@ module.exports = function (grunt)   {
                 files: ['css/*.css'],
             },
             js: {
-                files: ['web/clients/**/*.js','web/app.js','web/main.js','web/router.js','Code/**/*.js'],
+                files: ['web/clients/**/*.js','web/app.js','web/main.js','web/router.js','**/*.js'],
                 tasks: ['jshint'],
             },
             xml: {
-                files: ['Code/**/config.xml','Code/**/Controllers/*.xml']
+                files: ['**/config.xml','**/Controllers/*.xml']
             },
             php: {
-                files: ['Code/**/*.php']
+                files: ['**/*.php']
             }
         }
     });

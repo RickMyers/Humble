@@ -9,9 +9,9 @@ function manageView($controller,$templater,$tpl) {
 	//***************************************************************************************
 	//
     $config = array(
-        'tpl_dir'=> 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$controller.'/'.$templater.'/',
+        'tpl_dir'=> ''.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$controller.'/'.$templater.'/',
         'tpl_ext'=> 'rain',
-        'cache_dir'=> 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views_cache'])
+        'cache_dir'=> ''.$module['package'].'/'.str_replace('_','/',$module['views_cache'])
     );
     Tpl::configure($config);
     $template = $config['tpl_dir'].'/'.$tpl.'.rain';

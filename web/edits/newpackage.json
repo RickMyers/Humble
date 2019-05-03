@@ -29,7 +29,7 @@
             "value":        "",
             "onclick":        function () {
                 if (Edits['newpackage'].validate()) {
-                    (new EasyAjax('/humble/admin/newpackage')).add('package','Code/'+$('#new_package').val()).then(function () {
+                    (new EasyAjax('/humble/admin/newpackage')).add('package',''+$('#new_package').val()).then(function () {
                         window.location.href='/humble/admin/home';
                     }).post();
                 }

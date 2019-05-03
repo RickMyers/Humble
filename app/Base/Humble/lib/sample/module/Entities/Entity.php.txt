@@ -1,0 +1,25 @@
+<?php
+namespace &&package&&\&&module&&\Entities;
+/**
+ * Entity Base Transfer Class
+ *
+ * All entities classes must extend this class
+ *
+ * PHP version 5.5+
+ *
+ * LICENSE:
+ *
+ * @category   Entity
+ * @package    &&module&&
+ * @author     Original Author <&&email&&>
+ * @copyright  2005-Present Humble Project
+ * @license    https://license.enicity.com
+ * @version    3.0.0
+ * @link       http://pear.php.net/package/PackageName
+
+ */
+class Entity extends \Base\Humble\Entities\Unity
+{
+
+}
+?>
