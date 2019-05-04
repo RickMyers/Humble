@@ -33,6 +33,7 @@
         private static $controller  = false;
         private static $action      = false;
         private static $cache       = false;
+        private static $cacheConn   = false;
         private static $cacheFailed = false;
         private static $workflow    = [
         ];
@@ -439,27 +440,21 @@
          * @param mixed $value
          * @return mixed
          */
-        public static function cache($key,$value=null) {
-            $retval = null;
-            $conn   = false;
+        public static function cache($key,$value=null,$expire=0) {
+            $retval = null; $args   = func_num_args();
             if (\Environment::cachingEnabled()) {
                 if (!self::$cache && !self::$cacheFailed) {
                     if ($cache_server = Environment::settings()->getCacheHost()) {
                         $cache_server = explode(':',$cache_server);
                         if (self::$cache = new Memcache()) {
-                            @$conn = self::$cache->connect($cache_server[0],(isset($cache_server[1]) ? $cache_server[1] : 11211));
-                            if (!$conn) {
+                            if (!@self::$cacheConn = self::$cache->connect($cache_server[0],(isset($cache_server[1]) ? $cache_server[1] : 11211))) {
                                 self::$cacheFailed = true;
                             }
                         }
                     }
                 }
-                if ($conn) {
-                    if ($value !== null) {
-                        $retval = self::$cache->set($key,$value);
-                    } else {
-                        $retval = self::$cache->get($key);
-                    }
+                if (!self::$cacheFailed) {
+                    $retval = ($value !== null) ? self::$cache->set($key,$value,$expire) : (($value === null) && ($args > 1) ? self::$cache->delete($key) : self::$cache->get($key) );
                 }
             }
             return $retval;
