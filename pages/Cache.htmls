@@ -1,0 +1,22 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="RPC.htmls" title="Remote Procedure Calls" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Caching</div>
+
+Though optional, it is highly recommended that you utilize a memcache instance with Humble.  Humble will store frequently accessed resources in Memcache, otherwise those resources
+will be retrieved from the MySQL DB, which has unnecessary overhead for static resources.<br />
+<br />
+Additionally, if Memcache is utilized, the developer will be able to use caching in their own modules and apps.  The API for utilizing Memcache is shown below:<br /><br />
+    <div widget="codeBox" widgetScroll="100%" lang="php" lexicon="/pages/js/ColorizerLanguages.json" source="/pages/code/Memcache/example.phptxt" class="humble-code">
+
+    </div>
+
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->

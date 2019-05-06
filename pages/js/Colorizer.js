@@ -58,6 +58,13 @@ var Colorizer = (function (languageFile) {
             }
             return this.run();
         },
+        escapeHTML: function(unsafe) {
+            return unsafe;
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;");
+        },        
         run: function () {
             var me    = this;
             if ((this.language !== false) && (this.languages !== false) && (this.code !== false)) {
@@ -81,7 +88,7 @@ var Colorizer = (function (languageFile) {
                     $(this.box).height(size);
                 }
                 if (this.box.scrollWidth > 0) {
-                    $(this.box).width(this.codeBox.offsetWidth-this.rows.offsetWidth-2);
+                    $(this.box).width(this.codeBox.offsetWidth-this.rows.offsetWidth-3);
                     $('.'+this.id).width(this.box.scrollWidth);
                 }
                 $(this.box).on('scroll',function () {

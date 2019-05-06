@@ -54,6 +54,21 @@
         <li><a href="Pagination.htmls">Pagination</a></li>
     </ul>
     <div class="humble-doc-section">
+        Factories
+    </div>
+    <ul class="humble-doc-section-topics">
+        <li><a href="Factory.htmls">ReBranded Humble</a></li>
+        <li><a href="Environment.htmls">Environment</a></li>
+        <li><a href="Log.htmls">Logging</a></li>
+        <li><a href="Event.htmls">Event</a></li>
+        <li>Methods
+            <ul>
+                <li><a href="Cache.htmls">Cache</a></li>
+            </ul>
+        </li>
+
+    </ul>
+    <div class="humble-doc-section">
         Integration
     </div>
     <ul class="humble-doc-section-topics">

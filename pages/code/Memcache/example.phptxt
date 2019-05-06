@@ -1,0 +1,16 @@
+
+//The sample below stores the text 'bar' using the key 'foo' for 3600 seconds, or 1 hour.
+
+    Humble::cache('foo','bar',3600);
+
+//We do the same, but by not passing an expiration, the value will never expire
+
+    Humble::cache('foo','bar');
+
+//By passing just the key, we get back the stored value of 'bar'
+
+    $val = Humble::cache('foo');
+
+//To delete the key, pass in a null for the value argument
+
+    Humble::cache('foo',null);          //The 'foo' key will be deleted
