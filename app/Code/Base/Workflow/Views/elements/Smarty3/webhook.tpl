@@ -1,16 +1,11 @@
 {assign var=data value=$element->load()}
 <!--
-    INSTRUCTIONS:
-
-    This template makes setting up a configuration page for a workflow element pretty simple.
+    This template makes setting up a configuration page for a workflow element simple.
     
     You can leave most of this "as-is".  You can also tailor the template.tpl file to your liking.
 
-    First you will need to copy this template to your configuration view file.
-
     In the FORM SECTION below, you will need to *ONLY* add the HTML input fields and field descriptions,
-    along with any instructions for the person filling out the configuration page.  Also perform a change all
-    on the 'FORM-ELEMENT-NAME-HERE' placeholder with a unique name for the form element you are configuring.
+    along with any instructions for the person filling out the configuration page.
 
     Some common examples of HTML form fields are below as aids in designing your confiruation page.
 
@@ -42,31 +37,41 @@
     </tr>
     <tr style="height: 30px">
         <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Namespace</div><div class="paradigm-config-field">{$data.namespace}</div></td>
-        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Component</div><div class="paradigm-config-field">{$data.component}</div></td>
-        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Method</div><div class="paradigm-config-field">{$data.method}</div></td>
+        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Component</div><div class="paradigm-config-field">Web Hook</div></td>
+        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Method</div><div class="paradigm-config-field">&nbsp;</div></td>
     </tr>
 <!-- ################################ END HEADER SECTION ########################################-->    
     <tr>
         <td colspan="3" align="center" valign="middle">
             <!-- ########################## FORM SECTION ########################################-->
-            <form name="config-FORM-ELEMENT-NAME-HERE-form" id="config-FORM-ELEMENT-NAME-HERE-form-{$data.id}" onsubmit="return false">
+            <form name="config-webhook-form" id="config-webhook-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
                 <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />    <!-- Leave this As-Is -->
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
-                    <!--
-                        PUT YOUR CONFIGURATION INSTRUCTIONS HERE
-                    -->
-                    Field 1: <input class='paradigm-config-form-field' type="text" name="field_1_name" id="field_1_name_{$data.id}" value="{if (isset($data.field_1_name))}{$data.field_1_name}{/if}" /><br /><br >
-                    Field 2: <input class='paradigm-config-form-field' type="text" name="field_2_name" id="field_2_name_{$data.id}" value="{if (isset($data.field_2_name))}{$data.field_2_name}{/if}" /><br /><br >
-                    Checkbox Flag: <input type="checkbox" name="checkbox_field" id="checkbox_field_{$data.id}" value="Y"
-                           {if (isset($data.checkbox_field) && ($data.checkbox_field == "Y"))}
-                                   checked
-                           {/if}
-                    /><br />
-                    Radio Options: <input type="radio" name="radio_field" id="radio_field_yes_{$data.id}" value="Y" 
-                                          {if (isset($data.radio_field) && ($data.radio_field=='Y'))}checked="checked"{/if} /> Yes
-                                   <input type="radio" name="radio_field" id="radio_field_no_{$data.id}" value="N" 
-                                          {if (isset($data.radio_field) && ($data.radio_field=='N'))}checked="checked"{/if} /> No<br />
+                    Here we configure a WebHook, also called a "Reverse-API".  An external resource or application is going
+                    to send some data to a URI that you identify below, and that data will be converted into an event and 
+                    propagated down the workflow you design below.  The URI has to be of the form <b>/hook/namespace/<i>yourwebhook</i></b> where
+                    <i>yourwebhook</i> can be any descriptive text:<br /><br /><table>
+                        <tr>
+                            <td align="right">
+                                URI:
+                            </td>
+                            <td>/hook/{$data.namespace}/<input placeholder="webhook" class='paradigm-config-form-field' type="text" name="webhook" id="webhook_{$data.id}" value="{if (isset($data.webhook))}{$data.webhook}{/if}" /><br /><br >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                Event Field:
+                            </td>
+                            <td><input class='paradigm-config-form-field' type="text" name="field" id="field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" /><br /><br >
+                            </td>
+                        </tr>
+                    </table>
+                     
+                    <fieldset style="padding: 10px"><legend>WebHook Status</legend>
+                        <input type="checkbox" name="active" id="active_{$data.id}" {if (isset($data.active) && ($data.active=="Y" ))}checked{/if} value="Y" />  - When this box is checked, the webhook is available
+                    </fieldset>                    
+                    <br />
                     <br /><input type="submit" value=" Save " />
                 </fieldset>
             </form>
@@ -77,5 +82,5 @@
 <script type="text/javascript">
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    Form.intercept($('#config-FORM-ELEMENT-NAME-HERE-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
+    Form.intercept($('#config-webhook-form-{$data.id}').get(),'{$data.id}','/paradigm/webhook/save',"{$windowId}");
 </script>

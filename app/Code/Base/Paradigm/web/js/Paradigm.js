@@ -1087,6 +1087,7 @@ var Paradigm = (function () {
         },
         elements: {
             list:   [],
+            creating: false,
             connectors: {
                 check: function (connector) {
                     if (!(connector.start && connector.end)) {
@@ -1325,7 +1326,12 @@ var Paradigm = (function () {
 
             start: {
                 add: function () {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;
                     (new EasyAjax('/paradigm/element/create')).add('shape','circle').add('type','begin').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1374,7 +1380,12 @@ var Paradigm = (function () {
             },
             external:    {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','polygon1').add('type','external').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1418,7 +1429,12 @@ var Paradigm = (function () {
             },
             alerts: {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','triangle').add('type','alerts').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1464,9 +1480,14 @@ var Paradigm = (function () {
                     }).post();
                 }
             },
-            actor:  {
+            actor:  {                
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','actor').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1512,7 +1533,12 @@ var Paradigm = (function () {
             },
             system:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','system').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1558,7 +1584,12 @@ var Paradigm = (function () {
             },
             webservice:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','webservice').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1604,7 +1635,12 @@ var Paradigm = (function () {
             },
             webhook:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','webhook').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1650,7 +1686,12 @@ var Paradigm = (function () {
             },            
             process:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','rectangle').add('type','process').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1697,7 +1738,12 @@ var Paradigm = (function () {
             },
             decision:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','diamond').add('type','decision').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1737,13 +1783,16 @@ var Paradigm = (function () {
                         Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
                         Paradigm.redraw();
                     }).post();
-
                 }
-
             },
             rule:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','rule').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1792,7 +1841,12 @@ var Paradigm = (function () {
             },
             sensor:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','sensor').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1841,7 +1895,12 @@ var Paradigm = (function () {
 
             trigger:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','trigger').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1889,7 +1948,12 @@ var Paradigm = (function () {
             },
             detector:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','detector').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1937,7 +2001,12 @@ var Paradigm = (function () {
             },
             exception:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','exception').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -1985,7 +2054,12 @@ var Paradigm = (function () {
             },
             connector:  {
                 add: function () {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','arrow').add('type','connector').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -2028,7 +2102,12 @@ var Paradigm = (function () {
             },
             report:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','parallelogram').add('type','report').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -2077,7 +2156,12 @@ var Paradigm = (function () {
             },
             operation:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','trapezoid').add('type','operation').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -2126,7 +2210,12 @@ var Paradigm = (function () {
             },
             input:  {
                 add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','polygon2').add('type','input').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -2176,7 +2265,12 @@ var Paradigm = (function () {
             },
             terminus:  {
                 add: function () {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','roundedrectangle').add('type','terminus').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
@@ -2219,13 +2313,17 @@ var Paradigm = (function () {
             },
             label:  {
                 add: function () {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
                     (new EasyAjax('/paradigm/element/create')).add('shape','roundedrectangle').add('type','label').then(function (response) {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
                         if (!response) {
                             alert('Please try again, failed to create element');
                             return;
                         }
                         var z = Paradigm.elements.list.length;
-
                         Paradigm.objects[response] = Paradigm.label =  Paradigm.elements.list[z] = {
                             id: response,
                             type: 'diagramlabel',

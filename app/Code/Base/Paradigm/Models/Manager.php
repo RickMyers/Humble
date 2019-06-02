@@ -165,6 +165,10 @@ class Manager extends Model
                  * have access to the shared session variable.
                  */
                 $config  = $results['type'].'Configuration';
+                if (!isset($results['namespace']) || !$results['namespace']) {
+                    $element->setNamespace($this->getNamespace())->save();      //if you don't have a namespace yet (webhook, webservice, etc, this will assign you the current namespace of the workflow you are in
+                    $results['namespace'] = $this->getNamespace();              //Everything has got to belong to something
+                }
                 $this->setData(json_encode($results));
                 $this->setSessionId(true);  //enable session passing
                 $config = $this->$config();

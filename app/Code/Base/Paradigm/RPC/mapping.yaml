@@ -49,6 +49,13 @@ webserviceConfiguration  :
   secure          : true
   method          : POST
   arguments       : [sessionId,namespace,id,windowId,data,component,method]
+webhookConfiguration  :
+  url             : /workflow/elements/webhook
+  api-key         :
+  api-var         :
+  secure          : true
+  method          : POST
+  arguments       : [sessionId,namespace,id,windowId,data,component,method]  
 decisionConfiguration  :
   url             : /workflow/elements/decision
   api-key         :

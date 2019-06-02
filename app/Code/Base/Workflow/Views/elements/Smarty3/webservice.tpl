@@ -104,6 +104,7 @@
                 <div>
                     <fieldset style="padding: 10px"><legend>Webservice Status</legend>
                     <input type="checkbox" name="enabled" id="webservice-enabled-{$windowId}" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
+                    </fieldset>
                 </div><br /><br />
                 <div id='humble-paradigm-config-webservice-security-nav-{$manager->getId()}'></div>
                 <div id='humble-paradigm-config-webservice-security-none-{$manager->getId()}' style='display: none; padding: 30px'>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+Webhook integration point management
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
+-->
+<controller name="webservice" use="Smarty3" author="Richard Myers" email="rick@enicity.com">
+    <actions>
+        <action name="save">
+            <description>Saves or creates a new webhook integration point</description>
+            <model namespace="paradigm" class="webhooks" id="webhook" method="save">
+                <parameter name="data" source="post" required="true" />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

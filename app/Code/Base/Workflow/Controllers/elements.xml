@@ -179,6 +179,11 @@
             <mongo namespace="paradigm" class="elements" id="element">
                 <parameter name='id' source='post' required='true' default='' />
             </mongo>
+            <model namespace="workflow" class='manager' id='manager'>
+                <parameter name='namespace' source='post' required='true' default='' />
+                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='id' source='post' required='true' default='' />
+            </model>            
         </action>
         
         <!-- ################################################################################################# -->
