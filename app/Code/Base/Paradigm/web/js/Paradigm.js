@@ -1564,7 +1564,7 @@ var Paradigm = (function () {
                             type: 'image',
                             active: true,
                             image: Paradigm.default.file.image,
-                            element: 'actor',
+                            element: 'file',
                             label: Paradigm.default.file.label,
                             text: Paradigm.console.add('Add [fileTrigger: &text&][ID:'+response+']',text,1),
                             lines: {
@@ -1582,8 +1582,8 @@ var Paradigm = (function () {
                             },
                             X:  Paradigm.default.start.x,
                             Y:  Paradigm.default.start.y,
-                            W:  57,
-                            H:  68,
+                            W:  70,
+                            H:  70,
                             Z:  z+1,
                             isClosed: function () {
                                 //a function to determine when a shape is closed, as in no more connections are allowed
