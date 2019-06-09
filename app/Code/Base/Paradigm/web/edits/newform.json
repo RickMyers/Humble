@@ -70,7 +70,7 @@
                         Paradigm.actions.set.namespace($('#paradigm-new-diagram-client').val());
                         Paradigm.actions.set.majorVersion(0);
                         Paradigm.actions.set.minorVersion(1);
-                        Paradigm.elements.label.add();
+                        Paradigm.elements.label.add(Paradigm.elements.start.add);
                         Paradigm.elements.list = [];
                         Paradigm.objects = [];
                         Paradigm.redraw();
@@ -83,7 +83,6 @@
                             $('#paradigm-quick-inactivate').css('display','block').css('visibility','visible').fadeIn();
                             Workflows.controls = true;
                         }
-                        Paradigm.elements.start.add();
                         $('#paradigm-quick-inactivate').css('visibility','visible').css('display','block');
                         $('#paradigm-quick-activate').css('visibility','visible').css('display','none');
                         $('#generated-icon').css('visibility','hidden');

@@ -237,6 +237,9 @@ Copyright Enicity.com, all rights reserved
                         case    "process"  :
                             Paradigm.elements.process.add($('#new-element-text').val());
                             break;
+                        case    "file"  :
+                            Paradigm.elements.file.add($('#new-element-text').val());
+                            break;                            
                         case    "actor"  :
                             Paradigm.elements.actor.add($('#new-element-text').val());
                             break;
@@ -371,7 +374,7 @@ Copyright Enicity.com, all rights reserved
                         Desktop.window.list[Paradigm.actions.get.loadWindow()]._close();
                         Paradigm.redraw();
                         Workflows.enable();
-                        if (diagram.active==='Y') {
+                        if (diagram.active === 'Y') {
                             $('#paradigm-quick-inactivate').css('visibility','visible').css('display','none');
                             $('#paradigm-quick-activate').css('visibility','visible').css('display','block');
                             Paradigm.console.add('This workflow is active','',1);
@@ -522,12 +525,10 @@ Copyright Enicity.com, all rights reserved
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/cron.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('system')" /><br />
                             Time
                         </div>
-
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px" title='When somebody does something, such as form submission'>
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/person1.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('actor')" /><br />
                             Actor
                         </div>
-
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px;" title='An exposed webservice has been called'>
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/webservice2.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('webservice')" /><br />
                             Service
@@ -536,10 +537,14 @@ Copyright Enicity.com, all rights reserved
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/webhook_icon.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('webhook')" /><br />
                             WebHook
                         </div>                        
-                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-right: 20px" title='An event thrown by a batch or offline process'>
+                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px;" title='A controller action created the event'>
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/event3.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('trigger')" /><br />
-                            System Event
+                            Action
                         </div>
+                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-right: 20px" title='A file arrives in a directory'>
+                            <img class='flowchartGlyph' src='/images/paradigm/clipart/file_trigger.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('file')" /><br />
+                            File
+                        </div>                        
                         <!--div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-right: 20px" title='Triggered by the presence of specific data in a request'>
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/sensor2.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('sensor')" /><br />
                             Sensor
@@ -568,10 +573,10 @@ Copyright Enicity.com, all rights reserved
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/decision.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('decision')" /><br />
                             Decision
                         </div>
-                        <!--div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                        <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/business-rule.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('rule')" /><br />
                             Rule
-                        </div-->
+                        </div>
                         <!--div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/detector2.png' style=' height: 40px; cursor: pointer' onclick="Workflows.prompt('detector')" /><br />
                             Detector
@@ -655,6 +660,10 @@ Copyright Enicity.com, all rights reserved
                                         </li>
                                         <li class='humble-menu-has-sub'><a class='insert_glyph' href='#' onclick="Workflows.prompt('actor');return false"><span><img src='/images/paradigm/clipart/person1.png' style='height: 16px; float: right; margin-left: 5px; margin-right: 2px' />Actor</span></a>
                                         </li>
+                                        <li class='humble-menu-has-sub'><a class='insert_glyph' href='#' onclick="Workflows.prompt('file');return false"><span><img src='/images/paradigm/clipart/file_trigger.png' style='height: 16px; float: right; margin-left: 5px; margin-right: 2px' />File Trigger</span></a>
+                                        </li>
+                                        <li class='humble-menu-has-sub'><a class='insert_glyph' href='#' onclick="Workflows.prompt('webhook');return false"><span><img src='/images/paradigm/clipart/webhook.png' style='height: 16px; float: right; margin-left: 5px; margin-right: 2px' />WebHook</span></a>
+                                        </li>                                        
                                         <li class='humble-menu-has-sub'><a class='insert_glyph' href='#' onclick="Workflows.prompt('process');return false"><span><img src='/images/paradigm/clipart/process.png' style='height: 16px; float: right; margin-left: 5px; margin-right: 2px' />Process</span></a>
                                         </li>
                                         <li class='humble-menu-has-sub'><a class='insert_glyph' href='#' onclick="Workflows.prompt('decision');return false"><span><img src='/images/paradigm/clipart/decision.png' style='height: 16px; float: right; margin-left: 5px; margin-right: 2px' />Decision</span></a>
