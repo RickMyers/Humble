@@ -7,6 +7,16 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 -->
 <controller name="file" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
     <actions>
+        
+        <action name="trigger">
+            <description>Saves or creates a new file trigger </description>
+            <model namespace="paradigm" class="file" id="file" method="save">
+                <parameter name="data" source="post" required="true" />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
+                        
         <action name="add" passalong="windowId">
             <description>A form to specify a file or URL location</description>
             <mongo namespace='paradigm' class='elements' id='element'>

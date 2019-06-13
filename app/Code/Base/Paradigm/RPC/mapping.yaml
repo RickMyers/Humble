@@ -27,7 +27,13 @@ triggerConfiguration  :
   secure          : true
   method          : POST
   arguments       : [sessionId,namespace,id,windowId,data,component,method]
-
+fileConfiguration  :
+  url             : /workflow/elements/file
+  api-key         :
+  api-var         :
+  secure          : true
+  method          : POST
+  arguments       : [sessionId,namespace,id,windowId,data,component,method]
 externalConfiguration  :
   url             : /workflow/elements/external
   api-key         :

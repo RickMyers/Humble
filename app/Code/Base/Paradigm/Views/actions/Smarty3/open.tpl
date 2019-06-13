@@ -553,7 +553,7 @@ Copyright Enicity.com, all rights reserved
 
                     <fieldset style="display: inline-block; position: relative; top: -5px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
                         <legend style="font-family: sans-serif; font-size: .6em">Connectors</legend>
-                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; ">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/flowchart-arrow.gif' onclick="Paradigm.elements.connector.add()" style='height: 40px; cursor: pointer' /><br />
                                 Internal
                         </div>

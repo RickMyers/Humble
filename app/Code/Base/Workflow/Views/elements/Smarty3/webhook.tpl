@@ -80,20 +80,6 @@
                                 </select>
                             </td>
                         </tr>                        
-                        <tr>
-                            <td align="right">
-                                Security Question:
-                            </td>
-                            <td><input class='paradigm-config-form-field' type="text" name="question" id="question_{$data.id}" value="{if (isset($data.question))}{$data.question}{/if}" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="right">
-                                Question Answer:
-                            </td>
-                            <td><input class='paradigm-config-form-field' type="text" name="answer" id="answer_{$data.id}" value="{if (isset($data.answer))}{$data.answer}{/if}" />
-                            </td>
-                        </tr>                        
                     </table>
                      <br /><br />
                     <fieldset style="padding: 10px"><legend>WebHook Status</legend>

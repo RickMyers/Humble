@@ -62,7 +62,7 @@ class Webservice extends Model
         $component->saveComponent();
         $webhook     = Humble::getEntity('paradigm/webhooks');
         $webhook->setUri($data['uri']);
-        $webhook->setWebhookeId($data['id']);
+        $webhook->setWebhookId($data['id']);
         $webhook->setActive($data['active']);
         $id = $webhook->save();
         $this->registerWebhookIntegrationPoint($id,$data);
