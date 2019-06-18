@@ -574,6 +574,9 @@ SQL;
                 $non_values[$key] = $data;
             }
         }
+        if (!isset($db_fields['modified'])) {
+            $db_fields['modified'] = date('Y-m-d H:i:s');
+        }
         $fieldlist  = '`'.$this->implode_keys('`,`',$db_fields).'`';
         $values = '';
         foreach ($db_fields as $field) {
@@ -582,7 +585,7 @@ SQL;
         }
         //$values     = "'".implode("','",$db_fields)."'";
         $duplicates = [];
-        foreach ($this->_fields as $key => $value) {
+        foreach ($db_fields as $key => $value) {
             if (isset($this->_column[$key])) {
                 $duplicates[$key] = $db_fields[$key];
             }

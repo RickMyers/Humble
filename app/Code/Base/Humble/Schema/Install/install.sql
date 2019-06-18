@@ -17,8 +17,9 @@ MySQL - 5.7.18-log : Database - humble
 CREATE TABLE `humble_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` char(128) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_chronicle` */
 
@@ -30,6 +31,7 @@ CREATE TABLE `humble_chronicle` (
   `namespace` char(32) DEFAULT NULL,
   `class` char(64) DEFAULT NULL,
   `message` varchar(128) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `core_chronicle_idx` (`clientid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -40,6 +42,7 @@ CREATE TABLE `humble_controllers` (
   `namespace` char(64) NOT NULL,
   `controller` char(64) NOT NULL,
   `compiled` char(32) NOT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`namespace`,`controller`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -50,6 +53,7 @@ CREATE TABLE `humble_css` (
   `namespace` char(32) NOT NULL DEFAULT '',
   `source` char(128) NOT NULL DEFAULT '',
   `weight` int(11) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`package`,`namespace`,`source`),
   KEY `core_js_pkg_idx` (`package`),
   KEY `core_js_ns_idx` (`namespace`)
@@ -61,6 +65,7 @@ CREATE TABLE `humble_edits` (
   `namespace` char(32) NOT NULL DEFAULT '',
   `form` char(48) NOT NULL DEFAULT '',
   `source` char(128) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`namespace`,`form`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -70,6 +75,7 @@ CREATE TABLE `humble_entities` (
   `namespace` char(36) NOT NULL,
   `entity` char(36) NOT NULL,
   `polyglot` char(1) DEFAULT 'N',
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`namespace`,`entity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -79,6 +85,7 @@ CREATE TABLE `humble_entity_columns` (
   `namespace` char(64) NOT NULL,
   `entity` char(64) NOT NULL,
   `column` char(64) NOT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`namespace`,`entity`,`column`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -89,6 +96,7 @@ CREATE TABLE `humble_entity_keys` (
   `entity` char(64) NOT NULL DEFAULT '',
   `key` char(64) NOT NULL DEFAULT '',
   `auto_inc` char(1) DEFAULT 'N',
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`namespace`,`entity`,`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -112,6 +120,7 @@ CREATE TABLE `humble_js` (
   `namespace` char(32) NOT NULL DEFAULT '',
   `source` char(128) NOT NULL DEFAULT '',
   `weight` int(11) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`package`,`namespace`,`source`),
   KEY `core_js_pkg_idx` (`package`),
   KEY `core_js_ns_idx` (`namespace`),
@@ -154,15 +163,16 @@ CREATE TABLE `humble_modules` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `humble_modules_uidx` (`namespace`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_packages` */
 
 CREATE TABLE `humble_packages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` char(128) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_pages` */
 
@@ -170,6 +180,7 @@ CREATE TABLE `humble_pages` (
   `namespace` char(32) NOT NULL DEFAULT '',
   `page` char(128) NOT NULL DEFAULT '',
   `source` varchar(128) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`namespace`,`page`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -180,8 +191,9 @@ CREATE TABLE `humble_templaters` (
   `templater` char(64) DEFAULT NULL,
   `extension` char(16) DEFAULT NULL,
   `description` char(64) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_templates` */
 
@@ -189,6 +201,7 @@ CREATE TABLE `humble_templates` (
   `namespace` char(32) NOT NULL DEFAULT '',
   `template` char(48) NOT NULL DEFAULT '',
   `source` char(128) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`namespace`,`template`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -227,9 +240,10 @@ CREATE TABLE `humble_userlog` (
   `timein` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `timeout` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `currently_viewing` int(11) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`),
   KEY `userlog_idx` (`clientid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*Table structure for table `humble_users` */
 
@@ -246,8 +260,9 @@ CREATE TABLE `humble_users` (
   `logged_in` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   `account_status` char(1) DEFAULT '',
   `login_attempts` int(11) DEFAULT '0',
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
