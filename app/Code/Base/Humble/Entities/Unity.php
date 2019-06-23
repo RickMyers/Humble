@@ -583,7 +583,6 @@ SQL;
             $values .= $values ? "," : "";
             $values .= ($field || ($field===0) || ($field==='0')) ? "'".addslashes($field)."'" : "NULL";
         }
-        //$values     = "'".implode("','",$db_fields)."'";
         $duplicates = [];
         foreach ($db_fields as $key => $value) {
             if (isset($this->_column[$key])) {

@@ -55,7 +55,7 @@ class HumbleException {
             $pt = print_r($_POST,true);
 
             $filename = (method_exists($e,'getFileName')) ? $e->getFileName() : "N/A";
-            $exception = <<<ERROR
+            $exception = <<<ERRORTEXT
 --------------------------------------------------------------------------------
 {$ts} - {$type}
 RETURN CODE:   {$e->getCode()}
@@ -71,7 +71,7 @@ GET:
 {$gt}
 POST:
 {$pt}
-ERROR;
+ERRORTEXT;
             \Log::error($exception);
         }
     }

@@ -3,7 +3,8 @@ var Humble = (function ($) {
     var templates       = [];
     var defaultModule   = false;
     return {
-        init: function () {
+        init: function (callback) {
+            var me = this;
             (new EasyAjax('/paradigm/templates/fetch')).then(function (response) {
                 var tpls = JSON.parse(response);
                 if (tpls) {
@@ -15,7 +16,9 @@ var Humble = (function ($) {
                         }
                     }
                 }
-                console.log(templates);
+                if (callback) {
+                    callback.apply(me);
+                }
             }).get(false);
         },
         template:  function (identifier,defaults) {

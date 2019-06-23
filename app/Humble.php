@@ -461,6 +461,33 @@
         }
 
         /**
+         * Relays an event to the Node.js Signaling Hub
+         * 
+         * @param string $eventName
+         * @param array $data
+         * @return boolean
+         */
+        public static function emit($eventName,$data=[]) {
+            $success = false;
+            $project = Environment::getProject();
+            if ($server = file_get_contents('../../socketserver_'.$project->namespace.'.txt')) {
+                $data['event'] = $eventName;
+                $ch = curl_init($server.'/emit');
+                curl_setopt($ch, CURLOPT_POST,1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data,'','&'));
+                curl_setopt($ch, CURLOPT_HEADER, 1);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+                curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.12011-10-16");        
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);        
+                $res        = curl_exec($ch);
+                $info       = curl_getinfo($ch);
+                $success    = ($info && isset($info['http_code']) && (($info['http_code'] == '200') || ($info['http_code'] == '100')));
+            }
+        }
+
+        /**
          * To protect yourself from bad impulses, access to the DB is restricted to instances of Entity the object or a short list of privileged classes.  This is to encourage DAO style development
          *
          * @param \Code\Base\Humble\Entities\Unity $callingClass
