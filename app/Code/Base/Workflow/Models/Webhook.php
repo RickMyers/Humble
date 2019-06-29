@@ -19,7 +19,7 @@ use Humble;
  * @link       https://enicity.com/docs/class-&&MODULE&&.html
  * @since      File available since Version 1.0.1
  */
-class Webservice extends Model
+class Webhook extends Model
 {
 
     /**

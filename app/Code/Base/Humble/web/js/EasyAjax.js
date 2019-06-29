@@ -88,6 +88,17 @@ EasyAjax.prototype.add = function(paramName, paramValue) {
     return this;
 };
 /* ----------------------------------------------------------------- */
+EasyAjax.prototype.addModel     = function (model) {
+    for (var i in model) {
+        if ((i.substr(0,1)!=='$') && (i.substr(0,1)!=='_')) {
+            if ((typeof(model[i]) !== 'object') && (typeof(model[i]) !== 'function')) {
+                this.add(i,model[i]);
+            }
+        }
+    }
+    return this;
+}
+/* ----------------------------------------------------------------- */
 EasyAjax.prototype.addFiles= function(key,fileField) {
     if (fileField && fileField.files) {
         if (!this.formData) {
