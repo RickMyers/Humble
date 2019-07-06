@@ -61,10 +61,7 @@ class Webhook extends Model
         $component->setData($this->getData());
         $component->saveComponent();
         $webhook     = Humble::getEntity('paradigm/webhooks');
-        $webhook->setUri($data['uri']);
-        $webhook->setWebhookId($data['id']);
-        $webhook->setActive($data['active']);
-        $id = $webhook->save();
+        $id = $webhook->setWebhook($data['webhook'])->setFormat($data['format'])->setDescription($data['description'])->setField($data['field'])->setActive($data['active'])->save();
         $this->registerWebhookIntegrationPoint($id,$data);
     }
 }

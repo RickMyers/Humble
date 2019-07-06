@@ -201,6 +201,9 @@
                 <parameter name='windowId' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>            
+            <entity namespace="paradigm" class="webhooks" id="webhooks" >
+                <parameter name='namespace' source='post' required='true' default='' />
+            </entity>
         </action>
         
         <!-- ################################################################################################# -->

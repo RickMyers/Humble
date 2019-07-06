@@ -45,49 +45,64 @@
         <td colspan="3" align="center" valign="middle">
             <!-- ########################## FORM SECTION ########################################-->
             <form name="config-webhook-form" id="config-webhook-form-{$data.id}" onsubmit="return false">
-                <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />    <!-- Leave this As-Is -->
-                <input type="hidden" name="workflow_id" id="workflow_id_{$data.id}" value="" />    <!-- Leave this As-Is -->
-                <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
-                    <b>Note</b>:  Include a way to choose a preconfigured webhook, so you can set multiple workflows up per webhook<br /><br />
-                    Here we configure a WebHook, also called a "Reverse-API".  An external resource or application is going
-                    to send some data to a URI that you identify below, and that data will be converted into an event and 
-                    propagated down the workflow described here.  The URI has to be of the form <b>/hook/namespace/<i>yourwebhook</i></b> where
-                    <i>yourwebhook</i> can be any descriptive text:<br /><br />
-                    
-                    URI: /hook/{$data.namespace}/<input placeholder="webhook" class='paradigm-config-form-field' type="text" name="webhook" id="webhook_{$data.id}" value="{if (isset($data.webhook))}{$data.webhook}{/if}" />
-                    
-                    <table>
-                        <tr><td colspan="2">&nbsp;</td></tr>
-                        <tr>
-                            <td align="right">
-                                Event Field:
-                            </td>
-                            <td><input class='paradigm-config-form-field' type="text" name="field" id="field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="right">
-                                Data Format:
-                            </td>
-                            <td>
-                                <select class='paradigm-config-form-field' name="format" id="format_{$data.id}">
-                                    <option value=""></option>
-                                    <option value="JSON"> JSON (Conversion To Array) </option>
-                                    <option value="TEXT"> Text (No Conversion)  </option>
-                                    <option value="XML"> XML (Conversion To Object) </option>
-                                    <option value="RAW"> Raw (As-Is) </option>
-                                </select>
-                            </td>
-                        </tr>                        
-                    </table>
-                     <br /><br />
-                    <fieldset style="padding: 10px"><legend>WebHook Status</legend>
-                        <input type="checkbox" name="active" id="active_{$data.id}" {if (isset($data.active) && ($data.active=="Y" ))}checked{/if} value="Y" />  - When this box is checked, the webhook is available
-                    </fieldset>                    
-                    <br />
-                    <br /><input type="submit" value=" Save " />
-                </fieldset>
+                    <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
+                    <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />    <!-- Leave this As-Is -->
+                    <input type="hidden" name="workflow_id" id="workflow_id_{$data.id}" value="" />    <!-- Leave this As-Is -->
+                    <input type="hidden" name="namespace" id="namespace_{$data.id}" value="{$data.namespace}" />    <!-- Leave this As-Is -->
+                    <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
+                        
+                        Here we configure a WebHook, also called a "Reverse-API".  An external resource or application is going
+                        to send some data to a URI that you identify below, and that data will be converted into an event and 
+                        propagated down the workflow described here.  The URI has to be of the form <b>/hook/namespace/<i>yourwebhook</i></b> where
+                        <i>yourwebhook</i> can be any descriptive text:<br /><br />
+                        Existing Webhook:   <select name="existing_webhook" id="existing_webhook_{$data.id}" class='paradigm-config-form-field' style="width: 150px">
+                                                <option value=""> </option>
+                                                {foreach from=$webhooks->fetch(true) item=webhook}
+                                                    <option title="{$webhook.description}" value="{$webhook.id}"> {$webhook.webhook} </option>
+                                                {/foreach}
+                                            </select><br /><br />
+                        
+                        URI: /hook/{$data.namespace}/<input placeholder="webhook" class='paradigm-config-form-field' type="text" name="webhook" id="webhook_{$data.id}" value="{if (isset($data.webhook))}{$data.webhook}{/if}" />
+                        
+                        <table>
+                            <tr><td colspan="2">&nbsp;</td></tr>
+                            <tr>
+                                <td  colspan="2">
+                                    Description:<br />
+                                    <textarea rows="4" cols="45" class='paradigm-config-form-field'  name="description" id="description_{$data.id}">{if (isset($data.description))}{$data.description}{/if}</textarea>
+                                </td>
+                            </tr>                            
+                            <tr><td colspan="2">&nbsp;</td></tr>
+                            <tr>
+                                <td align="right">
+                                    Event Field:
+                                </td>
+                                <td>
+                                    <input class='paradigm-config-form-field' type="text" name="field" id="field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    Data Format:
+                                </td>
+                                <td>
+                                    <select class='paradigm-config-form-field' name="format" id="format_{$data.id}">
+                                        <option value=""></option>
+                                        <option value="JSON"> JSON (Conversion To Array) </option>
+                                        <option value="TEXT"> Text (No Conversion)  </option>
+                                        <option value="XML"> XML (Conversion To Object) </option>
+                                        <option value="RAW"> Raw (As-Is) </option>
+                                    </select>
+                                </td>
+                            </tr>                        
+                        </table>
+                        <br /><br />
+                        <fieldset style="padding: 10px"><legend>WebHook Status</legend>
+                            <input type="checkbox" name="active" id="active_{$data.id}" {if (isset($data.active) && ($data.active=="Y" ))}checked{/if} value="Y" />  - When this box is checked, the webhook is available
+                        </fieldset>                    
+                        <br />
+                    </fieldset>
+                <br /><input type="submit" value=" Save " />                
             </form>
             <!-- ########################## END FORM SECTION ####################################-->                
         </td>
@@ -99,5 +114,9 @@
     {if (isset($data.format) && $data.format)}
         $('#format_{$data.id}').val('{$data.format}')
     {/if}
+    $('#workflow_id_{$data.id}').val(Paradigm.actions.get.mongoWorkflowId());
     Form.intercept($('#config-webhook-form-{$data.id}').get(),'{$data.id}','/workflow/webhook/save',"{$windowId}");
+    $('#existing_webhook_{$data.id}').on("change",function (evt) {
+        alert('Ok');
+    });
 </script>
