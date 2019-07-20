@@ -9,9 +9,32 @@
     </tr>
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-<div class='humble-topic-header'>Section Header</div>
+<div class='humble-topic-header'>Manifest Destiny</div>
+Ok, that was a bad pun.  The Humble Website, where this page is hosted, is the ultimate repository for the Humble Framework, however, getting access to the functionality of 
+the framework is different depending on what role you want to take.  If you want to develop applications using the Humble Framework, then you follow the instructions on the
+installation page.  If you want to contribute to the Humble Framework, your instructions for installation are different and covered elsewhere.<br /><br />
 
+Regardless though, <u><i>the files that make up the application distro are not the files you get at GitHub by cloning the application</i></u>.<br /><br />
 
+In the /app folder are some .manifest files.  The Humble.manifest file contains the list of files (including directories and such) that will make up the distro.  Any file or directory not 
+represented on the Humble.manifest list will not be included in the distro.  This is why a fair amount of the files contained on the website (like this file) do not make it into the distro.<br /><br />
+
+If you are contributing to the Humble project, and you add new files or directories, you must make sure that those files or directories are on the Humble.manifest (one way or another).  Otherwise
+they won't get zipped up and shipped out with the distro.  There are rules to the Humble.manifest syntax, and you should acquaint yourself with those if you are a contributor.<br /><br />
+
+Beyond that, with each successful distro installation, there is a Humble.local.manifest file.  This file contains overrides for patching the Humble framework (something you should do occasionally).
+This file controls whether framework components will be updated, merged, or skipped during patching.  There are three sections to the local manifest, and these are:
+<ul>
+    <li>merge -- Files that you have taken ownership over, however, any future changes should be merged in </li>
+    <li>ignore -- File that you have taken ownership over and you want the patching feature to cease updating </li>
+    <li>alwaysSkip -- These are special system files. Don't touch them!</li>
+</ul>
+
+Choose carefully which files you add to this list, and, hopefully the list will not grow to long.  When you choose 'ignore', the application developers are taking on the responsibility of 
+effecting any and all necessary patches themselves.  Merge, as of the initial release of the Humble Framework, isn't implemented.  When we have found a suitable merge tool, it will be.
+<br /><br />
+The 'alwaysSkip' option should be limited to the default files found in the local.manifest.
+<br /><br />
 
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->

@@ -73,7 +73,7 @@ The following are most (but not necessarily all) of the elements that can compri
 <ul>
     <li><b>description</b> - A description of this actions purpose.  This description is used in a Searchable Directory so please include it and make meaningful.  The directory is available from the admin page.</li>
     <li><b>model/helper/entity</b> - These are the primary resources of your application, and are covered later in this document</li>
-    <li><b>switch/if</b> - Two mechanisms for selective processing, covered later in this document.</li>
+    <li><b>switch/if</b> - Two mechanisms for selective processing, covered later in this document</li>
     <li><b>view</b> - An override mechanism so you can share views between actions</li>
     <li><b>chain</b> - Identifies a series of 1 or more actions to perform after this action.  This is how we achieve Daisy-Chaining of actions.</li>
     <li><b>redirect</b> - When you need to go to an action in another controller, or access some resource not a component of the current namespace, then use a redirect. Otherwise use a "chain".</li>
@@ -81,7 +81,12 @@ The following are most (but not necessarily all) of the elements that can compri
     <li><b>abort</b> - Most often used with "switch/if", will force an abrupt end to processing and prevent any additional bubbling of events.</li>
 </ul>
 <div class="humble-section-header">Resources</div>
-
+    A resource is a reference to a PHP class.  There are only three kinds of resources that are readily available in your Controller, and these are listed below
+    <ul>
+        <li><b>Model</b> - A class containing custom logic, usually centered on processes.  These can contain workflow components</li>
+        <li><b>Helper</b> - A class containing utility methods.  These classes are allocated as Singletons and should not attempt to maintain state, also they may not contain workflow components</li>
+        <li><b>Entity</b> - A class representing a DB Table/Collection.  The class must follow the naming conventions related to Entities, and these are not allowed to contain workflow components</li>
+    </ul>
 <br />
 </div>
 
