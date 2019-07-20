@@ -239,7 +239,7 @@ HDR;
                     if ($this->trigger) {
                         //only if this is a trigger caused by an actor or something that hits a URL, not a system thrown event (time based)
                         if (isset($this->trigger['namespace']) && isset($this->trigger['component']) && isset($this->trigger['method'])) {
-                            $event = Humble::getEntity('paradigm/workflow_listeners');
+                            $event = Humble::getEntity('paradigm/workflow/listeners');
                             $event->setWorkflowId($this->_workflowId());
                             $trigger = $event->load(true);
                             if (!$trigger) {
