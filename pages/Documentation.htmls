@@ -48,8 +48,8 @@
         The Unity ORM
     </div>
     <ul class="humble-doc-section-topics">
+        <li><a href="Unity.htmls">Unity ORM Basics</a></li>
         <li><a href="Polyglot.htmls">Polyglot Persistence</a></li>
-        <li><a href="Entities.htmls">Entities</a></li>
         <li><a href="DAO.htmls">Database Access Objects (DAO)</a></li>
         <li><a href="Pagination.htmls">Pagination</a></li>
     </ul>
@@ -91,7 +91,16 @@
     <ul class="humble-doc-section-topics">
         <li>Events</li>
         <li>Workflows</li>
-        <li>Console</li>
+        <li>Triggers</li>
+        <li>Deployments</li>
     </ul>
+    <div class="humble-doc-section">
+        Contributing to the Humble Project
+    </div>
+    <ul class="humble-doc-section-topics">
+        <li><a href="Manifest.htmls">The Humble Manifest</a></li>
+        <li><a href="Contribute.htmls">Installing Humble For Contributors</a></li>
+        <li>Console</li>
+    </ul>    
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->

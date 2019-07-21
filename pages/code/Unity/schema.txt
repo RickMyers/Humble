@@ -1,0 +1,10 @@
+
+    create table namespace_table_name
+    (
+        id          int not null auto_increment,
+        .
+        .
+        .
+        modified    timestamp default current_timestamp,
+        primary key (id)
+    )
