@@ -23,15 +23,44 @@ the pagination features for Unity are absolutely the easiest there are.  But wha
 <ul>
     1) You will name your tables using the following format:
     <ul>
-        <b><i>namespace</i>_table_name</b>
+        <br /><b><i>namespace</i>_table_name</b><br /><br />
     </ul>
     2) Every entity will be defined with the following fields:
-    <ul>
-    <div widget="codeBox" widgetScroll="100%" lang="sql" lexicon="/pages/js/lang/Unity/schema.json" source="/pages/code/Unity/schema.txt" class="humble-code">
+    <ul><br /><div widget="codeBox" widgetScroll="100%" lang="sql" lexicon="/pages/js/lang/Unity/schema.json" source="/pages/code/Unity/schema.txt" class="humble-code">
 
     </div>
-    </ul>    
+    </ul><br />
+    3) Each entity has to be registered in the /etc/config.xml file (per module and namespace) to be managed by Unity:
+    <ul><br />
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Unity/configuration.json" source="/pages/code/Unity/configuration.txt" class="humble-code">
+
+    </div>
+    </ul><br />
 </ul>
+There are no generated classes by default to manage CRUD functions.  That's inherent to Unity's functionality.  All you need to do is to follow the conventions as described above and register
+your entity with the framework to begin managing tables.  Later we will examine more advanced techniques (such as managing joins and pagination), but for now, what you see above is it.
+<br /><br />
+By having the <i>modified</i> column as shown in step 2 above, anytime a row in a table is saved, the modified field is automatically updated.  By having an ID, you can lookup a row by that
+specific ID, or if ID is not available, you can return a row or a result set by non-key columns.
+<br /><br />
+After you have defined your entity and registered the entity, you are ready to begin working with them.  There are three different mechanisms for working with Entities, and they are shown below
+<ul>
+    1) From within the XML Controllers.<br /><br />
+    <ul>
+        We use the &lt;entity /&gt; tag to reference a registered entity, as shown below:<br /><br />
+        <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Unity/entity.json" source="/pages/code/Unity/entity.txt" class="humble-code">
+
+        </div><br /><br />
+        From the above example, we are accessing the entity 'humble_user_identification' by specifying the namespace ("humble") and class ("user/identification").  We are creating
+        a reference called "users", which will be available to any of the server-side templating engines we might use, and we are granting this entity direct access to the response
+        object without necessitating using a server-side view.  We are then calling the "load" method to retrieve the user information, and passing the returned data directly to the
+        response object, which means it will be returned to the requestor.  Further, we have defined a single required parameter, and that is an ID which is the primary key of the entity,
+        and the value of the parameter is the variable "uid" which is stored in the session.<br /><br />
+        This demonstrates a mechanism to return the identifying information of the user who is currently logged in.<br /><br />
+    </ul>
+</ul>
+
+
 
 
 

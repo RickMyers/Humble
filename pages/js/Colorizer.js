@@ -70,7 +70,7 @@ var Colorizer = (function (languageFile) {
             if ((this.language !== false) && (this.languages !== false) && (this.code !== false)) {
                 var lines =  me.code.split("\n");
                 var nl    = "<div id='colorizer_code_source_"+this.id+"' style=' width: "+(this.codeBox.offsetWidth-58)+"px; height: "+(this.codeBox.offsetHeight-1)+"px; display: inline-block; vertical-align: top; overflow: auto'>";
-                var rows  = "<div id='colorizer_code_rows_"+this.id+"' style='float: left; width: 45px; height: 100%; overflow: hidden'>";
+                var rows  = "<div id='colorizer_code_rows_"+this.id+"' style='display: inline-block; width: 45px; height: 100%; overflow: hidden'>";
                 this.codeBox.innerHTML = "";
                 var rt = false;
                 for (var i=0; i<lines.length; i++) {

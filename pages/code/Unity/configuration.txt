@@ -1,0 +1,14 @@
+
+        <orm>
+            <prefix>namespace_</prefix>
+            <mongodb>namespace</mongodb>
+            <entities>
+                <table_name polyglot="Y" />
+                <table_name_2 />
+                <table_name_3 />
+                .
+                .
+                .
+            </entities>
+        </orm>
+

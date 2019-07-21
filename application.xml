@@ -2,7 +2,7 @@
 <application>
     <name>The Humble Project</name>
     <version>
-        <framework>0.7.8.1.9</framework>
+        <framework>0.7.8.2.5</framework>
         <app>0.0.1.0</app>
     </version>
     <extend>

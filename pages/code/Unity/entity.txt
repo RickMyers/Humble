@@ -1,0 +1,4 @@
+
+    <entity namespace="humble" class="user/identification" id="users" method="load" response="true">
+        <parameter name="id" source="session" value="uid" required="true" />
+    </entity>
