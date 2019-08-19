@@ -317,7 +317,7 @@ class Model implements HumbleComponent
             }
             $opts = array_merge($opts,$auth);
         } else {
-            $parms = '?'.$content;
+            $parms = ($content) ? '?'.$content : '';
         }
 
         $context = stream_context_create($opts);
