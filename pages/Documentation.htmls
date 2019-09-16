@@ -17,6 +17,11 @@
     </div>
     <ul class="humble-doc-section-topics">
         <li><a href="/pages/Overview.htmls">Overview</a></li>
+        <li><a href="/pages/Installation.htmls">Installation</a>
+            <ul>
+                <li><a href="/pages/Htaccess.htmls">Apache HTACCESS</a></li>
+            </ul>
+        </li>
         <li><a href="/pages/Structure.htmls">Application Structure</a></li>
         <li><a href="/pages/Configuration.htmls">Module Configuration</a></li>
         <li><a href="/pages/Administration.htmls">Administration</a></li>
