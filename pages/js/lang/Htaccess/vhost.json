@@ -1,0 +1,68 @@
+{
+    "vhost": {
+            "longname":	 "VHOSTConfiguration",
+            "classes": {
+                "region":   "",
+                "row":      "",
+                "font":     "",
+                "zebra": {
+                    "odd":  "",
+                    "even": ""
+                }
+            },
+            "casesensitive":	false,
+            "chars":	" &|*^!+=-(){}/\\'\",.?:<>[];",
+            "comment":	{
+                "color":	"navy",
+                "style":	"",
+                "EOL":"#",
+                "start":	"<!--",
+                "end":"-->"
+            },
+            "char":	  {
+                "-": {"color": "green"},
+                "?": {"color": "green"},
+                ".": {"color": "green"},
+                ",": {"color": "green"},
+                ";": {"color": "green"},
+                "|": {"color": "fuchsia"},
+                "+": {"color": "green"},
+                "/": {"color": "blue"},
+                ":": {"color": "green"},
+                "{":  {"color": "blue"},
+                "}": {"color": "blue"},
+                "]": {"color": "blue"},
+                "[": {"color": "blue"},
+                "(": {"color": "blue"},
+                "\\":{"color": "black", "swap": "&#92;"},
+                ")": {"color": "blue"},
+                "<":{"color": "blue", "swap": "&lt;"},
+                ">":{"color": "blue", "swap": "&gt;"},
+                "&":{"color": "fuchsia",    "swap": "&amp;"},
+                "!":{"color": "green"},
+                "=":{"color": "blue"},
+                "*": {"color": "lightcyan"}
+            },
+            "tokens":	 {
+                "DirectoryIndex":   {"color": "navy"},
+                "AddHandler":   {"color": "navy"},
+                "Options":   {"color": "navy"},
+                "RewriteBase":   {"color": "blue"},
+                "RewriteEngine":   {"color": "fuchsia"},
+                "RewriteRule":   {"color": "blue"},
+                "RedirectMatch": {"color": "blue"},
+                "ErrorDocument": {"color": "blue"},
+                "VirtualHost": {"color": "red"},
+                "DocumentRoot": {"color": "navy"},
+                "ServerName": {"color": "navy"},
+                "ErrorLog": {"color": "navy"},
+                "AddType": {"color": "navy"},
+                "AddOutputFilter": {"color": "navy"},
+                "Directory": {"color": "red"},
+                "Require": {"color": "blue"}
+                
+
+            }
+        }
+}
+

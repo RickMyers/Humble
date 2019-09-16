@@ -1,0 +1,42 @@
+
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="Install.htmls" title="How to Install" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>HTACCESS Options</div>
+
+We call Humble semi-opinionated because you can use server-side rendering or decoupled UI (or both) in your application, and you can use a polyglot ORM (Unity) or not, whatever.  Where Humble 
+does have an opinion is in the underlying technology stack.  For persistence, currently we have a hard requirement of MySQL&trade; and MongoDB&trade;.  For Server Side "back-end" language, the hard requirement is PHP 7.2 or later, but there are plans
+someday for Python and Java as well.  For web server, the hard requirement is strictly Apache&trade;, and likely will stay that way due to the "clean" URIs.  This brings up some considerations on how you wish to run your Apache Web Server though.
+<br />
+<br />
+The first thing you want to consider is caching options. Optimally configured, Apache can serve PHP applications faster than NGINX, though NGINX can serve static resources much faster than Apache.  This is because on every request, even for static resources,
+Apache will load the PHP parse when it is completely unnecessary.  A solution then is to put a caching mechanism in front of Apache to serve the static resources (and for this, you could actually use NGINX!), and map
+those dynamic resources that require PHP to Apache.
+<br /><br />
+Anything served from <i>/js/</i>, <i>/css/</i>, <i>/edits/</i>, <i>/api/</i>, <i>/hook/</i>, <i>/admin</i>, or having a URI format of <i>/namespace/controller/action</i> must be mapped to Apache.  Anything else can be served by NGINX or other caching mechanism 
+<br /><br />
+The next thing you should consider is moving your HTACCESS file to inline rather than loaded per page.
+<br /><br />
+Below is the default .htaccess file for the Humble main website (this site).  This file is set up to run as you see below after you do the normal install, but there's a much better (and faster)
+way to configure your .htaccess file... First though, here's a normal .htaccess file sitting in the root of your application
+<br /><br />
+    <div widget="codeBox" widgetScroll="100%" lang="json" lexicon="/pages/js/lang/Htaccess/config.json" source="/pages/code/Htaccess/sample.txt" class="humble-code">
+
+    </div>
+<br /><br />
+A better way of doing this is to comment out each line from the default .htaccess file (or just delete it, but the system may put it back on patching), and then move the .htaccess file
+values into your Apache VHOST configuration as shown below...<br /><br />
+    <div widget="codeBox" widgetScroll="100%" lang="vhost" lexicon="/pages/js/lang/Htaccess/vhost.json" source="/pages/code/Htaccess/vhost.txt" class="humble-code">
+
+    </div>
+<br /><br />
+If you do the two things above, you will find that your application will be more performant as well as scale better.
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->
