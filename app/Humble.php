@@ -181,7 +181,7 @@
         /**
          *
          */
-        public static function getModel($resource_identifier,$override=false)  {
+        public static function getModel($resource_identifier,$override=false,...$arguments)  {
             $identifier     = self::parseResource($resource_identifier);
             $instance       = null;
             if ($module = self::getModule($identifier['namespace'],$override)) {
@@ -197,7 +197,7 @@
                     };
                 } else {
                     $class      = str_replace('/','\\','\\'.$class);
-                    $instance   = new $class();
+                    $instance   = new $class($arguments);
                 }
                 $instance->_prefix($module['prefix'])->_namespace($identifier['namespace'])->_isVirtual(!$class);
             }

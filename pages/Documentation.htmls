@@ -91,14 +91,23 @@
     </ul>
 
     <div class="humble-doc-section">
-        Paradigm Engine
+        <a href="Paradigm.htmls">Paradigm Engine</a>
     </div>
     <ul class="humble-doc-section-topics">
         <li>Events</li>
         <li>Workflows</li>
         <li>Triggers</li>
-        <li>Deployments</li>
+        <li>Workflow Deployments</li>
     </ul>
+    <div class="humble-doc-section">
+        <a href="Development.htmls">Development Aids</a>
+    </div>
+    <ul class="humble-doc-section-topics">
+        <li><a href="EasyAjax.htmls">EasyAjax</a></li>
+        <li><a href="SignalingServer.htmls">Signaling Server</a></li>
+        <li><a href="GruntTasks.htmls">Grunt Tasks</a></li>
+        <li><a href="Deployments.htmls">Code Deployment</a></li>
+    </ul>    
     <div class="humble-doc-section">
         Contributing to the Humble Project
     </div>

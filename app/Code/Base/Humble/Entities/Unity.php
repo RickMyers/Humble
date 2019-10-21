@@ -24,6 +24,7 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_fromRow       = 0;
     protected $_toRow         = 0;
     protected $_joins         = [];
+    protected $_in            = [];
     protected $_distinct      = false;
     protected $_mongodb       = null;
     protected $_mongocollection = null;
@@ -441,6 +442,10 @@ SQL;
                 $andFlag = true;
             }
         }
+        if ($this->_in) {
+            $query .= ($andFlag) ? " and " : ' where ';
+            $query .= "`".$this->_inField."` in ('".implode("','",$this->_in)."') ";
+        }        
         return $query;
     }
 
@@ -1112,7 +1117,25 @@ SQL;
         }
         return $this;
     }
-
+    
+    /**
+     * 
+     * @param type $args
+     * @return $this
+     */
+    public function in($args=false) {
+        if ($args) {
+            if (is_array($args)) {
+                foreach ($args as $arg) {
+                    $this->_in[] = addslashes($arg);
+                }
+            } else {
+                $this->_in[] = addslashes($args);
+            }
+        }
+        return $this;
+    }
+    
     /**
      *
      */
@@ -1535,6 +1558,10 @@ SQL;
             $token      = substr($name,5);
             $token{0}   = strtolower($token{0});
             return $this->_unset($token);
+        } elseif (substr($name,-2,2)==="In") {
+            $this->_inField = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-2)));
+            $this->in($arguments[0]);
+            return $this;
         }
         //method couldn't be handled
         $virtual = $this->_isVirtual() ? 'Real' : 'Virtual';
