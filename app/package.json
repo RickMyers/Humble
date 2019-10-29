@@ -7,7 +7,7 @@
     "gaze": "^0.5.1",
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "~0.5.0",
-    "lodash": "^3.8.0",
+    "lodash": "^4.17.15",
     "tiny-lr-fork": "0.0.5"
   },
   "devDependencies": {
