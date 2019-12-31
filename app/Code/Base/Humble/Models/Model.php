@@ -281,11 +281,7 @@ class Model implements HumbleComponent
          *
          * If Put, we still need to handle HTTPS and HTTP
          */
-        if ($method !== 'PUT') {
-            $content= http_build_query($args,'','&');
-        } else {
-            $content = json_encode($args);
-        }
+        $content = ((isset($call['format']) && (strtoupper($call['format'])) == 'JSON') || (strtoupper($method) === 'PUT')) ? json_encode($args) : http_build_query($args,'','&') ;
         $content_type = "Content-Type: application/x-www-form-urlencoded";
         if (isset($call['format'])) {
             switch (strtoupper($call['format'])) {

@@ -718,6 +718,8 @@ PHP;
             $op = ' >= '; $val = $node['gte'];
         } else if (isset($node['eqs'])) {
             $op = ' === '; $val = $node['eqs'];
+        }  else if (isset($node['ne'])) {
+            $op = ' != '; $val = $node['ne'];
         }
       //  if (!((strtoupper($val) === 'TRUE') || (strtoupper($val) === 'FALSE'))) {
             $val = '"'.$val.'"';

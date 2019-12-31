@@ -1,4 +1,23 @@
 <?php
+/**
+        ____  _      __       _ __          __  _           
+       / __ \(_)____/ /______(_) /_  __  __/ /_(_)___  ____ 
+      / / / / / ___/ __/ ___/ / __ \/ / / / __/ / __ \/ __ \
+     / /_/ / (__  ) /_/ /  / / /_/ / /_/ / /_/ / /_/ / / / /
+    /_____/______/\__/_/  /_/_.___/\__,_/\__/_______/_/ /_/ 
+          / ___/__  ______  ____  ____  _____/ /_           
+          \__ \/ / / / __ \/ __ \/ __ \/ ___/ __/           
+         ___/ / /_/ / /_/ / /_/ / /_/ / /  / /_             
+        /____/\__,_/ .___/ .___/\____/_/   \__/             
+             _____/_/   /_/  _       __                     
+            / ___/__________(_)___  / /_                    
+            \__ \/ ___/ ___/ / __ \/ __/                    
+           ___/ / /__/ /  / / /_/ / /_                      
+          /____/\___/_/  /_/ .___/\__/                      
+                          /_/             
+ 
+    Facilitates the download and installation of the initial repository
+ */
     function recurseDirectory($path=null) {
         $files = [];
         if ($path !== null) {
@@ -16,6 +35,7 @@
         }
         return $files;
     }
+    //main -####################################################################
     $action     = isset($_GET['action']) ? strtolower($_GET['action']) : false;
     switch ($action) {
         case    "fetch" :
@@ -46,6 +66,21 @@
             header("Accept-Ranges: bytes");
             header('Content-Length: ' . filesize($source));
             print readfile($source);
+            break;
+        case    "serialnumber" :
+        case    "serial_number":
+        case    "serialNumber" :
+            header("Content-Type: application/json");
+            $chars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $num    = '';
+            for ($i=0; $i<4; $i++) {
+                $num = $num ? $num.'-' : $num;
+                for ($j=0; $j<4; $j++) {
+                    $num.=substr($chars,rand(0,strlen($chars)-1),1);
+                }
+            }
+            // I probably should record the serial number somewhere in a DB and tie to to request IP
+            print('{ "serial_number": "'.$num.'" }');
             break;
         case    "version" :
             header("Content-Type: application/json");

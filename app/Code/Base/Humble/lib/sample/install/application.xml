@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <application>
     <name>{$name}</name>
-    <version>{$version}</version>
+    <version>0.0.0.1</version>
+    <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">{$serial_number}</serial_number>
+    <framework>
+        <version>{$version}</version>
+    </framework>
     <msa>
         <router>0</router>                      <!-- Switch to 1 to make this node the router for a MSA based application -->
     </msa>

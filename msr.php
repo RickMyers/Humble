@@ -12,9 +12,9 @@
     _|    _|  _|          _|
     _|    _|  _|        _|_|_|
 
-    MicroService API Router
+    MicroService Router
 
-    o A request of the form /U/R/I has been intercepted
+    o A request of the form /namespace/controller/action has been intercepted
     o We will break up the URI looking for the namespace
     o We use the namespace to XREF the server that hosts this URI resources
     o We forward the request there

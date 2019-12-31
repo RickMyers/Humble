@@ -215,7 +215,9 @@ class User extends Model {
         if ($EVENT) {
              $mydata = $EVENT->fetch();
              if (isset($mydata['url'])) {
-                 header('Location: '.$mydata['url']);
+                 $url = explode('?',$mydata['url']);
+                 $extra = isset($url[1]) ? '?'.urlencode($url[1]) : "";
+                 header('Location: '.$url[0].$extra);
              }
         }
     }

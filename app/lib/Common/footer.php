@@ -13,4 +13,10 @@ if ($ajaxUpload) {
         }
     }
 }
+if ($output = ob_get_clean()) {
+	\Log::console($output);
+}
+foreach (\Humble::response() as $idx => $output) {
+	print($output);
+}
 ?>

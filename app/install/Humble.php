@@ -218,6 +218,7 @@ FACTORY;
     }
     $project    = json_decode(file_get_contents('Humble.project'));
     $remote     = json_decode(file_get_contents($project->framework_url.'/distro/version'));
+    $serial     = json_decode(file_get_contents($project->framework_url.'/distro/serialNumber'));
     print("\n\nInstalling Humble distro version ".$remote->version." from ".$project->framework_url."\n\n");
     fetchProject($remote->version,$project->framework_url);
     file_put_contents('app/'.$project->factory_name.'.php',str_replace('&&FACTORY&&',$project->factory_name,$template));
