@@ -1,128 +1,972 @@
 <?php
-namespace Code\Base\Humble\Entities;
-use Humble;
-use Log;
-use Environment;
-/**
+$help = <<<HELP
+/* -----------------------------------------------------------------------------
+ *  This script is used to create a new module with all the required directory
+ *  structure and initial files.
  *
- * Core User table related methods
  *
- * see title...
+ *  Ex: Module.php --option(s) namespace=ns package=pk prefix=pr author=au module=md
  *
- * PHP version 7.2+
- *
- * @category   Entity
- * @package    Framework
- * @author     Richard Myers rick@humblecoding.com
- * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://enicity.com/license.txt
- * @version    1.0
- * @link       https://enicity.com/docs/class-&&MODULE&&.html
- * @since      File available since Version 1.0.1
+ *  option:
+ *      --?, --h, This Help
+ *      --o, --O, Toggle the application online or offline
+ *      --c, --C, Check for namespace availability
+ *      --p, --P, Preserve directory
+ *      --r, --R, Restore preserved directory
+ *      --b, --B, Build Initial Module
+ *      --i, --I, Install module
+ *      --u, --U, Update module
+ *      --e, --E, Enable a module
+ *      --d, --D, Disable a module
+ *      --k, --K, Uninstall (kill) a module
+ *      --v, --V, Version
+ *      --s, --S, Application status
+ *      --w, --W, Examine PHP code for workflow components
+ *      --g, --G, Generate JSON Edits
+ *      --l, --L, Toggle Local authentication
+ *      --y, --Y, Compile a controller
+ *      --x, --X, Check if a module prefix is available
+ *      --a, --A, Remove AUTOINCREMENT=# from SQL dumps
+ *      --adduser       Backend workaround to create a user, parameters are *user_name", "password", and optional "uid"       
+ *      --package       Creates a new downloadable archive file of the Humble project
+ *      --increment     Increments the minor version number by one, rolling over if it goes past 9
+ *      --initialize    Initializes the project
+        --patch         Updates the Humble Base Framework files with any new files, respecting manifested files
+ *      --sync          Updates the core files
+ * -----------------------------------------------------------------------------
  */
-class Users extends Entity
-{
-
-    private $alphabet = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789';
-    
-    /**
-     * Constructor
-     */
-    public function __construct() {
-        parent::__construct();
+HELP;
+    require_once('Humble.php');
+ //   ob_start();
+    //--------------------------------------------------------------------------
+    //Copied from PHPPro.blog
+    //--------------------------------------------------------------------------
+    function underscoreToCamelCase( $string, $first_char_caps = false) {
+        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }
-    
-    /**
-     * Creates a new user properly salting and encoding the password
-     * 
-     * @param type $user_name
-     * @param type $md5_password
-     * @param type $last_name
-     * @param type $first_name
-     * @return type
-     */
-    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='') {
-        $uname  = $user_name ? $user_name       : ($this->getUserName()  ? $this->getUserName()  : false);
-        $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
-        $fname  = $first_name ? $first_name     : ($this->getFirstName() ? $this->getFirstName() : '');
-        $lname  = $last_name ? $last_name       : ($this->getLastName()  ? $this->getLastName()            : '');
-        $uid    = null;
-        if ($uname && $pwd) {
-            $uid = $this->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setFirstName($fname)->setLastName($lname)->setUserName($uname)->save();
+    //--------------------------------------------------------------------------
+    //option functions
+    //--------------------------------------------------------------------------
+    function fetchParameter($parm,$list) {
+        $value=false;
+        foreach ($list as $key => $val) {
+            if ($key == $parm) {
+                $value = $val;
+                break;
+            }
         }
-        return $uid;
+        return $value;
     }
-    
-    /**
-     * Creates a salt token
-     * 
-     * @param type $length
-     * @return type
-     */
-    public function salt($length=16) {
-        $salt = ''; $len = strlen($this->alphabet);
-        for ($i=0; $i<$length; $i++) {
-            $salt .= substr($this->alphabet,rand(0,$len),1);
+    //--------------------------------------------------------------------------
+    function processArgs($args) {
+        $parms = array();
+        foreach ($args as $arg) {
+            if (strpos($arg,'=')===false) {
+                die('Invalid argument passed: '.$arg);
+            }
+            $arg = explode('=',$arg);
+            $parms[$arg[0]] = $arg[1];
         }
-        return $salt;
+        return $parms;
     }
-    
-    /**
-     * Assuming you passed in a token value, did it find it in the table?
-     *
-     * @return boolean
-     */
-    public function newPasswordRequestValid() {
-        return ($this->load(true)!==null);
+    //--------------------------------------------------------------------------
+    function printModule($mod) {
+        print("\n\n");
+        foreach ($mod as $idx => $val) {
+            print("#".$idx."\t = ".$val.";\n");
+        }
     }
 
-    /**
-     * Returns true if we are able to load a user record by password reset token
-     *
-     * @return boolean
-     */
-    public function resetTokenIsValid() {
-        return ($this->load(true)!==null);
+    //--------------------------------------------------------------------------
+    function toggleApplicationStatus() {
+        $xml  = simplexml_load_string(file_get_contents('../application.xml'));
+        $enabled = (int)$xml->status->enabled;
+        $xml->status->enabled = $enabled ? 0 : 1;
+        file_put_contents('../application.xml',$xml->asXML());
+        $message = ($enabled) ? 'System Status: OFFLINE' : 'System Status: ONLINE';
+        print("\n\n".$message."\n\n");
     }
 
-    /**
-     * This clears the users account so that they may log in again, assuming the proper token was passed
-     */
-    public function resetLoginAttempts() {
-        $data = $this->load(true);
+    //--------------------------------------------------------------------------
+    function toggleLocalAuthentication() {
+        $xml  = simplexml_load_string(file_get_contents('../application.xml'));
+        $enabled = (int)$xml->status->SSO->enabled;
+        $xml->status->SSO->enabled = $enabled ? 0 : 1;
+        file_put_contents('../application.xml',$xml->asXML());
+        $message = ($enabled) ? 'Authentication Engine: LOCAL' : 'Authentication Engine: SSO';
+        print("\n\n".$message."\n\n");
+    }
+
+    //--------------------------------------------------------------------------
+    function checkNamespaceAvailability($args) {
+        $ns = fetchParameter('namespace',processArgs($args));
+        if ($ns) {
+            $check = \Humble::getEntity('humble/modules');
+            $check->setNamespace($ns);
+            $mod = $check->load();
+            if ($mod) {
+                print("That namespace is already in use\n\n");
+                print("Information on that module follows:\n");
+                printModule($mod);
+            } else {
+                print("\nThat namespace ($ns) is available\n\n");
+            }
+
+        } else {
+            die('Namespace, in the form of "namespace=myns" was not passed');
+        }
+    }
+    //--------------------------------------------------------------------------
+    function checkPrefixAvailability($args) {
+        $px = fetchParameter('prefix',processArgs($args));
+        if ($px) {
+            $check = \Humble::getEntity('humble/modules');
+            $check->setPrefix($px);
+            $mod = $check->fetch();
+            if ($mod && count($mod)>0) {
+                print("That prefix is already in use\n\n");
+                print("Information on that module follows:\n");
+                printModule($mod[0]);
+            } else {
+                print("\nThat ORM prefix ($px) is available\n\n");
+            }
+        } else {
+            die('Prefix, in the form of "prefix=mypx" was not passed');
+        }
+    }
+    //--------------------------------------------------------------------------
+    function createModuleDirectories($args) {
+        $ns = fetchParameter('namespace',processArgs($args));
+        $pk = fetchParameter('package',processArgs($args));
+        $px = fetchParameter('prefix',processArgs($args));
+        $au = fetchParameter('author',processArgs($args));
+        $md = fetchParameter('module',processArgs($args));
+        $em = fetchParameter('email',processArgs($args));
+        if ($ns && $pk && $px && $md) {
+            $base = 'Code/'.$pk;
+            $root = $base."/".$md;
+            if (!is_dir($base)) {
+               @mkdir($base,0775,true);
+            }
+            if (!is_dir($root)) {
+                @mkdir($root);
+                @mkdir($root.'/etc');
+                @mkdir($root.'/Controllers');
+                @mkdir($root.'/Controllers/Cache');
+                @mkdir($root.'/Views');
+                @mkdir($root.'/Views/actions');
+                @mkdir($root.'/Views/actions/Smarty3');
+                @mkdir($root.'/Views/Cache');
+                @mkdir($root.'/Models');
+                @mkdir($root.'/Helpers');
+                @mkdir($root.'/Schema');
+                @mkdir($root.'/Schema/Install');
+                @mkdir($root.'/Schema/Update');
+                @mkdir($root.'/Schema/DSL');
+                @mkdir($root.'/Entities');
+                @mkdir($root.'/RPC');
+                @mkdir($root.'/web');
+                @mkdir($root.'/web/js');
+                @mkdir($root.'/web/app');
+                @mkdir($root.'/web/css');
+                @mkdir($root.'/web/edits');
+                @mkdir($root.'/Images');
+                $project     = file_exists('../Humble.project') ? json_decode(file_get_contents('../Humble.project'),true) : ["factory_name" => 'Humble'];
+                $srch        = array("&&namespace&&","&&prefix&&","&&author&&","&&module&&","&&package&&",'&&email&&','&&FACTORY&&');
+                $repl        = array($ns,$px,$au,$md,$pk,$em,$project['factory_name']);
+                $templates   = array("Code/Base/Humble/lib/sample/module/Controllers/actions.xml");  $out   = array("Code/".$pk."/".$md."/Controllers/actions.xml");
+                $templates[] = "Code/Base/Humble/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
+                $templates[] = "Code/Base/Humble/lib/sample/module/RPC/mapping.yaml";                $out[] = "Code/".$pk."/".$md."/RPC/mapping.yaml";
+                $templates[] = "Code/Base/Humble/lib/sample/module/Views/actions/Smarty3/open.tpl";  $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty3/open.tpl";
+                $templates[] = "Code/Base/Humble/lib/sample/module/web/js/actions.js";               $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
+                $templates[] = "Code/Base/Humble/lib/sample/module/web/css/template.css";            $out[] = "Code/".$pk."/".$md."/web/css/".ucfirst($md).".css";
+                $templates[] = "Code/Base/Humble/lib/sample/module/Models/Model.php.txt";            $out[] = "Code/".$pk."/".$md."/Models/Model.php";
+                $templates[] = "Code/Base/Humble/lib/sample/module/Helpers/Helper.php.txt";          $out[] = "Code/".$pk."/".$md."/Helpers/Helper.php";
+                $templates[] = "Code/Base/Humble/lib/sample/module/Entities/Entity.php.txt";         $out[] = "Code/".$pk."/".$md."/Entities/Entity.php";
+                $templates[] = "Code/Base/Humble/lib/sample/module/web/edits/template.json";         $out[] = "Code/".$pk."/".$md."/web/edits/sample_edit.json";
+                foreach ($templates as $idx => $template) {
+                    file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)));
+                }
+                print("\n\nIf no errors, then the module was likely built.  At this point, run 'Humble --i namespace=$ns' to install the module, or access it through the administration screens.\n\n");
+            }
+        } else {
+            $msg = <<<TXT
+            To create a module, you must pass namespace, package, module, prefix, and optionally author email.
+TXT;
+            print($msg);
+        }
+    }
+    //--------------------------------------------------------------------------
+    function displayHelp($help) {
+        print_r($help);
+    }
+    //--------------------------------------------------------------------------
+    function displayStatus($xml) {
+        if ($xml->status->enabled == 1) {
+            print("\n\n".date('Y-m-d H:i:s').'   <Application is enabled>'."\n\n");
+        } else {
+            print("\n\n".date('Y-m-d H:i:s').'   <Application is disabled>'."\n\n");
+        }
+    }
+    //--------------------------------------------------------------------------
+    function displayVersion($xml) {
+        print("\n\n".$xml->version->framework."\n\n");
+    }
+    //--------------------------------------------------------------------------
+    function getApplicationXML() {
+        $data = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("Error, application file not found");
+        $xml  = simplexml_load_string($data);
+        return $xml;
+    }
+    //--------------------------------------------------------------------------
+    function enableModule($args) {
+        $ns = $args[0];
+        print("Enabling ".$ns."\n\n");
+        $mod = \Humble::getEntity("humble/modules");
+        $mod->setNamespace($ns);
+        $mod->setEnabled('Y');
+        $mod->save();
+    }
+    //--------------------------------------------------------------------------
+    function disableModule($args) {
+        $ns = $args[0];
+        print("Disabling ".$ns."\n\n");
+        \Humble::getEntity("humble/modules")->setNamespace($ns)->setEnabled('N')->save();
+    }
+    //--------------------------------------------------------------------------
+    function incrementVersion($next=1) {
+        print("CHANGING VERSION");
+        $data   = getApplicationXML();
+        $v      = explode('.',(string)$data->version->framework);
+        for ($i=count($v)-1; $i>=0; $i-=1) {                                    //This is one of those ridiculously evil things in computer science
+            $v[$i] = (int)$v[$i]+$next;
+            if ($next  = ($v[$i]===10)) {
+                $v[$i] = 0;
+            }
+        }
+        $data->version->framework = (string)implode('.',$v);
+        print("\nSetting version to ".$data->version->framework."\n\n");
+        file_put_contents('../application.xml',$data->asXML());
+    }
+
+    //--------------------------------------------------------------------------
+    function installModule($id) {
+        $ns     = (isset($id[0])) ? $id[0] : false;
+        $etc    = (isset($id[1])) ? $id[1] : false;
+        if ($ns) {
+            if (file_exists($id[1]) && ($xml = file_get_contents($id[1]))) {
+                libxml_use_internal_errors(true);
+                $doc = new \DOMDocument('1.0', 'utf-8');
+                $doc->loadXML($xml);
+                $errors = libxml_get_errors();
+                if ($errors) {
+                    $level = array('1'=>'Warning', '2'=>'Error', '3'=>'Severe');
+                    print("\nThe installation failed.\n\n");
+                    print("Errors have been encountered in the XML configuration file ({$etc})\n\n");
+                    foreach ($errors as $error) {
+                        print("\t".$level[$error->level].": Line {$error->line}, column {$error->column} - ".$error->message);
+                    }
+                } else {
+                    print("Installing...\n");
+                    $utility = \Environment::getInstaller();
+                    $utility->setSource($etc);
+                    $utility->install();
+                }
+            } else {
+                print("Couldn't read the XML config file\n\n");
+            }
+        } else {
+            print("\n\nRequired parameters are namespace and configuration file location\n\n");
+        }
+
+    }
+    //--------------------------------------------------------------------------
+    function uninstallModule($id) {
+        $ns     = (isset($id[0])) ? $id[0] : false;
+        if ($ns) {
+            $module = \Humble::getModule($ns,true);
+            print_r($module);
+            if ($module) {
+                $utility = \Humble::getModel('humble/utility');
+                $utility->setPackage($module['package']);
+                $utility->setNamespace($module['namespace']);
+                if ($utility->uninstall()) {
+                    print("\n\nThe module was uninstalled, it is now safe to delete the module\n\n");
+                } else {
+                    print("\n\nAn error was encountered during uninstallation, the module was not uninstalled\n\n");
+                };
+            } else {
+                print("\nThe module represented by namespace [".$ns."] has either already been uninstalled or does not exist\n\n");
+            }
+        }
+    }
+
+
+    //--------------------------------------------------------------------------
+    function updateIndividualModule($namespace) {
+        $module = Humble::getEntity('humble/modules')->setNamespace($namespace);
+        $data   = $module->load(true);
+        if (isset($data['configuration']) && $data['configuration']) {
+            $etc     = 'Code/'.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
+            print('Running Update on '.$etc."\n");
+            $updater = \Environment::getUpdater();
+            $updater->update($etc);
+        } else {
+            print('Unable to determine where configuration file is for: '.$namespace.'.  You should review the configuration file manually');
+        }
+    }
+    //--------------------------------------------------------------------------
+    function updateModule($args) {
+        $namespace = fetchParameter('namespace',processArgs($args));
+        if (!$namespace) {
+            $namespace = fetchParameter('ns',processArgs($args));
+        }
+        if ($namespace) {
+            if ($namespace==='*') {
+                foreach (\Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+                    updateIndividualModule($module['namespace']);
+                }
+            } else {
+                foreach (explode(',',$namespace) as $namespace) {
+                    updateIndividualModule($namespace);
+                }
+            }
+        } else {
+            print('I need the namespace of the module to update passed in [namespace=ns]');
+        }
+    }
+    //--------------------------------------------------------------------------
+    function processDocComment($md=false,$method=false) {
+        $components = [];
+        try {
+            $comments = explode("\n",$md->getDocComment());
+            foreach ($comments as $comment) {
+                if (strpos($comment,'@workflow')!==false) {
+                    $components[] = substr($comment,strpos($comment,'@')+1);
+                }
+            }
+        } catch (ReflectionException $ex) {
+         //  \Log::console($ex);
+        }
+        return $components;
+    }
+    //--------------------------------------------------------------------------
+    function updateWorkflowComments($namespace,$model,$method,$md,$workflowComment) {
+        $skip = array('/**'=>true, '/'=>true, '*/'=>true, ''=>true, '/**/'=>true);
+        $comments = [];
+        try {
+            $docComments = explode("\n",$md->getDocComment());
+            foreach ($docComments as $comment) {
+                $comment = trim($comment);                                                      //left align
+                $comment = (substr($comment,0,1)=='*') ? trim(substr($comment,1)) : $comment;   //remove the * if there
+                if (substr($comment,0,1)=='@') {
+                    continue;                                                                   //we got an annotation, not looking for that...
+                }
+                if (!isset($skip[$comment])) {
+                    $comments[] = $comment;
+                }
+            }
+        } catch (\ReflectionException $ex) {
+         //  \Log::console($ex);
+        }
+        $workflowComment->reset();
+        $workflowComment->setNamespace($namespace);
+        $workflowComment->setClass($model);
+        $workflowComment->setMethod($method->name);
+        $workflowComment->setComment(implode("\n",$comments));
+    }
+    //--------------------------------------------------------------------------
+    function scanForWorkflowComponents($file) {
+        $namespace = false;
+        $file    = str_replace(['\\',"/"],["_","_"],$file[0]);
+        $parts   = explode('_',$file);
+        $package = strtolower($parts[1]);
+        $root    = strtolower($parts[2]."/".$parts[3]);
+        print($root);
+        $data    = \Humble::getEntity('humble/modules')->setModels($root)->fetch();
         if ($data) {
-            $this->setLoginAttempts(0);
-            $this->setAccountStatus(USER_ACCOUNT_UNLOCKED);
-            $this->setResetPasswordToken(null);
-            $this->save();
+            $data = $data->pop();
+            $namespace = $data['namespace'];
+        }
+        if (!$namespace) {
+            print(" Could not resolve the namespace for the class: ".$file."\n");
+            die();
+        } else {
+            //########################################################################
+            //# BE CAREFUL ABOUT HAVING ENTITY AND MODEL CLASSES WITH THE SAME NAME! #
+            //# Of course, that's only if we allow entities to throw events, which   #
+            //# we do not, so ignore this... nothing to see here... unless we start  #
+            //# allowing entities to trigger events.                                 #
+            //########################################################################
+            $models = \Humble::getModels($namespace);
+            //$models = array_merge($models,\Humble::getEntities($namespace));
+           // $models = array_merge($models,\Humble::getHelpers($namespace)); //no, this is not a good idea, at least not yet
+        }
+        $workflowComponent  = \Humble::getEntity('paradigm/workflow_components');
+        $workflowComment    = \Humble::getEntity('paradigm/workflow_comments');
+        foreach ($models as $model) {
+            print('Processing '.$model."...\n");
+            $workflowComponent->reset();
+            $workflowComponent->setNamespace($namespace);
+            $workflowComponent->setComponent($model);
+            $workflowComponent->delete();
+            $class          = \Humble::getModel($namespace.'/'.$model);
+            if (!method_exists($class, 'getClassName')) {
+                print($model."\n");
+                continue;
+            }
+            $name           = $class->getClassName();
+            $reflection     = new ReflectionClass($name);
+            $methods        = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
+            foreach ($methods as $idx => $method) {
+                $workflowComponent->reset();
+                $workflowComponent->setNamespace($namespace);
+                $workflowComponent->setComponent($model);
+                $workflowComponent->setMethod($method->name);
+                $m = new ReflectionMethod($class,$method->name);
+                $c = $m->getDeclaringClass();
+                if ($c->name !== $name) {
+                    //this skips any methods belonging to the parent class
+                    continue;
+                }
+                $comments      = processDocComment($reflection->getMethod($method->name),$method);
+                $authorization = false;
+                if ($comments) {
+                    print("\tRegistering ".$method->name."\n");
+                }
+                foreach ($comments as $comment) {
+                    $clauses   = explode(' ',$comment);
+                    foreach ($clauses as $clause) {
+                        $value = '';
+                        if (strpos($clause,'(') && (strpos($clause,')'))) {
+                            $data  = explode('(',$clause);
+                            $token = $data[0];
+                            $data  = explode(')',$data[1]);
+                            $value = $data[0];
+                        } else {
+                            $token = $clause;
+                        }
+                        switch ($token) {
+                            case "workflow"         :   //nop
+                                                        break;
+                            case "use"              :   $uses = explode(',',$value);
+                                                        foreach ($uses as $use) {
+                                                            $use = 'set'.ucfirst($use);
+                                                            $workflowComponent->$use('Y');
+                                                        }
+                                                        break;
+                            case "event"            :   $workflowComponent->setEventName($value);
+                                                        break;
+                            case "authorization"    :   if (strtolower($value) == 'true') {
+                                                            $authorization = true;
+                                                        } else if (strtolower($value) == 'false') {
+                                                            $authorization = false;
+                                                        } else {
+                                                            //throw an exception and stop processing
+                                                        }
+                                                        $workflowComponent->setAuthorization((($authorization) ? 'Y' : 'N'));
+                                                        break;
+                            case "configuration"    :   $workflowComponent->setConfiguration($value);
+                                                        break;
+                            default                 :   break;
+                        }
+                    }
+                    $workflowComponent->save();
+                    updateWorkflowComments($namespace,$model,$method,$reflection->getMethod($method->name),$workflowComment);
+                }
+            }
+        }
+        print('DONE!'."\n");
+    }
+    //--------------------------------------------------------------------------
+    function generateJSONEdits($args) {
+        $parms      = processArgs($args);
+        $namespace  = fetchParameter('namespace',$parms);
+        $entity     = fetchParameter('entity',$parms);
+        if ($namespace && $entity) {
+            $util   = \Environment::getInstaller();
+            $module = \Humble::getModule($namespace);
+            if ($module) {
+                if (isset($module['schema_layout']) && $module['schema_layout']) {
+                    $util->generateLayoutSchema($module['package'],$namespace,$module['schema_layout'],array(array($entity=>true)),true);
+                } else {
+                    print("No value set for the layout directory, please update the configuration XML.\n");
+                }
+            }
         }
     }
-    /**
-     *
-     * @param int $id
-     * @return array
-     */
-    public function information($id=false) {
-        $id      = ($id!==false) ? $id : ($this->getId() ? $this->getId() : ($this->getUid())?$this->getUid() : false);
-        $results = [];
-        if ($id !== false) {
-            $query = <<<SQL
-                select
-                    a.user_name
-                    , a.email
-                    , a.logged_in
-                    , a.account_status
-                    , a.login_attempts
-                    , b.*
-                  from humble_users as a
-                  left outer join humble_user_identification as b
-                    on a.uid = b.id
-                 where a.uid = '{$id}'
-SQL;
-                 $results = $this->query($query)->toArray();
+    //--------------------------------------------------------------------------
+    function preserveDirectory($args) {
+        $parms      = processArgs($args);
+        $directory  = fetchParameter('directory',$parms);
+        if (!$directory) {
+            $directory  = fetchParameter('dir',$parms);
         }
-        return isset($results[0]) ? $results[0] : $results;
+        print('Attempting to copy: '.$directory."\n");
+        if ($directory) {
+            $util       = Humble::getHelper('humble/directory');
+            $directory  = (substr($directory,0,1)==='/') ? substr($directory,1) : $directory;  //convert from absolute to relative path
+            if (is_dir('../'.$directory)) {
+                @mkdir('../../'.$directory,0775,true);
+                $util->copyDirectory('../'.$directory,'../../'.$directory);
+            } else {
+                print("Directory doesn't exist\n");
+            }
+        } else {
+            print('Directory not found');
+        }
+    }
+    //--------------------------------------------------------------------------
+    function restoreDirectory($args) {
+        $parms      = processArgs($args);
+        $directory  = fetchParameter('directory',$parms);
+        if (!$directory) {
+            $directory  = fetchParameter('dir',$parms);
+        }
+        print('Attempting to restore: '.$directory."\n");
+        if ($directory) {
+            $util       = Humble::getHelper('humble/directory');
+            $directory  = (substr($directory,0,1)==='/') ? substr($directory,1) : $directory;  //convert from absolute to relative path
+            if (is_dir('../../'.$directory)) {
+                @mkdir('../'.$directory,0775,true);
+                $util->copyDirectory('../../'.$directory,'../'.$directory);
+            } else {
+                print("Directory doesn't exist\n");
+            }
+        } else {
+            print('Directory not found');
+        }
+    }
+    //--------------------------------------------------------------------------
+    function deStinkyTheSQL($args) {
+        $parms = processArgs($args);
+        $file  = fetchParameter('file',$parms);
+        if ($file) {
+            if (file_exists($file)) {
+                $lines = [];
+                foreach (explode("\n",file_get_contents($file)) as $row) {
+                    if (($pos = strpos($row,"AUTO_INCREMENT="))!==false) {
+                        $pre = substr($row,0,$pos);
+                        $post = strpos(substr($row,$pos),' ');
+                        $row = $pre.substr(substr($row,$pos),$post);
+                    }
+                    $lines[] = $row;
+                }
+                file_put_contents($file,implode("\n",$lines));
+            } else {
+                print('File specified ['.$file.'] does not exist');
+            }
+        } else {
+            print('Must pass in an argument of file=###');
+        }
+
+    }
+    //--------------------------------------------------------------------------
+    function compileController($args) {
+        $file       = fetchParameter('file',processArgs($args));
+        print($file."\n");
+        $compiler   = \Environment::getCompiler();
+        $compiler->compileFile($file);
+    }
+    //--------------------------------------------------------------------------
+    function scrub($str) {
+        $srch = ["\n","\r","\t"];
+        $repl = ["","",""];
+        return str_replace($srch,$repl,$str);
+    }
+    //--------------------------------------------------------------------------
+    function recurseDirectory($path) {
+        $entries = [];
+        if ($path) {
+            if (!is_dir($path)) {
+                print("What is up with this: ".$path."\n");
+            }
+            $dir = dir($path);
+            while (($entry = $dir->read()) !== false ) {
+                if (($entry == '.') || ($entry == '..')) {
+                    continue;
+                }
+                if (is_dir($path.'/'.$entry)) {
+                    $entries = array_merge($entries,recurseDirectory($path.'/'.$entry));
+                } else {
+                    $entries[] = $path.'/'.$entry;
+                }
+            }
+        }
+        return $entries;
+    }
+    function addUser($args) {
+        $parms = processArgs($args);
+        $uname = fetchParameter('user_name',$parms);
+        $passw = fetchParameter('password',$parms);
+        $first = fetchParameter('first_name',$parms);
+        $last  = fetchParameter('last_name',$parms);
+        $uid   = fetchParameter('uid',$parms);
+        if ($uname && $passw) {
+            Humble::getEntity('humble/users')->newUser($uname,MD5($passw),$first,$last,$uid);
+        }
+    }
+    //--------------------------------------------------------------------------
+    function getManifestContent() {
+
+        $content = [
+            'manifest' => [],
+            'files' => [],
+            'exclude' => [],
+            'xref' => []
+        ];
+        if (file_exists('Humble.manifest')) {
+            $content['manifest'] = explode("\n",file_get_contents('Humble.manifest'));
+        } else {
+            die('Manifest file not found');
+        }
+        chdir('..');
+        foreach ($content['manifest'] as $file) {
+            if (substr($file,0,1) == '#') {
+                continue;
+            }
+            if (substr($file,0,1) == '^') {
+                $content['exclude'][trim(substr($file,1))] = $file;
+                continue;
+            }
+            $file            = trim($file);
+            $parts           = explode(' ',$file);
+            $content['xref'][$parts[0]] = (isset($parts[1]) ? $parts[1] : $parts[0]);
+            if (substr($file,strlen($file)-1,1)=='*') {
+                $content['files'] = array_merge($content['files'],recurseDirectory(substr($file,0,strlen($file)-2)));
+            } else {
+                $content['files'][] = $file;
+            }
+        }
+        chdir('app');
+        return $content;
+    }
+    //--------------------------------------------------------------------------
+    function syncProject($args) {
+        $target = fetchParameter('target',processArgs($args));
+        $sync   = [
+            'identical' => [],   /* same in source and target */
+            'missing'   => [],   /* missing in target */
+            'special'   => [],   /* where the src and dest aren't the same */
+            'changed'   => []    /* different in target than in source */
+        ];
+
+        if ($target && is_dir('../'.$target)) {
+            $content = getManifestContent();
+            chdir('..');
+            foreach ($content['files'] as $file) {
+                $exclude = false;
+                foreach ($content['exclude'] as $mask => $type) {
+                    if (strpos($file,$mask) !== false) {
+                        $exclude = true;
+                    }
+                }
+                if ($exclude || ($cnt = count(explode(' ',$file))>1)) {
+                    if ($cnt > 1) {
+                        $sync['special'][] = $file;
+                    }
+                    continue;
+                }
+                if (file_exists($target.'/'.$file)) {
+                    $a = file_get_contents($file);
+                    $b = file_get_contents($target.'/'.$file);
+                    if ($a === $b) {
+                        $sync['identical'][] = $file;
+                    } else {
+                        $sync['changed'][] = $file;
+                    }
+                } else {
+                    $sync['missing'][] = $file;
+                }
+            }
+
+            print("-------------------------------------------------------------\n");
+            print("- THE FOLLOWING FILES WILL BE COPIED TO THE TARGET PROJECT  -\n");
+            print("-------------------------------------------------------------\n");
+            foreach ($sync['missing'] as $idx => $file) {
+                print($idx." )\t".$file."\n");
+            }
+            print("\n-----------------------------------------------------------------\n");
+            print("- THE FOLLOWING FILES WILL REPLACE FILES IN THE TARGET PROJECT  -\n");
+            print("-----------------------------------------------------------------\n");
+            foreach ($sync['changed'] as $idx => $file) {
+                print($idx." )\t".$file."\n");
+            }
+            print("Do you wish to proceed? [Y/N]: ");
+            ob_flush();
+            $answer = scrub(fgets(STDIN));
+            if (strtolower($answer) === 'y') {
+                foreach ($sync['missing'] as $file) {
+                    if (($lastPos = strrpos($file,'/'))!== false) {
+                        if ($dir = substr($file,0,$lastPos)) {
+                            @mkdir($target.'/'.$dir,0775,true);
+                        }
+                        copy($file,$target.'/'.$file);
+                    }
+                }
+                foreach ($sync['changed'] as $file) {
+                    copy($file,$target.'/'.$file);
+                }
+            } else {
+                print("\n\nSync aborted");
+            }
+            chdir('app');
+        } else {
+            print("\nYou must specify the target project... [target=c:\\projects\\myproject\\ \n\n");
+        }
+    }
+    //--------------------------------------------------------------------------
+    function packageProject() {
+        $content = getManifestContent();
+        chdir('..');
+        foreach ($content['files'] as $file) {
+            if (!isset($content['xref'][$file])) {
+                $content['xref'][$file] = $file;
+            }
+        }
+        @mkdir('../packages/',0775);
+        $xml        = simplexml_load_file('application.xml');
+        $archive    = '../packages/Humble-Distro-'.(string)$xml->version->framework.'.zip';
+        print("Creating archive ".$archive."\n");
+        if (file_exists($archive)) {
+            unlink($archive);
+        }
+        $zip = new ZipArchive();
+        if ($zip->open($archive, ZipArchive::CREATE) !== true) {
+            die('Wasnt able to create zip');
+        };
+        foreach ($content['xref'] as $src => $dest) {
+            $exclude = false;
+            foreach ($content['exclude'] as $mask => $type) {
+                if (strpos($src,$mask) !== false) {
+                    $exclude = true;
+                }
+            }
+            if ($exclude) {
+                continue;
+            }
+            if (file_exists($src) && is_file($src)) {
+                $zip->addFile($src, $dest);
+            }
+        }
+        //Now add manifest file in the form of a git ignore...
+        $ignore = array_merge(['/images/*','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
+        $zip->addFromString('.gitignore',implode("\n",$ignore));
+        //$zip->addFromString('.manifest',implode("\n",$content['xref']));
+        $zip->close();
+        chdir('app');
+    }
+    //--------------------------------------------------------------------------
+    function performCoreUpdate($distro,$changed,$insertions,$matched,$ignored,$merged) {
+        ob_start();
+        print("\nPATCH REPORT\n########################################################\n\nMatched Files: ".$matched."\n\nThe following files will be updated by this process:\n\n");
+        print("\nThe following files are on the local manifest indicating they should be IGNORED in the patch:\n\n");
+        foreach ($ignored as $idx => $file) {
+            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
+        }
+        print("\nThe following files are on the local manifest indicating they should be MERGED in the patch:\n\n");
+        foreach ($merged as $idx => $file) {
+            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
+        }
+        print("\nThe following files will be patched:\n\n");
+        foreach ($changed as $idx => $file) {
+            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
+        }
+        print("\nThe following files are new and will be inserted by this patch:\n\n");
+        foreach ($insertions as $idx => $file) {
+            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
+        }
+        print($report = ob_get_clean());
+        file_put_contents('patch_report.txt',$report);
+        print("\n\nIf you do not want some files updated, add those files to the Humble.local.manifest file and re-run this process.\n\nA copy of the patch review report shown above can be found in file 'patch_report.txt'.\n\n");
+        print("Do you wish to continue [yes/no]? ");
+        ob_flush();
+        if (strtolower(scrub(fgets(STDIN))) === 'yes') {
+            foreach ($changed as $file) {
+                file_put_contents($file,$distro->getFromName($file));
+            }
+            foreach ($insertions as $file) {
+                if (count($parts = explode('/',$file))>1) {
+                    @mkdir(implode('/',array_slice($parts,0,count($parts)-1)),0775,true);
+                }
+                file_put_contents($file,$distro->getFromName($file));
+            }
+        } else {
+            print("\n\nFramework update aborted.\n\n");
+        }
+    }
+    //--------------------------------------------------------------------------
+    function evaluateCoreDifferences($app,$project,$version) {
+        $local_manifest = (file_exists('app/Humble.local.manifest')) ? json_decode(file_get_contents('app/Humble.local.manifest'),true) : ['merge'=>[],'ignore'=>[]];   //Load the manifest that tells us what files to not update
+        if (file_exists('app/Humble.local.manifest')) {
+            print("\n\n".'Found Local Manifest file...'."\n\n");
+        }
+        if (!$local_manifest) {
+            die("\n\nERROR: Could not read Humble.local.manifest.  Check to see it exists or if there is a parsing issue with the file\n\n");
+        }
+
+        file_put_contents('distro_'.$version.'/humble.zip',file_get_contents($project['framework_url'].'/distro/fetch'));                                               //Download the current source base
+        $changed    = []; $insertions = []; $source = []; $contents = []; $ignore = []; $merge = []; $matched = 0;
+        $distro     = new ZipArchive();
+        if ($distro->open('distro_'.$version.'/humble.zip')) {
+            for ($i=0; $i< $distro->numFiles; $i++) {
+                $contents[] = $distro->getNameIndex($i);
+            }
+        } else {
+            die("\nFailed To open distro zip file\n");
+        }
+        foreach ($contents as $file_idx => $file) {
+            print("processing ".$file."\n");
+            ob_flush();
+            if (file_exists($file)) {
+                if (isset($local_manifest['ignore'][$file]) && $local_manifest['ignore'][$file]) {
+                    $ignore[] = $file;
+                } else if (isset($local_manifest['merge'][$file]) && $local_manifest['merge'][$file]) {
+                    $merge[]  = $file;
+                } else if ($distro->getFromIndex($file_idx) != file_get_contents($file)) {
+                    $changed[] = $file;
+                } else {
+                    $matched++;
+                }
+            } else {
+                $insertions[] = $file;
+            }
+        }
+        performCoreUpdate($distro,$changed,$insertions,$matched,$ignore,$merge);
+    }
+    //--------------------------------------------------------------------------
+    function patchFrameworkCore() {
+        if (file_exists('../Humble.project')) {
+            $project = json_decode(file_get_contents('../Humble.project'),true);
+        } else {
+            die("\nHumble project file not found.\n");
+        }
+        if (file_exists('../application.xml')) {
+            $app = simplexml_load_file('../application.xml');
+        } else {
+            die("\Application XML file not found\n");
+        }
+        $canonical = json_decode(file_get_contents($project['framework_url']."/distro/version"),true);
+        $canon_version = (int)str_replace(".","",(string)$canonical['version']);
+        $local_version = (int)str_replace(".","",(string)$app->version->framework);
+        $helper = Humble::getHelper('humble/directory');
+        print("\n\nRunning patching report on core framework to version ".$canonical['version'].", please wait...\n\n");
+        $distro = 'distro_'.$canonical['version'];
+        ob_flush();
+        chdir('..');
+        @mkdir($distro,0775,true);
+        evaluateCoreDifferences($app,$project,$canonical['version']);
+        $helper->purgeDirectory($distro,true);
+        @rmdir('distro_'.$canonical['version']);
+        chdir('app');
+    }
+    //--------------------------------------------------------------------------
+    //begin main
+    //--------------------------------------------------------------------------
+    ob_start();
+    if (substr(getcwd(),-3,3)!=='app') {
+        chdir('app');           //being called from distribution script
+    }
+    if (!isset($argv) || !count($argv)) {
+        print(file_get_contents('Module.php'));
+        die();
+    }
+    $args = array_slice($argv,1);
+    if ($args) {
+        if (substr($args[0],0,2) == '--') {
+            $cmd = substr($args[0],2);
+            switch (strtolower($cmd)) {
+                case 'c'    :
+                    checkNamespaceAvailability(array_slice($args,1));
+                    break;
+                case 'p'    :
+                    preserveDirectory(array_slice($args,1));
+                    break;
+                case 'o'    :
+                    toggleApplicationStatus();
+                    break;
+                case 'x'    :
+                    checkPrefixAvailability(array_slice($args,1));
+                    break;
+                case 'r'    :
+                    restoreDirectory(array_slice($args,1));
+                    break;
+                case 'b'    :
+                    createModuleDirectories(array_slice($args,1));
+                    break;
+                case 'i'    :
+                    installModule(array_slice($args,1));
+                    break;
+                case 'u'    :
+                    updateModule(array_slice($args,1));
+                    break;
+                case 'e'    :
+                    enableModule(array_slice($args,1));
+                    break;
+                case 'd'    :
+                    disableModule(array_slice($args,1));
+                    break;
+                case '?'    :
+                case 'h'    :
+                case 'help' :
+                    displayHelp($help);
+                    break;
+                case 'k'    :   uninstallModule(array_slice($args,1));
+                                break;
+                case 's'    :
+                    $xml = getApplicationXML();
+                    displayStatus($xml);
+                     break;
+                case 'v'    :
+                    $xml = getApplicationXML();
+                    displayVersion($xml);
+                    break;
+                case 'w'    :
+                    scanForWorkflowComponents(array_slice($args,1));
+                    break;
+                case 'g'    :
+                    generateJSONEdits(array_slice($args,1));
+                    break;
+                case 'l'    :
+                    toggleLocalAuthentication();
+                    break;
+                case 'a'    :
+                    deStinkyTheSQL(array_slice($args,1));
+                    break;
+                case 'y'    :
+                    compileController(array_slice($args,1));
+                    break;
+                case 'package'  :
+                    packageProject();
+                    break;
+                case 'sync'     :
+                    syncProject(array_slice($args,1));
+                    break;
+                case 'patch'  :
+                    patchFrameworkCore();
+                    break;
+                case 'adduser' : 
+                    addUser(array_slice($args,1));
+                    break;
+                case 'inc':
+                case 'increment':
+                case '+':
+                    incrementVersion();
+                    break;
+                default  :
+                    die('Dont know how to process that command ('.$cmd.')');
+                    break;
+            }
+        } else {
+            $required = array('namespace'=>false, 'package'=>false, 'prefix'=>false, 'author'=>false);
+            if ($args[0] == 'help') {
+                print($help);
+            } else {
+                print("\n\tIncorrect flag format \n");
+            }
+        }
+    } else {
+        print('hows the weather out there...?');
     }
 
-
-}
+?>

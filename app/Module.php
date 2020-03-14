@@ -27,6 +27,7 @@ $help = <<<HELP
  *      --y, --Y, Compile a controller
  *      --x, --X, Check if a module prefix is available
  *      --a, --A, Remove AUTOINCREMENT=# from SQL dumps
+ *      --adduser       Backend workaround to create a user, parameters are *user_name", "password", and optional "uid"       
  *      --package       Creates a new downloadable archive file of the Humble project
  *      --increment     Increments the minor version number by one, rolling over if it goes past 9
  *      --initialize    Initializes the project
@@ -594,6 +595,17 @@ TXT;
         }
         return $entries;
     }
+    function addUser($args) {
+        $parms = processArgs($args);
+        $uname = fetchParameter('user_name',$parms);
+        $passw = fetchParameter('password',$parms);
+        $first = fetchParameter('first_name',$parms);
+        $last  = fetchParameter('last_name',$parms);
+        $uid   = fetchParameter('uid',$parms);
+        if ($uname && $passw) {
+            Humble::getEntity('humble/users')->newUser($uname,MD5($passw),$first,$last,$uid);
+        }
+    }
     //--------------------------------------------------------------------------
     function getManifestContent() {
 
@@ -932,6 +944,9 @@ TXT;
                     break;
                 case 'patch'  :
                     patchFrameworkCore();
+                    break;
+                case 'adduser' : 
+                    addUser(array_slice($args,1));
                     break;
                 case 'inc':
                 case 'increment':
