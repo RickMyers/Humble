@@ -12,7 +12,7 @@ Use Environment;
  *
  * @category   Logical Model
  * @package    Event
- * @author     Rick Myers <rick@enicity.com>
+ * @author     Rick Myers <rick@humblecoding.com>
  * @since      File available since Release 1.0.0
  */
 class FileManager extends Model

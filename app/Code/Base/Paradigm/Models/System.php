@@ -13,7 +13,7 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Workflow
- * @author     Richard Myers <rick@enicity.com>
+ * @author     Richard Myers <rick@humblecoding.com>
  * @since      File available since Version 1.0.1
  */
 class System extends Model
@@ -90,7 +90,7 @@ class System extends Model
         $job_queue       = Humble::getEntity('paradigm/job_queue');
         $schedule_log    = Humble::getEntity('paradigm/scheduler_log')->setStarted(date('Y-m-d H:i:s'));    //Let's record when you started
         $schedule_id     = $schedule_log->save();   
-        $jobs            = Jarvis::getEntity('paradigm/system_events')->setActive('Y')->fetch();//And persist it
+        $jobs            = Humble::getEntity('paradigm/system_events')->setActive('Y')->fetch();//And persist it
         foreach ($jobs as $event) {
             //if your next execution cycle is within 5 minutes and you haven't been run in the last 10 minutes, you will be queued for execution
             if ((int)$event['period'] == $event['period']) {

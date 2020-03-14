@@ -90,12 +90,12 @@ if (!empty($xml)) {
         if (isset($xml->status->enabled) && ((int)$xml->status->enabled)) {
 
         } else {
-            die("<table width='100%' height='100%'><tr><td align='center'><h1 style='color: white'>Please enable the application before attempting to install</h1></td></tr></table>");
+            die("<table width='100%' height='100%'><tr><td align='center'><h1 style='color: red'>Please enable the application before attempting to install</h1></td></tr></table>");
         }
         if (isset($xml->status->installer) && ((int)$xml->status->installer)) {
             //nop; everything is good
         } else {
-            die("<table width='100%' height='100%'><tr><td align='center'><h1 style='color: white'>Executing the installation script is currently disabled</h1></td></tr></table>");
+            die("<table width='100%' height='100%'><tr><td align='center'><h1 style='color: red'>Executing the installation script is currently disabled</h1></td></tr></table>");
         }
     } else {
         die("The application is not correctly configured.  Correct the application configuration file and try again");

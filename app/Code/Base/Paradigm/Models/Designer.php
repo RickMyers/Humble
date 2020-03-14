@@ -13,10 +13,10 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Framework
- * @author       <rick@enicity.com>
+ * @author       <rick@humblecoding.com>
  * @copyright  2005-present Humble Project
  * @license    https://enicity.com/license.txt
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @link       https://enicity.com/docs/class-Designer.html
  * @since      File available since Release 1.0.0
  */

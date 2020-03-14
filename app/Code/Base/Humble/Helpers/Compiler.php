@@ -181,7 +181,7 @@ class Compiler extends Directory
         if (count($this->elements) == 0){
             die("There are parameter statements floating around unattached to objects");
         }
-        $node = $this->elements[count($this->elements)-1];
+        $node   = $this->elements[count($this->elements)-1];
         $source = '$_REQUEST'; $custom = false;
         $isFile = false;
         $func   = false;
@@ -203,6 +203,10 @@ class Compiler extends Directory
                                     break;
             case    "CLASS"     :   $source = 'CLASS';
                                     break;
+            case    "MODEL"     :
+            case    "MODELS"    :
+            case    "ASSIGN"    :   $source = '$models';
+                                    break;                                
             case    "PUT"       :
             case    "STREAM"    :   $source = '$_REQUEST';
                                     print("\n".$this->tabs().'$_REQUEST["'.(string)$parameter['name'] .'"] = (string)file_get_contents("php://input");'."\n");
@@ -911,6 +915,11 @@ PHP;
                                             break;
                     }
                 }
+                if (isset($action['disposition']) || isset($action['filename'])) {
+                    $filename    = isset($action['filename']) ? '; filename="'.$action['filename'].'"' : "";
+                    $disposition = isset($action['disposition']) ? $action['disposition'] : 'attachment'; 
+                    print($this->tabs()."header('Content-Disposition: ".$disposition.$filename."');\n");
+                }                
                 //Handles if we are receiving raw json data...
                 if (isset($action['input'])) {
                     switch (strtolower($action['input'])) {

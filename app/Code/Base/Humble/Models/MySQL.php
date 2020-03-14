@@ -13,9 +13,9 @@ namespace Code\Base\Humble\Models;
  * @package    Core
  * @author     Original Author <author@example.com>
  * @author     Another Author <another@example.com>
- * @copyright  2007-Present, Rick Myers <rick@enicity.com>
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://license.enicity.com
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @link       http://pear.php.net/package/PackageName
  * @see        NetOther, Net_Sample::Net_Sample()
  * @since      File available since Version 1.0.1

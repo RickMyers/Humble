@@ -5,7 +5,7 @@ Viewing of events
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
 -->
-<controller name="events" use="Smarty3" author="Richard Myers" email="rick@enicity.com">
+<controller name="events" use="Smarty3" author="Richard Myers" email="rick@humblecoding.com">
     <actions>
         <action name="open" passalong="window_id">
             <description>The initial window showing the events</description>

@@ -6,7 +6,7 @@
         <description>This is the module that contains the base framework classes and components</description>
         <author>
             <name>Rick Myers</name>
-            <email>rick@enicity.com</email>
+            <email>rick@humblecoding.com</email>
         </author>
         <module>
             <name>Humble</name>

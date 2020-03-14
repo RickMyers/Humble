@@ -11,10 +11,10 @@ use Humble;
  *
  * @category   Logical Model
  * @package    Framework
- * @author     Richard Myers <rick@enicity.com>
- * @copyright  2007-Present, Rick Myers <rick@enicity.com>
+ * @author     Richard Myers <rick@humblecoding.com>
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://enicity.com/license.txt
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @link       https://enicity.com/docs/class-&&MODULE&&.html
  * @since      File available since Version 1.0.1
  */

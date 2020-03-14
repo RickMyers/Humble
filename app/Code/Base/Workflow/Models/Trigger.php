@@ -16,7 +16,7 @@ use Environment;
  * @author     Rick Myers <>
  * @copyright  2005-present Humble
  * @license    https://enicity.com/license.txt
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @link       https://enicity.com/docs/class-Trigger.html
  * @since      File available since Release 1.0.0
  */

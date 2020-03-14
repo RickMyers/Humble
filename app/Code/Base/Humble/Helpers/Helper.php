@@ -9,8 +9,8 @@ namespace Code\Base\Humble\Helpers;
  *
  * @category   Framework
  * @package    Humble
- * @author     Original Author <rick@enicity.com>
- * @copyright  2007-Present, Rick Myers <rick@enicity.com>
+ * @author     Original Author <rick@humblecoding.com>
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://license.enicity.com
  * @version    1.0.1
  * @see        NetOther, Net_Sample::Net_Sample()

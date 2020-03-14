@@ -13,10 +13,10 @@ use Environment;
  *
  * @category   Entity
  * @package    Framework
- * @author     Richard Myers rick@enicity.com
- * @copyright  2005-Present Humble Project
+ * @author     Richard Myers rick@humblecoding.com
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://enicity.com/license.txt
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @link       https://enicity.com/docs/class-&&MODULE&&.html
  * @since      File available since Release 1.0.0
  */

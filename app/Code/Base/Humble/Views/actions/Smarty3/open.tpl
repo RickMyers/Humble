@@ -4,7 +4,7 @@
 <h3>Package: Base.<br />
 Module: Core.<br />
 Namespace: core<br />
-Author: &lt;rick@enicity.com&gt;</h3>
+Author: &lt;rick@humblecoding.com&gt;</h3>
 
 Welcome to the home page of your application. Some useful information is below:<br />
 <ul>

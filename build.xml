@@ -93,6 +93,24 @@
             <property name="php"    value="${server.rmte.php}" />
             <echo message="Distributing ${server}" />
         </target>
+        
+    <!--#########################################################################################
+        #                                                                                       #
+        #         SETS THE REMOTE ENVIRONMENT VALUES                                            #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="aws" description="Distributes to the AWS Server">
+            <property name="server" value="${server.aws.ip}"  />
+            <property name="uid"    value="${server.aws.uid}" />
+            <property name="pwd"    value="${server.aws.pwd}" />
+            <property name="base"   value="${server.aws.base}" />
+            <property name="dbuser" value="${server.aws.dbuser}" />
+            <property name="dbpass" value="${server.aws.dbpass}" />
+            <property name="root"   value="${server.aws.root}" />
+            <property name="back"   value="${server.aws.back}" />
+            <property name="php"    value="${server.aws.php}" />
+            <echo message="Distributing ${server}" />
+        </target>        
 
     <!--#########################################################################################
         #                                                                                       #
@@ -102,8 +120,8 @@
         <target name="open" depends="create" description="Resets permissions and ownership on relevant directories">
             <sshexec host="${server}"
                   trust="true"
-                  username="root"
-                  password="${rpwd}"
+                  username="${uid}"
+                  password="${pwd}"
                   command="/home/codeship/build.sh open ${alias}" />
         </target>
 
@@ -198,11 +216,11 @@
                   username="${uid}"
                   password="${pwd}"
                   command="tar -czf ${back}${alias}.${timestamp}.tar.gz ${root}" />
-            <sshexec host="${server}"
+            <!--sshexec host="${server}"
                   trust="true"
                   username="root"
                   password="${rpwd}"
-                  command="/home/codeship/build.sh backup ${alias} ${timestamp}" />    <!-- Backsup databases and what not... non code stuff -->
+                  command="/home/codeship/build.sh backup ${alias} ${timestamp}" /-->    <!-- Backsup databases and what not... non code stuff -->
         </target>
 
     <!--#########################################################################################
@@ -213,8 +231,8 @@
         <target name="cleanup" depends="backup" description="Removes any backups older than a week">
             <sshexec host="${server}"
                   trust="true"
-                  username="root"
-                  password="${rpwd}"
+                  username="${uid}"
+                  password="${pwd}"
                   command="/home/codeship/build.sh cleanup ${alias} ${timestamp}" />  <!-- Tailor this using the configuration file in the cleanup script directory -->
         </target>
 
@@ -285,6 +303,7 @@
 
         <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package"   description="Distributes to the Prod Server" />
         <target name="distrmte" depends="constants,remote,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package,document"   description="Distributes to the Prod Server" />
+        <target name="distaws"  depends="constants,aws,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package,document"   description="Distributes to the AWS Lightsail Server" />
         <!--target name="disttest" depends="constants,test,open,create,backup,cleanup,remove,deploy,retain,composer,update,document,increment,package"   description="Distributes to the Test Server" /-->
 
     <!--#########################################################################################

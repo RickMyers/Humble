@@ -5,7 +5,7 @@ Manages the actions related to the workflow engine
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/pages/Controllers.htmls
 -->
-<controller name="workflow" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+<controller name="workflow" use="Smarty3" author="Rick Myers" email="rick@humblecoding.com">
     <actions>
         <action name="test">
             <description>Tests the workflow trigger mechansim</description>

@@ -13,7 +13,7 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Workflow
- * @author     Richard Myers <rick@enicity.com>
+ * @author     Richard Myers <rick@humblecoding.com>
  * @since      File available since Version 1.0.1
  */
 class System extends Model

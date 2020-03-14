@@ -5,7 +5,7 @@ Shows the innards of an event
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
 -->
-<controller name="event" use="PHP" author="Richard Myers" email="rick@enicity.com">
+<controller name="event" use="PHP" author="Richard Myers" email="rick@humblecoding.com">
     <actions>
         <action name="expand">
             <description>Expands an event out</description>

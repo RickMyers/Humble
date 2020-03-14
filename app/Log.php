@@ -8,8 +8,8 @@
  *
  * @category   Framework
  * @package    Core
- * @author     Original Author <rick@enicity.com>
- * @copyright  2007-Present, Rick Myers <rick@enicity.com>
+ * @author     Original Author <rick@humblecoding.com>
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://license.enicity.com
  * @version    1.0.1
  * @since      File available since Version 1.0.1
@@ -191,7 +191,7 @@ class Log {
                    'Reply-To: noreply@enicity.com' . "\r\n" .
                    'Content-Type: text/html' . "\r\n" .
                    'X-Mailer: PHP/' .phpversion();
-        mail('rick@enicity.com',$subject,$text,$headers);
+        mail('rick@humblecoding.com',$subject,$text,$headers);
     }
 
     /**

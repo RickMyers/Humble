@@ -14,10 +14,10 @@ use MongoDB;
  *
  * @category   Framework
  * @package    Core
- * @author     Rick Myers <rick@enicity.com>
- * @copyright  2007-Present, Rick Myers <rick@enicity.com>
+ * @author     Rick Myers <rick@humblecoding.com>
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://license.enicity.com
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @link       http://pear.php.net/package/PackageName
  */
 class Mongo  {

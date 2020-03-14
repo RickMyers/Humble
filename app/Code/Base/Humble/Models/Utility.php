@@ -14,10 +14,10 @@ use Log;
  *
  * @category   Utility
  * @package    Core
- * @author     Original Author <rick@enicity.com>
- * @copyright  2007-Present, Rick Myers <rick@enicity.com>
+ * @author     Original Author <rick@humblecoding.com>
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://license.enicity.com
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @since      File available since Version 1.0.1
  */
 class Utility extends Model

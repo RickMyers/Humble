@@ -14,7 +14,7 @@ use Environment;
  * @category   &&CATEGORY&&
  * @package    &&PACKAGE&&
  * @author     &&AUTHORNAME&& &&AUTHOREMAIL&&
- * @copyright  2005-Present Humble Project
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://enicity.com/license.txt
  * @version    <INSERT VERSIONING MECHANISM HERE />
  * @link       https://enicity.com/docs/class-&&MODULE&&.html

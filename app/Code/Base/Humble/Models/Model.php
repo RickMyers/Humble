@@ -186,7 +186,7 @@ class Model implements HumbleComponent
         if ($method == "GET") {
             $hurl = $URL.'?'.http_build_query($args,'','&');
         } else {
-        	$hurl = $URL;
+            $hurl = $URL;
         }
         $sessionControl = isset($this->_data['sessionId']);
         if ($sessionControl) {
@@ -702,7 +702,7 @@ SOAP;
     public function __call($name, $arguments)  {
         $token = substr($name,3);
         if ($token) {
-            $token{0} = strtolower($token{0});
+            $token[0] = strtolower($token[0]);
             if (substr($name,0,3)=='set') {
                 if (!$arguments) {
                     return $this;
@@ -712,7 +712,7 @@ SOAP;
                 return $this->__get($token);
             } elseif (substr($name,0,5)=='unset') {
                 $token      = substr($name,5);
-                $token{0}   = strtolower($token{0});
+                $token[0]   = strtolower($token[0]);
                 return $this->_unset($token);
             } else {
                 if (($retval = $this->_remoteProcedureCall($name)) === null) {

@@ -14,10 +14,10 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Workflow
- * @author     Rick Myers <rick@enicity.com>
+ * @author     Rick Myers <rick@humblecoding.com>
  * @copyright  2005-present Enicity.com
  * @license    https://enicity.com/license.txt
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @link       https://enicity.com/docs/class-User.html
  * @since      File available since Release 1.0.0
  */

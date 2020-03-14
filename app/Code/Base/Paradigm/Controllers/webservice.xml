@@ -5,7 +5,7 @@ Manages actions related to workflow webservices
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
 -->
-<controller name="webservice" use="Smarty3" author="Richard Myers" email="rick@enicity.com">
+<controller name="webservice" use="Smarty3" author="Richard Myers" email="rick@humblecoding.com">
     <actions>
         <action name="activate">
             <description>Enables or disables a webservice URI</description>

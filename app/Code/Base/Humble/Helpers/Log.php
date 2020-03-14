@@ -11,10 +11,10 @@ use Environment;
  *
  * @category   Utility
  * @package    Framework
- * @author     Rick Myers rick@enicity.com
- * @copyright  2007-Present, Rick Myers <rick@enicity.com>
+ * @author     Rick Myers rick@humblecoding.com
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://enicity.com/license.txt
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @link       https://enicity.com/docs/class-Humble_Helpers_Log.html
  * @since      File available since Version 1.0.1
  */

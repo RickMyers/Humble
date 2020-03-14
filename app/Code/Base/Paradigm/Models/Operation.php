@@ -13,7 +13,7 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Workflow
- * @author     Richard Myers <rick@enicity.com>
+ * @author     Richard Myers <rick@humblecoding.com>
  * @copyright  2005-present Humble Project
  * @since      File available since Release 1.0.0
  */

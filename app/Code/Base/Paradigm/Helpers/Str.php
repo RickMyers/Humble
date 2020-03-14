@@ -10,7 +10,7 @@ use Humble;
  *
  * @category   Utility
  * @package    Framework
- * @author     Rick Myers rick@enicity.com
+ * @author     Rick Myers rick@humblecoding.com
  * @since      File available since Release 1.0.0
  */
 class Str extends Helper implements \Countable, \ArrayAccess, \IteratorAggregate

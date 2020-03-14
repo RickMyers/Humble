@@ -5,7 +5,7 @@ Workflow actions involving sFTP
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
 -->
-<controller name="sftp" use="Smarty3" author="Richard Myers" email="rick@enicity.com.com">
+<controller name="sftp" use="Smarty3" author="Richard Myers" email="rick@humblecoding.com.com">
     <actions>
         <action name="get" passalong="windowId">
             <description>Retrieves files at sFTP site</description>

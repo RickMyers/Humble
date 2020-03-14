@@ -5,7 +5,7 @@ Manages the saving of settings and customizations for components
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/pages/Controllers.htmls
 -->
-<controller name="settings" use="Smarty3" author="Rick Myers" email="rick@enicity.com">
+<controller name="settings" use="Smarty3" author="Rick Myers" email="rick@humblecoding.com">
     <actions>
         <action name="save">
             <description>Saves the settings array</description>

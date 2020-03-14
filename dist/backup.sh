@@ -2,7 +2,7 @@
 echo $PWD
 now=$(date +"%Y%m%d")
 ts="D_$now"
-[ -d "/var/www/backups/$ts" ] || mkdir "/var/www/backups/$ts"
-cd "/var/www/backups/$ts"
+[ -d "/var/www/Backups/$ts" ] || mkdir "/var/www/Backups/$ts"
+cd "/var/www/Backups/$ts"
 mongodump
 mysqldump --all-databases -u root -p > mysql.sql

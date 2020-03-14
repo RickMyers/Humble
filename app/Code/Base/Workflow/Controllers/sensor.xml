@@ -5,7 +5,7 @@ Sensor related actions
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
 -->
-<controller name="sensor" use="Smarty3" author="Richard Myers" email="rick@enicity.com">
+<controller name="sensor" use="Smarty3" author="Richard Myers" email="rick@humblecoding.com">
     <actions>
         <action name="save">
             <description>Saves the sensor configuration</description>

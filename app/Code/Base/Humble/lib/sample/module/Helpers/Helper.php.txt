@@ -13,7 +13,7 @@ namespace Code\&&package&&\&&module&&\Helpers;
  * @category   Utility
  * @package    &&module&&
  * @author     Original Author <&&email&&>
- * @copyright  2005-Present Humble Project
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://license.enicity.com
  * @version    3.0.1
  */

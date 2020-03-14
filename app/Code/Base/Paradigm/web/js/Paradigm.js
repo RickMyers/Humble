@@ -9,7 +9,7 @@
  *
  * @author
  *
- *      Rick Myers [rick@enicity.com]
+ *      Rick Myers [rick@humblecoding.com]
  *
  * ----------------------------------------------------------------------------- */
 var Paradigm = (function () {

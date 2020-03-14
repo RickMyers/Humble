@@ -5,7 +5,7 @@ Unit Test Harness
 
 For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
 -->
-<controller name="unittests" use="Smarty3" author="Richard Myers" email="rick@enicity.com">
+<controller name="unittests" use="Smarty3" author="Richard Myers" email="rick@humblecoding.com">
     <actions>
 
         <action name="open" passalong="window_id">

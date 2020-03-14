@@ -1,5 +1,5 @@
 {
 	"description": 	"Configuration for how we cleanup code deploys",
-	"backup_dir":	"/var/www/backups/",
+	"backup_dir":	"/var/www/Backups/",
 	"retain":	5
 }

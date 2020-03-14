@@ -11,7 +11,7 @@ use Humble;
  *
  * @category   Utility
  * @package    Framework
- * @author     Rick Myers rick@enicity.com
+ * @author     Rick Myers rick@humblecoding.com
  * @license    https://www.enicity.com/license.txt
  * @since      File available since Release 1.0.0
  */

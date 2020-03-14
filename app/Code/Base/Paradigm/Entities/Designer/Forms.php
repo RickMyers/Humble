@@ -13,10 +13,10 @@ use Environment;
  *
  * @category   Entity
  * @package    Core
- * @author       rick@enicity.com
- * @copyright  2005-Present Humble Project
+ * @author       rick@humblecoding.com
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://enicity.com/license.txt
- * @version    <INSERT VERSIONING MECHANISM HERE />
+ * @version    1.0
  * @link       https://enicity.com/docs/class-Forms.html
  * @since      File available since Release 1.0.0
  */

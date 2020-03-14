@@ -12,7 +12,7 @@ use Humble;
  *
  * @category   Component
  * @package    Base
- * @author     Original Author <rick@enicity.com>
+ * @author     Original Author <rick@humblecoding.com>
  * @since      File available since Release 1.0.0
  */
 

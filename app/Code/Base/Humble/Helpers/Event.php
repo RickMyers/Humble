@@ -13,7 +13,7 @@ use Environment;
  *
  * @category   Utility
  * @package    Framework
- * @author     Rick Myers rick@enicity.com
+ * @author     Rick Myers rick@humblecoding.com
  * @copyright  2005-present Enicity.com
  * @license    https://enicity.com/license.txt
  * @version    1.0.0
