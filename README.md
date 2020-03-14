@@ -156,28 +156,28 @@ currentWeather  :
   arguments       : [p]
   method          : GET
 acmehealthAuthentication   :
-  wsdl            : https://acme.humble.acmehealthplatform.com/ServicesARGUS/AuthenticationService.svc?wsdl  #production
+  wsdl            : https://acme.humble.acmehealthplatform.com/Services /AuthenticationService.svc?wsdl  #production
   version         : 1.2
   operation       : Login
   ws-addressing   :
     Namespace     : ns2
     Action        : http://www.Acmeation.com/Authentication/IAuthentication/Login
     ReplyTo       : http://www.w3.org/2005/08/addressing/anonymous
-    To            : https://acme.humble.acmehealthplatform.com/ServicesARGUS/AuthenticationService.svc/Authentication
+    To            : https://acme.humble.acmehealthplatform.com/Services /AuthenticationService.svc/Authentication
   method          : SOAP
   arguments       :
     loginName     :
     loginPswd     :
     ipAddress     :
 unlockUser:
-  wsdl            : https://acme-uat.humble.acmehealthplatform.com/ServicesARGUS/UserAccountService.svc?wsdl  #UAT
+  wsdl            : https://acme-uat.humble.acmehealthplatform.com/Services /UserAccountService.svc?wsdl  #UAT
   version         : 1.2
   operation       : ProviderUserAccountUnlock
   ws-addressing   :
     Namespace     : ns2
     Action        : http://www.Acmeation.com/Authentication/IAuthentication/ProviderUserAccountUnLock
     ReplyTo       : http://www.w3.org/2005/08/addressing/anonymous
-    To            : https://acme-uat.humble.acmehealthplatform.com/ServicesARGUS/UserAccountService.svc/UserAccount
+    To            : https://acme-uat.humble.acmehealthplatform.com/Services /UserAccountService.svc/UserAccount
   method          : SOAP
   arguments       :
       ProviderUserAccountLockRequest :
