@@ -9,7 +9,7 @@ use Environment;
  *
  * see title
  *
- * PHP version 5.5+
+ * PHP version 7.0+
  *
  * @category   Entity
  * @package    Framework

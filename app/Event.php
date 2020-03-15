@@ -57,7 +57,7 @@ class Event {
      * introduce complexity in the form of custom event methods
      *
      * @param type $identifier
-     * @return \Core\Event\Object
+     * @return \Humble\Event\BaseObject
      */
     public static function get($identifier,$data=[]) {
         $event = new \Code\Base\Humble\Event\BaseObject($identifier);

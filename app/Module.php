@@ -604,6 +604,8 @@ TXT;
         $uid   = fetchParameter('uid',$parms);
         if ($uname && $passw) {
             Humble::getEntity('humble/users')->newUser($uname,MD5($passw),$first,$last,$uid);
+        } else {
+            print("Not enough data was passed to create a user.  user_name and password are minimum required fields.\n");
         }
     }
     //--------------------------------------------------------------------------
