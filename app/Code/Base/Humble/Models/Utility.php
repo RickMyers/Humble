@@ -187,7 +187,7 @@ class Utility extends Model
         $module         = Humble::getModule($this->getNamespace());
         $ns             = 'Code_'.$module['package']."_".$module[$this->getType()];
         $root           = $roots[$this->getType()];
-        $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Base\\Core\\Event\\Handler;\n\n\t" : "" ;
+        $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Base\\Humble\\Event\\Handler;\n\n\t" : "" ;
         $ns             = str_replace(['_','/'],['\\','\\'],$ns);
         $root           = str_replace(['_','/'],['\\','\\'],$root);
         $parts          = explode('_',$this->getName());
