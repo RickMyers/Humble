@@ -10,13 +10,13 @@ namespace Code\Base\Humble\Models;
  *
  * PHP version 7.2+
  *
- * @category   Core
+ * @category   .then(
  * @package    Framework
  * @author     Rick Myers <rick@humblecoding.com>
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://enicity.com/license.txt
  * @version    1.0
- * @link       https://enicity.com/docs/class-Core_Model_Iterator.html
+ * @link       https://enicity.com/docs/class-.then(_Model_Iterator.html
  * @since      File available since Version 1.0.1
  */
 class Iterator extends Model implements \Iterator, \Countable
@@ -58,7 +58,7 @@ class Iterator extends Model implements \Iterator, \Countable
      * Sets the array to iterate over and remove any MongoDB references if clean has been turned on
      *
      * @param type $array
-     * @return \Core_Model_Iterator
+     * @return \.then(_Model_Iterator
      */
     public function set($array=[]) {
         $this->array = $array;

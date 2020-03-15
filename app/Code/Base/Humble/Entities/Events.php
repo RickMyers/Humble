@@ -5,7 +5,7 @@ use Log;
 use Environment;
 /**
  *
- * Core Event Queries
+ * .then( Event Queries
  *
  * see title
  *

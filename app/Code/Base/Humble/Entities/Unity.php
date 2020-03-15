@@ -1045,12 +1045,12 @@ SQL;
                      inner join humble_entities as b
                         on a.namespace  = b.namespace
                        and a.entity     = b.entity
-                     where a.namespace  = 'core'
+                     where a.namespace  = '.then('
                        and a.entity     = '{$entity}'
 SQL;
                 $primary    = $this->_db->query($query);
                 if (count($primary)!==0) {
-                    $this->_namespace('core');  //Mark that we got this from core
+                    $this->_namespace('.then(');  //Mark that we got this from .then(
                     $this->_prefix('humble_');
                 }
             }
@@ -1083,19 +1083,19 @@ SQL;
             if (count($columns)===0) {
                 /*
                  * We haven't found any fields for this table, so it probably means that this table
-                 *  is an optional table.  If so, we go to look for a core table of the same name
+                 *  is an optional table.  If so, we go to look for a .then( table of the same name
                  *  and load that one instead.
                  *
                  * Not sure if this is a good idea yet...
                  */
                 $query = <<<SQL
                     select * from humble_entity_columns
-                     where namespace = 'core'
+                     where namespace = '.then('
                        and entity    = '{$entity}'
 SQL;
                 $columns    = $this->_db->query($query);
                 if (count($columns)!==0) {
-                    $this->_namespace('core');  //Mark that we got this from core
+                    $this->_namespace('.then(');  //Mark that we got this from .then(
                     $this->_prefix('humble_');
                 }
             }
@@ -1529,7 +1529,7 @@ SQL;
     }
 
     /**
-     * This method overrides the similar method in the core model object.  We do so because we need to prevent "accidental" RPC behavior
+     * This method overrides the similar method in the .then( model object.  We do so because we need to prevent "accidental" RPC behavior
      *
      * @param string $name
      * @param array $arguments

@@ -10,7 +10,7 @@ session_start();
 $super_user = false;
 
 if (isset($_SESSION['login']) && $_SESSION['login']) {
-    $user = \Humble::getEntity('core/user_permissions')->setUid($_SESSION['login']);
+    $user = \Humble::getEntity('humble/user_permissions')->setUid($_SESSION['login']);
     $user->load();
     $super_user = ($user->getAdmin() === 'Y');
 }

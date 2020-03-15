@@ -6,7 +6,7 @@
                 background-image: url(/web/images/light.jpg); background-repeat: no-repeat; background-size: cover
             }
             .services-body-background {
-                background-image: url(/images/core/services.png); background-repeat: no-repeat; background-position: -100px -100px; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%
+                background-image: url(/images/humble/services.png); background-repeat: no-repeat; background-position: -100px -100px; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%
             }
             .services-display-area {
                 width: 80%; height: 80%; border: 1px solid #cecece; background-color: rgba(232,232,232,.8); margin-left: auto; margin-right: auto; margin-top: 5%

@@ -865,6 +865,7 @@ TXT;
     //--------------------------------------------------------------------------
     //begin main
     //--------------------------------------------------------------------------
+    print("\nWorking on it...\n\n");
     ob_start();
     if (substr(getcwd(),-3,3)!=='app') {
         chdir('app');           //being called from distribution script

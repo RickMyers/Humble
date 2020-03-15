@@ -104,7 +104,7 @@
             $module = \Humble::getModule($namespace);
             if (isset($module['schema_layout']) && ($module['schema_layout'])) {
                 try {
-                    $editForm = \Humble::getModel('core/renderer');
+                    $editForm = \Humble::getModel('humble/renderer');
                     $editForm->setNamespace($namespace);
                     $editForm->setPackage($module['package']);
                     $editForm->setId($id);

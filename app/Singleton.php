@@ -1,8 +1,4 @@
 <?php
-//---------------------------------------------------------------------------------------------
-//RabbitMQ Integration -- we will enable these later
-//use PhpAmqpLib\Connection\AMQPStreamConnection;
-//use PhpAmqpLib\Message\AMQPMessage;
 /**
  * Manages singleton classes
  *
@@ -29,10 +25,7 @@ class Singleton
     private static $compiler         = null;
     private static $installer        = null;
     private static $updater          = null;
-    private static $refresher        = null;
     private static $translationTable = null;
-    private static $MQConnection     = null;
-    private static $MQChannel        = null;
     private static $mappings         = null;
 
     /**
@@ -54,12 +47,6 @@ class Singleton
      * Put code here to release any allocated resources
      */
     public static function destruct() {
-        if (self::$MQChannel) {
-            self::$MQChannel->close();
-        }
-        if (self::$MQConnection) {
-            self::$MQConnection->close();
-        }
     }
     /**
      *
@@ -69,21 +56,6 @@ class Singleton
             self::$mySQLAdapter = new \Code\Base\Humble\Models\MySQL();
         }
         return self::$mySQLAdapter;
-    }
-
-    public static function getMQConnection() {
-        if (!isset(self::$MQConnection)) {
-            self::$MQConnection = new AMQPStreamConnection('localhost',5672,'guest','guest');
-        }
-        return self::$MQConnection;
-
-    }
-
-    public static function getMQChannel() {
-        if (!isset(self::$MQChannel)) {
-            self::$MQChannel = self::getMQConnection()->channel();
-        }
-        return self::$MQChannel;
     }
 
     /**
@@ -113,7 +85,6 @@ class Singleton
                 self::$firephp = new \Code\Base\Humble\Helpers\FirePHP();
             } else {
                 self::$firephp = new \Code\Base\Humble\Helpers\FirePlacebo();
-                //self::$firephp = new Core_Helper_FirePlacebo(); //@TODO: When we go "live", swap these comments
             }
         }
         return self::$firephp;
@@ -155,23 +126,12 @@ class Singleton
     /**
      *
      */
-    public static function getRefresher()
-    {
-        if (!isset(self::$refresher)) {
-            self::$refresher = new \Code\Base\Humble\Helpers\Refresher();
-        }
-        return self::$refresher;
-    }
-
-    /**
-     *
-     */
     public static function getHelper($base,$name='Data')
     {
         //hit namespace for helper location.... then go after it
         if (!isset(self::$helper[$name])) {
             $helperClass = $base.'_'.$name.'.php';
-            $helperClass = (file_exists($helperClass)) ? $helperClass : '\Code\Base\Humble\Helper\Object' ;
+            $helperClass = (file_exists($helperClass)) ? $helperClass : '\Code\Base\Humble\Helpers\Helper' ;
             self::$helper[$name] = new $helperClass();
         }
         return self::$helper[$name];
@@ -221,8 +181,4 @@ class Singleton
     public function __wakeup()       {        }
 }
 
-//So, what am I doing here?  Well, I allocate some resources using a static class, but the __destruct method is not
-//called when a static class is destroyed, so I take an instance of it here as an instantiatied class, and thus I
-//now get __destruct() behavior when this class is destroyed
-$SINGLETON = new Singleton();
 ?>

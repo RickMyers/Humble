@@ -203,7 +203,7 @@ class Log {
      * @param type $data            An array of values to use to construct the message
      */
     public static function activity($primary=null,$secondary=null,$name=null,$data=[]) {
-        $template = Humble::getEntity('core/activity_templates')->setName($name)->load(true);
+        $template = Humble::getEntity('humble/activity_templates')->setName($name)->load(true);
         if ($template) {
             $actors     = ['primary_id'=>null,'secondary_id'=>null];
             if ($template['meta_data']) {
@@ -214,7 +214,7 @@ class Log {
             }
             $primary_id     = (isset($actors['primary_id']) && $actors['primary_id']) ? $actors['primary_id'] : $primary;
             $secondary_id   = (isset($actors['secondary_id']) && $actors['secondary_id']) ? $actors['secondary_id'] : $secondary;
-            Humble::getEntity('core/activity_log')->setLoggedBy(Environment::whoAmI())->setPrimaryId($primary_id)->setSecondaryId($secondary_id)->setActivity(Humble::getHelper('core/string')->translate($template['template'],$data))->save();
+            Humble::getEntity('humble/activity_log')->setLoggedBy(Environment::whoAmI())->setPrimaryId($primary_id)->setSecondaryId($secondary_id)->setActivity(Humble::getHelper('humble/string')->translate($template['template'],$data))->save();
         }
     }
 

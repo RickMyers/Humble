@@ -134,7 +134,7 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return (isset(self::$application->status) && isset(self::$application->status->caching) && self::$application->status->caching);
+        return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
     }
     /**
      * This is a wrapper for the session variable.  It will either set a session variable, return a session variable, or return the session array if no parameter is passed

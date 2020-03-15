@@ -105,7 +105,7 @@ class Event {
     public static function isRegistered($namespace=false,$eventName=false) {
         $event_registered = false;
         if ($eventName) {
-            $event = Humble::getEntity('core/events')->setEvent($eventName);
+            $event = Humble::getEntity('humble/events')->setEvent($eventName);
             if ($namespace) {
                 $event->setNamespace($namespace);
             }
@@ -125,7 +125,7 @@ class Event {
     public static function register($namespace=false,$eventName=false,$comment=false) {
         $id = false;
         if ($eventName && $comment) {
-            $event_library = Humble::getEntity('core/events')->setEvent($eventName)->setComment($comment);
+            $event_library = Humble::getEntity('humble/events')->setEvent($eventName)->setComment($comment);
             if ($namespace) {
                 $event_library->setNamespace($namespace);
             }

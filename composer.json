@@ -1,0 +1,13 @@
+{
+    "name": "rickmyers/humble",
+    "description": "The Humble Framework",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rick Myers",
+            "email": "rick@humblecoding.com"
+        }
+    ],
+    "require": {}
+}
