@@ -9,7 +9,7 @@
             </model>
             <entity namespace="humble" class="workflow/components" id="core">
                 <parameter name='process' source='request' default='Y' />
-                <parameter name='namespace' value='ns' source='post' required='true' default='core' /><!-- trick to set a variable to a different value... 'ns' isn't in the post, so it will take the default value -->
+                <parameter name='namespace' value='ns' source='post' required='true' default='humble' /><!-- trick to set a variable to a different value... 'ns' isn't in the post, so it will take the default value -->
             </entity>
         </action>
 
@@ -22,7 +22,7 @@
             </model>
             <entity namespace="humble" class="workflow/components" id="core">
                 <parameter name='process' source='request' default='Y' />
-                <parameter name='namespace' value='ns' source='post' required='true' default='core' /><!-- trick to set a variable to a different value... 'ns' isn't in the post, so it will take the default value -->
+                <parameter name='namespace' value='ns' source='post' required='true' default='humble' /><!-- trick to set a variable to a different value... 'ns' isn't in the post, so it will take the default value -->
             </entity>
         </action>
 

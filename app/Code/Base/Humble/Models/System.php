@@ -45,7 +45,7 @@ class System extends Model
     }
 
     public function save() {
-        $root       = Environment::getRoot('core');
+        $root       = Environment::getRoot('humble');
         $rain       = Environment::getInternalTemplater($root.'/lib/sample/install','xml');
         $rain->assign('enabled',    (($this->getEnabled())       ? 1 : 0));
         $rain->assign('installer',  (($this->getInstaller())     ? 1 : 0));

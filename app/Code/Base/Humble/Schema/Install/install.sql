@@ -33,7 +33,7 @@ CREATE TABLE `humble_chronicle` (
   `message` varchar(128) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `core_chronicle_idx` (`clientid`)
+  KEY `humble_chronicle_idx` (`clientid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_controllers` */
@@ -55,8 +55,8 @@ CREATE TABLE `humble_css` (
   `weight` int(11) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`package`,`namespace`,`source`),
-  KEY `core_js_pkg_idx` (`package`),
-  KEY `core_js_ns_idx` (`namespace`)
+  KEY `humble_js_pkg_idx` (`package`),
+  KEY `humble_js_ns_idx` (`namespace`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_edits` */
@@ -73,7 +73,7 @@ CREATE TABLE `humble_edits` (
 
 CREATE TABLE `humble_entities` (
   `namespace` char(36) NOT NULL,
-  `entity` char(36) NOT NULL,
+  `entity` char(128) NOT NULL,
   `polyglot` char(1) DEFAULT 'N',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`namespace`,`entity`)
@@ -122,9 +122,9 @@ CREATE TABLE `humble_js` (
   `weight` int(11) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`package`,`namespace`,`source`),
-  KEY `core_js_pkg_idx` (`package`),
-  KEY `core_js_ns_idx` (`namespace`),
-  KEY `core_edits_ns_idx` (`namespace`)
+  KEY `humble_js_pkg_idx` (`package`),
+  KEY `humble_js_ns_idx` (`namespace`),
+  KEY `humble_edits_ns_idx` (`namespace`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_modules` */

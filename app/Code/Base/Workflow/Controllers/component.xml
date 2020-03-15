@@ -5,7 +5,7 @@
         <action name="objects">
             <description>Gets a list of objects</description>
             <entity namespace='paradigm' class='workflow_components' id='objects' distinct='true' fields='component'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='process'   source='request' optional='true' default=''/>
                 <parameter name='decision'  source='request' optional='true' default='' />
                 <parameter name='role'      source='request' optional='true' default='' />
@@ -32,7 +32,7 @@
         <action name="methods">
             <description>Gets a list of events attached to an object</description>
             <entity namespace='paradigm' class='workflow_components' id='methods' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='component' source='request' default='' />
                 <parameter name='process'   source='request' optional='true' default=''/>
                 <parameter name='decision'  source='request' optional='true' default='' />
@@ -62,7 +62,7 @@
         <action name="events">
             <description>Gets a list of events attached to an object</description>
             <entity namespace='paradigm' class='workflow_components' id='components' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='event' source='request' default='Y' />
             </entity>
             <view name='list' />
@@ -73,7 +73,7 @@
         <action name="processes">
             <description>Gets a list of events attached to an object</description>
             <entity namespace='paradigm' class='workflow_components' id='components' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='process' source='request' default='Y' />
             </entity>
             <view name='list' />
@@ -84,7 +84,7 @@
         <action name="decisions">
             <description>Gets a list of decisions attached to an object</description>
             <entity namespace='paradigm' class='workflow_components' id='components' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='decision' source='request' default='Y' />
             </entity>
             <view name='list' />
@@ -95,7 +95,7 @@
         <action name="rules">
             <description>Gets a list of rules  available to a workflow</description>
             <entity namespace='paradigm' class='workflow_components' id='components' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='rule' source='request' default='Y' />
             </entity>
             <view name='list' />
@@ -106,7 +106,7 @@
         <action name="programs">
             <description>Gets a list of programs available to a workflow</description>
             <entity namespace='paradigm' class='workflow_components' id='components' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='program' source='request' default='Y' />
             </entity>
             <view name='list' />
@@ -117,7 +117,7 @@
         <action name="inputs">
             <description>Gets a list of inputs available to a workflow</description>
             <entity namespace='paradigm' class='workflow_components' id='components' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='input' source='request' default='Y' />
             </entity>
             <view name='list' />
@@ -128,7 +128,7 @@
         <action name="services">
             <description>Gets a list of services available to a workflow</description>
             <entity namespace='paradigm' class='workflow_components' id='components' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='service' source='request' default='Y' />
             </entity>
             <view name='list' />
@@ -139,7 +139,7 @@
         <action name="reports">
             <description>Gets a list of reports available to a workflow</description>
             <entity namespace='paradigm' class='workflow_components' id='components' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='report' source='request' default='Y' />
             </entity>
             <view name='list' />
@@ -150,7 +150,7 @@
         <action name="alerts">
             <description>Gets a list of programs available to a workflow</description>
             <entity namespace='paradigm' class='workflow_components' id='components' distinct='true' fields='method'>
-                <parameter name='namespace' source='request' default='core' />
+                <parameter name='namespace' source='request' default='humble' />
                 <parameter name='alert' source='request' default='Y' />
             </entity>
             <view name='list' />

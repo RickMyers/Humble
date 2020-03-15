@@ -24,7 +24,7 @@ insert  into `humble_categories`(`id`,`text`) values
 /*Data for the table `humble_packages` */
 
 insert  into `humble_packages`(`id`,`text`) values
-(1,'Core'),
+(1,'humble'),
 (2,'Workflow Editor'),
 (3,'Framework');
 
