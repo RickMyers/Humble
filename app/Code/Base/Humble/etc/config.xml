@@ -69,8 +69,8 @@
                 <modules />
                 <packages />
                 <pages />
-                <service_directory />
-                <service_parameters />
+                <!--service_directory />
+                <service_parameters /-->
                 <templaters />
                 <templates />
                 <userlog />

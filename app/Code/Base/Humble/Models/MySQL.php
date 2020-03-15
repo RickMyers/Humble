@@ -69,6 +69,9 @@ class MySQL  {
                 $errorstring .= "\t<sqlstate> ".$this->_dbref->sqlstate."</sqlstate>\n";
                 $errorstring .= "\t<errorcode> ".$this->_dbref->errno."</errorcode>\n";
                 $errorstring .= "\t<errortext> ".$this->_dbref->error." </errortext>\n";
+                ob_start();
+                debug_print_backtrace();
+                $errorstring .="\t<trace>".ob_get_clean()."</trace>\n";                
                 $errorstring .= "</error>\n";
                 \Log::mysql($errorstring);
                 $this->_connected = false;
