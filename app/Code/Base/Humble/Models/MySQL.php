@@ -1,9 +1,9 @@
 <?php
 namespace Code\Base\Humble\Models;
 /**
- * Short description for file
+ * MySQL connection manager
  *
- * Long description for file (if any)...
+ * Manages the connection to MySQL and reports on errors
  *
  * PHP version 7.2+
  *
@@ -11,20 +11,15 @@ namespace Code\Base\Humble\Models;
  *
  * @category   Framework
  * @package    Core
- * @author     Original Author <author@example.com>
- * @author     Another Author <another@example.com>
+ * @author     Rick Myers <rick@humblecoding.com>
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://license.enicity.com
  * @version    1.0
- * @link       http://pear.php.net/package/PackageName
- * @see        NetOther, Net_Sample::Net_Sample()
- * @since      File available since Version 1.0.1
  */
 class MySQL  {
 
-	private $_dbref 		= NULL;
-	private $_state			= NULL;
-	private $_prep			= NULL;
+    private $_dbref         = NULL;
+    private $_state	    = NULL;
+    private $_prep	    = NULL;
     private $_connected     = true;
     private $_environment   = null;
     private $_lastQuery     = null;
@@ -36,10 +31,11 @@ class MySQL  {
     /**
      * Loads the environment information, such as userid and password
      */
-	public function __construct() {
+    public function __construct() {
         $this->_environment = \Singleton::getEnvironment();
         $this->connect();
-	}
+    }
+    
     /**
      *
      */
@@ -51,12 +47,13 @@ class MySQL  {
         }
         return $this;
     }
-	/**
+    
+    /**
      * Connects to a DB source
      */
-	public function connect() {
-		$this->_dbref	= @ new \mysqli($this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword());
-		if (mysqli_connect_errno()) {
+    public function connect() {
+        $this->_dbref	= @ new \mysqli($this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword());
+        if (mysqli_connect_errno()) {
             $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";
             $errorstring .= "\t<class> ".$this->_environment->getDBHost()." </class>\n";
             $errorstring .= "\t<errorcode> Connection Error </errorcode>\n";
@@ -64,28 +61,28 @@ class MySQL  {
             $errorstring .= "</error>\n";
             \Log::mysql($errorstring);
             $this->_connected = false;
-		} else {
-			@ $this->_dbref->select_db($this->_environment->getDatabase());
-			if ($this->_dbref->sqlstate != "00000")	{
+        } else {
+            @ $this->_dbref->select_db($this->_environment->getDatabase());
+            if ($this->_dbref->sqlstate != "00000")	{
                 $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";
-				$errorstring .= "\t<class> ".$this->_environment->getDBHost()." </class>\n";
-				$errorstring .= "\t<sqlstate> ".$this->_dbref->sqlstate."</sqlstate>\n";
-				$errorstring .= "\t<errorcode> ".$this->_dbref->errno."</errorcode>\n";
-				$errorstring .= "\t<errortext> ".$this->_dbref->error." </errortext>\n";
-				$errorstring .= "</error>\n";
+                $errorstring .= "\t<class> ".$this->_environment->getDBHost()." </class>\n";
+                $errorstring .= "\t<sqlstate> ".$this->_dbref->sqlstate."</sqlstate>\n";
+                $errorstring .= "\t<errorcode> ".$this->_dbref->errno."</errorcode>\n";
+                $errorstring .= "\t<errortext> ".$this->_dbref->error." </errortext>\n";
+                $errorstring .= "</error>\n";
                 \Log::mysql($errorstring);
                 $this->_connected = false;
-			}
-		}
-	}
+            }
+        }
+    }
 
     /**
      * Closes the DB connection
      */
-	public function close() {
-		$this->_dbref->close();
+    public function close() {
+        $this->_dbref->close();
         return $this;
-	}
+    }
 
     /**
      * Executes a raw SQL query that is passed in
@@ -97,13 +94,13 @@ class MySQL  {
         return $this->_dbref->query($qry);
     }
 
-	/**
+    /**
      * Executes a query and records any issues with it
      *
      * @param type $query
      * @return array
      */
-	public function query($qry)	{
+    public function query($qry)	{
         //\Log::console($qry);
         $this->_lastQuery($qry);
         $resultSet = null;
@@ -121,11 +118,15 @@ class MySQL  {
                     $errorstring .= "\t\t$qry\n";
                     $errorstring .= "\t</sql>\n";
                     $errorstring .= "\t<rowsreturned>\n";
-                    if ($resultSet)
+                    if ($resultSet) {
                         $errorstring .= "\t\t$resultSet->num_rows\n";
-                    else
+                    } else {
                         $errorstring .= "\t\tNot Available\n";
+                    }
                     $errorstring .= "\t</rowsreturned>\n";
+                    ob_start();
+                    debug_print_backtrace();
+                    $errorstring .="\t<trace>".ob_get_clean()."</trace>\n";
                     $errorstring .= "</error>\n";
                     \Log::mysql($errorstring);
                 }
@@ -148,8 +149,8 @@ class MySQL  {
         } else {
             $resultSet = [];
         }
-		return $resultSet;
-	}
+	return $resultSet;
+    }
 
     /**
      *
@@ -157,23 +158,23 @@ class MySQL  {
      * @return type
      */
     protected function translateResultSet($rs=null)	{
-		$n_rs = [];
-		if (($rs) && $rs->num_rows > 0) {
-			while ($row = $rs->fetch_assoc()) {
-				$n_rs[] = $row;
+	$n_rs = [];
+	if (($rs) && $rs->num_rows > 0) {
+            while ($row = $rs->fetch_assoc()) {
+                $n_rs[] = $row;
             }
         }
-		return $n_rs;
-	}
+	return $n_rs;
+    }
 
     /**
      * Allows you to prepare a query for exectuion
      *
      * @param type $query
      */
-	public function prepare($qry) {
-		$this->_prep = $this->_dbref->prepare($qry);
-	}
+    public function prepare($qry) {
+	$this->_prep = $this->_dbref->prepare($qry);
+    }
 
     /**
      * Executes a prepared query
@@ -181,48 +182,48 @@ class MySQL  {
      * @param type $parms
      * @return type
      */
-	public function execute($parms)	{
-		return $this->execute($this->_prep,$parms);
-	}
+    public function execute($parms)	{
+	return $this->execute($this->_prep,$parms);
+    }
 
     /**
      * Begins transaction support
      *
      * @return object
      */
-	public function beginTransaction()	{
-		$resultSet = $this->_dbref->query("START TRANSACTION");
-		return $resultSet;
-	}
+    public function beginTransaction()	{
+	$resultSet = $this->_dbref->query("START TRANSACTION");
+	return $resultSet;
+    }
 
     /**
      * Commits a transaction
      *
      * @return object
      */
-	public function endTransaction() {
-		$resultSet = $this->_dbref->query("COMMIT");
-		return $resultSet;
-	}
+    public function endTransaction() {
+	$resultSet = $this->_dbref->query("COMMIT");
+	return $resultSet;
+    }
 
     /**
      * Reverses one or more recent queries, up to the start of the transaction or last commit
      *
      * @return object
      */
-	public function explicitRollBack() {
-		$resultSet = $this->_dbref->query("ROLLBACK");
-		return $resultSet;
-	}
+    public function explicitRollBack() {
+	$resultSet = $this->_dbref->query("ROLLBACK");
+	return $resultSet;
+    }
 
     /**
      * returns the last numeric id generated as a result of an insert
      *
      * @return int
      */
-	public function getInsertId() {
-		return $this->_dbref->insert_id;
-	}
+    public function getInsertId() {
+	return $this->_dbref->insert_id;
+    }
 
     /**
      * Returns the last query executed, or saves it off if passed in
@@ -280,7 +281,7 @@ class MySQL  {
      *
      * @return object
      */
-	public function getDbref()		{ return $this->_dbref;		}
+    public function getDbref()      { return $this->_dbref;		}
 }
 
 ?>
