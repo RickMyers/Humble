@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+Registration of Humble installation actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
+-->
+<controller name="registration" use="Twig" author="Rick Myers" email="rick@enicity.com">
+    <actions>
+        <action name="activation">
+            <description>Just records a few things about the site doing the installation by serial number</description>
+            <entity namespace="account" class="registration" method="activate">
+                <parameter source='get' format="JSON" required='true' />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

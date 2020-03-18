@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<config>
+    <account>
+        <version>0.0.1</version>
+        <title>Account Manager</title>
+        <description>Manages registered users</description>
+        <author>
+            <name>Rick Myers</name>
+            <email>rick@humblecoding.com</email>
+        </author>
+        <module>
+            <name>Account</name>
+            <weight>50</weight>
+            <required>N</required>
+            <workflow>Y</workflow>
+            <package>Main</package>
+            <use>Smarty3</use>
+        </module>
+        <structure>
+            <models>
+                <source>Account/Models</source>
+            </models>
+            <helpers>
+                <source>Account/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>Account/Controllers</source>
+                <cache>Account/Controllers/Cache</cache>
+            </controllers>
+            <schema>
+                <install>Account/Schema/Install</install>
+                <update>Account/Schema/Update</update>
+                <layout>Account/Schema/DSL</layout>
+            </schema>
+            <configuration>
+                <source>Account/etc</source>
+            </configuration>
+            <views>
+                <source>Account/Views</source>
+                <cache>Account/Views/Cache</cache>
+            </views>
+            <images>
+                <source>Account/Images</source>
+                <cache>Account/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>Account/Entities</source>
+            </entities>
+            <RPC>
+                <source>Account/RPC</source>
+            </RPC>
+            <frontend>
+                <source>Account/web/app</source>
+            </frontend>
+        </structure>
+        <orm>
+            <prefix>account_</prefix>
+            <mongodb>account</mongodb>
+            <entities>
+                <registrations polyglot='Y' />
+            </entities>
+        </orm>
+        <events>
+
+        </events>
+        <web>
+            <hook>
+                <js>
+                    <source>Account/web/js/Account.js</source>
+                </js>
+                <css>
+                    <source>Account/web/css/Account.css</source>
+                </css>
+            </hook>
+        </web>
+    </account>
+</config>

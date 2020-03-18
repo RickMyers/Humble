@@ -218,8 +218,9 @@ FACTORY;
     }
     $project    = json_decode(file_get_contents('Humble.project'));
     $remote     = json_decode(file_get_contents($project->framework_url.'/distro/version'));
-    $serial     = json_decode(file_get_contents($project->framework_url.'/distro/serialNumber'));
+    $serial     = json_decode(file_get_contents($project->framework_url.'/distro/serialNumber?'.json_encode($project)));
     print("\n\nInstalling Humble distro version ".$remote->version." from ".$project->framework_url."\n\n");
+    print("Serial Number: ".$serial->serial_number."\n\n");
     fetchProject($remote->version,$project->framework_url);
     file_put_contents('app/'.$project->factory_name.'.php',str_replace('&&FACTORY&&',$project->factory_name,$template));
     $srch = ['&&PACKAGE&&','&&MODULE&&','&&NAMESPACE&&'];
@@ -229,8 +230,8 @@ FACTORY;
         $repl[] = $project->factory_name.'.php';
     }
     //file_put_contents('index.php',str_replace($srch,$repl,file_get_contents('index.php')));  //replacing default Humble factory with the custom one you just created
-    $srch = ['{$name}','{$version}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}'];
-    $repl = [$project->project_name,$remote->version,1,0,15,1,0,0,0,'',1];
+    $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}'];
+    $repl = [$project->project_name,$remote->version,$serial->serial_number,1,0,15,1,1,0,0,'',1];
     file_put_contents('application.xml',str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/application.xml')));
     print("\n\n");
     print('Now running composer...'."\n");
@@ -264,27 +265,26 @@ function restoreProject() {
     @mkdir('tmp',0775);  //going to test extraction to this location
     $distro = 'Humble-Distro.'.$remote->version.'.zip';
     file_put_contents('tmp/'.$distro,file_get_contents($project->framework_url.'/distro/fetch'));
-	print('Fetching distro from '.$project->framework_url."\n");
+    print('Fetching distro from '.$project->framework_url."\n");
     $new_distro = new ZipArchive();
     if ($new_distro->open('tmp/'.$distro, ZipArchive::CREATE) !== true) {
         die('Wasnt able to open new distro');
     };
-	$collision_ctr = 0; $ctr = 0;
+    $collision_ctr = 0; $ctr = 0;
     while (($entry = $new_distro->getFromIndex($ctr))!==false) {
         $name = $new_distro->getNameIndex($ctr);
-		if (!file_exists($name)) {
-			$parts = explode('/',$name);
-			if (count($parts)>1) {
-				@mkdir(implode('/',array_slice($parts,0,count($parts)-1)),0775,true);
-			}
-			file_put_contents($name,$entry);
-		} else {
-			$collision_ctr++;
-		}
-		$ctr++;
+    	if (!file_exists($name)) {
+            $parts = explode('/',$name);
+            if (count($parts)>1) {
+		@mkdir(implode('/',array_slice($parts,0,count($parts)-1)),0775,true);
+            }
+            file_put_contents($name,$entry);
+	} else {
+            $collision_ctr++;
 	}
-	print("Files skipped: ".$collision_ctr."\n\n");
-    print("\n\n");
+	$ctr++;
+    }
+    print("Files skipped: ".$collision_ctr."\n\n\n");
     print('Now running composer...'."\n");
     chdir('app');
     exec('composer install');
@@ -335,7 +335,6 @@ if (PHP_SAPI === 'cli') {
     } else {
         print($help."\n");
     }
-
 } else {
     print(file_get_contents('Humble.php'));
 }

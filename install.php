@@ -138,10 +138,12 @@ switch ($method) {
                             <div style="padding: 10px; color: white; font-size: 1em; font-family: sans-serif; margin-bottom: 20px; text-align: center; background-color: #0F3F3F">
                                 Welcome to the Installation for <?=$xml->name?>
                             </div>
-                            <form name='installer-form' method='post' id='installer-form' onsubmit="" action="">
+                            <form name='installer-form' method='post' id='installer-form' onsubmit="return false" action="">
                                 <input type="hidden" name="method" id="method" value="INSTALL" />
+                                <input type="hidden" name="serial_number" id="serial_number" value="<?=$xml->serial_number?>" />
 
                                 <fieldset style="float: left; width: 250px; position: relative" id="div_1"><legend>Administrator Information</legend>
+                                    <div class='installer-field-description'>Serial Number: <b><?=$xml->serial_number?></b></div>
                                     <input type='text' class='installer-form-field' id='email' name='email' />
                                     <div class='installer-field-description'>E-Mail</div>
 
@@ -259,22 +261,35 @@ switch ($method) {
         ob_start();
         $step    = 0;
         file_put_contents('install_status.json','{ "stage": "Preparing",  "step": "Initializing...", "percent": 0 }');
-        $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']    : false;
-        $uid    = isset($_POST['userid'])           ? $_POST['userid']    : false;
-        $pwd    = isset($_POST['password'])         ? $_POST['password']  : false;
-        $mongo  = isset($_POST['mongo'])            ? $_POST['mongo']     : false;
-        $mongou = isset($_POST['mongo_userid'])     ? $_POST['mongo_userid']     : false;
-        $mongop = isset($_POST['mongo_password'])   ? $_POST['mongo_password']     : false;
-        $db     = isset($_POST['db'])               ? $_POST['db']        : false;
-        $cache  = isset($_POST['cache'])            ? $_POST['cache']     : false;
-        $fname  = isset($_POST['firstname'])        ? $_POST['firstname'] : '';
-        $lname  = isset($_POST['lastname'])         ? $_POST['lastname'] : '';
+        $email  = isset($_POST['email'])            ? $_POST['email']           : false;
+        $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']          : false;
+        $uid    = isset($_POST['userid'])           ? $_POST['userid']          : false;
+        $pwd    = isset($_POST['password'])         ? $_POST['password']        : false;
+        $mongo  = isset($_POST['mongo'])            ? $_POST['mongo']           : false;
+        $mongou = isset($_POST['mongo_userid'])     ? $_POST['mongo_userid']    : false;
+        $mongop = isset($_POST['mongo_password'])   ? $_POST['mongo_password']  : false;
+        $serial = isset($_POST['serial_number'])    ? $_POST['serial_number']   : false;
+        $db     = isset($_POST['db'])               ? $_POST['db']              : false;
+        $cache  = isset($_POST['cache'])            ? $_POST['cache']           : false;
+        $fname  = isset($_POST['firstname'])        ? $_POST['firstname']       : '';
+        $lname  = isset($_POST['lastname'])         ? $_POST['lastname']        : '';
         $srch   = array('&&USERID&&','&&PASSWORD&&','&&DATABASE&&','&&HOST&&','&&MONGO&&','&&CACHE&&','&&MONGOUSER&&','&&MONGOPWD&&');
         $repl   = array($uid,$pwd,$db,$host,$mongo,$cache,$mongou,$mongop);
         if (!file_exists('Humble.project')) {
             die('<h1>Missing Project File.  Run "humble --project" at the command line to create one</h1>');
         }
         $project = json_decode(file_get_contents('Humble.project'));
+        $registration_data = [
+            'serial_number' => $serial,
+            'first_name'    => $fname,
+            'last_name'     => $lname,
+            'email'         => $email,
+            'project'       => $project->project_name,
+            'project_url'   => $project->project_url,
+            'factory'       => $project->factory_name
+        ];
+        $response = file_get_contents($project->framework_url.'/account/registration/activate?'.json_encode($registration_data));    
+        
         @mkdir('../Settings/'.$project->namespace,0775,true);
         @mkdir('images',0775,true);
         file_put_contents("../Settings/".$project->namespace."/Settings.php",str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/Settings.php')));

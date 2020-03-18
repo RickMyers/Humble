@@ -70,6 +70,11 @@
         case    "serialnumber" :
         case    "serial_number":
         case    "serialNumber" :
+            //lots of work to be done here...
+            //take in the name of the project and the IP
+            //return a SN based on the IP and project name... they should get the same SN back for matching IP and project name
+            chdir('app');
+            require "Humble.php";
             header("Content-Type: application/json");
             $chars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $num    = '';
@@ -79,7 +84,7 @@
                     $num.=substr($chars,rand(0,strlen($chars)-1),1);
                 }
             }
-            // I probably should record the serial number somewhere in a DB and tie to to request IP
+            // I probably should record the serial number somewhere in a DB and tie to the request IP
             print('{ "serial_number": "'.$num.'" }');
             break;
         case    "version" :
