@@ -3,9 +3,9 @@
 
 Registration of Humble installation actions
 
-For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humble.humblecoding.com/internal/docs/controller.html
 -->
-<controller name="registration" use="Twig" author="Rick Myers" email="rick@enicity.com">
+<controller name="registration" use="Twig" author="Rick Myers" email="rick@humblecoding.com">
     <actions>
         <action name="activation">
             <description>Just records a few things about the site doing the installation by serial number</description>

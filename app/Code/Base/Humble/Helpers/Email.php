@@ -14,9 +14,9 @@ use Environment;
  * @category   Utility
  * @package    Other
  * @author     Rick Myers 
- * @license    https://enicity.com/license.txt
+ * @license    https://humblecoding.com/license.txt
  * @version    1.0.0
- * @link       https://enicity.com/docs/class-Email.html
+ * @link       https://humblecoding.com/docs/class-Email.html
  * @since      File available since Release 1.0.0
  */
 class Email extends Helper
@@ -48,8 +48,8 @@ class Email extends Helper
      */
     public function sendEmail($to=false,$subject=false,$body=false,$from=false,$reply=false,$attachment=false) {
         $settings = Environment::settings();
-        $from = ($from ? $from : 'humble@humble.enicity.com');
-        $reply = ($reply ? $reply : 'noreply@humble.enicity.com');
+        $from = ($from ? $from : 'humble@humble.humblecoding.com');
+        $reply = ($reply ? $reply : 'noreply@humble.humblecoding.com');
         $mailer = new \PHPMailer;
         $mailer->isSMTP();
         $mailer->Host = $settings->getSmtpHost();

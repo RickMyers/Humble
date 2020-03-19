@@ -3,7 +3,7 @@
 
 All things around system events, such as timer or cron like functionality
 
-For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humble.humblecoding.com/internal/docs/controller.html
 -->
 <controller name="system" use="Smarty3" author="Rick Myers" email="rick@humblecoding.com">
     <actions>

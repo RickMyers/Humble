@@ -13,7 +13,7 @@
  * @package    Workflow
  * @author     Rick Myers rick@humblecoding.com
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://enicity.com/license.txt
+ * @license    https://humblecoding.com/license.txt
  * @version    1.0
   * @since      File available since Version 1.0.1
  */

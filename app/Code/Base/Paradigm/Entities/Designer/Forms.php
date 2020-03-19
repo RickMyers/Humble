@@ -15,9 +15,9 @@ use Environment;
  * @package    Core
  * @author       rick@humblecoding.com
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://enicity.com/license.txt
+ * @license    https://humblecoding.com/license.txt
  * @version    1.0
- * @link       https://enicity.com/docs/class-Forms.html
+ * @link       https://humblecoding.com/docs/class-Forms.html
  * @since      File available since Release 1.0.0
  */
 class Forms extends \Code\Base\Paradigm\Entities\Entity

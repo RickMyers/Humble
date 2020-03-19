@@ -13,9 +13,9 @@ namespace Code\Base\Paradigm\Entities;
  * @package    Workflow
  * @author     Rick Myers rick@humblecoding.com
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://enicity.com/license.txt
+ * @license    https://humblecoding.com/license.txt
  * @version    1.0
- * @link       https://enicity.com/docs/class-Paradigm_Entities_Workflows.html
+ * @link       https://humblecoding.com/docs/class-Paradigm_Entities_Workflows.html
  * @since      File available since Version 1.0.1
  */
 class Workflows extends Entity

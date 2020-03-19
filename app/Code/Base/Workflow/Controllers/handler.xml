@@ -3,7 +3,7 @@
 
 Configurations from the parent handler class itself
 
-For Controller reference, please see "Anatomy of a Controller" at https://humble.enicity.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humble.humblecoding.com/internal/docs/controller.html
 -->
 <controller name="handler" use="Smarty3" author="Rick Myers" email="rick@humblecoding.com">
     <actions>

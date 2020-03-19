@@ -8,7 +8,7 @@ use Humble;
  *
  * PHP version 7.2+
  *
- * LICENSE: http://www.enicity.com/license.txt
+ * LICENSE: http://www.humblecoding.com/license.txt
  *
  * @category   Component
  * @package    Base

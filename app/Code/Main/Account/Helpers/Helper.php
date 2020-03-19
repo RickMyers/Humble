@@ -12,9 +12,9 @@ namespace Code\Main\Account\Helpers;
  *
  * @category   Utility
  * @package    Account
- * @author     Original Author <rick@enicity.com>
+ * @author     Original Author <rick@humblecoding.com>
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://license.enicity.com
+ * @license    https://license.humblecoding.com
  * @version    3.0.1
  */
 class Helper extends \Code\Base\Humble\Helpers\Helper

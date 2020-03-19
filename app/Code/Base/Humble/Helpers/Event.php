@@ -15,9 +15,9 @@ use Environment;
  * @package    Framework
  * @author     Rick Myers rick@humblecoding.com
  * @copyright  2005-present Enicity.com
- * @license    https://enicity.com/license.txt
+ * @license    https://humblecoding.com/license.txt
  * @version    1.0.0
- * @link       https://enicity.com/docs/class-Event.html
+ * @link       https://humblecoding.com/docs/class-Event.html
  * @since      File available since Release 1.0.0
  */
 class Event extends Helper

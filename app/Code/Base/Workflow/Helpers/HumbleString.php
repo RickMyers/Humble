@@ -12,7 +12,7 @@ use Humble;
  * @category   Utility
  * @package    Framework
  * @author     Rick Myers rick@humblecoding.com
- * @license    https://www.enicity.com/license.txt
+ * @license    https://www.humblecoding.com/license.txt
  * @since      File available since Release 1.0.0
  */
 class HumbleString extends Helper implements \Countable, \ArrayAccess, \IteratorAggregate

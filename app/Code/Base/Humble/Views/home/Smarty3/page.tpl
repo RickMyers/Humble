@@ -32,7 +32,7 @@
                      Some useful locations...<br /><br />
                     <ul>
                         <li> C:\var\www\Humble\app\Code\Base/humble/home/page - location for the main page of your Single Page Application</li>
-                        <li> <a style="color: blue" href="https://humble.enicity.com" target="_BLANK">https://humble.enicity.com</a> - website with extensive documentation and videos for the Humble framework</li>
+                        <li> <a style="color: blue" href="https://humble.humblecoding.com" target="_BLANK">https://humble.humblecoding.com</a> - website with extensive documentation and videos for the Humble framework</li>
                         <li> <a style="color: blue" href="/admin" target="_BLANK">/admin</a> - administration page for your application</li>
                     </ul>
                     <br /><br />

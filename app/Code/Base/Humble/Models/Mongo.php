@@ -16,7 +16,7 @@ use MongoDB;
  * @package    Core
  * @author     Rick Myers <rick@humblecoding.com>
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://license.enicity.com
+ * @license    https://license.humblecoding.com
  * @version    1.0
  * @link       http://pear.php.net/package/PackageName
  */

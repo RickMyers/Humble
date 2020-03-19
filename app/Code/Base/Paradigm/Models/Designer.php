@@ -15,9 +15,9 @@ use Environment;
  * @package    Framework
  * @author       <rick@humblecoding.com>
  * @copyright  2005-present Humble Project
- * @license    https://enicity.com/license.txt
+ * @license    https://humblecoding.com/license.txt
  * @version    1.0
- * @link       https://enicity.com/docs/class-Designer.html
+ * @link       https://humblecoding.com/docs/class-Designer.html
  * @since      File available since Release 1.0.0
  */
 class Designer extends Model

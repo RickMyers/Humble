@@ -15,9 +15,9 @@ use Environment;
  * @package    Framework
  * @author     Richard Myers rick@humblecoding.com.com
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://enicity.com/license.txt
+ * @license    https://humblecoding.com/license.txt
  * @version    1.0
- * @link       https://enicity.com/docs/class-&&MODULE&&.html
+ * @link       https://humblecoding.com/docs/class-&&MODULE&&.html
  * @since      File available since Release 1.0.0
  */
 class Events extends Entity
