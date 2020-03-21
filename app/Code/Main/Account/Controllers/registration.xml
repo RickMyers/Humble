@@ -9,13 +9,16 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
     <actions>
         <action name="activation" method="POST" request="JSON">
             <description>Just records a few things about the site doing the installation by serial number</description>
-            <entity namespace="account" class="registration" method="activate">
+            <entity namespace="account" class="registrations" method="save">
                 <parameter name="serial_number" source='post' required='true' />
-                <parameter name="first_name" source='post' optional='true' />
-                <parameter name="last_name" source='post' optional='true' />
-                <parameter name="email" source='post' optional='true' />
+                <parameter name="first_name"    source='post' optional='true' />
+                <parameter name="last_name"     source='post' optional='true' />
+                <parameter name="email"         source='post' optional='true' />
+                <parameter name="factory_name"  source='post' optional='true' />
+                <parameter name="project"       source='post' optional='true' />
+                <parameter name="project_url"   source='post' optional='true' />
             </entity>
-        </action>  
+        </action>    
 
         <!-- ############################################################### -->
 

@@ -288,7 +288,9 @@ switch ($method) {
             'project_url'   => $project->project_url,
             'factory'       => $project->factory_name
         ];
-        $response = file_get_contents($project->framework_url.'/account/registration/activate?'.json_encode($registration_data));    
+
+        $context = stream_context_create(['http'=>['method'=>'POST','header'=>'Content-type: application/json' ,'content'=>json_encode($registration_data)]]);
+        $response = file_get_contents($project->framework_url.'/account/registration/activation',false,$context);    
         
         @mkdir('../Settings/'.$project->namespace,0775,true);
         @mkdir('images',0775,true);
