@@ -225,7 +225,7 @@ class Compiler extends Directory
             $this->arguments[$source] = [];
         }
         $this->arguments[$source][$field] = (string)$parameter['name'];
-        $format     = isset($parameter['format'])   ? strtolower((string)$parameter['format']) : false;
+        $format     = isset($parameter['format'])    ? strtolower((string)$parameter['format']) : false;
         $minlength  = isset($parameter['minlength']) ? (int)$parameter['minlength'] : false;
         $maxlength  = isset($parameter['maxlength']) ? (int)$parameter['maxlength'] : false;
         $timestamp  = false;
@@ -301,8 +301,8 @@ class Compiler extends Directory
 PHP;
            print($php);
         }
-        if (isset($parameter['format'])) {
-            $this->processFormat(strtolower($parameter['format']),$source,$field,$required,$default);
+        if ($format) {
+            $this->processFormat($format,$source,$field,$required,$default);
         }
         if (($source == "GET") || ($source == "POST")) {
             $this->parameters[$source][] = $field;
@@ -446,7 +446,20 @@ PHP;
             }
         }
     }
-
+    
+    /**
+     * We are going to translate JSON input into the super global variables
+     * 
+     * @param type $node
+     */
+    private function handleJSONRequest($node=[]) {
+        $target = isset($node['method']) && (strtoupper($node['method'])=='GET') ? '$_GET' : '$_POST'; 
+        print($this->tabs().'$data = json_decode((string)file_get_contents("php://input"));'."\n");
+        print($this->tabs().'foreach ($data as $field => $value) {'."\n");
+        print($this->tabs(1).$target.'[$field]= $_REQUEST[$field] = $value;'."\n");
+        print($this->tabs(-1).'}'."\n");
+    }
+    
     /**
      * 
      * @param string $node
@@ -893,6 +906,9 @@ PHP;
                 print($this->tabs(1).'case "'.$action['name'].'":'."\n");
                 $this->resetParameters();
                 $this->actionId = $this->helper->_uniqueId();
+                if (isset($action['request']) && (strtoupper($action['request']) == 'JSON')) {
+                    $this->handleJSONRequest($action);
+                }                
                 print($this->tabs().'$P_'.$this->actionId.' = [];'."\n");
                 if (isset($action['output'])) {
                     switch (strtolower($action['output'])) {

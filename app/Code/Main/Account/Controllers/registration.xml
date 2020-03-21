@@ -7,12 +7,15 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 -->
 <controller name="registration" use="Twig" author="Rick Myers" email="rick@humblecoding.com">
     <actions>
-        <action name="activation">
+        <action name="activation" method="POST" request="JSON">
             <description>Just records a few things about the site doing the installation by serial number</description>
             <entity namespace="account" class="registration" method="activate">
-                <parameter source='get' format="JSON" required='true' />
+                <parameter name="serial_number" source='post' required='true' />
+                <parameter name="first_name" source='post' optional='true' />
+                <parameter name="last_name" source='post' optional='true' />
+                <parameter name="email" source='post' optional='true' />
             </entity>
-        </action>
+        </action>  
 
         <!-- ############################################################### -->
 

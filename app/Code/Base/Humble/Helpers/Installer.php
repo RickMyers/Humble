@@ -483,7 +483,7 @@ SQL;
                     }
                 }
                 if ($e = \Humble::getEntity($this->namespace.'/'.$name)) {
-                        $e->recache();
+                    $e->recache();
                 }
             }
         }
@@ -791,7 +791,9 @@ SQL;
                     if (file_exists($install_file) && class_exists($install_class)) {
                         $i = Humble::getModel($namespace.'/OnInstall',true)->execute();
                     }
+                    Humble::cache('module-',Humble::getModule($namespace));
                 }
+                
             } else {
                 print_r($helper->getErrors());
             }

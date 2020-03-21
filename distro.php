@@ -73,9 +73,6 @@
             //lots of work to be done here...
             //take in the name of the project and the IP
             //return a SN based on the IP and project name... they should get the same SN back for matching IP and project name
-            chdir('app');
-            require "Humble.php";
-            header("Content-Type: application/json");
             $chars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $num    = '';
             for ($i=0; $i<4; $i++) {

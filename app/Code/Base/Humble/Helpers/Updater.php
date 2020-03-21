@@ -206,7 +206,9 @@ class Updater extends Installer
                     if (file_exists($update_file) && class_exists($update_class)) {
                         $i = Humble::getModel($namespace.'/OnUpdate',true)->execute();
                     }
-                    print_r($ent->load());
+                    $data = $ent->load();
+                    Humble::cache('module-',$data);
+                    print_r($data);
                     //must log updated date
                 }
             } else {

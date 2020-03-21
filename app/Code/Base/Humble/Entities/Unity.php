@@ -1034,12 +1034,12 @@ SQL;
                    and a.entity    = '{$entity}'
 SQL;
             $primary    = $this->_db->query($query);
-            if (count($primary)===0) {
-                /*
-                 * We haven't found any keys for this table, so it probably means that this table
-                 *  is an optional table.  If so, we go to look for a core table of the same name
-                 *  and load that one instead
-                 */
+            /*if (count($primary)===0) {
+                //
+                // * We haven't found any keys for this table, so it probably means that this table
+                // *  is an optional table.  If so, we go to look for a core table of the same name
+                // *  and load that one instead
+                //
                 $query = <<<SQL
                     select * from humble_entity_keys as a
                      inner join humble_entities as b
@@ -1053,7 +1053,7 @@ SQL;
                     $this->_namespace('.then(');  //Mark that we got this from .then(
                     $this->_prefix('humble_');
                 }
-            }
+            }*/
             Humble::cache('entity_keys-'.$namespace.'/'.$entity,$primary);
         }
         $poly = true;
@@ -1080,14 +1080,13 @@ SQL;
                    and entity    = '{$entity}'
 SQL;
             $columns    = $this->_db->query($query);
-            if (count($columns)===0) {
-                /*
-                 * We haven't found any fields for this table, so it probably means that this table
-                 *  is an optional table.  If so, we go to look for a .then( table of the same name
-                 *  and load that one instead.
-                 *
-                 * Not sure if this is a good idea yet...
-                 */
+/*            if (count($columns)===0) {
+                //
+                 // We haven't found any fields for this table, so it probably means that this table
+                 //  is an optional table.  If so, we go to look for a .then( table of the same name
+                 //  and load that one instead.
+                 //
+                 //                                  * Not sure if this is a good idea yet...
                 $query = <<<SQL
                     select * from humble_entity_columns
                      where namespace = '.then('
@@ -1099,7 +1098,7 @@ SQL;
                     $this->_prefix('humble_');
                 }
             }
-            Humble::cache('entity_columns-'.$namespace.'/'.$entity,$columns);
+            Humble::cache('entity_columns-'.$namespace.'/'.$entity,$columns);*/
         }
         foreach ($columns as $row => $entity) {
             $this->_column[$entity['column']]    = true;   //register column

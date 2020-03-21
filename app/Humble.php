@@ -454,7 +454,7 @@
                     }
                 }
                 if (!self::$cacheFailed) {
-                    $retval = ($value !== null) ? self::$cache->set($key,$value,$expire) : (($value === null) && ($args > 1) ? self::$cache->delete($key) : self::$cache->get($key) );
+                    $retval = ($value !== null) ? self::$cache->set(Environment::serialNumber().'-'.$key,$value,$expire) : (($value === null) && ($args > 1) ? self::$cache->delete(Environment::serialNumber().'-'.$key) : self::$cache->get(Environment::serialNumber().'-'.$key) );
                 }
             }
             return $retval;
