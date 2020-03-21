@@ -286,7 +286,7 @@ switch ($method) {
             'email'         => $email,
             'project'       => $project->project_name,
             'project_url'   => $project->project_url,
-            'factory'       => $project->factory_name
+            'factory_name'  => $project->factory_name
         ];
 
         $context = stream_context_create(['http'=>['method'=>'POST','header'=>'Content-type: application/json' ,'content'=>json_encode($registration_data)]]);
