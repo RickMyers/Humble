@@ -101,11 +101,21 @@ class Environment {
         return new \Rain\Tpl;
     }
 
-
-    private static function loadApplicationMetaData() {
-        return (self::$application) ? self::$application : (self::$application = simplexml_load_string((file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time.")));
+    public static function recacheApplication() {
+        self::$application = json_decode(json_encode(simplexml_load_string((file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time."))));
+        Humble::cache('application',self::$application);        
     }
-
+    /**
+     * Either returns the previously loaded metadata or loads and returns it
+     * 
+     * @return Array
+     */
+    protected static function loadApplicationMetaData() {
+        if (!self::$application = Humble::cache('application')) {
+            self::recacheApplication();
+        }
+        return self::$application;
+    }
 
     /**
      * Returns the application status XML in object form
@@ -126,22 +136,23 @@ class Environment {
     }
 
     /**
-     * Returns if caching is enabled
+     * Returns if caching is enabled.  We are making caching a hard requirement with the new enhancements to caching
      *
      * @return boolean
      */
     public static function cachingEnabled() {
-        if (!self::$application) {
-            self::loadApplicationMetaData();
-        }
-        return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
+      //  if (!self::$application) {
+      //      self::loadApplicationMetaData();
+      //  }
+      //  return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
+      return true;
     }
     
     public static function serialNumber() {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return (isset(self::$application->serial_number)) ? self::$application->serial_number : '';
+        return (isset(self::$application['serial_number'])) ? self::$application['serial_number'] : '';
         
     }
     /**
@@ -190,16 +201,16 @@ class Environment {
      */
     public static function statusCheck($namespace=false,$controller=false,$method=false) {
         $status = false;
-        if (($namespace==='core') && ($controller==='system') && ($method==='active')) {
+        if (($namespace==='humble') && ($controller==='system') && ($method==='active')) {
             return false;
         }
         if (!self::$application) {
             self::loadApplicationMetaData();
             if (!empty(self::$application)) {
-                if (isset(self::$application->status)) {
-                    if (isset(self::$application->status->quiescing) && ((int)self::$application->status->quiescing)) {
+                if (isset(self::$application['status'])) {
+                    if (isset(self::$application['status']['quiescing']) && ((int)self::$application['status']['quiescing'])) {
                         $status = "System is going offline...";
-                    } else if (isset(self::$application->status->enabled) && ((int)self::$application->status->enabled)) {
+                    } else if (isset(self::$application['status']['enabled']) && ((int)self::$application['status']['enabled'])) {
                         //nop; everything is good
                     } else {
                         $status = "System is currently offline";
@@ -212,20 +223,21 @@ class Environment {
             }
         }
         //Allows override if you are a super user
-        if ($status) {
+        /*if ($status) {
+         * @TODO: Change this so when logged in, the user permissions are cached and we get this from the session
             if (isset($_SESSION['uid']) && $_SESSION['uid']) {
-                $user = \Humble::getEntity('humble/user_permissions')->setId($_SESSION['uid']);
+                $user = \Humble::getEntity('humble/user/permissions')->setId($_SESSION['uid']);
                 $user->load();
                 if ($user->getSuperUser() == 'Y') {
                     $status = false;
                 }
             }
-        }
+        }*/
         if ($status !== false) {
             header("location: /index.html?m=".$status);
             die();
         }
-        return (isset($xml->status->authorization) && (int)$xml->status->authorization->enabled);
+        return (isset(self::$application['status']['authorization']) && (int)self::$application['status']['authorization']['enabled']); //this will always, or should always, be false
     }
 
     /**
@@ -251,7 +263,7 @@ class Environment {
     public static function whoIs($id=false) {
         $user = false;
         if ($id) {
-            $user = Humble::getEntity('humble/user_identification')->setId($id)->load();
+            $user = Humble::getEntity('humble/user/identification')->setId($id)->load();
         }
         return $user;
     }

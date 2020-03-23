@@ -73,7 +73,7 @@
         }
 
         /**
-         * Puts a message onto a queue...
+         * Puts a message onto a queue... Not used at this time but maybe re-enabled (LAZY) in the future
          *
          * @param type $queue
          * @param type $message
@@ -90,7 +90,7 @@
         }
 
         /**
-         * Places a listener on a queue
+         * Places a listener on a queue... Not used at this time but maybe re-enabled (LAZY) in the future
          *
          * @param type $queue
          * @param type $callback
@@ -418,10 +418,22 @@
             return $instance;
         }
 
+        /**
+         * Used for workflow "bubbling"
+         * 
+         * @param type $workflowId
+         * @return type
+         */
         public static function pushWorkflow($workflowId) {
             return array_push(self::$workflow,$workflowId);
         }
 
+        /**
+         * Used for workflow "bubbling"
+         * 
+         * @param type $peek
+         * @return type
+         */
         public static function popWorkflow($peek=false) {
             if (!$peek) {
                 return array_pop(self::$workflow);
@@ -430,6 +442,25 @@
             }
         }
 
+        /**
+         * From a blog post, a super fast caching mechanism for php objects, that doesn't seem to actually work
+         * 
+         * @param type $key
+         * @param type $val
+         * @return type
+         */
+        public static function opcache($key, $val=false) {
+            if ($val) {
+                $val = var_export($val, true);
+                $val = str_replace('stdClass::__set_state', '(object)', $val);
+                $tmp = "/var/www/tmp/$key." . uniqid('', true) . '.tmp';
+                $didit = file_put_contents($tmp, '<?php $val = ' . $val . ';', LOCK_EX);
+                rename($tmp, "/var/www/tmp/$key");
+            } else {
+                include "/var/www/tmp/$key";
+                return isset($val) ? $val : false;                
+            }
+        }
 
         /**
          * Caching is implemented here in the factory so that it can be easily switched out to another product (Redis, APC, etc) should it be necessary

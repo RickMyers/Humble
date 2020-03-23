@@ -797,6 +797,7 @@ SQL;
             } else {
                 print_r($helper->getErrors());
             }
+            Environment::recacheApplication();
         } else {
           //  \Log::console('Could not find source file for installation: '.$source);
         }
