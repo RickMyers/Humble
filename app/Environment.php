@@ -21,6 +21,7 @@ class Environment {
     private static $session_id  = false;
     private static $status      = false;
     private static $application = false;
+    private static $project     = false;
 
     /**
      * Constructor
@@ -82,7 +83,9 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return ((self::$application->msa->router==1) || (self::$application->msa->router=='Y'));
+        return (isset(self::$application['msa']['router'])
+                && ((self::$application['msa']['router']===1)
+                || (self::$application['msa']['router']==='Y')));
     }
 
     /**
@@ -102,7 +105,7 @@ class Environment {
     }
 
     public static function recacheApplication() {
-        self::$application = json_decode(json_encode(simplexml_load_string((file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time."))));
+        self::$application = json_decode(json_encode(simplexml_load_string((file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time."))),true);
         Humble::cache('application',self::$application);        
     }
     /**
@@ -110,7 +113,7 @@ class Environment {
      * 
      * @return Array
      */
-    protected static function loadApplicationMetaData() {
+    public static function loadApplicationMetaData() {
         if (!self::$application = Humble::cache('application')) {
             self::recacheApplication();
         }
@@ -141,18 +144,18 @@ class Environment {
      * @return boolean
      */
     public static function cachingEnabled() {
-      //  if (!self::$application) {
-      //      self::loadApplicationMetaData();
-      //  }
+       // if (!self::$application) {
+       //     self::loadApplicationMetaData();
+       // }
       //  return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
-      return true;
+        return true;
     }
     
     public static function serialNumber() {
-        if (!self::$application) {
-            self::loadApplicationMetaData();
+        if (!self::$project) {
+           self::$project = self::getProject();
         }
-        return (isset(self::$application['serial_number'])) ? self::$application['serial_number'] : '';
+        return (isset(self::$project->serial_number)) ? self::$project->serial_number : '';
         
     }
     /**
@@ -309,7 +312,7 @@ class Environment {
      * @return object
      */
     public static function getProject() {
-        return (file_exists('../Humble.project')) ? json_decode(file_get_contents('../Humble.project')) : false;
+        return (self::$project) ? self::$project : (self::$project =  (file_exists('../Humble.project') ? json_decode(file_get_contents('../Humble.project')) : false));
     }
 
     /**

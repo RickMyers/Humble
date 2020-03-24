@@ -218,7 +218,11 @@ FACTORY;
     }
     $project    = json_decode(file_get_contents('Humble.project'));
     $remote     = json_decode(file_get_contents($project->framework_url.'/distro/version'));
-    $serial     = json_decode(file_get_contents($project->framework_url.'/distro/serialNumber?'.json_encode($project)));
+    $serial     = json_decode(file_get_contents($project->framework_url.'/distro/serialNumber'));
+    if (!isset($project->serial_number) || !($project->serial_number)) {
+        $project->serial_number = $serial->serial_number;
+    }
+    file_put_contents('Humble.project',json_encode($project,JSON_PRETTY_PRINT));    
     print("\n\nInstalling Humble distro version ".$remote->version." from ".$project->framework_url."\n\n");
     print("Serial Number: ".$serial->serial_number."\n\n");
     fetchProject($remote->version,$project->framework_url);

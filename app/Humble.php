@@ -484,6 +484,7 @@
                         }
                     }
                 }
+                $sn = Environment::serialNumber();
                 if (!self::$cacheFailed) {
                     $retval = ($value !== null) ? self::$cache->set(Environment::serialNumber().'-'.$key,$value,$expire) : (($value === null) && ($args > 1) ? self::$cache->delete(Environment::serialNumber().'-'.$key) : self::$cache->get(Environment::serialNumber().'-'.$key) );
                 }
