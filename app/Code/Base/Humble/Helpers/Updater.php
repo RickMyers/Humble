@@ -219,7 +219,7 @@ class Updater extends Installer
         } else {
          //   \Log::console('Could not find source file for refresh: '.$source);
         }
-        Environment::recacheApplication();
+        \Environment::recacheApplication();
         return $xml;
     }
 }

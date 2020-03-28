@@ -24,6 +24,7 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_fromRow       = 0;
     protected $_toRow         = 0;
     protected $_joins         = [];
+    protected $_in            = [];
     protected $_distinct      = false;
     protected $_mongodb       = null;
     protected $_mongocollection = null;
@@ -38,8 +39,7 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_batchsql      = [];
     protected $_batch         = false;
     protected $_isVirtual     = false;
-    protected $_inField       = '';
-    protected $_in            = [];
+    protected $_normalize     = false;
 
     /**
      * Initial constructor
@@ -49,8 +49,7 @@ class Unity extends \Code\Base\Humble\Models\Model
      * the $this->_db->query() direct DB call, which bypasses mongodb
      *
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->_db = Humble::getDatabaseConnection($this);
     }
@@ -58,8 +57,7 @@ class Unity extends \Code\Base\Humble\Models\Model
     /**
      *
      */
-    public function __destruct()
-    {
+    public function __destruct()  {
         //if pagination is set, store the page in the session
         if ($this->_page()) {
             if (!isset($_SESSION['pagination'])) {
@@ -87,7 +85,45 @@ class Unity extends \Code\Base\Humble\Models\Model
     }
 
     /**
+     * Because of the variable columns per row, we need to get a list of all columns across our dataset
      *
+     * @param array $rows
+     * @return array
+     */
+    private function columns($rows) {
+        $columns    = [];
+        foreach ($rows as $row) {
+            foreach ($row as $column => $value) {
+                $columns[$column] = $column;
+            }
+        }
+        return $columns;
+    }
+
+    /**
+     * Because of the variable number of columns per row in a polyglot entity, this method "normalizes" the result set, which means all rows will have the same number of columns
+     *
+     * @param iterator $iterator (optional
+     * @return iterator
+     */
+    public function normalize($iterator=false) {
+        $iterator = ($iterator) ? $iterator : $this->fetch();
+        $results  = $iterator->toArray();
+        $columns  = $this->columns($results);
+        foreach ($results as $idx => $row) {
+            $newRow = [];
+            foreach ($columns as $column) {
+                $newRow[$column] = isset($row[$column]) ? $row[$column] : '';
+            }
+            $results[$idx] = $newRow;
+        }
+        return $iterator->set($results);
+    }
+
+    /**
+     * Clears out the current state so that I can re-use this instance for possibly another entity
+     * 
+     * @return $this
      */
     public function clean()  {
         $this->_keys        = [];
@@ -102,7 +138,9 @@ class Unity extends \Code\Base\Humble\Models\Model
     }
 
     /**
-     *
+     * Reseting this instance so that I can use it for another read/write
+     * 
+     * @return $this
      */
     public function reset()  {
         $this->clean();
@@ -110,43 +148,7 @@ class Unity extends \Code\Base\Humble\Models\Model
         $this->loadEntityColumns();
         return $this;
     }
-    
-    /**
-     * Because of the variable columns per row, we need to get a list of all columns across our dataset
-     * 
-     * @param array $rows
-     * @return array
-     */
-    private function columns($rows) {
-        $columns    = [];
-        foreach ($rows as $row) {
-            foreach ($row as $column => $value) {
-                $columns[$column] = $column;
-            }
-        }
-        return $columns;
-    }
-    
-    /**
-     * Because of the variable number of columns per row in a polyglot entity, this method "normalizes" the result set, which means all rows will have the same number of columns
-     * 
-     * @param iterator $iterator (optional
-     * @return iterator
-     */
-    protected function normalize($iterator=false) {
-        $iterator = ($iterator) ? $iterator : $this->fetch();
-        $results  = $iterator->toArray();
-        $columns  = $this->columns($results);
-        foreach ($results as $idx => $row) {
-            $newRow = [];
-            foreach ($columns as $column) {
-                $newRow[$column] = isset($row[$column]) ? $row[$column] : '';
-            }
-            $results[$idx] = $newRow;
-        }
-        return $iterator->set($results);
-    }
-    
+
     /**
      *
      */
@@ -207,37 +209,6 @@ SQL;
           describe {$this->_prefix()}{$this->_entity()}
 SQL;
         return $this->_db->query($query);
-    }
-
-    /**
-     *
-     */
-    public function leftJoin($table=false,$field_l=false,$field_r=false) {
-        $table = explode('/',$table);
-        $success = false;
-        if (count($table)===2) {
-            $module = Humble::getModule($table[0]);
-             if (isset($module['prefix']) && ($module['prefix']!="")) {
-                $table = $module['prefix'].$table[1];
-                if ($table && $field_l && $field_r) {
-                    $success = true;
-                    $this->_joins[] = array("table" => $table, "field_l" => $field_l, "field_r" => $field_r);
-                }
-            }
-        }
-        return $success;
-    }
-
-    /**
-     *
-     */
-    protected function addJoins() {
-        $joinQuery = '';
-        foreach ($this->_joins as $idx => $data) {
-            $joinQuery .= " as L_{$idx} left outer join {$data["table"]} as R_{$idx} on L_{$idx}.{$data["field_l"]} = R_{$idx}.{$data["field_r"]} ";
-        }
-        return $joinQuery;
-
     }
 
     /**
@@ -318,7 +289,6 @@ SQL;
             }
             $countRowClause = ($this->_rows() && $this->_page()) ? " SQL_CALC_FOUND_ROWS " : "";
             $query   = "select {$countRowClause} * from {$this->_prefix()}{$this->_entity()}";
-            $query  .= $this->addJoins();
             $orFlag = false;
             foreach ($results as $field => $value) {
                 if ($results[$field]!="") {
@@ -363,24 +333,6 @@ SQL;
         return (count($results) == 1) ? $results[0] : null;
     }
 
-    /**
-     * 
-     * @param type $args
-     * @return $this
-     */
-    public function in($args=false) {
-        if ($args) {
-            if (is_array($args)) {
-                foreach ($args as $arg) {
-                    $this->_in[] = addslashes($arg);
-                }
-            } else {
-                $this->_in[] = addslashes($args);
-            }
-        }
-        return $this;
-    }
-    
     /**
      *
      */
@@ -493,7 +445,7 @@ SQL;
         if ($this->_in) {
             $query .= ($andFlag) ? " and " : ' where ';
             $query .= "`".$this->_inField."` in ('".implode("','",$this->_in)."') ";
-        }
+        }        
         return $query;
     }
 
@@ -531,7 +483,6 @@ SQL;
             }
         }
         $query   = "select SQL_CALC_FOUND_ROWS ". $this->_distinct() ." ".$this->_fieldList()." from ".$this->_prefix().$this->_entity();
-        $query  .= $this->addJoins();
         $query  .= $this->buildWhereClause($useKeys);
         $query  .= $this->buildOrderByClause();
         if (count($this->_groupBy) > 0) {
@@ -795,11 +746,14 @@ SQL;
                 $mdb->setId($id);
                 $rows   = $mdb->fetch();
                 if ($rows) {
-                    $int = []; //$key = false;
-                    //this builds a reference of every mysql result row that has the join field on it
+                    $int = []; $key = false;
                     foreach ($results as $idx => $row) {
-                        if ($id = isset($row[$mJoin]) ? $row[$mJoin] : false) {
-                            if (!isset($int[$id])) { 
+                        if (!$key) {
+                            $key = $mJoin;
+                        }
+                        $id = isset($row[$mJoin]) ? $row[$mJoin] : false;
+                        if ($id) {
+                            if (!isset($int[$id])) {
                                 $int[$id] = [];
                             }
                             $int[$id][] = $idx;
@@ -809,10 +763,9 @@ SQL;
                         //And this craziness merges the document data with the mysql data, being careful not to overlay mysql field values with mongo field values if they both happen to have the same field
                         foreach ($rows as $row) {
                             if (isset($int[$row['id']])) {
-                                foreach ($int[$row['id']] as $index => $vindex) {
+                                foreach ($int[$row['id']] as $index) {
                                     foreach ($row as $var => $val) {
-                                       // print($int[$row['id']][$index].','.$v."\n");
-                                        if (isset($results[$int[$row['id']][$index]]) && !isset($results[$int[$row['id']][$index]][$var])) {
+                                        if (!isset($results[$int[$row['id']][$index]][$var])) {
                                             $results[$int[$row['id']][$index]][$var] = $val;
                                         }
                                     }
@@ -822,9 +775,8 @@ SQL;
                     }
                 }
             }
-        } 
-        $results = Humble::getModel('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
-        return ($this->_normalize()) ? $this->normalize($results) : $results;
+        }
+        return Humble::getModel('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
     }
 
     /**
@@ -846,22 +798,14 @@ SQL;
         $andFlag = false;
         $query   = "delete from ".$this->_prefix().$this->_entity();
         $conditionFound = false;
-        if ($useFields) {
-            if ($whereClause = $this->buildWhereClause(true)) {
+        foreach ($results as $field => $value) {
+            if ($results[$field]!="") {
                 $conditionFound = true;
-                $query .= $whereClause;
-            }
-            
-        } else {
-            foreach ($results as $field => $value) {
-                if ($results[$field]!="") {
-                    $conditionFound = true;
-                     if ($andFlag == false) {
-                        $query .= ' where ';
-                    }
-                    $query .= ($andFlag ? "and ": "").$field." = '".addslashes($value)."' ";
-                    $andFlag = true;
+                 if ($andFlag == false) {
+                    $query .= ' where ';
                 }
+                $query .= ($andFlag ? "and ": "").$field." = '".addslashes($value)."' ";
+                $andFlag = true;
             }
         }
         if ($conditionFound) {
@@ -953,7 +897,7 @@ SQL;
     }
 
     public function commit() {
-       $this->_db->endTransaction();
+       // $this->_db->commit();
     }
     /**
      *
@@ -994,10 +938,10 @@ SQL;
         $this->loadEntityColumns(false);
     }
 
-    
+
     /**
      * Gets rows from table where the ID is greater than a set amount
-     * 
+     *
      * @param type $id
      * @return type
      */
@@ -1009,17 +953,17 @@ SQL;
                   from {$this->_prefix()}{$this->_entity()}
                  where id > {$id}
 SQL;
-            $results = $this->query($query);            
+            $results = $this->query($query);
         }
         return $results;
     }
-    
+
     /**
      * Gets rows from table where the ID is greater than or equal to a set amount
-     * 
+     *
      * @param type $id
      * @return type
-     */    
+     */
     public function greaterThanOrEqualTo($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
@@ -1028,17 +972,17 @@ SQL;
                   from {$this->_prefix()}{$this->_entity()}
                  where id >= {$id}
 SQL;
-            $results = $this->query($query);            
+            $results = $this->query($query);
         }
         return $results;
-    }   
-    
+    }
+
     /**
      * Gets rows from table where the ID is less than a set amount
-     * 
+     *
      * @param type $id
      * @return type
-     */    
+     */
     public function lessThan($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
@@ -1047,17 +991,17 @@ SQL;
                   from {$this->_prefix()}{$this->_entity()}
                  where id < {$id}
 SQL;
-            $results = $this->query($query);            
+            $results = $this->query($query);
         }
         return $results;
-    }    
+    }
 
     /**
      * Gets rows from table where the ID is less than or equal to a set amount
-     * 
+     *
      * @param type $id
      * @return type
-     */    
+     */
     public function lessThanOrEqualTo($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
@@ -1066,11 +1010,11 @@ SQL;
                   from {$this->_prefix()}{$this->_entity()}
                  where id <= {$id}
 SQL;
-            $results = $this->query($query);            
+            $results = $this->query($query);
         }
         return $results;
-    }    
-    
+    }
+
     /**
      * We need to get those fields that are the keys, because they are treated differently than normal columns
      */
@@ -1090,26 +1034,26 @@ SQL;
                    and a.entity    = '{$entity}'
 SQL;
             $primary    = $this->_db->query($query);
-            if (count($primary)===0) {
-                /*
-                 * We haven't found any keys for this table, so it probably means that this table
-                 *  is an optional table.  If so, we go to look for a humble table of the same name
-                 *  and load that one instead
-                 */
+            /*if (count($primary)===0) {
+                //
+                // * We haven't found any keys for this table, so it probably means that this table
+                // *  is an optional table.  If so, we go to look for a core table of the same name
+                // *  and load that one instead
+                //
                 $query = <<<SQL
                     select * from humble_entity_keys as a
                      inner join humble_entities as b
                         on a.namespace  = b.namespace
                        and a.entity     = b.entity
-                     where a.namespace  = 'humble'
+                     where a.namespace  = '.then('
                        and a.entity     = '{$entity}'
 SQL;
                 $primary    = $this->_db->query($query);
                 if (count($primary)!==0) {
-                    $this->_namespace('humble');  //Mark that we got this from humble
+                    $this->_namespace('.then(');  //Mark that we got this from .then(
                     $this->_prefix('humble_');
                 }
-            }
+            }*/
             Humble::cache('entity_keys-'.$namespace.'/'.$entity,$primary);
         }
         $poly = true;
@@ -1136,26 +1080,25 @@ SQL;
                    and entity    = '{$entity}'
 SQL;
             $columns    = $this->_db->query($query);
-            if (count($columns)===0) {
-                /*
-                 * We haven't found any fields for this table, so it probably means that this table
-                 *  is an optional table.  If so, we go to look for a humble table of the same name
-                 *  and load that one instead.
-                 *
-                 * Not sure if this is a good idea yet...
-                 */
+/*            if (count($columns)===0) {
+                //
+                 // We haven't found any fields for this table, so it probably means that this table
+                 //  is an optional table.  If so, we go to look for a .then( table of the same name
+                 //  and load that one instead.
+                 //
+                 //                                  * Not sure if this is a good idea yet...
                 $query = <<<SQL
                     select * from humble_entity_columns
-                     where namespace = 'humble'
+                     where namespace = '.then('
                        and entity    = '{$entity}'
 SQL;
                 $columns    = $this->_db->query($query);
                 if (count($columns)!==0) {
-                    $this->_namespace('humble');  //Mark that we got this from humble
+                    $this->_namespace('.then(');  //Mark that we got this from .then(
                     $this->_prefix('humble_');
                 }
             }
-            Humble::cache('entity_columns-'.$namespace.'/'.$entity,$columns);
+            Humble::cache('entity_columns-'.$namespace.'/'.$entity,$columns);*/
         }
         foreach ($columns as $row => $entity) {
             $this->_column[$entity['column']]    = true;   //register column
@@ -1173,7 +1116,25 @@ SQL;
         }
         return $this;
     }
-
+    
+    /**
+     * 
+     * @param type $args
+     * @return $this
+     */
+    public function in($args=false) {
+        if ($args) {
+            if (is_array($args)) {
+                foreach ($args as $arg) {
+                    $this->_in[] = addslashes($arg);
+                }
+            } else {
+                $this->_in[] = addslashes($args);
+            }
+        }
+        return $this;
+    }
+    
     /**
      *
      */
@@ -1477,7 +1438,7 @@ SQL;
      * Should we run the translations against what is returned
      *
      * @param type $arg
-     * @return \\Code\Base\Core\Entity\BaseObject
+     * @return \\Code\Base\Humble\Entities\Unity
      */
     public function withTranslation($arg=false) {
         $this->_translation = $arg;
@@ -1495,7 +1456,7 @@ SQL;
      * This sets whether to remove MongoDB _id references from the result set.  The default is to do just that
      *
      * @param type $arg
-     * @return \\Code\Base\Core\Entity\BaseObject
+     * @return \\Code\Base\Humble\Entities\Unity
      */
     public function _clean($arg=null) {
         if ($arg!==null) {
@@ -1519,8 +1480,8 @@ SQL;
             return $this->_normalize;
         }
         return $this;
-    }    
-    
+    }
+
     /**
      * For batching inserts, updates, and deletes, sets the number of statements to collect before executing them
      *
@@ -1556,7 +1517,7 @@ SQL;
      * We have to remove the variable from the general data array as well as the fields array
      *
      * @param type $name
-     * @return \Code\Base\Core\Entity\BaseObject
+     * @return \Code\Base\Humble\Entities\Unity
      */
     protected function _unset($name=false) {
         parent::_unset($name);
@@ -1567,17 +1528,20 @@ SQL;
     }
 
     /**
-     * This method overrides the similar method in the humble model object.  We do so because we need to prevent "accidental" RPC behavior
+     * This method overrides the similar method in the .then( model object.  We do so because we need to prevent "accidental" RPC behavior
      *
      * @param string $name
      * @param array $arguments
      * @return type
      */
-    public function __call($name, $arguments)
+    public function __call($name=false, $arguments=[])
     {
         $token      = substr($name,3);
         $token{0}   = strtolower($token{0});
         if (substr($name,0,3)=='set') {
+            if (!isset($arguments[0])) {
+                $arguments[0] = null;
+            }
             $token  = $name = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $token));
             if (array_key_exists($token,$this->_keys)) {
                 $this->_keys[$token] = $arguments[0]; //keep track of the keys we are using
