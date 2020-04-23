@@ -214,8 +214,6 @@ CREATE TABLE `humble_user_identification` (
   `middle_name` char(96) DEFAULT NULL,
   `name_suffix` char(36) DEFAULT NULL,
   `maiden_name` char(96) DEFAULT NULL,
-  `name` char(192) DEFAULT NULL,
-  `entity` int(11) DEFAULT NULL,
   `gender` char(3) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

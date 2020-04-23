@@ -41,23 +41,38 @@ class Users extends Entity
      * @param type $first_name
      * @return type
      */
-    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='',$uid='') {
+    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='',$uid='',$email='') {
         $uname  = $user_name ? $user_name       : ($this->getUserName()  ? $this->getUserName()  : false);
         $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
         $fname  = $first_name ? $first_name     : ($this->getFirstName() ? $this->getFirstName() : '');
         $lname  = $last_name ? $last_name       : ($this->getLastName()  ? $this->getLastName()  : '');
-        $uid    = $uid ? $uid                   : ($this->getUid()  ? $this->getUid()  : '');
+        $uid    = $uid ? $uid                   : ($this->getUid()       ? $this->getUid()  : '');
+        $email  = $email ? $email               : ($this->getEmail()     ? $this->getEmail()  : '');
         if ($uname && $pwd) {
             if ($uid) {
                 $this->setUid($uid);
             }
-            if ($id = $this->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setUserName($uname)->save()) {
+            if ($id = $this->setEmail($email)->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setUserName($uname)->save()) {
                 if ($fname && $lname) {
                     Humble::getEntity('humble/user/identification')->setId($id)->setFirstName($fname)->setLastName($lname)->save();
                 }
             }
         }
         return $id;
+    }
+    
+    /**
+     * Will take a user id (uid) and a password already in MD5 format and update the users password
+     * 
+     * @param int $user_id
+     * @param string $md5_password
+     */
+    public function updatePassword($user_id=false,$md5_password=false) {
+        $uid    = $uid ? $uid                   : ($this->getUid()  ? $this->getUid()  : '');
+        $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
+        if ($uid && $pwd) {
+            $this->setUid($uid)->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->save();
+        }
     }
     
     /**

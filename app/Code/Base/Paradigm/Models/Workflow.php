@@ -74,7 +74,7 @@ class Workflow extends Model
                 $results[]  = 'Exporting Component (MongoDB): '.$component['id'];
                 $workflow['components'][$component['id']] = $element->load();
             }
-            $whereTo = 'get'.$destination['name'];
+            $whereTo = $destination['name'];
             Log::warning('Export Target: '.$whereTo);
             $this->setSessionId(true);
             $this->setWorkflow(json_encode($workflow));

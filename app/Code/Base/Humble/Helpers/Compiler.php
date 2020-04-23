@@ -653,6 +653,36 @@ PHP;
      */
     private function processRedirect($node) {
         $redirect = "";
+        print($this->tabs().'$_SESSION["JARVIS_REDIRECT_HEADERS"] = headers_list();'."\n");
+        if (isset($node['post']) && $node['post']==true) {
+            $txt = $this->tabs().'$vars = [];
+                        foreach ($_POST as $key => $val) {
+                            $vars[$key] = $val;
+                        }';
+            print($txt."\n");
+            if (isset($node['add']) && $node['add']) {
+                $txt = '';
+                foreach (explode(",",$node['add']) as $key => $val) {
+                    $txt .= $this->tabs().'$vars["'.$val.'"] = $'.$val.";\n";
+                }
+               print($txt."\n");
+            }
+            print($this->tabs().'$jsonData = json_encode($vars);'."\n");
+            $id = $this->_uniqueId();
+            print($this->tabs().'$_SESSION["'.$id.'"] = $jsonData;'."\n");
+            $delim = (strpos($node['href'],'?')===false) ? "?" : "&";
+            $redirect = $delim.'redirect=true&POST='.$id;
+        }
+        if (isset($node['var'])) {
+            $place = '$_REQUEST'."['".$node['var']."']";
+            print($this->tabs().'if (!isset($_REQUEST["'.$node['var'].'"])) { throw new \Exceptions\RedirectVariableException("The variable that should contain the redirect URL is not set: <i style=\'color: red\'>'.$node['var'].'</i>",16); }'."\n");
+            print($this->tabs().'header("Location: {'.$place.'}'.$redirect.'");'."\n");
+        } else {
+            print($this->tabs().'header("Location: '.$node['href'].$redirect.'");'."\n");
+            
+        }        
+/*        
+        $redirect = "";
         print($this->tabs().'$_SESSION["HUMBLE_REDIRECT_HEADERS"] = headers_list();'."\n");
         if (isset($node['post']) && $node['post']==true) {
             $txt = '    $vars = [];
@@ -667,6 +697,8 @@ PHP;
             $redirect = $delim.'redirect=true&POST='.$id;
         }
         print($this->tabs().'header("Location: '.$node['href'].$redirect.'");'."\n");
+ * 
+ */
     }
 
     /**
