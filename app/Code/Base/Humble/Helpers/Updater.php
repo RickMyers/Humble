@@ -207,7 +207,7 @@ class Updater extends Installer
                         $i = Humble::getModel($namespace.'/OnUpdate',true)->execute();
                     }
                     $data = $ent->load();
-                    Humble::cache('module-',$data);
+                    Humble::cache('module-'.$namespace,$data);
                     print_r($data);
                     //must log updated date
                 }

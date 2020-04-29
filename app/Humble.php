@@ -547,10 +547,10 @@
             if (isset(self::$modules[$identifier])) {
                 return self::$modules[$identifier];
             }
-            if (!$data = Humble::cache('module-'.$identifier)) {
+            if (!$data  = Humble::cache('module-'.$identifier)) {
                 $db     = Humble::getDatabaseConnection();
                 $module = explode('/',$identifier);
-                $query = <<<SQL
+                $query  = <<<SQL
                     select * from humble_modules
                       where namespace = '{$module[0]}'
 SQL;

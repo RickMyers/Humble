@@ -29,8 +29,11 @@
                 <table>
                     <tr><td>
                             Please specify the location to redirect the user to:<br /><br />
-                            URL: <input type="text" name="url" id="config_redirect_{$data.id}" value="{if (isset($data.url))}{$data.url}{/if}" /><br /><br >
+                            URL: <input type="text" name="url" id="config_redirect_{$data.id}" value="{if (isset($data.url))}{$data.url}{/if}" />
                         </td></tr>
+                    <tr>
+                        <td>URL Encode: <input type="checkbox" value='Y' id='config_redirect_encode_{$data.id}}' name='urlencode' /><br /><br />
+                    </tr>
                     <tr><td>
                             <br /><input type="submit" value=" Save " />
                         </td></tr>

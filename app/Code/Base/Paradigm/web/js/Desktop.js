@@ -4,7 +4,7 @@
 //Part of the Cloud-IT project
 //
 //All licensing and copyrights are held by Cloud-IT.  Use is by permission from
-//  Rick Myers [rick@humblecoding.com]
+//  Rick Myers [rick@enicity.com]
 //
 //All other rights are reserved.
 //Copyright 2014, Cloud-IT.com
@@ -114,7 +114,7 @@ function DesktopWindow(icon,refId) {
     this.maximizeIcon   = $E("cloud-it-window-"+this.id+"-maximize");
     this.minimizeIcon   = $E("cloud-it-window-"+this.id+"-minimize");
     this.closeIcon      = $E("cloud-it-window-"+this.id+"-close");
-    this.splashScreen   = $E("cloud-it-window-"+this.id+"-splash");
+    var splashScreen    = $E("cloud-it-window-"+this.id+"-splash");
     this.namespace      = icon.namespace;     //I am a window of what application
     this.appid          = 0;        //numerical instance of an app
     this.state          = 0;        //0 - closed, 1 - minimized, 2 - open, 3 - maximized
@@ -242,6 +242,13 @@ function DesktopWindow(icon,refId) {
         this._resize(this);
         return this;
     };
+    this.splashScreen = function (screen) {
+        if (screen) {
+            $(splashScreen).html(screen).show();
+        } else {
+            $(splashScreen).hide();
+        }
+    }    
     this._minimize  = function (evt) {
         var win     = this.win;
         this.left   = this.frame.offsetLeft;
@@ -272,7 +279,6 @@ function DesktopWindow(icon,refId) {
         return this;
     }
     this.resizeTo = function (w,h) {
-        console.log(w+','+h);
         if (w) {
             this.frame.style.width  = w + "px";
         }
@@ -413,9 +419,12 @@ var Desktop = {
         }
         var result = null;
         while (node) {
-            result = node.getAttribute('desktop_id');
-            if (result) {
-                return (obj) ? Desktop.window.list[result] : result;
+            result = false;
+            if (node.getAttribute) {
+                result = node.getAttribute('desktop_id');
+                if (result) {
+                    return (obj) ? Desktop.window.list[result] : result;
+                }
             }
             node = (node.offsetParent) ? node.offsetParent : false;
         }
@@ -469,7 +478,7 @@ var Desktop = {
                 '<span class="cloud-it-desktop-icon-text" id="cloud-it-&&w_id&&-icon-text">&&text&&</span>'+
                 '</div>',
         window: '<div class="cloud-it-desktop-window-frame" id="cloud-it-window-&&w_id&&-frame" desktop_id="&&w_id&&" onclick="Desktop.stopPropagation(event)" onmousedown="Desktop.stopPropagation(event)" onmouseover="Desktop.stopPropagation(event)">'+
-                '<div id="cloud-it-window-&&w_id&&-splash" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: none"></div>'+
+                '<div id="cloud-it-window-&&w_id&&-splash" style="z-index: 9999; background-color: rgba(50,50,50,.5); position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: none"></div>'+
                 '<div class="cloud-it-desktop-window-titlebar" id="cloud-it-window-&&w_id&&-titlebar" desktop_id="&&w_id&&">'+
                 '<img desktop_id="&&w_id&&" style="cursor: pointer;" id="cloud-it-window-&&w_id&&-close" class="cloud-it-window-close" src="/images/paradigm/desktop/redx.png" alt="Close" title="Close this window" onmousedown="Desktop.stopPropagation(event)" />'+
                 '<img desktop_id="&&w_id&&" style="position: relative; top: -2px; cursor: pointer; height: 20px; width: 20px" id="cloud-it-window-&&w_id&&-maximize" class="cloud-it-window-maximize" src="/images/paradigm/desktop/maximize.gif" title="Expand window to fullest" alt="Zoom Page"  />'+
@@ -497,16 +506,14 @@ var Desktop = {
         return (Desktop.isModern) ? window.pageYOffset : Desktop.ref.iebody.scrollTop;
     },
     on: function (obj,event,handler) {
-        var result = null;
         if (typeof obj == 'string') {
             obj = document.getElementById(obj);
         }
         if (Desktop.isModern) {
-            result = obj.addEventListener(event,handler,false);
+            obj.addEventListener(event,handler,false);
         } else {
-            result = obj.attachEvent('on'+event,handler);
+            obj.attachEvent('on'+event,handler);
         }
-        return result;
     },
     off: function (obj,event,handler) {
         if (typeof obj == 'string') {

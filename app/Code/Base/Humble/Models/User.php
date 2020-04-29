@@ -216,7 +216,8 @@ class User extends Model {
              $mydata = $EVENT->fetch();
              if (isset($mydata['url'])) {
                  $url = explode('?',$mydata['url']);
-                 $extra = isset($url[1]) ? '?'.urlencode($url[1]) : "";
+                 $extra = isset($url[1]) ? '?'.$this->substitute($url[1],$data) : "";
+                 $extra = (isset($mydata['urlencode']) && ($mydata['urlencode']=='Y')) ? urlencode($extra) : $extra;
                  header('Location: '.$url[0].$extra);
              }
         }

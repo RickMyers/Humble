@@ -252,7 +252,7 @@ CREATE TABLE `humble_users` (
   `salt` char(32) DEFAULT NULL,
   `email` char(128) DEFAULT '',
   `authenticated` char(1) DEFAULT 'N',
-  `new_password_token` char(16) DEFAULT '',
+  `security_token` char(16) DEFAULT '',
   `reset_password_token` char(16) DEFAULT '',
   `authentication_token` char(16) DEFAULT '',
   `logged_in` timestamp NULL DEFAULT '0000-00-00 00:00:00',

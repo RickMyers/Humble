@@ -109,7 +109,39 @@ class Model implements HumbleComponent
             }
         }
     }
-
+    
+    /**
+     * For use with template substitution
+     * 
+     * @param string $text
+     * @param array $values
+     * @return string
+     */
+    public function substitute($text,$values) {
+        $retval = '';
+        foreach (explode('%%',$text) as $idx => $section) {
+            if ($idx%2 != 0) {
+                if (strpos($section,'.')) {
+                    $s = '$values';
+                    foreach (explode('.',$section) as $node) {
+                        $s .= "['".$node."']";
+                    }
+                    eval('$valid = isset('.$s.');');
+                    if ($valid) {
+                        eval('$retval .='.$s.';');                              //Yes, it is evil, but what else are you going to do?
+                    } else {
+                        $retval .= '';
+                    }
+                } else {
+                    $retval .= isset($values[$section]) ? $values[$section] : '';
+                }
+            } else {
+                $retval .= $section;
+            }
+        }
+        return $retval;
+    }
+    
     /**
      * Everything is set...
      *
