@@ -176,7 +176,7 @@ SQL;
                 $parts = explode('/',$mongo_source);
                 $data  = Humble::getModule($parts[0]);
                 $this->_mongodb = $data['mongodb'];
-                $this->_mongocollection = $parts[1];
+                $this->_mongocollection = str_replace(["/"],["_"],substr($mongo_source,strpos($mongo_source,'/')+1));
             } else {
                 $data  = Humble::getModule($this->_namespace());
                 $this->_mongodb = $data['mongodb'];
