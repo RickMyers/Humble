@@ -127,6 +127,46 @@
 
     <!--#########################################################################################
         #                                                                                       #
+        #         CREATES THE SINGLE FILE TO DEPLOY                                             #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="compress" description="Will pack the entire application into a gzip file">
+            <tar destfile="../${alias}.tar" 
+                 basedir="." 
+                 longfile="gnu"
+                 excludes="**/vendor/,**/Cache/,app/Workflows/,.git,.gitignore,build.xml,app/headers/**"
+            />
+            <gzip src="../${alias}.tar" destfile="../${alias}_${timestamp}.tar.gzip"/>
+        </target>
+        
+    <!--#########################################################################################
+        #                                                                                       #
+        #         UNZIPS AND UNTARRS THE COMPRESSED FILE THAT WAS SHIPPED TO THE SERVER         #
+        #                                                                                       #
+        #########################################################################################-->        
+        <target name="expand" description="Unpacks the codebase on the remote system">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh expand ${alias} ${timestamp}" />  
+        </target>        
+        
+    <!--#########################################################################################
+        #                                                                                       #
+        #         UNZIPS AND UNTARRS THE COMPRESSED FILE THAT WAS SHIPPED TO THE SERVER         #
+        #                                                                                       #
+        #########################################################################################-->        
+        <target name="purge" depends="expand" description="Unpacks the codebase on the remote system">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh purge ${alias} ${timestamp}" />  
+        </target>   
+                
+    <!--#########################################################################################
+        #                                                                                       #
         #         RENAMES TIMESTAMP DIRECTORY TO PROJECT DIRECTORY                              #
         #                                                                                       #
         #########################################################################################-->
