@@ -113,20 +113,25 @@ class Environment {
      * 
      * @return Array
      */
-    public static function loadApplicationMetaData() {
-        if (!self::$application = Humble::cache('application')) {
-            self::recacheApplication();
+    public static function loadApplicationMetaData($dontUseCache=false) {
+        if ($dontUseCache) {
+            $data = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time.");
+            return simplexml_load_string($data);            
+        } else {
+            if (!self::$application = Humble::cache('application')) {
+                self::recacheApplication();
+            }
+            return self::$application;
         }
-        return self::$application;
     }
 
     /**
-     * Returns the application status XML in object form
+     * Returns the application status as either fresh XML object (passed value of true) or what is stored in the cache (normal mode)
      *
      * @return type
      */
-    public static function status() {
-        return self::loadApplicationMetaData();
+    public static function status($dontUseCache=false) {
+        return self::loadApplicationMetaData($dontUseCache);
     }
 
     /**

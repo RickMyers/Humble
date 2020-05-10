@@ -68,7 +68,7 @@ class System extends Model
      */
     public function _landing() {
         $status = Environment::status();
-        return $status->landing;
+        return $status['landing'];
     }
 
     /**
@@ -78,7 +78,7 @@ class System extends Model
      */
     public function isQuiescing() {
         if (!$this->xml) {
-            $this->xml  = Environment::status();
+            $this->xml  = Environment::status(true);
         }
         return $this->xml->status->quiescing;
     }
@@ -90,8 +90,9 @@ class System extends Model
      */
     public function isActive() {
         if (!$this->xml) {
-            $this->xml  = Environment::status();
+            $this->xml  = Environment::status(true);
         }
+        
         return $this->xml->status->enabled;
     }
 
@@ -101,7 +102,7 @@ class System extends Model
      *
      */
     public function quiesce() {
-        $xml  = Environment::status();
+        $xml  = Environment::status(true);
         $xml->status->quiescing = $this->getValue();
         file_put_contents('../application.xml',$xml->asXML());
     }
@@ -112,7 +113,7 @@ class System extends Model
      *
      */
     public function online() {
-        $xml  = Environment::status();
+        $xml  = Environment::status(true);
         $xml->status->enabled = 1;
         file_put_contents('../application.xml',$xml->asXML());
     }
@@ -123,7 +124,7 @@ class System extends Model
      *
      */
     public function offline() {
-        $xml  = Environment::status();
+        $xml  = Environment::status(true);
         $xml->status->enabled = 0;
         file_put_contents('../application.xml',$xml->asXML());
     }
@@ -136,7 +137,7 @@ class System extends Model
      * @return boolean
      */
     public function SSOEnabled($EVENT=false) {
-        $application   = Environment::status();
+        $application   = Environment::status(true);
         return ($application && (isset($application->status->SSO)) && ($application->status->SSO->enabled == 1));
 
     }

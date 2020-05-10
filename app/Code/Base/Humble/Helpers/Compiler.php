@@ -102,10 +102,29 @@ class Compiler extends Directory
     }
 
     /**
-     * @TODO: this
+     * If certain tokens were passed in, this will swap the token to the value of the token
      */
-    private function processDefault() {
-
+    private function processDefault($default='') {
+        if (($default)) {
+            switch (strtoupper($default)) {
+                case '"UNIQUEID"' :
+                    $default = '"'.$this->_uniqueId(true).'"';
+                    break;
+                case '"TIMESTAMP"' :
+                    $default = '"'.date("Y-m-d H:i:s").'"';
+                    break;
+                case '"TIME"' :
+                    $default = '"'.date("H:i:s").'"';
+                    break;
+                case '"DATESTAMP"':
+                case '"DATE"' :
+                    $default = '"'.date("Y-m-d").'"';
+                    break;
+                default:
+                    break;
+            }
+        }
+        return $default;
     }
     
     /**
@@ -232,6 +251,7 @@ class Compiler extends Directory
         $datestamp  = false;
         $time       = false;
         $default    = (isset($parameter['default']) ? (($parameter['default']!='') ? '"'.$parameter['default'].'"' : 'null') : 'null');
+        $default    = $this->processDefault($default);
         if (($default == '"now"') && ($format)) {
             $timestamp = ($format   == 'timestamp') ? 1 : 0;
             $datestamp = (($format  == 'date') || ($format == "datestamp")) ? 1 : 0;
@@ -537,7 +557,7 @@ PHP;
             }
             $assign_str = ''; $method_str = '$'.$node['id'].'->'.$node['method'].'('.$arglist.')';
             if (isset($node['assign'])) {
-                $assign_str = '$'.$node['assign'].' = ';
+                $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
             }
             if (isset($node['normalize']) && (strtoupper($node['normalize'])=='Y')) {
                 $method_str = '$'.$node['id'].'->normalize('.$method_str.')';
@@ -653,7 +673,7 @@ PHP;
      */
     private function processRedirect($node) {
         $redirect = "";
-        print($this->tabs().'$_SESSION["JARVIS_REDIRECT_HEADERS"] = headers_list();'."\n");
+        print($this->tabs().'$_SESSION["HUMBLE_REDIRECT_HEADERS"] = headers_list();'."\n");
         if (isset($node['post']) && $node['post']==true) {
             $txt = $this->tabs().'$vars = [];
                         foreach ($_POST as $key => $val) {
@@ -680,8 +700,10 @@ PHP;
         } else {
             print($this->tabs().'header("Location: '.$node['href'].$redirect.'");'."\n");
             
-        }        
-/*        
+        }
+       
+        
+        /*
         $redirect = "";
         print($this->tabs().'$_SESSION["HUMBLE_REDIRECT_HEADERS"] = headers_list();'."\n");
         if (isset($node['post']) && $node['post']==true) {
@@ -697,8 +719,8 @@ PHP;
             $redirect = $delim.'redirect=true&POST='.$id;
         }
         print($this->tabs().'header("Location: '.$node['href'].$redirect.'");'."\n");
- * 
- */
+         * 
+         */
     }
 
     /**
