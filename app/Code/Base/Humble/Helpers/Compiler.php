@@ -981,7 +981,9 @@ PHP;
                                             break;
                         case 'yaml'     :   print($this->tabs()."header('content-type: text/yaml');\n");
                                             break;
-                        default         :   die('Unknown type of output requested ('.$action['output'].')');
+                        case 'text'     :   print($this->tabs()."header('content-type: text/plain');\n");
+                                            break;                                        
+                        default         :   print($this->tabs()."header('content-type: application/octet-stream');\n");
                                             break;
                     }
                 }

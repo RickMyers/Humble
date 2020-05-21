@@ -23,6 +23,7 @@ $help = <<<HELP
  *      --s, --S, Application status
  *      --w, --W, Examine PHP code for workflow components
  *      --g, --G, Generate JSON Edits
+        --z, --Z, Generate Workflows
  *      --l, --L, Toggle Local authentication
  *      --y, --Y, Compile a controller
  *      --x, --X, Check if a module prefix is available
@@ -325,6 +326,12 @@ TXT;
             foreach (\Humble::getEntity('paradigm/workflows')->setNamespace($namespace)->setActive('Y')->fetch() as $workflow) {
                 $generator->setId($workflow['id'])->setDiagram($workflow['diagram'])->generate();
             }
+        }
+    }
+    //--------------------------------------------------------------------------
+    function workflows($args) {
+        if ($namespace = fetchParameter(['namespace','ns'],processArgs($args))) {
+            generateWorkflows($namespace);
         }
     }
     //--------------------------------------------------------------------------
@@ -935,6 +942,9 @@ TXT;
                     break;
                 case 'w'    :
                     scanForWorkflowComponents(array_slice($args,1));
+                    break;
+                case 'z'    :
+                    workflows(array_slice($args,1));
                     break;
                 case 'g'    :
                     generateJSONEdits(array_slice($args,1));
