@@ -48,9 +48,11 @@ HELP;
     //option functions
     //--------------------------------------------------------------------------
     function fetchParameter($parm,$list) {
+        $parms = [];
+        $parms = is_array($parm) ? array_flip($parm) : [$parm=>true];
         $value=false;
         foreach ($list as $key => $val) {
-            if ($key == $parm) {
+            if (isset($parms[$key])) {
                 $value = $val;
                 break;
             }
@@ -316,19 +318,26 @@ TXT;
         }
     }
     //--------------------------------------------------------------------------
-    function updateModule($args) {
-        $namespace = fetchParameter('namespace',processArgs($args));
-        if (!$namespace) {
-            $namespace = fetchParameter('ns',processArgs($args));
-        }
+    function generateWorkflows($namespace=false) {
+        @mkdir('Workflows',0775);
         if ($namespace) {
-            if ($namespace==='*') {
-                foreach (\Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
-                    updateIndividualModule($module['namespace']);
-                }
-            } else {
-                foreach (explode(',',$namespace) as $namespace) {
-                    updateIndividualModule($namespace);
+            $generator = \Humble::getHelper('paradigm/generator');
+            foreach (\Humble::getEntity('paradigm/workflows')->setNamespace($namespace)->setActive('Y')->fetch() as $workflow) {
+                $generator->setId($workflow['id'])->setDiagram($workflow['diagram'])->generate();
+            }
+        }
+    }
+    //--------------------------------------------------------------------------
+    function updateModule($args) {
+        $namespace = fetchParameter(['namespace','ns'],processArgs($args));
+        $workflows = fetchParameter(['w','workflow','workflows'],processArgs($args));
+        if ($namespace) {
+            $modules = ($namespace==='*') ? \Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() : explode(',',$namespace);
+            foreach ($modules as $module) {
+                $namespace = (is_array($module) ? $module['namespace'] : $module);
+                updateIndividualModule($namespace);
+                if (strtoupper($workflows)==='Y') {
+                    $this->generateWorkflows($namespace);
                 }
             }
         } else {
@@ -595,6 +604,7 @@ TXT;
         }
         return $entries;
     }
+    //--------------------------------------------------------------------------
     function addUser($args) {
         $parms = processArgs($args);
         $uname = fetchParameter('user_name',$parms);
@@ -610,7 +620,6 @@ TXT;
     }
     //--------------------------------------------------------------------------
     function getManifestContent() {
-
         $content = [
             'manifest' => [],
             'files' => [],

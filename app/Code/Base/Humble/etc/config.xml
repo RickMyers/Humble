@@ -110,6 +110,7 @@
                 <js>
                     <source weight="28">Humble/web/js/jquery-ui.js</source>
                     <source weight="29">Humble/web/js/jquery.filthypillow.min.js</source>
+                    <source weight="29">Humble/web/js/Sliders.js</source>
                 </js>
                 <css>
                     <source weight="28">Humble/web/css/jquery-ui.css</source>

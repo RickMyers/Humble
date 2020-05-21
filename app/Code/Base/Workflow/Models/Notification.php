@@ -31,7 +31,7 @@ class Notification extends Model {
         return __CLASS__;
     }
 
-    protected function substitute($text,$values) {
+    public function substitute($text,$values) {
         $retval = '';
         foreach (explode('%%',$text) as $idx => $section) {
             if ($idx%2 != 0) {

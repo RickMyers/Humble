@@ -1,4 +1,4 @@
-<project name="DistributionScript" default="default" basedir=".">
+<project name="HumbleFramework" default="default" basedir=".">
     <description>
             ______ _     _        _ _           _   _
             |  _  (_)   | |      (_) |         | | (_)
@@ -23,7 +23,7 @@
     #       THERE IS A SAMPLE 'config.properties' FILE INCLUDED WITH THE JARVIS PROJECT        #
     #                                                                                          #
     ############################################################################################-->
-    <property file="../config.your_projectname_here.properties"/>
+    <property file="../config.humble.properties"/>
 
     <!--#########################################################################################
         #                                                                                       #
@@ -52,6 +52,7 @@
             <property name="dbpass" value="${server.prod.dbpass}" />
             <property name="root"   value="${server.prod.root}" />
             <property name="back"   value="${server.prod.back}" />
+            <property name="php"    value="${server.prod.php}" />
             <echo message="Distributing ${server}" />
         </target>
 
@@ -70,8 +71,46 @@
             <property name="dbpass" value="${server.test.dbpass}" />
             <property name="root"   value="${server.test.root}" />
             <property name="back"   value="${server.test.back}" />
+            <property name="php"    value="${server.test.php}" />
             <echo message="Distributing ${server}" />
         </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
+        #         SETS THE REMOTE ENVIRONMENT VALUES                                            #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="remote" description="Distributes to the Test Server">
+            <property name="server" value="${server.rmte.ip}"  />
+            <property name="uid"    value="${server.rmte.uid}" />
+            <property name="pwd"    value="${server.rmte.pwd}" />
+            <property name="rpwd"   value="${server.rmte.root_password}" />
+            <property name="base"   value="${server.rmte.base}" />
+            <property name="dbuser" value="${server.rmte.dbuser}" />
+            <property name="dbpass" value="${server.rmte.dbpass}" />
+            <property name="root"   value="${server.rmte.root}" />
+            <property name="back"   value="${server.rmte.back}" />
+            <property name="php"    value="${server.rmte.php}" />
+            <echo message="Distributing ${server}" />
+        </target>
+        
+    <!--#########################################################################################
+        #                                                                                       #
+        #         SETS THE REMOTE ENVIRONMENT VALUES                                            #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="aws" description="Distributes to the AWS Server">
+            <property name="server" value="${server.aws.ip}"  />
+            <property name="uid"    value="${server.aws.uid}" />
+            <property name="pwd"    value="${server.aws.pwd}" />
+            <property name="base"   value="${server.aws.base}" />
+            <property name="dbuser" value="${server.aws.dbuser}" />
+            <property name="dbpass" value="${server.aws.dbpass}" />
+            <property name="root"   value="${server.aws.root}" />
+            <property name="back"   value="${server.aws.back}" />
+            <property name="php"    value="${server.aws.php}" />
+            <echo message="Distributing ${server}" />
+        </target>        
 
     <!--#########################################################################################
         #                                                                                       #
@@ -81,8 +120,8 @@
         <target name="open" depends="create" description="Resets permissions and ownership on relevant directories">
             <sshexec host="${server}"
                   trust="true"
-                  username="root"
-                  password="${rpwd}"
+                  username="${uid}"
+                  password="${pwd}"
                   command="/home/codeship/build.sh open ${alias}" />
         </target>
 
@@ -117,7 +156,7 @@
         #         RENAMES THE EXISTING PROJECT DIRECTORY TO _old                                #
         #                                                                                       #
         #########################################################################################-->
-        <target name="retain" depends="deploy" description="Renames the current project to have an old suffix">
+        <target name="retain" depends="ship" description="Renames the current project to have an old suffix">
             <sshexec host="${server}"
                   trust="true"
                   username="${uid}"
@@ -164,7 +203,20 @@
                   password="${pwd}"
                   command="./build.sh purge ${alias} ${timestamp}" />  
         </target>   
-                
+        
+    <!--#########################################################################################
+        #                                                                                       #
+        #         SCP (SECURE COPY) THE TARRED AND ZIPPED FILE TO DESTINATION SERVER            #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="ship" depends="compress" description="Sends the packaged development code to the target server">
+            <scp todir="${uid}:${pwd}@${server}:${base}"
+                 file="../${alias}_${timestamp}.tar.gzip"
+                 trust="true" 
+                 verbose="false">
+            </scp>
+        </target>   
+        
     <!--#########################################################################################
         #                                                                                       #
         #         RENAMES TIMESTAMP DIRECTORY TO PROJECT DIRECTORY                              #
@@ -184,7 +236,7 @@
         #         Runs the composer update						                                #
         #                                                                                       #
         #########################################################################################-->
-		<target name="composer" depends="rename" description="Runs composer">
+	<target name="composer" depends="rename" description="Runs composer">
             <sshexec host="${server}"
                   trust="true"
                   username="${uid}"
@@ -217,11 +269,11 @@
                   username="${uid}"
                   password="${pwd}"
                   command="tar -czf ${back}${alias}.${timestamp}.tar.gz ${root}" />
-            <sshexec host="${server}"
+            <!--sshexec host="${server}"
                   trust="true"
-                  username="${uid}"
-                  password="${pwd}"
-                  command="./build.sh backup ${alias} ${timestamp} ${dbuser} ${dbpass}" />    <!-- Backsup databases and what not... non code stuff -->
+                  username="root"
+                  password="${rpwd}"
+                  command="/home/codeship/build.sh backup ${alias} ${timestamp}" /-->    <!-- Backsup databases and what not... non code stuff -->
         </target>
 
     <!--#########################################################################################
@@ -234,7 +286,7 @@
                   trust="true"
                   username="${uid}"
                   password="${pwd}"
-                  command="./build.sh cleanup ${alias} ${timestamp}" />  <!-- Tailor this using the configuration file in the cleanup script directory -->
+                  command="/home/codeship/build.sh cleanup ${alias} ${timestamp}" />  <!-- Tailor this using the configuration file in the cleanup script directory -->
         </target>
 
     <!--#########################################################################################
@@ -242,7 +294,7 @@
         #  CREATES THE MECHANICALLY GENERATED API DOCUMENTATION                                 #
         #                                                                                       #
         #########################################################################################-->
-        <target name="document" depends="deploy" description="Runs phpDocumentor2 against the project that was just deployed">
+        <target name="document" depends="ship" description="Runs phpDocumentor2 against the project that was just deployed">
             <sshexec host="${server}"
                   trust="true"
                   username="${uid}"
@@ -256,11 +308,9 @@
         #                                                                                       #
         #########################################################################################-->
         <target name="increment" depends="prod" description="Generates a new package for deployment">
-            <sshexec host="${server}"
-                  trust="true"
-                  username="${uid}"
-                  password="${pwd}"
-                  command="./build.sh increment ${alias} ${timestamp}" />  <!-- Tailor this using the configuration file in the cleanup script directory -->
+            <exec dir="app" executable="cmd.exe" >
+                <arg value="/c humble --increment" />
+            </exec>
         </target>
 
     <!--#########################################################################################
@@ -289,8 +339,8 @@
                     <exclude name="**/vendor/" />
                     <exclude name="**/Cache/" />
                     <exclude name="**/SDSF/" />
-                    <!--exclude name="Humble.project" /-->
                     <exclude name=".git" />
+                    <exclude name=".gitignore" />
                     <exclude name="build.xml" />
                 </fileset>
             </scp>
@@ -298,13 +348,14 @@
 
     <!--#########################################################################################
         #                                                                                       #
-        #                 SETS THE TARGET ENVIRONMENT TO THE PROD SERVER                        #
+        #               SETS THE TARGET ENVIRONMENT TO THE PARTICULAR SERVER                    #
+        #                                                                                       #
+        #          ONLY HUMBLE FRAMEWORK SHOULD CALL 'INCREMENT' AND 'PACKAGE' STEPS            #
         #                                                                                       #
         #########################################################################################-->
 
-        <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,deploy,retain,composer,update,document"   description="Distributes to the Prod Server" />
-
-        <target name="disttest" depends="constants,test,open,create,backup,cleanup,remove,deploy,retain,composer,update,document"   description="Distributes to the Test Server" />
+        <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,compress,increment,ship,retain,expand,composer,update,package,document"   description="Distributes to the Prod Server" />
+        <target name="disttest" depends="constants,test,open,create,backup,cleanup,remove,compress,increment,ship,retain,expand,composer,update,package,document"   description="Distributes to the Prod Server" />
 
     <!--#########################################################################################
         #                                                                                       #

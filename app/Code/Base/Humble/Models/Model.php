@@ -75,6 +75,17 @@ class Model implements HumbleComponent
     }
 
     /**
+     * Cute routine to insert an underscore prior to any capitalized letter
+     *
+     * @param string $string
+     * @param boolean $make_lower_case
+     * @return string
+     */
+    public function camelCaseToUnderscore($string='',$make_lower_case=true) {
+        return $make_lower_case ? strtolower(trim(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $string))): trim(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $string));
+    }
+    
+    /**
      * Will add to the response headers any messages or errors generated during processing
      */
     public function __destruct() {
@@ -210,6 +221,8 @@ class Model implements HumbleComponent
      * @return string The body of the response from the remote resource
      */
 	protected function _curl($URL,$args,$method="POST",$secure=false,$userid=false,$password=false)	{
+            
+        //--> USE HURL INSTEAD... 
         if (substr($URL,0,4)!=='http') {
             $URL = $_SERVER['HTTP_HOST'].$URL;
             $URL = ($this->_isWindows) ? 'http://'.$URL : 'https://'.$URL;
@@ -220,7 +233,7 @@ class Model implements HumbleComponent
         } else {
             $hurl = $URL;
         }
-        $sessionControl = isset($this->_data['sessionId']);
+        $sessionControl = isset($this->_data['sessionId']) || ((isset($call['blocking']) && (!$call['blocking'])));
         if ($sessionControl) {
             $SID = session_id();
             $this->setSessionId($SID);
@@ -292,19 +305,22 @@ class Model implements HumbleComponent
         $res            = null; $opts = []; $parms = '';
         $auth           = ($userid && $password) ? array("Authorization"=> "Basic ".base64_encode($userid.":".$password)) : [];
         $protocol       = ($secure) ? 'ssl' : 'http';
-        $sessionControl = isset($this->_data['sessionId']);  //do I need to suspend the current session to give access to the session during the remote call
+        $sessionControl = isset($this->_data['sessionId']) || ((isset($call['blocking']) && (!$call['blocking'])));  //do I need to suspend the current session to give access to the session during the remote call
 
         if ($sessionControl) {
             $args['sessionId'] = session_id();
             session_write_close();
          }
         //if you are going to "eat your own dogfood", we need to precede the resource URL with the fully qualified host name
+        $HTTP_HOST = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+        $HTTP_HOST = 'dev.argusdentalvision.com';
+        $PROTOCOL = (isset($_SERVER['HTTPS']) && (strtoupper($_SERVER['HTTPS'])=='ON')) ? 'https://' : ((isset($_SERVER['HTTP']) && (strtoupper($_SERVER['HTTP'])=='ON')) ? 'http://' : 'https://');
         if (substr($URL,0,4)!=='http') {
             if (isset($_SERVER['HTTPS']) && (strtoupper($_SERVER['HTTPS'])=='ON')) {
-                $URL      = 'https://'.$_SERVER['HTTP_HOST'].$URL;
+                $URL      = $PROTOCOL.$HTTP_HOST.$URL;
                 $protocol = 'ssl';
             } else {
-                $URL      = 'http://'.$_SERVER['HTTP_HOST'].$URL;
+                $URL      = $PROTOCOL.$HTTP_HOST.$URL;
                 $protocol = 'http';
             }
         }
@@ -495,16 +511,17 @@ SOAP;
         $args = [];
         $rpc  = $this->_RPC();  //capture current RPC state
         $this->_RPC(false);     //turn off RPC or might fall into an infinite loop
+        $cc   = isset($call['camel-case']) && $call['camel-case'];
         foreach ($call['arguments'] as $var => $val) {
             if (!is_numeric($var)) {
                 if (trim($val) != '') {
                     $args[$var] = $val;
                 } else {
-                    $method = 'get'.ucfirst($var);
+                    $method = 'get'.(($cc) ? $this->underscoreToCamelCase($var,true) : ucfirst($var));
                     $args[$var] = $this->$method();
                 }
             } else {
-                $method = 'get'.ucfirst($val);
+                $method = 'get'.(($cc) ? $this->underscoreToCamelCase($var,true) : ucfirst($var));
                 $args[$val] = $this->$method();
             }
         }
@@ -559,13 +576,17 @@ SOAP;
         if ($name && $this->_RPC()) {
             //require_once('../lib/yaml/lib/sfYaml.php');
             if (!\Singleton::mappings()) {
-                \Singleton::mappings(Yaml::parseFile('Code/Base/Humble/RPC/mapping.yaml')); //default mappings
+                if (!$default_mappings = Humble::cache('yaml-humble')) {
+                    Humble::cache('yaml-humble',$default_mappings = Yaml::parseFile('Code/Base/Humble/RPC/mapping.yaml'));
+                }
+                \Singleton::mappings($default_mappings); //default mappings
             }
             if (strtolower($this->_namespace()) !== 'humble') {
                 $me = Humble::getModule($this->_namespace());
                 $mappingFile = 'Code/'.$me['package'].'/'.str_replace('_','/',$me['rpc_mapping']).'/mapping.yaml';
                 if (file_exists($mappingFile)) {
                     //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
+                    //@TODO: cache this
                     \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings() ,Yaml::parseFile($mappingFile)) : Yaml::parseFile($mappingFile)));
                 }
             }

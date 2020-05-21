@@ -156,7 +156,7 @@
         #         RENAMES THE EXISTING PROJECT DIRECTORY TO _old                                #
         #                                                                                       #
         #########################################################################################-->
-        <target name="retain" depends="deploy" description="Renames the current project to have an old suffix">
+        <target name="retain" depends="ship" description="Renames the current project to have an old suffix">
             <sshexec host="${server}"
                   trust="true"
                   username="${uid}"
@@ -164,6 +164,59 @@
                   command="./build.sh retain ${alias} ${timestamp}" />
         </target>
 
+    <!--#########################################################################################
+        #                                                                                       #
+        #         CREATES THE SINGLE FILE TO DEPLOY                                             #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="compress" description="Will pack the entire application into a gzip file">
+            <tar destfile="../${alias}.tar" 
+                 basedir="." 
+                 longfile="gnu"
+                 excludes="**/vendor/,**/Cache/,app/Workflows/,.git,.gitignore,build.xml,app/headers/**"
+            />
+            <gzip src="../${alias}.tar" destfile="../${alias}_${timestamp}.tar.gzip"/>
+        </target>
+        
+    <!--#########################################################################################
+        #                                                                                       #
+        #         UNZIPS AND UNTARRS THE COMPRESSED FILE THAT WAS SHIPPED TO THE SERVER         #
+        #                                                                                       #
+        #########################################################################################-->        
+        <target name="expand" description="Unpacks the codebase on the remote system">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh expand ${alias} ${timestamp}" />  
+        </target>        
+        
+    <!--#########################################################################################
+        #                                                                                       #
+        #         UNZIPS AND UNTARRS THE COMPRESSED FILE THAT WAS SHIPPED TO THE SERVER         #
+        #                                                                                       #
+        #########################################################################################-->        
+        <target name="purge" depends="expand" description="Unpacks the codebase on the remote system">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh purge ${alias} ${timestamp}" />  
+        </target>   
+        
+    <!--#########################################################################################
+        #                                                                                       #
+        #         SCP (SECURE COPY) THE TARRED AND ZIPPED FILE TO DESTINATION SERVER            #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="ship" depends="compress" description="Sends the packaged development code to the target server">
+            <scp todir="${uid}:${pwd}@${server}:${base}"
+                 file="../${alias}_${timestamp}.tar.gzip"
+                 trust="true" 
+                 verbose="false">
+            </scp>
+        </target>   
+        
     <!--#########################################################################################
         #                                                                                       #
         #         RENAMES TIMESTAMP DIRECTORY TO PROJECT DIRECTORY                              #
@@ -183,7 +236,7 @@
         #         Runs the composer update						                                #
         #                                                                                       #
         #########################################################################################-->
-		<target name="composer" depends="rename" description="Runs composer">
+	<target name="composer" depends="rename" description="Runs composer">
             <sshexec host="${server}"
                   trust="true"
                   username="${uid}"
@@ -241,7 +294,7 @@
         #  CREATES THE MECHANICALLY GENERATED API DOCUMENTATION                                 #
         #                                                                                       #
         #########################################################################################-->
-        <target name="document" depends="deploy" description="Runs phpDocumentor2 against the project that was just deployed">
+        <target name="document" depends="ship" description="Runs phpDocumentor2 against the project that was just deployed">
             <sshexec host="${server}"
                   trust="true"
                   username="${uid}"
@@ -301,9 +354,9 @@
         #                                                                                       #
         #########################################################################################-->
 
-        <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,compress,increment,deploy,retain,expand,composer,update,package"   description="Distributes to the Prod Server" />
+        <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,compress,increment,ship,retain,expand,composer,update,package"   description="Distributes to the Prod Server" />
         <target name="distrmte" depends="constants,remote,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package,document"   description="Distributes to the Prod Server" />
-        <target name="distaws"  depends="constants,aws,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package,document"   description="Distributes to the AWS Lightsail Server" />
+        <target name="distaws"  depends="constants,aws,open,create,backup,cleanup,remove,compress,increment,ship,retain,expand,composer,update,package"   description="Distributes to the AWS Lightsail Server" />
         <!--target name="disttest" depends="constants,test,open,create,backup,cleanup,remove,deploy,retain,composer,update,document,increment,package"   description="Distributes to the Test Server" /-->
 
     <!--#########################################################################################

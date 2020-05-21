@@ -107,7 +107,7 @@
     <script type='text/javascript'>
         window.onload = function () {
             new EasyEdits('/web/edits/login.json','login');
-            var loginMessage = window.location.href.split('?m=');
+            var loginMessage = window.location.href.split('?message=');
             if (loginMessage[1]) {
                 $E('login-error').innerHTML = unescape(loginMessage[1]);
             }
