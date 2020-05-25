@@ -721,9 +721,11 @@ EasyEdits.setCombo = function (formField,combo) {
 }
 /* ------------------------------------------------ */
 EasyEdits.resetCombos = function (easy) {
-    for (var i=0; i<easy.edits.fields.length; i++)	{
-        if (easy.edits.fields[i].type == "combo") {
-            EasyEdits.setCombo($E(easy.edits.fields[i].id),$E(easy.edits.fields[i].id+"_combo"));
+    if (easy.edits && easy.edits.fields) {
+        for (var i=0; i<easy.edits.fields.length; i++)	{
+            if (easy.edits.fields[i].type == "combo") {
+                EasyEdits.setCombo($E(easy.edits.fields[i].id),$E(easy.edits.fields[i].id+"_combo"));
+            }
         }
     }
 }
