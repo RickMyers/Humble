@@ -313,7 +313,6 @@ class Model implements HumbleComponent
          }
         //if you are going to "eat your own dogfood", we need to precede the resource URL with the fully qualified host name
         $HTTP_HOST = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
-        $HTTP_HOST = 'dev.argusdentalvision.com';
         $PROTOCOL = (isset($_SERVER['HTTPS']) && (strtoupper($_SERVER['HTTPS'])=='ON')) ? 'https://' : ((isset($_SERVER['HTTP']) && (strtoupper($_SERVER['HTTP'])=='ON')) ? 'http://' : 'https://');
         if (substr($URL,0,4)!=='http') {
             if (isset($_SERVER['HTTPS']) && (strtoupper($_SERVER['HTTPS'])=='ON')) {
@@ -521,7 +520,7 @@ SOAP;
                     $args[$var] = $this->$method();
                 }
             } else {
-                $method = 'get'.(($cc) ? $this->underscoreToCamelCase($var,true) : ucfirst($var));
+                $method = 'get'.(($cc) ? $this->underscoreToCamelCase($val,true) : ucfirst($val));
                 $args[$val] = $this->$method();
             }
         }

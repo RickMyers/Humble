@@ -17,7 +17,7 @@
                     <helper namespace='humble' class='directory'    id='packages' />
                 </case>
                 <default>
-                    <redirect href='/index.html?m=Insufficient privilege' />
+                    <redirect href='/index.html?message=Insufficient privilege' />
                 </default>
             </switch>
         </action>
