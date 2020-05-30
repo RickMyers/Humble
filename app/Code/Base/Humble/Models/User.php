@@ -214,6 +214,7 @@ class User extends Model {
     public function redirect($EVENT=false) {
         if ($EVENT) {
              $mydata = $EVENT->fetch();
+             $data   = $EVENT->load();
              if (isset($mydata['url'])) {
                  $url = explode('?',$mydata['url']);
                  $extra = isset($url[1]) ? '?'.$this->substitute($url[1],$data) : "";
