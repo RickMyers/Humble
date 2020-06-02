@@ -22,7 +22,6 @@ mapi.php
 msa.php
 debug.php
 fallback.php
-favicon.ico
 install.php
 installtest.php
 mongotest.php

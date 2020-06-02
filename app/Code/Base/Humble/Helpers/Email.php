@@ -47,9 +47,12 @@ class Email extends Helper
      * @return boolean
      */
     public function sendEmail($to=false,$subject=false,$body=false,$from=false,$reply=false,$attachment=false) {
+        $to       = (is_string($to)) ? [$to] : $to;
         $settings = Environment::settings();
-        $from = ($from ? $from : 'humble@humble.humblecoding.com');
-        $reply = ($reply ? $reply : 'noreply@humble.humblecoding.com');
+        $project  = Environment::getProject();
+        $prj      = explode(':',(string)$project->project_url);
+        $from = ($from ? $from : 'webmaster@'.substr($prj[1],2));
+        $reply = ($reply ? $reply : 'noreply@'.substr($prj[1],2));
         $mailer = new \PHPMailer;
         $mailer->isSMTP();
         $mailer->Host = $settings->getSmtpHost();
@@ -59,7 +62,9 @@ class Email extends Helper
         $mailer->Password = $settings->getSmtpPassword();
         $mailer->SMTPSecure = 'tls';
         $mailer->setFrom($from,'');
-        $mailer->addAddress($to);
+        foreach ($to as $recipient) {
+            $mailer->addAddress($recipient);
+        }
         $mailer->Subject = $subject;
         $mailer->addReplyTo($reply);
         $mailer->isHTML(true);
