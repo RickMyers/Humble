@@ -227,10 +227,10 @@ EasyAjax.prototype.suppress = function (boolean) {
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.getResponse = function() {
     if (!this.suppressAlerts) {
-        var alerts = JSON.parse(this.xmlHttp.getResponseHeader('Alerts'));
+        var alerts = JSON.parse(this.xmlHttp.getResponseHeader('Notices'));
         if (alerts) {
             for (var i=0; i<alerts.length; i++) {
-                alert(alerts[i]);
+                alert(alerts[i].replace(/<br>/g,'\n'));
             }
         }
     }

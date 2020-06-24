@@ -473,6 +473,8 @@ TXT;
                                                         break;
                             case "event"            :   $workflowComponent->setEventName($value);
                                                         break;
+                            case "emit"             :   //Must register this event
+                                                        break;
                             case "authorization"    :   if (strtolower($value) == 'true') {
                                                             $authorization = true;
                                                         } else if (strtolower($value) == 'false') {
@@ -482,6 +484,7 @@ TXT;
                                                         }
                                                         $workflowComponent->setAuthorization((($authorization) ? 'Y' : 'N'));
                                                         break;
+                            case "config"           :
                             case "configuration"    :   $workflowComponent->setConfiguration($value);
                                                         break;
                             default                 :   break;

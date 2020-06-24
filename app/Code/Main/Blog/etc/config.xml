@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<config>
+    <blog>
+        <version>0.0.1</version>
+        <title>Humble Blog</title>
+        <description>A module with basic blog like capabilities</description>
+        <author>
+            <name>Rick Myers</name>
+            <email>rick@humblecoding.com</email>
+        </author>
+        <module>
+            <name>Blog</name>
+            <weight>50</weight>
+            <required>N</required>
+            <workflow>Y</workflow>
+            <package>Main</package>
+            <use>Smarty3</use>
+        </module>
+        <structure>
+            <models>
+                <source>Blog/Models</source>
+            </models>
+            <helpers>
+                <source>Blog/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>Blog/Controllers</source>
+                <cache>Blog/Controllers/Cache</cache>
+            </controllers>
+            <schema>
+                <install>Blog/Schema/Install</install>
+                <update>Blog/Schema/Update</update>
+                <layout>Blog/Schema/DSL</layout>
+            </schema>
+            <configuration>
+                <source>Blog/etc</source>
+            </configuration>
+            <views>
+                <source>Blog/Views</source>
+                <cache>Blog/Views/Cache</cache>
+            </views>
+            <images>
+                <source>Blog/Images</source>
+                <cache>Blog/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>Blog/Entities</source>
+            </entities>
+            <RPC>
+                <source>Blog/RPC</source>
+            </RPC>
+            <frontend>
+                <source>Blog/web/app</source>
+            </frontend>
+        </structure>
+        <orm>
+            <prefix>blog_</prefix>
+            <mongodb>blog</mongodb>
+            <!--
+                Register your tables to be managed under this namespace in the entities section below in the following format:
+
+                <table_name polyglot="Y' />
+
+                The 'polyglot' attribute is optional.  Only specify when you are actually enabling the polyglot behavior
+            -->
+            <entities>
+
+            </entities>
+        </orm>
+        <events>
+
+        </events>
+        <web>
+            <!-- Edits are used for separating form validation from the form -->
+            <edits>
+                <edit1>Blog/web/edits/edit.json</edit1>
+            </edits>
+            <hook>
+                <!-- #################################################
+                     This is where the JS lives for your module
+
+                     Set the 'hook' name appropriately, and use as
+                       many hooks as you'd like
+                     #################################################    -->
+                <js>
+                    <source>Blog/web/js/Blog.js</source>
+                </js>
+                <css>
+                    <source>Blog/web/css/Blog.css</source>
+                </css>
+            </hook>
+        </web>
+    </blog>
+</config>

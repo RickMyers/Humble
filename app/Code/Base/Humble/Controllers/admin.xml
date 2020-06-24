@@ -24,6 +24,74 @@
 
         <!-- ############################################################### -->
 
+        <action name='package'>
+            <description>The Humble administration home page</description>
+            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
+                <parameter name='id' value="uid"  source='session' required='true' />
+            </entity>
+            <switch id='permissions' method='getAdmin'>
+                <case value='Y'>
+                    
+                </case>
+                <default>
+                    <redirect href='/index.html?message=Insufficient privilege' />
+                </default>
+            </switch>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name='module'>
+            <description>The Humble administration home page</description>
+            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
+                <parameter name='id' value="uid"  source='session' required='true' />
+            </entity>
+            <switch id='permissions' method='getAdmin'>
+                <case value='Y'>
+                    <helper namespace='humble' class='directory'    id='packages' />
+                </case>
+                <default>
+                    <redirect href='/index.html?message=Insufficient privilege' />
+                </default>
+            </switch>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name='component'>
+            <description>The Humble administration home page</description>
+            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
+                <parameter name='id' value="uid"  source='session' required='true' />
+            </entity>
+            <switch id='permissions' method='getAdmin'>
+                <case value='Y'>
+                    <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
+                </case>
+                <default>
+                    <redirect href='/index.html?message=Insufficient privilege' />
+                </default>
+            </switch>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name='controller'>
+            <description>The Humble administration home page</description>
+            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
+                <parameter name='id' value="uid"  source='session' required='true' />
+            </entity>
+            <switch id='permissions' method='getAdmin'>
+                <case value='Y'>
+                    <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
+                </case>
+                <default>
+                    <redirect href='/index.html?message=Insufficient privilege' />
+                </default>
+            </switch>
+        </action>
+        
+        <!-- ############################################################### -->
+
         <action name="compile">
             <description>Compiles (generates) the controllers of a module</description>
             <model namespace="humble" class="Utility" id='Utility'>

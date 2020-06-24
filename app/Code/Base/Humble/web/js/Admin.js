@@ -1,21 +1,53 @@
-Administration = (function () {
+var Administration = (function () {
                 return {
                     add: {
                         package: function () {
                             var val = prompt("Please enter a new documentation package");
                             if (val) {
                                 (new EasyAjax('/humble/admin/addpackage')).add('package',val).then(function () {
-                                    window.location.reload();
+                                    //window.location.reload();
                                 }).post();
                             }
                         },
                         category: function () {
-                            var val = prompt("Please enter a new documentation package");
+                            var val = prompt("Please enter a new documentation category");
                             if (val) {
                                 (new EasyAjax('/humble/admin/addcategory')).add('category',val).then(function () {
-                                    window.location.reload();
+                                    //window.location.reload();
                                 }).post();
                             }
+                        }
+                    },
+                    create: {
+                        win: {
+                            pak: false,
+                            mod: false,
+                            com: false,
+                            con: false
+                        },
+                        package: function () {
+                            var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true))._static(true)._title("New Package");
+                            (new EasyAjax('/humble/admin/package')).then(function (response) {
+                                win._open(response);
+                            }).get();
+                        },
+                        module: function () {
+                            var win = (Administration.create.win.mod = Administration.create.win.mod ? Administration.create.win.mod : Desktop.semaphore.checkout(true))._static(true)._title("New Module");
+                            (new EasyAjax('/humble/admin/module')).then(function (response) {
+                                win._open(response);
+                            }).get();                            
+                        },
+                        component: function () {
+                            var win = (Administration.create.win.com = Administration.create.win.com ? Administration.create.win.com : Desktop.semaphore.checkout(true))._static(true)._title("New Component");
+                            (new EasyAjax('/humble/admin/component')).then(function (response) {
+                                win._open(response);
+                            }).get();                            
+                        },
+                        controller: function () {
+                            var win = (Administration.create.win.con = Administration.create.win.con ? Administration.create.win.con : Desktop.semaphore.checkout(true))._static(true)._title("New Controller");
+                            (new EasyAjax('/humble/admin/controller')).then(function (response) {
+                                win._open(response);
+                            }).get();                            
                         }
                     },
                     templates: {
@@ -195,13 +227,13 @@ Administration = (function () {
                             $('#admin-lightbox-output').html(response);
                         }).post();
                     },
-                    create:     function (directory,pkg) {
+/*                    create:     function (directory,pkg) {
                         if (confirm('Would you like to create the path '+directory+' in the '+pkg+' package?')) {
                             (new EasyAjax('/humble/admin/create')).add('package',pkg).add('directory',directory).then(function () {
                                 window.location.reload(true);
                             }).post();
                         }
-                    },
+                    },*/
                     activate:   function (what) {
                         if ($E(what).style.display !== 'block') {
                             $E(what).style.display = 'block';
@@ -212,16 +244,16 @@ Administration = (function () {
                     init:   function () {
                         Desktop.init(Desktop.enable);
                         Desktop.semaphore.init();
-                        new EasyEdits('/web/edits/newmodule.json','newmodule');
-                        new EasyEdits('/web/edits/newcomponent.json','newcomponent');
-                        new EasyEdits('/web/edits/newcontroller.json','newcontroller');
-                        new EasyEdits('/web/edits/newpackage.json','newpackage');
+                       // new EasyEdits('/web/edits/newmodule.json','newmodule');
+                      //  new EasyEdits('/web/edits/newcomponent.json','newcomponent');
+                       // new EasyEdits('/web/edits/newcontroller.json','newcontroller');
+                      //  new EasyEdits('/web/edits/newpackage.json','newpackage');
                         $(window).resize(function () {
                             $('#widgets-column').height($(window).height() - $E('navigation-bar').offsetHeight - $E('humble-footer').offsetHeight);
                             $(document).css('overflow','hidden');
                             $('#apps-column').height($(window).height() - $E('navigation-bar').offsetHeight - $E('humble-footer').offsetHeight);
                             $('#apps-column').css('overflow','auto');
-                            $('#modules_list').width($(window).width() - $E('widgets-column').offsetWidth - $E('humble-creation-forms').offsetWidth -40);
+                            $('#modules_list').width($(window).width() - $E('widgets-column').offsetWidth - 20);
                             $('#admin-lightbox').width($(document).width()).height($(document).height());
                         }).resize();
                     },
@@ -326,3 +358,4 @@ Administration = (function () {
                     }
                 }
             })();
+console.log(Administration);

@@ -1,0 +1,11 @@
+<div id="new_package_area">
+    <span style="font-size: 1.5em">New Package Creation</span><br /><br />
+    All modules are contained within packages.  Should you wish to create a new package for your module, you may do so here<br /><br />
+    <form name="new_package_form" id="new_package_form" onsubmit="return false" >
+        <input type="text" name="new_package" id="new_package" class="new-user-email" style='color: #333'/>
+        <input type="button" name="new_package_submit" id="new_package_submit"  value="Create Package" />
+    </form>
+</div>
+<script type="text/javascript">
+    new EasyEdits('/web/edits/newpackage.json','newpackage');
+</script>
