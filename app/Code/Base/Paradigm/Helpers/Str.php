@@ -167,6 +167,11 @@ class Str extends Helper implements \Countable, \ArrayAccess, \IteratorAggregate
         return $text;
     }
 
+    
+    public function template($template=false,$data=false) {
+        $templater = Environment::getInternalTemplater();
+    }
+    
     /**
      * Employs a substitution algorithm to replace parts of a string with segmented values
      *

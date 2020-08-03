@@ -20,6 +20,9 @@ var Paradigm = (function () {
         config: {
 
         },
+        Editors: {
+            
+        },
         images: {
             /*
              * Any and all images that are to be injected into the canvas need to be listed here for pre-caching,

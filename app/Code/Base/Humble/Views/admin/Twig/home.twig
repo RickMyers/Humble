@@ -127,15 +127,7 @@
                              <li style="border-top: 1px solid silver; "><a target="_BLANK" href='/humble/user/logout'>Logout</a>
 
                           </ul>
-                        </li>
-                        <li><a href='#'>Create...</a>
-                            <ul>
-                                <li><a href='#' onclick='Administration.create.package(); return false'>New Package</a></li>
-                                <li><a href='#' onclick='Administration.create.module(); return false'>New Module</a></li>
-                                <li><a href='#' onclick='Administration.create.component(); return false'>New Component</a></li>
-                                <li><a href='#' onclick='Administration.create.controller(); return false'>New Controller</a></li>
-                            </ul>
-                        </li>                        
+                       </li>
                         <li><a href='#'>Admin</a>
                             <ul>
                                  <li><a href='#' onclick='Administration.admin.add.user(); return false'>Add User</a></li>
@@ -154,7 +146,7 @@
 
                 </div>
 
-                <div style='float: left; height: 100%; width: 65px; background-color: rgba(252,252,252,.3); margin-right: 2px' id='widgets-column'>
+                <div style='float: left; height: 100%; width: 70px; background-color: rgba(252,252,252,.3); margin-right: 10px' id='widgets-column'>
 
                     <div class='administration-mini-icon' title='Documentation' style="margin-top: 20px" onclick="Administration.documentation.home()">
                         <i class="glyphicons glyphicons-book" style="margin-left: 2px; font-size: 30px"> </i>
@@ -199,12 +191,107 @@
                 </div>
 
                 <div style='float: left' id='apps-column'>
+                <div style='min-width: 500px; width: 500px; float: right; margin-left: 2px; ' id='humble-creation-forms'>
+                    <div id="new_package_area">
+                        <span style="font-size: 1.5em">New Package Creation</span><br /><br />
+                        All modules are contained within packages.  Should you wish to create a new package for your module, you may do so here<br /><br />
+                        <form name="new_package_form" id="new_package_form" onsubmit="return false" >
+                            <input type="text" name="new_package" id="new_package" class="new-user-email" style='color: #333'/>
+                            <input type="button" name="new_package_submit" id="new_package_submit"  value="Create Package" />
+                        </form>
+                    </div>
+
+                    <div id='new_module_area'>
+                        <span style="font-size: 1.5em">Module Creation</span><br /><br />
+                        You can create a new module using the form below.  Please specify which package your module will belong to, the unique namespace that will be used to identify the
+                        components that namespace will be controlling, a name for your module, and a prefix that will be used to identify any tables you will be creating<br /><br /><br />
+                        <form name="new_module_form" id="new_module_form" onsubmit="return false" >
+                            <select name="package" id="package" class="new-module-field" style='color: #333'>
+                                <option value=''></option>
+                                {% for package in packages.listSubdirectories('Code/') %}
+                                    <option value='{{ package }}'>{{ package }}</option>
+                                {% endfor %}
+                            </select><br />
+                            <div class='new-module-desc'>Package</div>
+                            <input type="text" name="namespace" id="namespace" class="new-module-field" style='color: #333'/><br />
+                            <div class='new-module-desc'>Namespace</div>
+                            <input type="text" name="module" id="module" class="new-module-field" style='color: #333'/><br />
+                            <div class='new-module-desc'>Module Name Prefix</div>
+                            <input type="text" name="prefix" id="prefix" class="new-module-field" style='color: #333'/><br />
+                            <div class='new-module-desc'>Database Prefix</div>
+                            <input type="button" name="new_module_submit" id="new_module_submit"  value="Create" />
+                        </form>
+
+                    </div>
+
+                    <div id='new_component_area'>
+                        <span style="font-size: 1.5em">Component Creation</span><br /><br />
+                        You can build a new component using the form below.  Please specify which namespace your component will be bound to, the type of component, and the name of the new component<br /><br /><br />
+                        <form name="new_component_form" id="new_component_form" onsubmit="return false" >
+                            <input type='text' name='short_description' id='short_description' /><br />
+                            <div class='new-module-desc'>Short Description</div>
+                            <textarea name='long_description' id='long_description' ></textarea><br />
+                            <div class='new-module-desc'>Long Description</div>
+                            <select name="component_namespace" id="component_namespace" class="new-module-field" style='color: #333'>
+                            </select><br />
+                            <div class='new-module-desc'>Namespace</div>
+                            <select name="component_type" id="component_type" class="new-module-field" style='color: #333'>
+                                <option value=''>Please select type of component to create</option>
+                                <option value='models'>Model Class</option>
+                                <option value='entities'>Entity Class</option>
+                                <option value='helpers'>Helper Class</option>
+                            </select><br />
+                            <div class='new-module-desc'>Component Type</div>
+
+                            <div style='margin-bottom: 20px; font-size: 1.1em'>
+                                <input type='checkbox' value='Y' id='generates_events' name='generates_events' /> Event Generator
+                            </div>
+
+                            <select name="component_package" id="component_package" class="new-module-field" style='color: #333'>
+                            </select><br />
+                            <div class='new-module-desc'>Component Package</div>
+                            <select name="component_category" id="component_category" class="new-module-field" style='color: #333'>
+                            </select><br />
+                            <div class='new-module-desc'>Component Category</div>
+                            <input type="text" name="component_name" id="component_name" class="new-module-field" style='color: #333'/><br />
+                            <div class='new-module-desc'>Component Name</div><br />
+                            <input type="button" name="new_component_submit" id="new_component_submit"  value="Build" />
+                            <!--input type='text' name='component_package_combo' id='component_package_combo' />
+                            <input type='text' name='component_category_combo' id='component_category_combo' /-->
+                        </form>
+
+                    </div>
+
+                    <div id='new_controller_area'>
+                        <span style="font-size: 1.5em">Controller Creation</span><br /><br />
+                        You can create a new controller using the form below.  Please specify which namespace your controller will belong to, the templater the controller will be using, a name for the controller, and the name of the first action<br /><br /><br />
+                        <form name="new_controller_form" id="new_controller_form" onsubmit="return false" >
+                            <select name="controller_namespace" id="controller_namespace" class="new-module-field" style='color: #333'>
+                            </select><br />
+                            <div class='new-module-desc'>Namespace</div>
+                            <select name="controller_templater" id="controller_templater" class="new-module-field" style='color: #333'>
+                            </select><br />
+                            <div class='new-module-desc'>Templater</div>
+                            <input type="text" name="controller_name" id="controller_name" class="new-module-field" style='color: #333'/><br />
+                            <div class='new-module-desc'>Controller Name</div>
+                            <input type="text" name="controller_description" id="controller_description" class="new-module-field" style='color: #333'/><br />
+                            <div class='new-module-desc'>Controller Description</div>
+                            <input type="text" name="action_name" id="action_name" class="new-module-field" style='color: #333'/><br />
+                            <div class='new-module-desc'>Name of Action</div>
+                            <input type="text" name="action_description" id="action_description" class="new-module-field" style='color: #333'/><br />
+                            <div class='new-module-desc'>Action Description</div><br />
+                            <input type="button" name="new_controller_submit" id="new_controller_submit"  value="Create" />
+                        </form>
+
+                    </div>
+                </div>
 
                     <div id='modules_list' style="display: inline-block">
                         <div style='background-color: rgba(232,232,232,.3); padding: 10px 0px 10px 0px'>
                         <select name='globalAction' id='globalAction' style="font-size: 1.1em; height: 28px; width: 300px">
                             <option style='font-style: italic' value="">Choose a Global action...</option>
                             <option value="install">Install All</option>
+                            <option value="refresh">Refresh All</option>
                             <option value="update">Update All</option>
                             <option value="recompile">Compile All</option>
                             <option value="clear">Clear All</option>
@@ -226,6 +313,7 @@
                                                 <tr>
                                                     {% if data.installed != '' %}
                                                         {% set color = 'white' %}
+                                                        <td><img onclick='Administration.refresh("{{ package }}","{{ module.module }}","{{ module.namespace }}")' src='/web/images/refresh_icon.png' height='24' style='cursor: pointer' title='Refresh...'/></td>
                                                         <td><img onclick='Administration.update("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/web/images/update.png' height='20' style='cursor: pointer' title='Update...'/></td>
                                                         <td><img onclick='Administration.compile("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/web/images/compile.gif' height='20' style='cursor: pointer' title='Compile Controllers...'/></td>
                                                         <td><img onclick='Administration.clearcache("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/web/images/clear.png' height='20' style='cursor: pointer' title='Clear Cache...'/></td>
@@ -348,7 +436,9 @@
                 </div>
 
                 <!-- ###################################################################################################### -->
-               
+
+
+                <!-- ###################################################################################################### -->
                 <div style='clear: both'></div>
 
             </div>

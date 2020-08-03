@@ -34,10 +34,10 @@
     })($);
     $('#paradigm-sync-submit-{$windowId}').on('click',function () {
         if ($('#sync-target-{$windowId}').val()) {
-            Animate.run('sync-image');
+            Paradigm.actions.animate.run('sync-image');
             $('#paradigm-sync-submit-{$windowId}').attr('disabled','true');
             (new EasyAjax('/paradigm/workflow/sync')).add('windowId','{$windowId}').add('destination_id',$('#sync-target-{$windowId}').val()).then(function (response) {
-                Animate.stop();
+                Paradigm.actions.animate.stop();
                 $('#paradigm-sync-submit-{$windowId}').attr('disabled','false');
                 alert((response) ? response : "Synced, I think...");
                 Desktop.window.list['{$windowId}']._close();

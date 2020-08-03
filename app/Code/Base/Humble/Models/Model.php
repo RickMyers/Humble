@@ -366,6 +366,7 @@ class Model implements HumbleComponent
         $context = stream_context_create($opts);
         $hurl    = $URL.$parms;
         $fp      = fopen($hurl, 'rb', false, $context);
+        stream_set_timeout($fp,60000);
 
         if ($fp) {
             $res = stream_get_contents($fp);

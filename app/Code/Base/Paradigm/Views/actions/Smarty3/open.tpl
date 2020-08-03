@@ -161,6 +161,7 @@ Copyright Enicity.com, all rights reserved
         <script type="text/javascript" src="/js/desktop"></script>
         <script type="text/javascript" src="/js/engine"></script>
         <script type="text/javascript" src="/js/widgets"></script>
+        <script type="text/javascript" src="/ace/ace.js"></script>
         <script type="text/javascript">
         Form.set.defaultURL('/workflow/elements/save');
         var Workflows = (function () {

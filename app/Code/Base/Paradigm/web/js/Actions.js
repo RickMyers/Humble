@@ -16,6 +16,43 @@ Paradigm.actions = (function () {
     var major_version       = 0;
     var minor_version       = 0;
     return {
+        animate:  (function () {
+            var timer       = null;
+            var interval    = 15;
+            var deg         = 0;
+            var element     = null;
+            return {
+                run: function (thing) {
+                    if (thing) {
+                        element = $E(thing);
+                    }
+                    deg = (deg >= 360) ? 0 : deg+3;
+                    element.style.transform = 'rotate('+deg+'deg)';
+                    timer = window.setTimeout(Paradigm.actions.animate.run,interval)
+                },
+                stop: function () {
+                    if (timer) {
+                        window.clearTimeout(timer);
+                    }
+                },
+                set: {
+                    interval: function (arg) {
+                        interval = arg;
+                    },
+                    degrees: function (arg) {
+                        deg = arg;
+                    }
+                },
+                get: {
+                    interval: function () {
+                        return interval;
+                    },
+                    degrees: function () {
+                        return deg;
+                    }
+                }
+            }
+            })(),
         get: {
             majorVersion: function () {
                 return major_version;
