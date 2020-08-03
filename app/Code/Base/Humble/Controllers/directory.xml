@@ -35,10 +35,18 @@ Actions and views related to directory services
 
         <!-- ############################################################### -->
 
-        <action name="index">
+        <!--action name="index">
             <description>This builds the paginated page that displays the list of currently available services</description>
             <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="40" id="services" defaultPage='1'>
             </entity>
+        </action-->
+
+        <!-- ############################################################### -->
+
+        <action name="index">
+            <description>This builds the paginated page that displays the list of currently available services</description>
+            <model namespace="humble" class="services" id="services" method="explain">
+            </model>
         </action>
 
         <!-- ############################################################### -->
