@@ -194,7 +194,7 @@ class Updater extends Installer
                     $ent = Humble::getEntity('humble/modules');
                     $ent->setNamespace($this->namespace);
                     $now = date('Y-m-d H:i:s');
-                    $dat = $ent->load();
+                    $dat = $ent->load(true);
                     $ent->setLastUpdated($now);
                     if (!$dat['installed']) {
                         $ent->setInstalled($now);

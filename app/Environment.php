@@ -93,8 +93,10 @@ class Environment {
      *
      * @return \Rain\Tpl
      */
-    public static function getInternalTemplater($root,$extension='rain',$cache=false) {
-        $cache = ($cache) ? $cache : $root.'/cache/';
+    public static function getInternalTemplater($root='',$extension='rain',$cache=false) {
+        $root = ($root) ? $root : getcwd();
+        $root = (substr($root,-1,1)==='/') ? $root : $root.'/';
+        $cache = ($cache) ? $cache : $root.'cache/';
         $config = array(
             'tpl_dir'   => $root,
             'tpl_ext'   => $extension,
