@@ -5,7 +5,8 @@
         "index.html": true,
         ".htaccess": true,
         "app/Humble.local.manifest": true,
-	"app/allowed.json": true
+	"app/allowed.json": true,
+        "app/Constants.php": true
     },
     "alwaysSkip": {
         ".git": true,

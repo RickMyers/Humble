@@ -52,7 +52,7 @@ class System extends Model
                         $parts = explode('/',$file);
                         $template = $parts[count($parts)-1];
                         $template = explode('.',$template);
-                        $templates[$module['namespace']][$template[0]] = addslashes(file_get_contents($file));
+                        $templates[$module['namespace']][$template[0]] = str_replace(['\r','\n'],['',''],file_get_contents($file));
                     }
                 }
             }

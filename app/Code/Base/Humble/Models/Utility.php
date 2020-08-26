@@ -168,7 +168,8 @@ class Utility extends Model
         $data   = Humble::getEntity('humble/user_identification')->setId($this->getUid())->load();
         $cmd    = 'php Module.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' prefix='.$this->getPrefix().' author="'.$data['first_name'].' '.$data['last_name'].'"';
         \Log::console($cmd);
-        return shell_exec($cmd);
+        $result = exec($cmd,$output);
+        return $result;
     }
 
     /**
