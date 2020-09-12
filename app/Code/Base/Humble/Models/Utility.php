@@ -160,6 +160,19 @@ class Utility extends Model
     }
 
     /**
+     * Will set the enabled/disabled flag on a module and trigger a recache of the module data
+     */
+    public function toggleEnableFlag() {
+        $ns     = $this->getNamespace();
+        $flag   = $this->getEnabled();
+        if ($ns) {
+            $flag = (!$flag) ? "N" : (($flag=='N') ? 'N' : 'Y');
+            Humble::getEntity('humble/modules')->setNamespace($ns)->setEnabled($flag)->save();
+            Humble::cache('module-',Humble::getModule($ns));
+        }
+    }
+    
+    /**
      * Create a new module
      */
     public function createModule() {
@@ -266,9 +279,14 @@ class Utility extends Model
         $template       = $this->resolveLocation($templates);
         
         
-        $module         = Humble::getModule($this->getNamespace());
+        if (!$module         = Humble::getModule($this->getNamespace())) {
+            return "The ".$this->getNamespace()." module is disabled or does not exist";
+        }
         $dest           = 'Code/'.$module['package']."/".$module['controller'];
         $dest           = $dest.'/'.$this->getName().'.xml';
+        if (file_exists($dest)) {
+            return "A controller with that name already exists [".$dest."]";
+        }
         $srch           = array(
             '&&NAME&&',
             '&&ENGINE&&',
@@ -296,7 +314,11 @@ class Utility extends Model
                 file_put_contents($newDir.'/'.$this->getAction().'.'.$exts[$this->getEngine()],str_replace('&&HOME&&',$loc,file_get_contents('Code/Base/Humble/lib/sample/module/Views/actions/Smarty3/landing.tpl')));
             }
         }
-        file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)));
+        if (file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)))) {
+            return "Ok";
+        } else {
+            return "Unable to create the controller";
+        }
     }
 
     /**

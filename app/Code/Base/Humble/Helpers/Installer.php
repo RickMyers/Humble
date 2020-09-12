@@ -731,12 +731,11 @@ SQL;
      */
     public function install($source=false)  {
         $source = ($source!==false) ? $source : $this->getSource();
-        //$helper = Humble::getHelper('humble/data');
         if (file_exists($source)) {
-            //if ($helper->isValidXML($xml = file_get_contents($source))) {
             if ($xml = file_get_contents($source)) {
                 $xml    = new SimpleXMLElement($xml);
                 foreach ($xml as $namespace => $contents) {
+                    Humble::cache('module-'.$namespace,null);                   //removes any data we might have had in the cache
                     $this->namespace    = $namespace;
                     $this->title        = $contents->title;
                     $this->version      = $contents->version;
@@ -777,9 +776,9 @@ SQL;
                     if (isset($contents->structure->images)) {
                         $this->installImages($this->prefix,$contents->structure,$contents->module);
                     }
-                //    if (isset($contents->events)) {
-                 ///       $this->registerEvents($contents->events);  //can't do this on install, since paradigm won't exist yet.  after install, run update
-                 //   }
+                //  if (isset($contents->events)) {
+                //     $this->registerEvents($contents->events);  //can't do this on install, since paradigm won't exist yet.  after install, run update
+                //  }
                     if (isset($contents->web)) {
                         $this->registerWebComponents($contents->web,$contents->module);
                     }
@@ -791,7 +790,7 @@ SQL;
                     if (file_exists($install_file) && class_exists($install_class)) {
                         $i = Humble::getModel($namespace.'/OnInstall',true)->execute();
                     }
-                    Humble::cache('module-',Humble::getModule($namespace));
+                    Humble::cache('module-'.$namespace,Humble::getModule($namespace));
                 }
                 
             } else {

@@ -134,10 +134,10 @@
 
         <action name="enable">
             <description>Activates or deactivates a module</description>
-            <entity namespace="humble" class="modules" id='mod'>
+            <model namespace="humble" class="utility" response="true" method="toggleEnableFlag">
                 <parameter name='namespace' source='post' default='' />
                 <parameter name='enabled' source='post' default='' />
-            </entity>
+            </model>
         </action>
 
         <!-- ############################################################### -->
