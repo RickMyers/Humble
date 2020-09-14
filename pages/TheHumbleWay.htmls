@@ -1,0 +1,129 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<style type="text/css">
+    .famous_quote {
+        background-color: rgba(202,202,202,.2); padding: 10px; font-style: italic; color: #333; margin-bottom: 20px; border: 1px solid silver; border-radius: 5px;
+    }
+    .signature {
+        clear: both; margin-top: 10px; font-style: normal; 
+    }
+    .manifesto {
+        background-color: rgba(202,202,202,.2); padding: 10px; color: #333; margin-bottom: 20px; border: 1px solid silver; border-radius: 5px;
+    }
+    .traits {
+        font-size: 1.0em; font-family: sans-serif; background-color: rgba(202,202,202,.3); padding: 5px 10px 10px 10px; border: 1px solid silver; border-collapse: collapse;
+    }
+    .traits_heading {
+        font-size: 1.0em; font-family: sans-serif; background-color: rgba(202,202,202,.3); padding: 5px 10px 10px 10px; font-weight: bolder; background-color: #029ef3; color: #333;
+        border: 1px solid silver; border-collapse: collapse;
+    }
+</style>
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="Installation.htmls" title="" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>The Humble Way - A human centered approach to developing technology</div>
+<p class="famous_quote">
+    We shall do a much better programming job, provided that we approach the task with a full appreciation of its tremendous difficulty, provided that we stick to modest and elegant programming languages, provided that we respect the intrinsic limitations of the human mind and approach the task as Very Humble Programmers.
+    <br /><br />
+    <span class="signature">
+        <b>--</b> Edsgar Djikstra
+    </span>    
+</p>
+<p class="famous_quote">
+    You don't manage people; you manage things. You lead people.
+    <br /><br />
+    Leadership is a two-way street, loyalty up and loyalty down. Respect for one's superiors; care for one's crew
+    <br /><br />
+    No computer is ever going to ask a new, reasonable question. It takes trained people to do that
+    <br /><br />
+    <span class="signature">
+        <b>--</b> Grace Hopper
+    </span>
+</p>
+<br />
+
+As you can tell by the above carefully selected quotes from legendary contributors to Computer Science, The Humble Way, just as those legendary folks agree, emphasizes people over things, since computers don't innovate, people do.  It may seem ironic that in an
+age where so many seem lost to the technology around them, that the relationships we build, particularly as we work together in teams, is probably the greatest facilitator to ultimate success in the field of technology development.
+<br /><br >
+Further, as we seek to define who we are and what products we build, if we wish to continue to innovate and excel we must learn how to manage our own egos first, and the egos and personalities of
+our teams.  Many teams staffed with highly competent engineers have managed to under-perform as a result of personal conflict and failed relationships, regardless of how many "super-stars" were
+placed on the team.  You may have just built the best team of five Java developers around, but they might not be able to achieve their potential if some or all of them are ego-driven soloists.
+<br /><br />
+The Humble Way places consensus, inter-personal relationships, trust, and respect over skills, especially since skills are the easiest thing to acquire.  It is focused on maximizing individual potential by a two way commitment on personal and professional
+growth by the team member, and the guarantee of a safe, respectful, and open environment by the leaders of whatever organization those team members belong.
+<br /><br />
+But this is not a new idea.  For decades the wisest among us has seen that success does not lie with any particular programming language, especially since most programming languages are fungible, 
+but rather with those who utilize languages and technology to solve complex problems around us.  Almost two decades ago the Agile Manifesto was put forth, and as shown below, it is as relevant today
+as it was 20 years ago:<br /><br />
+<div class="manifesto">
+    <a  style="font-style: normal" href="" target="_BLANK">Agile Manifesto</a>:<br /><br />
+    <ol>
+        <li>Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.</li>
+        <li>Welcome changing requirements, even late in development. Agile processes harness change for the customer's competitive advantage.</li>
+        <li>Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.</li>
+        <li>Business people and developers must work together daily throughout the project.</li>
+        <li>Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done.</li>
+        <li>The most efficient and effective method of conveying information to and within a development team is face-to-face conversation.</li>
+        <li>Working software is the primary measure of progress.</li>
+        <li>Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely.</li>
+        <li>Continuous attention to technical excellence and good design enhances agility.</li>
+        <li>Simplicity--the art of maximizing the amount of work not done--is essential.</li>
+        <li>The best architectures, requirements, and designs emerge from self-organizing teams.</li>
+        <li>At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.</li>
+    </ol>
+</div>
+
+To be successful, people work best when their opinion is heard, and mutual respect among team members is the norm.  For that end, a collaborative environment where each team member is felt to be 
+valued as opposed to just another cog in a machine is absolutely preferred.  Today, we call this approach to management and leadership the <a target="_BLANK" href="https://hbswk.hbs.edu/item/is-there-a-distinctive-west-coast-style-of-management">"West Coast (Innovative)"</a> style, and below we compare and 
+contrast it a bit with the "East Coast (Frenetic)" style:<br /><br />
+
+<table>
+    <tr>
+        <td class="traits_heading">East Coast (Frenetic)</td>
+        <td class="traits_heading">West Coast (Innovative)</td>
+    </tr>
+    <tr>
+        <td class="traits">
+            Compliance<br />
+            Enforcement<br />
+            Process<br />
+            Standards<br />
+            Values obedience<br />
+            Stability & Continuation<br />
+            Authority by Title<br />
+            Hierarchical<br />
+            Staid<br />
+            Direction comes from above<br />
+        </td>
+        <td class="traits">
+            Consensus<br />
+            Empowerment<br />
+            Relationships<br />
+            Flexibility<br />
+            Values opinions<br />
+            Change and Renewal<br />
+            True Authority comes from Knowledge<br />
+            Egalitarian<br />
+            Evolving<br />
+            Self-Directed<br />
+        </td>
+    </tr>
+</table>
+<br />
+With the East Coast approach, the appearance of activity is often mistaken for progress, while with the West Coast style, the Continuous Delivery of valuable software is achieved by
+the creation of an open and collaborative work environment as well as the commitments made by the team members to each other.  Trust between team members will deliver more and better
+product than fear of managers.
+<br /><br />
+So, in summary, an approach based on the understanding that machines do not innovate; people do, and that to maximize the potential to innovate, you have to maximize the potential of all
+team members by creating a collaborative, sharing, respectful, and trusting environment where people can feel they are free to do what they need to do to get the job done.<br /><br />
+That is The Humble Way!
+
+<br /><br /><br /><br />
+
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->
