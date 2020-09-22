@@ -1154,7 +1154,7 @@ EasyEdits.setFormNode	= function (easy,node) {
 /* ------------------------------------------------ */
 EasyEdits.populateSelectBox = function (selectBox, contents, map, leaveCombo) {
     map       = (map) ? map : false;
-    leaveCombo = (leaveCombo) ? true : false;
+    leaveCombo = (leaveCombo) ? true : true; //Override for now... fixes a problem with some highly dynamic forms
     contents  = (typeof(contents)==='string') ? JSON.parse(contents) : contents;
     selectBox = (typeof(selectBox)=="string") ? $E(selectBox) : selectBox;
     if (selectBox)	{
@@ -1447,64 +1447,64 @@ EasyEdits.showCalendar	= function (field,evt)
 /* ------------------------------------------------ */
 EasyEdits.hideCalendar = function ()
 {
-	if (EasyEdits.calendar)
-		EasyEdits.calendar.getNode().style.display = "none";
+    if (EasyEdits.calendar)
+        EasyEdits.calendar.getNode().style.display = "none";
 }
 /* ------------------------------------------------ */
 EasyEdits.dayHandler = function () {
-	var fld = null;
-	this.setField = function (field) {
-		fld = field;
-	}
-	this.fire = function (mm,dd,yyyy) {
-		fld.value = (+mm+1)+"/"+dd+"/"+yyyy;
-		fld.onkeyup();
-		fld.onchange();
-		fld.focus();
-		EasyEdits.hideCalendar();
-	}
+    var fld = null;
+    this.setField = function (field) {
+        fld = field;
+    }
+    this.fire = function (mm,dd,yyyy) {
+        fld.value = (+mm+1)+"/"+dd+"/"+yyyy;
+        fld.onkeyup();
+        fld.onchange();
+        fld.focus();
+        EasyEdits.hideCalendar();
+    }
 }
 /* ------------------------------------------------ */
 EasyEdits.timeHandler = function () {
-	var fld = null;
-	this.setField = function (field) {
-		fld = field;
-	}
-	this.fire = function (mm,dd,yyyy) {
-		fld.value = (+mm+1)+"/"+dd+"/"+yyyy;
-		fld.onkeyup();
-		fld.onchange();
-		fld.focus();
-		EasyEdits.hideCalendar();
-	}
+    var fld = null;
+    this.setField = function (field) {
+        fld = field;
+    }
+    this.fire = function (mm,dd,yyyy) {
+        fld.value = (+mm+1)+"/"+dd+"/"+yyyy;
+        fld.onkeyup();
+        fld.onchange();
+        fld.focus();
+        EasyEdits.hideCalendar();
+    }
 }
 /* ------------------------------------------------ */
 EasyEdits.validDate = function (evt) {
-	if (this.value.trim() !== "") 	{
-		var token       = this.value.substr(2,1);
-		var dateFields  = this.value.split(token);
-		var badDate     = (!dateFields[0] || !dateFields[1] || !dateFields[2])
-		if (!badDate) {
+    if (this.value.trim() !== "") 	{
+        var token       = this.value.substr(2,1);
+        var dateFields  = this.value.split(token);
+        var badDate     = (!dateFields[0] || !dateFields[1] || !dateFields[2])
+        if (!badDate) {
             badDate     = (parseInt(dateFields[0], 10) > 12);
         }
-		if (!badDate) {
+        if (!badDate) {
             badDate     = (parseInt(dateFields[1], 10) < 1) || (parseInt(dateFields[1], 10) > 31);
         }
-		if (parseInt(dateFields[2]) < 100) {
-			//curYear % 2000
-			if (parseInt(dateFields[2])<11) {
-				dateFields[2] += "";
-				if (dateFields[2].length == 1) {
-					dateFields[2] = "0"+""+dateFields[2];
+        if (parseInt(dateFields[2]) < 100) {
+                //curYear % 2000
+            if (parseInt(dateFields[2])<11) {
+                dateFields[2] += "";
+                if (dateFields[2].length == 1) {
+                    dateFields[2] = "0"+""+dateFields[2];
                 }
-				dateFields[2] = "20"+""+dateFields[2];
-			} else {
-				dateFields[2] = "19"+""+dateFields[2];
-            }
-		}
-		if (!badDate) {
-			this.value = dateFields[0]+token+dateFields[1]+token+dateFields[2];
+                dateFields[2] = "20"+""+dateFields[2];
+            } else {
+                dateFields[2] = "19"+""+dateFields[2];
+            }   
         }
-	}
-	return true;
+        if (!badDate) {
+            this.value = dateFields[0]+token+dateFields[1]+token+dateFields[2];
+        }
+    }
+    return true;
 }
