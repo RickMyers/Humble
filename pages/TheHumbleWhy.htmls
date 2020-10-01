@@ -8,9 +8,23 @@
     </tr>
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-<div class='humble-topic-header'>The Humble "Why"</div>
+<div class='humble-topic-header'>The Humble "Why" &mdash; Do we really need another framework?</div>
 
-
+It all starts with a thought... a thought that leads to an idea.  From there, it leads to applying numerous techniques and procedures, some novel and some learned, to make that idea into something 
+that resolves the fundamental reason for the initial thought.<br />
+<br />
+I had a thought once... and that thought led me to an idea on how I could put into place what I have learned from coding for (at the time) around 30 years, to create something that would reduce the 
+need to write code.  I had, through painful experience, learned how debilitating a large code base could be to an organization, and how, though initially heralded, the over production of code could 
+hobble organizations as they need to grow and adapt to a changing world.  Too often management cheers on hard-working and over-enthusiastic developers not realizing that the code they are producing,
+while solving today's problem, will be the bane of the company and perhaps its end in the future.<br />
+<br />
+This is what brought me to the idea of a framework that abstracts away as many of the common tasks we do as developers, thus leaving the developers to only focus on the custom pieces, or "chunks",
+of the application that define the core functionality of the application.<br />
+<br />
+Initially it was just abstracting away the "C' in the MVC paradigm, but over time it grew.  What is an application but a presentation tier (The View), a data manipulation tier (The Model),
+a routing and data scrubbing tier (The Controller), a persistence tier (The Model), and an integration tier (Remote Procedure Calls).  What I ended up with was a method for abstracting everything
+but The View. That is what the Humble Framework is today.<br />
+<br />
 
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->
