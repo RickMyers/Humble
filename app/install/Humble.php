@@ -32,7 +32,7 @@ HDR;
     print($header);
 }
 /* ---------------------------------------------------------------------------------- */
-function installedEextensionCheck() {
+function installedExtensionCheck() {
 
     exec('php -m',$modules);
 
@@ -313,7 +313,7 @@ function restoreProject() {
 if (PHP_SAPI === 'cli') {
     $args = array_slice($argv,1);
     if ($action = (($args && isset($args[0])) ? $args[0] : false)) {
-        installedEextensionCheck();
+       // installedExtensionCheck();
         $action = substr($action,2);
         switch ($action) {
             case "init"     :
