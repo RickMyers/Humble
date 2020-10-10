@@ -115,6 +115,11 @@ case $1 in
   'rollback')
         cd /var/www
         echo 'rollback';;
+  'integrate')
+        cd /var/www/$2
+        wget https://humblecoding.com/app/install/Humble.php
+        php Humble.php --restore;;
+
   *)
         echo "i dunno how to do that $1";;
 esac

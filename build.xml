@@ -309,7 +309,7 @@
         #########################################################################################-->
         <target name="increment" depends="prod" description="Generates a new package for deployment">
             <exec dir="app" executable="cmd.exe" >
-                <arg value="/c humble --increment" />
+                <arg value="/c php increment.php" />
             </exec>
         </target>
 
