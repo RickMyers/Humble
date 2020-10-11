@@ -54,7 +54,7 @@ class Workflow extends Model
         }
         $results                         = [];
         $results[]                       = '#########################################################';
-        $results[]                       = 'Beginning Export';
+        $results[]                       = 'Beginning Export for '.$this->_namespace();
 
         $workflow                        = ["data"  => false,"webservice_workflow" => false,"webservice" => false,"listeners"=>false,"components" => []];
         $workflow['data']                = Humble::getEntity('paradigm/workflows')->setId($this->getId())->load();
@@ -67,6 +67,7 @@ class Workflow extends Model
         $element                         = Humble::getCollection('paradigm/elements');
         $results[]                       = 'Exporting To '.$destination['source'];
         if ($workflow['data'] && $destination) {
+            $results[]  = "Sending Components for Workflow [".$workflow['data']['title']."]";
             $component_list = json_decode($workflow['data']['workflow'],true);
             foreach ($component_list as $idx => $component) {
                 $element->reset();
