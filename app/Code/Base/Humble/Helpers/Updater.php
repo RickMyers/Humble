@@ -208,7 +208,13 @@ class Updater extends Installer
                     }
                     $data = $ent->load();
                     Humble::cache('module-'.$namespace,$data);
-                    print_r($data);
+                    print("\n============================================================================\n");
+                    print("= MODULE STATE [".$namespace."]\n");
+                    print("============================================================================\n");
+                    foreach ($data as $attribute => $value) {
+                        print("\t[".$attribute."]:\t ".$value."\n");
+                    }
+                    print("============================================================================\n\n");
                     //must log updated date
                 }
             } else {

@@ -17,7 +17,7 @@ namespace Code\Base\Humble\Helpers;
  * @since      File available since Version 1.0.1
  */
 class Helper extends \Code\Base\Humble\Models\Model {
-    private $xml            = null;
+    private   $xml          = null;
     protected $errors       = null;
     protected $isVirtual    = false;
 

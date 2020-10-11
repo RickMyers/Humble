@@ -32,7 +32,8 @@ $help = <<<HELP
  *      --package       Creates a new downloadable archive file of the Humble project
  *      --increment     Increments the minor version number by one, rolling over if it goes past 9
  *      --initialize    Initializes the project
-        --patch         Updates the Humble Base Framework files with any new files, respecting manifested files
+ *      --export        Exports workflows to a pre-defined server/environment
+ *      --patch         Updates the Humble Base Framework files with any new files, respecting manifested files
  *      --sync          Updates the core files
  * -----------------------------------------------------------------------------
  */
@@ -303,30 +304,30 @@ TXT;
             }
         }
     }
-
-
     //--------------------------------------------------------------------------
     function updateIndividualModule($namespace) {
-        $module = Humble::getEntity('humble/modules')->setNamespace($namespace);
-        $data   = $module->load(true);
+        $data = Humble::getEntity('humble/modules')->setNamespace($namespace)->load(true);
         if (isset($data['configuration']) && $data['configuration']) {
             $etc     = 'Code/'.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
-            print('Running Update on '.$etc."\n");
+            print('Running Update on '.$etc."\n\n");
             $updater = \Environment::getUpdater();
             $updater->update($etc);
         } else {
-            print('Unable to determine where configuration file is for: '.$namespace.'.  You should review the configuration file manually');
+            print('===> ERROR: Unable to determine where configuration file is for: '.$namespace.'.  You should review the configuration file manually <==='."\n");
         }
     }
     //--------------------------------------------------------------------------
     function generateWorkflows($namespace=false) {
         @mkdir('Workflows',0775);
+        print('*** Generation workflows for Namespace: '.$namespace."***\n");
         if ($namespace) {
             $generator = \Humble::getHelper('paradigm/generator');
             foreach (\Humble::getEntity('paradigm/workflows')->setNamespace($namespace)->setActive('Y')->fetch() as $workflow) {
-                $generator->setId($workflow['id'])->setDiagram($workflow['diagram'])->generate();
+                print("\tGenerating: ".$workflow['title']."\n");
+                $generator->setId($workflow['id'])->setWorkflow($workflow['workflow'])->generate();
             }
         }
+        print("\n\n");
     }
     //--------------------------------------------------------------------------
     function workflows($args) {
@@ -340,12 +341,19 @@ TXT;
         $workflows = fetchParameter(['w','workflow','workflows'],processArgs($args));
         if ($namespace) {
             $modules = ($namespace==='*') ? \Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() : explode(',',$namespace);
+            print("\n\nThe following modules will be updated:\n\n"); $ctr=0;
+            foreach ($modules as $module) {
+                print("\t".++$ctr.') '.(is_array($module) ? $module['namespace'] : $module)."\n");
+            }
+            print("\n");
             foreach ($modules as $module) {
                 $namespace = (is_array($module) ? $module['namespace'] : $module);
+                print("===] Beginning update of Namespace: ".$namespace." [===\n\n");
                 updateIndividualModule($namespace);
-                if (strtoupper($workflows)==='Y') {
-                    $this->generateWorkflows($namespace);
-                }
+                //if (strtoupper($workflows)==='Y') {
+                    generateWorkflows($namespace);
+                //}
+                //print(ob_get_clean());
             }
         } else {
             print('I need the namespace of the module to update passed in [namespace=ns]');
@@ -398,7 +406,7 @@ TXT;
         $parts   = explode('_',$file);
         $package = strtolower($parts[1]);
         $root    = strtolower($parts[2]."/".$parts[3]);
-        print($root);
+        print($root."\n");
         $data    = \Humble::getEntity('humble/modules')->setModels($root)->fetch();
         if ($data) {
             $data = $data->pop();
@@ -418,6 +426,7 @@ TXT;
             //$models = array_merge($models,\Humble::getEntities($namespace));
            // $models = array_merge($models,\Humble::getHelpers($namespace)); //no, this is not a good idea, at least not yet
         }
+        print('*** Scanning for workflow components within the Models of the Module identified by Namespace: '.$namespace."***\n");
         $workflowComponent  = \Humble::getEntity('paradigm/workflow_components');
         $workflowComment    = \Humble::getEntity('paradigm/workflow_comments');
         foreach ($models as $model) {
@@ -882,15 +891,40 @@ TXT;
         chdir('app');
     }
     //--------------------------------------------------------------------------
+    function exportWorkflows($args) {
+        if ($target = fetchParameter(['destination','dst','dest','ds'],processArgs($args))) {
+            //now get if they want to include all "all = fetchParameter(['all'],processArgs($args))
+            $exporter = Humble::getModel('paradigm/workflow'); $dest_id = '';
+            if (!preg_match( '/^(http|https):\\/\\/[a-z0-9_]+([\\-\\.]{1}[a-z_0-9]+)*\\.[_a-z]{2,5}'.'((:[0-9]{1,5})?\\/.*)?$/i' ,$target)) {
+                if ($data = Humble::getEntity('paradigm/import/sources')->setName($target)->load(true)) {
+                    $target = $data['source']; $dest_id = $data['id'];
+                } else {
+                    die('You must either pass the URL of the destination, or a valid alias of the destination');
+                }
+            } else {
+                if ($data = Humble::getEntity('paradigm/import/sources')->setSource($target)->load(true)) {
+                    $dest_id = $data['id'];
+                } else {
+                    die('Unable to export to that destination, please consult the import sources table');
+                }
+            }
+            foreach (Humble::getEntity('paradigm/workflows')->setActive('Y')->fetch() as $workflow) {
+                $exporter->setId($workflow['id'])->setDestinationId($dest_id)->export();
+            }
+        } else {
+            die('At a minimum, you must pass in the destination, and optionally whether you want to include all instead of just active workflows');
+        }
+    }
+    //--------------------------------------------------------------------------
     //begin main
     //--------------------------------------------------------------------------
     print("\nWorking on it...\n\n");
-    ob_start();
+    //ob_start();
     if (substr(getcwd(),-3,3)!=='app') {
         chdir('app');           //being called from distribution script
     }
     if (!isset($argv) || !count($argv)) {
-        print(file_get_contents('Module.php'));
+        print(file_get_contents('Module.php'));                                 //looks a bit crazy, but this basically says, if I wasn't called with arguments, someone is likely trying to download me, and this resolves that intention
         die();
     }
     $args = array_slice($argv,1);
@@ -977,6 +1011,9 @@ TXT;
                 case 'increment':
                 case '+':
                     incrementVersion();
+                    break;
+                case 'export': 
+                    exportWorkflows(array_slice($args,1));
                     break;
                 default  :
                     die('Dont know how to process that command ('.$cmd.')');
