@@ -847,7 +847,6 @@ TXT;
         }
         foreach ($contents as $file_idx => $file) {
             print("processing ".$file."\n");
-            ob_flush();
             if (file_exists($file)) {
                 if (isset($local_manifest['ignore'][$file]) && $local_manifest['ignore'][$file]) {
                     $ignore[] = $file;
