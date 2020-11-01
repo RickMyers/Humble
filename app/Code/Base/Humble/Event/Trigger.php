@@ -119,16 +119,16 @@ class Trigger  {
                 }
             }
             if (!$handled) {
-                $f = Humble::getEntity('paradigm/event/listeners');
-                $n = $this->_namespace();
+                //we didn't find a listener for our event, lets try it another way
                 foreach (Humble::getEntity('paradigm/event/listeners')->setNamespace($this->_namespace())->setEvent($eventName)->setActive('Y')->fetch() as $diagram) {
-                    $handled = $this->runWorkflow($diagram,$cleanEvent);
-                    if ($cancelBubble) {
-                        $this->_errors('bubbling was canceled');
-                        break;  //time to exit! No more workflow processing
+                    if (Humble::getEntity('paradigm/workflows')->setId($diagram['id'])->setActive('Y')->load(true)) {
+                        $handled = $this->runWorkflow($diagram,$cleanEvent);
+                        if ($cancelBubble) {
+                            $this->_errors('bubbling was canceled');
+                            break;  //time to exit! No more workflow processing
+                        }
                     }
                 }
-                //we didn't find a listener for our event, lets try it another way
             }
         }
         return $ok;
