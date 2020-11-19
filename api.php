@@ -25,7 +25,10 @@
     chdir('app');
     require_once('Humble.php');
     session_start();
-
+    if (!isset($_SESSION['uid'])) {
+        header('Content-type: application/json');
+        die('{ "error": "Not Logged In, Authenticate First" }');
+    }
     $headers         = getallheaders();
     $request_method  = strtolower($_SERVER['REQUEST_METHOD']);
     $error           = false;

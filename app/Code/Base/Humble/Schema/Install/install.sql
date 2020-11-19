@@ -184,8 +184,21 @@ CREATE TABLE `humble_pages` (
   PRIMARY KEY (`namespace`,`page`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `humble_templaters` */
 
+CREATE TABLE `humble_services` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `namespace` CHAR(64) DEFAULT '',
+  `controller` CHAR(64) DEFAULT '',
+  `action` CHAR(96) DEFAULT '',
+  `output` CHAR(24) DEFAULT '',
+  `view` CHAR(1) DEFAULT 'N',
+  `paginated` CHAR(1) DEFAULT 'N',
+  `authorized` CHAR(1) DEFAULT 'N',  
+  `description` TEXT DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;       
+
+/*Table structure for table `humble_templaters` */
 CREATE TABLE `humble_templaters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `templater` char(64) DEFAULT NULL,

@@ -10,7 +10,6 @@
 ^.project
 ^.tmp
 ^.bak
-^.project
 ^.well-known/
 .htaccess
 LICENSE

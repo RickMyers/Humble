@@ -1,4 +1,5 @@
 var Administration = (function () {
+                var servicesWindow = false;
                 return {
                     add: {
                         package: function () {
@@ -48,6 +49,23 @@ var Administration = (function () {
                             (new EasyAjax('/humble/admin/controller')).then(function (response) {
                                 win._open(response);
                             }).get();                            
+                        }
+                    },
+                    services: {
+                        directory: {
+                            index: function () {
+                                servicesWindow = (servicesWindow) ? servicesWindow : Desktop.semaphore.checkout(true);
+                                servicesWindow._title("Index of Services")._static(true)._open();
+                                (new EasyAjax('/humble/directory/index')).add('all','Y').then(function (response) {
+                                    servicesWindow.set(response);
+                                    servicesWindow.resize = function () {
+                                       console.log(servicesWindow.content.height())
+                                       $('#service-directory').height(servicesWindow.content.height() - $('#service-header').height() - $('#service-controls').height());
+                                    };
+                                    servicesWindow._resize();
+                                }).post();
+                                return false;
+                            }
                         }
                     },
                     templates: {

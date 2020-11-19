@@ -134,6 +134,11 @@ class Trigger  {
         return $ok;
     }
 
+    /**
+     * The idea here is that I want to spawn off the workflow in its own thread.  I'll get around to this eventually... but it kills the idea of bubbling/cancel-bubble
+     * 
+     * @param type $EVENT
+     */
     public function spawn($EVENT) {
 
     }
