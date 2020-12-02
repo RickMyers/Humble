@@ -876,6 +876,34 @@ PHP;
     }
 
     /**
+     * If the <action /> statement has an 'audit=""' attribute, we will add a step to record this action 
+     * 
+     * @param string $audit
+     */
+    private function handleAudit($audit=false) {
+        $track = ['TRUE'=>true,'YES'=>true,'Y'=>true,'ON'=>true];               //will do an audit if any of these values are present
+        if ($audit) {
+            if (isset($track[strtoupper($audit)])) {
+                print($this->tabs().'$skip = ["m"=>true,"n"=>true,"c"=>true];'."\n");
+                print($this->tabs().'$audit = \Humble::getEntity("humble/audit/log");'."\n");
+                print($this->tabs().'$audit->setNamespace(\Humble::_namespace());'."\n");
+                print($this->tabs().'$audit->setController(\Humble::_controller());'."\n");
+                print($this->tabs().'$audit->setAction(\Humble::_action());'."\n");
+                print($this->tabs().'$audit->setUid(\Environment::whoAmI())'.";\n");
+                print($this->tabs().'$audit->setIdentity(\Environment::whoAmIReally())'.";\n");
+                print($this->tabs().'$audit->setTimestamp(date("Y-m-d H:i:s"))'.";\n");
+                print($this->tabs().'foreach ($_REQUEST as $var => $val) {'."\n");
+                print($this->tabs(1).'if (!isset($skip[$var])) {'."\n");
+                print($this->tabs(1).'$method = "set".underscoreToCamelCase($var,true)'.";\n");
+                print($this->tabs().'$audit->$method($val);'."\n");
+                print($this->tabs(-1)."}\n");
+                print($this->tabs(-1)."}\n");
+                print($this->tabs().'$audit->save();'."\n");
+            }
+        }
+    }
+    
+    /**
      * For each XML DOM node encountered, routes to the proper handler
      *
      * @param array $node
@@ -1054,6 +1082,9 @@ PHP;
                         print($this->tabs().'$models[\''.$value.'\'] = isset($_REQUEST[\''.$field.'\']) ? $_REQUEST[\''.$field.'\'] : '.($default ? $default : 'null').';'."\n");
                     }
                 }
+                if (isset($action['audit'])) {
+                    $this->handleAudit($action['audit']);
+                }                
                 if (isset($action['required'])) {
                     $fields = explode(",",$action['required']);                 //I forgot I put this in there... must have been drinking and coding...
                     foreach ($fields as $field) {

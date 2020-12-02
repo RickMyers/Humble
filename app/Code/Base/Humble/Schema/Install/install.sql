@@ -12,6 +12,22 @@ MySQL - 5.7.18-log : Database - humble
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+/*Table structure for table `humble_audit_log` */
+
+CREATE TABLE humble_audit_log
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	namespace CHAR(64) DEFAULT NULL,
+	controller CHAR(64) DEFAULT NULL,
+	`action` CHAR(128) DEFAULT NULL,
+	uid INT DEFAULT NULL,
+	`identity` INT DEFAULT NULL,
+	`timestamp` DATETIME DEFAULT NULL,
+	modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id)
+);
+
 /*Table structure for table `humble_categories` */
 
 CREATE TABLE `humble_categories` (

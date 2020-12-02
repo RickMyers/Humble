@@ -39,7 +39,7 @@ $help = <<<HELP
  */
 HELP;
     require_once('Humble.php');
- //   ob_start();
+    ob_start();
     //--------------------------------------------------------------------------
     //Copied from PHPPro.blog
     //--------------------------------------------------------------------------
@@ -161,6 +161,7 @@ HELP;
                 @mkdir($root.'/Views/actions');
                 @mkdir($root.'/Views/actions/Smarty3');
                 @mkdir($root.'/Views/Cache');
+                @mkdir($root.'/Mobile');
                 @mkdir($root.'/Models');
                 @mkdir($root.'/Helpers');
                 @mkdir($root.'/Schema');
@@ -847,6 +848,7 @@ TXT;
         }
         foreach ($contents as $file_idx => $file) {
             print("processing ".$file."\n");
+            ob_flush();
             if (file_exists($file)) {
                 if (isset($local_manifest['ignore'][$file]) && $local_manifest['ignore'][$file]) {
                     $ignore[] = $file;

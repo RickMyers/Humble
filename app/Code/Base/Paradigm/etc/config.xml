@@ -56,6 +56,7 @@
             <entities>
                 <api_projects />
                 <api_tests />
+                <audit_log polyglot="Y" />
                 <events />
                 <event_listeners />
                 <event_log />
