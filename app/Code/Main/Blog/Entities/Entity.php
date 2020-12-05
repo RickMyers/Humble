@@ -13,7 +13,7 @@ namespace Code\Main\Blog\Entities;
  * @package    Blog
  * @author     Original Author <rick@enicity.com>
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://license.humblecoding.com
+ * @license    https://humblecoding.com/LICENSE.txt
  * @version    3.0.0
  * @link       http://pear.php.net/package/PackageName
 

@@ -14,7 +14,7 @@ namespace Code\Main\Blog\Models;
  * @package    Blog
  * @author     Original Author <rick@enicity.com>
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://license.humblecoding.com
+ * @license    https://humblecoding.com/LICENSE.txt
  * @version    3.0.1
  */
 class Model extends \Code\Base\Humble\Models\Model

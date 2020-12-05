@@ -8,9 +8,9 @@
  *
  * @category   Framework
  * @package    Core
- * @author     Original Author <rickmyers1969@gmail.com>
- * @copyright  2007-Present, Rick Myers <rickmyers1969@gmail.com>
- * @license    http://license.enicity.com
+ * @author     Original Author <rick@humblecoding.com>
+ * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
+ * @license    https://humblecoding.com/LICENSE.txt
  * @version    1.0.1
  * @since      File available since Version 1.0.1
  */

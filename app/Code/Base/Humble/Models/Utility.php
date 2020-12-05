@@ -16,7 +16,7 @@ use Log;
  * @package    Core
  * @author     Original Author <rick@humblecoding.com>
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://license.humblecoding.com
+ * @license    https://humblecoding.com/LICENSE.txt
  * @version    1.0
  * @since      File available since Version 1.0.1
  */

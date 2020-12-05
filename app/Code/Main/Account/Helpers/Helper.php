@@ -14,7 +14,7 @@ namespace Code\Main\Account\Helpers;
  * @package    Account
  * @author     Original Author <rick@humblecoding.com>
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://license.humblecoding.com
+ * @license    https://humblecoding.com/LICENSE.txt
  * @version    3.0.1
  */
 class Helper extends \Code\Base\Humble\Helpers\Helper

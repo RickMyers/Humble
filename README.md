@@ -191,7 +191,7 @@ Here is a real quick video of building a module to manage the MySQL demonstratio
 ## A final note...
 
 _**Don't Fork And Run!**_  You won't be getting what you think you are getting.  The proper way to install this framework for testing is to visit the project home page
-at https://humble.enicity.com and make sure you have the dependencies properly installed and configured.  You will also need to have an Apache web server running and your VHOST
+at https://humblcoding.com and make sure you have the dependencies properly installed and configured.  You will also need to have an Apache web server running and your VHOST
 configured properly.
 
 Any questions?  The Author of this framework can be reached here... <a href="mailto:rickmyers1969@gmail.com?subject=Humble%20Framework">Rick Myers</a>

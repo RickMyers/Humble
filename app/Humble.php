@@ -19,7 +19,7 @@
      *
      * @category   Framework
      * @package    Base
-     * @author     Original Author <rickmyers1969@gmail.com>
+     * @author     Original Author <rick@humblecoding.com>
      * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
      * @license    http://license.humble.enicity.com
      * @version    1.0.1
