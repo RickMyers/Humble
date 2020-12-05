@@ -26,7 +26,7 @@ interface HumbleComponent {
  * @package    Core
  * @author     Original Author <rick@humblecoding.com>
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    http://license.humble.humblecoding.com
+ * @license    http://license.humblecoding.com
  * @version    1.0.1
  */
 class Model implements HumbleComponent

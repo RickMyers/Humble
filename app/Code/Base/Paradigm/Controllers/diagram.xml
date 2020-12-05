@@ -3,7 +3,7 @@
 
 Diagram/Workflow basic actions
 
-For Controller reference, please see "Anatomy of a Controller" at https://humble.humblecoding.com/pages/Controllers.htmls
+For Controller reference, please see "Anatomy of a Controller" at https://humblecoding.com/pages/Controllers.htmls
 -->
 <controller name="diagram" use="Smarty3" author="Rick Myers" email="rick@humblecoding.com">
     <actions>
