@@ -509,7 +509,7 @@ SQL;
                 if ($ctr) {
                     $query .= ', ';
                 }
-                $query .= $field.' '.$direction;
+                $query .= '`'.$field.'` '.$direction;
                 $ctr++;
             }
         }
