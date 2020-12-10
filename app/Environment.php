@@ -68,6 +68,17 @@ class Environment {
     }
 
     /**
+     * Returns the namespace of the primary (first) module identified when the installation took place
+     * 
+     * @return string
+     */
+    public static function namespace() {
+        if (!self::$project) {
+           self::$project = self::getProject();
+        }
+        return (isset(self::$project->namespace)) ? self::$project->namespace : '';        
+    }
+    /**
      * Combines the protocol and server name to construct the complete host name
      *
      * @return string
@@ -447,13 +458,6 @@ class Environment {
      */
     public static function getUpdater()  {
         return Singleton::getUpdater();
-    }
-
-    /**
-     *
-     */
-    public static function getMarkdownParser() {
-        return new \Parser();
     }
 
     /**
