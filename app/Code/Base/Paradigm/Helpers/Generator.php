@@ -222,12 +222,13 @@ HDR;
      */
     public function generate() {
         global $tabs;
-        $tabs        = '';  //Keeps track of indentation... the number of "tabs" to use...
-        $diagram     = $this->getWorkflow();
-        $workflow    = Humble::getEntity("paradigm/workflows");
+        $this->workflow = '';
+        $tabs           = '';  //Keeps track of indentation... the number of "tabs" to use...
+        $diagram        = $this->getWorkflow();
+        $workflow       = Humble::getEntity("paradigm/workflows");
         $workflow->setId($this->getId());
-        $data        = $workflow->load();
-        $namespace   = $this->getNamespace();
+        $data           = $workflow->load();
+        $namespace      = $this->getNamespace();
         if ($diagram || (isset($data['workflow']) && $data['workflow'])) {
             $this->title        = $data['title'];
             $this->description  = $data['description'];

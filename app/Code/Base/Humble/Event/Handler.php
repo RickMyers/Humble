@@ -31,9 +31,9 @@ trait Handler {
                 $uid    = isset($user['uid']) ? $user['uid'] : 0;  //why not 0?
             }
         }
-        Humble::getEntity('paradigm/event_log')->setEvent($name)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
+        Humble::getEntity('paradigm/event/log')->setEvent($name)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
         if ($cleanEvent) {
-            $workflows  = Humble::getEntity('paradigm/workflow_listeners');              //now lookup if any workflows are "listening", and then include them
+            $workflows  = Humble::getEntity('paradigm/workflow/listeners');              //now lookup if any workflows are "listening", and then include them
             $workflows->setNamespace($cleanEvent->_namespace());
             $workflows->setComponent($cleanEvent->_component());
             $workflows->setMethod($cleanEvent->_method());

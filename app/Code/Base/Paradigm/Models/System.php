@@ -74,9 +74,8 @@ class System extends Model
         $system_event->setEventStart($data['event_date'].' '.$data['event_time']);
         $system_event->setRecurring($data['recurring_flag']);
         $system_event->setPeriod($data['period']);
-        $system_event->setActive($data['active']);
+        $system_event->setActive($data['active_flag']);
         $system_event->save();
-
     }
 
     /**
@@ -87,16 +86,17 @@ class System extends Model
     public function runScheduler() {
         //@TODO: Think about setting a sticky bit that flags the scheduler as running, so we don't launch this thing more than once
         $now             = strtotime(date('Y-m-d H:i:s'));
-        $job_queue       = Humble::getEntity('paradigm/job_queue');
-        $schedule_log    = Humble::getEntity('paradigm/scheduler_log')->setStarted(date('Y-m-d H:i:s'));    //Let's record when you started
-        $schedule_id     = $schedule_log->save();   
-        $jobs            = Humble::getEntity('paradigm/system_events')->setActive('Y')->fetch();//And persist it
-        foreach ($jobs as $event) {
+        $job_queue       = Humble::getEntity('paradigm/job/queue');
+        $schedule_log    = Humble::getEntity('paradigm/scheduler/log');   
+        $schedule_id     = $schedule_log->setStarted(\date('Y-m-d H:i:s'))->save();    //Let's record when you started
+        foreach (Humble::getEntity('paradigm/system/events')->setActive('Y')->fetch() as $event) {
             //if your next execution cycle is within 5 minutes and you haven't been run in the last 10 minutes, you will be queued for execution
             if ((int)$event['period'] == $event['period']) {
                 if ((!$event['last_run']) || ($now - strtotime($event['last_run']) >= 600)) {
-                    $int = ($event['period'] - ($now - strtotime($event['event_start'])) % $event['period']);
-                    if ($int <= 300) {
+                    $med = $now - strtotime($event['event_start']);             //This is the time since the event was initially run
+                    $off = ($med % $event['period']);                           //This is the remainder if you divide that time by the event period
+                    $int = ($event['period'] - $off) ;                          //And this subtracts the value to see if we are almost at the period where we need to run it again
+                    if (($int <= 300) || ($med < (int)$event['period'])) {      //If the next interval is within 5 minutes 
                         $queued = $job_queue->reset()->setSystemEventId($event['id'])->setStatus(NEW_EVENT_JOB)->load(true);
                         if (!$queued) {
                             //Don't queue it up if there's one run there already
@@ -106,8 +106,7 @@ class System extends Model
                 }
             }
         }
-        $schedule_log->reset()->setId($schedule_id)->setFinished(date('Y-m-d H:i:s'))->save();                                            //Save when the scheduler finished, this is also and audit trail since if there are no values for finished... it didn't for some reason
-        return true;
+        return $schedule_log->reset()->setId($schedule_id)->setFinished(date('Y-m-d H:i:s'))->save();    //Save when the scheduler finished, this is also an audit trail since if there are no values for finished... it didn't for some reason
     }
 
     /**
@@ -116,7 +115,7 @@ class System extends Model
      * @return boolean
      */
     public function runLauncher() {
-        $queue  = Humble::getEntity('paradigm/job_queue');
+        $queue  = Humble::getEntity('paradigm/job/queue');
         $jobs   = $queue->setStatus(NEW_EVENT_JOB)->fetch();
         foreach ($jobs as $job) {
             //$cmd = 'php launch.php '.$job['id']." > ../SDSF/job_".$job['id'].".txt 2>&1";
