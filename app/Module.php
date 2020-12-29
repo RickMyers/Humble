@@ -320,7 +320,7 @@ TXT;
     //--------------------------------------------------------------------------
     function generateWorkflows($namespace=false) {
         @mkdir('Workflows',0775);
-        print('*** Generation workflows for Namespace: '.$namespace."***\n");
+        print('*** Generating workflows for Namespace: '.$namespace."***\n");
         if ($namespace) {
             $generator = \Humble::getHelper('paradigm/generator');
             foreach (\Humble::getEntity('paradigm/workflows')->setNamespace($namespace)->setActive('Y')->fetch() as $workflow) {
@@ -401,6 +401,13 @@ TXT;
         $workflowComment->setComment(implode("\n",$comments));
     }
     //--------------------------------------------------------------------------
+    function registerInlineEvent($namespace=false,$emit=false,$comment=false) {
+        if ($namespace && $emit && $comment) {
+            print('        Registering Inline Event '.$namespace.'/'.$emit.' ==> '.$comment."\n");            
+            \Humble::getEntity('paradigm/events')->setNamespace($namespace)->setEvent($emit)->setComment($comment)->save();
+        }
+    }
+    //--------------------------------------------------------------------------
     function scanForWorkflowComponents($file) {
         $namespace = false;
         $file    = str_replace(['\\',"/"],["_","_"],$file[0]);
@@ -461,9 +468,14 @@ TXT;
                     print("\tRegistering ".$method->name."\n");
                 }
                 foreach ($comments as $comment) {
-                    $clauses   = explode(' ',$comment);
+                    $emit  = false; $inline_comment = false;                       //For inline event declaration                    
+                    if (strtolower(substr(trim($comment),0,8)) === "workflow") {
+                        $comment = substr(trim($comment),8);
+                    }
+                    $clauses   = explode(')',$comment);
                     foreach ($clauses as $clause) {
-                        $value = '';
+                        $value  = '';
+                        $clause = trim($clause).')';
                         if (strpos($clause,'(') && (strpos($clause,')'))) {
                             $data  = explode('(',$clause);
                             $token = $data[0];
@@ -472,7 +484,7 @@ TXT;
                         } else {
                             $token = $clause;
                         }
-                        switch ($token) {
+                        switch (trim($token)) {
                             case "workflow"         :   //nop
                                                         break;
                             case "use"              :   $uses = explode(',',$value);
@@ -483,7 +495,7 @@ TXT;
                                                         break;
                             case "event"            :   $workflowComponent->setEventName($value);
                                                         break;
-                            case "emit"             :   //Must register this event
+                            case "emit"             :   registerInlineEvent($namespace,($emit=$value),$inline_comment);
                                                         break;
                             case "authorization"    :   if (strtolower($value) == 'true') {
                                                             $authorization = true;
@@ -493,6 +505,8 @@ TXT;
                                                             //throw an exception and stop processing
                                                         }
                                                         $workflowComponent->setAuthorization((($authorization) ? 'Y' : 'N'));
+                                                        break;
+                            case "comment"          :   registerInlineEvent($namespace,$emit,($inline_comment=$value));
                                                         break;
                             case "config"           :
                             case "configuration"    :   $workflowComponent->setConfiguration($value);
