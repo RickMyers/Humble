@@ -89,6 +89,23 @@ class Trigger  {
     }
 
     /**
+     * 
+     * @param type $namespace
+     * @param type $cleanEvent
+     * @param type $eventName
+     */
+    public function fire($namespace,$cleanEvent,$eventName) {
+        foreach (Humble::getEntity('paradigm/event/listeners')->setNamespace($namespace)->setEvent($eventName)->setActive('Y')->fetch() as $diagram) {
+            if (Humble::getEntity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true)) {
+                $handled = $this->runWorkflow($diagram,clone $cleanEvent);
+                if ($cancelBubble) {
+                    $this->_errors('bubbling was canceled');
+                    break;  //time to exit! No more workflow processing
+                }
+            }
+        }
+    }
+    /**
      * Used when an event is identified on a controller... specifically calls those workflows just looking for a particular event name and not based on namespace/controller/method
      *
      * @param type $eventName

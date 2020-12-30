@@ -34,30 +34,37 @@ trait Handler {
         Humble::getEntity('paradigm/event/log')->setEvent($name)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
         if ($cleanEvent) {
             $workflows  = Humble::getEntity('paradigm/workflow/listeners');              //now lookup if any workflows are "listening", and then include them
-            $workflows->setNamespace($cleanEvent->_namespace());
-            $workflows->setComponent($cleanEvent->_component());
-            $workflows->setMethod($cleanEvent->_method());
-            foreach ($workflows->active() as $diagram) {
-                if ($diagram['active']==='Y') {
-                    $EVENT = clone $cleanEvent; //this event is dirty
-                    $source = 'Workflows/'.$diagram['workflow_id'].'.php';
-                    if (file_exists($source)) {
-                        $workflowRC     = null;
-                        $cancelBubble   = false;
-                        include($source);
-                        $ok = $ok && $workflowRC;
-                    } else {
-                        $this->_errors('The source file for workflow '.$source.' was not found');
+            $namespace = $cleanEvent->_namespace();
+            $component = $cleanEvent->_component();
+            $method    = $cleanEvent->_method();
+            if (!$component === 'Event') {
+                $workflows->setNamespace($namespace);
+                $workflows->setComponent($component);
+                $workflows->setMethod($method);
+                foreach ($workflows->active() as $diagram) {
+                    if ($diagram['active']==='Y') {
+                        $EVENT = clone $cleanEvent; //this event is dirty
+                        $source = 'Workflows/'.$diagram['workflow_id'].'.php';
+                        if (file_exists($source)) {
+                            $workflowRC     = null;
+                            $cancelBubble   = false;
+                            include($source);
+                            $ok = $ok && $workflowRC;
+                        } else {
+                            $this->_errors('The source file for workflow '.$source.' was not found');
+                        }
+                        $EVENT->_bubble(false); //why?
+                        $EVENT->_workflowStatus($workflowRC);
+                        $EVENT->close();
+                        if ($cancelBubble) {
+                            $this->_errors('bubbling was canceled');
+                            break;  //time to exit! No more workflow processing
+                        }
+                        $this->_event($EVENT);
                     }
-                    $EVENT->_bubble(false); //why?
-                    $EVENT->_workflowStatus($workflowRC);
-                    $EVENT->close();
-                    if ($cancelBubble) {
-                        $this->_errors('bubbling was canceled');
-                        break;  //time to exit! No more workflow processing
-                    }
-                    $this->_event($EVENT);
                 }
+            } else {
+                Event::getTrigger()->fire($namespace,$cleanEvent,$name);
             }
         }
         return $ok;
@@ -93,6 +100,7 @@ trait Handler {
     }
     
     /**
+     * Preps and relays an event to the notify method
      * 
      * @param string $name
      * @param string $namespace
@@ -109,7 +117,17 @@ trait Handler {
         return $this->notify($EVENT,$name);
     }
     
-
+    /**
+     * Relay for the fire method
+     * 
+     * @param type $name
+     * @param type $data
+     * @return type
+     */
+    protected function emit($name,$data) {
+        return $this->fire($this->_namespace(),$name,$data);
+    }
+    
     /**
      * Allows you to call a workflow component directly by simulating an event
      *
