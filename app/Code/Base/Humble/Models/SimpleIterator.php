@@ -2,11 +2,10 @@
 namespace Code\Base\Humble\Models;
 /**    
  *
- * An iterator for managing result sets
+ * An iterator for managing query results that are simple arrays
  *
  * The results of an SQL query is injected into this iterator with the
- * purpose of suppressing certain unnecessary fields, like the polyglot
- * _id from Mongo
+ * purpose of being consistent with the default Iterator class
  *
  * PHP version 7.2+
  *
@@ -16,23 +15,26 @@ namespace Code\Base\Humble\Models;
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://humblecoding.com/license.txt
  * @version    1.0
- * @link       https://humblecoding.com/docs/class-.then(_Model_Iterator.html
+ * @link       https://humblecoding.com/
  * @since      File available since Version 1.0.1
  */
-class Iterator extends Model implements \Iterator, \Countable
+class SimpleIterator extends Model implements \Iterator, \Countable
 {
 
     private $position   = 0;
     private $array      = [];
-    private $clean      = true;
+    private $clean      = false;
     private $translate  = false;
 
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct($array=false) {
         parent::__construct();
         $this->position = 0;
+        if ($array && is_array($array)) {
+            $this->set($array);
+        }
     }
 
     /**
@@ -61,17 +63,27 @@ class Iterator extends Model implements \Iterator, \Countable
      * @return \.then(_Model_Iterator
      */
     public function set($array=[]) {
-        $this->array = $array;
         if ($this->clean) {
-            foreach ($this->array as $idx => $row) {
-                if (isset($this->array[$idx]['_id'])) {
-                    unset($this->array[$idx]['_id']);
-                }
-            }
+            if (isset($array['_id'])) {
+                unset($array['_id']);
+            }            
+        }
+        foreach ($array as $key => $val) {
+            $this->array[] = [$key => $val];
         }
         return $this;
     }
 
+    public function get() {
+        $a = [];
+        foreach ($this->array as $field) {
+            foreach ($field as $key => $val) {
+                $a[$key] = $val;
+            }
+        }
+        return $a;
+    }
+    
     /**
      * Back to the beginning of the array
      */
@@ -87,12 +99,8 @@ class Iterator extends Model implements \Iterator, \Countable
     public function current() {
         $record = null;
         if ($this->translate) {
-            if (is_array($this->array[$this->position])) {
-                foreach ($this->array[$this->position] as $key => $val) {
-                    $record[$key] = \Humble::string($val);
-                }
-            } else {
-                $record = \Humble::string($this->array[$this->position]);
+            foreach ($this->array[$this->position] as $key => $val) {
+                $record[$key] = \Humble::string($val);
             }
         } else {
             $record = $this->array[$this->position];
@@ -113,23 +121,41 @@ class Iterator extends Model implements \Iterator, \Countable
     }
 
     public function toArray() {
-        return $this->array;
+        return $this->get();
     }
 
     public function __toString() {
-        return json_encode($this->array);
+        return json_encode($this->get());
     }
 
     public function count($mode=0) {
         return count($this->array,$mode);
     }
 
+    protected function fetch($position=false) {
+        $retval = null;
+        $position = ($position===false) ? $this->position : $position;
+        if (isset($this->array[$position])) {
+            foreach (($field = $this->array[$position]) as $key=>$val) {
+                $retval=[
+                    $key => $val
+                ];
+            }
+        }
+        return $retval;        
+    }
+    
     public function first() {
-        return (isset($this->arrray[0]) ? $this->array[0] : null);
+        $this->position = 0;
+        return $this->fetch();
     }
 
     public function pop() {
-        return array_pop($this->array);
+        $field = array_pop($this->array);
+        foreach ($field as $var => $val) {
+            $field = [$var => $val];
+        }
+        return $field;
     }
 
     public function push($what) {
@@ -137,14 +163,6 @@ class Iterator extends Model implements \Iterator, \Countable
         return $this;
     }
 
-    /**
-     * Converts the two dimensional array of fields to a simple one dimensional array consisting of the first row of fields
-     */
-    public function snip() {
-        $this->array =  (isset($this->array[0])) ? $this->array[0] : []; 
-        return $this;
-    }
-    
     public function withTranslation($arg=false) {
         $this->translate = $arg;
         return $this;

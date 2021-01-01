@@ -40,6 +40,7 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_isVirtual     = false;
     protected $_inField       = '';
     protected $_in            = [];
+    public $_lastResult    = [];
 
     /**
      * Initial constructor
@@ -49,8 +50,7 @@ class Unity extends \Code\Base\Humble\Models\Model
      * the $this->_db->query() direct DB call, which bypasses mongodb
      *
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->_db = Humble::getDatabaseConnection($this);
     }
@@ -461,6 +461,7 @@ SQL;
                 $result[$key] = Humble::string($val);
             }
         }
+        $this->_lastResult->snip();
         return $result;
     }
 
@@ -824,7 +825,7 @@ SQL;
             }
         } 
         $results = Humble::getModel('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
-        return ($this->_normalize()) ? $this->normalize($results) : $results;
+        return $this->_lastResult = (($this->_normalize()) ? $this->normalize($results) : $results);
     }
 
     /**
@@ -1565,7 +1566,11 @@ SQL;
         }
         return $this;
     }
-
+    
+    public function __toString() {
+        return $this->_lastResult->__toString();
+    }
+    
     /**
      * This method overrides the similar method in the humble model object.  We do so because we need to prevent "accidental" RPC behavior
      *
