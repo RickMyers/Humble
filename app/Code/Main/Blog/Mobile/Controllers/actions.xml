@@ -9,8 +9,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
     <actions>
 
         <action name="open">
-            <description>Stuff</description>
+            <description>This is the default action that is invoked when user double clicks your icon</description>
 
+
+            <!-- Your Entity, Model, or Helper declarations go here -->
 
         </action>
 

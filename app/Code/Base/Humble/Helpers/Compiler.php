@@ -1219,6 +1219,16 @@ SQL;
      * @throws \Exceptions\MalformedXMLException
      * @throws \Exceptions\MissingControllerXMLException
      */
+    
+    
+    
+    /**
+     *  GOING TO HAVE TO USE THE SOURCE VALUE AND DESTINATION VALUE ONLY
+     * 
+     *  DONT CALCULATE LOCATIONS ... LET CALLING PROGRAM PASS THEM IN
+     * 
+     *  CACHE THE FILEMTIME ON THE SOURCE
+     */
     public function compile($identifier=false,$force=true)    {
         if ($identifier===false) {
             $source          = $this->getFile();

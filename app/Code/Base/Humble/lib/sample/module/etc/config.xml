@@ -27,6 +27,16 @@
                 <source>&&module&&/Controllers</source>
                 <cache>&&module&&/Controllers/Cache</cache>
             </controllers>
+            <mobile>
+                <controllers>
+                    <source>&&module&&/Mobile/Controllers</source>
+                    <cache>&&module&&/Mobile/Controllers/Cache</cache>
+                </controllers>
+                <views>
+                    <source>&&module&&/Mobile/Views</source>
+                    <cache>&&module&&/Mobile/Views/Cache</cache>
+                </views>
+            </mobile>
             <schema>
                 <install>&&module&&/Schema/Install</install>
                 <update>&&module&&/Schema/Update</update>

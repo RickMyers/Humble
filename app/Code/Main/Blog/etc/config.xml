@@ -27,6 +27,16 @@
                 <source>Blog/Controllers</source>
                 <cache>Blog/Controllers/Cache</cache>
             </controllers>
+            <mobile>
+                <controllers>
+                    <source>Mobile/Blog/Controllers</source>
+                    <cache>Mobile/Blog/Controllers/Cache</cache>
+                </controllers>
+                <views>
+                    <source>Mobile/Blog/Views</source>
+                    <cache>Mobile/Blog/Views/Cache</cache>
+                </views>                
+            </mobile>
             <schema>
                 <install>Blog/Schema/Install</install>
                 <update>Blog/Schema/Update</update>

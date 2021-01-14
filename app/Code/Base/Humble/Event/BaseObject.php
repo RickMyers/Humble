@@ -158,6 +158,19 @@ class BaseObject  {
         if ($persist) {
             $this->save();
         }
+        return $this;
+    }
+    
+    /**
+     * Just a synonym for the update method, if you like the 'attach' verb better than the 'update' verb
+     * 
+     * @param type $newData
+     * @param type $persist
+     * @return $this
+     */
+    public function attach($newData=[],$persist=false) {
+        $this->update($newData,$persist);
+        return $this;
     }
 
     /**
