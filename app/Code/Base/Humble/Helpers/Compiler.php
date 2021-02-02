@@ -560,7 +560,7 @@ PHP;
                 $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
             }
             if (isset($node['normalize']) && (strtoupper($node['normalize'])=='Y')) {
-                $method_str = '$'.$node['id'].'->normalize('.$method_str.')';
+                $method_str = '$'.$node['id'].'->_normalize('.$method_str.')';
             }
             if (isset($node['wrapper'])) {
                 $method_str = $node['wrapper'].'('.$method_str.')';
@@ -664,6 +664,13 @@ PHP;
             print($this->tabs().'$chainControllers[]'." = '".$action['controller']."';\n");
         } else {
             print($this->tabs().'$chainControllers[]'." = '".$this->controller."';\n");
+        }
+        if (isset($action['add'])) {
+            $fields = explode(',',$action['add']);
+            foreach ($fields as $idx => $name) {
+                print($this->tabs().'$_POST["'.$name.'"] = $'.$name.";\n");
+                print($this->tabs().'$_REQUEST["'.$name.'"] = $'.$name.";\n");
+            }
         }
     }
 
