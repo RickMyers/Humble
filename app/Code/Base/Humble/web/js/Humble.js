@@ -19,7 +19,7 @@ var Humble = (function ($) {
                 if (callback) {
                     callback.apply(me);
                 }
-            }).get(false);
+            }).get();
         },
         template:  function (identifier,defaults) {
             var tp      = '';
