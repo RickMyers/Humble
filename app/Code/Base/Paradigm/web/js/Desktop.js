@@ -322,6 +322,7 @@ function DesktopWindow(icon,refId) {
             default  :
                 break;
         }
+        return this;
     }
     return this;
 }
