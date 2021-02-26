@@ -6,9 +6,13 @@
         AddOutputFilter INCLUDES .htmls
 	DirectoryIndex pages/Main.htmls index.html
 	AddHandler application/x-httpd-php .html .htm
-	Options +FollowSymlinks +Includes
+	Options +FollowSymlinks +Includes -Indexes
 	<Directory "c:\var\www\Humble">
 		Require all granted
+		AllowOverride none 
+		DirectoryIndex index.html
+		AddHandler application/x-httpd-php .html .htm
+		Options +FollowSymlinks +Includes -Indexes
 		RewriteEngine on
 		RewriteBase /
 		RewriteRule ^app/ - [L,NC]
@@ -17,7 +21,7 @@
 		RewriteRule ^web/ - [L,NC]
 		RewriteRule ^pages/ - [L,NC]
 		RewriteRule ^docs/ - [L,NC]
-		RewriteRule ^home/? /humble/home/page [NC,QSA,L]
+                RewriteRule ^home/? /humble/home/page [NC,QSA,L]
 		RewriteRule ^admin/? /humble/admin/home [NC,QSA,L]
 		RewriteRule ^admin/(.*)? /humble/admin/home [NC,QSA,L]
 		RewriteRule ^distro/(.*)? /distro.php?action=$1 [QSA,L]
@@ -26,6 +30,7 @@
 		RewriteRule ^edits/([^/\.]+)/([^/\.]+)? /loader.php?type=edits&n=$1&f=$2 [QSA,L]
 		RewriteRule ^templates/([^/\.]+)/([^/\.]+)? /loader.php?type=templates&n=$1&f=$2 [QSA,L]
 		RewriteRule ^ckeditor/(.*)? /app/Code/Base/Humble/web/js/ckeditor/$1 [QSA,L]
+		RewriteRule ^ace/(.*)? /app/Code/Base/Paradigm/web/js/ace/$1 [QSA,L]
 		RewriteRule ^api/([^/\.]+)/([^/\.]+)/(.*)?$ /api.php?n=$1&t=$2&m=$3 [QSA,L]
 		RewriteRule ^api/([^/\.]+)/([^/\.]+)?$ /api.php?n=$1&t=$2 [QSA,L]
 		RewriteRule ^hook/([^/\.]+)/([^/\.]+)? /hapi.php?n=$1&hook=$2 [QSA,L]
