@@ -555,18 +555,21 @@ PHP;
                     }
                 }
             }
-            $assign_str = ''; $method_str = '$'.$node['id'].'->'.$node['method'].'('.$arglist.')';
+            $norm_str = ''; $assign_str = ''; $method_str = '$'.$node['id'].'->'.$node['method'].'('.$arglist.')';
             if (isset($node['assign'])) {
                 $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
             }
             if (isset($node['normalize']) && (strtoupper($node['normalize'])=='Y')) {
-                $method_str = '$'.$node['id'].'->_normalize('.$method_str.')';
-            }
+                $norm_str = '$'.$node['id'].'->_normalize(true)';
+            }            
             if (isset($node['wrapper'])) {
                 $method_str = $node['wrapper'].'('.$method_str.')';
             }
             if (isset($node['response']) && (strtolower($node['response'])=='true')) {
                 $method_str = 'Humble::response('.$method_str.')';
+            }
+            if ($norm_str) {
+                print($this->tabs().$norm_str.";\n");
             }
             print($this->tabs().$assign_str.$method_str.";\n");
         }
