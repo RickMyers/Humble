@@ -307,7 +307,7 @@
         #  CREATES A DOWNLOADABLE PACKAGE DISTRO BASED ON CURRENT VERSION OF FRAMEWORK          #
         #                                                                                       #
         #########################################################################################-->
-        <target name="increment" depends="prod" description="Generates a new package for deployment">
+        <target name="increment" depends="prod" description="Increments the application version">
             <exec dir="app" executable="cmd.exe" >
                 <arg value="/c php increment.php" />
             </exec>
@@ -354,10 +354,10 @@
         #                                                                                       #
         #########################################################################################-->
 
-        <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,compress,increment,ship,retain,expand,composer,update,package"   description="Distributes to the Prod Server" />
-        <target name="distrmte" depends="constants,remote,open,create,backup,cleanup,remove,increment,deploy,retain,composer,update,package,document"   description="Distributes to the Prod Server" />
-        <target name="distaws"  depends="constants,aws,open,create,backup,cleanup,remove,compress,increment,ship,retain,expand,composer,update,package"   description="Distributes to the AWS Lightsail Server" />
-        <!--target name="disttest" depends="constants,test,open,create,backup,cleanup,remove,deploy,retain,composer,update,document,increment,package"   description="Distributes to the Test Server" /-->
+        <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,compress,ship,retain,expand,composer,update,package"   description="Distributes to the Prod Server" />
+        <target name="distrmte" depends="constants,remote,open,create,backup,cleanup,remove,deploy,retain,composer,update,package,document"   description="Distributes to the Prod Server" />
+        <target name="distaws"  depends="constants,aws,open,create,backup,cleanup,remove,compress,ship,retain,expand,composer,update,package"   description="Distributes to the AWS Lightsail Server" />
+        <!--target name="disttest" depends="constants,test,open,create,backup,cleanup,remove,deploy,retain,composer,update,document,package"   description="Distributes to the Test Server" /-->
 
     <!--#########################################################################################
         #                                                                                       #
