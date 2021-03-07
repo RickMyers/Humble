@@ -14,7 +14,7 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Core
- * @author     Rick Myers <rick@enicity.com>
+ * @author     Rick Myers <rick@humblecoding.com>
  * @copyright  2005-present Humble
  * @license    https://humblecoding.com/license.txt
  * @version    <INSERT VERSIONING MECHANISM HERE />

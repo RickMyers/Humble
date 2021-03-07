@@ -187,8 +187,8 @@ class Log {
             $arr[] = $name.' = '.$val;
         }
         $text .= "<b>HTTP POST</b><br /><pre>\n".implode("\n",$arr)."\n</pre><br />";
-        $headers = 'From: alert@enicity.com' ."\r\n" .
-                   'Reply-To: noreply@enicity.com' . "\r\n" .
+        $headers = 'From: alert@humblecoding.com' ."\r\n" .
+                   'Reply-To: noreply@humblecoding.com' . "\r\n" .
                    'Content-Type: text/html' . "\r\n" .
                    'X-Mailer: PHP/' .phpversion();
         mail('rick@humblecoding.com',$subject,$text,$headers);

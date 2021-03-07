@@ -21,7 +21,7 @@
      * @package    Base
      * @author     Original Author <rick@humblecoding.com>
      * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
-     * @license    http://license.humble.enicity.com
+     * @license    http://humblecoding.com/license.txt
      * @version    1.0.1
      * @since      File available since Version 1.0.1
      */

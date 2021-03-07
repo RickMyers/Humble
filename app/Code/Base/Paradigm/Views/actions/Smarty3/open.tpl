@@ -6,7 +6,7 @@
                         |___|                  |___|
 by Rick Myers.
 
-Copyright Enicity.com, all rights reserved
+Copyright humblecoding.com, all rights reserved
 
 -->
 <!DOCTYPE html>

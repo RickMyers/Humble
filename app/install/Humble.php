@@ -146,7 +146,7 @@ function initializeProject() {
             $attributes     = ['project_name'=>'','project_url'=>'','factory_name'=>'','framework_url'=>'','module'=>'','namespace'=>'','package'=>'','landing_page'=>'', 'author'=>''];
             while (!$attributes['framework_url']) {
                 print("\n\tHumble has its own framework updater but needs to know where to obtain the source from\n");
-                print("\tPlease enter the URL for the Humble source [https://humble.enicity.com]: ");
+                print("\tPlease enter the URL for the Humble source [https://humblecoding.com]: ");
                 $attributes['framework_url']        = scrub(fgets(STDIN));
             }
             while (!$attributes['project_name']) {

@@ -16,7 +16,7 @@ namespace Exceptions;
  * @category   Exceptions
  * @package    Framework
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://enicity.com/license.txt
+ * @license    https://humblecoding.com/license.txt
  * @version    1.0.1
  *
  */

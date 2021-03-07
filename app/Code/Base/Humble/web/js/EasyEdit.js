@@ -2,7 +2,7 @@
 //
 // 	EasyEdits.
 //
-//	Author: 	Rick Myers 		<rmyers@jarvis-project.com>
+//	Author: 	Rick Myers 		<rick@humblecoding.com>
 //
 //  This software is not freeware, shareware, or released under any open source license.
 //    Since this is a "Work In Progress", use is by permission only.  Contact Rick for

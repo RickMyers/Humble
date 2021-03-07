@@ -20,7 +20,7 @@
     # MAKE SURE YOU PUT THE PROPERTIES CONFIGURATION FILE IN A PlACE NOT OFF OF THE ROOT SINCE #
     #          THE CONFIGURATION FILE HAS CONFIDENTIAL INFORMATION IN IT!!!!!!!!!!!            #
     #                                                                                          #
-    #       THERE IS A SAMPLE 'config.properties' FILE INCLUDED WITH THE JARVIS PROJECT        #
+    #       THERE IS A SAMPLE 'config.properties' FILE INCLUDED WITH THE HUMBLE PROJECT        #
     #                                                                                          #
     ############################################################################################-->
     <property file="../config.humble.properties"/>
@@ -328,7 +328,7 @@
 
     <!--#########################################################################################
         #                                                                                       #
-        #  DEPLOYS FILES TO TARGET ENVIRONMENT AND RUNS THE JARVIS UPDATE APPLICATION SCRIPT    #
+        #  DEPLOYS FILES TO TARGET ENVIRONMENT AND RUNS THE HUMBLE UPDATE APPLICATION SCRIPT    #
         #                                                                                       #
         #########################################################################################-->
         <target name="deploy" depends="remove" description="Sends the development code to the production server">

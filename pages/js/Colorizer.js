@@ -14,7 +14,7 @@
  *
  *  Highly flexible Code Colorizer
  *
- *  @author: Rick Myers <rickmyers1969@gmail.com>
+ *  @author: Rick Myers <rick@gmail.com>
  *  @param {string} languageFile Default Language File
 */
 var Colorizer = (function (languageFile) {

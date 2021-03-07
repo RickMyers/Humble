@@ -1,7 +1,7 @@
 /**   ------------------------------------------
  *    Easy Tab Navigation Class
  *
- *    @author: <rmyers@jarvis-project.com>
+ *    @author: <rick@humblecoding.com>
  *
  *    ------------------------------------------  */
 var EasyTabs = [];
