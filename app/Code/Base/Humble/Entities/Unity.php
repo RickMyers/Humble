@@ -424,8 +424,10 @@ SQL;
         } else {
             $query .= ' LIMIT 1'; //load returns the first instance to match only
         }
-        $results = $this->query($query);
-        if ($this->_polyglot() && (count($results->toArray())>0)) {
+
+        $row_total  = count($results = $this->query($query));                    //This is where the query happens
+        $result     = $results->first();
+        if ($this->_polyglot() && ($row_total>0)) {
             //now get the mongo object...
             $mod = $this->_module();
             if (isset($this->_collections[$mod['mongodb'].'/'.$this->_entity()])) {
@@ -433,28 +435,24 @@ SQL;
             } else {
                 $mdb = $this->_collections[$mod['mongodb'].'/'.$this->_entity()] = Humble::getCollection($mod['mongodb'].'/'.$this->_entity());
             }
-            $col = $results->toArray()[0];
-            $id  = isset($col['id']) ? $col['id'] : (isset($col['uid']) ? $col['uid'] : false);
-            if (!$id) {
-                die('No id found for the mongo merge');
-            }
-            $mdb->setId($id);
-            $rows = $mdb->load();
-            if ($rows) {
-                foreach ($rows as $key=>$val) {
-                    if (!isset($col[$key])) {
-                        $col[$key] = $val;
+            if ($id  = isset($result['id']) ? $result['id'] : (isset($result['uid']) ? $col['result'] : false)) {
+                $mdb->setId($id);
+                $rows = $mdb->load();
+                if ($rows) {
+                    foreach ($rows as $key => $val) {
+                        if (!isset($result[$key])) {                            //If there's already a column with that name in the result, don't override it
+                            $result[$key] = $val;
+                        }
                     }
                 }
             }
         }
-        if (count($results->toArray())>0) {
-            foreach ($results->toArray()[0] as $field => $value) {
+        if ($row_total>0) {
+            foreach ($result as $field => $value) {
                 $method = 'set'.ucfirst($field);
                 $this->$method($value);
             }
         }
-        $result = (count($results->toArray())>0) ? $results->toArray()[0] : null;
         //now if polyglot and there are extra polyglot fields, go through this and exclude if they don't match
         if ($result && $this->_translation) {
             foreach ($result as $key => $val) {
@@ -462,7 +460,7 @@ SQL;
             }
         }
         $this->_lastResult->snip();
-        return $result;
+        return Humble::array($result);
     }
 
     /**

@@ -650,8 +650,12 @@ SQL;
          * @param type $string
          * @return \Code\Base\Humble\Helpers\HumbleString
          */
-        public static function string($string) {
+        public static function string($string='') {
             return new \Code\Base\Humble\Helpers\HumbleString($string);
+        }
+        
+        public static function array($arr=[]){
+            return new \Code\Base\Humble\Models\Arr($arr);
         }
 
         /**

@@ -125,7 +125,7 @@ class Iterator extends Model implements \Iterator, \Countable
     }
 
     public function first() {
-        return (isset($this->arrray[0]) ? $this->array[0] : null);
+        return (isset($this->array[0]) ? $this->array[0] : []);
     }
 
     public function pop() {
