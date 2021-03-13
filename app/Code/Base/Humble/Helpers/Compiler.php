@@ -259,7 +259,7 @@ class Compiler extends Directory
         }
         $required   = (isset($parameter['required']) ? strtolower((string)$parameter['required']) : false);
         $this->processRequired($required,$source,$field);
-        $optional   = (isset($parameter['optional']) ? strtolower((string)$parameter['optional']) : false);
+        $optional   = (isset($parameter['optional']) && ($parameter['name']!=='*') ? strtolower((string)$parameter['optional']) : false);
         $optional   = ($optional) ? ($optional==='true' ? true : false) : false;
 
         $type       = (isset($parameter['type']) ? strtolower((string)$parameter['type']) : false);
@@ -683,6 +683,7 @@ PHP;
      */
     private function processRedirect($node) {
         $redirect = "";
+        print($this->tabs().'if ((session_id() == "") || !isset($_SESSION)) {  session_start();   }'."\n");
         print($this->tabs().'$_SESSION["HUMBLE_REDIRECT_HEADERS"] = headers_list();'."\n");
         if (isset($node['post']) && $node['post']==true) {
             $txt = $this->tabs().'$vars = [];

@@ -16,7 +16,6 @@ Copyright humblecoding.com, all rights reserved
         <link rel="stylesheet" type="text/css" href="/css/common" />
         <link rel="stylesheet" type="text/css" href="/css/features" />
         <link rel="stylesheet" type="text/css" href="/css/engine" />
-        <link rel="stylesheet" type="text/css" href="/css/desktop" />
         <link rel="stylesheet" type="text/css" href="/css/widgets" />
         <style type='text/css'>
             div {
@@ -158,7 +157,6 @@ Copyright humblecoding.com, all rights reserved
         <script type="text/javascript">
             var UseTranparentWindows = 'N';
         </script>
-        <script type="text/javascript" src="/js/desktop"></script>
         <script type="text/javascript" src="/js/engine"></script>
         <script type="text/javascript" src="/js/widgets"></script>
         <script type="text/javascript" src="/ace/ace.js"></script>
