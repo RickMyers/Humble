@@ -40,6 +40,8 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_isVirtual     = false;
     protected $_inField       = '';
     protected $_in            = [];
+    protected $_betweenField  = '';
+    protected $_between       = '';
     public $_lastResult    = [];
 
     /**
@@ -381,6 +383,15 @@ SQL;
         return $this;
     }
     
+    public function between($args=false) {
+        if ($args) {
+            $this->_between = $args;
+        } else {
+            return $this->_between;
+        }
+        return $this;
+    }
+    
     /**
      *
      */
@@ -493,6 +504,10 @@ SQL;
             $query .= ($andFlag) ? " and " : ' where ';
             $query .= "`".$this->_inField."` in ('".implode("','",$this->_in)."') ";
         }
+        if ($this->_between) {
+            $query .= ($andFlag) ? " and " : ' where ';
+            $query .= "`".$this->_betweenField."` between '".$this->_between[0]."' and '".$this->_between[1]."' ";
+        }
         return $query;
     }
 
@@ -539,7 +554,6 @@ SQL;
                 //and optionally a having clause, array with three elements
             }
         }
-
         $query  .= $this->addLimit($this->_currentPage);
         $results = $this->query($query);
         //if (count($results)==0) {
@@ -1600,7 +1614,11 @@ SQL;
             $this->_inField = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-2)));
             $this->in($arguments[0]);
             return $this;
-        }
+        } elseif (substr($name,-7,7)==="Between") {
+            $this->_betweenField = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-7)));
+            $this->between($arguments);
+            return $this;
+        }        
         //method couldn't be handled
         $virtual = $this->_isVirtual() ? 'Real' : 'Virtual';
         die("<pre>\nError:\n\nMethod not found: (".$name.") from (".$virtual.')'.$this->getClassName().".\n\n</pre>");
