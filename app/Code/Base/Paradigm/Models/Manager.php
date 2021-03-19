@@ -97,14 +97,14 @@ class Manager extends Model
                 $data    = $element->load(true);
                 $this->setData($data);
                 $this->setElement($element);
-                if (!$data) {
+                if (!$data || (count($data)==0)) {
                     //see if this is a type of element that has a defacto configuration URL...
                     switch ($results['type']) {
                         case    "terminus"      :
                             $configURL  = "/workflow/default/terminus";
                             break;
                         case    "begin"         :
-                            $configURL  = "/workflow/default/begin";
+                            $configURL  = "/workflow/elements/begin";
                             break;
                         case    "system"        :
                             $configURL  = "/workflow/elements/system";
@@ -229,6 +229,16 @@ class Manager extends Model
         }
     }
 
+    public function run() {
+        if ($workflow_id = $this->getId()) {
+            $workflowRC    = 0;
+            $cancelBubble  = false;
+            $EVENT = \Event::get('TestEvent',[]);
+            if (file_exists('Workflows/'.$workflow_id.'.php')) {
+                include 'Workflows/'.$workflow_id.'.php';
+            }
+        }
+    }
     /**
      * Will take a JSON construct representing a workflow and copy it's contents into the local MongoDB and MySQL instances
      *

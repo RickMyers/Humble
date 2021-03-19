@@ -571,6 +571,26 @@ SOAP;
         return $retval;
     }
 
+    
+
+    protected function pushToCache($namespace=false,$call_name=false,$arguments=[],$results='') {
+        //when we push to cache, we are going to push an object
+        //one node of the object will have the results
+        //the other node will have the date is was cached, so we can then 'expire' the cache on pull
+    }
+    
+    protected function pullFromCache($namespace=false,$call_name=false,$arguments=[]) {
+        $retval = false;
+        //compare expiry date... delete from cache and return nothing if expires i
+        return $retval;
+    }
+    
+    /**
+     * 
+     * 
+     * @param type $name
+     * @return varied
+     */
     protected function _remoteProcedureCall($name=false) {
         $retval = null;
         if ($name && $this->_RPC()) {
@@ -618,8 +638,15 @@ SOAP;
                         $passwd = (isset($call['password']) && $call['password'])   ? $call['password'] : false;
                         $secure = (isset($call['secure'])   && $call['secure'])     ? $call['secure']   : false;
                         //$retval = $this->_curl($call['url'],$args,$call['method'],$secure,$userid,$passwd);
-
+                        if (isset($call['cache']) && $call['cache']) {
+                            if ($retval = $this->pullFromCache($this->_namespace(),$name,$args)) {
+                                return $retval;                                 //this ain't the way m8
+                            }
+                        }
                         $retval = $this->_hurl($call['url'],$args,$call,$secure,$userid,$passwd);  //going to use _hurl until curl starts working again
+                        if (isset($call['cache']) && $call['cache']) {
+                            $this->pushToCache($this->_namespace(),$name,$args,$retval);
+                        }
                     } else {
                         //lather it up...
                         $secure     = (isset($call['secure'])   && $call['secure'])     ? $call['secure']    : false;

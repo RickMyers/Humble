@@ -20,11 +20,8 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="begin">
+        <action name="begin" passalong="windowId">
             <description>Begin/Start Configuration Page</description>
-            <helper namespace='paradigm' class='data' id='helper'>
-                <parameter name='windowId' source='post' default='' />
-            </helper>
             <mongo namespace="paradigm" class="elements" id='stuff'>
                 <parameter name='id' source='post' default='' />
             </mongo>

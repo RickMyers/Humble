@@ -15,6 +15,16 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         </action>
 
         <!-- ############################################################### -->
+        
+        <action name="run">
+            <description>Tests the workflow trigger mechansim</description>
+            <model namespace="paradigm" class="manager" id='workflow' response="true" method="run">
+                <parameter name='uid' source='session'  required="true" />
+                <parameter name='id' source='post' value='workflow_id' default='' />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
 
         <action name="details">
             <description>Gets the current workflow information</description>
