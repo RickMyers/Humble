@@ -1590,10 +1590,7 @@ SQL;
      * @param array $arguments
      * @return type
      */
-    public function __call($name, $arguments)
-    {
-        $token      = substr($name,3);
-        $token{0}   = strtolower($token{0});
+    public function __call($name, $arguments)  {
         if (substr($name,0,3)=='set') {
             $token  = $name = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $token));
             if (array_key_exists($token,$this->_keys)) {
@@ -1607,8 +1604,7 @@ SQL;
             $result     = $this->__get($name);
             return $result;
         } elseif (substr($name,0,5)=='unset') {
-            $token      = substr($name,5);
-            $token{0}   = strtolower($token{0});
+            $token      = lcfirst(substr($name,5));
             return $this->_unset($token);
         } elseif (substr($name,-2,2)==="In") {
             $this->_inField = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-2)));

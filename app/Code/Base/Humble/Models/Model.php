@@ -780,9 +780,7 @@ SOAP;
      * @param array $arguments arguments passed to the non-existant method
      */
     public function __call($name, $arguments)  {
-        $token = substr($name,3);
-        if ($token) {
-            $token[0] = strtolower($token[0]);
+        if ($token = lcfirst(substr($name,3))) {
             if (substr($name,0,3)=='set') {
                 if (!$arguments) {
                     return $this;
@@ -791,8 +789,7 @@ SOAP;
             } elseif (substr($name,0,3)=='get') {
                 return $this->__get($token);
             } elseif (substr($name,0,5)=='unset') {
-                $token      = substr($name,5);
-                $token[0]   = strtolower($token[0]);
+                $token      = lcfirst(substr($name,5));
                 return $this->_unset($token);
             } else {
                 if (($retval = $this->_remoteProcedureCall($name)) === null) {
