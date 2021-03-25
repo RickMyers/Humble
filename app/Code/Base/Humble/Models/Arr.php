@@ -40,11 +40,20 @@ class Arr extends \ArrayObject
     }
 
     /**
+     * Used to resolve if this array is empty.  Normally, a true empty array would resolve to false, but not when a class like this, even if there's no elements in the array
+     * 
+     * @return boolean
+     */
+    public function isEmpty() {
+        return (count($this->getArrayCopy()) === 0);
+    }
+    
+    
+    /**
      * Just here to comply with the framework requirements
      */
     public function _isVirtual($state=null) {
- 
-        return false;
+         return false;
     }
     
     /**

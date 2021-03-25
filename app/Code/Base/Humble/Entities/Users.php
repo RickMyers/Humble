@@ -67,7 +67,7 @@ class Users extends Entity
      * @param int $user_id
      * @param string $md5_password
      */
-    public function updatePassword($user_id=false,$md5_password=false) {
+    public function updatePassword($uid=false,$md5_password=false) {
         $uid    = $uid ? $uid                   : ($this->getUid()  ? $this->getUid()  : '');
         $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
         if ($uid && $pwd) {

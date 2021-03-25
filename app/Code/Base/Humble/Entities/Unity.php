@@ -1592,7 +1592,7 @@ SQL;
      */
     public function __call($name, $arguments)  {
         if (substr($name,0,3)=='set') {
-            $token  = $name = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $token));
+            $token  = $name = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', substr($name,3)));
             if (array_key_exists($token,$this->_keys)) {
                 $this->_keys[$token] = $arguments[0]; //keep track of the keys we are using
             } else {
@@ -1600,7 +1600,7 @@ SQL;
             }
             return $this->__set($token,$arguments[0]);
         } elseif (substr($name,0,3)=='get') {
-            $name       = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $token));
+            $name       = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', substr($name,3)));
             $result     = $this->__get($name);
             return $result;
         } elseif (substr($name,0,5)=='unset') {
