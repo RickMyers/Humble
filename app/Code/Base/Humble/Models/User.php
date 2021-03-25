@@ -476,8 +476,9 @@ class User extends Model {
      */
     public function logout() {
        session_unset();
-       session_destroy(session_id());
+       session_destroy();
     }
+    
     /**
      * Stores the login error or returns the last error
      *
