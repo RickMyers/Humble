@@ -13,10 +13,10 @@ namespace Code\Base\Humble\Helpers;
  * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
  * @license    https://humblecoding.com/LICENSE.txt
  * @version    1.0.1
- * @see        NetOther, Net_Sample::Net_Sample()
  * @since      File available since Version 1.0.1
  */
 class Helper extends \Code\Base\Humble\Models\Model {
+    
     private   $xml          = null;
     protected $errors       = null;
     protected $isVirtual    = false;

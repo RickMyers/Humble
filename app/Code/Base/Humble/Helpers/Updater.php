@@ -42,7 +42,91 @@ class Updater extends Installer
     public function refresh($source = false) {
         //nulling these out so can't be used
     }
-
+    
+    /**
+     * We are collecting only certain descriptive elements of the controller to register with the service directory
+     * 
+     * @param type $action
+     * @param type $elements
+     * @return type
+     */    
+    private function extractElements($action,$elements) {
+        foreach ($action as $node => $subelements) {
+            switch ((string)$node) {
+                case 'description'  :
+                    $elements['description'] = (string)$subelements ? (string)$subelements : 'N/A';
+                    break;
+                case 'model'        :
+                    $attr = $subelements->attributes();
+                    $elements['models'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
+                    break;
+                case 'helper'       :
+                    $attr = $subelements->attributes();
+                    $elements['helpers'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
+                    break;
+                case 'entity'       :
+                    $attr = $subelements->attributes();
+                    $elements['entities'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
+                    break;
+                case 'mongo'        : 
+                    $attr = $subelements->attributes();
+                    $elements['collections'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
+                    break;
+                case 'parameter'    :
+                    $attr = $subelements->attributes();
+                    if (isset($attr->required)) {
+                        $elements['required'] [(string)$attr->name] = true;
+                    }
+                    $elements['parameters'][(string)$attr->name] = true;
+                    break;
+                default:
+                    break;
+            }
+            if (count($subelements)) {
+                $elements = $this->extractElements($subelements,$elements);
+            }        
+        }
+        return $elements;
+    }
+    
+    /**
+     * Since everything is a service, we should register them for easy lookup
+     * 
+     * @param type $namespace
+     */
+    protected function updateServiceDirectory($namespace=null) {
+        if ($namespace) {
+            Humble::getEntity('humble/service/directory')->setNamespace($namespace)->delete();
+            if ($module = Humble::getModule($namespace)) {
+                $services = Humble::getEntity('humble/service/directory');
+                if (is_dir($location = 'Code/'.$module['package'].'/'.$module['controller'])) {
+                    $dh = dir($location);
+                    while ($controller = $dh->read()) {
+                        if (($controller == '.') || ($controller == '..')) {
+                            continue;
+                        }
+                        foreach (simplexml_load_file($location.'/'.$controller) as $actions) {
+                            foreach ($actions as $action) {
+                                $attr       = $action->attributes();
+                                $passalong  = (isset($attr->passalong) ? (string)$attr->passalong : "");
+                                $services->reset()->setNamespace($namespace)->setController(str_replace('.xml','',$controller))->setAction((string)$attr->name)->setOutput(isset($attr->output) ? (string)$attr->output : 'text/html')->setPassed($passalong);
+                                $attrs = ['description'=>[],'parameters'=>[],'helpers'=>[],'models'=>[],'entities'=>[],'collections'=>[],'required'=>[]];
+                                if (count($action)) {
+                                    $attrs       = $this->extractElements($action,$attrs);
+                                }
+                                foreach ($attrs as $type => $attr) {
+                                    $method = 'set'.ucfirst($type);
+                                    $services->$method($attr);
+                                }
+                                $services->save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     /**
      *
      * @param type $prefix
@@ -216,6 +300,7 @@ class Updater extends Installer
                     }
                     print("============================================================================\n\n");
                     //must log updated date
+                    $this->updateServiceDirectory($namespace);                    
                 }
             } else {
                 print_r($helper->getErrors());

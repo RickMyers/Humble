@@ -6,11 +6,13 @@ use Log;
 use Symfony\Component\Yaml\Yaml;
 /**
  *
- * At a minimum, your custom classes should override this method...
+ * At a minimum, your custom classes should override the getClassName method...
  *
  */
 interface HumbleComponent {
     public function getClassName();
+    public function load($field=false);
+    public function fetch();
 }
 
 /**
@@ -62,7 +64,30 @@ class Model implements HumbleComponent
     public function getClassName() {
         return __CLASS__;
     }
+    
+    /**
+     * Returns just one element of the model if passed in, or nothing null if not passed in or not present in model
+     * 
+     * @param type $field
+     * @return type
+     */
+    public function load($field=false) {
+        $result = null;
+        if ($field) {
+            $result = isset($this->_data[$field]) ? $this->_data[$field] : null;
+        }
+        return $result;
+    }
 
+    /**
+     * Returns the current model, wrapped in the custom Humble Array class
+     * 
+     * @return array
+     */
+    public function fetch() {
+        return Humble::array($this->_data);
+    }
+    
     /**
      * Cute routine to convert the next letter after an underscore to uppercase while removing the underscore
      *
@@ -161,18 +186,6 @@ class Model implements HumbleComponent
      */
     public function __isset($name=false)    {
         return true;
-    }
-
-    /**
-     *
-     */
-    public function _isVirtual($state=null) {
-        if ($state === null) {
-            return $this->_isVirtual;
-        } else {
-            $this->_isVirtual = $state;
-        }
-        return $this;
     }
 
     /**

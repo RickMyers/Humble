@@ -248,8 +248,7 @@ class Trigger  {
      * @param array $arguments arguments passed to the non-existant method
      */
     public function __call($name, $arguments)    {
-        $token = substr($name,3);
-        $token{0} = strtolower($token{0});
+        $token = lcfirst(substr($name,3));
         if (substr($name,0,3)=='set') {
             return $this->__set($token,$arguments[0]);
         } else if (substr($name,0,3)=='get') {

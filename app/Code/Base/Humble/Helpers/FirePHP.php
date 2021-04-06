@@ -1091,7 +1091,7 @@ class FirePHP extends Helper {
 
           $name = $raw_name;
 
-          if ($name{0} == "\0") {
+          if (substr($name,0,1) == "\0") {
             $parts = explode("\0", $name);
             $name = $parts[2];
           }
@@ -1264,9 +1264,9 @@ class FirePHP extends Helper {
           case 2:
               // return a UTF-16 character from a 2-byte UTF-8 char
               // see: http://www.cl.cam.ac.uk/~mgk25/unicode.html#utf-8
-              return chr(0x07 & (ord($utf8{0}) >> 2))
-                   . chr((0xC0 & (ord($utf8{0}) << 6))
-                       | (0x3F & ord($utf8{1})));
+              return chr(0x07 & (ord(substr($utf8,0,1)) >> 2))
+                   . chr((0xC0 & (ord(substr($utf8,0,1)) << 6))
+                       | (0x3F & ord(substr($utf8,1,1))));
 
           case 3:
               // return a UTF-16 character from a 3-byte UTF-8 char
