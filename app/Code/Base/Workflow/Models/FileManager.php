@@ -273,7 +273,7 @@ class FileManager extends Model
                     $log->reset();
                     $include = true;
                     if (isset($cfg['new_files_only']) && ($cfg['new_files_only'] === 'Y')) {
-                        $include = (!$log->setTransport('sftp')->setHost($cfg['host'])->setFilename($filename)->load(true));
+                        $include = (!count($log->setTransport('sftp')->setHost($cfg['host'])->setFilename($filename)->load(true)));
                     }
                     if ($include) {
                         $log->setFilesize($filesize = $sftp->size($filename));

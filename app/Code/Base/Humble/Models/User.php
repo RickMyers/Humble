@@ -279,7 +279,7 @@ class User extends Model {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
                 $user   = Humble::getEntity('humble/users')->setUserName($data['user_name']);
-                if ($user->load(true)) {
+                if (count($user->load(true))) {
                     $user->setLoginAttempts(0);
                     $user->save();
                 }
@@ -301,7 +301,7 @@ class User extends Model {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
                 $user   = Humble::getEntity('humble/users')->setUserName($data['user_name']);
-                if ($user->load(true)) {
+                if (count($user->load(true))) {
                     $user->setLoginAttempts($user->getLoginAttempts()+1);
                     $x = $user->save();
                 }
@@ -460,7 +460,7 @@ class User extends Model {
         $token    = $this->getResetPasswordToken();
         $email    = $this->getEmail();
         $user     = Humble::getEntity('humble/users')->setEmail($email)->setResetPasswordToken($token);
-        if ($user->load(true) && $password && ($password == $confirm)) {
+        if (count($user->load(true)) && $password && ($password == $confirm)) {
             $user->setPassword($password);
             $user->setResetPasswordToken(null);
             $user->setAccountStatus(USER_ACCOUNT_UNLOCKED);

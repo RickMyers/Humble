@@ -96,7 +96,7 @@ class Trigger  {
      */
     public function fire($namespace,$cleanEvent,$eventName) {
         foreach (Humble::getEntity('paradigm/event/listeners')->setNamespace($namespace)->setEvent($eventName)->setActive('Y')->fetch() as $diagram) {
-            if (Humble::getEntity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true)) {
+            if (count(Humble::getEntity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true))) {
                 $handled = $this->runWorkflow($diagram,clone $cleanEvent);
                 if ($cancelBubble) {
                     $this->_errors('bubbling was canceled');
@@ -138,7 +138,7 @@ class Trigger  {
             if (!$handled) {
                 //we didn't find a listener for our event, lets try it another way
                 foreach (Humble::getEntity('paradigm/event/listeners')->setNamespace($this->_namespace())->setEvent($eventName)->setActive('Y')->fetch() as $diagram) {
-                    if (Humble::getEntity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true)) {
+                    if (count(Humble::getEntity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true))) {
                         $handled = $this->runWorkflow($diagram,$cleanEvent);
                         if ($cancelBubble) {
                             $this->_errors('bubbling was canceled');

@@ -41,14 +41,14 @@ class Helper extends \Code\Base\Humble\Models\Model {
      * @TODO:  Refactor all of the XML routines out of here and into their own XML helper!!!!!!!!
      */
     public function isValidXML($xml=false)    {
-		$this->xml = ($xml!==false) ? $xml : $this->getXML();
+	$this->xml = ($xml!==false) ? $xml : $this->getXML();
         if ($this->xml !== null) {
             libxml_use_internal_errors(true);
             @$doc = new \DOMDocument('1.0', 'utf-8');
             @$doc->loadXML($this->xml);
             $this->errors = libxml_get_errors();
         }
-		return ($this->xml === null) ? false : (count($this->errors) == 0);
+	return ($this->xml === null) ? false : (count($this->errors) == 0);
     }
 
     /**
@@ -78,22 +78,22 @@ class Helper extends \Code\Base\Humble\Models\Model {
      * @param type $xml
      * @return type
      */
-	public function toArray($xml=null)
-	{
-		$xml = ($xml) ? $xml : $this->getXML();
-		return json_decode(json_encode((array) simplexml_load_string($xml)),1);
-	}
+    public function toArray($xml=null)
+    {
+        $xml = ($xml) ? $xml : $this->getXML();
+        return json_decode(json_encode((array) simplexml_load_string($xml)),1);
+    }
 
     /**
      *
      * @param type $xml
      * @return type
      */
-	public function toJSON($xml=null)
-	{
-		$xml = ($xml) ? $xml : $this->getXML();
-		return json_encode((array) simplexml_load_string($xml));
-	}
+    public function toJSON($xml=null)
+    {
+        $xml = ($xml) ? $xml : $this->getXML();
+        return json_encode((array) simplexml_load_string($xml));
+    }
 
     /**
      * This is a helper for templaters, takes a string and converts to a JSON array
@@ -107,6 +107,7 @@ class Helper extends \Code\Base\Humble\Models\Model {
         }
         return false;
     }
+    
     /**
      *
      * @param type $arr
@@ -158,7 +159,7 @@ class Helper extends \Code\Base\Humble\Models\Model {
      */
     public function toSimpleXML($xml=null)    {
     	$xml = ($xml) ? $xml : $this->getXML();
-		return simplexml_load_string($xml);
+	return simplexml_load_string($xml);
     }
 
     /**
@@ -218,14 +219,14 @@ class Helper extends \Code\Base\Humble\Models\Model {
      * @return type
      */
     public function fetch($url=false) {
-		ini_set('user_agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.9) Gecko/20071025 Firefox/2.0.0.9');
-		$opts = array(
-			'http'=>array(
-			'method'=>"GET",
-			'header'=>"Accept-language: en\r\n" .
-			"User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.9) Gecko/20071025 Firefox/2.0.0.9\r\n"
-			)
-		);
+        ini_set('user_agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.9) Gecko/20071025 Firefox/2.0.0.9');
+        $opts = array(
+                'http'=>array(
+                'method'=>"GET",
+                'header'=>"Accept-language: en\r\n" .
+                "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.9) Gecko/20071025 Firefox/2.0.0.9\r\n"
+                )
+        );
         $retval = '';
 
         if ($url) {
