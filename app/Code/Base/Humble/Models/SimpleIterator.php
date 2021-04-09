@@ -132,7 +132,7 @@ class SimpleIterator extends Model implements \Iterator, \Countable
         return count($this->array,$mode);
     }
 
-    protected function fetch($position=false) {
+    public function fetch($position=false) {
         $retval = null;
         $position = ($position===false) ? $this->position : $position;
         if (isset($this->array[$position])) {
