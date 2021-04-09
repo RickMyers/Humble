@@ -471,7 +471,8 @@ SQL;
             }
         }
         $this->_lastResult->snip();
-        return Humble::array($result);
+        return $result;
+  //      return Humble::array($result);
     }
 
     /**
