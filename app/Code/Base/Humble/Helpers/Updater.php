@@ -102,7 +102,7 @@ class Updater extends Installer
                 if (is_dir($location = 'Code/'.$module['package'].'/'.$module['controller'])) {
                     $dh = dir($location);
                     while ($controller = $dh->read()) {
-                        if (($controller == '.') || ($controller == '..')) {
+                        if (($controller == '.') || ($controller == '..') || is_dir($location.'/'.$controller)) {
                             continue;
                         }
                         foreach (simplexml_load_file($location.'/'.$controller) as $actions) {
