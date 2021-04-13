@@ -4,7 +4,7 @@
 Actions and views related to directory services
 
 -->
-<controller name="directory" use="Smarty3" author="Rick Myers" email="rick@humblecoding.com">
+<controller name="directory" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
         <action name="generate">
             <description>Generates a list of services available as an HTML page</description>

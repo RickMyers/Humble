@@ -14,9 +14,9 @@ use MongoDB;
  *
  * @category   Framework
  * @package    Core
- * @author     Rick Myers <rick@humblecoding.com>
- * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://humblecoding.com/LICENSE.txt
+ * @author     Rick Myers <rick@humbleprogramming.com>
+ * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
+ * @license    https://humbleprogramming.com/LICENSE.txt
  * @version    1.0
  * @link       http://pear.php.net/package/PackageName
  */

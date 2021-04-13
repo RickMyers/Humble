@@ -2,7 +2,7 @@
  *
  * Sliders, part of the Cloud-IT project.
  *
- * @author: Rick Myers <rick@humblecoding.com>
+ * @author: Rick Myers <rick@humbleprogramming.com>
  *
  *
  */

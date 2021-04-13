@@ -3,9 +3,9 @@
 
 Sensor related stuff
 
-For Controller reference, please see "Anatomy of a Controller" at https://humblecoding.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="sensor" use="Smarty3" author="Richard Myers" email="rick@humblecoding.com">
+<controller name="sensor" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
     <actions>
         <action name="listen" passalong="windowId" >
             <description>Listens for ping from the detector</description>

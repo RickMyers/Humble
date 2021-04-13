@@ -13,11 +13,11 @@ use Environment;
  *
  * @category   Entity
  * @package    Core
- * @author       rick@humblecoding.com
- * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://humblecoding.com/license.txt
+ * @author       rick@humbleprogramming.com
+ * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humblecoding.com/docs/class-Forms.html
+ * @link       https://humbleprogramming.com/docs/class-Forms.html
  * @since      File available since Release 1.0.0
  */
 class Forms extends \Code\Base\Paradigm\Entities\Entity

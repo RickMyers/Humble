@@ -13,8 +13,8 @@ namespace Code\Base\Paradigm\Entities\Workflow;
  * @package    PackageName
  * @author     Original Author <author@example.com>
  * @author     Another Author <another@example.com>
- * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://humblecoding.com/LICENSE.txt
+ * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
+ * @license    https://humbleprogramming.com/LICENSE.txt
  * @version    1.0
  * @link       http://pear.php.net/package/PackageName
  * @see        NetOther, Net_Sample::Net_Sample()

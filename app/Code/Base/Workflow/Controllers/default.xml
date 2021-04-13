@@ -3,9 +3,9 @@
 
 Default configurations for basic
 
-For Controller reference, please see "Anatomy of a Controller" at https://humblecoding.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="default" use="Smarty3" author="Rick Myers" email="rick@humblecoding.com">
+<controller name="default" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
 
         <action name="terminus">

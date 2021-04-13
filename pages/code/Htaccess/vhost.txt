@@ -1,6 +1,6 @@
 <VirtualHost *:80>
 	DocumentRoot "c:\var\www\Humble"
-	ServerName humblecoding.test
+	ServerName humbleprogramming.test
 	ErrorLog "c:\var\logs\apache_humble.log"
 	AddType text/html .htmls
         AddOutputFilter INCLUDES .htmls

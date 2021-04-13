@@ -3,7 +3,7 @@
 
 Basic Controller only used to route the person to the application home page
 
-For Controller reference, please see "Anatomy of a Controller" at https://humblecoding.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
 <controller name="home" use="Smarty3" author=" " email="">
     <actions>

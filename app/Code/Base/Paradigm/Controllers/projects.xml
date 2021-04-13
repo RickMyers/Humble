@@ -3,9 +3,9 @@
 
 Test API Projects actions
 
-For Controller reference, please see "Anatomy of a Controller" at https://humblecoding.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="projects" use="Twig" author="Rick Myers" email="rick@humblecoding.com">
+<controller name="projects" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
         <action name="list">
             <description>Lists the current projects</description>

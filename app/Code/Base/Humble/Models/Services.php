@@ -14,11 +14,11 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Core
- * @author     Rick Myers <rick@humblecoding.com>
+ * @author     Rick Myers <rick@humbleprogramming.com>
  * @copyright  2005-present Humble
- * @license    https://humblecoding.com/license.txt
+ * @license    https://humbleprogramming.com/license.txt
  * @version    <INSERT VERSIONING MECHANISM HERE />
- * @link       https://humblecoding.com/docs/class-Services.html
+ * @link       https://humbleprogramming.com/docs/class-Services.html
  * @since      File available since Release 1.0.0
  */
 class Services extends Model

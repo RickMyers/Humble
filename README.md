@@ -18,7 +18,7 @@ methods and allowing you to construct business logic by drag-and-dropping those 
 is then compiled.
 
 ### Paradigm Engine
-![Demo Workflow](https://humblecoding.com/pages/images/screengrabs/workflow_1.png "Demo Workflow")
+![Demo Workflow](https://humbleprogramming.com/pages/images/screengrabs/workflow_1.png "Demo Workflow")
 
 The workflow shown above is composed of exposed methods contained within your models.  These methods are categorized by the type of functionality they perform, such
 as PROCESS, INPUT, NOTIFICATION (e-mail, text, pop-up alert...), DECISION, etc... which you identify using annotations in your code, as shown below:
@@ -52,7 +52,7 @@ as PROCESS, INPUT, NOTIFICATION (e-mail, text, pop-up alert...), DECISION, etc..
 Once a workflow has been built and all components (glyphs) have been mapped to the appropriate methods, you are able to compile the diagram into a working workflow
 as shown below:
 
-![Workflow Compiled](https://humblecoding.com/pages/images/screengrabs/workflow_2.png "Workflow Compiled")
+![Workflow Compiled](https://humbleprogramming.com/pages/images/screengrabs/workflow_2.png "Workflow Compiled")
 
 ## Controllers
 
@@ -191,7 +191,7 @@ Here is a real quick video of building a module to manage the MySQL demonstratio
 ## A final note...
 
 _**Don't Fork And Run!**_  You won't be getting what you think you are getting.  The proper way to install this framework for testing is to visit the project home page
-at https://humblecoding.com and make sure you have the dependencies properly installed and configured.  You will also need to have an Apache web server running and your VHOST
+at https://humbleprogramming.com and make sure you have the dependencies properly installed and configured.  You will also need to have an Apache web server running and your VHOST
 configured properly.
 
-Any questions?  The Author of this framework can be reached here... <a href="mailto:rick@humblecoding.com?subject=Humble%20Framework">Rick Myers</a>
+Any questions?  The Author of this framework can be reached here... <a href="mailto:rick@humbleprogramming.com?subject=Humble%20Framework">Rick Myers</a>

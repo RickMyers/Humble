@@ -117,7 +117,7 @@ case $1 in
         echo 'rollback';;
   'integrate')
         cd /var/www/$2
-        wget https://humblecoding.com/app/install/Humble.php
+        wget https://humbleprogramming.com/app/install/Humble.php
         php Humble.php --restore;;
 
   *)

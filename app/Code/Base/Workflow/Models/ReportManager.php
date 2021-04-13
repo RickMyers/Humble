@@ -12,7 +12,7 @@ use Humble;
  *
  * @category   Logical Model
  * @package    Workflow
- * @author     Rick Myers <rick@humblecoding.com>
+ * @author     Rick Myers <rick@humbleprogramming.com>
  * @since      File available since Release 1.0.0
  */
 class ReportManager extends Model

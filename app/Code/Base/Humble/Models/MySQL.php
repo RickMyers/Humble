@@ -11,8 +11,8 @@ namespace Code\Base\Humble\Models;
  *
  * @category   Framework
  * @package    Core
- * @author     Rick Myers <rick@humblecoding.com>
- * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
+ * @author     Rick Myers <rick@humbleprogramming.com>
+ * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
  * @version    1.0
  */
 class MySQL  {

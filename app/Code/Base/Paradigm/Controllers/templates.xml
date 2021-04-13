@@ -3,9 +3,9 @@
 
 Fetches the aggregated "decoupled" UI templates
 
-For Controller reference, please see "Anatomy of a Controller" at https://humblecoding.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="templates" use="Smarty3" author="Rick Myers" email="rick@humblecoding.com">
+<controller name="templates" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
 
         <action name="fetch" output='JSON'>

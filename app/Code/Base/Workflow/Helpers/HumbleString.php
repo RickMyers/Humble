@@ -11,8 +11,8 @@ use Humble;
  *
  * @category   Utility
  * @package    Framework
- * @author     Rick Myers rick@humblecoding.com
- * @license    https://www.humblecoding.com/license.txt
+ * @author     Rick Myers rick@humbleprogramming.com
+ * @license    https://www.humbleprogramming.com/license.txt
  * @since      File available since Release 1.0.0
  */
 class HumbleString extends Helper implements \Countable, \ArrayAccess, \IteratorAggregate

@@ -3,9 +3,9 @@
 
 Manages the saving of settings and customizations for components
 
-For Controller reference, please see "Anatomy of a Controller" at https://humblecoding.com/pages/Controllers.htmls
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="settings" use="Smarty3" author="Rick Myers" email="rick@humblecoding.com">
+<controller name="settings" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
         <action name="save">
             <description>Saves the settings array</description>

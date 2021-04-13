@@ -13,11 +13,11 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Workflow Editor
- * @author     Rick Myers <rick@humblecoding.com>
+ * @author     Rick Myers <rick@humbleprogramming.com>
  * @copyright  2005-present Humble
- * @license    https://humblecoding.com/license.txt
+ * @license    https://humbleprogramming.com/license.txt
  * @version    <INSERT VERSIONING MECHANISM HERE />
- * @link       https://humblecoding.com/docs/class-Post.html
+ * @link       https://humbleprogramming.com/docs/class-Post.html
  * @since      File available since Release 1.0.0
  */
 class Post extends Model

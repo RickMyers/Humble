@@ -8,11 +8,11 @@ use Humble;
  *
  * PHP version 7.2+
  *
- * LICENSE: http://www.humblecoding.com/license.txt
+ * LICENSE: http://www.humbleprogramming.com/license.txt
  *
  * @category   Component
  * @package    Base
- * @author     Original Author <rick@humblecoding.com>
+ * @author     Original Author <rick@humbleprogramming.com>
  * @since      File available since Release 1.0.0
  */
 

@@ -13,11 +13,11 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Core
- * @author     Rick Myers <rick@humblecoding.com>
+ * @author     Rick Myers <rick@humbleprogramming.com>
  * @copyright  2005-present Humble
- * @license    https://humblecoding.com/license.txt
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humblecoding.com/docs/class-File.html
+ * @link       https://humbleprogramming.com/docs/class-File.html
  * @since      File available since Release 1.0.0
  */
 class File extends Model

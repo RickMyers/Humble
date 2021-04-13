@@ -15,9 +15,9 @@ use Environment;
  * @package    Core
  * @author     Rick Myers <>
  * @copyright  2005-present Humble
- * @license    https://humblecoding.com/license.txt
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humblecoding.com/docs/class-Trigger.html
+ * @link       https://humbleprogramming.com/docs/class-Trigger.html
  * @since      File available since Release 1.0.0
  */
 class Trigger extends Model

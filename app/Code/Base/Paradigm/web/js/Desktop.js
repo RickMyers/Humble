@@ -4,7 +4,7 @@
 //Part of the Cloud-IT project
 //
 //All licensing and copyrights are held by Cloud-IT.  Use is by permission from
-//  Rick Myers [rick@humblecoding.com]
+//  Rick Myers [rick@humbleprogramming.com]
 //
 //All other rights are reserved.
 //Copyright 2014, Cloud-IT.com

@@ -33,7 +33,7 @@
             Some useful locations...<br /><br />
             <ul>
                 <li> &&HOME&& - location for the main page of your Single Page Application</li>
-                <li> <a style="color: blue" href="https://humblecoding.com" target="_BLANK">https://humblecoding.com</a> - website with extensive documentation and videos for the Humble framework</li>
+                <li> <a style="color: blue" href="https://humbleprogramming.com" target="_BLANK">https://humbleprogramming.com</a> - website with extensive documentation and videos for the Humble framework</li>
                 <li> <a style="color: blue" href="/admin" target="_BLANK">/admin</a> - administration page for your application</li>
             </ul>
             <br /><br />

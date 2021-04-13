@@ -10,11 +10,11 @@ namespace Code\Base\Humble\Helpers;
  *
  * @category   Utility
  * @package    Framework
- * @author     Rick Myers rick@humblecoding.com
- * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://humblecoding.com/license.txt
+ * @author     Rick Myers rick@humbleprogramming.com
+ * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humblecoding.com/docs/class-.then(_Helper_Directory.html
+ * @link       https://humbleprogramming.com/docs/class-.then(_Helper_Directory.html
  * @since      File available since Version 1.0.1
  */
 class Directory extends File

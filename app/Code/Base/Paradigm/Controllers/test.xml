@@ -3,9 +3,9 @@
 
 Individual API Test Actions
 
-For Controller reference, please see "Anatomy of a Controller" at https://humblecoding.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="test" use="Twig" author="Rick Myers" email="rick@humblecoding.com">
+<controller name="test" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
         <action name="list">
             <description>Lists the tests in a project</description>

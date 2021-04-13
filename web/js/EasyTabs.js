@@ -1,7 +1,7 @@
 /**   ------------------------------------------
  *    Easy Tab Navigation Class
  *
- *    @author: <rick@humblecoding.com>
+ *    @author: <rick@humbleprogramming.com>
  *
  *    ------------------------------------------  */
 var EasyTabs = [];

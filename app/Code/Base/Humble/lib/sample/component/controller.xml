@@ -3,7 +3,7 @@
 
 &&DESCRIPTION&&
 
-For Controller reference, please see "Anatomy of a Controller" at https://www.humblecoding.com/pages/Controllers.htmls
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="&&NAME&&" use="&&ENGINE&&" author="&&AUTHORNAME&&" email="&&AUTHOREMAIL&&">
     <actions>

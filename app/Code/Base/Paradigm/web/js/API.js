@@ -9,7 +9,7 @@
  *
  * @author
  *
- *      Rick Myers [rick@humblecoding.com]
+ *      Rick Myers [rick@humbleprogramming.com]
  *
  * ----------------------------------------------------------------------------- */
 var API = (function () {

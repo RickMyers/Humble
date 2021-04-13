@@ -8,9 +8,9 @@
  *
  * @category   Framework
  * @package    Core
- * @author     Original Author <rick@humblecoding.com>
- * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://humblecoding.com/LICENSE.txt
+ * @author     Original Author <rick@humbleprogramming.com>
+ * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
+ * @license    https://humbleprogramming.com/LICENSE.txt
  * @version    1.0.1
  * @since      File available since Version 1.0.1
  */
@@ -187,11 +187,11 @@ class Log {
             $arr[] = $name.' = '.$val;
         }
         $text .= "<b>HTTP POST</b><br /><pre>\n".implode("\n",$arr)."\n</pre><br />";
-        $headers = 'From: alert@humblecoding.com' ."\r\n" .
-                   'Reply-To: noreply@humblecoding.com' . "\r\n" .
+        $headers = 'From: alert@humbleprogramming.com' ."\r\n" .
+                   'Reply-To: noreply@humbleprogramming.com' . "\r\n" .
                    'Content-Type: text/html' . "\r\n" .
                    'X-Mailer: PHP/' .phpversion();
-        mail('rick@humblecoding.com',$subject,$text,$headers);
+        mail('rick@humbleprogramming.com',$subject,$text,$headers);
     }
 
     /**

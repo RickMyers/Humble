@@ -3,9 +3,9 @@
 
 Workflow actions involving FTP 
 
-For Controller reference, please see "Anatomy of a Controller" at https://humblecoding.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="ftp" use="Smarty3" author="Richard Myers" email="rick@humblecoding.com.com">
+<controller name="ftp" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com.com">
     <actions>
         <action name="get" passalong="windowId">
             <description>Retrieves files at sFTP site</description>

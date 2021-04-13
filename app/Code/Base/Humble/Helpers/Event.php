@@ -13,11 +13,11 @@ use Environment;
  *
  * @category   Utility
  * @package    Framework
- * @author     Rick Myers rick@humblecoding.com
- * @copyright  2005-present humblecoding.com
- * @license    https://humblecoding.com/license.txt
+ * @author     Rick Myers rick@humbleprogramming.com
+ * @copyright  2005-present humbleprogramming.com
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0.0
- * @link       https://humblecoding.com/docs/class-Event.html
+ * @link       https://humbleprogramming.com/docs/class-Event.html
  * @since      File available since Release 1.0.0
  */
 class Event extends Helper

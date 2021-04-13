@@ -13,11 +13,11 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Framework
- * @author       <rick@humblecoding.com>
+ * @author       <rick@humbleprogramming.com>
  * @copyright  2005-present Humble Project
- * @license    https://humblecoding.com/license.txt
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humblecoding.com/docs/class-Designer.html
+ * @link       https://humbleprogramming.com/docs/class-Designer.html
  * @since      File available since Release 1.0.0
  */
 class Designer extends Model

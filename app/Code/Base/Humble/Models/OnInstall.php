@@ -13,11 +13,11 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Core
- * @author       <rick@humblecoding.com>
+ * @author       <rick@humbleprogramming.com>
  * @copyright  2005-present Humble Project
- * @license    https://humblecoding.com/license.txt
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humblecoding.com/docs/class-OnInstall.html
+ * @link       https://humbleprogramming.com/docs/class-OnInstall.html
  * @since      File available since Release 1.0.0
  */
 class OnInstall extends Model

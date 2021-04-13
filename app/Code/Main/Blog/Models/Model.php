@@ -12,9 +12,9 @@ namespace Code\Main\Blog\Models;
  *
  * @category   Model
  * @package    Blog
- * @author     Original Author <rick@humblecoding.com>
- * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://humblecoding.com/LICENSE.txt
+ * @author     Original Author <rick@humbleprogramming.com>
+ * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
+ * @license    https://humbleprogramming.com/LICENSE.txt
  * @version    3.0.1
  */
 class Model extends \Code\Base\Humble\Models\Model

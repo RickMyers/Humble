@@ -11,11 +11,11 @@ namespace Code\Base\Humble\Models;
  *
  * @category   .then(
  * @package    Framework
- * @author     Rick Myers <rick@humblecoding.com>
- * @copyright  2007-Present, Rick Myers <rick@humblecoding.com>
- * @license    https://humblecoding.com/license.txt
+ * @author     Rick Myers <rick@humbleprogramming.com>
+ * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humblecoding.com/
+ * @link       https://humbleprogramming.com/
  * @since      File available since Version 1.0.1
  */
 class SimpleIterator extends Model implements \Iterator, \Countable

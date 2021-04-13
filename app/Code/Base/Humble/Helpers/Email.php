@@ -14,9 +14,9 @@ use Environment;
  * @category   Utility
  * @package    Other
  * @author     Rick Myers 
- * @license    https://humblecoding.com/license.txt
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0.0
- * @link       https://humblecoding.com/docs/class-Email.html
+ * @link       https://humbleprogramming.com/docs/class-Email.html
  * @since      File available since Release 1.0.0
  */
 class Email extends Helper

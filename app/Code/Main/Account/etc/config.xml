@@ -6,7 +6,7 @@
         <description>Manages registered users</description>
         <author>
             <name>Rick Myers</name>
-            <email>rick@humblecoding.com</email>
+            <email>rick@humbleprogramming.com</email>
         </author>
         <module>
             <name>Account</name>
