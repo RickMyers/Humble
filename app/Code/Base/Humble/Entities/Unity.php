@@ -35,6 +35,8 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_clean         = true;   //if polyglot, clean out MongoDB _id references in the result set
     protected $_translation   = false;  //if true, parse result set looking for tokens and replace them with corresponding value from lookup table
     private   $_collections   = [];     //a hash table of connections to be used in a polyglot transaction.  This is used to improve performance
+    protected $_dynamic       = false; //Dynamically build the where clause on my query?    
+    protected $_alias         = false;
     protected $_batchsql      = [];
     protected $_batch         = false;
     protected $_isVirtual     = false;
@@ -479,7 +481,7 @@ SQL;
      *
      */
     protected function buildWhereClause($useKeys) {
-        $query = '';
+        $query   = '';
         $results = [];
         if ($useKeys) {
             foreach ($this->_keys as $idx => $key) {
@@ -497,7 +499,7 @@ SQL;
                  if ($andFlag == false) {
                     $query .= ' where ';
                 }
-                $query .= ($andFlag ? "and `": "`").$field."` = '".addslashes($value)."' ";
+                $query .= ($andFlag ? "and ": "").($this->_alias() ? $this->_alias().'.':'')."`".$field."` = '".addslashes($value)."' ";
                 $andFlag = true;
             }
         }
@@ -745,9 +747,13 @@ SQL;
      * @return type
      */
     public function query($query) {
+        if ($this->_dynamic()) {
+            $query .= $this->buildWhereClause(true);
+        }
         if (!$this->_orderBuilt && (count($this->_orderBy)>0)) {
             $query .= $this->buildOrderByClause();
         }
+        //print($query); die();
         $words  = explode(' ',trim($query));
         if (strtoupper($words[0])==='SELECT') {
             if ($this->_page()) {
@@ -1334,7 +1340,7 @@ SQL;
         }
         return $this;
     }
-
+    
     /**
      *
      */
@@ -1347,6 +1353,30 @@ SQL;
         return $this;
     }
 
+    /**
+     * Used in conjunction with dynamic for building semi-dynamic where clauses
+     */
+    public function _alias($alias=null) {
+        if ($alias === null) {
+            return $this->_alias;
+        } else {
+            $this->_alias = $alias;
+        }
+        return $this;
+    }
+    
+    /**
+     * Flag to dynamically build the where clause
+     */
+    public function _dynamic($state=null) {
+        if ($state === null) {
+            return $this->_dynamic;
+        } else {
+            $this->_dynamic = $state;
+        }
+        return $this;
+    }
+    
     /**
      *
      */
