@@ -330,7 +330,14 @@ PHP;
 
         if ((string)$parameter['name'] == '*') {
             print('
+                                $exc = [];
+                                if (\''.$source.'\' === \'$_REQUEST\') {
+                                    $exc = ["n"=>true,"m"=>true,"c"=>true];
+                                }
                                 foreach ('.$source.' as $name => $value) {
+                                    if (isset($exc[$name])) {
+                                       continue;
+                                    }
                                     $method = "set".underscoreToCamelCase($name);
                                     $'.$node['id'].'->$method($value);
                                 }
@@ -1248,8 +1255,8 @@ SQL;
             $source          = $source.'/'.$controller.'.xml';
         }
         if (!$this->getDestination()) {
-                $mod    = \Humble::getModule($namespace);
-                $this->setDestination($mod['package'].'/'.str_replace(['_'],['/'],$mod['controller_cache']));
+            $mod    = \Humble::getModule($namespace);
+            $this->setDestination($mod['package'].'/'.str_replace(['_'],['/'],$mod['controller_cache']));
         }
         if (file_exists($source)) {
             $this->xml = file_get_contents($source);

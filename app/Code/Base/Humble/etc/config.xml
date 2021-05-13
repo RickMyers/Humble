@@ -57,6 +57,7 @@
             <prefix>humble_</prefix>
             <mongodb>humble</mongodb>
             <entities>
+                <audit_log polyglot="Y" />
                 <categories />
                 <chronicle />
                 <controllers />

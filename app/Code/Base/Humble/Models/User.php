@@ -277,12 +277,8 @@ class User extends Model {
     public function resetTries($EVENT=false) {
         if ($EVENT) {
             $data   = $EVENT->load();
-            if (isset($data['user_name'])) {
-                $user   = Humble::getEntity('humble/users')->setUserName($data['user_name']);
-                if (count($user->load(true))) {
-                    $user->setLoginAttempts(0);
-                    $user->save();
-                }
+            if (Environment::whoAmI()) {
+                Humble::getEntity('humble/users')->setUid(Environment::whoAmI())->setLoginAttempts(0)->save();
             } else {
                 //throw an exception for insufficient data
             }
@@ -299,11 +295,10 @@ class User extends Model {
     public function incrementTries($EVENT=false) {
         if ($EVENT) {
             $data   = $EVENT->load();
-            if (isset($data['user_name'])) {
-                $user   = Humble::getEntity('humble/users')->setUserName($data['user_name']);
-                if (count($user->load(true))) {
-                    $user->setLoginAttempts($user->getLoginAttempts()+1);
-                    $x = $user->save();
+            if (Environment::whoAmI()) {
+                $user   = Humble::getEntity('humble/users')->setUid(Environment::whoAmI());
+                if (count($user->load())) {
+                    $user->setLoginAttempts($user->getLoginAttempts()+1)->save();
                 }
             } else {
                 //throw an exception for insufficient data
@@ -320,11 +315,8 @@ class User extends Model {
     public function recordLoginTime($EVENT=false) {
         if ($EVENT) {
             $data   = $EVENT->load();
-            if (isset($data['user_name'])) {
-                $user   = Humble::getEntity('humble/users')->setUserName($data['user_name']);
-                $user->load(true);
-                $user->setLoggedIn(date('Y-m-d H:i:s'));
-                $user->save();
+            if (Environment::whoAmI()) {
+                Humble::getEntity('humble/users')->setUid(Environment::whoAmI())->setLoggedIn(date('Y-m-d H:i:s'))->save();
             } else {
                 //throw an exception for insufficient data
             }
