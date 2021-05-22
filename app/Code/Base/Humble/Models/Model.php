@@ -3,7 +3,7 @@ namespace Code\Base\Humble\Models;
 use Humble;
 use Environment;
 use Log;
-use Symfony\Component\Yaml\Yaml;
+/*use Symfony\Component\Yaml\Yaml;*/
 /**
  *
  * At a minimum, your custom classes should override the getClassName method...
@@ -607,10 +607,10 @@ SOAP;
     protected function _remoteProcedureCall($name=false) {
         $retval = null;
         if ($name && $this->_RPC()) {
-            //require_once('../lib/yaml/lib/sfYaml.php');
+
             if (!\Singleton::mappings()) {
                 if (!$default_mappings = Humble::cache('yaml-humble')) {
-                    Humble::cache('yaml-humble',$default_mappings = Yaml::parseFile('Code/Base/Humble/RPC/mapping.yaml'));
+                    Humble::cache('yaml-humble',$default_mappings = yaml_parse('Code/Base/Humble/RPC/mapping.yaml'));
                 }
                 \Singleton::mappings($default_mappings); //default mappings
             }
@@ -620,7 +620,7 @@ SOAP;
                 if (file_exists($mappingFile)) {
                     //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
                     //@TODO: cache this
-                    \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings() ,Yaml::parseFile($mappingFile)) : Yaml::parseFile($mappingFile)));
+                    \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings() ,yaml_parse($mappingFile)) : yaml_parse($mappingFile)));
                 }
             }
             if (isset(\Singleton::mappings()[$name])) {

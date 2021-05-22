@@ -800,7 +800,7 @@ TXT;
             }
         }
         //Now add manifest file in the form of a git ignore...
-        $ignore = array_merge(['/images/*','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
+        $ignore = array_merge(['/images/*','/app/allowed.json','/app/Constants.php','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
         $zip->addFromString('.gitignore',implode("\n",$ignore));
         //$zip->addFromString('.manifest',implode("\n",$content['xref']));
         $zip->close();
