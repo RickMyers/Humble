@@ -142,6 +142,8 @@
                                 <li><a href='#' onclick='Administration.add.package(); return false'>Add New Package</a></li>
                                 <li><a href='#' onclick='Administration.admin.add.user(); return false'>Add User</a></li>
                                 <li><a href='#' onclick='Administration.admin.add.list(); return false'>Manage User Lists</a></li>
+                                <li><a href='#' onclick='Administration.admin.add.exportTarget(); return false'>Add Export Target</a></li>
+                                <li><a href='#' onclick='Administration.admin.add.importKey(); return false'>Add Import Key</a></li>
                                 {% if (permissions.getSuperUser() == 'Y') %}
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>

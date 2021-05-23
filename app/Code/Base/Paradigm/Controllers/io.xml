@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+
+Import/Export Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="io" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        
+        <action name="export" blocking="off" passalong="window_id">
+            <description>A page to add an export target location</description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="token" blocking="off" passalong="window_id">
+            <description>A page to add an export target location</description>
+        </action>
+        
+        <!-- ############################################################### -->        
+        
+        <action name="create" blocking="off" passalong="window_id">
+            <description>Creates an export target</description>
+            <entity namespace="paradigm" class="export/target" method="save">
+                <parameter name='*' source='post' />
+            </entity>
+        </action>
+        
+        <!-- ############################################################### -->        
+        
+        <action name="activate" blocking="off" passalong="window_id">
+            <description>Stores a token to be used in an export/import process</description>
+            <entity namespace="paradigm" class="import/tokens" method="save">
+                <parameter name='*' source='post' />
+            </entity>            
+        </action>
+        
+    </actions>
+</controller>
