@@ -17,18 +17,6 @@ var Administration = (function () {
                                     //window.location.reload();
                                 }).post();
                             }
-                        },
-                        exportTarget: function () {
-                            var win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/paradigm/io/target')).add('window_id',win.id).then(function (response) {
-                                win._open(response);
-                            }).post();
-                        },
-                        importToken: function () {
-                            var win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/paradigm/io/token')).add('window_id',win.id).then(function (response) {
-                                win._open(response);
-                            }).post();                            
                         }
                     },
                     create: {
@@ -203,6 +191,20 @@ var Administration = (function () {
                         }
                     },
                     workflows: {
+                        add: {
+                            exportTarget: function () {
+                                var win = Desktop.semaphore.checkout(true);
+                                (new EasyAjax('/paradigm/io/target')).add('window_id',win.id).then(function (response) {
+                                    win._open(response);
+                                }).post();
+                            },
+                            importToken: function () {
+                                var win = Desktop.semaphore.checkout(true);
+                                (new EasyAjax('/paradigm/io/token')).add('window_id',win.id).then(function (response) {
+                                    win._open(response);
+                                }).post();                            
+                            }
+                        },                        
                         fetch: function () {
                             (new EasyAjax('/humble/workflows/list')).then(function (response) {
 

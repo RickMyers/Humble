@@ -203,7 +203,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="exportlist" passalong='id,windowId'>
             <description>Presents a list of destination to export to</description>
-            <entity namespace="paradigm" class="import_sources" id="sources" />
+            <entity namespace="paradigm" class="export/targets" id="targets" orderby="alias=ASC" />
         </action>
 
         <!-- ############################################################### -->

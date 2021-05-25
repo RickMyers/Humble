@@ -85,7 +85,22 @@ CREATE TABLE `paradigm_events` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_import_sources` */
-
+CREATE TABLE paradigm_export_targets
+(
+      id INT AUTO_INCREMENT,
+      `alias` CHAR(32) DEFAULT NULL,
+      target VARCHAR(255) DEFAULT NULL,
+      token VARCHAR(255) DEFAULT NULL,
+      modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id)
+);
+CREATE TABLE paradigm_import_tokens
+(
+      id INT AUTO_INCREMENT,
+      token VARCHAR(255) DEFAULT NULL,
+      modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id)
+);
 CREATE TABLE `paradigm_import_sources` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(32) DEFAULT NULL,

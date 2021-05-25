@@ -52,21 +52,23 @@ class Workflow extends Model
             $this->exporter              = Environment::getProject();
             $this->_namespace($this->exporter->namespace);
         }
+        $target                          = Humble::getEntity('paradigm/export/targets')->setId($this->getId())->load();
         $results                         = [];
         $results[]                       = '#########################################################';
         $results[]                       = 'Beginning Export for '.$this->_namespace();
 
-        $workflow                        = ["data"  => false,"webservice_workflow" => false,"webservice" => false,"listeners"=>false,"components" => []];
+        $workflow                        = ["data"  => false,"webservice_workflow" => false,"webservice" => false,"listeners"=>false,"components" => [], "token"=>$target['token']];
         $workflow['data']                = Humble::getEntity('paradigm/workflows')->setId($this->getId())->load();
         $workflow['webservice_workflow'] = Humble::getEntity('paradigm/webservice_workflows')->setWorkflowId($workflow['data']['workflow_id'])->load(true);
         $workflow['listeners']           = Humble::getEntity('paradigm/workflow_listeners')->setWorkflowId($workflow['data']['workflow_id'])->load(true);
         if (isset($workflow['webservice_workflow']['webservice_id'])) {
             $workflow['webservice']      = Humble::getEntity('paradigm/webservices')->setId($workflow['webservice_workflow']['webservice_id'])->load();
         }
-        $destination                     = Humble::getEntity('paradigm/import_sources')->setId($this->getDestinationId())->load();
+
+//        $destination                     = Humble::getEntity('paradigm/import_sources')->setId($this->getDestinationId())->load();
         $element                         = Humble::getCollection('paradigm/elements');
-        $results[]                       = 'Exporting To '.$destination['source'];
-        if ($workflow['data'] && $destination) {
+        $results[]                       = 'Exporting To '.$target['target'];
+        if ($workflow['data'] && isset($target['target'])) {
             $results[]  = "Sending Components for Workflow [".$workflow['data']['title']."]";
             $component_list = json_decode($workflow['data']['workflow'],true);
             foreach ($component_list as $idx => $component) {
@@ -75,11 +77,23 @@ class Workflow extends Model
                 $results[]  = 'Exporting Component (MongoDB): '.$component['id'];
                 $workflow['components'][$component['id']] = $element->load();
             }
-            $whereTo = $destination['name'];
-            Log::warning('Export Target: '.$whereTo);
+  //          $whereTo = $destination['name'];
+            Log::warning('Export Target: '.$target['target']);
             $this->setSessionId(true);
+            $call = [
+                "url" => $target['target'],
+                "api-key" => '',
+                "api-var" => '',
+                "secure"  => true,
+                "method"  => "POST",
+                "arguments" => [
+                    "workflow" => ''
+                ]
+            ];            
+            
             $this->setWorkflow(json_encode($workflow));
-            $results[] = $this->$whereTo();
+            $results[] = $this->_hurl($target['target'],$this->_processArguments($call),$call);
+            //$results[] = $this->$whereTo();
         } else {
             $results[] = 'Missing a workflow '.$this->getId();
         }
@@ -113,7 +127,7 @@ class Workflow extends Model
 
         file_put_contents($dest.'workflow_'.time().'.dat',$this->getWorkflow());
         $workflow = json_decode($this->getWorkflow(),true);
-        if ($workflow) {
+        if ($workflow && count(Humble::getEntity('paradigm/import/tokens')->setToken($workflow['token'])->load(true))) {
             $mysql                  = Humble::getEntity('paradigm/workflows');
             $webservice_workflow    = Humble::getEntity('paradigm/webservice_workflows');
             $webservice             = Humble::getEntity('paradigm/webservices');
@@ -171,6 +185,8 @@ class Workflow extends Model
             }
             $this->generate($workflow['data']['id'],$workflow['data']['namespace']);
             $results[] = 'Generated the workflow';
+        } else {
+            $results[] = 'Import Token Not Found, Aborting Import';
         }
         $results[] = 'Finished receiving a workflow';
         $results[] = '###########################################################';

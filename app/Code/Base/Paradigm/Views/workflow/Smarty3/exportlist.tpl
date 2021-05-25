@@ -12,8 +12,8 @@
                 <div style="width: 300px; margin-right: auto; margin-left: auto; text-align: left; overflow: hidden; white-space: nowrap">
                     <select name="target" id="export-target-{$windowId}" style="width: 100%; padding: 2px; border: 1px solid #aaf; background-color: #FFEBC9">
                         <option style="font-style: italic" value="">Choose destination server...</option>
-                        {foreach from=$sources->fetch() item=option}
-                            <option value="{$option.id}">{$option.name} - {$option.source}</option>
+                        {foreach from=$targets->fetch() item=option}
+                            <option value="{$option.id}">{$option.alias} - {$option.target}</option>
                         {/foreach}
                     </select><br /><br />
                     <input type="button" style="background-color: #0077AF; font-size: 1.1em; padding: 2px 5px; color: white" id="paradigm-export-submit-{$windowId}" name="paradigm-export-submit" value="  Export  " />

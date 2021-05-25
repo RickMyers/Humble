@@ -60,7 +60,9 @@
                 <events />
                 <event_listeners />
                 <event_log />
+                <export_targets />
                 <import_sources />
+                <import_tokens />
                 <job_queue />
                 <scheduler_log />
                 <sensors />
@@ -84,6 +86,8 @@
                 <new>Paradigm/web/edits/newform.json</new>
                 <namespaces>Paradigm/web/edits/namespaceList.json</namespaces>
                 <system>Paradigm/web/edits/system.json</system>
+                <token>Paradigm/web/edits/token.json</token>
+                <target>Paradigm/web/edits/target.json</target>
             </edits>
             <apptest>
                 <js>

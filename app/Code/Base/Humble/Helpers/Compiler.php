@@ -590,6 +590,14 @@ PHP;
         if (isset($node['text'])) {
             print($this->tabs()."Humble::response(\"".addslashes($node['text'])."\");\n");
         }
+        if (isset($node['request'])) {
+            print($this->tabs().'Humble::response($_REQUEST["'.$node['request'].'"]);'."\n");
+        }        
+        /*Must determine if var is present and then reply it back
+         * if (isset($node['var'])) {
+            print($this->tabs()."Humble::response(\"".addslashes($node['text'])."\");\n");
+        } */       
+        
     }
     
     /**
