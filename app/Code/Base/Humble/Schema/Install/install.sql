@@ -214,6 +214,16 @@ CREATE TABLE `humble_services` (
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;       
 
+CREATE TABLE `humble_service_directory` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `namespace` char(32) DEFAULT NULL,
+  `controller` char(64) DEFAULT NULL,
+  `action` char(64) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `namespace` (`namespace`,`controller`,`action`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 /*Table structure for table `humble_templaters` */
 CREATE TABLE `humble_templaters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

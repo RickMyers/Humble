@@ -87,7 +87,7 @@ $info            = array();         //Initialize the controller info array
 //###########################################################################
 //Primes the Humble Engine
 $ns              = $namespace;      //save a copy, since this might change if there's no specific action but there is a default action
-\Humble::_namespace($namespace);     //this will become the inherited namespace if necessary
+\Humble::_namespace($namespace);    //this will become the inherited namespace if necessary
 \Humble::_controller($controller);
 \Humble::_action($method);
 \Environment::isAjax(isset($headers['HTTP_X_REQUESTED_WITH']) && ($headers['HTTP_X_REQUESTED_WITH']==='xmlhttprequest'));
@@ -114,7 +114,7 @@ if (!$module) {
         $info        = \Humble::getController($namespace.'/'.$controller);
         $recompile   = ($info['compiled'] != date("F d Y, H:i:s", filemtime($source)));
     } else if (file_exists($source)) {
-        $recompile   = true;                                                    //The controller source code exists but it is not currently compiled so flag it for compiling
+        $recompile   = true;                     //The controller source code exists but it is not currently compiled so flag it for compiling
     } else {
         //No specific controller exists to match request, so let's go look for it in the base application module
         $include         = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/Cache/'.$controller.'Controller.php';

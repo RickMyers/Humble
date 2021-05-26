@@ -11,10 +11,10 @@
 ^.tmp
 ^.bak
 ^.well-known/
-.htaccess
 LICENSE
 index.php
 app/install/index.html index.html
+app/install/.htaccess .htaccess
 api.php
 iapi.php
 mapi.php
@@ -29,7 +29,6 @@ phpdoc.dist.xml
 lib/*
 web/*
 dist/*
-app/install/*
 app/Humble.local.manifest
 app/Code/Base/*
 app/Exceptions/*
