@@ -6,8 +6,6 @@
 /app/node_modules/*
 /app/Workflows/*
 **/DSL/*
-/Humble.project
 /nbproject/private/
-pages/files/Innovation.pptx
 .vscode/
 nbproject/
