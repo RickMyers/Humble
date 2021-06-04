@@ -620,7 +620,9 @@ SOAP;
                 if (file_exists($mappingFile)) {
                     //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
                     //@TODO: cache this
-                    \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings() ,yaml_parse($mappingFile)) : yaml_parse($mappingFile)));
+                    $mappings = \Singleton::mappings();
+                    $map      = yaml_parse($mappingFile);
+                    \Singleton::mappings((($mappings) ? array_merge($mappings,$map) : $map));
                 }
             }
             if (isset(\Singleton::mappings()[$name])) {

@@ -20,13 +20,13 @@ class Singleton
     private static $mongoAdapter     = null;
     private static $settings         = null;
     private static $environment      = null;
-    private static $helper           = array();
+    private static $helper           = [];
     private static $firephp          = null;
     private static $compiler         = null;
     private static $installer        = null;
     private static $updater          = null;
     private static $translationTable = null;
-    private static $mappings         = null;
+    private static $mappings         = [];
 
     /**
      *
