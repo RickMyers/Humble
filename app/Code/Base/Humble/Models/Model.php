@@ -622,8 +622,12 @@ SOAP;
                     //@TODO: cache this
                     $mappings = \Singleton::mappings();
                     $map      = yaml_parse($mappingFile);
-                    print($mappings);print("\n");
-                    print($map);
+                    if (is_string($mappings)) {
+                        print("Mappings: ".$mappings."\n");
+                    }
+                    if (is_string($map)) {
+                        print("Map: ".$map."\n");
+                    }
                     \Singleton::mappings((($mappings) ? array_merge($mappings,$map) : $map));
                 }
             }
