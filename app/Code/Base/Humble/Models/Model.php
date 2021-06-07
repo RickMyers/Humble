@@ -610,7 +610,7 @@ SOAP;
 
             if (!\Singleton::mappings()) {
                 if (!$default_mappings = Humble::cache('yaml-humble')) {
-                    Humble::cache('yaml-humble',$default_mappings = yaml_parse('Code/Base/Humble/RPC/mapping.yaml'));
+                    Humble::cache('yaml-humble',$default_mappings = yaml_parse(file_get_contents('Code/Base/Humble/RPC/mapping.yaml')));
                 }
                 \Singleton::mappings($default_mappings); //default mappings
             }
@@ -621,7 +621,7 @@ SOAP;
                     //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
                     //@TODO: cache this
                     $mappings = \Singleton::mappings();
-                    $map      = yaml_parse($mappingFile);
+                    $map      = yaml_parse(file_get_contents($mappingFile));
                     if (is_string($mappings)) {
                         print("Mappings: ".$mappings."\n");
                     }
