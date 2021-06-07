@@ -609,6 +609,7 @@ SOAP;
         if ($name && $this->_RPC()) {
 
             if (!\Singleton::mappings()) {
+                Humble::cache('yaml-humble',$default_mappings = yaml_parse(file_get_contents('Code/Base/Humble/RPC/mapping.yaml')));
                 if (!$default_mappings = Humble::cache('yaml-humble')) {
                     Humble::cache('yaml-humble',$default_mappings = yaml_parse(file_get_contents('Code/Base/Humble/RPC/mapping.yaml')));
                 }
