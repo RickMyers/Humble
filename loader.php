@@ -24,7 +24,7 @@
         case    'js'        :   header('Content-Type: application/javascript');
                                 $orm->setPackage(str_replace('.js','',$_GET['package']));
                                 $orm->_orderBy('weight');
-                                $packageFiles = $orm->fetch(true);
+                                $packageFiles = $orm->fetchEnabled(str_replace('.js','',$_GET['package']));
                                 foreach ($packageFiles as $idx => $file) {
                                     if (!isset($packages[$file['namespace']])) {
                                         $mod = \Humble::getModule($file['namespace']);
@@ -51,7 +51,7 @@
         case    'css'       :   header('Content-Type: text/css');
                                 $orm->setPackage(str_replace('.css','',$_GET['package']));
                                 $orm->_orderBy('weight');
-                                $packageFiles = $orm->fetch(true);
+                                $packageFiles = $orm->fetchEnabled(str_replace('.css','',$_GET['package']));
                                 foreach ($packageFiles as $idx => $file) {
                                     if (!isset($packages[$file['namespace']])) {
                                         $mod = \Humble::getModule($file['namespace']);
