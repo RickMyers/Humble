@@ -26,10 +26,10 @@ require_once('Humble.php');  //This is the engine of the whole system
 //if not, it returns us whether we are running with authorization checks in
 //place.  We would only disable authorization checks if the system were in
 //an unusable state and we were doing aggressive debugging or testing
-$authorizationEngineEnabled = \Environment::statusCheck($_GET['n'],$_GET['c'],$_GET['m']);
-$namespace       = $_GET['n'];
-$controller      = $_GET['c'];
-$method          = $_GET['m'];
+$namespace       = htmlspecialchars($_GET['n'],ENT_QUOTES);
+$controller      = htmlspecialchars($_GET['c'],ENT_QUOTES);
+$method          = htmlspecialchars($_GET['m'],ENT_QUOTES);
+$authorizationEngineEnabled = \Environment::statusCheck($namespace,$controller,$method);
 $bypass          = false;
 $headers         = getallheaders();
 
@@ -183,9 +183,9 @@ if (!$module) {
     }
 
     //###########################################################################
-    if ($authorizationEngineEnabled && !$bypass) {          //This control is set in the application.xml root file
-        require_once "AuthorizationEngine.php";             //Call out to the authorization engine
-    }
+    // if ($authorizationEngineEnabled && !$bypass) {          //This control is set in the application.xml root file
+    //      require_once "AuthorizationEngine.php";             //Call out to the authorization engine
+    // }
 
     //###########################################################################
     if (file_exists('Constants.php')) {

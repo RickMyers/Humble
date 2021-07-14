@@ -74,7 +74,7 @@ class MySQL  {
                 $this->_connected = false;
             }
         }
-        $this->_environment = 'Environment Variable Cleared';
+        $this->_environment->clearPassword();
     }
 
     /**

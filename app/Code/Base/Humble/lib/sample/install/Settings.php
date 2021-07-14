@@ -36,7 +36,8 @@ class Settings
         $this->smtpUserName     = '';
         $this->smtpPassword    	= '';
     }
-
+    public function clearPassword()         { $this->password       = '';   }
+    public function clearMongodbPassword()  { $this->mongodbPwd     = '';   }
     public function getUserid()             { return $this->userid;         }
     public function getPassword()           { return $this->password;       }
     public function getDatabase()           { return $this->database;       }
