@@ -76,11 +76,11 @@ if (!isset($_SESSION['uid'])) {
 if (file_exists('HEADERS.php')) {
     include 'HEADERS.php';
 } else {
-    //###########################################################################
-    //Allows for custom headers to be created and passed to the client
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE');
-    header('Access-Control-Expose-Headers: Errors, Warnings, Notices, Messages, Alerts, Pagination');
+//###########################################################################
+//Allows for custom headers to be created and passed to the client
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE');
+header('Access-Control-Expose-Headers: Errors, Warnings, Notices, Messages, Alerts, Pagination');
 }
 
 //###########################################################################
@@ -133,8 +133,14 @@ if (!$module) {
             $info        = \Humble::getController($ns.'/'.$controller);
             $recompile   = true;
         } else {
-            //@TODO: Can I have an exception please?
-            die('FRONT CONTROLLER: Could not find the controller to route this request ('.$namespace.','.$controller.','.$method.')');
+            \HumbleException::standard(new Exception("Can Not Route Request, Resource Does Not Exist",12),"Request Error",'routing');
+            $sapi_type = php_sapi_name();
+            if (substr($sapi_type, 0, 3) == 'cgi') {
+                header("Status: 400 Bad Request");
+            } else {
+                header("HTTP/1.1 400 Bad Request");
+            }
+            die();
         }
     }
 

@@ -623,7 +623,7 @@ SOAP;
                     if ($map      = yaml_parse(file_get_contents($mappingFile))) {
                         \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings(),$map) : $map));
                     } else {
-                        print("Problem parsing YaML file ".$mappingfile."\n\nPlease make sure it exists and that it is correct.\n");
+                        print("Problem parsing YaML file ".$mappingFile."\n\nPlease make sure it exists and that it is correct.\n");
                     }
                 }
             }
