@@ -1209,7 +1209,14 @@ PHP;
                 print($this->tabs()."break;\n");
             } else {
                 print($this->tabs()."default :\n");
-                print($this->tabs(1).'die("<pre>No action defined for method: {$method}.</pre>");'."\n");
+                print($this->tabs(1)."\HumbleException::standard(new Exception('Can Not Route Request, Undefined Action',12),'Request Error','routing');\n");
+                print($this->tabs().'$sapi_type = php_sapi_name();'."\n");
+                print($this->tabs().'if (substr($sapi_type, 0, 3) == "cgi") {'."\n");
+                print($this->tabs(1).'header("Status: 400 Bad Request");'."\n");
+                print($this->tabs(-1)."} else {\n");
+                print($this->tabs(1).'header("HTTP/1.1 400 Bad Request");'."\n");
+                print($this->tabs(-1)."}\n");
+                print($this->tabs()."die();\n");
                 print($this->tabs(-1).'break; '."\n");
             }
             print($this->tabs(-1)."}\n");
