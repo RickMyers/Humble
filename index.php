@@ -26,9 +26,13 @@ require_once('Humble.php');  //This is the engine of the whole system
 //if not, it returns us whether we are running with authorization checks in
 //place.  We would only disable authorization checks if the system were in
 //an unusable state and we were doing aggressive debugging or testing
-$namespace       = htmlspecialchars($_GET['n'],ENT_QUOTES);
-$controller      = htmlspecialchars($_GET['c'],ENT_QUOTES);
-$method          = htmlspecialchars($_GET['m'],ENT_QUOTES);
+foreach ($_GET as $var => $val) {
+    $_GET[$var] = htmlspecialchars($val,ENT_QUOTES);
+}
+
+$namespace       = $_GET['n'];
+$controller      = $_GET['c'];
+$method          = $_GET['m'];
 $authorizationEngineEnabled = \Environment::statusCheck($namespace,$controller,$method);
 $bypass          = false;
 $headers         = getallheaders();
