@@ -1,5 +1,5 @@
 <?php
-/*############################################################################################
+/*##############################################################################
  ______               _      _____            _             _ _
 |  ____|             | |    / ____|          | |           | | |
 | |__ _ __ ___  _ __ | |_  | |     ___  _ __ | |_ _ __ ___ | | | ___ _ __
@@ -11,12 +11,22 @@ This software is licensed under GNU GPL.
 
 For more information, see the file LICENSE.txt
 
+*/
 //------------------------------------------------------------------------------
-                                      */
 function underscoreToCamelCase( $string, $first_char_caps = false) {
     return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
 }
-
+//------------------------------------------------------------------------------
+function badRequestError() {
+    $sapi_type = php_sapi_name();
+    if (substr($sapi_type, 0, 3) == 'cgi') {
+        header("Status: 400 Bad Request");
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
+    die();        
+}
+//------------------------------------------------------------------------------
 ob_start();                  //Must do this to capture all headers before passing to client
 chdir('app');                //This is the root directory of the application
 require_once('Humble.php');  //This is the engine of the whole system
@@ -72,19 +82,18 @@ if (!isset($_SESSION['uid'])) {
         //NOP, you are ok to hit that resource
     } else {
         //Go log in!
-        header("Location: /index.html?message=You Must Log In");
+        header("Location: /index.html?message=You%20Must%20Log%20In");
     }
 }
-
 
 if (file_exists('HEADERS.php')) {
     include 'HEADERS.php';
 } else {
-//###########################################################################
-//Allows for custom headers to be created and passed to the client
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE');
-header('Access-Control-Expose-Headers: Errors, Warnings, Notices, Messages, Alerts, Pagination');
+    //###########################################################################
+    //Allows for custom headers to be created and passed to the client
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE');
+    header('Access-Control-Expose-Headers: Errors, Warnings, Notices, Messages, Alerts, Pagination');
 }
 
 //###########################################################################
@@ -107,8 +116,8 @@ $ns              = $namespace;      //save a copy, since this might change if th
 $module          = \Humble::getModule($namespace);
 
 if (!$module) {
-    //@TODO: change this to throw an exception
-    die('The module/feature (ns='.$namespace.',cn='.$controller.',mt='.$method.') you are trying to access either does not exist or is disabled');
+    \HumbleException::standard(new Exception("Namespace Error, Module Missing Or Disabled",16),"Request Error",'routing');
+    badRequestError();
 } else {
     $core            = \Humble::getProject();    //A reference to the core functionality held in the applications primary module
     $core            = \Humble::getModule($core['namespace']);
@@ -138,13 +147,7 @@ if (!$module) {
             $recompile   = true;
         } else {
             \HumbleException::standard(new Exception("Can Not Route Request, Resource Does Not Exist",12),"Request Error",'routing');
-            $sapi_type = php_sapi_name();
-            if (substr($sapi_type, 0, 3) == 'cgi') {
-                header("Status: 400 Bad Request");
-            } else {
-                header("HTTP/1.1 400 Bad Request");
-            }
-            die();
+            badRequestError();
         }
     }
 
