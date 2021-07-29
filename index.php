@@ -82,7 +82,8 @@ if (!isset($_SESSION['uid'])) {
         //NOP, you are ok to hit that resource
     } else {
         //Go log in!
-        header("Location: /index.html?message=You%20Must%20Log%20In");
+        header("Message: You%20Must%20Log%20In%20To%20Access%20That");        
+        header("Location: /index.html");
     }
 }
 
