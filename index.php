@@ -37,7 +37,8 @@ require_once('Humble.php');  //This is the engine of the whole system
 //place.  We would only disable authorization checks if the system were in
 //an unusable state and we were doing aggressive debugging or testing
 foreach ($_GET as $var => $val) {
-    $_GET[$var] = htmlspecialchars($val,ENT_QUOTES);
+    $_REQUEST[$var] = $_GET[$var] = htmlspecialchars($val,ENT_QUOTES);
+    
 }
 
 $namespace       = $_GET['n'];
