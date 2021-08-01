@@ -87,6 +87,10 @@
         </webhooks>        
         <web>
             <edits>
+                <newmodule>Humble/web/edits/newmodule.json</newmodule>
+                <newcontroller>Humble/web/edits/newcontroller.json</newcontroller>
+                <newpackage>Humble/web/edits/newpackage.json</newpackage>
+                <newcomponent>Humble/web/edits/newcomponent.json</newcomponent>
             </edits>
             <common>
                 <js>
