@@ -45,12 +45,24 @@ function EasyAjax(targetUrl) {
     this.getPagination = function () {
         return JSON.parse(this.xmlHttp.getResponseHeader('pagination'));
     }
+    var vars = EasyAjax.always.get()
+    for (var name in vars) {
+        this.add(name,vars[name]);
+    }
     return this;
 }
 //-------------------------------------------------------------------------
-EasyAjax.prototype.alwaysAdd	= function (name,val) {
-    this.vars[name] =  val;
-};
+EasyAjax.always = (function () {
+    var vars = [];
+    return {
+        add: function (name,val) {
+            vars[name] =  val;
+        },
+        get: function () {
+            return vars;
+        }
+    }
+})();    
 /* ------------------------------- */
 /*  Hack for old versions of IE    */
 /* ------------------------------- */
