@@ -88,11 +88,18 @@ if (!isset($_SESSION['uid'])) {
     }
 }
 
+//###########################################################################
+//Allows for custom code execution at this point if so desired.
+if (file_exists('CUSTOM.php')) {
+    include 'CUSTOM.php';
+}
+
+//###########################################################################
+//Allows for custom headers to be created and passed to the client if the app
+// is using a custom headers file
 if (file_exists('HEADERS.php')) {
     include 'HEADERS.php';
 } else {
-    //###########################################################################
-    //Allows for custom headers to be created and passed to the client
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE');
     header('Access-Control-Expose-Headers: Errors, Warnings, Notices, Messages, Alerts, Pagination');

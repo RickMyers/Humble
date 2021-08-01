@@ -978,6 +978,29 @@ PHP;
     }
 
     /**
+     * If CSRF (Cross Site Request Forgery) protection is set, then we will be looking for the 3 required values necessary to effect this, otherwiese we dont do anything
+     * 
+     * @param string $parameters
+     */
+    private function processCSRFProtection($parameters=false) {
+        $opts = [];
+        foreach (explode(',',$parameters) as $token) {
+            $parts = explode("=",$token);
+            $opts[$parts[0]] = $parts[1];
+        }
+        
+        if (($token = isset($opts['csrf_token']) ? $opts['csrf_token'] : false) && ($var = isset($opts['csrf_session_variable']) ? $opts['csrf_session_variable'] : false) && ($tab_id = isset($opts['csrf_tab_id']) ? $opts['csrf_tab_id'] : false)) {
+            print($this->tabs().'if (!isset($_SESSION["'.$var.'"][$_REQUEST["'.$tab_id.'"]]) || ($_SESSION["'.$var.'"][$_REQUEST["'.$tab_id.'"]] !== $_REQUEST["'.$token.'"])) {'."\n");
+	    print($this->tabs(1)."\HumbleException::standard(new Exception('Bad Request, Possible CSRF Attack',16),'CSRF Attack','csrf');\n");
+            print($this->tabs().'header("HTTP/1.1 400 Bad Request");'."\n");
+	    print($this->tabs()."die();\n");            
+            print($this->tabs(-1)."}\n");
+        } else {
+            die('You had a csrf parsing problem on '.$parameters."\n");
+        }
+    }
+    
+    /**
      * 
      * @param string $xml
      */
@@ -1012,11 +1035,16 @@ PHP;
                     continue;
                 }
                 print($this->tabs(1).'case "'.$action['name'].'":'."\n");
+                if (isset($action['CSRF_PROTECTION'])) {
+
+                    $this->processCSRFProtection((string)$action['CSRF_PROTECTION']);
+                }                
                 $this->resetParameters();
                 $this->actionId = $this->helper->_uniqueId();
                 if (isset($action['request']) && (strtoupper($action['request']) == 'JSON')) {
                     $this->handleJSONRequest($action);
-                }                
+                }
+
                 print($this->tabs().'$P_'.$this->actionId.' = [];'."\n");
                 if (isset($action['output'])) {
                     switch (strtolower($action['output'])) {
