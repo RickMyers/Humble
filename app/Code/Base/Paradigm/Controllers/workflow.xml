@@ -26,7 +26,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <!-- ############################################################### -->
 
-        <action name="details">
+        <action name="details" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Gets the current workflow information</description>
             <entity namespace='paradigm' class='workflows' id='workflow' method='load'>
                 <parameter name='id' source='request' default='' />
@@ -57,7 +57,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="save">
+        <action name="save" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Performs the actual save of the workflow</description>
             <model namespace='paradigm' class='manager' id='workflow'>
                 <parameter name="id"           source='post'  default="" />
@@ -74,7 +74,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="quicksave">
+        <action name="quicksave" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id" >
             <description>Saves just an updated diagram of the workflow</description>
             <entity namespace='paradigm' class='workflows' id='workflow' method='save' response="true">
                 <parameter name="id"           source='post' required="true" default="" />
@@ -103,7 +103,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name='list'>
+        <action name='list' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Draws the Load page</description>
             <entity namespace='paradigm' class='workflows' id='workflows' rows='rows' page='page' defaultRows='10'>
             </entity>
@@ -184,7 +184,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="synclist" passalong='windowId'>
+        <action name="synclist" passalong='windowId' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Presents a list of destination to sync with</description>
             <entity namespace="paradigm" class="import_sources" id="sources" />
         </action>

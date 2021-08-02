@@ -35,7 +35,7 @@ Actions and views related to directory services
 
         <!-- ############################################################### -->
 
-        <action name="index">
+        <action name="index" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>This builds the paginated page that displays the list of currently available services</description>
             <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="40" id="services" defaultPage='1'>
             </entity>

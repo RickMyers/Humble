@@ -60,7 +60,8 @@ EasyAjax.always = (function () {
         },
         get: function () {
             return vars;
-        }
+        },
+        show: function () { console.log(vars); }
     }
 })();    
 /* ------------------------------- */

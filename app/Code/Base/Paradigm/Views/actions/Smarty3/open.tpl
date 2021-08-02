@@ -161,6 +161,10 @@ Copyright humbleprogramming.com, all rights reserved
         <script type="text/javascript" src="/js/widgets"></script>
         <script type="text/javascript" src="/ace/ace.js"></script>
         <script type="text/javascript">
+        {assign var=tab_id value=$manager->browserTabId()}
+        EasyAjax.always.add('browser_tab_id','{$tab_id}')
+        EasyAjax.always.add('csrf_buster','{$manager->csrfBuster($tab_id)}');
+        EasyAjax.always.show();
         Form.set.defaultURL('/workflow/elements/save');
         var Workflows = (function () {
             var available = { };

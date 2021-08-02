@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <controller name="actions" use="Smarty3">
     <actions>
-        <action name="open">
+        <action name="open" >
             <description>Main landing for the workflow editor</description>
             <entity namespace="humble" class="user_permissions" id="permissions" method="load">
                 <parameter name='id' value="uid" source="session" required="true" />
             </entity>
+            <model namespace="humble" class="system" id="system" />
         </action>
 
         <!-- ############################################################### -->

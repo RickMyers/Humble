@@ -9,7 +9,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
     <actions>
         <!-- ################################################################################################# -->
 
-        <action name="save">
+        <action name="save" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Performs the actual save of the diagram</description>
             <model namespace='paradigm' class='manager' id='manager'>
                 <parameter name="id"          source='post'  default="" />
@@ -31,14 +31,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ################################################################################################# -->
 
-        <action name="new">
+        <action name="new" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Builds the dialog for creating a new workflow diagram </description>
             <entity namespace='humble' class='modules' id='clients' orderby="weight" />
         </action>
 
         <!-- ################################################################################################# -->
 
-        <action name="create">
+        <action name="create" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Performs the actual save of the diagram</description>
             <model namespace='paradigm' class='manager' id='manager' method='save' response='true'>
                 <parameter name="description" source='post'  optional='true' default="" />

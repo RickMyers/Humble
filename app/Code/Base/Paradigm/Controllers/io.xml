@@ -8,19 +8,19 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 <controller name="io" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
         
-        <action name="target" blocking="off" passalong="window_id">
+        <action name="target" blocking="off" passalong="window_id" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>A page to add an export target location</description>
         </action>
 
         <!-- ############################################################### -->
 
-        <action name="token" blocking="off" passalong="window_id">
+        <action name="token" blocking="off" passalong="window_id" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>A page to add an export target location</description>
         </action>
         
         <!-- ############################################################### -->        
         
-        <action name="create" blocking="off" >
+        <action name="create" blocking="off" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Creates an export target</description>
             <entity namespace="paradigm" class="export/targets" method="save">
                 <parameter name='*' source='post' />
@@ -30,7 +30,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <!-- ############################################################### -->        
         
-        <action name="activate" blocking="off">
+        <action name="activate" blocking="off" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Stores a token to be used in an export/import process</description>
             <entity namespace="paradigm" class="import/tokens" method="save">
                 <parameter name='*' source='post' />

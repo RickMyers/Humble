@@ -82,9 +82,7 @@ if (!isset($_SESSION['uid'])) {
         $bypass = true;
         //NOP, you are ok to hit that resource
     } else {
-        //Go log in!
-        header("Message: You%20Must%20Log%20In%20To%20Access%20That");        
-        header("Location: /index.html");
+        header("Location: /index.html?message=Please Log In");
     }
 }
 

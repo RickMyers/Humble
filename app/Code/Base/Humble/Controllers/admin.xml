@@ -9,6 +9,7 @@
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
                 <parameter name='id' value="uid"  source='session' required='true' />
             </entity>
+            <model namespace="humble" class="system" id="system" />
             <switch id='permissions' method='getAdmin'>
                 <case value='Y'>
                     <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
@@ -24,7 +25,7 @@
 
         <!-- ############################################################### -->
 
-        <action name='package'>
+        <action name='package' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>The Humble administration home page</description>
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
                 <parameter name='id' value="uid"  source='session' required='true' />
@@ -41,7 +42,7 @@
         
         <!-- ############################################################### -->
         
-        <action name='module'>
+        <action name='module' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>The Humble administration home page</description>
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
                 <parameter name='id' value="uid"  source='session' required='true' />
@@ -58,7 +59,7 @@
         
         <!-- ############################################################### -->
         
-        <action name='component'>
+        <action name='component' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>The Humble administration home page</description>
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
                 <parameter name='id' value="uid"  source='session' required='true' />
@@ -75,7 +76,7 @@
         
         <!-- ############################################################### -->
         
-        <action name='controller'>
+        <action name='controller' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>The Humble administration home page</description>
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
                 <parameter name='id' value="uid"  source='session' required='true' />
@@ -176,7 +177,7 @@
 
         <!-- ############################################################### -->
 
-        <action name="newpackage">
+        <action name="newpackage" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Creates a new directory</description>
             <helper namespace="humble" class='directory' method='create'>
                 <parameter name="directory" value="package" source="post" required="true" />
@@ -185,7 +186,7 @@
 
         <!-- ############################################################### -->
 
-        <action name="addpackage">
+        <action name="addpackage" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Adds a doc block package, don't confuse this with adding a module package (directory)</description>
             <entity namespace="humble" class="packages" method="save">
                 <parameter name="text" value="package" source="post" required="true" />
@@ -194,7 +195,7 @@
 
         <!-- ############################################################### -->
 
-        <action name="addcategory">
+        <action name="addcategory" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Adds a doc block category</description>
             <entity namespace="humble" class="categories" method="save">
                 <parameter name="text" value="category" source="post" required="true" />

@@ -76,6 +76,10 @@
         <script type='text/javascript'>
             $(document).ready(Administration.init);
             Humble.init();
+            {% set tab_id = system.browserTabId()%}
+            EasyAjax.always.add('browser_tab_id','{{ tab_id }}')
+            EasyAjax.always.add('csrf_buster','{{ system.csrfBuster(tab_id) }}');
+            EasyAjax.always.show();
         </script>
     </head>
     <body style="overflow: hidden;">
