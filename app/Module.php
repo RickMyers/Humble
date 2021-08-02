@@ -743,7 +743,6 @@ TXT;
                 print($idx." )\t".$file."\n");
             }
             print("Do you wish to proceed? [Y/N]: ");
-            ob_flush();
             $answer = scrub(fgets(STDIN));
             if (strtolower($answer) === 'y') {
                 foreach ($sync['missing'] as $file) {
@@ -830,7 +829,6 @@ TXT;
         file_put_contents('patch_report.txt',$report);
         print("\n\nIf you do not want some files updated, add those files to the Humble.local.manifest file and re-run this process.\n\nA copy of the patch review report shown above can be found in file 'patch_report.txt'.\n\n");
         print("Do you wish to continue [yes/no]? ");
-        ob_flush();
         if (strtolower(scrub(fgets(STDIN))) === 'yes') {
             foreach ($changed as $file) {
                 file_put_contents($file,$distro->getFromName($file));
@@ -867,7 +865,6 @@ TXT;
         }
         foreach ($contents as $file_idx => $file) {
             print("processing ".$file."\n");
-            ob_flush();
             if (file_exists($file)) {
                 if (isset($local_manifest['ignore'][$file]) && $local_manifest['ignore'][$file]) {
                     $ignore[] = $file;
@@ -902,7 +899,6 @@ TXT;
         $helper = Humble::getHelper('humble/directory');
         print("\n\nRunning patching report on core framework to version ".$canonical['version'].", please wait...\n\n");
         $distro = 'distro_'.$canonical['version'];
-        ob_flush();
         chdir('..');
         @mkdir($distro,0775,true);
         evaluateCoreDifferences($app,$project,$canonical['version']);
