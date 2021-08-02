@@ -94,7 +94,6 @@
             </edits>
             <common>
                 <js>
-                    <source weight="5">Humble/web/js/jquery-3.6.0.min.js</source>
                     <source weight='10'>Humble/web/js/Humble.js</source>
                     <source weight='11'>Humble/web/js/EasyAjax.js</source>
                     <source weight='12'>Humble/web/js/EasyEdit.js</source>
@@ -151,7 +150,7 @@
             </admintheme>
             <jquery>
                 <js>
-                    <source>Humble/web/js/jquery-3.1.0.min.js</source>
+                    <source weight="5">Humble/web/js/jquery-3.6.0.min.js</source>
                 </js>
             </jquery>
         </web>
