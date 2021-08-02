@@ -150,7 +150,7 @@
             </admintheme>
             <jquery>
                 <js>
-                    <source weight="5">Humble/web/js/jquery-3.6.0.min.js</source>
+                    <source weight="5">Humble/web/js/jquery.3.6.0.min.js</source>
                 </js>
             </jquery>
         </web>
