@@ -991,7 +991,7 @@ PHP;
         
         if (($token = isset($opts['csrf_token']) ? $opts['csrf_token'] : false) && ($var = isset($opts['csrf_session_variable']) ? $opts['csrf_session_variable'] : false) && ($tab_id = isset($opts['csrf_tab_id']) ? $opts['csrf_tab_id'] : false)) {
             print($this->tabs().'if (!isset($_SESSION["'.$var.'"][$_REQUEST["'.$tab_id.'"]]) || ($_SESSION["'.$var.'"][$_REQUEST["'.$tab_id.'"]] !== $_REQUEST["'.$token.'"])) {'."\n");
-	    print($this->tabs(1)."\HumbleException::standard(new Exception('Bad Request, Possible CSRF Attack',16),'CSRF Attack','csrf');\n");
+	    print($this->tabs(1)."\HumbleException::standard(new Exception('Bad Request, Possible Security Issue',16),'Form Failure','csrf');\n");
             print($this->tabs().'header("HTTP/1.1 400 Bad Request");'."\n");
 	    print($this->tabs()."die();\n");            
             print($this->tabs(-1)."}\n");
@@ -1036,7 +1036,6 @@ PHP;
                 }
                 print($this->tabs(1).'case "'.$action['name'].'":'."\n");
                 if (isset($action['CSRF_PROTECTION'])) {
-
                     $this->processCSRFProtection((string)$action['CSRF_PROTECTION']);
                 }                
                 $this->resetParameters();
