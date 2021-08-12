@@ -125,9 +125,9 @@ class MySQL  {
                         $errorstring .= "\t\tNot Available\n";
                     }
                     $errorstring .= "\t</rowsreturned>\n";
-                    ob_start();
+                  /*  ob_start();
                     debug_print_backtrace();
-                    $errorstring .="\t<trace>".ob_get_clean()."</trace>\n";
+                    $errorstring .="\t<trace>".ob_get_clean()."</trace>\n"; */  //@TODO: suspending this until I can come up with something that doesnt clog up the log
                     $errorstring .= "</error>\n";
                     \Log::mysql($errorstring);
                 }
