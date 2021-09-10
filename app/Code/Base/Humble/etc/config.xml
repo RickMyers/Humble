@@ -71,6 +71,7 @@
                 <packages />
                 <pages />
                 <services />
+                <service_directory polyglot="Y" />
                 <templaters />
                 <templates />
                 <userlog />
