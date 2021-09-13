@@ -59,7 +59,7 @@ class Installer extends Directory
             $this->lastStage = $stage;
             $this->lastTime  = $now;
         }
-        print('['.str_pad($stage,16," ",STR_PAD_RIGHT).']['.date('Y-m-d H:i:s').'] '.str_pad(substr($message,0,80),80," ",STR_PAD_RIGHT)."[".str_pad($now - $this->lastTime,4,0,STR_PAD_LEFT)."][".str_pad($now-$this->init,4,0,STR_PAD_LEFT)."]\n");
+        print('['.str_pad($stage,16," ",STR_PAD_RIGHT).']['.date('H:i:s').'] '.str_pad(substr($message,0,80),80," ",STR_PAD_RIGHT)."[".str_pad($now - $this->lastTime,4,0,STR_PAD_LEFT)."][".str_pad($now-$this->init,4,0,STR_PAD_LEFT)."]\n");
     }
     
     /**
@@ -442,6 +442,7 @@ SQL;
                     $workflowComponent->save();
                 }
             }
+            $this->output("WORKFLOW","Finished Scanning ".ucfirst($model)."...");
         }
     }
 

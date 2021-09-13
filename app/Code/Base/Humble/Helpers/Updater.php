@@ -95,6 +95,7 @@ class Updater extends Installer
      * @param type $namespace
      */
     protected function updateServiceDirectory($namespace=null) {
+        $this->output('DIRECTORY','Generating Processing Service Directory');
         if ($namespace) {
             Humble::getEntity('humble/service/directory')->setNamespace($namespace)->delete();
             if ($module = Humble::getModule($namespace)) {
@@ -125,6 +126,7 @@ class Updater extends Installer
                 }
             }
         }
+        $this->output('DIRECTORY','Finished Generating Directory');
     }
     
     /**
@@ -132,8 +134,8 @@ class Updater extends Installer
      * @param type $prefix
      * @param type $structure
      */
-    private function updateImages($prefix,$structure,$module)
-    {
+    private function updateImages($prefix,$structure,$module) {
+        $this->output('IMAGES','Processing Images');
         $images     = $structure->images->source;
         if (is_dir('Code/'.$module->package.'/'.str_replace('_','/',$images))) {
             $sourceDir      = 'Code/'.$module->package.'/'.str_replace('_','/',$images);
@@ -142,6 +144,7 @@ class Updater extends Installer
             $skipIfThere = false;
             $this->copyDirectory($sourceDir, $destination,$skipIfThere);
         }
+        $this->output('IMAGES','Finished Processing Images');
     }
 
     /**
@@ -152,6 +155,7 @@ class Updater extends Installer
      * @param type $source
      */
     private function updateSchema($package,$namespace,$source)    {
+        $this->output('SCHEMA','Processing any schema updates');
         $dir = @dir($path = 'Code/'.$package.'/'.str_replace('_','/',$source));
         $module = Humble::getModule($namespace);
         if (!$module) {
@@ -174,6 +178,7 @@ class Updater extends Installer
                 }
             }
         }
+        $this->output('SCHEMA','Finished Processing schema updates');
     }
     public function updateStructure($namespace,$structure,$module_data) {
         $module = Humble::getEntity('humble/modules')->setNamespace($namespace);

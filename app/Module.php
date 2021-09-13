@@ -315,7 +315,7 @@ TXT;
         $data = Humble::getEntity('humble/modules')->setNamespace($namespace)->load(true);
         if (isset($data['configuration']) && $data['configuration']) {
             $etc     = 'Code/'.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
-            print('Running Update on '.$etc."\n\n");
+            $updater->output('BEGIN','Update Configuration File: '.$etc);
             $updater->update($etc);
         } else {
             print('===> ERROR: Unable to determine where configuration file is for: '.$namespace.'.  You should review the configuration file manually <==='."\n");
@@ -342,7 +342,8 @@ TXT;
             $updater = \Environment::getUpdater();            
             foreach ($modules as $module) {
                 $namespace = (is_array($module) ? $module['namespace'] : $module);
-                print("===] Beginning update of Namespace: ".$namespace." [===\n\n");
+                $updater->output('BEGIN','');
+                $updater->output('BEGIN',"=== Beginning update of Namespace: ".$namespace." ===");
                 updateIndividualModule($updater->reset(),$namespace);
                 //if (strtoupper($workflows)==='Y') {
                     $updater->generateWorkflows($namespace);
