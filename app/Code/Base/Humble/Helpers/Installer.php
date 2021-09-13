@@ -32,6 +32,9 @@ class Installer extends Directory
     protected $mongodb            = "";
     protected $weight             = null; //controls order of adding web components
     protected $_db                = null;
+    protected $lastTime           = 0;
+    protected $init               = 0;
+    protected $lastStage          = '';
 
     /**
      *
@@ -43,8 +46,22 @@ class Installer extends Directory
         if ($project->namespace) {
             @mkdir('../../logs/'.$project->namespace,0777,true);   //added this later
         }
+        $this->init = $this->lastTime = time();
     }
 
+    public function reset() {
+        return $this;
+    }
+    
+    public function output($stage='',$message='') {
+        $now = time();
+        if ($stage !== $this->lastStage) {
+            $this->lastStage = $stage;
+            $this->lastTime  = $now;
+        }
+        print('['.str_pad($stage,16," ",STR_PAD_RIGHT).']['.date('Y-m-d H:i:s').'] '.str_pad(substr($message,0,80),80," ",STR_PAD_RIGHT)."[".str_pad($now - $this->lastTime,4,0,STR_PAD_LEFT)."][".str_pad($now-$this->init,4,0,STR_PAD_LEFT)."]\n");
+    }
+    
     /**
      *
      * @return system
@@ -184,7 +201,7 @@ SQL;
         $compiler->setDestination($dest);
         foreach ($files as $file) {
             if (strpos($file,'.xml')!==false) {
-                print("Compiling: ".$file."\n");
+                $this->output("CONTROLLERS","Compiling: ".$file);
                 $compiler->compile($namespace.'/'.substr($file,0,strpos($file,'.xml')));
             }
         }
@@ -273,6 +290,19 @@ SQL;
         $components->delete();
     }
 
+    public function generateWorkflows($namespace=false) {
+        @mkdir('Workflows',0775);
+        $this->output('WORKFLOWS','Generating workflows for Namespace '.$namespace);
+        if ($namespace) {
+            $generator = \Humble::getHelper('paradigm/generator');
+            foreach (\Humble::getEntity('paradigm/workflows')->setNamespace($namespace)->setActive('Y')->fetch() as $workflow) {
+                $this->output('WORKFLOWS',"     Generating: ".$workflow['title']);
+                $generator->setId($workflow['id'])->setWorkflow($workflow['workflow'])->generate();
+            }
+        }
+        $this->output('WORKFLOWS','Done Generating workflows');
+    }
+    
     /**
      * Find just the comment portion of the doc comment
      *
@@ -334,14 +364,16 @@ SQL;
         $models     = Humble::getModels($namespace);
         $workflowComponent  = Humble::getEntity('paradigm/workflow_components');
         $workflowComment   = Humble::getEntity('paradigm/workflow_comments');
-        print("Processing Namespace [".$namespace."]...\n\n");
-        foreach ($models as $model) {
-            print("\n\tScanning Model Class ".ucfirst($model)."...\n");
+        $this->output("WORKFLOW","Processing Namespace [".$namespace."]...");
+        
+        foreach ($models as $model) { 
+            $this->output("WORKFLOW","");
+            $this->output("WORKFLOW","Scanning Model Class ".ucfirst($model)."...");
             $workflowComponent->setNamespace($namespace);
             $workflowComponent->setComponent($model);
             $class          = Humble::getModel($namespace.'/'.$model);
             if (!method_exists($class, 'getClassName')) {
-                //print($model."\n");
+                //$this->output("",$model);
                 continue;
             }
             $name           = $class->getClassName();
@@ -385,7 +417,7 @@ SQL;
                             case "workflow"         :   //nop
                                                         break;
                             case "use"              :   $uses = explode(',',$value);
-                                                        print("\t\tRegistering Workflow Element ".$method->name."\n");
+                                                        $this->output("WORKFLOW","     Registering Workflow Element ".$method->name);
                                                         foreach ($uses as $use) {
                                                             $use = 'set'.ucfirst(strtolower($use));
                                                             $workflowComponent->$use('Y');
@@ -437,6 +469,7 @@ SQL;
       $this->unInstallEntities($this->namespace);
       foreach ($orm->entities as $name => $entities) {
           foreach ($entities as $name => $entity) {
+            $this->output('ENTITIES','Registering '.$name);
             //first save off key field data
             $data = $entity->attributes();
             $polyglot = isset($data['polyglot']) ? $data['polyglot'] : 'N';
@@ -663,6 +696,7 @@ SQL;
      */
     public function registerWebComponents($web,$module=false)
     {
+        $this->output('WEB','Registering Web Components');
         foreach ($web as $node => $items) {
             foreach ($items as $package => $item) {
                 if (($package === 'edits') || ($package === "routes") || ($package=="templates")) {
@@ -689,6 +723,7 @@ SQL;
         }
         $this->registerWebEdits($web);
         $this->registerWebPages($web);
+        $this->output('WEB','Done Registering Web Components');
     }
 
     /**
@@ -794,7 +829,9 @@ SQL;
                 }
                 
             } else {
-                print_r($helper->getErrors());
+                foreach ($helper->getErrors() as $error) {
+                    $this->output('ERRORS',$error);
+                }
             }
             Environment::recacheApplication();
         } else {
@@ -885,7 +922,7 @@ SQL;
                                         }
                                     }
                                 } else {
-                                    print('not valid '.$etcfile."\n");
+                                    $this->output("ERROR",'Configuration Not Valid '.$etcfile);
                                 }
                             }
                         }

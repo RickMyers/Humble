@@ -311,34 +311,21 @@ TXT;
         }
     }
     //--------------------------------------------------------------------------
-    function updateIndividualModule($namespace) {
+    function updateIndividualModule($updater,$namespace) {
         $data = Humble::getEntity('humble/modules')->setNamespace($namespace)->load(true);
         if (isset($data['configuration']) && $data['configuration']) {
             $etc     = 'Code/'.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
             print('Running Update on '.$etc."\n\n");
-            $updater = \Environment::getUpdater();
             $updater->update($etc);
         } else {
             print('===> ERROR: Unable to determine where configuration file is for: '.$namespace.'.  You should review the configuration file manually <==='."\n");
         }
     }
     //--------------------------------------------------------------------------
-    function generateWorkflows($namespace=false) {
-        @mkdir('Workflows',0775);
-        print('*** Generating workflows for Namespace: '.$namespace."***\n");
-        if ($namespace) {
-            $generator = \Humble::getHelper('paradigm/generator');
-            foreach (\Humble::getEntity('paradigm/workflows')->setNamespace($namespace)->setActive('Y')->fetch() as $workflow) {
-                print("\tGenerating: ".$workflow['title']."\n");
-                $generator->setId($workflow['id'])->setWorkflow($workflow['workflow'])->generate();
-            }
-        }
-        print("\n\n");
-    }
-    //--------------------------------------------------------------------------
     function workflows($args) {
+        $updater = \Environment::getUpdater();                    
         if ($namespace = fetchParameter(['namespace','ns'],processArgs($args))) {
-            generateWorkflows($namespace);
+            $updater->generateWorkflows($namespace);
         }
     }
     //--------------------------------------------------------------------------
@@ -352,12 +339,13 @@ TXT;
                 print("\t".++$ctr.') '.(is_array($module) ? $module['namespace'] : $module)."\n");
             }
             print("\n");
+            $updater = \Environment::getUpdater();            
             foreach ($modules as $module) {
                 $namespace = (is_array($module) ? $module['namespace'] : $module);
                 print("===] Beginning update of Namespace: ".$namespace." [===\n\n");
-                updateIndividualModule($namespace);
+                updateIndividualModule($updater->reset(),$namespace);
                 //if (strtoupper($workflows)==='Y') {
-                    generateWorkflows($namespace);
+                    $updater->generateWorkflows($namespace);
                 //}
                 //print(ob_get_clean());
             }
@@ -470,7 +458,7 @@ TXT;
                 $comments      = processDocComment($reflection->getMethod($method->name),$method);
                 $authorization = false;
                 if ($comments) {
-                    print("\tRegistering ".$method->name."\n");
+                    print("    Registering ".$method->name."\n");
                 }
                 foreach ($comments as $comment) {
                     $emit  = false; $inline_comment = false;                       //For inline event declaration                    

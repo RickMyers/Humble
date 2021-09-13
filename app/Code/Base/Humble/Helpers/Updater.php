@@ -292,22 +292,24 @@ class Updater extends Installer
                     }
                     $data = $ent->load();
                     Humble::cache('module-'.$namespace,$data);
-                    print("\n============================================================================\n");
-                    print("= MODULE STATE [".$namespace."]\n");
-                    print("============================================================================\n");
+                    $this->output("SUMMARY","============================================================================");
+                    $this->output("SUMMARY","= MODULE STATE [".$namespace."]");
+                    $this->output("SUMMARY","============================================================================");
                     foreach ($data as $attribute => $value) {
-                        print("\t[".$attribute."]:\t ".$value."\n");
+                        $this->output("SUMMARY","[".$attribute."]: ".$value);
                     }
-                    print("============================================================================\n\n");
+                    $this->output("SUMMARY","============================================================================");
                     //must log updated date
                     $this->updateServiceDirectory($namespace);                    
                 }
             } else {
-                print_r($helper->getErrors());
+                foreach ($helper->getErrors() as $error) {
+                    $this->output('ERRORS',$error);
+                }
               //  \Log::console($helper->getErrors());
             }
-          //  \Log::console('Did the update for: '.$source);
         } else {
+            $this->output('','');
          //   \Log::console('Could not find source file for refresh: '.$source);
         }
         \Environment::recacheApplication();
