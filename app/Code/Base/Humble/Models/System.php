@@ -72,6 +72,7 @@ class System extends Model
     public function save() {
         $root       = Environment::getRoot('humble');
         $rain       = Environment::getInternalTemplater($root.'/lib/sample/install','xml');
+        $rain->assign('state',      (($this->getState())         ? $this->getState() : 'DEVELOPMENT'));
         $rain->assign('enabled',    (($this->getEnabled())       ? 1 : 0));
         $rain->assign('installer',  (($this->getInstaller())     ? 1 : 0));
         $rain->assign('authorized', (($this->getAuthorization()) ? 1 : 0));
@@ -117,10 +118,28 @@ class System extends Model
         if (!$this->xml) {
             $this->xml  = Environment::status(true);
         }
-        
         return $this->xml->status->enabled;
     }
-
+    
+    /**
+     * If available, returns the current state or the default DEVELOPMENT if not set
+     * 
+     * @return string
+     */
+    public function state() {
+        $xml    = Environment::status(true);
+        return (isset($xml->state)) ? $xml->state : 'DEVELOPMENT';
+    }
+    
+    /**
+     * Changes the state, values are DEVELOPMENT, PRODUCTION, and DEBUG
+     */
+    public function changeState() {
+        $xml    = Environment::status(true);
+        $xml->state = $this->getState();
+        file_put_contents('../application.xml',$xml->asXML());
+    }
+    
     /**
      * Sets the system quiescing bit...
      *
@@ -167,4 +186,10 @@ class System extends Model
 
     }
 
+    /**
+     * Triggers the re-caching to memcache of the application
+     */
+    public function recache() {
+        Environment::recacheApplication();
+    }
 }

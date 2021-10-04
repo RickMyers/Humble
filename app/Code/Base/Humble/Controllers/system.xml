@@ -47,7 +47,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                     </model>
                 </case>
                 <default>
-                    <redirect href="/index.html?m=You do not have permission to alter system settings" />
+                    <redirect href="/index.html?message=You do not have permission to alter system settings" />
                 </default>
             </switch>
         </action>
@@ -74,7 +74,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                     </model>
                 </case>
                 <default>
-                    <redirect href="/index.html?m=You lack the authority to quiesce the system" />
+                    <redirect href="/index.html?message=You lack the authority to quiesce the system" />
                 </default>
             </switch>
         </action>
@@ -93,9 +93,37 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                     </model>
                 </case>
                 <default>
-                    <redirect href="/index.html?m=You lack the authority to disable the system" />
+                    <redirect href="/index.html?message=You lack the authority to disable the system" />
                 </default>
             </switch>
+        </action>
+        
+        <!-- ########################################################################################## -->
+        
+        <action name="state" blocking="off">
+            <description>Changes the state that the application is, from DEVELOPMENT, to PRODUCTION, or DEBUG</description>
+            <entity namespace="humble" class="user_permissions" method="load" id="permissions">
+                <parameter name="id" value="uid" source="session" required="true" />
+            </entity>
+            <switch id="permissions" method="getSuperUser">
+                <case value="Y">
+                    <model namespace="humble" class="system" id='system' method='changeState'>
+                        <parameter name='state' source='post' required='true' />
+                    </model>
+                </case>
+                <default>
+                    <redirect href="/index.html?message=You lack the authority to change state" />
+                </default>
+            </switch>            
+        </action>
+        
+        <!-- ########################################################################################## -->
+        
+        <action name="recache">
+            <description>A service to recache the core application</description>
+            <model namespace="humble" class="system" method="recache">
+                
+            </model>
         </action>
     </actions>
 </controller>

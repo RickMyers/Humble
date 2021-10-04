@@ -19,6 +19,15 @@ var Administration = (function () {
                             }
                         }
                     },
+                    change: {
+                        state: function (cs) {
+                            if (confirm('Would you like to put the site in '+$(cs).val()+' mode?')) {
+                                (new EasyAjax('/humble/system/state')).add('state',$(cs).val()).then(function (response) {
+                                    console.log(response);
+                                }).post();
+                            }
+                        }
+                    },
                     create: {
                         win: {
                             pak: false,
@@ -104,7 +113,7 @@ var Administration = (function () {
                                     $("#quiesce-box").fadeOut();
                                     (new EasyAjax('/humble/system/offline')).add('value',0).then(function (response) {
                                         (new EasyAjax('/humble/system/quiesce')).add('value',0).then(function (response) {
-                                            window.location.href = '/index.html?m=The system is now offline';
+                                            window.location.href = '/index.html?message=The system is now offline';
                                         }).post();
                                     }).post();
                                 }

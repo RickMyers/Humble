@@ -844,7 +844,10 @@ SQL;
             }
         } 
         $results = Humble::getModel('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
-        return $this->_lastResult = (($this->_normalize()) ? $this->normalize($results) : $results);
+        if (\Environment::isActiveDebug()) {
+            \Log::user(array_merge(['Query'=>$query],$results->toArray()));
+        }
+         return $this->_lastResult = (($this->_normalize()) ? $this->normalize($results) : $results);
     }
 
     /**

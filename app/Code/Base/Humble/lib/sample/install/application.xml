@@ -3,6 +3,7 @@
     <name>{$name}</name>
     <version>0.0.0.1</version>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">{$serial_number}</serial_number>
+    <state>{$state}</state>
     <framework>
         <version>{$version}</version>
     </framework>

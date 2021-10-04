@@ -89,7 +89,11 @@ class Environment {
         return $protocol.'://'.$host;
     }
 
-
+    /**
+     * Returns if the Micro-Services Architecture Router Flag is set and activated
+     * 
+     * @return boolean
+     */
     public static function MSARouter() {
         if (!self::$application) {
             self::loadApplicationMetaData();
@@ -99,6 +103,44 @@ class Environment {
                 || (self::$application['msa']['router']==='Y')));
     }
 
+    /**
+     * Returns true if the system is in PRODUCTION, which means certain features will be turned on
+     * 
+     * @return boolean
+     */
+    public static function isProduction() {
+        if (!self::$application) {
+            self::loadApplicationMetaData();
+        }
+        return (isset(self::$application['state']) && (self::$application['state']==='PRODUCTION'));
+    }
+
+    /**
+     * Returns true if the system state is not present or if it is present then it must equal 'DEVELOPMENT'
+     * 
+     * @return boolean
+     */
+    public static function isDevelopment() {
+        if (!self::$application) {
+            self::loadApplicationMetaData();
+        }
+        return (!isset(self::$application['state']) || (isset(self::$application['state']) && (self::$application['state']==='DEVELOPMENT')));
+    }
+    
+    /**
+     * Returns true if the system has been put into a state requiring extensive debugging
+     * 
+     * @return boolean
+     */
+    public static function isActiveDebug() {
+        if (!self::$application) {
+            self::loadApplicationMetaData();
+        }
+        return (isset(self::$application['state']) && (self::$application['state']==='DEBUG'));
+    }
+    
+
+    
     /**
      * We are using Rain 3 for internal "in-line" templating
      *

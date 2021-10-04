@@ -13,7 +13,7 @@
                     <model namespace='humble' class='user' method='routeToHomePage' />
                 </case>
                 <default>
-                    <redirect href='/index.html?m=Invalid Login Attempt' />   
+                    <redirect href='/index.html?message=Invalid Login Attempt' />   
                 </default>
                    
             </switch>

@@ -16,7 +16,7 @@ Actions and views related to directory services
                     <helper namespace='humble' class='service/directory' id='services'></helper>
                 </case>
                 <default>
-                    <redirect href="/index.html?m=You do not have permission to run that service" />
+                    <redirect href="/index.html?message=You do not have permission to run that service" />
                 </default>
             </switch>
 

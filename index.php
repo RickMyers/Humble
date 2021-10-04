@@ -32,21 +32,23 @@ chdir('app');                //This is the root directory of the application
 require_once('Humble.php');  //This is the engine of the whole system
 
 //###########################################################################
-//This checks to see if the system has been taken down for maintenance, and
-//if not, it returns us whether we are running with authorization checks in
-//place.  We would only disable authorization checks if the system were in
-//an unusable state and we were doing aggressive debugging or testing
+//Scrubba-dub-dub
 foreach ($_GET as $var => $val) {
     $_REQUEST[$var] = $_GET[$var] = htmlspecialchars($val,ENT_QUOTES);
     
 }
-
 $namespace       = $_GET['n'];
 $controller      = $_GET['c'];
 $method          = $_GET['m'];
-$authorizationEngineEnabled = \Environment::statusCheck($namespace,$controller,$method);
 $bypass          = false;
 $headers         = getallheaders();
+
+//###########################################################################
+//This checks to see if the system has been taken down for maintenance, and
+//if not, it returns us whether we are running with authorization checks in
+//place.  We would only disable authorization checks if the system were in
+//an unusable state and we were doing aggressive debugging or testing
+$authorizationEngineEnabled = \Environment::statusCheck($namespace,$controller,$method);
 
 //###########################################################################
 //If this application is deployed using a Micro-Services Architecture, then
@@ -132,29 +134,32 @@ if (!$module) {
     $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']).'/'.$controller.'.xml';
 
     //###########################################################################
+    //If App Status is not in a production state, we allow for dynamic compilation of controllers.
     //We first look for the controller that contains the action in the module identified by the namespace used on the URL.
     //If we don't find the controller, we go check in the module that is identified as the base module for the application.
     //If we find a controller in our base module, with an action that matches the URL, we use that.
-    if (file_exists($include)) {
-        $info        = \Humble::getController($namespace.'/'.$controller);
-        $recompile   = ($info['compiled'] != date("F d Y, H:i:s", filemtime($source)));
-    } else if (file_exists($source)) {
-        $recompile   = true;                     //The controller source code exists but it is not currently compiled so flag it for compiling
-    } else {
-        //No specific controller exists to match request, so let's go look for it in the base application module
-        $include         = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/Cache/'.$controller.'Controller.php';
-        $source          = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/'.$controller.'.xml';
+    if (!\Environment::isProduction()) {
         if (file_exists($include)) {
-            $ns          = $core['namespace'];   //we mark that we are in fact using the default namespace action without specifically changing the official namespace
-            $info        = \Humble::getController($ns.'/'.$controller);
+            $info        = \Humble::getController($namespace.'/'.$controller);
             $recompile   = ($info['compiled'] != date("F d Y, H:i:s", filemtime($source)));
         } else if (file_exists($source)) {
-            $ns          = $core['namespace'];
-            $info        = \Humble::getController($ns.'/'.$controller);
-            $recompile   = true;
+            $recompile   = true;                     //The controller source code exists but it is not currently compiled so flag it for compiling
         } else {
-            \HumbleException::standard(new Exception("Can Not Route Request, Resource Does Not Exist",12),"Request Error",'routing');
-            badRequestError();
+            //No specific controller exists to match request, so let's go look for it in the base application module
+            $include         = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/Cache/'.$controller.'Controller.php';
+            $source          = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/'.$controller.'.xml';
+            if (file_exists($include)) {
+                $ns          = $core['namespace'];   //we mark that we are in fact using the default namespace action without specifically changing the official namespace
+                $info        = \Humble::getController($ns.'/'.$controller);
+                $recompile   = ($info['compiled'] != date("F d Y, H:i:s", filemtime($source)));
+            } else if (file_exists($source)) {
+                $ns          = $core['namespace'];
+                $info        = \Humble::getController($ns.'/'.$controller);
+                $recompile   = true;
+            } else {
+                \HumbleException::standard(new Exception("Can Not Route Request, Resource Does Not Exist",12),"Request Error",'routing');
+                badRequestError();
+            }
         }
     }
 

@@ -75,6 +75,9 @@
         <script type="text/javascript" src='/js/admin'/></script>
         <script type='text/javascript'>
             $(document).ready(Administration.init);
+            $(document).ready(function () {
+               $('#state').val('{{ system.state() }}') 
+            });
             Humble.init();
             {% set tab_id = system.browserTabId()%}
             EasyAjax.always.add('browser_tab_id','{{ tab_id }}')
@@ -215,6 +218,14 @@
 
                     <div id='modules_list' style="display: inline-block">
                         <div style='background-color: rgba(232,232,232,.3); padding: 10px 0px 10px 0px'>
+                            <div style="float: right; margin-right: 10px; white-space: nowrap">
+                                <b>STATE </b>
+                                <select name="state" id="state" onchange="Administration.change.state(this)" style="background-color: #cc4444; color: ghostwhite; font-size: 1.1em; height: 28px; letter-spacing: 1px; font-family: monospace; font-weight: bold">
+                                    <option value="DEVELOPMENT" title="Standard mode, all basic features enabled">DEVELOPMENT</option>
+                                    <option value="PRODUCTION" title="Performance mode, some features disabled">PRODUCTION</option>
+                                    <option value="DEBUG" title="Active Debug, additional logging enabled">DEBUG</option>
+                                </select>
+                            </div>
                         <select name='globalAction' id='globalAction' style="font-size: 1.1em; height: 28px; width: 300px">
                             <option style='font-style: italic' value="">Choose a Global action...</option>
                             <option value="install">Install All</option>

@@ -67,6 +67,8 @@ class Log {
         } else {
             $message .= "\n";
         }
+        $message = date('Y-m-d H:i:s').' -------------------------------------------------'."\n\n".$message.'---------------------------------------------------------------------'."\n\n";
+        
         $handle     = fopen($file, "r+");
         if (!is_resource($handle)) {
             \Log::console('LOG: could not allocate a resource ['.$file.'] for message: '.$message);
@@ -80,7 +82,7 @@ class Log {
         $i = 1;
         while (ftell($handle) < $final_len) {
             fwrite($handle, $message);
-            $message = $original;
+            $message  = $original;
             $original = fread($handle, $len);
             fseek($handle, $i * $len);
             $i++;
@@ -113,12 +115,13 @@ class Log {
      * @param mixed $message
      */
     public static function user($message) {
-        if (isset($_SESSION['login'])) {
-            $project = self::getProject();
-            $file    = '../../logs/'.$project->namespace.'/'.$_SESSION['login'] .'.log';
-            if ($message) {
-                self::prependFile($message, $file);
+        if ($message) {
+            if (!is_dir('../../logs/'.$project->namespace.'/users')) {
+                @mkdir('../../logs/'.$project->namespace.'/users',0775);
             }
+            $project = self::getProject();
+            $file    = (isset($_SESSION['login'])) ? '../../logs/'.$project->namespace.'/users/'.$_SESSION['login'].'.log' : '../../logs/'.$project->namespace.'/users/anonymous.log';
+            self::prependFile($message, $file);
         }
     }
 

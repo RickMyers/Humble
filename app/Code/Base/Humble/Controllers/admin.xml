@@ -170,7 +170,7 @@
                     <redirect href="/mongo/admin" />
                 </case>
                 <default>
-                    <redirect href="/index.html?m=You are not authorized to access that resource" />
+                    <redirect href="/index.html?message=You are not authorized to access that resource" />
                 </default>
             </switch>
         </action>
