@@ -146,5 +146,26 @@ SQL;
         return isset($results[0]) ? $results[0] : $results;
     }
 
-
+    /**
+     * Returns information about users by being passed a list of user ids
+     * 
+     * @param mixed $list
+     * @return iterator
+     */
+    public function usersById($list=[]) {
+        $results = [];
+        if ($list = ($list) ? $list : ($this->getList() ? $this->getList() : false)) {
+            $list = is_array($list) ? implode(',',$list) : $list;
+            $query = <<<SQL
+                select a.user_name, a.uid, a.uid as user_id,
+                       b.first_name, b.last_name
+                  from humble_users as a
+                  left outer join as b
+                    on a.uid = b.id
+                 where a.uid in ({$list})
+SQL;
+           $results = $this->query($query);   
+        }
+        return $results;
+    }
 }

@@ -101,4 +101,24 @@ class Log extends Helper
         }
     }
 
+    /**
+     * Returns the list of active user logs
+     * 
+     * @return iterator
+     */
+    public function availableUserLogs() {
+        $logs = [];
+        $project = \Environment::getProject();
+        $users = '../../logs/'.$project->namespace.'/users';
+        print($users."\n");
+        $dh = dir($users);
+        while ($entry = $dh->read()) {
+            if (($entry=='.') || ($entry=='..')) {
+                continue;
+            }
+            $logs[] = $entry;
+        }
+        return \Humble::getEntity('humble/users')->usersById($logs);
+    }
+
 }

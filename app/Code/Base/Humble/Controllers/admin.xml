@@ -156,6 +156,17 @@
 
         <action name="log" passalong='log,window_id'>
             <description>Gets the view for the administration log that is passed in</description>
+            <if var="log" eq="user">
+                <then>
+                    <helper namespace="humble" class="log" id="users">
+                        
+                    </helper>
+                    <view name="user" />
+                </then>
+                <else>
+                    
+                </else>
+            </if>
         </action>
 
         <!-- ############################################################### -->

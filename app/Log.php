@@ -115,11 +115,11 @@ class Log {
      * @param mixed $message
      */
     public static function user($message) {
+        $project = self::getProject();
         if ($message) {
             if (!is_dir('../../logs/'.$project->namespace.'/users')) {
                 @mkdir('../../logs/'.$project->namespace.'/users',0775);
             }
-            $project = self::getProject();
             $file    = (isset($_SESSION['login'])) ? '../../logs/'.$project->namespace.'/users/'.$_SESSION['login'].'.log' : '../../logs/'.$project->namespace.'/users/anonymous.log';
             self::prependFile($message, $file);
         }
