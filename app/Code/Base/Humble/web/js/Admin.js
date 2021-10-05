@@ -367,18 +367,17 @@ var Administration = (function () {
                         created: false,
                         open: function (log) {
                             if (!Administration.logs.windows[log]) {
-                                Administration.logs.windows[log] = Desktop.semaphore.checkout();
+                                Administration.logs.windows[log] = Desktop.semaphore.checkout(true);
+                                Administration.logs.windows[log]._title(log+ ' Log')._scroll(false)._static(true);
                             }
-                            var win = Desktop.window.list[Administration.logs.windows[log]];
-                            win._title(log+ ' Log | Humble')._open();
-                            log = log.toLowerCase();
-                            (new EasyAjax('/humble/admin/log')).add('log',log).add('window_id',win.id).then(function (response) {
+                            var win = Administration.logs.windows[log]._open();
+                            (new EasyAjax('/humble/admin/log')).add('log',log.toLowerCase()).add('window_id',win.id).then(function (response) {
                                 win.set(response);
                             }).post();
                         },
                         clear: function (log) {
                             if (confirm('Clear the '+log.charAt(0).toUpperCase() + log.slice(1)+' log?')) {
-                                (new EasyAjax('/humble/log/clearlog')).add('log',log).then(function (response) {
+                                (new EasyAjax('/humble/log/clearlog')).add('log',log.toLowerCase()).then(function (response) {
                                     alert(response);
                                 }).post();
                             }

@@ -6,7 +6,7 @@
         <framework>0.7.9.1.0</framework>
         <app>0.0.1.0</app>
     </version>
-    <state>PRODUCTION</state>
+    <state>DEVELOPMENT</state>
     <extend>
         <helpers>1</helpers>
         <models>1</models>

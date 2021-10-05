@@ -6,7 +6,7 @@
         background-color: #333; color: ghostwhite; position: relative; box-style: border-box; font-size: .8em; padding: 5px 2px;
     }
     #log-viewer-body-{{ window_id }} {
-        box-style: border-box; height: 100%; overflow: auto; white-space: nowrap
+        box-style: border-box; height: 100%; overflow: hidden; white-space: nowrap
     }
     .log-viewer-list-log {
         width: 65px; height: 65px; margin-bottom: 12px; padding: 5px; border: 1px solid #333; color: #333; background-color: ghostwhite; border-radius: 5px; text-align: center; display: inline-block
@@ -28,8 +28,6 @@
 </div>
 <script type="text/javascript">
     var win         = Desktop.window.list['{{ window_id }}'];
-    win.content.style.overflow = 'hidden';
-    win.content.style.boxStyle = 'border-box';
     win.header      = $E('log-viewer-header-{{ window_id }}');
     win.body        = $E('log-viewer-body-{{ window_id }}');
     win.footer      = $E('log-viewer-footer-{{ window_id }}');
@@ -51,7 +49,7 @@
         return function () {
             var h = (win.content.offsetHeight - win.header.offsetHeight - win.footer.offsetHeight - 5) + "px";
             win.body.style.height    = h;
-            win.body.style.width     = (win.content.offsetWidth -5)+"px";
+            win.body.style.width     = (win.content.offsetWidth)+"px";
         };
     })(win);
     win.resize();
