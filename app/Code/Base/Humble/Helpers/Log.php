@@ -110,13 +110,13 @@ class Log extends Helper
         $logs = [];
         $project = \Environment::getProject();
         $users = '../../logs/'.$project->namespace.'/users';
-        print($users."\n");
+
         $dh = dir($users);
         while ($entry = $dh->read()) {
-            if (($entry=='.') || ($entry=='..')) {
+            if (($entry=='.') || ($entry=='..') ||($entry=='anonymous.log')) {
                 continue;
             }
-            $logs[] = $entry;
+            $logs[] = str_replace('.log','',$entry);
         }
         return \Humble::getEntity('humble/users')->usersById($logs);
     }
