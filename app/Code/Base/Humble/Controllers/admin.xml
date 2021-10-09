@@ -158,9 +158,6 @@
             <description>Gets the view for the administration log that is passed in</description>
             <if var="log" eq="user">
                 <then>
-                    <helper namespace="humble" class="log" id="users">
-                        
-                    </helper>
                     <view name="user" />
                 </then>
                 <else>
@@ -169,6 +166,15 @@
             </if>
         </action>
 
+        <!-- ############################################################### -->
+        
+        <action name="users" blocking="off">
+            <description>Generates a list of available user logs</description>
+            <helper namespace="humble" class="log" id="users">
+                        
+            </helper>            
+        </action>
+        
         <!-- ############################################################### -->
 
         <action name="mongo">

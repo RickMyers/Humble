@@ -365,6 +365,11 @@ var Administration = (function () {
                         windows: { },
                         tabs: null,
                         created: false,
+                        users: function () {
+                            (new EasyAjax('/humble/log/users')).then(function (response) {
+                                console.log(response);
+                            }).get();
+                        },
                         open: function (log) {
                             if (!Administration.logs.windows[log]) {
                                 Administration.logs.windows[log] = Desktop.semaphore.checkout(true);

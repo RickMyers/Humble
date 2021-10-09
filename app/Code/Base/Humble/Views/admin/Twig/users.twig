@@ -1,0 +1,6 @@
+{% for users.availableUserLogs() as log %}
+    <div style="white-space: nowrap" onclick="">
+        <img src="/images/humble/log.png" style="display: inline-block; height: 25px; margin-right: 5px" />
+        {{ log.user_id }} {{ log.last_name }}, {{ log.first_name }}
+    </div>
+{% endfor %}
