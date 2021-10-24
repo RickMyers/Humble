@@ -35,13 +35,13 @@
     win.viewing     = '{{ log }}';
     win.refresh     = (function (win) {
          return function () {
-   /*         if ($E('log-viewer-textarea-{{ window_id }}')) {
+            if ($E('log-viewer-textarea-{{ window_id }}')) {
                 Administration.logs.fetch(win.viewing,win.id);
                 window.clearTimeout(win.timer);
                 win.timer = window.setTimeout(win.refresh,10000);
             } else {
                 window.clearTimeout(win.timer);
-            } */
+            } 
         }
     })(win);
     win.resize      = (function (win) {
@@ -52,6 +52,6 @@
         };
     })(win);
     win.resize();
-  //  win.timer = window.setTimeout(win.refresh,10000);
-    Administration.logs.users(win.viewing,win.id);
+    win.timer = window.setTimeout(win.refresh,10000);
+    Administration.logs.users.open(win.viewing,win.id);
 </script>

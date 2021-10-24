@@ -25,5 +25,15 @@
             </entity>
         </action>
 
+        <!-- ################################################################### -->
+        
+        <action name="users" blocking="off" passalong="window_id">
+            <description>Gets the content of a users log</description>
+            <helper namespace='humble' class='log' id='log'>
+                <parameter name='log'       source='post' default='' />
+                <parameter name='user_id'   source='post' default='' />
+            </helper>  
+            <view name="fetch" />          
+        </action>
     </actions>
 </controller>

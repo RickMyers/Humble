@@ -25,19 +25,23 @@ class Log extends Helper
                     'warning'   => '../../logs/&&NAMESPACE&&/warning.log',
                     'general'   => '../../logs/&&NAMESPACE&&/general.log',
                     'mysql'     => '../../logs/&&NAMESPACE&&/mysql.log',
-                    'mongodb'   => '../../logs/&&NAMESPACE&&/mongo.log'
+                    'mongodb'   => '../../logs/&&NAMESPACE&&/mongo.log',
+                    'user'      => '../../logs/&&NAMESPACE&&/users/&&USERID&&.log'
                   );
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct();
-        $project = Environment::getProject();
-        foreach ($this->logs as $log => $location) {
-            $this->logs[$log] = str_replace('&&NAMESPACE&&',$project->namespace,$location);
-        }
     }
 
+    public function processLogs() {
+        $project = Environment::getProject();
+        $user_id = $this->getUserId();
+        foreach ($this->logs as $log => $location) {
+            $this->logs[$log] = str_replace(['&&NAMESPACE&&','&&USERID&&'],[$project->namespace,$user_id],$location);
+        }
+    }
     /**
      * Required for Helpers, Models, and Events, but not Entities
      *
@@ -53,7 +57,8 @@ class Log extends Helper
      * @return string
      */
     public function fetchLogData() {
-        $data = '';
+        $this->processLogs();
+        $data   = '';
         $log    = $this->getLog();
         $size   = $this->getSize();
 
@@ -63,6 +68,7 @@ class Log extends Helper
             } else {
                 $filesize = filesize($this->logs[$log]);
                 $size     = (($size==='*') ? $filesize : (((int)$size > (int) $filesize) ? $size : $filesize));
+                $size     = $size > 250000 ? 250000 : $size;                    //cap it at 250000
                 $fh       = fopen($this->logs[$log],'r');
                 $data     = fread($fh,$size);
             }
@@ -76,6 +82,7 @@ class Log extends Helper
                 }
                 $filesize   = filesize($this->logs[$log]);
                 $size       = (($size==='*') ? $filesize : ((int)$size > (int)$filesize) ? $filesize : $size);
+                $size       = $size > 500000 ? 500000 : $size; 
                 $startfrom  = $filesize - $size;
                 $fh         = fopen($this->logs[$log],'r');
                 fseek($fh,$startfrom);
@@ -89,6 +96,7 @@ class Log extends Helper
      * Writes over the log that was passed in
      */
     public function clearLog() {
+        $this->processLogs();        
         $log = $this->getLog();
         if (isset($this->logs[$log])) {
             file_put_contents($this->logs[$log],'');   //blows away the log
@@ -113,7 +121,7 @@ class Log extends Helper
 
         $dh = dir($users);
         while ($entry = $dh->read()) {
-            if (($entry=='.') || ($entry=='..') ||($entry=='anonymous.log')) {
+            if (($entry=='.') || ($entry=='..') || ($entry=='anonymous.log')) {
                 continue;
             }
             $logs[] = str_replace('.log','',$entry);

@@ -365,10 +365,19 @@ var Administration = (function () {
                         windows: { },
                         tabs: null,
                         created: false,
-                        users: function () {
-                            (new EasyAjax('/humble/log/users')).then(function (response) {
-                                console.log(response);
-                            }).get();
+                        users: {
+                            open: function (win,win_id) {
+                                (new EasyAjax('/humble/admin/users')).add('viewing',win).add('window_id',win_id).then(function (response) {
+                                    $('#log-viewer-body-'+win_id).html(response);
+                                }).get();
+                            },
+                            fetch: function (user_id,user_name) {
+                                var win = Desktop.semaphore.checkout(true);
+                                win._title(user_name+' Log')._open();
+                                (new EasyAjax('/humble/log/users')).add('log','user').add('user_id',user_id).then(function (response) {
+                                    win.set(response);
+                                }).post();
+                            }
                         },
                         open: function (log) {
                             if (!Administration.logs.windows[log]) {
