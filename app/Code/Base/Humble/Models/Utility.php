@@ -192,13 +192,18 @@ class Utility extends Model
         $data           = Humble::getEntity('humble/users')->setUid($this->getUid())->load();
         $user           = Humble::getEntity('humble/user_identification')->setId($this->getUid())->load();
         $project        = Environment::getProject();
+        $module         = Humble::getModule($this->getNamespace());
         $custom_root    = 'Code/'.$project->package.'/'.$project->module.'/lib/sample/component';
+        $module_root      = 'Code/'.$module['package'].'/'.$module['module'].'/lib/sample/component';
         $templates      = [];
         $templates['models']   = file_exists($custom_root.'/Model.php.txt')  ? $custom_root.'/Model.php.txt' : 'Code/Base/Humble/lib/sample/component/Model.php.txt';
+        $templates['models']   = file_exists($module_root.'/Model.php.txt')  ? $module_root.'/Model.php.txt' : $templates['models'];
         $templates['entities'] = file_exists($custom_root.'/Entity.php.txt') ? $custom_root.'/Entity.php.txt' : 'Code/Base/Humble/lib/sample/component/Entity.php.txt';
+        $templates['entities'] = file_exists($module_root.'/Entity.php.txt') ? $module_root.'/Entity.php.txt' : $templates['entities'];        
         $templates['helpers']  = file_exists($custom_root.'/Helper.php.txt') ? $custom_root.'/Helper.php.txt' : 'Code/Base/Humble/lib/sample/component/Helper.php.txt';
+        $templates['helpers']  = file_exists($module_root.'/Helper.php.txt') ? $module_root.'/Helper.php.txt' : $templates['helpers'];        
         $roots          = ['models'=>'Model','helpers'=>'Helper','entities'=>'Entity'];
-        $module         = Humble::getModule($this->getNamespace());
+        
         $ns             = 'Code_'.$module['package']."_".$module[$this->getType()];
         $root           = $roots[$this->getType()];
         $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Base\\Humble\\Event\\Handler;\n\n\t" : "" ;
