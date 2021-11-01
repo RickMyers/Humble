@@ -1184,6 +1184,7 @@ EasyEdits.populateSelectBox = function (selectBox, contents, map, leaveCombo) {
             label   = (contents[jk].label) ? contents[jk].label : false;
             text    = (contents[jk].text && !map) ? contents[jk].text : '';
             value   = (contents[jk].value && !map) ? contents[jk].value : '';
+            title   = (contents[jk].title && !map) ? contents[jk].title : '';
             if (!text && map) {
                 if (typeof(map.text)==="object") {
                     text = '';
@@ -1218,6 +1219,9 @@ EasyEdits.populateSelectBox = function (selectBox, contents, map, leaveCombo) {
             }
             oOption = document.createElement('OPTION');
             oOption.value = value;
+            if (title) {
+                oOption.title = title;
+            }
             if (contents[jk].style) {
                 oOption.style = contents[jk].style;
             }
