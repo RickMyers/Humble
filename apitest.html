@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/common" />
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap" />
+        <style type="text/css">
+            td {
+                font-family: monospace; letter-spacing: 1px; padding: 2px 4px;
+            }
+            .api-input {
+                padding: 2px; border: 1px solid #777; width: 400px; background-color: lightcyan;
+            }
+        </style>
+        <script type="text/javascript" src="/js/common"></script>
+        <script type="text/javascript" src="/js/jquery"></script>
+        <script type="text/javascript">
+            var API = {
+                test: function () {
+                    var table = $('#table').val();
+                    var field = $('#field').val();
+                    var value = $('#value').val();
+                    var method = $('input[name="method"]:checked').val();
+                    if (table && field && method) {
+                        var ao = new EasyAjax('/api/'+table);
+                        ao.add(field,value);
+                        ao.then(function (response) {
+                            alert(response);
+                        });
+                        switch (method) {
+                            case "GET"      :
+                                ao.get();
+                                break;
+                            case "POST"     :
+                                ao.post();
+                                break;
+                            case "PUT"      :
+                                ao.put();
+                                break;
+                            case "DELETE"   :
+                                ao.delete();
+                                break;
+                            default         :
+                                break;
+                        }
+                    } else {
+                        alert('You need to select at least the table, field, and method');
+                    }
+                }
+            }
+        </script>
+            
+    </head>
+    <body>
+        <!--
+            o Get is a "load"
+            o Post is a "Fetch"
+            o Put is a "Save"
+            o Delete is a "Delete"
+        -->
+        <table style="width: 100%; height: 100%; background-color: rgba(202,202,202,.4)">
+            <tr>
+                <td>
+                    <div style="margin-left: auto; margin-right: auto; width: 800px; padding: 20px; border-radius: 20px; background-color: ghostwhite; border: 1px solid #777">
+                        <span style="font-size: 1.1em; font-family: monospace">Simple Humble API Test Utility</span>
+                        <hr style="border-color: #333"/>
+                        <br />
+                        <form onsubmit="return false">
+                            <table>
+                                <tr>
+                                    <td>Table: &nbsp;</td>
+                                    <td><input type="text" name="table" id="table" class="api-input" value="" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Field: &nbsp;</td>
+                                    <td><input type="text" name="field" id="field" class="api-input" value="" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Value: &nbsp;</td>
+                                    <td><input type="text" name="value" id="value" class="api-input" value="" /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <input type="radio" name="method" id="method-1" value="GET" checked="true" /> GET &nbsp;&nbsp;&nbsp; 
+                                        <input type="radio" name="method" id="method-2" value="POST" /> POST &nbsp;&nbsp;&nbsp;
+                                        <input type="radio" name="method" id="method-3" value="PUT" /> PUT &nbsp;&nbsp;&nbsp;
+                                        <input type="radio" name="method" id="method-4" value="DELETE" /> DELETE 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><input type="button" onclick="API.test()" value="   Test   " /></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

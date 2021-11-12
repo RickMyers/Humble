@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/common" />
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap" />
+        <script type="text/javascript" src="https://qa.argusdentalvision.com/js/jquery"></script>
+        <script type="text/javascript" src="/js/bootstrap"></script>
+        <script type="text/javascript" src="/js/common"></script>
+        <script type="text/javascript" src="/js/vue"></script>
+        <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>        
+        <script type="text/javascript">
+            var MyApps = {
+                form1: {
+                    ref: false,
+                    app: false
+                },
+                form2: {
+                    ref: false,
+                    app: false
+                           
+                }
+            }
+            $(document).ready(function () {
+                MyApps.form1.ref = $E('integration-test-form');
+                MyApps.form1.app = new Vue({
+                    el: '#integration-test-form',
+                    data: {
+                        url: '/wapi/argus/authentication',
+                        request: '',
+                        user_name: '',
+                        password: ''
+                    },
+                    methods: {
+                        testIntegrationPoint: function () {
+                            (new EasyAjax(this.url)).add('request',this.data).add('user_name',this.user_name).add('password',this.password).then(function (response) {
+                                alert(response);
+                                console.log(response);
+                                response = JSON.parse(response);
+                                if (response.sessionId) {
+                                    MyApps.form2.app.sessionId = response.sessionId;
+                                }
+                                console.log(response);
+                            }).post();
+                        }
+                    }
+                });
+                MyApps.form2.ref = $E('integration-test-form2');
+                MyApps.form2.app = new Vue({
+                    el: '#integration-test-form2',
+                    data: {
+                        url:         '/esb/pcp/results',
+                        fields: '',
+                        sessionId:   ''
+                    },
+                    methods: {
+                        testSessionAuthentication: function () {
+                            var ao = new EasyAjax(this.url);
+                            var parts;
+                            var arguments = this.fields.split(',');
+                            console.log(arguments);
+                            for (var i in arguments) {
+                                parts = arguments[i].split('=');
+                                console.log(parts)
+                                ao.add(parts[0],parts[1]);
+                            };
+                            ao.add('sessionId',this.sessionId).callback(function (response) {
+                                alert(response);
+                            }).post();
+                        }
+                    }
+                });                
+            });
+        </script>
+    </head>
+    <body>
+        <div id="integration-test-form" style="padding: 40px">
+            <h3>Authenticate</h3>
+            <input v-model="url" style="width: 300px; background-color: lightcyan; padding: 2px; border-radius: 2px; border: 1px solid #aaf"/><br />
+            <textarea v-model="request" style="width: 300px; background-color: lightcyan; padding: 2px; border-radius: 2px; border: 1px solid #aaf" ></textarea><br />
+            <input placeholder="User Id" v-model="user_name" style="width: 100px; background-color: lightcyan; padding: 2px; border-radius: 2px; border: 1px solid #aaf" /><br />
+            <input type="password" v-model="password" style="width: 100px; background-color: lightcyan; padding: 2px; border-radius: 2px; border: 1px solid #aaf" /><br />
+            <br/>
+            <button v-on:click="testIntegrationPoint">Run Test</button>
+        </div>
+        <br /><br />
+        <div id="integration-test-form2" style="padding: 40px">
+            <h3>Execute</h3>
+            <input v-model="url" style="width: 300px; background-color: lightcyan; padding: 2px; border-radius: 2px; border: 1px solid #aaf"/><br />
+            <textarea v-model="fields" style="width: 300px; background-color: lightcyan; padding: 2px; border-radius: 2px; border: 1px solid #aaf" ></textarea><br />
+            <input placeholder="Session ID" v-model="sessionId" style="width: 300px; background-color: lightcyan; padding: 2px; border-radius: 2px; border: 1px solid #aaf" /><br />
+
+            <br/>
+            <button v-on:click="testSessionAuthentication">Run Session Test</button>
+        </div>        
+    </body>
+</html>
+
