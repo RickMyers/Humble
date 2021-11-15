@@ -544,8 +544,7 @@ PHP;
         }
         if (isset($node['conditionvar']) || isset($node['conditionsvar'])) {
             print($this->tabs().'if (isset($_REQUEST["'.$node['conditionvar'].'"]) && $_REQUEST["'.$node['conditionvar'].'"]) {'."\n");
-            print($this->tabs(1).'$'.$node['id']."->condition('".$node['condition']."');"."\n");
-                print($this->tabs().'$'.$node['id'].'->condition(htmlspecialchars_decode($_REQUEST["'.$node['conditionvar'].'"]));'."\n");
+                print($this->tabs(1).'$'.$node['id'].'->condition(htmlspecialchars_decode($_REQUEST["'.$node['conditionvar'].'"]));'."\n");
                 print($this->tabs().'unset($_REQUEST["'.$node['conditionvar'].'"]);'."\n");
                 print($this->tabs().'unset($_POST["'.$node['conditionvar'].'"]);'."\n");
                 print($this->tabs().'unset($_GET["'.$node['conditionvar'].'"]);'."\n");
