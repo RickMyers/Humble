@@ -24,6 +24,7 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_fromRow       = 0;
     protected $_toRow         = 0;
     protected $_joins         = [];
+    protected $_conditions    = [];
     protected $_distinct      = false;
     protected $_mongodb       = null;
     protected $_mongocollection = null;
@@ -258,6 +259,14 @@ SQL;
         return $query;
     }
 
+    public function condition($condition=false) {
+        if ($condition) {
+            $this->_conditions[] = $condition;
+            return $this;
+        } else {
+            return $this->_conditions;
+        }
+    }
     /**
      *
      */
@@ -506,11 +515,20 @@ SQL;
         if ($this->_in) {
             $query .= ($andFlag) ? " and " : ' where ';
             $query .= "`".$this->_inField."` in ('".implode("','",$this->_in)."') ";
+            $andFlag = true;
         }
         if ($this->_between) {
             $query .= ($andFlag) ? " and " : ' where ';
             $query .= "`".$this->_betweenField."` between '".$this->_between[0]."' and '".$this->_between[1]."' ";
+            $andFlag = true;
         }
+        if ($this->condition()) {
+            foreach ($this->condition() as $condition) {
+                $query .= ($andFlag) ? " and " : ' where ';
+                $query .= " ".$condition." ";                
+                $andFlag = true;
+            }
+        }        
         return $query;
     }
 
@@ -753,7 +771,6 @@ SQL;
         if (!$this->_orderBuilt && (count($this->_orderBy)>0)) {
             $query .= $this->buildOrderByClause();
         }
-        //print($query); die();
         $words  = explode(' ',trim($query));
         if (strtoupper($words[0])==='SELECT') {
             if ($this->_page()) {

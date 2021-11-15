@@ -539,6 +539,19 @@ PHP;
         if (isset($node['fields'])) {
             print($this->tabs().'$'.$node['id']."->_fieldList('".$node['fields']."');"."\n");
         }
+        if (isset($node['condition']) || isset($node['conditions'])) {
+            print($this->tabs().'$'.$node['id']."->condition('".$node['condition']."');"."\n");
+        }
+        if (isset($node['conditionvar']) || isset($node['conditionsvar'])) {
+            print($this->tabs().'if (isset($_REQUEST["'.$node['conditionvar'].'"]) && $_REQUEST["'.$node['conditionvar'].'"]) {'."\n");
+            print($this->tabs(1).'$'.$node['id']."->condition('".$node['condition']."');"."\n");
+                print($this->tabs().'$'.$node['id'].'->condition(htmlspecialchars_decode($_REQUEST["'.$node['conditionvar'].'"]));'."\n");
+                print($this->tabs().'unset($_REQUEST["'.$node['conditionvar'].'"]);'."\n");
+                print($this->tabs().'unset($_POST["'.$node['conditionvar'].'"]);'."\n");
+                print($this->tabs().'unset($_GET["'.$node['conditionvar'].'"]);'."\n");
+                print($this->tabs().'unset($_PUT["'.$node['conditionvar'].'"]);'."\n");
+            print($this->tabs(-1)."}\n");
+        }
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
             $this->processNode($tag,$newNode);
