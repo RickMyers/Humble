@@ -2441,7 +2441,7 @@ var Paradigm = (function () {
         init: function () {
             Desktop.init(Desktop.enable);
             Desktop.semaphore.init();
-            Paradigm.console.initialize();
+            //Paradigm.console.initialize(); //Until we can get the focus issue worked out
             Paradigm.canvas             = $E('canvas');
             Paradigm.container          = $E('canvas-container');
             Paradigm.draw               = Paradigm.canvas.getContext('2d');
