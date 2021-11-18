@@ -261,7 +261,11 @@ class Compiler extends Directory
         $this->processRequired($required,$source,$field);
         $optional   = (isset($parameter['optional']) && ($parameter['name']!=='*') ? strtolower((string)$parameter['optional']) : false);
         $optional   = ($optional) ? ($optional==='true' ? true : false) : false;
-
+        $trim       = (isset($parameter['trim']) ? strtolower((string)$parameter['trim']) : false);
+        $upper      = (isset($parameter['upper']) ? strtolower((string)$parameter['upper']) : false);
+        $lower      = (isset($parameter['lower']) ? strtolower((string)$parameter['lower']) : false);
+        $escape     = (isset($parameter['escape']) ? strtolower((string)$parameter['escape']) : false);
+        $unescape   = (isset($parameter['unescape']) ? strtolower((string)$parameter['unescape']) : false);
         $type       = (isset($parameter['type']) ? strtolower((string)$parameter['type']) : false);
         if ($type) {
             switch ($type) {
@@ -337,7 +341,21 @@ PHP;
                                 foreach ('.$source.' as $name => $value) {
                                     if (isset($exc[$name])) {
                                        continue;
-                                    }
+                                    }'."\n");
+            if ($upper) {
+                print('                                    $value = strtoupper($value);'."\n");
+            } else if ($lower) {
+                print('                                    $value = strtolower($value);'."\n");
+            }
+            if ($escape) {
+                print('                                    $value = htmlspecialchars($value);'."\n");
+            } else if ($unescape) {
+                print('                                    $value = htmlspecialchars_decode($value);'."\n");
+            }            
+            if ($trim) {
+                print('                                    $value = trim($value);'."\n");
+            }
+            print( ' 
                                     $method = "set".underscoreToCamelCase($name);
                                     $'.$node['id'].'->$method($value);
                                 }
@@ -358,6 +376,19 @@ PHP;
             } else if ($custom) {
                 print($this->tabs().'$'.$node['id'].'->set'.ucfirst($this->underscoreToCamelCase($parameter['name']))."( isset(".$source.'["'.$parameter['source'].'"]'.") ? ".$source.'["'.$parameter['source'].'"]'." : ".$default.");\n");
             } else {
+                if ($upper) {
+                    print($this->tabs().$source.'["'.$field.'"] = strtoupper('.$source.'["'.$field.'"]);'."\n");    
+                } else if ($lower) {
+                    print($this->tabs().$source.'["'.$field.'"] = strtolower('.$source.'["'.$field.'"]);'."\n");
+                }
+                if ($escape) {
+                    print($this->tabs().$source.'["'.$field.'"] = htmlspecialchars('.$source.'["'.$field.'"]);'."\n");    
+                } else if ($unescape) {
+                    print($this->tabs().$source.'["'.$field.'"] = htmlspecialchars_decode('.$source.'["'.$field.'"]);'."\n");
+                }                
+                if ($trim) {
+                    print($this->tabs().$source.'["'.$field.'"] = trim('.$source.'["'.$field.'"]);'."\n");
+                }
                 print($this->tabs().'$'.$node['id'].'->set'.ucfirst($this->underscoreToCamelCase($parameter['name']))."( isset(".$source.'["'.$field.'"]'.") ? ".$source.'["'.$field.'"]'." : ".$default.");\n");
             }
         }
