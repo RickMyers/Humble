@@ -154,6 +154,7 @@ try {
                                     }
                                 }
                                 if (!$allowed) {
+                                    header("HTTP/1.1 400 Bad Request");
                                     throw new \Exceptions\WhitelistException('Invalid Requestor',99);
                                 }
                             }
@@ -161,9 +162,11 @@ try {
                                 if (($userid == $criteria['standard-userid']) && ($passwd === $criteria['standard-password'])) {
                                     triggerWorkflow(createWorkflowEvent($criteria),$workflow);
                                 } else {
+                                    header("HTTP/1.1 400 Bad Request");
                                     throw new \Exceptions\CredentialsIncorrectException('Authorization Information Invalid',24);
                                 }
                             } else {
+                                header("HTTP/1.1 400 Bad Request");
                                 throw new \Exceptions\CredentialsException('Credentials Missing',24);
                             }
                             break;
@@ -189,6 +192,7 @@ try {
                                     }
                                     triggerWorkflow(createWorkflowEvent($criteria),$workflow);
                                 } else {
+                                    header("HTTP/1.1 400 Bad Request");
                                     \Humble::response(json_encode([
                                         "RC" => "12",
                                         "message" => "Invalid Session ID",
@@ -199,6 +203,7 @@ try {
                                     die();
                                 }
                             } else {
+                                header("HTTP/1.1 400 Bad Request");
                                 \Humble::response(json_encode([
                                     "RC" => "12",
                                     "message" => "Missing Session ID",
@@ -217,12 +222,15 @@ try {
                 }
                 outputResponse();
             } else {
+                header("HTTP/1.1 400 Bad Request");
                 throw new \Exceptions\DisabledWebServiceException('Disabled Web Service',8);
             }
         } else {
+            header("HTTP/1.1 400 Bad Request");
             throw new \Exceptions\UnknownWebServiceException('WebService Not Found',16);
         }
     } else {
+        header("HTTP/1.1 400 Bad Request");
         throw new \Exceptions\MissingURIException('URI Invalid or Not Set',24);
     }
 } catch (\Exceptions\WhitelistException $e) {
