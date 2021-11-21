@@ -828,6 +828,8 @@ TXT;
                 }
                 file_put_contents($file,$distro->getFromName($file));
             }
+            print("Now running update...\n\n");
+            updateModule(['ns=*']);
         } else {
             print("\n\nFramework update aborted.\n\n");
         }
