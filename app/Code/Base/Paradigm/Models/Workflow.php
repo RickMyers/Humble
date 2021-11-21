@@ -52,7 +52,7 @@ class Workflow extends Model
             $this->exporter              = Environment::getProject();
             $this->_namespace($this->exporter->namespace);
         }
-        $target                          = Humble::getEntity('paradigm/export/targets')->setId($this->getId())->load();
+        $target                          = Humble::getEntity('paradigm/export/targets')->setId($this->getDestinationId())->load();
         $results                         = [];
         $results[]                       = '#########################################################';
         $results[]                       = 'Beginning Export for '.$this->_namespace();
@@ -81,7 +81,7 @@ class Workflow extends Model
             Log::warning('Export Target: '.$target['target']);
             $this->setSessionId(true);
             $call = [
-                "url" => $target['target'],
+                "url" => $target['target'].'/paradigm/workflow/import',
                 "api-key" => '',
                 "api-var" => '',
                 "secure"  => true,
@@ -92,7 +92,7 @@ class Workflow extends Model
             ];            
             
             $this->setWorkflow(json_encode($workflow));
-            $results[] = $this->_hurl($target['target'],$this->_processArguments($call),$call);
+            $results[] = $this->_hurl($target['target'].'/paradigm/workflow/import',$this->_processArguments($call),$call);
             //$results[] = $this->$whereTo();
         } else {
             $results[] = 'Missing a workflow '.$this->getId();
@@ -127,7 +127,8 @@ class Workflow extends Model
 
         file_put_contents($dest.'workflow_'.time().'.dat',$this->getWorkflow());
         $workflow = json_decode($this->getWorkflow(),true);
-        if ($workflow && count(Humble::getEntity('paradigm/import/tokens')->setToken($workflow['token'])->load(true))) {
+        //&& count(Humble::getEntity('paradigm/import/tokens')->setToken($workflow['token'])->load(true))  do this differently
+        if ($workflow) {
             $mysql                  = Humble::getEntity('paradigm/workflows');
             $webservice_workflow    = Humble::getEntity('paradigm/webservice_workflows');
             $webservice             = Humble::getEntity('paradigm/webservices');
@@ -149,7 +150,7 @@ class Workflow extends Model
                     $webservice->$method($value);
                 }
                 $wid = $webservice->save();
-                $results[] = 'Added Webservice (MySQL): '.$workflow['webservice']['id'].' with id '.$wid;
+                $results[] = 'Added Webservice (MySQL): '.$workflow['webservice']['id'].' with id '.$wid['_id'];
             }
             if (isset($workflow['listeners']) && $workflow['listeners']) {
                 $results[] = 'Removing Listeners (MySQL): '.$workflow['listeners']['id'];
@@ -159,7 +160,7 @@ class Workflow extends Model
                     $listeners->$method($value);
                 }
                 $wid = $listeners->save();
-                $results[] = 'Added Listener (MySQL): '.$workflow['webservice']['id'].' with id '.$wid;
+                $results[] = 'Added Listener (MySQL): '.$workflow['webservice']['id'].' with id '.$wid['_id'];
             }
             if (isset($workflow['webservice_workflow']) && ($workflow['webservice_workflow'])) {
                 $results[] = 'Removing Webservice Workflow (MySQL): '.$workflow['webservice_workflow']['id'];
@@ -169,7 +170,7 @@ class Workflow extends Model
                     $webservice_workflow->$method($value);
                 }
                 $wid = $webservice_workflow->save();
-                $results[] =  'Added Webservice Workflow (MySQL): '.$workflow['webservice']['id'].' with id '.$wid;
+                $results[] =  'Added Webservice Workflow (MySQL): '.$workflow['webservice']['id'].' with id '.$wid['_id'];
             }
             foreach ($workflow['components'] as $id => $component) {
                 $results[] = 'Removing Component (MongoDB): '.$id;
@@ -181,7 +182,7 @@ class Workflow extends Model
                     $element->$method($value);
                 }
                 $wid = $element->save();
-                $results[] = 'Adding Component (MongoDB): '.$id.' with id '.$wid;
+                $results[] = 'Adding Component (MongoDB): '.$id.' with id '.$wid['_id'];
             }
             $this->generate($workflow['data']['id'],$workflow['data']['namespace']);
             $results[] = 'Generated the workflow';

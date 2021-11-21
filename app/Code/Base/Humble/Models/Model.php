@@ -456,7 +456,7 @@ SOAP;
      *
      * @return array Processed args
      */
-    private function _processSoapArguments($arguments,$ucfirst=false) {
+    protected function _processSoapArguments($arguments,$ucfirst=false) {
         $args = []; $cast = false;
         foreach ($arguments as $var => $val) {
             if ($p = strpos($var,'|')) {
