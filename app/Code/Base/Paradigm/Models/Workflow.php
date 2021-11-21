@@ -150,7 +150,7 @@ class Workflow extends Model
                     $webservice->$method($value);
                 }
                 $wid = $webservice->save();
-                $results[] = 'Added Webservice (MySQL): '.$workflow['webservice']['id'].' with id '.$wid['_id'];
+                $results[] = 'Added Webservice (MySQL): '.$workflow['webservice']['id'].' with id '.$wid;
             }
             if (isset($workflow['listeners']) && $workflow['listeners']) {
                 $results[] = 'Removing Listeners (MySQL): '.$workflow['listeners']['id'];
@@ -160,7 +160,7 @@ class Workflow extends Model
                     $listeners->$method($value);
                 }
                 $wid = $listeners->save();
-                $results[] = 'Added Listener (MySQL): '.$workflow['webservice']['id'].' with id '.$wid['_id'];
+                $results[] = 'Added Listener (MySQL): '.$workflow['webservice']['id'].' with id '.$wid;
             }
             if (isset($workflow['webservice_workflow']) && ($workflow['webservice_workflow'])) {
                 $results[] = 'Removing Webservice Workflow (MySQL): '.$workflow['webservice_workflow']['id'];
@@ -170,7 +170,7 @@ class Workflow extends Model
                     $webservice_workflow->$method($value);
                 }
                 $wid = $webservice_workflow->save();
-                $results[] =  'Added Webservice Workflow (MySQL): '.$workflow['webservice']['id'].' with id '.$wid['_id'];
+                $results[] =  'Added Webservice Workflow (MySQL): '.$workflow['webservice']['id'].' with id '.$wid;
             }
             foreach ($workflow['components'] as $id => $component) {
                 $results[] = 'Removing Component (MongoDB): '.$id;
