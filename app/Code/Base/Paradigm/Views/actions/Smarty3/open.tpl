@@ -362,7 +362,7 @@ Copyright humbleprogramming.com, all rights reserved
                         Paradigm.actions.set.diagramTitle(diagram.title);
                         Paradigm.actions.set.diagramDescription(diagram.description);
                         if (!Workflows.controls) {
-                            $('#paradigm-quick-save').on("click",Paradigm.actions.quickSave).css('visibility','visible').fadeIn();
+                            $('#paradigm-quick-save').on("click",Paradigm.actions.details).css('visibility','visible').fadeIn();
                             $('#paradigm-quick-generate').on("click",Paradigm.actions.generate).css('visibility','visible').fadeIn();
                             $('#paradigm-quick-activate').on("click",Paradigm.actions.inactivate);
                             $('#paradigm-quick-inactivate').on("click",Paradigm.actions.activate);
