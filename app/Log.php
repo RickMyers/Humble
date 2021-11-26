@@ -217,10 +217,33 @@ class Log {
             }
             $primary_id     = (isset($actors['primary_id']) && $actors['primary_id']) ? $actors['primary_id'] : $primary;
             $secondary_id   = (isset($actors['secondary_id']) && $actors['secondary_id']) ? $actors['secondary_id'] : $secondary;
-            Humble::getEntity('humble/activity_log')->setLoggedBy(Environment::whoAmI())->setPrimaryId($primary_id)->setSecondaryId($secondary_id)->setActivity(Humble::getHelper('humble/string')->translate($template['template'],$data))->save();
+            Humble::getEntity('humble/activity/log')->setLoggedBy(Environment::whoAmI())->setPrimaryId($primary_id)->setSecondaryId($secondary_id)->setActivity(Humble::getHelper('humble/string')->translate($template['template'],$data))->save();
         }
     }
 
+    /**
+     * Relays an alert to a model so that it can be handled by a workflow
+     * 
+     * @param sting $type
+     * @param mixed $data
+     */
+    public static function alert($type=false,$data=[]) {
+        if ($type) {
+            \Humble::getModel('humble/system')->systemAlert($type,$data);
+        }
+    }
+    
+    /**
+     * Relays a notification to a model so that it can be handled by a workflow
+     * 
+     * @param sting $type
+     * @param mixed $data
+     */
+    public static function notify($type=false,$data=[]) {
+        if ($type) {
+            \Humble::getModel('humble/system')->systemNotification($type,$data);
+        }
+    }    
     /**
      *
      */

@@ -192,4 +192,32 @@ class System extends Model
     public function recache() {
         Environment::recacheApplication();
     }
+    
+    /**
+     * System Alert handler, allows for handling system wide alerts through workflows
+     * 
+     * 
+     * @workflow use(EVENT) emit(SystemAlert)
+     * @param type $type
+     * @param type $data
+     */
+    public function systemAlert($type=false,$data) {
+        if ($type) {
+            $this->trigger('SystemAlert',__CLASS__,__METHOD__,['type'=>$type,'details'=>$data]);
+        }
+    }
+    
+    /**
+     * System Notification handler, allows for handling system wide notifications through workflows
+     * 
+     * 
+     * @workflow use(EVENT) emit(SystemNotification)
+     * @param type $type
+     * @param type $data
+     */
+    public function systemNotification($type=false,$data) {
+        if ($type) {
+            $this->trigger('SystemNotification',__CLASS__,__METHOD__,['type'=>$type,'details'=>$data]);
+        }
+    }    
 }
