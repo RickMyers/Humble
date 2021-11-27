@@ -502,6 +502,7 @@ TXT;
                                                         break;
                             case "comment"          :   registerInlineEvent($namespace,$emit,($inline_comment=$value));
                                                         break;
+                            case "cfg"              :
                             case "config"           :
                             case "configuration"    :   $workflowComponent->setConfiguration($value);
                                                         break;

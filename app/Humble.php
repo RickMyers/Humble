@@ -179,7 +179,12 @@
         }
 
         /**
-         *
+         * Returns an instance of a class or a "virtual class" if that class doesn't exist
+         * 
+         * @param type $resource_identifier
+         * @param type $override
+         * @param type $arguments
+         * @return \class
          */
         public static function getModel($resource_identifier,$override=false,...$arguments)  {
             $identifier     = self::parseResource($resource_identifier);
@@ -247,18 +252,16 @@
             $xml    = null;
             $data   = null;
             if ($module) {
-                //get module info and
+                //get module info and substitute that for the namespace to load that modules configuration for some gawd awful reason?  Why was I doing this again?
             } else {
                 $data   = Environment::getProject();
             }
-
             $res    = Humble::getEntity('humble/modules')->setNamespace($data->namespace)->load();
             $source = 'Code/'.$res['package'].'/'.$res['configuration'].'/config.xml';
             if (file_exists($source)) {
                 $xml =  new \SimpleXMLElement(file_get_contents($source));
             }
             return $xml;
-
         }
 
         /**
@@ -580,7 +583,8 @@ SQL;
         }
 
         /**
-         *
+         * Returns a list of the folders/directories that modules are stored in... a "package" is just a directory containing modules
+         * 
          * @return type
          */
         public static function getPackages()  {
