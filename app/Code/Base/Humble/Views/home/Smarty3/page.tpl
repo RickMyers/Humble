@@ -5,7 +5,7 @@
 		<link rel="stylesheet" type="text/css" href="/css/bootstrap" />
 		<style type="text/css">
 			.column {
-				display: inline-block; box-style: border-box; vertical-align: top
+				display: inline-block; box-sizing: border-box; vertical-align: top
 			}
 			.side-column {
 				width: 15%; background-color: #445348;

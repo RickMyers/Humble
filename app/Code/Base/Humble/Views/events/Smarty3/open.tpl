@@ -1,15 +1,15 @@
 <style type="text/css">
     #events-viewer-pagination {
-        text-align: center; position: relative; box-style: border-box; padding: 5px 2px
+        text-align: center; position: relative; box-sizing: border-box; padding: 5px 2px
     }
     #events-viewer-header {
-        background-color: #333; color: ghostwhite; position: relative; box-style: border-box; font-size: 1.5em; padding: 5px 2px;
+        background-color: #333; color: ghostwhite; position: relative; box-sizing: border-box; font-size: 1.5em; padding: 5px 2px;
     }
     #events-viewer-footer {
-        background-color: #333; color: ghostwhite; position: relative; box-style: border-box; font-size: .8em; padding: 5px 2px;
+        background-color: #333; color: ghostwhite; position: relative; box-sizing: border-box; font-size: .8em; padding: 5px 2px;
     }
     #events-viewer-body {
-        box-style: border-box;
+        box-sizing: border-box;
     }
 </style>
 <div id="events-viewer-header">

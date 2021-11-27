@@ -515,7 +515,7 @@ Copyright humbleprogramming.com, all rights reserved
             </table>
         </div>
         <div id="paradigm-virtual-desktop" style="width: 100%; height: 100%">
-            <div id="paradigm-header" style='position: relative; box-style: border-box; white-space: nowrap'>
+            <div id="paradigm-header" style='position: relative; box-sizing: border-box; white-space: nowrap'>
                 <div style='display: block; box-sizing: border-box; padding-left: 15px; background-color: #e3e3e3; height: 100%; border-radius: 0px 0px 0px 0px; min-width: 1000px; width: 100%;  '>
                     <div style="float: left;">
                         <img src='/images/humble/djikstra.png' align="top" style=' float: left; height: 76px; margin-right: 240px' />
@@ -523,7 +523,7 @@ Copyright humbleprogramming.com, all rights reserved
                         <div style="font-size: 1em; color: #555; letter-spacing: 6px; position: absolute; top: 55px; left: 80px; text-shadow: -1px 1px 1px #5A5A5A;">Workflow Editor</div>
                     </div>
                     <div style='display: inline-block; margin-left: auto; margin-right: auto; visibility: hidden' id="paradigm-workflow-components">
-                    <fieldset style="display: inline-block; position: relative; top: -5px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
+                    <fieldset style="display: inline-block; position: relative; top: 2px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
                         <legend style="font-family: sans-serif; font-size: .6em">Triggers</legend>
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px" title='A recurring event, based on time'>
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/cron.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('system')" /><br />
@@ -555,7 +555,7 @@ Copyright humbleprogramming.com, all rights reserved
                         </div-->
                     </fieldset>
 
-                    <fieldset style="display: inline-block; position: relative; top: -5px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
+                    <fieldset style="display: inline-block; position: relative;  top: 2px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
                         <legend style="font-family: sans-serif; font-size: .6em">Connectors</legend>
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; ">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/flowchart-arrow.gif' onclick="Paradigm.elements.connector.add()" style='height: 40px; cursor: pointer' /><br />
@@ -567,7 +567,7 @@ Copyright humbleprogramming.com, all rights reserved
                         </div>
                     </fieldset>
 
-                    <fieldset style="display: inline-block; white-space: nowrap;  position: relative; top: -5px; margin-left: 20px; padding: 0px 40px 0px 20px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
+                    <fieldset style="display: inline-block; white-space: nowrap;  position: relative; top: 2px; margin-left: 20px; padding: 0px 40px 0px 20px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
                         <legend style="font-family: sans-serif; font-size: .6em">Components</legend>
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/process.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('process')" /><br />
@@ -615,7 +615,7 @@ Copyright humbleprogramming.com, all rights reserved
                     <div style="clear: both"></div>
                 </div>
             </div>
-            <div id="paradigm-menu" style='position: relative; box-style: border-box; white-space: nowrap'>
+            <div id="paradigm-menu" style='position: relative; box-sizing: border-box; white-space: nowrap'>
                 <div style="float: right; text-align: right; width: 100%; background-color: #e3e3e3; position: relative ">
                         <div id="humble-app-header" style='white-space: nowrap; position: relative'>
                             <form name="paradigm-controls-form" id="paradigm-controls-form" style='white-space: nowrap; position: relative'>
@@ -743,12 +743,12 @@ Copyright humbleprogramming.com, all rights reserved
                     </div>
                 <div style="clear: both"></div>
             </div>
-            <div id="paradigm-content" style='position: relative; box-style: border-box'>
-                <div style="position: relative; overflow: auto; width: 100%; height: 100%; box-style: border-box" tabindex='99' id='canvas-container'>
+            <div id="paradigm-content" style='position: relative; box-sizing: border-box'>
+                <div style="position: relative; overflow: auto; width: 100%; height: 100%; box-sizing: border-box" tabindex='99' id='canvas-container'>
                     <canvas style=" background-image: url(/images/paradigm/bg_graph.png); display: block" id="canvas"></canvas>
                 </div>
             </div>
-            <div style='font-family: sans-serif; background-color: #333; color: white; font-size: 10px; box-style: border-box; position: relative' id="paradigm-footer">
+            <div style='font-family: sans-serif; background-color: #333; color: white; font-size: 10px; box-sizing: border-box; position: relative' id="paradigm-footer">
                 <div style='float: right; margin-right: 10px; color: ghostwhite' id='paradigm-last-action'>
                 </div>
                 &copy; Humble Project, 2007-present

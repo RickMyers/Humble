@@ -1,4 +1,4 @@
-<div id="paradigm-sync-header-{$windowId}" style="background-color: #333; color: white; font-size: .9em; padding: 5px; box-style: border-box">
+<div id="paradigm-sync-header-{$windowId}" style="background-color: #333; color: white; font-size: .9em; padding: 5px; box-sizing: border-box">
 </div>
 <div id="paradigm-sync-content-{$windowId}">
 <table style="width: 100%; height: 100%">
@@ -23,7 +23,7 @@
     </tr>
 </table>
 </div>
-<div id="paradigm-sync-footer-{$windowId}" style="background-color: #333; color: white; font-size: .9em; padding: 5px; box-style: border-box">
+<div id="paradigm-sync-footer-{$windowId}" style="background-color: #333; color: white; font-size: .9em; padding: 5px; box-sizing: border-box">
     &copy; 2015-present, Humble Project
 </div>
 <script type="text/javascript">

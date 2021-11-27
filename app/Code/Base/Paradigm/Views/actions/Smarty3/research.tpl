@@ -175,7 +175,7 @@
     <body style='margin: 0px; padding: 0px; overflow: hidden; '>
         <div style='position: absolute; visibility: hidden; top: -100px; left: -1000px; float: left;' id='hiddenSizingLayer'></div>
         <div id="paradigm-virtual-desktop" style="width: 100%; height: 100%">
-            <div id="paradigm-header" style='position: relative; box-style: border-box; white-space: nowrap'>
+            <div id="paradigm-header" style='position: relative; box-sizing: border-box; white-space: nowrap'>
                 <div style='display: block; box-sizing: border-box; padding-left: 15px; background-color: #e3e3e3; height: 100%; border-radius: 0px 0px 0px 0px; min-width: 1000px; width: 100%;  '>
                     <div style="float: left;">
                         <img src='/images/humble/djikstra.png' align="top" style=' float: left; height: 76px; margin-right: 180px' />
@@ -206,7 +206,7 @@
                     <div style="clear: both"></div>
                 </div>
             </div>
-            <div id="paradigm-menu" style='position: relative; box-style: border-box; white-space: nowrap'>
+            <div id="paradigm-menu" style='position: relative; box-sizing: border-box; white-space: nowrap'>
                 <div style="float: right; text-align: right; width: 100%; background-color: #e3e3e3; position: relative ">
                         <div id="humble-app-header" style='white-space: nowrap; position: relative'>
                             <form name="paradigm-controls-form" id="paradigm-controls-form" style='white-space: nowrap; position: relative'>
@@ -240,12 +240,12 @@
                     </div>
                 <div style="clear: both"></div>
             </div>
-            <div id="paradigm-content" style='position: relative; box-style: border-box'>
-                <div style="position: relative; overflow: auto; width: 100%; height: 100%; box-style: border-box" tabindex='99' id='canvas-container'>
+            <div id="paradigm-content" style='position: relative; box-sizing: border-box'>
+                <div style="position: relative; overflow: auto; width: 100%; height: 100%; box-sizing: border-box" tabindex='99' id='canvas-container'>
                     <canvas style=" background-image: url(/images/paradigm/bg_graph.png); display: block" id="canvas"></canvas>
                 </div>
             </div>
-            <div style='font-family: sans-serif; background-color: #333; color: white; font-size: 10px; box-style: border-box; position: relative' id="paradigm-footer">
+            <div style='font-family: sans-serif; background-color: #333; color: white; font-size: 10px; box-sizing: border-box; position: relative' id="paradigm-footer">
                 <div style='float: right; margin-right: 10px; color: ghostwhite' id='paradigm-last-action'>
                 </div>
                 &copy; Humble Project, 2014-present
