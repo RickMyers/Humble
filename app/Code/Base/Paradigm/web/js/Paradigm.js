@@ -281,8 +281,8 @@ var Paradigm = (function () {
         drag:       false,  /* a flag, if true an item is being dragged */
         resize:     false,  /* set when within 5px of the edge of an element */
         canvas:     null,   /* reference to the drawing canvas  */
-        container: false,   /* reference to the div containing the canvas */
-        label: false,
+        container:  false,   /* reference to the div containing the canvas */
+        label:      false,
         draw:       null,   /* the canvase context */
         rect:       null,   /* for storing the bounding client rectangle */
         element:    false,  /* current element index number for the hashmap */
