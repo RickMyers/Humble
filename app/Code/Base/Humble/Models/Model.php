@@ -111,6 +111,21 @@ class Model implements HumbleComponent
     }
     
     /**
+     * Returns true if this is a virtual class (not a physical one)
+     * 
+     * @param type $virtual
+     * @return $this
+     */
+    public function _isVirtual($virtual=false) {
+        if ($virtual) {
+            $this->_isVirtual = $virtual;
+            return $this;
+        } else {
+            return $this->_isVirtual;
+        }
+    }
+    
+    /**
      * Will add to the response headers any messages or errors generated during processing
      */
     public function __destruct() {

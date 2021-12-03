@@ -196,6 +196,7 @@
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
+                            $this->_isVirtual(true);
                             parent::__construct();
                         }
                         public function getClassName() {   return $this->anon_class; }
