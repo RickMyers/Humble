@@ -535,7 +535,7 @@ SOAP;
      *
      * @return array Processed args
      */
-    private function _processArguments($call) {
+    protected function _processArguments($call) {
         $args = [];
         $rpc  = $this->_RPC();  //capture current RPC state
         $this->_RPC(false);     //turn off RPC or might fall into an infinite loop
