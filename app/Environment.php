@@ -367,12 +367,25 @@ class Environment {
     }
 
     /**
-     * Returns the contents of the project file of false if the project hasn't been created yet
+     * Returns the contents of the project file of false if the project hasn't been created yet, or possibly a node of the project file if the node name is passed and is present
      *
      * @return object
      */
-    public static function getProject() {
-        return (self::$project) ? self::$project : (self::$project =  (file_exists('../Humble.project') ? json_decode(file_get_contents('../Humble.project')) : false));
+    public static function getProject($node=false) {
+        $project = (self::$project) ? self::$project : (self::$project =  (file_exists('../Humble.project') ? json_decode(file_get_contents('../Humble.project')) : false));
+        if ($node) {
+            $project = (isset(self::$project->$node) ? self::$project->$node : null);
+        }
+        return $project;
+    }
+
+    
+    public static function getApplication($node=false) {
+        $app = self::loadApplicationMetaData();
+        if ($node) {
+            $app = (isset($app[$node]) ? $app[$node] : null);
+        }
+        return $app;
     }
 
     /**
