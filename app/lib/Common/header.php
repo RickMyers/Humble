@@ -67,12 +67,12 @@ function parseAjaxUpload() {
                 $files[$fileKey]['tmp_name'][]   = $tmpfile;
                 $files[$fileKey]['name'][]       = $filename;
                 $files[$fileKey]['type'][]       = $type;
-                $files[$fileKey]['size'][]       = strlen($cnt)-2;
+                $files[$fileKey]['size'][]       = strlen($cnt);
                 $files[$fileKey]['error'][]      = UPLOAD_ERR_OK;
             } else {
-                $files[$fileKey] = array('tmp_name'=>$tmpfile,'name'=>$filename,'size'=>strlen($cnt)-2,'type'=>$type,'error'=>UPLOAD_ERR_OK);
+                $files[$fileKey] = array('tmp_name'=>$tmpfile,'name'=>$filename,'size'=>strlen($cnt),'type'=>$type,'error'=>UPLOAD_ERR_OK);
             }
-            file_put_contents($tmpfile,substr($cnt,0,strlen($cnt)-2));
+            file_put_contents($tmpfile,$cnt);
         }
     }
     foreach ($vars as $var => $value) {
