@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+General actions for outputting data into an event
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="output" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="field" passalong="windowId">
+            <description>Outputs a value from an event</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
