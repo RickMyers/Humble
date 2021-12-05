@@ -821,7 +821,7 @@ TXT;
         print("Do you wish to continue [yes/no]? ");
         if (strtolower(scrub(fgets(STDIN))) === 'yes') {
             $app->version->framework = $version;
-            file_put_contents('../application.xml',$app->asXML());
+            file_put_contents('application.xml',$app->asXML());
             foreach ($changed as $file) {
                 file_put_contents($file,$distro->getFromName($file));
             }
