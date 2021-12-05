@@ -796,7 +796,7 @@ TXT;
         chdir('app');
     }
     //--------------------------------------------------------------------------
-    function performCoreUpdate($distro,$changed,$insertions,$matched,$ignored,$merged) {
+    function performCoreUpdate($distro,$changed,$insertions,$matched,$ignored,$merged,$app,$version) {
         ob_start();
         print("\nPATCH REPORT\n########################################################\n\nMatched Files: ".$matched."\n\nThe following files will be updated by this process:\n\n");
         print("\nThe following files are on the local manifest indicating they should be IGNORED in the patch:\n\n");
@@ -820,6 +820,8 @@ TXT;
         print("\n\nIf you do not want some files updated, add those files to the Humble.local.manifest file and re-run this process.\n\nA copy of the patch review report shown above can be found in file 'patch_report.txt'.\n\n");
         print("Do you wish to continue [yes/no]? ");
         if (strtolower(scrub(fgets(STDIN))) === 'yes') {
+            $app->version->framework = $version;
+            file_put_contents('../application.xml',$app->asXML());
             foreach ($changed as $file) {
                 file_put_contents($file,$distro->getFromName($file));
             }
@@ -873,7 +875,7 @@ TXT;
                 $insertions[] = $file;
             }
         }
-        performCoreUpdate($distro,$changed,$insertions,$matched,$ignore,$merge);
+        performCoreUpdate($distro,$changed,$insertions,$matched,$ignore,$merge,$app,$version);
     }
     //--------------------------------------------------------------------------
     function patchFrameworkCore() {
@@ -897,7 +899,7 @@ TXT;
         @mkdir($distro,0775,true);
         evaluateCoreDifferences($app,$project,$canonical['version']);
         $helper->purgeDirectory($distro,true);
-        @rmdir('distro_'.$canonical['version']);
+        @rmdir($distro);
         chdir('app');
     }
     //--------------------------------------------------------------------------

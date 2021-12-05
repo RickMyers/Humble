@@ -59,6 +59,7 @@ class Workflow extends Model
 
         $workflow                        = ["data"  => false,"webservice_workflow" => false,"webservice" => false,"listeners"=>false,"components" => [], "token"=>$target['token']];
         $workflow['data']                = Humble::getEntity('paradigm/workflows')->setId($this->getId())->load();
+        unset($workflow['data']['image']);  //image sending can cause problems due to size
         $workflow['webservice_workflow'] = Humble::getEntity('paradigm/webservice_workflows')->setWorkflowId($workflow['data']['workflow_id'])->load(true);
         $workflow['listeners']           = Humble::getEntity('paradigm/workflow_listeners')->setWorkflowId($workflow['data']['workflow_id'])->load(true);
         if (isset($workflow['webservice_workflow']['webservice_id'])) {
