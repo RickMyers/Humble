@@ -95,7 +95,7 @@ class Updater extends Installer
      * @param type $namespace
      */
     protected function updateServiceDirectory($namespace=null) {
-        $this->output('DIRECTORY','Generating Processing Service Directory');
+        $this->output('DIRECTORY','Generating Service Directory');
         if ($namespace) {
             Humble::getEntity('humble/service/directory')->setNamespace($namespace)->delete();
             if ($module = Humble::getModule($namespace)) {

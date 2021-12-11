@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <controller name="actions" use="Smarty3">
     <actions>
-        <action name="open" >
+        <action name="open" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>Main landing for the workflow editor</description>
             <entity namespace="humble" class="user_permissions" id="permissions" method="load">
                 <parameter name='id' value="uid" source="session" required="true" />
@@ -21,8 +21,5 @@
 
         </action>
     </actions>
-
-
-
 
 </controller>

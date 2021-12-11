@@ -833,7 +833,7 @@ TXT;
             }
             chdir('app');
             print("Now running update...\n\n");
-            updateModule(['ns=*']);
+            updateModule(['ns=humble,paradigm,workflow']);
             chdir('..');
         } else {
             print("\n\nFramework update aborted.\n\n");

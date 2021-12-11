@@ -346,5 +346,19 @@ class Utility extends Model
         $this->trigger('documentationGenerated',__CLASS__,__METHOD__,["generated"=>date('Y-m-d H:i:s'),'user_id'=>Environment::user()]);
     }
 
+    /**
+     * Creates a copy of the component templates in the main modules directory structure
+     */
+    public function clone() {
+        if ($namespace = \Environment::getProject('namespace')) {
+            if ($module = Humble::getModule($namespace)) {
+                $base = 'Code/Base/Humble/lib';
+                $dest = 'Code/'.$module['package'].'/'.$module['module'].'/lib';
+                @mkdir($dest,0775,true);
+                \Humble::getHelper('humble/directory')->copyDirectory($base,$dest);
+            }
+        }
+    }
+    
 }
 ?>
