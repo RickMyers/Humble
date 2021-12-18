@@ -9,21 +9,17 @@ use Environment;
  *
  * &&LONGDESC&&
  *
- * PHP version 7.2+
+ * PHP version 7.0+
  *
  * @category   &&CATEGORY&&
  * @package    &&PACKAGE&&
  * @author     &&AUTHORNAME&& <&&AUTHOREMAIL&&>
- * @copyright  2005-present &&PROJECT&&
- * @license    https://humbleprogramming.com/license.txt
- * @version    <INSERT VERSIONING MECHANISM HERE />
- * @link       https://humbleprogramming.com/docs/class-&&MODULE&&.html
- * @since      File available since Release 1.0.0
  */
 class &&CLASS&& extends &&ROOT&&
 {
 
-    &&TRAIT&&/**
+    &&TRAIT&&
+    /**
      * Constructor
      */
     public function __construct() {

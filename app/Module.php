@@ -184,7 +184,7 @@ HELP;
                 $project     = Environment::getProject();
                 $module      = Humble::getModule($project->namespace);
                 $root        = is_dir('Code/'.$project->package.'/'.$project->module.'/lib/sample/module') ? 'Code/'.$project->package.'/'.$project->module : "Code/Base/Humble";
-                 $srch        = ["&&namespace&&","&&prefix&&","&&author&&","&&module&&","&&package&&",'&&email&&','&&FACTORY&&'];
+                $srch        = ["&&namespace&&","&&prefix&&","&&author&&","&&module&&","&&package&&",'&&email&&','&&FACTORY&&'];
                 $repl        = [$ns,$px,$au,$md,$pk,$em,$project->factory_name];
                 $templates   = [$root."/lib/sample/module/Controllers/actions.xml"];
                 $out         = ["Code/".$pk."/".$md."/Controllers/actions.xml"];

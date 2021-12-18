@@ -238,7 +238,9 @@ class Utility extends Model
             '&&LONGDESC&&',
             '&&FACTORY&&',
             '&&PROJECT&&',
-            '&&MODULE&&'
+            '&&MODULE&&',
+            '&&base_package&&',
+            '&&base_module&&'
         );
         if (strpos($root,'_')!==false) {
             $root = '\\'+$root;
@@ -256,7 +258,9 @@ class Utility extends Model
             $description,
             $project['factory_name'],
             $project['project_name'],
-            $class
+            $class,
+            $project['package'],
+            $project['module']
         );
         //ADD A CHECK!
         file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)));
