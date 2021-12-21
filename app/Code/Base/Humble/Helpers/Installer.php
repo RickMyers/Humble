@@ -464,9 +464,9 @@ SQL;
     /**
      *
      */
-    protected function storeEntities($orm,$prefix)    {
+    protected function storeEntities($orm,$prefix=false)    {
       $environment  = \Singleton::getEnvironment();
-      $prefix       = $orm->prefix;
+      $prefix       = ($prefix) ? $prefix : $orm->prefix;
       $this->unInstallEntities($this->namespace);
       foreach ($orm->entities as $name => $entities) {
           foreach ($entities as $name => $entity) {
@@ -491,7 +491,10 @@ SQL;
                         SELECT extra FROM  information_schema.COLUMNS WHERE table_schema = '{$environment->getDatabase()}' AND TABLE_NAME = '{$prefix}{$name}' AND column_name = '{$col}'
 SQL;
                 $data = $this->_db->query($query);
-                $inc = ($data[0]['extra']=="auto_increment") ? 'Y' : 'N';
+                $inc = 'N';
+                if (isset($data[0]['extra'])) {
+                    $inc = ($data[0]['extra']=="auto_increment") ? 'Y' : 'N';
+                }
                 $query = <<<SQL
                        insert into humble_entity_keys
                           (namespace,entity,`key`,auto_inc)
@@ -500,7 +503,7 @@ SQL;
 SQL;
                     $this->_db->query($query);
                 }
-                //now get a list of columns that are non-key.  If you try to save a field that isn't in this list, it will get redirected to a mongo db entry
+                //now get a list of columns that are non-key.  If you try to save a field that isn't in this list, it will get redirected to a mongodb collection
                 $query = <<<SQL
                     SHOW COLUMNS IN {$prefix}{$name} WHERE `Key` != 'PRI'
 SQL;
