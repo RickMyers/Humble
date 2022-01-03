@@ -3,7 +3,7 @@
             background-image: url(/images/paradigm/bg_graph.png); position: relative
         }
         .services-header {
-            color: navy; font-size: 2.2em; height: 50px
+            color: #333; font-size: 2.2em; height: 50px
         }
         .service-display {
             overflow: auto; background-color: ghostwhite
@@ -26,12 +26,23 @@
             <div class="services-display-area" id='service-display-area'>
                 <div id="service-header" class="services-header">
                     <div style='float: right; white-space: nowrap; font-size: .5em; margin-right: 5px;'>
-                        <form>
+                        <form onsubmit="return false">
+                            <div style="display: inline-block; width: 240px">
+                                Search: <input type="text" name="search_services_text" id="search_services_text" style="width: 190px; background-color: lightcyan; color: #333; border: 1px solid #333; border-radius: 2px" />
+                            </div>                            
+                            <div style="display: inline-block; width: 180px">
+                                Module: <select name="module_namespace" id="module_namespace" style="color: #333; width: 110px; background-color: lightcyan; padding: 2px; border: 1px solid #333; border-radius: 2px">
+                                    <option value=""> </option>
+                                    {foreach from=$modules->fetch() item=module}
+                                        <option value="{$module.namespace}" title="{$module.description}"> {$module.module|ucfirst} </option>
+                                    {/foreach}
+                                </select>
+                            </div>
                             <div style="display: inline-block; margin-right: 20px">
                                 <input type="checkbox" name="hide_framework_services" id="hide_framework_services" value="Y" /> Hide Framework Services
                             </div>
                             <div style="display: inline-block">
-                            Rows: <select id='service-rows' name='service-rows'>
+                            Rows: <select id='service-rows' name='service-rows' style="background-color: lightcyan; color: #333; padding: 2px; border: 1px solid #333; border-radius: 2px">
                                 <option value='10000'> All </option>
                                 <option value='10'> 10 </option>
                                 <option value='25'> 25 </option>
@@ -77,7 +88,8 @@
         loaded:     {},
         page: {
             goto: function (page) {
-                (new EasyAjax('/humble/directory/services')).add('page',page).add('rows',$('#service-rows').val()).then(function (response) {
+                var hide = $('#hide_framework_services').prop('checked');
+                (new EasyAjax('/humble/directory/services')).add('namespace',$('#module_namespace').val()).add('hide_framework_services',hide).add('page',page).add('rows',$('#service-rows').val()).then(function (response) {
                     $('#service-directory').html(response);
                 }).post();
             }

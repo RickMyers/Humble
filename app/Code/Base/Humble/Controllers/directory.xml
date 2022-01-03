@@ -34,22 +34,44 @@ Actions and views related to directory services
         </action>
 
         <!-- ############################################################### -->
+        
+        <action name="describe" blocking="off">
+            <description>Will produce a more detailed description of a particular service</description>
+            <entity assign="details" namespace="humble" class="service/directory" method="load">
+                <parameter name="id" source="request" required="true" />
+            </entity>
+        </action>
+        
+        <!-- ############################################################### -->
 
         <action name="index" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>This builds the paginated page that displays the list of currently available services</description>
+            <entity namespace="humble" class="modules" id="modules" />
             <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="40" id="services" defaultPage='1'>
             </entity>
         </action>
 
         <!-- ############################################################### -->
 
-        <action name="services" authorization='true'>
+        <action name="services" blocking="false">
             <description>This builds the paginated page that displays the list of currently available services, and how to call them</description>
             <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="40" id="services">
-                <!--parameter name="id" source="request" type="int" required="true" /-->
+                <parameter name="id" source="request" optional="true" />
+                <parameter name="hide_framework_services" source="request" optional="true" />
+                <parameter name="namespace" source="request" optional="true" />
             </entity>
         </action>
 
+        <!-- ############################################################### -->
+
+        <action name="search">
+            <description>This builds the paginated page that displays the list of currently available services, and how to call them</description>
+            <entity namespace="humble" class="modules" id="modules" />
+            <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="40" id="services">
+                <parameter name="id" source="request" optional="true" />
+            </entity>
+        </action>
+        
         <!-- ############################################################### -->
 
         <action name="serviceparms" authorization='true'>
