@@ -1,15 +1,28 @@
 <?xml version="1.0"?>
 <application>
     <name>{$name}</name>
-    <version>0.0.0.1</version>
+    <version>
+        <framework>{$version}</framework>
+        <app>0.0.0.1</app>
+    </version>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">{$serial_number}</serial_number>
     <state>{$state}</state>
-    <framework>
-        <version>{$version}</version>
-    </framework>
+    <state>DEVELOPMENT</state>
+    <extend>
+        <helpers>1</helpers>
+        <models>1</models>
+        <entities>1</entities>
+    </extend>
     <msa>
-        <router>0</router>                      <!-- Switch to 1 to make this node the router for a MSA based application -->
+        <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application -->
+        <strategy>
+            <forward>1</forward>
+            <redirect>0</redirect>
+        </strategy>
     </msa>
+    <api>
+        <enabled>0</enabled>
+    </api>    
     <status>
         <enabled>{$enabled}</enabled>           <!-- Switch to 0 to take the application offline -->
         <quiescing>{$quiescing}</quiescing>     <!-- switch to 1 to being the process of taking the system offline -->

@@ -83,6 +83,7 @@ class System extends Model
         $rain->assign('logout',     (($this->getLogout())        ? $this->getLogout()    : ""));
         $rain->assign('quiescing',  (($this->getQuiescing())     ? $this->getQuiescing() : ""));
         $rain->assign('SSO',        (($this->getSso())           ? $this->getSso()       : ""));
+        $rain->assign('version',    (($this->getVersion())       ? $this->getVersion()   : "0.0.0.0.1"));
         file_put_contents('../application.xml',$rain->render('application',true));
         Humble::response('Saved...');
     }

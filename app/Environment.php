@@ -170,8 +170,7 @@ class Environment {
      */
     public static function loadApplicationMetaData($dontUseCache=false) {
         if ($dontUseCache) {
-            $data = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time.");
-            return simplexml_load_string($data);            
+            return json_decode(json_encode(simplexml_load_string((file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time."))),true);
         } else {
             if (!self::$application = Humble::cache('application')) {
                 self::recacheApplication();
@@ -380,8 +379,8 @@ class Environment {
     }
 
     
-    public static function getApplication($node=false) {
-        $app = self::loadApplicationMetaData();
+    public static function getApplication($node=false,$dontUseCache=false) {
+        $app = self::loadApplicationMetaData($dontUseCache);
         if ($node) {
             $app = (isset($app[$node]) ? $app[$node] : null);
         }

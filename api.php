@@ -19,15 +19,27 @@
     function underscoreToCamelCase( $string, $first_char_caps = false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }
-
+    function errorOff($message='Encountered Error') {
+        $sapi_type = php_sapi_name();
+        if (substr($sapi_type, 0, 3) == 'cgi') {
+            header("Status: 400 Bad Request");
+        } else {
+            header("HTTP/1.1 400 Bad Request");
+        }        
+        header('Content-type: application/json');
+        die('{ "error": "'.$message.'" }');
+     }
     ob_start();
 
     chdir('app');
     require_once('Humble.php');
+    $status = Environment::getApplication('api',true);
+    if (!isset($status['enabled']) || !(int)$status['enabled']) {
+        errorOff('API is disable');
+    }
     session_start();
     if (!isset($_SESSION['uid'])) {
-        header('Content-type: application/json');
-        die('{ "error": "Not Logged In, Authenticate First" }');
+        errorOff('Not Logged In, Authenticate First');
     }
     $headers         = getallheaders();
     $request_method  = strtolower($_SERVER['REQUEST_METHOD']);
@@ -53,11 +65,14 @@
         }
     }
 
+    $illegal         = ['paradigm'=>true,"humble"=>true,"workflow"=>true];
     $table           = isset($_GET['t'])   ? $_GET['t'] : false;
     $action          = (isset($_GET['m'])) ? $_GET['m'] : ((isset($content['id']) && $content['id']) ? $content['id'] : false);
     $namespace       = isset($_GET['n'])   ? $_GET['n'] : false;
     $module          = \Humble::getModule($namespace);
-
+    if (isset($illegal[$namespace])) {
+        errorOff("Core modules are not accessible via the API");
+    }
     /*
      * If table api action is an INT or undefined, use the implied CRUD to REST mappings
      *
@@ -123,7 +138,7 @@
     }
 
     if (!$content) {
-        $content = array();
+        $content = array();  //need to pass in some kind of criteria...
     }
     if ($namespace && $table && $action) {
         //if (!empty($content)) {
@@ -137,7 +152,6 @@
 
                 foreach ($content as $name => $val) {
                     if ($name !== "") {
-
                         $method = 'set'.underscoreToCamelCase($name, true);
                         $ref->$method($val);
                     }
@@ -178,17 +192,15 @@
                 }
 
             } else {
-                $error = array('error'=>'The module you are trying to access either does not exist or is disabled');
+                errorOff('The module you are trying to access either does not exist or is disabled');
             }
      //   } else {
        //     $error = array('error'=>'No content was passed, unable to process');
       //  }
    } else {
-       $error = array('error'=>'Namespace, Table, and Method or an ID number for the row are required');
+       errorOff('Namespace, Table, and Method or an ID number for the row are required');
    }
 
-   if ($error) {
-       print(json_encode($error));
-   } else if ($results) {
+   if ($results) {
        print(is_array($results) ? json_encode($results) : $results);
    }

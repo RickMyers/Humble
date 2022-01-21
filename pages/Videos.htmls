@@ -1,0 +1,68 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Installation.htmls" title="Installation" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Video Aids</div>
+These [presentation]s and videos are made available to accompany the text documentation on this site<br /><br />
+<ul>
+    <li>Beginnings
+        <ul>
+            <li><a href="#" onclick="return false">Concepts</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+            <li><a href="#" onclick="return false">Installation</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+            <li><a href="#" onclick="return false">Server Options</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+            <li><a href="#" onclick="return false">A First Application</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+        </ul>
+    </li>
+</ul>
+<br />
+<ul>
+    <li>Development
+        <ul>
+            <li><a href="#" onclick="return false">Routing</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+            <li><a href="#" onclick="return false">Component Creation &amp; Options</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+            <li><a href="#" onclick="return false">Controllers</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+            <li><a href="#" onclick="return false">Models &amp; Helpers</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+            <li>Entities
+                <ul>
+                    <li><a href="#" onclick="return false">Basics</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                    <li><a href="#" onclick="return false">Polyglot</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                    <li><a href="#" onclick="return false">Pagination</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                    <li><a href="#" onclick="return false">Advanced Features</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                </ul>
+            <li>Smart End-Points
+                <ul>
+                    <li><a href="#" onclick="return false">REST</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                    <li><a href="#" onclick="return false">XML &amp; SOAP</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                </ul>
+            <li><a href="#" onclick="return false">Node.js &amp; Grunt Tasks</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+        </ul>
+    </li>
+</ul>
+<br />
+<ul>
+    <li>Advanced Topics &amp; Use Cases
+        <ul>
+            <li><a href="#" onclick="return false">ESB</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+            <li>Architecture 
+                <ul>
+                    <li><a href="#" onclick="return false">Scaling</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                    <li><a href="#" onclick="return false">Micro-Service Deployment</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                    <li><a href="#" onclick="return false">Event Structure</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                </ul>
+            </li>
+            <li>CI/CD
+                <ul>
+                    <li><a href="#" onclick="return false">ANT Build Scripts</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
+                </ul>
+        </ul>
+    </li>
+</ul>
+
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->
