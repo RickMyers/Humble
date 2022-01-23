@@ -35,7 +35,7 @@
     require_once('Humble.php');
     $status = Environment::getApplication('api',true);
     if (!isset($status['enabled']) || !(int)$status['enabled']) {
-        errorOff('API is disable');
+        errorOff('API is disabled');
     }
     session_start();
     if (!isset($_SESSION['uid'])) {
@@ -190,15 +190,16 @@
                                             }
                                             break;
                 }
-
             } else {
                 errorOff('The module you are trying to access either does not exist or is disabled');
             }
      //   } else {
        //     $error = array('error'=>'No content was passed, unable to process');
       //  }
+   } else if ($namespace && $table) {
+    
    } else {
-       errorOff('Namespace, Table, and Method or an ID number for the row are required');
+       errorOff('Not enough data to use the API');
    }
 
    if ($results) {
