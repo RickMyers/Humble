@@ -136,7 +136,7 @@ class System extends Model
      * Changes the state, values are DEVELOPMENT, PRODUCTION, and DEBUG
      */
     public function changeState() {
-        $xml    = Environment::status(true);
+        $xml = simplexml_load_file('../application.xml');
         $xml->state = $this->getState();
         file_put_contents('../application.xml',$xml->asXML());
     }
@@ -147,7 +147,7 @@ class System extends Model
      *
      */
     public function quiesce() {
-        $xml  = Environment::status(true);
+        $xml = simplexml_load_file('../application.xml');
         $xml->status->quiescing = $this->getValue();
         file_put_contents('../application.xml',$xml->asXML());
     }
@@ -158,7 +158,7 @@ class System extends Model
      *
      */
     public function online() {
-        $xml  = Environment::status(true);
+        $xml = simplexml_load_file('../application.xml');
         $xml->status->enabled = 1;
         file_put_contents('../application.xml',$xml->asXML());
     }
@@ -169,7 +169,7 @@ class System extends Model
      *
      */
     public function offline() {
-        $xml  = Environment::status(true);
+        $xml = simplexml_load_file('../application.xml');
         $xml->status->enabled = 0;
         file_put_contents('../application.xml',$xml->asXML());
     }
@@ -182,8 +182,8 @@ class System extends Model
      * @return boolean
      */
     public function SSOEnabled($EVENT=false) {
-        $application   = Environment::status(true);
-        return ($application && (isset($application->status->SSO)) && ($application->status->SSO->enabled == 1));
+        $application =  Environment::status(true);
+        return ($application && (isset($application['status']['SSO'])) && ($application['status']['SSO']['enabled'] == 1));
 
     }
 

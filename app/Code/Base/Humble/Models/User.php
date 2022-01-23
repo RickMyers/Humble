@@ -136,7 +136,7 @@ class User extends Model {
     public function login() {
         $successful = false;
         $app        = Environment::status();
-        if (isset($app->status->SSO->enabled) && $app->status->SSO->enabled == 1) {
+        if (isset($app['status']['SSO']['enabled']) && $app['status']['SSO']['enabled'] == 1) {
             $successful = $this->SSOLogin();
         } else {
             $successful = $this->standardLogin();
