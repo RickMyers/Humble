@@ -107,7 +107,7 @@ class System extends Model
         if (!$this->xml) {
             $this->xml  = Environment::status(true);
         }
-        return $this->xml->status->quiescing;
+        return $this->xml['status']['quiescing'];
     }
 
     /**
@@ -119,7 +119,7 @@ class System extends Model
         if (!$this->xml) {
             $this->xml  = Environment::status(true);
         }
-        return $this->xml->status->enabled;
+        return $this->xml['status']['enabled'];
     }
     
     /**
