@@ -45,7 +45,9 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_in            = [];
     protected $_betweenField  = '';
     protected $_between       = '';
-    public $_lastResult    = [];
+    protected $_decrypt       = false;
+    protected $_encrypt       = false;     
+    public    $_lastResult    = [];
 
     /**
      * Initial constructor
@@ -95,6 +97,8 @@ class Unity extends \Code\Base\Humble\Models\Model
      *
      */
     public function clean()  {
+        $this->_decrypt     = false;
+        $this->_encrypt     = false;
         $this->_keys        = [];
         $this->_columns     = [];
         $this->_fields      = [];
@@ -113,6 +117,28 @@ class Unity extends \Code\Base\Humble\Models\Model
         $this->clean();
         $this->loadEntityKeys();
         $this->loadEntityColumns();
+        return $this;
+    }
+    
+    /**
+     * Sets the flag on whether something should be encrypted before being set
+     * 
+     * @param type $encrypt
+     * @return $this
+     */    
+    public function encrypt($encrypt=false) {
+        $this->_encrypt  = $encrypt;
+        return $this;
+    }
+    
+    /**
+     * Sets the flag on whether something needs to be decrypt before being returned
+     * 
+     * @param type $decrypt
+     * @return $this
+     */
+    public function decrypt($decrypt=false) {
+        $this->_decrypt = $decrypt;
         return $this;
     }
     
@@ -1601,6 +1627,22 @@ SQL;
     }
 
     /**
+     * Basic magic method for setting, with an option to encrypt the value before setting it.  If encrypted, the flag is disabled after setting
+     * 
+     * @param string $name
+     * @param mixed $value
+     * @return $this
+     */
+    public function __set($name,$value)   {
+        if ($this->_encrypt) {
+            $value = openssl_decrypt($retval,'aes-128-ctr',Environment::getProject('serial_number'));
+            $this->_encrypt = false;
+        }
+        $this->_data[$name] = $value;
+        return $this;
+    }
+    
+    /**
      * We don't support the extended RPC functionality in an entity, so we are suppressing that here
      *
      * @param type $name
@@ -1611,6 +1653,10 @@ SQL;
         if (!is_array($name)) {
             if (isset($this->_data[$name])) {
                 $retval = $this->_data[$name];
+                if ($this->_decrypt) {
+                    $retval = openssl_decrypt($retval,'aes-128-ctr',Environment::getProject('serial_number'));
+                    $this->decrypt(false);
+                }
             }
         }
         return $retval;

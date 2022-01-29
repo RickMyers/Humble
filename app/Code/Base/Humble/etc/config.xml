@@ -70,6 +70,7 @@
                 <modules />
                 <packages />
                 <pages />
+                <secrets_manager />
                 <services />
                 <service_directory polyglot="Y" />
                 <templaters />

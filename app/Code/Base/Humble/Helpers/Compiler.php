@@ -176,10 +176,11 @@ class Compiler extends Directory
                 print($this->tabs(1).$source.'["'.$field.'"] = MD5('.$source.'["'.$field.'"]'.');'."\n");
                 print($this->tabs(-1)."}\n");
                 break;
+            case "encrypt":
             case "crypt" :
                 //need to think this through with a salt and all that
                 print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                print($this->tabs(1).$source.'["'.$field.'"] = crypt('.$source.'["'.$field.'"]'.');'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = openssl_encrypt('.$source.'["'.$field.'"]'.',"aes-128-ctr",Environment::getProject("serial_number"));'."\n");
                 print($this->tabs(-1)."}\n");
                 break;
             case "json" :

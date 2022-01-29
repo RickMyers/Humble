@@ -26,7 +26,7 @@
         <!-- ############################################################### -->
 
         <action name='package' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
-            <description>The Humble administration home page</description>
+            <description>The form that allows you to create a package/directory</description>
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
                 <parameter name='id' value="uid"  source='session' required='true' />
             </entity>
@@ -43,7 +43,7 @@
         <!-- ############################################################### -->
         
         <action name='module' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
-            <description>The Humble administration home page</description>
+            <description>The form that allows you to create a new module</description>
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
                 <parameter name='id' value="uid"  source='session' required='true' />
             </entity>
@@ -60,7 +60,7 @@
         <!-- ############################################################### -->
         
         <action name='component' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
-            <description>The Humble administration home page</description>
+            <description>The form that allows you to create an Entity, Model, or Helper</description>
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
                 <parameter name='id' value="uid"  source='session' required='true' />
             </entity>
@@ -77,7 +77,7 @@
         <!-- ############################################################### -->
         
         <action name='controller' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
-            <description>The Humble administration home page</description>
+            <description>The form that allows you to create a controller</description>
             <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
                 <parameter name='id' value="uid"  source='session' required='true' />
             </entity>
@@ -90,7 +90,24 @@
                 </default>
             </switch>
         </action>
+
+        <!-- ############################################################### -->
         
+        <action name='secret' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description>The form that allows you to create a secret</description>
+            <entity namespace='humble' class='user/permissions' method='load' id='permissions'>
+                <parameter name='id' value="uid"  source='session' required='true' />
+            </entity>
+            <switch id='permissions' method='getAdmin'>
+                <case value='Y'>
+                    <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
+                </case>
+                <default>
+                    <redirect href='/index.html?message=Insufficient privilege' />
+                </default>
+            </switch>
+        </action>
+                        
         <!-- ############################################################### -->
 
         <action name="compile">

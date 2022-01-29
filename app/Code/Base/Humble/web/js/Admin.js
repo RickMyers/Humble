@@ -33,7 +33,8 @@ var Administration = (function () {
                             pak: false,
                             mod: false,
                             com: false,
-                            con: false
+                            con: false,
+                            sec: false
                         },
                         package: function () {
                             var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true))._static(true)._title("New Package");
@@ -56,6 +57,12 @@ var Administration = (function () {
                         controller: function () {
                             var win = (Administration.create.win.con = Administration.create.win.con ? Administration.create.win.con : Desktop.semaphore.checkout(true))._static(true)._title("New Controller");
                             (new EasyAjax('/humble/admin/controller')).then(function (response) {
+                                win._open(response);
+                            }).get();                            
+                        },
+                        secret: function () {
+                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._title("New Secret");
+                            (new EasyAjax('/humble/admin/secret')).then(function (response) {
                                 win._open(response);
                             }).get();                            
                         }

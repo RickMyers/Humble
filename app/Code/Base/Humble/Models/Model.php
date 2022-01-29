@@ -614,6 +614,22 @@ SOAP;
     }
     
     /**
+     * This call might be using our Secrets Manager, if so, if they followed the protocol, will decrypt the apiKey for them
+     * 
+     * @param string $apiKey
+     * @return string
+     */
+    protected function processApiKey($apiKey) {
+        if (strtolower(substr($apiKey,0,5))==='sm://') {
+            $sm = Humble::getEntity('humble/secrets/manager');
+            if ($x = $sm->setSecretName(substr($apiKey,5))->setNamespace($this->_namespace())->load(true)) {
+                $apiKey = $sm->decrypt(true)->getSecretValue();
+            }
+        }
+        return $apiKey;
+    }
+    
+    /**
      * 
      * 
      * @param type $name
@@ -658,7 +674,7 @@ SOAP;
                 } else {
                     if (isset($call['method']) && (strtoupper($call['method'])!=='SOAP')) {
                         if (isset($call['api-var']) && $call['api-var']) {
-                            $args[$call['api-var']] = $call['api-key'];
+                            $args[$call['api-var']] = $this->processApiKey($call['api-key']);
                         }
                         if (is_string($call['arguments']) && (substr($call['url'],strlen($call['url'])-1,1)=='+')) {
                             $method      = 'get'.ucfirst($call['arguments']);
