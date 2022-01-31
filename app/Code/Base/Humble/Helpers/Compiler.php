@@ -916,6 +916,9 @@ PHP;
         } else {
             if (isset($node['id']) && isset($node['method'])) {
                 print($this->tabs().'$'.$node['var'].' = $models["'.$node['var'].'"] = $'.$node['id'].'->'.$node['method'].'();'."\n");
+            } else {
+                throw new \Exceptions\ControllerParmeterException("Assign parameter is missing an ID to map to.  Add an ID attribute to the element",20);
+                print("\nInvalid Assign attribute, add an ID to complete it.  Assign works with elements tagged with an ID\n\n");                
             }
         }
     }

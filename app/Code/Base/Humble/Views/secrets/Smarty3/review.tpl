@@ -25,7 +25,7 @@
                             {/foreach}
                         </select><br />
                         <div class="secret_field_desc">Secret Name</div>
-                        <input type="text" name="secret_value" id="fetch_secret_value" value="" />
+                        <input type="text" name="secret_value" id="fetch_secret_value" value="" /><input type="button" value=" Update " name="update_secret_submit" id="update_secret_submit" />
                         <div class="secret_field_desc">Secret Value</div>
                         <input type="button" value=" Fetch Secret " name="fetch_secret_submit" id="fetch_secret_submit" />
                     </fieldset>
