@@ -141,7 +141,6 @@
                                 <li><a href='#' onclick='Administration.create.module(); return false'>New Module</a></li>
                                 <li><a href='#' onclick='Administration.create.component(); return false'>New Component</a></li>
                                 <li><a href='#' onclick='Administration.create.controller(); return false'>New Controller</a></li>
-                                <li><a href='#' onclick='Administration.create.secret(); return false'>New Secret</a></li>
                             </ul>
                         </li>                        
                         <li><a href='#'>Admin</a>
@@ -155,7 +154,13 @@
                                         <li><a href='#' onclick='Administration.workflows.add.exportTarget(); return false'>Add Export Target</a></li>
                                         <li><a href='#' onclick='Administration.workflows.add.importToken(); return false'>Add Import Token</a></li>
                                     </ul>
-                                </li>                                
+                                </li>  
+                                <li><a href="#">Secrets Manager</a>
+                                    <ul>
+                                        <li><a href='#' onclick='Administration.secrets.add(); return false'>Add Secret</a></li>
+                                        <li><a href='#' onclick='Administration.secrets.review(); return false'>Review Secret</a></li>
+                                    </ul>
+                                </li>                                       
                                 {% if (permissions.getSuperUser() == 'Y') %}
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>

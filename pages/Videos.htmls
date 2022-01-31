@@ -40,6 +40,7 @@ These [presentation]s and videos are made available to accompany the text docume
                     <li><a href="#" onclick="return false">REST</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
                     <li><a href="#" onclick="return false">XML &amp; SOAP</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
                 </ul>
+            <li><a href="#" onclick="return false">Secrets Manager</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
             <li><a href="#" onclick="return false">Node.js &amp; Grunt Tasks</a>&nbsp;&nbsp;&nbsp;<a href="#">[presentation]</a></li>
         </ul>
     </li>

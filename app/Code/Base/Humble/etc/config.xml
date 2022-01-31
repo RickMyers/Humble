@@ -93,6 +93,8 @@
                 <newcontroller>Humble/web/edits/newcontroller.json</newcontroller>
                 <newpackage>Humble/web/edits/newpackage.json</newpackage>
                 <newcomponent>Humble/web/edits/newcomponent.json</newcomponent>
+                <newsecret>Humble/web/edits/newsecret.json</newsecret>
+                <fetchsecret>Humble/web/edits/fetchsecret.json</fetchsecret>
             </edits>
             <common>
                 <js>
@@ -105,7 +107,6 @@
                     <source weight="16">Humble/web/js/socket.io.2.0.4.js</source>
                     <source weight="17">Humble/web/js/vue.js</source>
                     <source weight="18">Humble/web/js/vuerouter.js</source>
-                    
                 </js>
                 <css>
                     <source>Humble/web/css/Normalize.css</source>

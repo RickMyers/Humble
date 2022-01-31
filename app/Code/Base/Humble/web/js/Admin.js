@@ -28,6 +28,20 @@ var Administration = (function () {
                             }
                         }
                     },
+                    secrets: {
+                        add: function () {
+                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._title("New Secret");
+                            (new EasyAjax('/humble/secrets/form')).then(function (response) {
+                                win._open(response);
+                            }).get();                              
+                        },
+                        review: function () {
+                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._title("New Secret");
+                            (new EasyAjax('/humble/secrets/review')).then(function (response) {
+                                win._open(response);
+                            }).get();                              
+                        }
+                    },
                     create: {
                         win: {
                             pak: false,
@@ -57,12 +71,6 @@ var Administration = (function () {
                         controller: function () {
                             var win = (Administration.create.win.con = Administration.create.win.con ? Administration.create.win.con : Desktop.semaphore.checkout(true))._static(true)._title("New Controller");
                             (new EasyAjax('/humble/admin/controller')).then(function (response) {
-                                win._open(response);
-                            }).get();                            
-                        },
-                        secret: function () {
-                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._title("New Secret");
-                            (new EasyAjax('/humble/admin/secret')).then(function (response) {
                                 win._open(response);
                             }).get();                            
                         }
