@@ -37,10 +37,12 @@ foreach ($_GET as $var => $val) {
     $_REQUEST[$var] = $_GET[$var] = htmlspecialchars($val,ENT_QUOTES);
     
 }
-$namespace       = $_GET['n'];
-$controller      = $_GET['c'];
-$method          = $_GET['m'];
+$namespace       = $_GET['humble_framework_namespace'];
+$controller      = $_GET['humble_framework_controller'];
+$action          = $_GET['humble_framework_action'];
+$method          = $action;  //Because REASONS!!!
 $bypass          = false;
+
 $headers         = getallheaders();
 
 //###########################################################################
@@ -48,7 +50,7 @@ $headers         = getallheaders();
 //if not, it returns us whether we are running with authorization checks in
 //place.  We would only disable authorization checks if the system were in
 //an unusable state and we were doing aggressive debugging or testing
-$authorizationEngineEnabled = \Environment::statusCheck($namespace,$controller,$method);
+$authorizationEngineEnabled = \Environment::statusCheck($namespace,$controller,$action);
 
 //###########################################################################
 //If this application is deployed using a Micro-Services Architecture, then
@@ -80,7 +82,7 @@ session_start();
 if (!isset($_SESSION['uid'])) {
     //check to see if the service they are trying to access is publicly visible
     $allowed = json_decode(file_get_contents('allowed.json'));
-    if (isset($allowed->routes->{'/'.$namespace.'/'.$controller.'/'.$method}) || isset($allowed->namespaces->$namespace) || isset($allowed->controllers->{'/'.$namespace.'/'.$controller})) {
+    if (isset($allowed->routes->{'/'.$namespace.'/'.$controller.'/'.$action}) || isset($allowed->namespaces->$namespace) || isset($allowed->controllers->{'/'.$namespace.'/'.$controller})) {
         $bypass = true;
         //NOP, you are ok to hit that resource
     } else {
@@ -116,7 +118,7 @@ $info            = array();         //Initialize the controller info array
 $ns              = $namespace;      //save a copy, since this might change if there's no specific action but there is a default action
 \Humble::_namespace($namespace);    //this will become the inherited namespace if necessary
 \Humble::_controller($controller);
-\Humble::_action($method);
+\Humble::_action($action);
 \Environment::isAjax(isset($headers['HTTP_X_REQUESTED_WITH']) && ($headers['HTTP_X_REQUESTED_WITH']==='xmlhttprequest'));
 
 //###########################################################################
