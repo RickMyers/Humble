@@ -120,8 +120,8 @@
         <target name="open" depends="create" description="Resets permissions and ownership on relevant directories">
             <sshexec host="${server}"
                   trust="true"
-                  username="${uid}"
-                  password="${pwd}"
+                  username="root"
+                  password="${rpwd}"
                   command="/home/codeship/build.sh open ${alias}" />
         </target>
 
@@ -146,8 +146,8 @@
         <target name="remove" description="Removes the previous '_old' directory">
             <sshexec host="${server}"
                   trust="true"
-                  username="${uid}"
-                  password="${pwd}"
+                  username="root"
+                  password="${rpwd}"
                   command="./build.sh remove ${alias} ${timestamp}" />
         </target>
 
@@ -186,8 +186,8 @@
         <target name="expand" description="Unpacks the codebase on the remote system">
             <sshexec host="${server}"
                   trust="true"
-                  username="${uid}"
-                  password="${pwd}"
+                  username="root"
+                  password="${rpwd}"
                   command="./build.sh expand ${alias} ${timestamp}" />  
         </target>        
         
@@ -225,8 +225,8 @@
         <target name="rename" depends="retain" description="Renames the timestamp directory to the project directory">
             <sshexec host="${server}"
                   trust="true"
-                  username="${uid}"
-                  password="${pwd}"
+                  username="root"
+                  password="${rpwd}"
                   command="./build.sh rename ${alias} ${timestamp}" />
 
         </target>
