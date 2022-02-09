@@ -646,15 +646,16 @@ SOAP;
                 \Singleton::mappings($default_mappings); //default mappings
             }
             if (strtolower($this->_namespace()) !== 'humble') {
-                $me = Humble::getModule($this->_namespace());
-                $mappingFile = 'Code/'.$me['package'].'/'.str_replace('_','/',$me['rpc_mapping']).'/mapping.yaml';
-                if (file_exists($mappingFile)) {
-                    //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
-                    //@TODO: cache this
-                    if ($map      = yaml_parse(file_get_contents($mappingFile))) {
-                        \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings(),$map) : $map));
-                    } else {
-                        print("Problem parsing YaML file ".$mappingFile."\n\nPlease make sure it exists and that it is correct.\n");
+                if ($me = Humble::getModule($this->_namespace())) {
+                    $mappingFile = 'Code/'.$me['package'].'/'.str_replace('_','/',$me['rpc_mapping']).'/mapping.yaml';
+                    if (file_exists($mappingFile)) {
+                        //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
+                        //@TODO: cache this
+                        if ($map      = yaml_parse(file_get_contents($mappingFile))) {
+                            \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings(),$map) : $map));
+                        } else {
+                            print("Problem parsing YaML file ".$mappingFile."\n\nPlease make sure it exists and that it is correct.\n");
+                        }
                     }
                 }
             }
