@@ -44,6 +44,12 @@
             </switch>
         </action>
 
+        <!-- ########################################################################################## -->
+        
+        <action name="apitester">
+            <description>A form allowing you to test an API call through the ESB</description>
+        </action>
+        
     </actions>
 
 

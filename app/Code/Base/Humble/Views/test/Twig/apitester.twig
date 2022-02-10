@@ -1,0 +1,50 @@
+
+<style type="text/css">
+    .apitester-field {
+        width: 80%;
+    }
+    .apitester-desc {
+        font-family: monospace; letter-spacing: 2px; color: ghostwhite; padding-bottom: 15px;
+    }
+</style>
+<div style="margin-left: auto; margin-right: auto; width: 600px; padding: 20px; background-color: rgba(00,102,153,.8)">
+    <form onsubmit="return false" name="apitester_form" id="apitester_form">
+        <input class="apitester-field" type="text" name="api_user_id" id="api_user_id" value="" />
+        <div class="apitester-desc">API User Id</div>
+        
+        <input class="apitester-field" type="text" name="api_key" id="api_key" value="" />
+        <input type="button" name="session_id_fetch" id="session_id_fetch" value="Get Session Id" style="float: right; margin-right: 5px" />
+        <div class="apitester-desc">API Token</div>
+
+        <input class="apitester-field" type="text" name="sessionId" id="sessionId" value="" />
+        <div class="apitester-desc">Session Id</div>
+
+        <input class="apitester-field" type="text" name="api_url" id="api_url" value="" />
+        <input type="button" name="api_url_test" id="api_url_test" value="Test URL" style="float: right; margin-right: 5px" />
+        <div class="apitester-desc">API URL</div>
+
+        <input class="apitester-field" type="text" name="variable_name_1" id="variable_name_1" value="" style="float: left; width: 30%;"/> =
+        <input class="apitester-field" type="text" name="variable_value_1" id="variable_value_1" value="" style="width: 30%"/>
+        <div class="apitester-desc">Variable 1</div>
+        
+        <input class="apitester-field" type="text" name="variable_name_2" id="variable_name_2" value="" style="float: left; width: 30%;"/> =        
+        <input class="apitester-field" type="text" name="variable_value_2" id="variable_value_2" value=""  style="width: 30%"/>
+        <div class="apitester-desc">Variable 2</div>
+        
+        <input class="apitester-field" type="text" name="variable_name_3" id="variable_name_3" value="" style="float: left; width: 30%;"/> =
+        <input class="apitester-field" type="text" name="variable_value_3" id="variable_value_3" value="" style="width: 30%" />
+        <div class="apitester-desc">Variable 3</div>
+        
+        <input class="apitester-field" type="text" name="variable_name_4" id="variable_name_4" value="" style="float: left; width: 30%;"/> =
+        <input class="apitester-field" type="text" name="variable_value_4" id="variable_value_4" value="" style="width: 30%" />
+        <div class="apitester-desc">Variable 4</div> 
+        
+        <textarea class="apitester-field"  name="test_results" id="test_results" value="test_results" /></textarea>
+        <div class="apitester-desc">Results</div>
+    </form>
+</div>
+<script>
+    (function () {
+        new EasyEdits('/edits/humble/apitester','apitester');
+    })();
+</script>

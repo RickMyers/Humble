@@ -28,6 +28,14 @@ var Administration = (function () {
                             }
                         }
                     },
+                    api: {
+                        tester: function () {
+                            var win = (Administration.create.win.api = Administration.create.win.api ? Administration.create.win.api : Desktop.semaphore.checkout(true))._static(true)._title("API Test");
+                            (new EasyAjax('/humble/test/apitester')).then(function (response) {
+                                win._open(response);
+                            }).get();                              
+                        }
+                    },
                     secrets: {
                         add: function () {
                             var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._title("New Secret");
@@ -48,7 +56,8 @@ var Administration = (function () {
                             mod: false,
                             com: false,
                             con: false,
-                            sec: false
+                            sec: false,
+                            api: false
                         },
                         package: function () {
                             var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true))._static(true)._title("New Package");

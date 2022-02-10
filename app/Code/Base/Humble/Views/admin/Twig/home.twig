@@ -160,7 +160,8 @@
                                         <li><a href='#' onclick='Administration.secrets.add(); return false'>Add Secret</a></li>
                                         <li><a href='#' onclick='Administration.secrets.review(); return false'>Review Secret</a></li>
                                     </ul>
-                                </li>                                       
+                                </li>      
+                                <li><a href="#" onclick='Administration.api.tester(); return false'>API Tester</a></li>
                                 {% if (permissions.getSuperUser() == 'Y') %}
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>

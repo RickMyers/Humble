@@ -1,0 +1,104 @@
+{
+	"form":
+	{
+		"id":           "apitester_form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+		{
+			"active":		true,
+			"id": 			"api_user_id",
+			"longname":		"API User ID",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},
+		{
+			"active":		true,
+			"id": 			"api_key",
+			"longname":		"API Key",
+                        "title":                "API Key",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 375px"
+		},
+		{
+			"active":		true,
+			"id": 			"sessionId",
+			"longname":		"Session ID",
+                        "title":                "Session ID passed a long with requests",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		}, 
+                {
+			"active":		true,
+			"id": 			"test_results",
+			"longname":		"Test Results",
+                        "title":                "Results of test",
+			"type":			"textarea",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px; height: 300px"
+		},                 
+		{
+			"active":		true,
+			"id": 			"api_url",
+			"longname":		"API URL",
+                        "title":                "API URL to test",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                 
+		{
+			"active":		true,
+			"id":			"session_id_fetch",
+			"longname":		"Session ID Fetch Button",
+			"type":			"button",
+                        "style":                "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
+                        "value":                "",
+                        "onclick":        function () {
+                            (new EasyAjax('/esb/api/authorization')).add('api_user_id',$('#api_user_id').val()).add('api_key',$('#api_key').val()).then(function (response) {
+                                response = JSON.parse(response);
+                                console.log(response);
+                                if (+response.RC === 0) {
+                                    $('#sessionId').val(response.sessionId);
+                                }
+                            }).post();
+                        }
+		},                
+		{
+			"active":		true,
+			"id":			"api_url_test",
+			"longname":		"Test API URL",
+			"type":			"button",
+                        "style":                "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
+                        "onclick":        function () {
+                alert('here');
+                            if (Edits['apitester'].validate()) {
+                                var ao = new EasyAjax($('#api_url').val());
+                                ao.add('sessionId',$('#sessionId').val());
+                                for (var i=1; i<5; i++) {
+                                    if ($('#variable_name_'+i).val()) {
+                                        ao.add($('#variable_name_'+i).val(),$('#variable_value_'+i).val());
+                                    }
+                                }
+                                ao.then(function (response) {
+                                    console.log(response);
+                                }).post();
+                            }
+                        }
+		}
+	]
+}
+
+
