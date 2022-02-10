@@ -14,11 +14,13 @@ MySQL - 5.7.18-log : Database - humble
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 /*Table structure for table `paradigm_api_projects` */
 
+/*Table structure for table `paradigm_api_projects` */
+
 CREATE TABLE `paradigm_api_projects` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` char(64) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `creator` int(11) DEFAULT NULL,
+  `creator` int DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -26,11 +28,11 @@ CREATE TABLE `paradigm_api_projects` (
 /*Table structure for table `paradigm_api_tests` */
 
 CREATE TABLE `paradigm_api_tests` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `project_id` int DEFAULT NULL,
   `name` char(64) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `creator` int(11) DEFAULT NULL,
+  `creator` int DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `details` json DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -40,7 +42,7 @@ CREATE TABLE `paradigm_api_tests` (
 /*Table structure for table `paradigm_designer_forms` */
 
 CREATE TABLE `paradigm_designer_forms` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` char(32) DEFAULT NULL,
   `image` longblob,
   `image_name` char(64) DEFAULT NULL,
@@ -51,7 +53,7 @@ CREATE TABLE `paradigm_designer_forms` (
 /*Table structure for table `paradigm_event_listeners` */
 
 CREATE TABLE `paradigm_event_listeners` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `namespace` char(32) DEFAULT NULL,
   `event` char(128) DEFAULT NULL,
   `workflow_id` char(32) DEFAULT NULL,
@@ -59,50 +61,46 @@ CREATE TABLE `paradigm_event_listeners` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `event` (`event`,`namespace`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_event_log` */
 
 CREATE TABLE `paradigm_event_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `mongo_id` char(24) DEFAULT NULL,
   `event` char(64) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_events` */
 
 CREATE TABLE `paradigm_events` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `namespace` char(32) DEFAULT NULL,
   `event` char(128) DEFAULT NULL,
   `comment` varchar(255) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `paradigm_events_uidx` (`namespace`,`event`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `paradigm_export_targets` */
+
+CREATE TABLE `paradigm_export_targets` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `alias` char(32) DEFAULT NULL,
+  `target` varchar(255) DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_import_sources` */
-CREATE TABLE paradigm_export_targets
-(
-      id INT AUTO_INCREMENT,
-      `alias` CHAR(32) DEFAULT NULL,
-      target VARCHAR(255) DEFAULT NULL,
-      token VARCHAR(255) DEFAULT NULL,
-      modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (id)
-);
-CREATE TABLE paradigm_import_tokens
-(
-      id INT AUTO_INCREMENT,
-      token VARCHAR(255) DEFAULT NULL,
-      modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (id)
-);
+
 CREATE TABLE `paradigm_import_sources` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `name` char(32) DEFAULT NULL,
   `source` varchar(255) DEFAULT '',
   `token` char(32) DEFAULT 'null' COMMENT 'Security Token',
@@ -110,14 +108,23 @@ CREATE TABLE `paradigm_import_sources` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Table structure for table `paradigm_import_tokens` */
+
+CREATE TABLE `paradigm_import_tokens` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `token` varchar(255) DEFAULT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 /*Table structure for table `paradigm_job_queue` */
 
 CREATE TABLE `paradigm_job_queue` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `system_event_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `system_event_id` int DEFAULT NULL,
   `queued` datetime DEFAULT NULL,
   `started` datetime DEFAULT NULL,
-  `pid` int(11) DEFAULT NULL,
+  `pid` int DEFAULT NULL,
   `finished` datetime DEFAULT NULL,
   `status` char(1) DEFAULT 'N',
   `comment` varchar(255) DEFAULT NULL,
@@ -129,7 +136,7 @@ CREATE TABLE `paradigm_job_queue` (
 /*Table structure for table `paradigm_scheduler_log` */
 
 CREATE TABLE `paradigm_scheduler_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `started` datetime DEFAULT NULL,
   `finished` datetime DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -140,8 +147,8 @@ CREATE TABLE `paradigm_scheduler_log` (
 /*Table structure for table `paradigm_sensor_workflows` */
 
 CREATE TABLE `paradigm_sensor_workflows` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sensor_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `sensor_id` int NOT NULL,
   `workflow_id` char(32) DEFAULT NULL,
   `value` char(128) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -155,7 +162,7 @@ CREATE TABLE `paradigm_sensor_workflows` (
 /*Table structure for table `paradigm_sensors` */
 
 CREATE TABLE `paradigm_sensors` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `sensor` char(64) DEFAULT '',
   `sensor_id` char(32) DEFAULT '' COMMENT 'The MongoDB Id for the object containing the service information',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -167,7 +174,7 @@ CREATE TABLE `paradigm_sensors` (
 /*Table structure for table `paradigm_system_events` */
 
 CREATE TABLE `paradigm_system_events` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `workflow_id` char(32) DEFAULT NULL,
   `event_start` datetime DEFAULT NULL,
   `recurring` char(1) DEFAULT 'N',
@@ -182,8 +189,8 @@ CREATE TABLE `paradigm_system_events` (
 /*Table structure for table `paradigm_webhook_workflows` */
 
 CREATE TABLE `paradigm_webhook_workflows` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `webhook_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `webhook_id` int DEFAULT NULL,
   `workflow_id` char(32) DEFAULT NULL,
   `active` char(1) DEFAULT 'N',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -194,8 +201,10 @@ CREATE TABLE `paradigm_webhook_workflows` (
 /*Table structure for table `paradigm_webhooks` */
 
 CREATE TABLE `paradigm_webhooks` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `namespace` char(32) DEFAULT NULL,
   `webhook` char(128) DEFAULT NULL,
+  `description` char(255) DEFAULT NULL,
   `format` char(32) DEFAULT NULL,
   `field` char(32) DEFAULT NULL,
   `active` char(1) DEFAULT 'N',
@@ -207,8 +216,8 @@ CREATE TABLE `paradigm_webhooks` (
 /*Table structure for table `paradigm_webservice_workflows` */
 
 CREATE TABLE `paradigm_webservice_workflows` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `webservice_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `webservice_id` int NOT NULL,
   `workflow_id` char(32) DEFAULT NULL,
   `uri` char(128) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -221,7 +230,7 @@ CREATE TABLE `paradigm_webservice_workflows` (
 /*Table structure for table `paradigm_webservices` */
 
 CREATE TABLE `paradigm_webservices` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `uri` char(64) DEFAULT '',
   `webservice_id` char(32) DEFAULT '' COMMENT 'The MongoDB Id for the object containing the service information',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -233,7 +242,7 @@ CREATE TABLE `paradigm_webservices` (
 /*Table structure for table `paradigm_workflow_comments` */
 
 CREATE TABLE `paradigm_workflow_comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `namespace` char(32) DEFAULT '',
   `class` char(64) DEFAULT '',
   `method` char(64) DEFAULT '',
@@ -241,11 +250,12 @@ CREATE TABLE `paradigm_workflow_comments` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `namespace` (`namespace`,`class`,`method`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_workflow_components` */
 
 CREATE TABLE `paradigm_workflow_components` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `namespace` char(32) NOT NULL,
   `component` char(64) NOT NULL,
   `method` char(128) NOT NULL,
@@ -263,13 +273,14 @@ CREATE TABLE `paradigm_workflow_components` (
   `event_name` char(64) DEFAULT NULL,
   `configuration` char(64) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`namespace`,`component`,`method`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `paradigm_workflow_components_uidx` (`namespace`,`component`,`method`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_workflow_listeners` */
 
 CREATE TABLE `paradigm_workflow_listeners` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `workflow_id` char(32) NOT NULL DEFAULT '',
   `namespace` char(32) NOT NULL DEFAULT '',
   `component` char(32) NOT NULL DEFAULT '',
@@ -277,16 +288,16 @@ CREATE TABLE `paradigm_workflow_listeners` (
   `active` char(1) DEFAULT 'N',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `paradigm_workflows` */
 
 CREATE TABLE `paradigm_workflows` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `workflow_id` char(32) DEFAULT '' COMMENT 'The ID of the Start element, which will become the name of the workflow',
-  `creator` int(11) DEFAULT NULL,
-  `major_version` int(11) DEFAULT '1',
-  `minor_version` int(11) DEFAULT '0',
+  `creator` int DEFAULT NULL,
+  `major_version` int DEFAULT '1',
+  `minor_version` int DEFAULT '0',
   `title` varchar(128) DEFAULT '',
   `description` varchar(512) DEFAULT '',
   `image` mediumblob,
@@ -300,7 +311,8 @@ CREATE TABLE `paradigm_workflows` (
   `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `paradigm_workflows_idx` (`workflow_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

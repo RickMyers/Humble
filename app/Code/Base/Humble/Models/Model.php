@@ -583,7 +583,6 @@ SOAP;
      * this routine will load a yaml file representing a namespace set of remote resources, and
      * if the label requested matches any label in the yaml file, that yaml will be invoked.
      *
-     * @TODO: Rework the mapping file to not use sfYaml
      * @TOOD: For when we "jump" namespaces, figure out how to precede mappings with their namespace
      *
      * @param string $name A pnuemonic, label or variable name
@@ -654,7 +653,7 @@ SOAP;
                         if ($map      = yaml_parse(file_get_contents($mappingFile))) {
                             \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings(),$map) : $map));
                         } else {
-                            print("Problem parsing YaML file ".$mappingFile."\n\nPlease make sure it exists and that it is correct.\n");
+                            print("Problem parsing YaML file ".$mappingFile."\n\nPlease make sure it exists and that it is in correct format.\n");
                         }
                     }
                 }
