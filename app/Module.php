@@ -28,6 +28,7 @@ $help = <<<HELP
  *      --y, --Y, Compile a controller
  *      --x, --X, Check if a module prefix is available
  *      --a, --A, Remove AUTOINCREMENT=# from SQL dumps
+        --use           Update a module using the relative location of a configuration file [etc=Code/Base/Humble/etc/config.xml]
  *      --adduser       Backend workaround to create a user, parameters are *user_name", "password", and optional "uid"       
  *      --package       Creates a new downloadable archive file of the Humble project
  *      --increment     Increments the minor version number by one, rolling over if it goes past 9
@@ -324,6 +325,21 @@ TXT;
             print('===> ERROR: Unable to determine where configuration file is for: '.$namespace.'.  You should review the configuration file manually <==='."\n");
         }
     }
+    //--------------------------------------------------------------------------
+    function updateUsingConfigurationFile($args) {
+        $updater = \Environment::getUpdater(); 
+        if ($etc= fetchParameter('etc',processArgs($args))) {
+            if (file_exists($etc)) {
+                $updater->output('BEGIN','Update Configuration File: '.$etc);
+                $updater->update($etc);                
+            } else {
+                print("\nConfig file does not exist\n\n");
+            }
+        } else {
+            print("\nMust pass in the location of the configuration file\n\n");
+        }
+
+    }    
     //--------------------------------------------------------------------------
     function workflows($args) {
         $updater = \Environment::getUpdater();                    
@@ -1029,6 +1045,9 @@ TXT;
                     break;
                 case 'export': 
                     exportWorkflows(array_slice($args,1));
+                    break;
+                case 'use':
+                    updateUsingConfigurationFile(array_slice($args,1));
                     break;
                 default  :
                     die('Dont know how to process that command ('.$cmd.')');

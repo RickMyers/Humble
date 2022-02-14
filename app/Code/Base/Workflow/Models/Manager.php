@@ -47,7 +47,7 @@ class Manager extends Model {
         $b = $element->load();
         $this->setType($b['type']);
         foreach ($data as $var => $val) {
-            $method = 'set'.ucfirst($var);
+            $method = 'set'.$this->underscoreToCamelCase($var,true);
             $this->$method($val);
             if ($var == 'windowId') {
                 //we don't need to record this, since it changes each time you edit this component

@@ -56,10 +56,9 @@ class Manager extends Model
         $id = $this->getId();
         if ($id) {
             $workflow->setId($id);
-            $workflow->save();
-        } else {
-            $id = $workflow->add();
         }
+        $id =    $workflow->save();
+        
         return $id;
     }
 

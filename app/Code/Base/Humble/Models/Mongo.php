@@ -51,6 +51,17 @@ class Mongo  {
     }
 
     /**
+     * Cute routine to convert the next letter after an underscore to uppercase while removing the underscore
+     *
+     * @param string $string
+     * @param boolean $first_char_caps
+     * @return string
+     */
+    public function underscoreToCamelCase( $string, $first_char_caps = false) {
+        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
+    }    
+    
+    /**
      * Where is mongo located at?
      *
      * @param string $arg
@@ -184,7 +195,7 @@ class Mongo  {
         $doc = $this->_map($doc);
         foreach ($doc as $var => $val) {
             if ($var !== '_id') {
-                $method = 'set'.ucfirst($var);
+                $method = 'set'.$this->underscoreToCamelCase($var);
                 $this->$method($val);
             }
         }
@@ -413,7 +424,7 @@ class Mongo  {
             $this->_data = [];
             if ($doc) {
                 foreach ($doc as $var => $val) {
-                    $method = 'set'.ucfirst($var);
+                    $method = 'set'.$this->underscoreToCamelCase($var,true);
                     $this->$method($val);
                 }
             }
@@ -421,7 +432,7 @@ class Mongo  {
         } else {
             $doc = [];
             foreach ($this->_data as $key => $val) {
-                $method = 'get'.ucfirst($key);
+                $method = 'get'.$this->underscoreToCamelCase($key,true);
                 $val    = $this->$method();
                 if (($key === '_id') && (!is_object($val))) {
                     $val = new \MongoDB\BSON\ObjectID($val);
