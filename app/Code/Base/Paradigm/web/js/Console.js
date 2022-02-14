@@ -3,8 +3,10 @@
  *  --------------------------------------------------------------------*/
 Paradigm.console = (function () {
     var console_app = false;
-    var console_window_id = false;
     return {
+        app: function () {
+            return console_app;
+        },
         service: {
             arguments: [],
             url:    '',
@@ -18,10 +20,9 @@ Paradigm.console = (function () {
             }
         },
         initialize:       function () {
-            if (!console_window_id) {
-                console_window_id = Desktop.semaphore.checkout();
-                console_app     = Desktop.window.list[console_window_id];
-                console_app.close = (function (app) {
+            if (!console_app) {
+                console_app = Desktop.semaphore.checkout(true);
+                console_app._title('Console').close = (function (app) {
                     return function () {
                         app.lastState = app.state;
                         app.state = 0;
@@ -30,7 +31,6 @@ Paradigm.console = (function () {
                     }
                 })(console_app);
                 (new EasyAjax('/paradigm/console/init')).then(function (response) {
-                    console_app.set(response);
                     Paradigm.console.ref        = $E('paradigmConsole');
                     Paradigm.console.ref.style.contentEditable = false;
                     console_app._resize();
@@ -231,13 +231,12 @@ Paradigm.console = (function () {
             Paradigm.console.command = '';
         },
         capture: function () {
-            Desktop.off(document,'keydown',Paradigm.remove);
-            Desktop.on(document,'keypress',Paradigm.console.update);
-
+            Desktop.off(Paradigm.console.app().content,'keydown',Paradigm.remove);
+            Desktop.on(Paradigm.console.app().content,'keypress',Paradigm.console.update);
         },
         release: function () {
-            Desktop.off(document,'keypress',Paradigm.console.update);
-            Desktop.on(document,'keydown',Paradigm.remove);
+            Desktop.off(Paradigm.console.app().content,'keypress',Paradigm.console.update);
+            Desktop.on(Paradigm.console.app().content,'keydown',Paradigm.remove);
         },
         cursor: {
             text: ["READY",">Working...",">Loading...",">Saving...",">Printing...",">Generating...",">Initializing..."],

@@ -491,7 +491,8 @@ Copyright humbleprogramming.com, all rights reserved
             window.setTimeout(function () {
                 $(Paradigm.canvas).prop('width',$(Paradigm.container).width()*2);
                 $(Paradigm.canvas).prop('height',$(Paradigm.container).height()*2);
-            },200);
+                Paradigm.console.initialize();
+            },1200);
         });
         </script>
     </head>
