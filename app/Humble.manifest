@@ -20,7 +20,7 @@ iapi.php
 mapi.php
 msa.php
 debug.php
-fallback.php
+fallback.html
 install.php
 installtest.php
 mongotest.php

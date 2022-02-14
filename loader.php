@@ -82,7 +82,7 @@ function secureCheck($file=[]) {
         case    'edits'     :   header('Content-Type: application/json');
                                 $orm->setNamespace($_GET['n']);
                                 $orm->setForm($_GET['f']);
-                                $data = $orm->load();
+                                $data = $orm->load(true);
                                 $module = \Humble::getModule($_GET['n']);
                                 if ($module && secureCheck($data)) {
                                     $file = 'Code/'.$module['package'].'/'.$orm->getSource();
