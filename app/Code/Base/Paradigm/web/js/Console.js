@@ -31,6 +31,7 @@ Paradigm.console = (function () {
                     }
                 })(console_app);
                 (new EasyAjax('/paradigm/console/init')).then(function (response) {
+                    console_app.set(response);
                     Paradigm.console.ref        = $E('paradigmConsole');
                     Paradigm.console.ref.style.contentEditable = false;
                     console_app._resize();
@@ -50,6 +51,7 @@ Paradigm.console = (function () {
         currentCommand: 0,
         update: function (evt) {
             var key = evt.keyCode || evt.charCode || evt.which;
+            console.log(key);
             switch (key) {
                 case 38     :   Paradigm.console.command = '';
                                 if ((Paradigm.console.commands.length > 0) && (Paradigm.console.currentCommand < Paradigm.console.commands.length) ) {
@@ -232,10 +234,10 @@ Paradigm.console = (function () {
         },
         capture: function () {
             Desktop.off(Paradigm.console.app().content,'keydown',Paradigm.remove);
-            Desktop.on(Paradigm.console.app().content,'keypress',Paradigm.console.update);
+            Desktop.on(Paradigm.console.app().content,'keydown',Paradigm.console.update);
         },
         release: function () {
-            Desktop.off(Paradigm.console.app().content,'keypress',Paradigm.console.update);
+            Desktop.off(Paradigm.console.app().content,'keydown',Paradigm.console.update);
             Desktop.on(Paradigm.console.app().content,'keydown',Paradigm.remove);
         },
         cursor: {

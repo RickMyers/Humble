@@ -105,26 +105,33 @@ class Data extends Helper
      * @return \Paradigm_Helpers_Data
      */
     public function search() {
-        $xml = $this->getDictionaryDefinition();
-        $xmlobj = @simplexml_load_string($xml);
-        if ($xmlobj) {
-        if (isset($xmlobj->suggestion)) {
-            $this->setSuggestions($xmlobj->suggestion);
-        } else {
-            $xml    = (string)substr($xml,strpos($xml,'<entry '));
-            $xml    = substr($xml,0,strpos($xml,'</entry>')+8);
+        if ($json = json_decode($this->dictionaryDefinition(),true)) {
+            if (isset($json['suggestion'])) {
+                $this->setSuggestions($json['suggestion']);
+            } else {
+                foreach ($json as $entry => $data) {
+                    if (isset($data['shortdef'])) {
+                        $text = '';
+                        foreach ($data['shortdef'] as $def) {
+                            $text .= ($text) ? ' / '.$def : $def;
+                        }
+                        $this->setText($text);
+                    }
+                }
+/*                $xml    = (string)substr($xml,strpos($xml,'<entry '));
+                $xml    = substr($xml,0,strpos($xml,'</entry>')+8);
 
-            $this->setOriginalTerm($this->extractTag($xml,'ew'));
-            $this->setRootWord($this->extractTag($xml,'hw'));
-            $this->setFirstUsed($this->extractTag($xml,'date'));
-            $this->setPronunciation($this->extractTag($xml,'pr'));
-            $this->setWordType($this->extractTag($xml,'fl'));
-            $this->setWordOrigin($this->extractTag($xml,'et'));
-            $this->setText($this->translateDefinition($this->extractTag($xml,'def')));
-            $this->setSynonyms($this->extractTag($xml,'pt'));
-            $this->setEnunciation($this->extractTag($xml,'wav'));
-            $this->setOrly($this->extractTag($xml,'uro'));
-        }
+                $this->setOriginalTerm($this->extractTag($xml,'ew'));
+                $this->setRootWord($this->extractTag($xml,'hw'));
+                $this->setFirstUsed($this->extractTag($xml,'date'));
+                $this->setPronunciation($this->extractTag($xml,'pr'));
+                $this->setWordType($this->extractTag($xml,'fl'));
+                $this->setWordOrigin($this->extractTag($xml,'et'));
+                $this->setText($this->translateDefinition($this->extractTag($xml,'def')));
+                $this->setSynonyms($this->extractTag($xml,'pt'));
+                $this->setEnunciation($this->extractTag($xml,'wav'));
+                $this->setOrly($this->extractTag($xml,'uro'));*/
+            }
         } else {
             $this->setText("No Data");
         }

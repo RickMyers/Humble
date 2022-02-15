@@ -120,13 +120,13 @@ geoLocation     :
   arguments       : [q,sensor]
   method          : GET
 dictionaryDefinition :
-  url             : http://www.dictionaryapi.com/api/v1/references/collegiate/xml+    # alternate format, a + at the end means append the arguments as URI segments, except for API Key
+  url             : https://www.dictionaryapi.com/api/v3/references/collegiate/json+    # alternate format, a + at the end means append the arguments as URI segments, except for API Key
   api-key         : 1fb88106-0c12-4e40-9f54-b17e0422e095
   api-var         : key
   arguments       : term
   method          : GET
 thesaurusEntry :
-  url             : http://www.dictionaryapi.com/api/v1/references/thesaurus/xml+    # alternate format, a + at the end means append the arguments as URI segments, except for API Key
+  url             : https://www.dictionaryapi.com/api/v3/references/thesaurus/json+    # alternate format, a + at the end means append the arguments as URI segments, except for API Key
   api-key         : 769d2912-c0cf-4c9c-8a83-bfd573e83ec4
   api-var         : key
   arguments       : entry                                                            # instead of an array of arguments, a string representing the key variable

@@ -4,7 +4,6 @@
 
         <action name="init">
             <description>Lays out the console, intializing it</description>
-            
         </action>
 
         <!-- ################################################################################################# -->
@@ -21,7 +20,7 @@
         <!-- ################################################################################################# -->
 
         <action name='whoami'>
-            <entity namespace='humble' class='users' id='user'>
+            <entity namespace='humble' class='user_identification' id='user'>
                 <parameter name='id' value='uid' source='session' default='' />
             </entity>
         </action>
@@ -33,7 +32,6 @@
                 <parameter name='term' value='term' source='post' default='stupid' />
             </helper>
         </action>
-
 
     </actions>
 </controller>
