@@ -498,8 +498,10 @@ SQL;
         }
         if ($row_total>0) {
             foreach ($result as $field => $value) {
-                $method = 'set'.$this->underscoreToCamelCase($field,true);
-                $this->$method($value);
+                if ($field !== '_id') {
+                    $method = 'set'.$this->underscoreToCamelCase($field,true);
+                    $this->$method($value);
+                }
             }
         }
         //now if polyglot and there are extra polyglot fields, go through this and exclude if they don't match
@@ -744,8 +746,10 @@ SQL;
             }
             //then we add/update with new values
             foreach ($non_values as $key => $value) {
-                $method = 'set'.$this->underscoreToCamelCase($key,true);
-                $mdb->$method($value);
+                if ($key !== '_id') {
+                    $method = 'set'.$this->underscoreToCamelCase($key,true);
+                    $mdb->$method($value);
+                }
             }
             //then we save
             $mdb->save();
