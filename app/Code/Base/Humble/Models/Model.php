@@ -599,16 +599,43 @@ SOAP;
 
     
 
-    protected function pushToCache($namespace=false,$call_name=false,$arguments=[],$results='') {
-        //when we push to cache, we are going to push an object
-        //one node of the object will have the results
-        //the other node will have the date is was cached, so we can then 'expire' the cache on pull
+    protected function pushToCache($namespace=false,$call_name=false,$arguments=[],$expire=0,$results='') {
+        if ($expire) {
+            $unit = substr($expire,-1,1);
+            $base = substr($expire,0,strlen($expire)-1);
+            switch (strtoupper($unit)) {
+                case 'S' :
+                    $expire = $base;
+                    break;
+                case 'I' :
+                    $expire = $base * 60;
+                    break;
+                case 'H' :
+                    $expire = $base * 3600;
+                    break;
+                case 'D' :
+                    $expire = $base * 86400;
+                    break;
+                case 'W' :
+                    $expire = $base * 604800;
+                    break;
+                case 'M' :
+                    $expire = $base * 2592000;
+                    break;
+                case 'Y' : 
+                    $expire = $base * 31536000;
+                    break;
+                default:
+                    $expire = 0;
+                    break;
+             }
+             $expire = time()+$expire;          //creates an actual unix date/time for it to expire rather than an offset
+        }
+        $x = Humble::cache($namespace.'-'.$call_name.'-'.md5(http_build_query($arguments)),$results,$expire);
     }
     
     protected function pullFromCache($namespace=false,$call_name=false,$arguments=[]) {
-        $retval = false;
-        //compare expiry date... delete from cache and return nothing if expires i
-        return $retval;
+        return Humble::cache($namespace.'-'.$call_name.'-'.md5(http_build_query($arguments)));
     }
     
     /**
@@ -685,14 +712,15 @@ SOAP;
                         $passwd = (isset($call['password']) && $call['password'])   ? $call['password'] : false;
                         $secure = (isset($call['secure'])   && $call['secure'])     ? $call['secure']   : false;
                         //$retval = $this->_curl($call['url'],$args,$call['method'],$secure,$userid,$passwd);
-                        if (isset($call['cache']) && $call['cache']) {
+                        if (isset($call['cache'])) {
+                            ksort($args);
                             if ($retval = $this->pullFromCache($this->_namespace(),$name,$args)) {
                                 return $retval;                                 //this ain't the way m8
                             }
                         }
                         $retval = $this->_hurl($call['url'],$args,$call,$secure,$userid,$passwd);  //going to use _hurl until curl starts working again
-                        if (isset($call['cache']) && $call['cache']) {
-                            $this->pushToCache($this->_namespace(),$name,$args,$retval);
+                        if (isset($call['cache'])) {
+                            $this->pushToCache($this->_namespace(),$name,$args,$call['cache'],$retval);
                         }
                     } else {
                         //lather it up...

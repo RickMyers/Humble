@@ -476,7 +476,7 @@
          * @return mixed
          */
         public static function cache($key,$value=null,$expire=0) {
-            $retval = null; $args   = func_num_args();
+            $retval = null; $args   = func_num_args(); $key = trim($key);
             if (\Environment::cachingEnabled()) {
                 if (!self::$cache && !self::$cacheFailed) {
                     if ($cache_server = Environment::settings()->getCacheHost()) {
@@ -488,9 +488,9 @@
                         }
                     }
                 }
-                $sn = Environment::serialNumber();
+                $serialNumber = Environment::serialNumber();
                 if (!self::$cacheFailed) {
-                    $retval = ($value !== null) ? self::$cache->set(Environment::serialNumber().'-'.$key,$value,$expire) : (($value === null) && ($args > 1) ? self::$cache->delete(Environment::serialNumber().'-'.$key) : self::$cache->get(Environment::serialNumber().'-'.$key) );
+                    $retval = ($value !== null) ? self::$cache->set($serialNumber.'-'.$key,$value,false,$expire) : (($value === null) && ($args > 1) ? self::$cache->delete($serialNumber.'-'.$key) : self::$cache->get($serialNumber.'-'.$key) );
                 }
             }
             return $retval;

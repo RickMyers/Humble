@@ -112,17 +112,21 @@ testServer  :
   method          : POST
   arguments       :
     workflow      :
-geoLocation     :
-  url             : http://maps.google.com/maps/geo
-  api-key         : ABQIAAAA3dvGgsd-4_63lqArcU8W_RSOXHExfso9GnSGg8C5S9H63Jsc4xRIPDT7pdQUNu31PiqMSvFtDrTqzg
-  #AIzaSyBiOPDv7lMH5FpldjJP30GK1Sp-z3km1QI 36 character key
+geocodeLocation   :
+  url             : https://maps.googleapis.com/maps/api/geocode/json
+  secure          : true
+  cache           : 0
+  api-key         : AIzaSyAwhRMTcWKelBwQR1HKtcstG8traG2nXr0
   api-var         : key
-  arguments       : [q,sensor]
-  method          : GET
+  blocking        : false
+  method          : GET 
+  arguments       : 
+      address     :  
 dictionaryDefinition :
   url             : https://www.dictionaryapi.com/api/v3/references/collegiate/json+    # alternate format, a + at the end means append the arguments as URI segments, except for API Key
   api-key         : 1fb88106-0c12-4e40-9f54-b17e0422e095
   api-var         : key
+  cache           : 90D
   arguments       : term
   method          : GET
 thesaurusEntry :
