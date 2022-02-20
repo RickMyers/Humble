@@ -116,7 +116,7 @@ geocodeLocation   :
   url             : https://maps.googleapis.com/maps/api/geocode/json
   secure          : true
   cache           : 0
-  api-key         : AIzaSyAwhRMTcWKelBwQR1HKtcstG8traG2nXr0
+  api-key         : SM://googleGeocodeApiKey
   api-var         : key
   blocking        : false
   method          : GET 
