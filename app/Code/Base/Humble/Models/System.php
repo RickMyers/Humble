@@ -84,6 +84,8 @@ class System extends Model
         $rain->assign('quiescing',  (($this->getQuiescing())     ? $this->getQuiescing() : ""));
         $rain->assign('SSO',        (($this->getSso())           ? $this->getSso()       : ""));
         $rain->assign('version',    (($this->getVersion())       ? $this->getVersion()   : "0.0.0.0.1"));
+        $rain->assign('support_name',(($this->getSupportName())  ? $this->getSupportName() : ""));
+        $rain->assign('support_email',(($this->getSupportEmail())? $this->getSupportEmail() : ""));
         file_put_contents('../application.xml',$rain->render('application',true));
         Humble::response('Saved...');
     }

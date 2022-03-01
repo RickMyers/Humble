@@ -10,6 +10,15 @@
 	},
 	"fields":
 	[
+    		{
+			"active":		true,
+			"id": 			"server",
+			"longname":		"Server (optional)",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},
 		{
 			"active":		true,
 			"id": 			"api_user_id",
@@ -58,7 +67,80 @@
 			"required":		false,
 			"force":		false,
                         "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
-		},                 
+		}, 
+		{
+			"active":		true,
+			"id": 			"variable_name_1",
+			"longname":		"Variable 1",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                
+		{
+			"active":		true,
+			"id": 			"variable_value_1",
+			"longname":		"Variable 1",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                
+		{
+			"active":		true,
+			"id": 			"variable_name_2",
+			"longname":		"Variable 1",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                
+		{
+			"active":		true,
+			"id": 			"variable_value_2",
+			"longname":		"Variable 1",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                
+		{
+			"active":		true,
+			"id": 			"variable_name_3",
+			"longname":		"Variable 1",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                
+		{
+			"active":		true,
+			"id": 			"variable_value_3",
+			"longname":		"Variable 1",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                
+		{
+			"active":		true,
+			"id": 			"variable_name_4",
+			"longname":		"Variable 1",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                
+		{
+			"active":		true,
+			"id": 			"variable_value_4",
+			"longname":		"Variable 1",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                
+                
 		{
 			"active":		true,
 			"id":			"session_id_fetch",
@@ -67,7 +149,8 @@
                         "style":                "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
                         "value":                "",
                         "onclick":        function () {
-                            (new EasyAjax('/esb/api/authorization')).add('api_user_id',$('#api_user_id').val()).add('api_key',$('#api_key').val()).then(function (response) {
+                            var url = ($('#server').val()) ? $('#server').val()+'/esb/api/authorization' : '/esb/api/authorization';
+                            (new EasyAjax(url)).add('api_user_id',$('#api_user_id').val()).add('api_key',$('#api_key').val()).then(function (response) {
                                 response = JSON.parse(response);
                                 console.log(response);
                                 if (+response.RC === 0) {
@@ -83,9 +166,9 @@
 			"type":			"button",
                         "style":                "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
                         "onclick":        function () {
-                alert('here');
                             if (Edits['apitester'].validate()) {
-                                var ao = new EasyAjax($('#api_url').val());
+                                var url = ($('#server').val()) ? $('#server').val()+$('#api_url').val() : $('#api_url').val();
+                                var ao = new EasyAjax(url);
                                 ao.add('sessionId',$('#sessionId').val());
                                 for (var i=1; i<5; i++) {
                                     if ($('#variable_name_'+i).val()) {

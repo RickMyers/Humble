@@ -7,8 +7,14 @@
         font-family: monospace; letter-spacing: 2px; color: ghostwhite; padding-bottom: 15px;
     }
 </style>
-<div style="margin-left: auto; margin-right: auto; width: 600px; padding: 20px; background-color: rgba(00,102,153,.8)">
+<table style='width: 100%; height: 100%'>
+    <tr><td>
+<div style="margin-left: auto; margin-right: auto; width: 650px; padding: 20px; background-color: rgba(00,102,153,.8)">
+    
     <form onsubmit="return false" name="apitester_form" id="apitester_form">
+        <input class="apitester-field" type="text" name="server" id="server" value="" />
+        <div class="apitester-desc">Server URL (blank for local)</div>
+        
         <input class="apitester-field" type="text" name="api_user_id" id="api_user_id" value="" />
         <div class="apitester-desc">API User Id</div>
         
@@ -43,6 +49,7 @@
         <div class="apitester-desc">Results</div>
     </form>
 </div>
+        </td></tr></table>
 <script>
     (function () {
         new EasyEdits('/edits/humble/apitester','apitester');

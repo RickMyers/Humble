@@ -67,7 +67,7 @@ class Log {
         } else {
             $message .= "\n";
         }
-        $message = date('Y-m-d H:i:s').' -------------------------------------------------'."\n\n".$message."\n\n";
+        $message = date('Y-m-d H:i:s').' User_id: '.((isset($_SESSION['uid'])) ? $_SESSION['uid'] : 'N/A').' -------------------------------------------------'."\n\n".$message."\n\n";
         
         $handle     = fopen($file, "r+");
         if (!is_resource($handle)) {
@@ -172,29 +172,33 @@ class Log {
         if (is_array($messages)) {
             $messages = implode("\n",$messages);
         }
-        $text = 'Attention, the following alerts have been issued:<br/><br/><br/>';
-        $text .= "<pre>\n".$messages."\n</pre><br />";
-        $text .= "Additional information follows:<br /><br />";
-        $arr = array();
+        $text   = 'Attention, the following alerts have been issued:<br/><br/><br/>';
+        $text   .= "<pre>\n".$messages."\n</pre><br />";
+        $text   .= "Additional information follows:<br /><br />";
+        $arr    = [];
         foreach ($_SESSION as $name => $val) {
             $arr[] = $name.' = '.$val;
         }
-        $text .= "<b>SESSION INFORMATION</b><br /><pre>\n".implode("\n",$arr)."\n</pre><br />";
-        $arr = array();
+        $text   .= "<b>SESSION INFORMATION</b><br /><pre>\n".implode("\n",$arr)."\n</pre><br />";
+        $arr    = [];
         foreach ($_GET as $name => $val) {
             $arr[] = $name.' = '.$val;
         }
-        $text .= "<b>HTTP GET</b><br /><pre>\n".implode("\n",$arr)."\n</pre><br />";
-        $arr = array();
+        $text   .= "<b>HTTP GET</b><br /><pre>\n".implode("\n",$arr)."\n</pre><br />";
+        $arr    = [];
         foreach ($_POST as $name => $val) {
             $arr[] = $name.' = '.$val;
         }
-        $text .= "<b>HTTP POST</b><br /><pre>\n".implode("\n",$arr)."\n</pre><br />";
+        $text   .= "<b>HTTP POST</b><br /><pre>\n".implode("\n",$arr)."\n</pre><br />";
         $headers = 'From: alert@humbleprogramming.com' ."\r\n" .
                    'Reply-To: noreply@humbleprogramming.com' . "\r\n" .
                    'Content-Type: text/html' . "\r\n" .
                    'X-Mailer: PHP/' .phpversion();
-        mail('rick@humbleprogramming.com',$subject,$text,$headers);
+        
+        $user = Environment::getApplication('support');
+        if (isset($user['email']) && $user['email']) {
+            mail($user['email'],$subject,$text,$headers);
+        }
     }
 
     /**

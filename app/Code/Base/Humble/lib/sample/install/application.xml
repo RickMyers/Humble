@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
 <application>
     <name>{$name}</name>
+    <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">{$serial_number}</serial_number>
     <version>
         <framework>{$version}</framework>
         <app>0.0.0.1</app>
-    </version>
-    <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">{$serial_number}</serial_number>
-    <state>{$state}</state>
+    </version>    
     <state>DEVELOPMENT</state>
     <extend>
         <helpers>1</helpers>
@@ -23,6 +22,10 @@
     <api>
         <enabled>0</enabled>
     </api>    
+    <support>
+        <name>{$support_name}</name>
+        <email>{$support_email}</email>
+    </support>    
     <status>
         <enabled>{$enabled}</enabled>           <!-- Switch to 0 to take the application offline -->
         <quiescing>{$quiescing}</quiescing>     <!-- switch to 1 to being the process of taking the system offline -->

@@ -3,6 +3,7 @@ namespace Code\Base\Humble\Helpers;
 use Humble;
 use Log;
 use Environment;
+use PHPMailer\PHPMailer\PHPMailer;
 /**
  *
  * E-mail related functionality
@@ -53,7 +54,7 @@ class Email extends Helper
         $prj      = explode(':',(string)$project->project_url);
         $from = ($from ? $from : 'webmaster@'.substr($prj[1],2));
         $reply = ($reply ? $reply : 'noreply@'.substr($prj[1],2));
-        $mailer = new \PHPMailer;
+        $mailer = new PHPMailer;
         $mailer->isSMTP();
         $mailer->Host = $settings->getSmtpHost();
         $mailer->SMTPAuth = true;
