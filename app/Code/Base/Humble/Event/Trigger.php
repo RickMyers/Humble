@@ -67,6 +67,14 @@ class Trigger  {
     }
 
 
+    /**
+     * Tries to run a workflow by including it
+     * 
+     * @global boolean $cancelBubble
+     * @global type $workflowRC
+     * @param type $diagram
+     * @param type $cleanEvent
+     */
     protected function runWorkflow($diagram = false,$cleanEvent) {
         global $cancelBubble;
         global $workflowRC;
@@ -85,9 +93,11 @@ class Trigger  {
             $EVENT->_workflowStatus($workflowRC);
             $EVENT->close();
             $this->_event($EVENT);
+            return true;
         }
+        return false;
     }
-
+    
     /**
      * 
      * @param type $namespace
