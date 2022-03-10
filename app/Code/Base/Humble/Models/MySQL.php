@@ -111,7 +111,7 @@ class MySQL  {
             if (($this->_dbref->sqlstate != "00000")) {
                 if ($this->_dbref->errno!=1062) {
                     $errorstring = "<error date=\"".date(DATE_RFC822)."\">\n";
-                    $errorstring = "\t<user_id>".((isset($_SESSION['uid'])) ? $_SESSION['uid'] : 'N/A')."</user_id>";
+                    $errorstring = "\t<user_id>".((isset($_SESSION['uid'])) ? $_SESSION['uid'] : 'N/A')."</user_id>\n";
                     $errorstring .= "\t<class> ".$this->_environment->getDBHost()." </class>\n";
                     $errorstring .= "\t<sqlstate> ".$this->_dbref->sqlstate."</sqlstate>\n";
                     $errorstring .= "\t<errorcode> ".$this->_dbref->errno."</errorcode>\n";

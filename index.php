@@ -50,7 +50,7 @@ $headers         = getallheaders();
 //if not, it returns us whether we are running with authorization checks in
 //place.  We would only disable authorization checks if the system were in
 //an unusable state and we were doing aggressive debugging or testing
-$authorizationEngineEnabled = \Environment::statusCheck($namespace,$controller,$action);
+//$authorizationEngineEnabled = \Environment::statusCheck($namespace,$controller,$action);
 
 //###########################################################################
 //If this application is deployed using a Micro-Services Architecture, then
