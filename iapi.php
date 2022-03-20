@@ -156,6 +156,7 @@ try {
                                 if (!$allowed) {
                                     header("HTTP/1.1 400 Bad Request");
                                     throw new \Exceptions\WhitelistException('Invalid Requestor',99);
+                                    die();
                                 }
                             }
                             if ($userid && $passwd) {
@@ -164,10 +165,12 @@ try {
                                 } else {
                                     header("HTTP/1.1 400 Bad Request");
                                     throw new \Exceptions\CredentialsIncorrectException('Authorization Information Invalid',24);
+                                    die();
                                 }
                             } else {
                                 header("HTTP/1.1 400 Bad Request");
                                 throw new \Exceptions\CredentialsException('Credentials Missing',24);
+                                die();
                             }
                             break;
                         case 'session':
