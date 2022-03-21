@@ -1,5 +1,12 @@
 <?php
+chdir('app');
+require "Humble.php";
 
-phpinfo();
+if (Environment::getApplication('state')=='DEVELOPMENT') {
+    phpinfo();    
+} else {
+    print('Started...');
+}
+
 
 ?>
