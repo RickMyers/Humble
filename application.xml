@@ -3,7 +3,7 @@
     <name>The Humble Project</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">JSFQ-VSYF-QRKQ-CJQQ</serial_number>
     <version>
-        <framework>0.7.9.3.7</framework>
+        <framework>0.7.9.3.8</framework>
         <app>0.0.0.1</app>
     </version>
     <state>DEVELOPMENT</state>
@@ -24,7 +24,7 @@
     </api>
     <support>
         <name>Rick Myers</name>
-        <email>rick@humblecoding.com</email>
+        <email>rick@humbleprogramming.com</email>
     </support>
     <status>
         <enabled>1</enabled>           <!-- Switch to 0 to take the application offline -->

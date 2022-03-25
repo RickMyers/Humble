@@ -195,7 +195,7 @@ class Mongo  {
         $doc = $this->_map($doc);
         foreach ($doc as $var => $val) {
             if ($var !== '_id') {
-                $method = 'set'.$this->underscoreToCamelCase($var);
+                $method = 'set'.ucfirst($var);
                 $this->$method($val);
             }
         }
@@ -424,7 +424,7 @@ class Mongo  {
             $this->_data = [];
             if ($doc) {
                 foreach ($doc as $var => $val) {
-                    $method = 'set'.$this->underscoreToCamelCase($var,true);
+                    $method = 'set'.ucfirst($var);
                     $this->$method($val);
                 }
             }
@@ -432,7 +432,7 @@ class Mongo  {
         } else {
             $doc = [];
             foreach ($this->_data as $key => $val) {
-                $method = 'get'.$this->underscoreToCamelCase($key,true);
+                $method = 'get'.ucfirst($key);
                 $val    = $this->$method();
                 if (($key === '_id') && (!is_object($val))) {
                     $val = new \MongoDB\BSON\ObjectID($val);

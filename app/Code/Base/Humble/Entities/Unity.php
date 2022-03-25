@@ -321,7 +321,7 @@ SQL;
     public function average($field)  {
         $group = [];
         foreach ($this->_keys as $idx => $key) {
-            $method = 'get'.$this->underscoreToCamelCase($idx,true);
+            $method = 'get'.ucfirst($idx);
             $res = $this->$method();
             if ($this->$method() != "") {
                 $group[$idx] = $idx;
@@ -348,12 +348,12 @@ SQL;
                 //basically, you passed a true in the first field and nothing in the second,
                 //this means you want to also search the key fields (quasi-polymorphic)
                 foreach ($this->_keys as $idx => $key) {
-                    $method = 'get'.$this->underscoreToCamelCase($idx,true);
+                    $method = 'get'.ucfirst($idx);
                     $results[$idx] = $this->$method();
                 }
             }
             foreach ($this->_fields as $idx => $key) {
-                $method = 'get'.$this->underscoreToCamelCase($idx,true);
+                $method = 'get'.ucfirst($idx);
                 $results[$idx] = $this->$method();
             }
             $countRowClause = ($this->_rows() && $this->_page()) ? " SQL_CALC_FOUND_ROWS " : "";
@@ -439,14 +439,14 @@ SQL;
         foreach ($this->_keys as $idx => $key) {
             //we check to see if the a key value was attempted to be set, even if it was set to a null
             if (isset($this->_data[$idx]) || (array_key_exists($idx,$this->_data) && ($this->_data[$idx] === null))) {
-                $method = 'get'.$this->underscoreToCamelCase($idx,true);
+                $method = 'get'.ucfirst($idx);
                 $results[$idx] = $this->$method();
             }
         }
         if ($nonkeys) {
             $polyglot = $this->_polyglot();
             foreach ($this->_fields as $idx => $key) {
-                $method = 'get'.$this->underscoreToCamelCase($idx,true);
+                $method = 'get'.ucfirst($idx);
                 $results[$idx] = $this->$method();
             }
         }
@@ -499,7 +499,7 @@ SQL;
         if ($row_total>0) {
             foreach ($result as $field => $value) {
                 if ($field !== '_id') {
-                    $method = 'set'.$this->underscoreToCamelCase($field,true);
+                    $method = 'set'.ucfirst($field);
                     $this->$method($value);
                 }
             }
@@ -523,12 +523,12 @@ SQL;
         $results = [];
         if ($useKeys) {
             foreach ($this->_keys as $idx => $key) {
-                $method = 'get'.$this->underscoreToCamelCase($idx,true);
+                $method = 'get'.ucfirst($idx);
                 $results[$idx] = $this->$method();
             }
         }
         foreach ($this->_fields as $idx => $key) {
-            $method = 'get'.$this->underscoreToCamelCase($idx,true);
+            $method = 'get'.ucfirst($idx);
             $results[$idx] = $this->$method();
         }
         $andFlag = false;
@@ -675,7 +675,7 @@ SQL;
         }
         $db_fields  = [];
         foreach ($this->_keys as $idx => $key) {
-            $method = 'get'.$this->underscoreToCamelCase($idx,true);
+            $method = 'get'.ucfirst($idx);
             $data   = $this->$method();
             if ($data) {
                 $db_fields[$idx] = $data;
@@ -683,7 +683,7 @@ SQL;
         }
         $non_values = [];
         foreach ($this->_fields as $key => $value) {
-            $method   = 'get'.$this->underscoreToCamelCase($key,true);
+            $method   = 'get'.ucfirst($key);
             $data     = $this->$method();
             if (isset($this->_column[$key]) || (isset($this->_keys[$key]))) {
                 $db_fields[$key] = $data;
@@ -734,7 +734,7 @@ SQL;
             //first we look for mongo record with the same ID value
             foreach ($this->_keys as $key => $data) {
                 if (($key === 'id')) {
-                    $method = 'get'.$this->underscoreToCamelCase($key,true);
+                    $method = 'get'.ucfirst($key);
                     $id = $this->$method();
                     $mdb->setId(($id) ? $id : $insertId);
                     $d = $mdb->load();
@@ -747,7 +747,7 @@ SQL;
             //then we add/update with new values
             foreach ($non_values as $key => $value) {
                 if ($key !== '_id') {
-                    $method = 'set'.$this->underscoreToCamelCase($key,true);
+                    $method = 'set'.ucfirst($key);
                     $mdb->$method($value);
                 }
             }
@@ -763,7 +763,7 @@ SQL;
     public function add()  {
         $fields     = $this->_fields;
         foreach ($this->_autoinc as $var => $autoinc) {
-            $method = 'get'.$this->underscoreToCamelCase($var,true);
+            $method = 'get'.ucfirst($var);
             if ($this->$method()) {
                 $fields[$var] = true;
             } else if ($autoinc != 'Y') {
@@ -773,7 +773,7 @@ SQL;
         $fieldlist  = '`'.$this->implode_keys('`,`',$fields).'`';
         $values     = [];
         foreach ($fields as $key => $value) {
-            $method = 'get'.$this->underscoreToCamelCase($key,true);
+            $method = 'get'.ucfirst($key);
             $values[] = addslashes($this->$method());
         }
         $values = "'".implode("','",$values)."'";
@@ -905,12 +905,12 @@ SQL;
     public function delete($useFields=false) {
         $results = [];
         foreach ($this->_keys as $idx => $key) {
-            $method = 'get'.$this->underscoreToCamelCase($idx,true);
+            $method = 'get'.ucfirst($idx);
             $results[$idx] = $this->$method();
         }
         if ($useFields) {
             foreach ($this->_fields as $idx => $key) {
-                $method = 'get'.$this->underscoreToCamelCase($idx,true);
+                $method = 'get'.ucfirst($idx);
                 $results[$idx] = $this->$method();
             }
         }
@@ -1034,12 +1034,12 @@ SQL;
         $results = [];
         if ($useKeys) {
             foreach ($this->_keys as $idx => $key) {
-                $method = 'get'.$this->underscoreToCamelCase($idx,true);
+                $method = 'get'.ucfirst($idx);
                 $results[$idx] = $this->$method();
             }
         }
         foreach ($this->_fields as $idx => $key) {
-            $method = 'get'.$this->underscoreToCamelCase($idx,true);
+            $method = 'get'.ucfirst($idx);
             $results[$idx] = $this->$method();
         }
         $query    = "select count(*) as count from ".$this->_prefix().$this->_entity();
