@@ -300,6 +300,7 @@ function restoreProject() {
         @unlink('humble.sh');
     }
     @unlink('Humble.php');
+    @unlink('tmp/'.$distro);
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('start '.$project->project_url.'/install.php');
     } else  {
