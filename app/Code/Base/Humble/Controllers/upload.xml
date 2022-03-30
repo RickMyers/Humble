@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+
+Adhoc Upload File Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="upload" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="form">
+            <description>The basic upload form</description>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="file" blocking="off">
+            <description>The upload service</description>
+            <helper namespace="humble" class="file" method="upload" response="true">
+                <parameter name="uploaded_file" value='filename' source="file" required="true" />
+                <parameter name="destination" source="post" default="/var/www/uploads" />
+            </helper>
+        </action>
+
+    </actions>
+</controller>

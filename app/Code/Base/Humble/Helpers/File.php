@@ -109,6 +109,19 @@ class File extends Helper
     }
 
     /**
+     * Arbitrary file uploader
+     */
+    public function upload() {
+        $file = $this->getUploadedFile();
+        $dest = $this->getDestination();
+        
+        if ($file && $dest) {
+            @mkdir($dest);
+            file_put_contents($dest.'/'.$file['name'],file_get_contents($file['path']));
+        }
+    }
+    
+    /**
      * Appends data to the front of a file, such as a log file.  Can't prepend to a file that hasn't been created.
      *
      * @param type $data

@@ -110,6 +110,15 @@ var Administration = (function () {
                             }
                         }
                     },
+                    upload: {
+                        win: false,
+                        form: function () {
+                            var win = (Administration.upload.win) ? Administration.upload.win : Administration.upload.win = Desktop.semaphore.checkout(true);
+                            (new EasyAjax('/humble/upload/form')).then(function (response) {
+                                win._title('File Upload')._open(response);
+                            }).post();
+                        }
+                    },
                     status: {
                         check: function () {
                             (new EasyAjax('/humble/system/status')).then(function (response) {
