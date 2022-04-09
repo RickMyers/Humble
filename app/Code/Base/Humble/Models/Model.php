@@ -539,17 +539,19 @@ SOAP;
         $rpc  = $this->_RPC();  //capture current RPC state
         $this->_RPC(false);     //turn off RPC or might fall into an infinite loop
         $cc   = isset($call['camel-case']) && $call['camel-case'];
-        foreach ($call['arguments'] as $var => $val) {
-            if (!is_numeric($var)) {
-                if (trim($val) != '') {
-                    $args[$var] = $val;
+        if (isset($call['arguments']) && $call['arguments']) {
+            foreach ($call['arguments'] as $var => $val) {
+                if (!is_numeric($var)) {
+                    if (trim($val) != '') {
+                        $args[$var] = $val;
+                    } else {
+                        $method = 'get'.(($cc) ? $this->underscoreToCamelCase($var,true) : ucfirst($var));
+                        $args[$var] = $this->$method();
+                    }
                 } else {
-                    $method = 'get'.(($cc) ? $this->underscoreToCamelCase($var,true) : ucfirst($var));
-                    $args[$var] = $this->$method();
+                    $method = 'get'.(($cc) ? $this->underscoreToCamelCase($val,true) : ucfirst($val));
+                    $args[$val] = $this->$method();
                 }
-            } else {
-                $method = 'get'.(($cc) ? $this->underscoreToCamelCase($val,true) : ucfirst($val));
-                $args[$val] = $this->$method();
             }
         }
         $this->_RPC($rpc);  //restore RPC state
@@ -639,19 +641,25 @@ SOAP;
     }
     
     /**
-     * This call might be using our Secrets Manager, if so, if they followed the protocol, will decrypt the apiKey for them
+     * If any call parameter value is marked as a secret, we attempt to retrieve that secret here and substitute the value
      * 
-     * @param string $apiKey
-     * @return string
+     * @param array $call
+     * @return array
      */
-    protected function processApiKey($apiKey) {
-        if (strtolower(substr($apiKey,0,5))==='sm://') {
-            $sm = Humble::getEntity('humble/secrets/manager');
-            if ($x = $sm->setSecretName(substr($apiKey,5))->setNamespace($this->_namespace())->load(true)) {
-                $apiKey = $sm->decrypt(true)->getSecretValue();
+    protected function processSecrets($call=[]) {
+        $sm = Humble::getEntity('humble/secrets/manager');
+        foreach ($call as $key => $val) {
+            if (is_array($val)) {
+                $call[$key] = $this->processSecrets($val);
+            } else {
+                if (strtolower(substr($val,0,5))==='sm://') {
+                    if ($x = $sm->reset()->setSecretName(substr($key,5))->setNamespace($this->_namespace())->load(true)) {
+                        $call[$key] = $sm->decrypt(true)->getSecretValue();
+                    }
+                }
             }
         }
-        return $apiKey;
+        return $call;
     }
     
     /**
@@ -685,7 +693,7 @@ SOAP;
                 }
             }
             if (isset(\Singleton::mappings()[$name])) {
-                $call   = \Singleton::mappings()[$name];
+                $call   = $this->processSecrets(\Singleton::mappings()[$name]);
                 $args   = [];
                 if (isset($call['authentication'])) {
                     switch (strtoupper($call['authentication'])) {
@@ -699,9 +707,6 @@ SOAP;
                     }
                 } else {
                     if (isset($call['method']) && (strtoupper($call['method'])!=='SOAP')) {
-                        if (isset($call['api-var']) && $call['api-var']) {
-                            $args[$call['api-var']] = $this->processApiKey($call['api-key']);
-                        }
                         if (is_string($call['arguments']) && (substr($call['url'],strlen($call['url'])-1,1)=='+')) {
                             $method      = 'get'.ucfirst($call['arguments']);
                             $call['url'] = substr($call['url'],0,strlen($call['url'])-1).'/'.$this->$method();

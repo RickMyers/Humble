@@ -61,6 +61,30 @@ class User extends Model {
     }
 
     /**
+     * Returns a random token of a specified length
+     * 
+     * @param int $len
+     * @return string
+     */
+    private function resetToken($len=8) {
+        $chars ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
+        $token = '';
+        for ($i=0; $i<$len; $i++) {
+            $token .= substr($chars,rand(0,strlen($chars)-1),1);
+        }
+        return $token;
+    }
+    /**
+     * 
+     */
+    public function resetPasswords() {
+        $user = Humble::getEntity('humble/users');
+        foreach (Humble::getEntity('humble/users')->fetch() as $obs) {
+            $user->reset()->setUid($obs['uid'])->setResetPasswordToken($this->resetToken(12))->save();
+        }
+        return "Passwords were reset (sure)";
+    }
+    /**
      * Allows you to set a message that will be displayed on the page after a login attempt
      *
      * @deprecated since 3.1

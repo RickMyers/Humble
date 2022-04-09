@@ -36,5 +36,22 @@
                 <action name="list" />
             </chain>
         </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="resetpasswords" blocking="off">
+            <entity namespace="humble" class="user/permissions" id="user" method="load">
+                <parameter name="id" value="uid" source="session" default="" />
+            </entity>
+            <if id="user" method="getSuperUser" eq="Y">
+                <then>
+                    <model namespace="humble" class="user" method="resetPasswords" response="true"/>
+                </then>
+                <else>
+                    <output text="You lack the required permission to globally reset passwords" />
+                </else>
+            </if>
+        </action>
+        
     </actions>
 </controller>
