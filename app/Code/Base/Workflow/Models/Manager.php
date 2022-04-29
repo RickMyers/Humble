@@ -47,12 +47,12 @@ class Manager extends Model {
         $b = $element->load();
         $this->setType($b['type']);
         foreach ($data as $var => $val) {
-            $method = 'set'.$this->ucfirst($var);
-            $this->$method($val);
             if ($var == 'windowId') {
                 //we don't need to record this, since it changes each time you edit this component
                 continue;
-            }
+            }            
+            $method = 'set'.ucfirst($var);
+            $this->$method($val);
             $element->$method($val);
         }
         $element->setConfigured(1);
@@ -76,5 +76,3 @@ class Manager extends Model {
         return $id;
     }
 }
-
-?>

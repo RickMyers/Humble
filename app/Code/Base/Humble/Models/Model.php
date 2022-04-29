@@ -599,7 +599,23 @@ SOAP;
         return $retval;
     }
 
-    
+    /**
+     * Gets values from one object and sets them in this object based on an array list
+     * 
+     * @param object $object
+     * @param array $relationship
+     * @return $this
+     */
+    public function _map($object,$relationship=[]) {
+        if ($relationship) {
+            foreach ($relationship as $field) {
+                $getter = 'get'.$this->underscoreToCamelCase($field,true);
+                $setter = 'set'.$this->underscoreToCamelCase($field,true);
+                $this->$setter($object->$getter());
+            }
+        }
+        return $this;
+    }
 
     protected function pushToCache($namespace=false,$call_name=false,$arguments=[],$expire=0,$results='') {
         if ($expire) {
