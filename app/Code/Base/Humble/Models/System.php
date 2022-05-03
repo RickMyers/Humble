@@ -131,7 +131,7 @@ class System extends Model
      */
     public function state() {
         $xml    = Environment::status(true);
-        return (isset($xml->state)) ? $xml->state : 'DEVELOPMENT';
+        return (isset($xml['state'])) ? $xml['state'] : 'DEVELOPMENT';
     }
     
     /**
@@ -141,6 +141,7 @@ class System extends Model
         $xml = simplexml_load_file('../application.xml');
         $xml->state = $this->getState();
         file_put_contents('../application.xml',$xml->asXML());
+        Environment::recacheApplication();
     }
     
     /**

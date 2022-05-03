@@ -104,6 +104,19 @@ class Environment {
     }
 
     /**
+     * Returns the current State of the system
+     * 
+     * @return boolean
+     */
+    public static function state() {
+        if (!self::$application) {
+            self::loadApplicationMetaData();
+        }
+        $x = self::$application['state'];
+        return isset(self::$application['state']) ?  self::$application['state'] : 'Unknown';
+    }
+    
+    /**
      * Returns true if the system is in PRODUCTION, which means certain features will be turned on
      * 
      * @return boolean
@@ -125,6 +138,30 @@ class Environment {
             self::loadApplicationMetaData();
         }
         return (!isset(self::$application['state']) || (isset(self::$application['state']) && (self::$application['state']==='DEVELOPMENT')));
+    }
+
+    /**
+     * Returns true if the system is in TEST, which means certain features will be turned on
+     * 
+     * @return boolean
+     */
+    public static function isTest() {
+        if (!self::$application) {
+            self::loadApplicationMetaData();
+        }
+        return (isset(self::$application['state']) && (self::$application['state']==='TEST'));
+    }
+
+    /**
+     * Returns true if the system is in DEBUG, which means certain features will be turned on
+     * 
+     * @return boolean
+     */
+    public static function isDebug() {
+        if (!self::$application) {
+            self::loadApplicationMetaData();
+        }
+        return (isset(self::$application['state']) && (self::$application['state']==='DEBUG'));
     }
     
     /**

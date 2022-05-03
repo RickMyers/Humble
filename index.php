@@ -228,6 +228,11 @@ if (!$module) {
         require_once "Compatibility.php";
     }
 
+    if (!file_exists($include)) {
+        \HumbleException::standard(new Exception("Controller Does Not Exist, Check Name [".Environment::state()."]",16),"Request Error",'routing');
+        die();
+    }
+    
     //###########################################################################
     //If we got this far, hand off to the controllers
     try {
