@@ -51,7 +51,7 @@ $headers         = getallheaders();
 //place.  We would only disable authorization checks if the system were in
 //an unusable state and we were doing aggressive debugging or testing
 //$authorizationEngineEnabled = \Environment::statusCheck($namespace,$controller,$action);
-
+$authorizationEngineEnabled = true;
 //###########################################################################
 //If this application is deployed using a Micro-Services Architecture, then
 //one of the application nodes must be the router.  If this is the MSA Router,
@@ -216,9 +216,9 @@ if (!$module) {
     }
 
     //###########################################################################
-    // if ($authorizationEngineEnabled && !$bypass) {          //This control is set in the application.xml root file
-    //      require_once "AuthorizationEngine.php";             //Call out to the authorization engine
-    // }
+    if ($authorizationEngineEnabled && !$bypass) {          //This control is set in the application.xml root file
+       require_once "AuthorizationEngine.php";             //Call out to the authorization engine
+    }
 
     //###########################################################################
     if (file_exists('Constants.php')) {

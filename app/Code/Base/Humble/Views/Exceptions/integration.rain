@@ -45,7 +45,7 @@
                                 <b>URI</b>: <span style="color: orange"></span>
                             </div>
                             <div style="font-family: sans-serif; font-size: .9em; padding-bottom: 8px;">
-                                <b>File</b>: <span style="color: green">{$ex->getFileName()}</span>
+                                <b>File</b>: <span style="color: green">{$filename}</span>
                             </div>
                             <div style="">
                             </div>
