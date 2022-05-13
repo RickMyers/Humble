@@ -6,7 +6,15 @@
             <entity namespace="humble" class="user_permissions" id="permissions" method="load">
                 <parameter name='id' value="uid" source="session" required="true" />
             </entity>
-            <model namespace="humble" class="system" id="system" />
+            <switch id='permissions' method='getAdmin'>
+                <case value='Y'>
+                    <model namespace="humble" class="system" id="system" />
+                    <model namespace="humble" class="system" id="system" />                
+                </case>
+                <default>
+                    <redirect href='/index.html?message=Insufficient privilege' />
+                </default>
+            </switch>            
         </action>
 
         <!-- ############################################################### -->
