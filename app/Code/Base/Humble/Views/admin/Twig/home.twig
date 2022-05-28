@@ -167,6 +167,19 @@
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>
                                     <li><a href='#' onclick='Administration.templates.clone(); return false'>Clone Component Templates</a></li>
+                                    <li><a href='#'>Export</a>
+                                        <ul>
+                                            <li onclick='Administration.export.module(); return false'>Module 1</li>
+                                        </ul>
+                                    </li>
+                                    <li><a href='#'>Import</a>
+                                        <ul>
+                                            {% for module in available_module.fetch() %}
+                                                <li><a href='#' onclick='Administration.import.module('{{ module.namespace }}'); return false'>{{ module.module }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    
                                 {% endif %}
 
                             </ul>

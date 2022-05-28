@@ -12,7 +12,7 @@
             <model namespace="humble" class="system" id="system" />
             <switch id='permissions' method='getAdmin'>
                 <case value='Y'>
-                    <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
+                    <entity namespace='humble' class='modules'      id='available_modules' orderby='package=ASC,namespace=ASC' />
                     <helper namespace='humble' class='installer'    id='installer' />
                     <helper namespace='humble' class='admin'        id='directory' />
                     <helper namespace='humble' class='directory'    id='packages' />
