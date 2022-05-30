@@ -14,7 +14,7 @@ use Environment;
  * @category   Logical Model
  * @package    Core
  * @author       <rick@humbleprogramming.com>
- * @copyright  2005-present Humble Project
+ * @copyright  2007-present, Humbleprogramming.com
  * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
  * @link       https://humbleprogramming.com/docs/class-OnInstall.html

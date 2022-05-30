@@ -14,7 +14,7 @@ use Environment;
  * @category   Logical Model
  * @package    Workflow
  * @author     Richard Myers <rick@humbleprogramming.com>
- * @copyright  2005-present Humble Project
+ * @copyright  2007-present, Humbleprogramming.com
  * @since      File available since Release 1.0.0
  */
 class Operation extends Model
