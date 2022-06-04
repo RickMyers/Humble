@@ -28,6 +28,7 @@ $help = <<<HELP
  *      --y, --Y, Compile a controller
  *      --x, --X, Check if a module prefix is available
  *      --a, --A, Remove AUTOINCREMENT=# from SQL dumps
+        --activate      Build, Install, and Enable a module
         --use           Update a module using the relative location of a configuration file [etc=Code/Base/Humble/etc/config.xml]
  *      --adduser       Backend workaround to create a user, parameters are *user_name", "password", and optional "uid"       
  *      --package       Creates a new downloadable archive file of the Humble project
@@ -39,7 +40,9 @@ $help = <<<HELP
  * -----------------------------------------------------------------------------
  */
 HELP;
-    require_once('Humble.php');
+    if (!class_exists('Humble')) {
+        require_once('Humble.php');
+    }
     //ob_start();
     //--------------------------------------------------------------------------
     //Copied from PHPPro.blog
@@ -143,7 +146,7 @@ HELP;
     function createModuleDirectories($args) {
         $ns = fetchParameter('namespace',processArgs($args));
         $pk = fetchParameter('package',processArgs($args));
-        $px = fetchParameter('prefix',processArgs($args));
+        $px = $ns.'_';
         $au = fetchParameter('author',processArgs($args));
         $md = fetchParameter('module',processArgs($args));
         $em = fetchParameter('email',processArgs($args));
@@ -184,9 +187,12 @@ HELP;
                 @mkdir($root.'/Images');
                 $project     = Environment::getProject();
                 $module      = Humble::getModule($project->namespace);
+                $is_base     = (string)$project->namespace == $ns;
+                $package     = $is_base ? 'Base' : (string)$project->package;
+                $module      = $is_base ? 'Humble' : (string)$project->module;
                 $root        = is_dir('Code/'.$project->package.'/'.$project->module.'/lib/sample/module') ? 'Code/'.$project->package.'/'.$project->module : "Code/Base/Humble";
                 $srch        = ["&&namespace&&","&&prefix&&","&&author&&","&&module&&","&&package&&",'&&email&&','&&FACTORY&&','&&base_package&&','&&base_module&&'];
-                $repl        = [$ns,$px,$au,$md,$pk,$em,$project->factory_name,$project->package,$project->module];
+                $repl        = [$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module];
                 $templates   = [$root."/lib/sample/module/Controllers/actions.xml"];
                 $out         = ["Code/".$pk."/".$md."/Controllers/actions.xml"];
                 $templates[] = $root."/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
@@ -209,6 +215,18 @@ HELP;
 TXT;
             print($msg);
         }
+    }
+    //--------------------------------------------------------------------------
+    function activateModule($args) {
+        $ns = fetchParameter('namespace',processArgs($args));
+        $pk = fetchParameter('package',processArgs($args));
+        $md = fetchParameter('module',processArgs($args));        
+        createModuleDirectories($args);
+        installModule([
+            $ns,
+            'Code/'.$pk.'/'.$md.'/etc/config.xml'
+        ]);
+        enableModule([$ns]);
     }
     //--------------------------------------------------------------------------
     function displayHelp($help) {
@@ -952,7 +970,13 @@ TXT;
     print("\nWorking on it...\n\n");
     //ob_start();
     if (substr(getcwd(),-3,3)!=='app') {
-        chdir('app');           //being called from distribution script
+        chdir('app');                                                           //being called from distribution script
+    }
+    if (isset($args) && count($args)) {                                         //If included instead of being called, assign the args array to the argv array to make it look like it was called
+        $argv = [];
+        foreach ($args as $arg => $value) {
+            $argv[$arg] = $value;
+        }
     }
     if (!isset($argv) || !count($argv)) {
         print(file_get_contents('Module.php'));                                 //looks a bit crazy, but this basically says, if I wasn't called with arguments, someone is likely trying to download me, and this resolves that intention
@@ -1048,6 +1072,9 @@ TXT;
                     break;
                 case 'use':
                     updateUsingConfigurationFile(array_slice($args,1));
+                    break;
+                case 'activate':
+                    activateModule(array_slice($args,1));
                     break;
                 default  :
                     die('Dont know how to process that command ('.$cmd.')');

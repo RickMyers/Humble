@@ -236,5 +236,29 @@
             </entity>
         </action>
 
+        <!-- ############################################################### -->
+
+        <action name="installpage" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description>The page that lets you select which module to upload and install</description>
+            <entity namespace='humble' class='modules' id='modules' orderby='module=ASC' />
+        </action>
+                
+        <!-- ############################################################### -->
+
+        <action name="importpage" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description>The page that lets you select which module to upload and apply data for</description>
+            <entity namespace='humble' class='modules' id='modules' orderby='module=ASC' />
+        </action>
+                
+        <!-- ############################################################### -->
+        
+        <action name="export" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description>Exports and zips up data for the user to then download</description>
+            <model namespace='humble' class='admin' method='export'>
+                <parameter name='namespace' source='post' required='true' />
+                <parameter name='uid' source='session' required='true' />
+            </model>
+        </action>
+        
     </actions>
 </controller>

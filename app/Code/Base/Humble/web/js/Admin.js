@@ -36,6 +36,27 @@ var Administration = (function () {
                             }).get();                              
                         }
                     },
+                    module: {
+                        import: function (namespace) {
+                            let win = Desktop.semaphore.checkout(true);
+                            (new EasyAjax('/humble/admin/importpage')).then(function (response) {
+                                win._open(response)._title('Import Data');
+                            }).post();
+                        },
+                        export: function (namespace) {
+                            if (confirm('Would you like to export (download) data for the module '+namespace+"?")) {
+                                (new EasyAjax('/humble/admin/export')).add('namespace',namespace).then(function (response) {
+                                    
+                                }).post();
+                            }
+                        },
+                        install: function (namespace) {
+                            let win = Desktop.semaphore.checkout(true);
+                            (new EasyAjax('/humble/admin/installpage')).then(function (response) {
+                                win._open(response)._title('Install Module');
+                            }).post();                            
+                        }
+                    },
                     secrets: {
                         add: function () {
                             var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._title("New Secret");

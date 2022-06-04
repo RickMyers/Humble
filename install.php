@@ -301,8 +301,18 @@ switch ($method) {
         $modules = \Environment::getRequiredModuleConfigurations();
         $percent = (count($modules)*2)+4;
         file_put_contents('../install_status.json','{ "stage": "Starting", "step": "Building Application Module", "percent": '.(++$step*$percent).' }');
-        $cmd = 'php Module.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_';
-        exec($cmd);
+        $args = [
+            "Module.php",
+            "--activate",
+            "namespace=".$project->namespace,
+            "package=".$project->package,
+            "module=".$project->module
+        ];
+        include "Module.php";
+//        $cmd = 'php Module.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module;
+//        exec($cmd,$results);
+        
+        
         foreach ($modules as $idx => $etc) {
             file_put_contents('../install_status.json','{ "stage": "Installing", "step": "Installing '.$etc.'", "percent": '.(++$step*$percent).' }');
             print('###########################################'."\n");
@@ -310,6 +320,10 @@ switch ($method) {
             print('###########################################'."\n\n");
             $util->install($etc);
         }
+        
+        //
+        // ###NOW RUN UPDATE ON EACH MODULE!!!!#######
+        //
         $util = \Environment::getUpdater();
         foreach ($modules as $idx => $etc) {
             file_put_contents('../install_status.json','{ "stage": "Updating", "step": "Updating '.$etc.'", "percent": '.(++$step*$percent).' }');
@@ -318,16 +332,12 @@ switch ($method) {
             print('###########################################'."\n\n");
             $util->update($etc);
         }
-        //
-        // ###NOW RUN UPDATE ON EACH MODULE!!!!#######
-        //
+        
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing = explode('/',$landing_page);
         $ins     = Humble::getModel('humble/utility');
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
-        shell_exec("php Module.php --i ".$project->namespace." Code/".$project->package."/".$project->module."/etc/config.xml");
-        shell_exec("php Module.php --e ".$project->namespace);
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();
         $uid    = \Humble::getEntity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']))->newUser();
@@ -350,7 +360,7 @@ switch ($method) {
         print("done with creating drivers\n\n");
         unlink('install/driver.bat');
         unlink('install/humble.sh');
-        rmdir('install');
+        //rmdir('install');
         $log = ob_get_flush();
         print($log);
         file_put_contents('../install_status.json','{ "stage": "Complete", "step": "Finished", "percent": 100 }');
