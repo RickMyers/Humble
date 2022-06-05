@@ -301,17 +301,6 @@ switch ($method) {
         $modules = \Environment::getRequiredModuleConfigurations();
         $percent = (count($modules)*2)+4;
         file_put_contents('../install_status.json','{ "stage": "Starting", "step": "Building Application Module", "percent": '.(++$step*$percent).' }');
-        $args = [
-            "Module.php",
-            "--activate",
-            "namespace=".$project->namespace,
-            "package=".$project->package,
-            "module=".$project->module
-        ];
-        include "Module.php";
-//        $cmd = 'php Module.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module;
-//        exec($cmd,$results);
-        
         
         foreach ($modules as $idx => $etc) {
             file_put_contents('../install_status.json','{ "stage": "Installing", "step": "Installing '.$etc.'", "percent": '.(++$step*$percent).' }');
@@ -333,6 +322,14 @@ switch ($method) {
             $util->update($etc);
         }
         
+        $args = [
+            "Module.php",
+            "--activate",
+            "namespace=".$project->namespace,
+            "package=".$project->package,
+            "module=".$project->module
+        ];
+        include "Module.php";        
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing = explode('/',$landing_page);
@@ -345,8 +342,8 @@ switch ($method) {
         if (!$uid) {
             file_put_contents('oops.txt',$results);
         }
-        \Humble::getEntity('humble/user_identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
-        \Humble::getEntity('humble/user_permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
+        \Humble::getEntity('humble/user/identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
+        \Humble::getEntity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
         $ins->setUid($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
         if (!$cache) {
 
@@ -355,11 +352,11 @@ switch ($method) {
         $_SESSION['uid'] = $uid;
         print('Attempting to create drivers'."\n");
         print(getcwd()."\n");
-        copy('install/humble.bat',strtolower((string)$project->factory_name).'.bat');
-        copy('install/humble.sh',strtolower((string)$project->factory_name).'.sh');
+        copy('humble.bat',strtolower((string)$project->factory_name).'.bat');
+        copy('humble.sh',strtolower((string)$project->factory_name).'.sh');
         print("done with creating drivers\n\n");
-        unlink('install/driver.bat');
-        unlink('install/humble.sh');
+ //       unlink('driver.bat');
+//        unlink('humble.sh');
         //rmdir('install');
         $log = ob_get_flush();
         print($log);

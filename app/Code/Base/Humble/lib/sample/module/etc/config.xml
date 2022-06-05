@@ -2,8 +2,8 @@
 <config>
     <&&namespace&&>
         <version>0.0.1</version>
-        <title><!-- This will appear in the administration screens for this module --></title>
-        <description><!-- This will appear in the admin page --></description>
+        <title>&&module&&<!-- This will appear in the administration screens for this module --></title>
+        <description>The &&module&& module<!-- This will appear in the admin page --></description>
         <author>
             <name>&&author&&</name>
             <email>&&email&&</email>
@@ -11,7 +11,7 @@
         <module>
             <name>&&module&&</name>
             <weight>50</weight>
-            <required>N</required>
+            <required>&&required&&</required>
             <workflow>Y</workflow>
             <package>&&package&&</package>
             <use>Smarty3</use>
