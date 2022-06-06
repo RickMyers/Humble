@@ -45,9 +45,7 @@ var Administration = (function () {
                         },
                         export: function (namespace) {
                             if (confirm('Would you like to export (download) data for the module '+namespace+"?")) {
-                                (new EasyAjax('/humble/admin/export')).add('namespace',namespace).then(function (response) {
-                                    
-                                }).post();
+                                window.open('/humble/admin/export?namespace='+namespace);
                             }
                         },
                         install: function (namespace) {

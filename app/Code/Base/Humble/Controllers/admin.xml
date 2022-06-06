@@ -242,6 +242,17 @@
             <description>The page that lets you select which module to upload and install</description>
             <entity namespace='humble' class='modules' id='modules' orderby='module=ASC' />
         </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="install" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description>Installs a module by overlaying it in the file system</description>
+            <model namespace='humble' class='admin' method='install' response='true'>
+                <parameter name='namespace' source='post' required='true' />
+                <parameter name='module' source='file' required='true' />
+                <parameter name='uid' source='session' required='true' />
+            </model>
+        </action>
                 
         <!-- ############################################################### -->
 
@@ -252,12 +263,33 @@
                 
         <!-- ############################################################### -->
         
-        <action name="export" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
-            <description>Exports and zips up data for the user to then download</description>
-            <model namespace='humble' class='admin' method='export'>
+        <action name="import" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description></description>
+            <model namespace='humble' class='admin' method='export' response='true'>
                 <parameter name='namespace' source='post' required='true' />
+                <parameter name='data' source='file' required='true' />                
                 <parameter name='uid' source='session' required='true' />
             </model>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="export">
+            <description>Exports and zips up data for the user to then download</description>
+            <entity namespace='humble' class='user/permissions' id='perms' method='load'>
+                <parameter name='id' value='uid' source='session' required='true' />
+            </entity>
+            <switch id='perms' method='getSuperUser'>
+                <case value='Y'>
+                    <model namespace='humble' class='admin' method='export' response='true'>
+                        <parameter name='namespace' source='request' required='true' />
+                        <parameter name='uid' source='session' required='true' />
+                    </model>
+                </case>
+                <default>
+                    <redirect href='index.html?message=Unauthorized' />
+                </default>
+            </switch>
         </action>
         
     </actions>
