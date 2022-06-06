@@ -96,6 +96,8 @@
                 <newsecret>Humble/web/edits/newsecret.json</newsecret>
                 <fetchsecret>Humble/web/edits/fetchsecret.json</fetchsecret>
                 <apitester>Humble/web/edits/apitester.json</apitester>
+                <importdata>Humble/web/edits/importdata.json</importdata>
+                <installmodule>Humble/web/edits/installmodule.json</installmodule>
             </edits>
             <common>
                 <js>
