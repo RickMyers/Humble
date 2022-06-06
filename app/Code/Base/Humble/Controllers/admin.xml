@@ -264,10 +264,10 @@
         <!-- ############################################################### -->
         
         <action name="import" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
-            <description></description>
-            <model namespace='humble' class='admin' method='export' response='true'>
+            <description>Uploads a data file for loading into the DB</description>
+            <model namespace='humble' class='admin' method='import' response='true'>
                 <parameter name='namespace' source='post' required='true' />
-                <parameter name='data' source='file' required='true' />                
+                <parameter name='data_file' source='file' required='true' />                
                 <parameter name='uid' source='session' required='true' />
             </model>
         </action>

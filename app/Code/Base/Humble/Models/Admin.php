@@ -37,8 +37,10 @@ class Admin extends Model
     }
 
     /**
+     * Creates a zip file containing JSON representing all the tables attributed to a namespace
      * 
      * @param type $namespace
+     * @return type
      */
     public function export($namespace=false) {
         if ($namespace = ($namespace) ? $namespace : ($this->getNamespace() ? $this->getNamespace() : false)) {
@@ -62,11 +64,47 @@ class Admin extends Model
         }
     }
     
+    /**
+     * Accepts a ZIP file containing JSON files to apply locally
+     * 
+     * @param type $namespace
+     */
     public function import($namespace=false) {
+        $message = 'Upload did not execute';
         if ($namespace = ($namespace) ? $namespace : ($this->getNamespace() ? $this->getNamespace() : false)) {
-        }        
+            if ($data_file = $this->getDataFile()) {
+                @mkdir('import',0775);
+                copy($data_file['path'],'import/'.$data_file['name']);
+                $archive = new \ZipArchive();
+                if ($archive->open('import/'.$data_file['name'])) {
+                    for ($i=0; $i<count($archive); $i++) {
+                        $file = $archive->getFromIndex($i);
+                        if ($name = $archive->getNameIndex($i)) {
+                            $name = explode('.',$name);
+                            $obs  = Humble::getEntity($namespace.'/'.$name[0]);
+                            foreach (json_decode($file) as $row) {
+                                $obs->reset();
+                                foreach ($row as $field => $value) {
+                                    $method = 'set'.$this->underscoreToCamelCase($field,true);
+                                    $obs->$method($value);
+                                }
+                                $obs->save();
+                            }
+                        }
+                    }
+                }
+                $archive->close();
+                unlink('import/'.$data_file['name']);
+                $message = 'Import finished, lets hope that worked';
+            }
+        }
+        return $message;
     }
     
+    /**
+     * 
+     * @param type $namespace
+     */
     public function install($namespace=false) {
         if ($namespace = ($namespace) ? $namespace : ($this->getNamespace() ? $this->getNamespace() : false)) {
         }        
