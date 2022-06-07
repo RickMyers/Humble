@@ -45,7 +45,7 @@ class Operation extends Model
      * @param event $EVENT
      */
     public function execute($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cfg  = $EVENT->fetch();
             if (isset($cfg['program'])) {

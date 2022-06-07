@@ -47,7 +47,7 @@ class User extends Model
      * @param type $EVENT
      */
     public function information($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cfg  = $EVENT->fetch();
             if (isset($cfg['source']) && $cfg['source']) {

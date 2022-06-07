@@ -46,7 +46,7 @@ class XML extends Model
      * @param type $EVENT
      */
     public function translate($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnfg = $EVENT->fetch();
             if (isset($cnfg['source']) && isset($data[$cnfg['source']])) {

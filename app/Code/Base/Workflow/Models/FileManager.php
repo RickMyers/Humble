@@ -42,7 +42,7 @@ class FileManager extends Model
      */
     public function addFile($EVENT=false) {
         $added = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnf  = $EVENT->fetch();
             if (isset($cnf['field'])) {
@@ -66,7 +66,7 @@ class FileManager extends Model
      */
     public function loadFile($EVENT=false) {
         $loaded = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnf  = $EVENT->fetch();
             if (isset($cnf['field'])) {
@@ -88,7 +88,7 @@ class FileManager extends Model
      */
     public function saveFile($EVENT=false) {
         $saved = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnf  = $EVENT->fetch();
             if (isset($cnf['field'])) {
@@ -113,7 +113,7 @@ class FileManager extends Model
      */
     public function storeFile($EVENT=false,$folder=false) {
         $stored = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnf  = $EVENT->fetch();
             if (isset($data[$cnf['source']])) {
@@ -149,7 +149,7 @@ class FileManager extends Model
      */
     public function copyFile($EVENT=false) {
         $copied = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnf  = $EVENT->fetch();
             if (isset($data[$cnf['source']])) {
@@ -168,7 +168,7 @@ class FileManager extends Model
      */
     public function isValidXML($EVENT=false) {
         $valid = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnf  = $EVENT->fetch();
             if (isset($data['xml_source'])) {
@@ -222,7 +222,7 @@ class FileManager extends Model
      * @param event $EVENT
      */
     public function ftpGet($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             
         }
     }
@@ -234,7 +234,7 @@ class FileManager extends Model
      * @param event $EVENT
      */
     public function ftpPut($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             
         }        
     }
@@ -250,7 +250,7 @@ class FileManager extends Model
         $success = false;
         $outcome = [];
         $files   = [];
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $cfg  = $EVENT->fetch();
             $host = $cfg['host'].':'.($cfg['port'] ? $cfg['port']: '22');
             $cfg['local_dir'] = str_replace("\\","/",$cfg['local_dir']);
@@ -298,7 +298,7 @@ class FileManager extends Model
      * @param event $EVENT
      */
     public function sftpPut($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             
         }        
     }

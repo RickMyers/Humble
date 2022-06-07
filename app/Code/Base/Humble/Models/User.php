@@ -44,7 +44,7 @@ class User extends Model {
      */
     public function exceededTries($EVENT=false) {
         $exceeded = true;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
                 $user       = Humble::getEntity('humble/users')->setUserName($data['user_name']);
@@ -93,7 +93,7 @@ class User extends Model {
      * @return boolean
      */
     public function setLoginErrorMessage($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $myId   = $EVENT->_target();
             $action = $EVENT->name;
             $data   = $EVENT->$action;
@@ -115,7 +115,7 @@ class User extends Model {
      * @workflow use(process)
      */
     public function routeToHomePage($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             //just duplicating for now... not sure if I want special "polymorphic" behavior for this if passed an event
             $project = Environment::getProject();
             header('Location: '.$project->landing_page);
@@ -177,7 +177,7 @@ class User extends Model {
      */
     public function SSOLoginSuccessful($EVENT=false) {
         $successful = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             // ‘v3-sp' is a name of the authentication provider setup in simplesamlphp, but it could be anything for any client. Based on how client want to authenticate.
             // how do we get a value in here?
@@ -236,7 +236,7 @@ class User extends Model {
      * @param type $EVENT
      */
     public function redirect($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
              $mydata = $EVENT->fetch();
              $data   = $EVENT->load();
              if (isset($mydata['url'])) {
@@ -257,7 +257,7 @@ class User extends Model {
      */
     public function standardLoginSuccessful($EVENT=false) {
         $successful = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data       = $EVENT->load();
             $user       = Humble::getEntity('humble/users')->setUserName($data['user_name'])->load(true);
             if (isset($user['password']) && isset($data['password']) && $data['password']) {
@@ -285,7 +285,7 @@ class User extends Model {
      */
     public function loginFailed($EVENT=false) {
         $failed = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             //work this out later
         }
@@ -299,7 +299,7 @@ class User extends Model {
      * @workflow use(process)
      */
     public function resetTries($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
                 Humble::getEntity('humble/users')->setUid(Environment::whoAmI())->setLoginAttempts(0)->save();
@@ -317,7 +317,7 @@ class User extends Model {
      * @workflow use(process)
      */
     public function incrementTries($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
                 $user   = Humble::getEntity('humble/users')->setUid(Environment::whoAmI());
@@ -337,7 +337,7 @@ class User extends Model {
      * @workflow use(process)
      */
     public function recordLoginTime($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
                 Humble::getEntity('humble/users')->setUid(Environment::whoAmI())->setLoggedIn(date('Y-m-d H:i:s'))->save();
@@ -378,7 +378,7 @@ class User extends Model {
      */
     public function accountLocked($EVENT=false) {
         $locked = true;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
                 $user   = Humble::getEntity('humble/users')->setUserName($data['user_name'])->load(true);
@@ -400,7 +400,7 @@ class User extends Model {
      * @return boolean
      */
     public function lockAccount($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
                 $user   = Humble::getEntity('humble/users')->setUserName($data['user_name']);
@@ -424,7 +424,7 @@ class User extends Model {
      * @return boolean
      */
     public function unlockAccount($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
                 $user   = Humble::getEntity('humble/users')->setUserName($data['user_name']);
@@ -449,7 +449,7 @@ class User extends Model {
      */
     public function isResetPasswordTokenSet($EVENT) {
         $token = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             if (isset($data['user_name'])) {
                 $user   = Humble::getEntity('humble/users')->setUserName($data['user_name']);

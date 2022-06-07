@@ -223,7 +223,7 @@ class Workflow extends Model
      */
     public function enable($EVENT=false) {
         $enabled = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['workflow_id'])) {
 
@@ -242,7 +242,7 @@ class Workflow extends Model
      */
     public function disable($EVENT=false) {
         $disabled = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['workflow_id'])) {
 

@@ -107,6 +107,16 @@ class Admin extends Model
      */
     public function install($namespace=false) {
         if ($namespace = ($namespace) ? $namespace : ($this->getNamespace() ? $this->getNamespace() : false)) {
+            if ($module = $this->getModule()) {
+                @mkdir('install',0775);
+                copy($module['path'],'import/'.$module['name']);
+                $archive = new \ZipArchive();
+                if ($archive->open('import/'.$module['name'])) {
+                    for ($i=0; $i<count($archive); $i++) {
+                        $file = $archive->getFromIndex($i);
+                    }
+                }
+            }
         }        
     }
 }

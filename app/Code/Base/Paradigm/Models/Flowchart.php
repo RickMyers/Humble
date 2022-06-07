@@ -48,7 +48,7 @@ class Flowchart extends Model
      */
     public function ifSymbol($EVENT=false) {
         $outcome = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnfg = $EVENT->fetch();
             if (isset($cnfg['field']) && isset($data[$cnfg['field']])) {

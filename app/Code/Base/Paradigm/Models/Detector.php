@@ -48,7 +48,7 @@ class Detector extends Model
      * @param type $EVENT
      */
     public function trigger($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();
             $cnfg   = $EVENT->fetch();
             if (isset($data[$cnfg['field']])) {

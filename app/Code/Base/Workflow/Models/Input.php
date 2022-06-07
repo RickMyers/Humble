@@ -46,7 +46,7 @@ class Input extends Model
      * @param type $EVENT
      */
     public function inputField($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cfg  = $EVENT->fetch();
             if (isset($cfg['field']) && $cfg['field']) {

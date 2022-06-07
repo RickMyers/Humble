@@ -64,7 +64,7 @@ class Notification extends Model {
     public function alert($EVENT=false) {
         $alerted = false;
         $string  = Humble::getHelper('humble/string');
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $mydata = $EVENT->fetch();
             $alert = $string->translate($mydata['message'],$EVENT->load());
             $EVENT->alert($alert);
@@ -80,7 +80,7 @@ class Notification extends Model {
      */
     public function dashboard($EVENT=false) {
         $alerted = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $mydata = $EVENT->fetch();
             //do something
             $alerted = true;
@@ -95,7 +95,7 @@ class Notification extends Model {
      */
     public function email($EVENT=false) {
         $emailed = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data   = $EVENT->load();   //get the original event data, it should have information by now
             $cfg    = $EVENT->fetch();
             if ($recipients = isset($cfg['recipient_type']) && ($cfg['recipient_type']=='value') ? $cfg['recipients'] : ((isset($data[$cfg['recipients']]) && $data[$cfg['recipients']]) ? $data[$cfg['recipients']] : false)) {
@@ -119,7 +119,7 @@ class Notification extends Model {
      */
     public function text($EVENT=false) {
         $texted = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $mydata = $EVENT->configurations[$EVENT->_target()];
             if (isset($mydata['number']) && isset($mydata['message'])) {
                 $this->setAction('getBalance');
@@ -140,7 +140,7 @@ class Notification extends Model {
      */
     public function response($EVENT=false) {
         $responded = false;
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $mydata = $EVENT->fetch();
             if (isset($mydata['response'])) {
                 Humble::response($mydata['response']);

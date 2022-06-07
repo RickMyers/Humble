@@ -46,7 +46,7 @@ class Output extends Model
      * @param type $EVENT
      */
     public function outputField($EVENT=false) {
-        if ($EVENT) {
+        if ($EVENT!==false) {
             $data = $EVENT->load();
             $cfg  = $EVENT->fetch();
             if (isset($cfg['field']) && $cfg['field']) {
