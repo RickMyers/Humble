@@ -102,12 +102,19 @@ class MySQL  {
      * @return array
      */
     public function query($qry)	{
-        //\Log::console($qry);
         $this->_lastQuery($qry);
         $resultSet = null;
+        $status = \Humble::cache('queryLogging');
+        $logQuery  = ($status==='On');
         if ($this->_connected) {
+            if ($logQuery) {
+                $st = microtime(true);
+            }
             $resultSet = $this->_dbref->query($qry);
             $this->_state = $this->_dbref->sqlstate;
+            if ($logQuery) {
+                \Log::query($qry."\n\nELAPSED TIME: ".(microtime(true)-$st)."\nSQL STATE: ".$this->_state."\nERROR: ".$this->_dbref->error."\n");
+            }
             if (($this->_dbref->sqlstate != "00000")) {
                 if ($this->_dbref->errno!=1062) {
                     $errorstring = "<error date=\"".date(DATE_RFC822)."\">\n";
@@ -225,6 +232,15 @@ class MySQL  {
      */
     public function getInsertId() {
 	return $this->_dbref->insert_id;
+    }
+
+    /**
+     * Enables or disables query logging
+     * 
+     * @return type
+     */
+    public function logging() {
+       return \Humble::cache('queryLogging',$this->getStatus() ? ($this->getStatus()==='On') : false);
     }
 
     /**

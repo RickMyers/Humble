@@ -110,6 +110,19 @@ class Log {
     }
 
     /**
+     * Sends data to the general message log
+     *
+     * @param mixed $message
+     */
+    public static function query($message) {
+        $project = self::getProject();
+        $file    = '../../logs/'.$project->namespace.'/query.log';
+        if ($message) {
+            self::prependFile($message, $file);
+        }
+    }
+    
+    /**
      * Sends data to the users personal message log
      *
      * @param mixed $message

@@ -17,6 +17,7 @@
         o We consult the "ns/relationships" table to see if a relationship exists for that type
         o This really isn't implemented... but was a nice thought
 */
+/*
 try {
     $engine = \Humble::getEntity('humble/service/directory')->setNamespace($namespace)->setRouter($controller)->setService($method)->load(true);
     if (isset($engine['authorized']) && ($engine['authorized']==='Y'))  {
@@ -35,4 +36,6 @@ try {
     Environment::standard($ex,'Authorization Error','authorization');
     die();
 }
+ 
+ */
 ?>

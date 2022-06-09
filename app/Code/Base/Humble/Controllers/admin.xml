@@ -16,6 +16,7 @@
                     <helper namespace='humble' class='installer'    id='installer' />
                     <helper namespace='humble' class='admin'        id='directory' />
                     <helper namespace='humble' class='directory'    id='packages' />
+                    <cache get='queryLogging' assign='queryLogging' />
                 </case>
                 <default>
                     <redirect href='/index.html?message=Insufficient privilege' />

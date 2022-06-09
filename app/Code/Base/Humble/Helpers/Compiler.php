@@ -636,7 +636,12 @@ PHP;
         }
         if (isset($node['request'])) {
             print($this->tabs().'Humble::response($_REQUEST["'.$node['request'].'"]);'."\n");
-        }        
+        }   
+        if (isset($node['var'])) {
+            print($this->tabs().'Humble::response($models["'.$node['var'].'"]);'."\n");
+        }   
+        
+        
         /*Must determine if var is present and then reply it back
          * if (isset($node['var'])) {
             print($this->tabs()."Humble::response(\"".addslashes($node['text'])."\");\n");
@@ -713,6 +718,27 @@ PHP;
         $value  = (isset($node['value']))   ? $node['value'] : false;
         if ($name && $value) {
             print($this->tabs().'header("'.$name.': '.$value.'");'."\n");
+        }
+    }
+    
+    /**
+     * Adds the ability to directly interact with the caching mechanism through the controller XML
+     * 
+     * @param type $node
+     */
+    private function processCache($node) {
+        $assign     = (isset($node['assign']))  ? $node['assign']  : false;
+        $var        = (isset($node['var']))     ? $node['var']     : false;
+        $value      = (isset($node['value']))   ? $node['value']   : false;
+        $default    = (isset($node['default'])) ? $node['default'] : false;
+        if (isset($node['set'])) {
+            $source = ($var) ? '$models["'.$var.'"]' : ($value ? '$_REQUEST["'.$value.'"]' : ($default ? "'".$default."'" : '' ));
+            print($this->tabs().'\Humble::cache("'.$node['set'].'",'.$source.");\n");
+        } else if (isset($node['get'])) {
+            if ($assign) {
+                print($this->tabs().'$'.$assign.' = ');
+            }
+            print('$models["'.$assign.'"] = \Humble::cache("'.$node['get'].'");'."\n");
         }
     }
     
@@ -803,6 +829,11 @@ PHP;
         }
     }
 
+    private function resolveBoolean($val) {
+        $val = strtolower($val);
+        return (($val===true) || ($val==='y') || ($val==='yes') || ($val==='true') || ($val==='on')) ? true : false;
+    }
+    
     /**
      * Punches out the code that creates a switch statement...
      *
@@ -1017,7 +1048,9 @@ PHP;
                                         break;
             case    "assign"        :   $this->processAssign($node);
                                         break;
-            case    "header"        :   $this->processHeader($nodw);
+            case    "header"        :   $this->processHeader($node);
+                                        break;
+            case    "cache"         :   $this->processCache($node);
                                         break;
             default                 :   break;
 

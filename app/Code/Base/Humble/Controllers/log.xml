@@ -35,5 +35,22 @@
             </helper>  
             <view name="fetch" />          
         </action>
+        
+        <!-- ################################################################### -->
+        
+        <!--action name='queryon' blocking='off'>
+            <description>Enable Query Logging</description>
+            <cache set='queryLogging' default='On' />
+            <redirect href='/admin' />
+        </action-->
+        
+        <!-- ################################################################### -->
+        
+        <!--action name='queryoff' blocking='off'>
+            <description>Enable Query Logging</description>
+            <cache set='queryLogging' default='Off' />            
+            <redirect href='/admin' />
+        </action-->
+                
     </actions>
 </controller>

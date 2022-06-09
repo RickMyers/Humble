@@ -26,6 +26,7 @@ class Log extends Helper
                     'general'   => '../../logs/&&NAMESPACE&&/general.log',
                     'mysql'     => '../../logs/&&NAMESPACE&&/mysql.log',
                     'mongodb'   => '../../logs/&&NAMESPACE&&/mongo.log',
+                    'query'     => '../../logs/&&NAMESPACE&&/query.log',
                     'user'      => '../../logs/&&NAMESPACE&&/users/&&USERID&&.log'
                   );
     /**
@@ -82,7 +83,7 @@ class Log extends Helper
                 }
                 $filesize   = filesize($this->logs[$log]);
                 $size       = (($size==='*') ? $filesize : ((int)$size > (int)$filesize) ? $filesize : $size);
-                $size       = $size > 500000 ? 500000 : $size; 
+                $size       = ($size > 200000) ? 200000 : $size;                //lets just make it easy on ourselves and limit it to 200K max
                 $startfrom  = $filesize - $size;
                 $fh         = fopen($this->logs[$log],'r');
                 fseek($fh,$startfrom);

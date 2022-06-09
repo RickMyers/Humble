@@ -108,8 +108,6 @@
             <div id='main-container'>
                 <div id='navigation-bar'>
                     <div id='landing-clock' class='landing-clock'></div>
-                    <div style='float: right; margin-right: 60px; position: relative'>
-                    </div>
                     <ul style='position: relative; z-index: 3'><!-- humble_logo_white.png -->
                        <li style='padding-top: 6px'><img src='/images/humble/djikstra_light.png' style='height: 30px; position: relative; top: 3px; left: 5px' /></li>
                        <li class='active'><a href='#'>Places</a>
@@ -160,7 +158,13 @@
                                         <li><a href='#' onclick='Administration.secrets.add(); return false'>Add Secret</a></li>
                                         <li><a href='#' onclick='Administration.secrets.review(); return false'>Review Secret</a></li>
                                     </ul>
-                                </li>      
+                                </li> 
+                                <!--li><a href="#">Query Logging</a>
+                                    <ul>
+                                        <li><a href='/humble/log/queryon' onclick="window.event.stopPropagation()">On</a></li>
+                                        <li><a href='/humble/log/queryoff' onclick="window.event.stopPropagation()">Off</a></li>
+                                    </ul>
+                                </li--> 
                                 <li><a href="#" onclick='Administration.api.tester(); return false'>API Tester</a></li>
                                 {% if (permissions.getSuperUser() == 'Y') %}
                                     <li><a href='#' onclick='Administration.upload.form(); return false'>Upload File</a></li>
@@ -183,7 +187,6 @@
                        <li><a href='#'>About</a></li>
                        <li><a href='#'>Contact</a></li>
                     </ul>
-
                 </div>
 
                 <div style='float: left; height: 100%; width: 65px; background-color: rgba(252,252,252,.3); margin-right: 2px' id='widgets-column'>
@@ -228,7 +231,12 @@
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         System
                     </div>
-                    <hr style="margin-bottom: 10px; margin-top: 10px"/>
+                    <hr style="margin-bottom: 5px; margin-top: 5px"/>
+                    <div class='administration-mini-icon' title='Log Viewer' onclick="Administration.logs.open('Query')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        Query
+                    </div>                    
+                    <hr style="margin-bottom: 10px; margin-top: 5px"/>
                     <div id="landing-minimized-windows" style=" width: 100%; height: 400px; padding-top: 5px; padding-bottom: 5px; border: 1px solid transparent; border-radius: 5px;">
 
                     </div>
@@ -248,19 +256,19 @@
                                     
                                 </select>
                             </div>
-                        <select name='globalAction' id='globalAction' style="font-size: 1.1em; height: 28px; width: 300px">
-                            <option style='font-style: italic' value="">Choose a Global action...</option>
-                            <option value="install">Install All</option>
-                            <option value="update">Update All</option>
-                            <option value="recompile">Compile All</option>
-                            <option value="clear">Clear All</option>
-                            <option value="documentation">Generate Docs</option>
-                            <option value="services">Update Service Directory</option>
-                        </select><input type='button' onclick='Administration.globalAction()' value=' Go ' style='font-size: 1em; margin-left: 2px; width: 70px; height: 28px' class="settingsButton" />
-                        </div>
-                        <div style='width: 500px; float: right; margin-left: 2px; '>
 
+                            <select name='globalAction' id='globalAction' style="font-size: 1.1em; height: 28px; width: 300px">
+                                <option style='font-style: italic' value="">Choose a Global action...</option>
+                                <option value="install">Install All</option>
+                                <option value="update">Update All</option>
+                                <option value="recompile">Compile All</option>
+                                <option value="clear">Clear All</option>
+                                <option value="documentation">Generate Docs</option>
+                                <option value="services">Update Service Directory</option>
+                            </select><input type='button' onclick='Administration.globalAction()' value=' Go ' style='font-size: 1em; margin-left: 2px; width: 70px; height: 28px' class="settingsButton" />
+                            <div style='color: red; font-weight: bold; display: inline-block; width: 40%; text-align: right; font-size: 1.5em; '> QUERY LOGGING: <span style="background-color: #333; padding: 2px 10px; border-radius: 5px">{{ queryLogging }}</span> </div>
                         </div>
+ 
                         {% for package, modules in installer.getModules() %}
                             <div class='packageTitle'>Package: <b> {{ package }} </b></div><div style='height: 1px'></div>
                             {% for module in modules %}
