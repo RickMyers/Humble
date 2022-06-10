@@ -38,19 +38,19 @@
         
         <!-- ################################################################### -->
         
-        <!--action name='queryon' blocking='off'>
+        <action name='queryon' blocking='off'>
             <description>Enable Query Logging</description>
             <cache set='queryLogging' default='On' />
             <redirect href='/admin' />
-        </action-->
+        </action>
         
         <!-- ################################################################### -->
         
-        <!--action name='queryoff' blocking='off'>
+        <action name='queryoff' blocking='off'>
             <description>Enable Query Logging</description>
             <cache set='queryLogging' default='Off' />            
             <redirect href='/admin' />
-        </action-->
+        </action>
                 
     </actions>
 </controller>
