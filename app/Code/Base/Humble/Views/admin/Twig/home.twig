@@ -159,12 +159,12 @@
                                         <li><a href='#' onclick='Administration.secrets.review(); return false'>Review Secret</a></li>
                                     </ul>
                                 </li> 
-                                <!--li><a href="#">Query Logging</a>
+                                <li><a href="#">Query Logging</a>
                                     <ul>
                                         <li><a href='/humble/log/queryon' onclick="window.event.stopPropagation()">On</a></li>
                                         <li><a href='/humble/log/queryoff' onclick="window.event.stopPropagation()">Off</a></li>
                                     </ul>
-                                </li--> 
+                                </li> 
                                 <li><a href="#" onclick='Administration.api.tester(); return false'>API Tester</a></li>
                                 {% if (permissions.getSuperUser() == 'Y') %}
                                     <li><a href='#' onclick='Administration.upload.form(); return false'>Upload File</a></li>

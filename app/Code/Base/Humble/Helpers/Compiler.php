@@ -743,6 +743,34 @@ PHP;
     }
     
     /**
+     * Adds the ability to directly query values from the Humble.project file
+     * 
+     * @param type $node
+     */
+    private function processProject($node) {
+        $assign     = (isset($node['assign']))  ? $node['assign']  : false;
+        $var        = (isset($node['var']))     ? $node['var']     : false;
+        if ($assign) {
+            print($this->tabs().'$'.$assign.' = ');
+        }
+        print('$models["'.$assign.'"] = \Environment::getProject("'.$var.'");'."\n");
+    }
+    
+    /**
+     * Adds the ability to directly query values from the Humble.project file
+     * 
+     * @param type $node
+     */
+    private function processApplication($node) {
+        $assign     = (isset($node['assign']))  ? $node['assign']  : false;
+        $var        = (isset($node['var']))     ? $node['var']     : false;
+        if ($assign) {
+            print($this->tabs().'$'.$assign.' = ');
+        }
+        print('$models["'.$assign.'"] = \Environment::getApplication("'.$var.'");'."\n");
+    }    
+    
+    /**
      *
      * @param type $action
      */
@@ -1052,6 +1080,10 @@ PHP;
                                         break;
             case    "cache"         :   $this->processCache($node);
                                         break;
+            case    "project"       :   $this->processProject($node);
+                                        break;
+            case    "application"   :   $this->processApplication($node);
+                                        break;                                    
             default                 :   break;
 
         }
