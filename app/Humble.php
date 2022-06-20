@@ -26,9 +26,9 @@
      * @since      File available since Version 1.0.1
      */
     class Humble  {
-        private static $modules     = array();
-     // private static $helpers     = array();  //we are not keeping these static anymore
-        private static $response    = array();
+        private static $modules     = [];
+        private static $helpers     = [];  //we are not keeping these static anymore
+        private static $response    = [];
         private static $namespace   = false;
         private static $controller  = false;
         private static $action      = false;
@@ -211,10 +211,16 @@
         }
 
         /**
-         *
+         * A helper is different from a model in that it should not maintain state, or data, between invocations
+         * 
+         * @param string $resource_identifier
+         * @return object
          */
         public static function getHelper($resource_identifier)  {
             $identifier     = self::parseResource($resource_identifier);
+            if (isset(self::$helpers[$resource_identifier])) {
+                return self::$helpers[$resource_identifier];                    //Static, singleton style, allocation for helpers
+            }
             if ($module = self::getModule($identifier['namespace'])) {
                 $str   = "Code/{$module['package']}/".str_replace("_","/",$module['helpers'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
@@ -234,7 +240,8 @@
             }  else {
                 \Log::general($identifier);
             }
-            return $instance;
+            
+            return self::$helpers[$resource_identifier] = $instance;
         }
 
         /**
@@ -296,7 +303,7 @@
          * @param string $dir The directory to recurse
          */
         private static function recurseDirectory($dir=false) {
-            $files = array();
+            $files = [];
             if ($dir !== false) {
                 $dh = dir($dir);
                 while (($entry = $dh->read()) !== false) {
@@ -319,7 +326,7 @@
          *  @param string $namespace Namespace of the model containing the method
          */
         public static function getModels($namespace=false) {
-            $models = array();
+            $models = [];
             $dir    = false;
             if ($namespace) {
                 $module = self::getModule($namespace);
@@ -346,7 +353,7 @@
          *  @param string $namespace Namespace of the model containing the method
          */
         public static function getEntities($namespace=false) {
-            $entities = array();
+            $entities = [];
             $dir      = false;
             if ($namespace) {
                 $module = self::getModule($namespace);
@@ -373,7 +380,7 @@
          *  @param string $namespace Namespace of the model containing the method
          */
         public static function getHelpers($namespace=false) {
-            $helpers = array();
+            $helpers = [];
             $dir     = false;
             if ($namespace) {
                 $module = self::getModule($namespace);
@@ -606,7 +613,7 @@ SQL;
          *
          */
         public static function getModules($package) {
-            $modules= array();
+            $modules= [];
             $directory = dir('Code/'.$package);
 
             while (($entry = $directory->read()) !== false ) {
@@ -627,7 +634,7 @@ SQL;
          *
          */
         public static function getNamespaces($package=false) {
-            $namespaces = array();
+            $namespaces = [];
             if ($package) {
                 $db    = Humble::getDatabaseConnection();
                 $query = <<<SQL
