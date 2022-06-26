@@ -50,7 +50,7 @@
            "reason":   "Remote update of critical workflows when not able to log in",
            "description": "This will update and install workflows remotely"
        },
-       "/blog/whats/new": {
+       "/blog/whatsnew/home": {
            "reason":   "No need to log in to see the whats new section",
            "description": "Shows recent changes to product and site"
        }

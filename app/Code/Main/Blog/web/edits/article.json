@@ -1,0 +1,50 @@
+({
+    form:
+    {
+        "id": 		"whats_new_article_form",
+        "drawme":	false,
+        "action":	"",
+        "onload":       function () {
+            //when form is loaded, do something
+        },
+        "method":	"post",
+        "style":	"",
+        "onenterkey":	"send"
+    },
+    fields:
+    [
+        {
+            active:	true,
+            id: 	"whats_new_article_title",
+            longname:	"Article Title",
+            title:	"Title for the article",
+            type:       "text",
+            required:	true,
+            force:	true,
+            classname:	"",
+            style:	"padding: 2px; border: 1px solid #aaf; border-radius: 2px; width: 75%"
+        },
+        {
+            active:	true,
+            id: 	"whats_new_article_version",
+            longname:	"Framework Version",
+            title:	"Version of the framework",
+            type:       "text",
+            required:	true,
+            force:	true,
+            classname:	"",
+            style:	"padding: 2px; border: 1px solid #aaf; border-radius: 2px; width: 75%"
+        },
+        {
+            active:	true,
+            id: 	"whats_new_article_text",
+            longname:	"Article Text",
+            title:	"The text of the article",
+            type:       "textarea",
+            required:	true,
+            force:	true,
+            classname:	"",
+            style:	"padding: 2px; border: 1px solid #aaf; border-radius: 2px; width: 100%; height: 300px"
+        }          
+    ]
+})

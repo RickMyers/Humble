@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+
+Whats new related actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="whatsnew" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="home">
+            <description>Whats new home page</description>
+            <entity namespace="humble" class="user/identification" id='user' method='load'>
+                <parameter name='id' source='session' value='uid' default='' />
+            </entity>
+            <application var='version' assign='app_version' />
+            <entity namespace="blog" class="whatsnew" id="articles" orderby="published=DESC">
+                <parameter name="active" source="request" default="Y" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
