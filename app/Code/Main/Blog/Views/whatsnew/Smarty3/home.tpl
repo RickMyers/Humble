@@ -17,6 +17,7 @@
     <div style="width: 800px; min-width: 500px; margin-left: auto; margin-right: auto">
 
         <form name='whats_new_article_form' id='whats_new_article_form' onsubmit='return false'>
+            <input type="hidden" name="id" id="whats_new_article_id" value="" />
             <fieldset><legend>New Article, Author: {$first_name} {$user->getLastName()}</legend>
                 <input type='text' name='title' id='whats_new_article_title' value='' />
                 <div class="whats-new-article-desc">Article Title</div>
@@ -24,8 +25,8 @@
                 <div class="whats-new-article-desc">Applies to what version</div>
                 <textarea name='article' id='whats_new_article_text'></textarea>
                 <div class="whats-new-article-desc">Article Text</div>
-                <input type='button' value=' Publish '  style="float: right"/>
-                <input type='button' value=' Save ' />
+                <input type='button' value=' Publish ' id="whats_new_article_publish"  style="float: right"/>
+                <input type='button' value=' Save ' id="whats_new_article_save" />
             </fieldset>
         </form>
     </div>

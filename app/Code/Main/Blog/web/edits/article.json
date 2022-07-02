@@ -15,6 +15,16 @@
     [
         {
             active:	true,
+            id: 	"whats_new_article_id",
+            longname:	"",
+            title:	"",
+            type:       "hidden",
+            required:	false,
+            force:	false,
+            classname:	"",
+        },
+        {
+            active:	true,
             id: 	"whats_new_article_title",
             longname:	"Article Title",
             title:	"Title for the article",
@@ -30,8 +40,8 @@
             longname:	"Framework Version",
             title:	"Version of the framework",
             type:       "text",
-            required:	true,
-            force:	true,
+            required:	false,
+            force:	false,
             classname:	"",
             style:	"padding: 2px; border: 1px solid #aaf; border-radius: 2px; width: 75%"
         },
@@ -45,6 +55,42 @@
             force:	true,
             classname:	"",
             style:	"padding: 2px; border: 1px solid #aaf; border-radius: 2px; width: 100%; height: 300px"
+        },
+        {
+            active:	true,
+            id: 	"whats_new_article_save",
+            longname:	"Article Text",
+            title:	"The text of the article",
+            type:       "button",
+            required:	false,
+            force:	false,
+            onclick:    function (evt) {
+                (new EasyAjax('/blog/whatsnew/save')).packageForm('whats_new_article_form').then(function (response) {
+                    $('#whats_new_article_id').val(response);
+                }).post();
+            },
+            classname:	"",
+            style:	""
+        },
+        {
+            active:	true,
+            id: 	"whats_new_article_publish",
+            longname:	"Article Text",
+            title:	"The text of the article",
+            type:       "button",
+            required:	false,
+            force:	false,
+            onclick:    function (evt) {
+                if ($('whats_new_article_id').val()) {
+                    (new EasyAjax('/blog/whatsnew/publish')).add('id',$('whats_new_article_id').val()).then(function (response) {
+                        //$('#whats_new_article_id').val(response);
+                    }).post();
+                } else {
+                    alert('Please save the article at least once before trying to publish');
+                }
+            },            
+            classname:	"",
+            style:	""
         }          
     ]
 })

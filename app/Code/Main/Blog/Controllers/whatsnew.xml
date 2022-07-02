@@ -20,5 +20,25 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
+        <action name="save" blocking='off'>
+            <description>Saves the current article</description>
+            <entity namespace="blog" class="whatsnew" id="articles" method='save'>
+                <parameter name='id' source='post' required='true' />
+                <parameter name="title" source="post" default="" />
+                <parameter name="version" source="post" default="" />
+                <parameter name="article" source="post" default="" />
+            </entity>
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="publish">
+            <description>Whats new home page</description>
+            <entity namespace="blog" class="whatsnew" id="articles" method='save'>
+                <parameter name="id" source="post" required="true" />
+                <parameter name="active" source="post" default='Y' />
+            </entity>
+        </action>
+        
     </actions>
 </controller>
