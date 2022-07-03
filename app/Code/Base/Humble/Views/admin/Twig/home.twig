@@ -126,7 +126,8 @@
                                    <li><a target="_BLANK" href='/humble/directory/authorizations'>Authorizations</a></li>
                                 </ul>
                              </li>
-                             <li><a target="_BLANK" href='/paradigm/actions/open'>Workflow Editor</a></li>
+                             <li><a target="_BLANK" href='/paradigm/actions/open'>Paradigm Editor</a></li>
+                             <li><a target="_BLANK" href='/contrive/actions/open'>Contrive Designer</a></li>
                              <li><a target="_BLANK" href='/paradigm/api/home'>API Test App</a></li>
                              <li><a target="_BLANK" href='/paradigm/actions/designer'>Form Designer</a></li>
                              <li style="border-top: 1px solid silver; "><a target="_BLANK" href='/humble/user/logout'>Logout</a>
@@ -147,12 +148,6 @@
                                 <li><a href='#' onclick='Administration.add.package(); return false'>Add New Package</a></li>
                                 <li><a href='#' onclick='Administration.admin.add.user(); return false'>Add User</a></li>
                                 <li><a href='#' onclick='Administration.admin.add.list(); return false'>Manage User Lists</a></li>
-                                <li><a href="#">Workflows</a>
-                                    <ul>
-                                        <li><a href='#' onclick='Administration.workflows.add.exportTarget(); return false'>Add Export Target</a></li>
-                                        <li><a href='#' onclick='Administration.workflows.add.importToken(); return false'>Add Import Token</a></li>
-                                    </ul>
-                                </li>  
                                 <li><a href="#">Secrets Manager</a>
                                     <ul>
                                         <li><a href='#' onclick='Administration.secrets.add(); return false'>Add Secret</a></li>
@@ -166,6 +161,16 @@
                                     </ul>
                                 </li> 
                                 <li><a href="#" onclick='Administration.api.tester(); return false'>API Tester</a></li>
+                            </ul>
+                        </li>
+                        <li><a href='#'>Environment</a>
+                            <ul>
+                                <li><a href="#">Workflows</a>
+                                    <ul>
+                                        <li><a href='#' onclick='Administration.workflows.add.exportTarget(); return false'>Add Export Target</a></li>
+                                        <li><a href='#' onclick='Administration.workflows.add.importToken(); return false'>Add Import Token</a></li>
+                                    </ul>
+                                </li>  
                                 {% if (permissions.getSuperUser() == 'Y') %}
                                     <li><a href='#' onclick='Administration.upload.form(); return false'>Upload File</a></li>
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
@@ -184,8 +189,6 @@
                             </ul>
                         </li>
 
-                       <li><a href='#'>About</a></li>
-                       <li><a href='#'>Contact</a></li>
                     </ul>
                 </div>
 
