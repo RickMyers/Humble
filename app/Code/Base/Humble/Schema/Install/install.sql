@@ -58,7 +58,7 @@ CREATE TABLE `humble_css` (
   `weight` int DEFAULT NULL,
   `secure` char(1) DEFAULT 'N',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`package`,`namespace`,`source`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `humble_css_uidx` (`package`,`namespace`,`source`),
   KEY `core_js_pkg_idx` (`package`),
   KEY `core_js_ns_idx` (`namespace`)
