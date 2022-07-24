@@ -10,7 +10,9 @@
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>EasyAjax</div>
 
-
+<p>
+    Humble ships with an elegant and easy to use JavaScript library for making AJAX based calls
+</p>
 
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->
