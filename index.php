@@ -42,7 +42,8 @@ $controller      = $_GET['humble_framework_controller'];
 $action          = $_GET['humble_framework_action'];
 $method          = $action;  //Because REASONS!!!
 $bypass          = false;
-
+$home            = '/index.html';
+$login_message   = '?message=Please Log In';
 $headers         = getallheaders();
 
 //###########################################################################
@@ -74,6 +75,12 @@ if (isset($_REQUEST['sessionId'])) {
 session_start();
 
 //###########################################################################
+//Allows for custom code execution at this point if so desired.
+if (file_exists('CUSTOM.php')) {
+    include 'CUSTOM.php';
+}
+
+//###########################################################################
 //Two phased login check.  If you are not logged in (determined by having a
 //variable called uid in the session, then load the list of services a person
 //can access without being logged in.  If the service you are trying to load
@@ -86,15 +93,9 @@ if (!isset($_SESSION['uid'])) {
         $bypass = true;
         //NOP, you are ok to hit that resource
     } else {
-        header("Location: /index.html?message=Please Log In");
+        header("Location: ".$home.$login_message);
         die();
     }
-}
-
-//###########################################################################
-//Allows for custom code execution at this point if so desired.
-if (file_exists('CUSTOM.php')) {
-    include 'CUSTOM.php';
 }
 
 //###########################################################################

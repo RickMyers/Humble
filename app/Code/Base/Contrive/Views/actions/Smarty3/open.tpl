@@ -1,41 +1,32 @@
-<table width='100%' height='100%' cellspacing='0' cellpadding='0'>
-<tr><td align='center'>
-<div style='padding: 5px 20px 10px 20px; text-align: left; border: 1px solid #aaf; background-color: #eee; font-family: tahoma, sans-serif; width: 600px'>
-<h3>Package: Base.<br />
-Module: Contrive.<br />
-Namespace: contrive<br />
-Author: &lt;Rick Myers&gt;</h3>
+<!doctype html>
 
-Welcome to the home page of your application. Some useful information is below:<br />
-<ul>
-    <b>Configuration</b>:<br /><br />
-    
-    &nbsp;&nbsp;&nbsp;app/Code/Base/Contrive/etc/config.xml<br /><br />
-    
-    <b>Main View</b>:<br /><br />
-    
-    &nbsp;&nbsp;&nbsp;app/Code/Base/Contrive/Views/actions/Smarty3/open.tpl<br /><br />
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <b>JavaScript File</b>:<br /><br />
-    
-    &nbsp;&nbsp;&nbsp;app/Code/Base/Contrive/web/js/actions.js<br /><br />
-    <b>Tutorials</b>:
-    <ul>
-        <li><a href="#" onclick="return false">Getting Started</a></li>
-        <li><a href="#" onclick="return false">etc, etc, etc...</a></li>
-        <li><a href="#" onclick="return false">Controllers</a></li>
-        <li><a href="#" onclick="return false">Models and Helpers</a></li>
-        <li><a href="#" onclick="return false">Templaters, permissions, and Views</a></li>
-        <li><a href="#" onclick="return false">Basic ORM and the DB</a></li>
-        <li><a href="#" onclick="return false">Advanced ORM</a></li>
-        <li><a href="#" onclick="return false">Remote calls using mappings.yaml</a></li>
-        <li><a href="#" onclick="return false">Registering Applications</a></li>
-        <li><a href="#" onclick="return false">Registering Help Videos</a></li>
-        <li><a href="#" onclick="return false">Administration</a></li>
-    </ul><br />
-    <i>Enjoy</i>!  And best of luck with whatever you are trying to create!<br /><br />
-    
-    -Rick.
-</ul></td></tr>
-</div>
-</table>
+  <title>Contrive..  A controller creator</title>
+  <meta name="description" content=""/>
+  <meta name="author" content="Rick Myers"/>
+
+  <meta property="og:title" content="Contrive"/>
+  <meta property="og:type" content="utility"/>
+  <meta property="og:url" content="/contrive/actions/open"/>
+  <meta property="og:description" content="Design your own controller"/>
+  <!--meta property="og:image" content="image.png"-->
+
+  <link rel="icon" href="/images/contrive/favicon.ico">
+  <link rel="icon" href="/images/contrive/favicon.svg" type="image/svg+xml" />
+  <!--link rel="apple-touch-icon" href="/apple-touch-icon.png"-->
+
+  <link rel="stylesheet" type="text/css" href="/css/common" />
+  <script src="/js/jquery"></script>
+  <script src="/js/common"></script>
+  <script src="/js/contrive"></script>
+</head>
+
+<body>
+  <!-- your content here... -->
+  
+</body>
+</html>
