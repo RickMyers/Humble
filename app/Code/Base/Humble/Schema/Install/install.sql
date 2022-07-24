@@ -51,7 +51,7 @@ CREATE TABLE `humble_controllers` (
 /*Table structure for table `humble_css` */
 
 CREATE TABLE `humble_css` (
-  `id` int NOT NULL,
+  `id` int NOT NULL auto_increment,
   `package` char(32) NOT NULL DEFAULT '',
   `namespace` char(32) NOT NULL DEFAULT '',
   `source` char(128) NOT NULL DEFAULT '',
