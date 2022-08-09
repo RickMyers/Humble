@@ -121,16 +121,16 @@ class Compiler extends Directory
                     $default = '"'.date("Y-m-d").'"';
                     break;
                 case '"CURRENTYEAR"':
-                    $default = '"'.date("Y").'"';
+                    $default = 'date("Y")';
                     break;
                 case '"CURRENTMONTH"':
-                    $default = '"'.date("m").'"';
+                    $default = 'date("m")';
                     break;
                 case '"CURRENTDAY"':
-                    $default = '"'.date("d").'"';
+                    $default = 'date("d")';
                     break;
                 case '"CURRENTDAYOFWEEK"':
-                    $default = '"'.date("D").'"';
+                    $default = 'date("D")';
                     break;                
                 default:
                     break;
