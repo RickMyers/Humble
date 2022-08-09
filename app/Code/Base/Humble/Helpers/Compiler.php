@@ -120,6 +120,18 @@ class Compiler extends Directory
                 case '"DATE"' :
                     $default = '"'.date("Y-m-d").'"';
                     break;
+                case '"CURRENTYEAR"':
+                    $default = '"'.date("Y").'"';
+                    break;
+                case '"CURRENTMONTH"':
+                    $default = '"'.date("m").'"';
+                    break;
+                case '"CURRENTDAY"':
+                    $default = '"'.date("d").'"';
+                    break;
+                case '"CURRENTDAYOFWEEK"':
+                    $default = '"'.date("D").'"';
+                    break;                
                 default:
                     break;
             }
@@ -1476,4 +1488,3 @@ SQL;
     public function getDestination()     {   return $this->destination;                   }
     public function setDestination($arg) {   $this->destination       = 'Code/'.$arg;     }
 }
-?>
