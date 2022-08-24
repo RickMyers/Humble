@@ -106,7 +106,7 @@
             <property name="base"   value="${server.aws.base}" />
             <property name="dbuser" value="${server.aws.dbuser}" />
             <property name="dbpass" value="${server.aws.dbpass}" />
-            <property name="root"   value="${server.aws.root_password}" />
+            <property name="rpwd"   value="${server.aws.root_password}" />
             <property name="back"   value="${server.aws.back}" />
             <property name="php"    value="${server.aws.php}" />
             <echo message="Distributing ${server}" />
