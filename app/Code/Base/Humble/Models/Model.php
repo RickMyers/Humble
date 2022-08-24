@@ -28,7 +28,7 @@ interface HumbleComponent {
  * @package    Core
  * @author     Original Author <rick@humbleprogramming.com>
  * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
- * @license    http://humbleprogramming.com/license.txt
+ * @license    https://humbleprogramming.com/license.txt
  * @version    1.0.1
  */
 class Model implements HumbleComponent
@@ -329,6 +329,7 @@ class Model implements HumbleComponent
      * @return string
      */
     protected function _hurl($URL,$args,$call,$secure=false,$userid=false,$password=false)	{
+        $URL = $this->substitute($URL,$args);
         $method         = isset($call['method']) ? strtoupper($call['method']) : 'POST';
         $res            = null; $opts = []; $parms = '';
         $auth           = ($userid && $password) ? array("Authorization"=> "Basic ".base64_encode($userid.":".$password)) : [];
@@ -342,7 +343,7 @@ class Model implements HumbleComponent
         //if you are going to "eat your own dogfood", we need to precede the resource URL with the fully qualified host name
         $HTTP_HOST = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
         if (substr($URL,0,4)!=='http') {
-            if (isset($_SERVER['HTTPS'])) {
+            if ($_SERVER['HTTPS'] ?? $_SERVER['REQUEST_SCHEME'] ?? $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? false) {
                 $URL      = 'https://'.$HTTP_HOST.$URL;
                 $protocol = 'ssl';
             } else {
