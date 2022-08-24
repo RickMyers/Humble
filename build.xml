@@ -268,7 +268,7 @@
                   verbose="false"
                   username="${uid}"
                   password="${pwd}"
-                  command="tar -czf ${back}${alias}.${timestamp}.tar.gz ${rpwd}" />
+                  command="tar -czf ${back}${alias}.${timestamp}.tar.gz ${root}" />
             <!--sshexec host="${server}"
                   trust="true"
                   username="${uid}"
