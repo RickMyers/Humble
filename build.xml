@@ -135,7 +135,7 @@
                   trust="true"
                   username="root"
                   password="${rpwd}"
-                  command="./build.sh create ${alias} ${timestamp}" />
+                  command="/home/codeship/build.sh create ${alias} ${timestamp}" />
         </target>
 
     <!--#########################################################################################
