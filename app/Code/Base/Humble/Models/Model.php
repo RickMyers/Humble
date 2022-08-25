@@ -343,7 +343,10 @@ class Model implements HumbleComponent
         //if you are going to "eat your own dogfood", we need to precede the resource URL with the fully qualified host name
         $HTTP_HOST = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
         if (substr($URL,0,4)!=='http') {
-            if ($_SERVER['HTTPS'] ?? $_SERVER['REQUEST_SCHEME'] ?? $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? false) {
+            $isHttps = isset($_SERVER['HTTPS']) && strtoupper($_SERVER['HTTPS'])==='ON' ? true :
+                       (isset($_SERVER['REQUEST_SCHEME']) && strtoupper($_SERVER['REQUEST_SCHEME']==='HTTPS') ? true : 
+                       (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])? true : false));
+            if ($isHttps) {            
                 $URL      = 'https://'.$HTTP_HOST.$URL;
                 $protocol = 'ssl';
             } else {
