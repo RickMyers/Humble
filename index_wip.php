@@ -252,4 +252,4 @@ if ($module          = \Humble::getModule($namespace)) {
     } catch (Exception $e) {
         \HumbleException::standard($e,"Error Encountered");
     }
-}
+

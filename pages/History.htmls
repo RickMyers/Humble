@@ -1,0 +1,90 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<style type="text/css">
+    .screenshot {
+        height: 325px; margin-right: 2px; border: 1px solid #333; position: relative; padding-bottom: 10px
+    }
+    .famous_quote {
+        background-color: rgba(202,202,202,.2); padding: 10px; font-style: italic; color: #333; margin-bottom: 20px; border: 1px solid silver; border-radius: 5px;
+    }
+</style>
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Rick.htmls" title="Let's meet Rick..." >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>From Humble Beginnings...</div>
+<p>
+What eventually became the Humble Framework began as a side project with a friend and colleague of mine.
+It was 2008 and we were just finishing with yet another failed start-up when I broached the topic of collaborating with him on an idea. 
+You see, back then it was common to use languages like Java or C# for normal "Enterprise" work, but also use PHP (almost exclusively back then) for side projects,
+and the reason for that was that, before AWS, hosting solutions like HostMonster or HostGator only supported PHP or Perl as development options.
+The start-up we were leaving was Java based and used Webwork/Struts-II as its core framework.  My idea presented to him was that PHP could use a 'Struts-Like' framework and he agreed.
+Before we finished, the team would get another developer, as well as two testers and one documenter, and we pretty much had achieved our stated goal by the end of 2008.
+</p>
+<p>
+Now that we had our framework, we needed a project to showcase the flexibility, ideas, and features, and so this then gave birth to Cloud-IT.com, which was kind of like Facebook, Yahoo, Flickr, and Youtube all rolled up into one.
+We named the underlying framework 'Aura', since Clouds have Auras, and implementing new and amazing features in Cloud-IT became the primary driver for the continued development of the framework.  Around 2010 or so, it became quite clear most of the
+team had moved on and that I was the primary developer/tester/documenter of both Cloud-IT.com and of the Aura framework.
+</p>
+<div style="margin: 10px 0px">
+    <a href="#" onclick="$('#screenshots').slideToggle();return false">Click here to see some screenshots of Cloud-IT.com</a>
+</div>
+<div style="white-space: nowrap; overflow: auto; display: none" id='screenshots'>
+<img src='/pages/images/screens/screen0.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen1.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen2.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen3.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen4.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen5.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen6.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen7.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen8.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen9.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen10.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen11.jpg' class='screenshot' />
+
+</div>
+<p>
+The name Aura would eventually be changed to Jarvis when I realized there was already a popular PHP project called Aura-PHP and I didn't want any confusion.
+The name Jarvis was chosen because of how much the framework automatically did for you (through abstraction, but more on that later), especially in its low-code/no-code configuration, and so reminded me of the Jarvis robot from the Marvel movies (Tony Stark couldn't get by without him).  I had been
+running a Subversion server for source code management but decided in 2011 to migrate to GitHub.  When I did the migration I did not tell any of my team members because I wanted to see if anyone would notice, and if no one noticed then it was true that they
+had moved on and that was it.  Well, to my expectations, no one noticed when I shut down the Subversion server and so since mid 2011 I have been the sole contributor to the framework and to Cloud-IT.com.</p>
+<p>
+Now that I had complete control of both projects, I had been tossing around the idea for a workflow creation tool (for orchestration &amp; choreography) and sketched out the outlines of what it could do and how it would work, but for Cloud-IT.com there was no pressing need, so the idea just sat there.  In 2013 while working 
+for a healthcare company that used their own branch of Aura, I finally had the need and in a marathon three day coding session over a weekend, I pretty much built the Paradigm Engine for Aura and it was an instant enormous success.  By and large the way I built it
+in 2013 is the way it is still working today.  Also at this time I realized Aura had evolved so almost everything was dynamic and also everything was in format that looked like a service, and it was at this time I coined the "Everything as a Service" (EaaS) term.  
+However, about the same time another term came into being -- "Microservice", and that pretty much eclipsed my EaaS label.  I'd like to think that Aura was way ahead of the curve, but I'm not sure when or who was it that created the idea of an application being nothing
+more than a collection of services.
+</p>
+<p>
+In 2015 the Cloud-IT.com project was shuttered.  The root cause is that some choices I made simply would not scale and I wasn't in the mood at that time to rewrite it.  The fantastic qualities it had are still there, but as PHP moved on some of the features no longer work because
+underlying elements of the language have been deprecated.  In 2016 Aura, which was PSR-0 compliant, became Jarvis which was PSR-4 compliant.  In 2017, after realizing there are a lot of projects in GitHub that use Jarvis, or some form of that word, I decided to rename 
+the framework again, and went looking for inspiration.
+</p>
+<p class="famous_quote">
+    We shall do a much better programming job, provided that we approach the task with a full appreciation of its tremendous difficulty, provided that we stick to modest and elegant programming languages, provided that we respect the intrinsic limitations of the human mind and approach the task as Very Humble Programmers.
+    <br /><br />
+    <span class="signature">
+        <b>--</b> Edsgar Djikstra
+    </span>    
+</p>
+<p>
+A major theme of this now unnamed framework are tiers of abstraction.  Abstraction is in no way new, and was focused on in Edsgar Djikstra's famous paper <a href="/humble.html" target="_BLANK">"The Humble Programmer"</a>.  It was that paper, and in recognition of Professor Djikstra's 
+prodigious contribution to the field of Computer Science that I decided to rename the framework to "Humble", and dedicate it to him, though I think by reading some of his other papers, and his extensive criticism of language failings over the decades that, though
+he might like some ideas as they are implemented, I am quite sure he would not like PHP (nor would he like JavaScript).  PHP has some similarities to PL/1, particularly in the expansive API, and Professor Djikstra has referred to PL/1 as a mental illness.
+</p>
+<p>
+The Humble Framework continues to grow and evolve, and in 2022 the Contrive module was started.  This module will make it possible to build controllers using a GUI rather than hand coded XML.  The output will still by XML, but generated through a drag-n-drop interface.
+Of the many varied frameworks I have worked with, I can honestly say I do not see any other that makes application development, and application management and growth as simple and robust as Humble.  I am committed to the frameworks development, growth, support, and 
+hopefully greater adoption in the future.  Certainly for me this will be the base of all my side projects.
+</p>
+<p>
+Thank you,<br/>
+<a style="margin-top: 20px" href='/pages/Rick.htmls'>Rick Myers</a>
+</p>
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->

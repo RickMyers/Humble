@@ -1,0 +1,36 @@
+{
+    "never": {
+        "comment": "These are namespaces that are **NEVER** allowed to use the API",
+        "namespaces": {
+            "humble":   true,
+            "paradigm": true,
+            "workflow": true,
+            "contrive": true
+        }
+    },
+    "public": {
+        "comment": "These are elements that are allowed to use the API when ***NOT*** logged in",
+        "namespaces":  {
+            
+        },
+        "controllers": {
+            
+        },
+        "routes":      {
+            
+        }
+    },
+    "protected": {
+        "comment": "These are elements that are allowed to use the API ONLY when authenticated",
+        "namespaces":  {
+            
+        },
+        "controllers": {
+            
+        },
+        "routes":      {
+            
+        }
+    }
+    
+}

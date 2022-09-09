@@ -41,7 +41,8 @@ $namespace       = $_GET['humble_framework_namespace'];
 $controller      = $_GET['humble_framework_controller'];
 $action          = $_GET['humble_framework_action'];
 $method          = $action;  //Because REASONS!!!
-$bypass          = false;
+$bypass          = false;    //Be wary of setting to true, will make everything public
+$mobileSupport   = false;
 $home            = '/index.html';
 $login_message   = '?message=Please Log In';
 $headers         = getallheaders();
@@ -76,6 +77,7 @@ session_start();
 
 //###########################################################################
 //Allows for custom code execution at this point if so desired.
+//Can also override default flags
 if (file_exists('CUSTOM.php')) {
     include 'CUSTOM.php';
 }

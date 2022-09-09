@@ -1,21 +1,34 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpdoc>
-  <parser>
-    <target>/var/www/Docs/Humble</target>
-  </parser>
-  <transformer>
-    <target>/var/www/Docs/Humble</target>
-  </transformer>
-  <files>
-    <directory>/var/www/Humble</directory>
-    <ignore>lib/*</ignore>
-    <ignore>vendor/*</ignore>
-    <ignore>sample/*</ignore>
-    <ignore>Cache/*</ignore>
-    <ignore>dist/*</ignore>
-    <ignore>Workflows/*</ignore>
-    <ignore>tests/*</ignore>
-    <ignore>install/*</ignore>
-    <ignore>node_modules/*</ignore>
-  </files>
-</phpdoc>
+<phpdocumentor
+        configVersion="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
+>
+    <paths>
+        <output>/mnt/c/var/www/Docs/Humble/</output>
+    </paths>
+    <version number="3.0.0">
+        <api>
+            <source dsn="/mnt/c/var/www/Humble">
+                <path>app/Code</path>
+            </source>
+            <ignore hidden="true" symlinks="true">
+                <path>lib/**/*</path>
+                <path>vendor/**/*</path>
+                <path>sample/**/*</path>
+                <path>**/Cache/**/*</path>
+                <path>dist/**/*</path>
+                <path>Workflows/*</path>
+                <path>tests/**/*</path>
+                <path>install/**/*</path>
+                <path>node_modules/**/*</path>
+            </ignore>    
+            <markers>
+              <!--1 or more repetitions:-->
+              <marker>TODO</marker>
+              <marker>FIXME</marker>
+              <marker>WORKFLOW</marker>
+            </markers>                    
+        </api>
+    </version>
+</phpdocumentor>
