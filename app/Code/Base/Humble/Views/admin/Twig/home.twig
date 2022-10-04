@@ -96,7 +96,7 @@
                            <div id="admin-lightbox-output" style="height: 455px; border: 1px solid silver; overflow: auto; background-color: lightcyan; white-space: pre">
                            </div>
                            <center>
-                           <button style="margin-left: auto; margin-right: auto; padding: 5px 10px; background-color: dodgerblue; font-family: sans-serif; letter-spacing: 2px; color: ghostwhite" onclick="$('#admin-lightbox').css('display','none')">Close</button>
+                                <button style="margin-left: auto; margin-right: auto; padding: 5px 10px; background-color: dodgerblue; font-family: sans-serif; letter-spacing: 2px; color: ghostwhite" onclick="$('#admin-lightbox').css('display','none')">Close</button>
                            </center>
                        </div>
                     </td>
@@ -115,9 +115,10 @@
                              <li><a target="_BLANK" href='/admin/'>Administration</a></li>
                              <li><a href='#'>Documentation</a>
                                 <ul>
+                                   <li><a href="#" onclick="Administration.documentation.run(); return false;">Generate API Documentation</a></li>
                                    <li><a target="_BLANK" href='/internal/docs/'>Developer Documentation</a></li>
-                                   <li><a target="_BLANK" href='/docs/'>API Documentation</a></li>
-                                   <li><a target="_BLANK" href='#'>Administration Documentation</a></li>
+                                   <li><a href='/Docs/' onclick="Administration.documentation.review(); return false;">API Documentation</a></li>
+                                   <li><a target="_BLANK" href='#' onclick=" return false">Administration Documentation</a></li>
                                 </ul>
                              </li>
                              <li><a href='#'>Services</a>

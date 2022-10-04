@@ -5,23 +5,24 @@
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/phpDocumentor/phpDocumentor/master/data/xsd/phpdoc.xsd"
 >
     <paths>
-        <output>/mnt/c/var/www/Docs/Humble/</output>
+        <output>Docs/</output>
     </paths>
     <version number="3.0.0">
         <api>
-            <source dsn="/mnt/c/var/www/Humble">
+            <source dsn=".">
                 <path>app/Code</path>
             </source>
             <ignore hidden="true" symlinks="true">
+                <path>Base/**/*</path>
                 <path>lib/**/*</path>
-                <path>vendor/**/*</path>
-                <path>sample/**/*</path>
+                <path>**/vendor/**/*</path>
+                <path>**/sample/**/*</path>
                 <path>**/Cache/**/*</path>
                 <path>dist/**/*</path>
-                <path>Workflows/*</path>
+                <path>**/Workflows/*</path>
                 <path>tests/**/*</path>
                 <path>install/**/*</path>
-                <path>node_modules/**/*</path>
+                <path>**/node_modules/**/*</path>
             </ignore>    
             <markers>
               <!--1 or more repetitions:-->

@@ -103,6 +103,17 @@ var Administration = (function () {
                             }).get();                            
                         }
                     },
+                    documentation: {
+                        run: function () {
+                            if (confirm("Are you sure you want to run the docs?  It could take a while...")) {
+                                let win = Desktop.semaphore.checkout(true);
+                                win._title('API Generation')._open();
+                                (new EasyAjax('/humble/documentation/generate')).add('window_id',win.id).then(function (response) {
+                                    win.set(response);
+                                }).post();
+                            }
+                        }
+                    },
                     services: {
                         directory: {
                             index: function () {

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+Actions around generating API documentationj
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="documentation" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="generate">
+            <description>Runs the PHPDoc application</description>
+            <model namespace="humble" class="documentation" id="documentor">
+                
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
