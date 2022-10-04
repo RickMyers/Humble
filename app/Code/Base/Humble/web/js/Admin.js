@@ -112,6 +112,13 @@ var Administration = (function () {
                                     win.set(response);
                                 }).post();
                             }
+                        },
+                        review: function () {
+                            let win = Desktop.semaphore.checkout(true);
+                            win._title('API Generation')._open();
+                            (new EasyAjax('/humble/documentation/review')).add('window_id',win.id).then(function (response) {
+                                win.set(response);
+                            }).post();
                         }
                     },
                     services: {

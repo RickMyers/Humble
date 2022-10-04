@@ -7,7 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 -->
 <controller name="documentation" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
-        <action name="generate">
+        <action name="generate" blocking="off">
             <description>Runs the PHPDoc application</description>
             <model namespace="humble" class="documentation" id="documentor">
                 
@@ -16,5 +16,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
+        <action name="review" blocking="off" passalong="window_id">
+            <description>Displays the API documentation in an IFRAME</description>
+        </action>
+        
     </actions>
 </controller>
