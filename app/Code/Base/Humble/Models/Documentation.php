@@ -57,8 +57,9 @@ class Documentation extends Model
             $this->documentor_source = isset($documentor['source'])   ? $documentor['source']   : false;
             $this->command           = isset($documentor['command'])  ? $documentor['command']  : false;
         }
-        if (!$exists = file_exists($this->documentor)) {
-            $exists = file_put_contents($this->documentor,file_get_contents($this->documentor_source));
+        if (!$exists = file_exists('../'.$this->documentor)) {
+            $exists = file_put_contents('../'.$this->documentor,file_get_contents($this->documentor_source));
+            shell_exec('chmod +x '.'../'.$this->documentor);
         }
         return $exists;
     }
@@ -75,7 +76,7 @@ class Documentation extends Model
             if ($this->documentorExists()) {
                 chdir('..');
                 $cmd     = $this->location.' '.$this->command.' 2>&1';
-                $results = shell_exec($cmd);
+                print($cmd);
                 if ($EVENT) {
                     $EVENT->update(['documentation_generation_results'=>$results]);
                 }
@@ -84,7 +85,6 @@ class Documentation extends Model
             } else {
                 $results = 'Could not resolve the documentation engine to use';
             }
-            
         }
         return $results;
     }
