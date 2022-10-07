@@ -65,6 +65,14 @@ class Model implements HumbleComponent
         return __CLASS__;
     }
     
+    public function _isLinux() {
+        return $this->_isLinux;
+    }
+
+    public function _isWindows() {
+        return $this->_isWindows;
+    }
+    
     /**
      * Returns just one element of the model if passed in, or nothing null if not passed in or not present in model
      * 

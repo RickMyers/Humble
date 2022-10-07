@@ -8,7 +8,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 <controller name="unittests" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
     <actions>
 
-        <action name="open" passalong="window_id">
+        <action name="home" passalong="window_id">
             <description>Main Test Harness page</description>
         </action>
 

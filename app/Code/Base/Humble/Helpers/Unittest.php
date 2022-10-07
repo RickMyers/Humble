@@ -112,9 +112,9 @@ class Unittest extends Directory
      *
      * @return boolean
      */
-    public function load() {
+    public function load($field=false) {
         if ($this->source = $this->getSource()) {
-            exec('php Harness.php --o source='.$this->source.' output=JSON',$results);
+            exec('c:\\php\\74\\php.exe Harness.php --o source='.$this->source.' output=JSON',$results);
             if (isset($results[0])) {
                 $this->order = json_decode($results[0]);
             }
@@ -133,7 +133,7 @@ class Unittest extends Directory
     public function run() {
         if ($this->load()) {
             $s = $this->source;
-            exec('php Harness.php --x source='.$this->source.' output=JSON',$results);
+            exec('c:\\php\\74\\php.exe Harness.php --x source='.$this->source.' output=JSON',$results);
             if (isset($results[0])) {
                 $this->results = json_decode($results[0]);
                 foreach ($this->results as $idx => $result) {

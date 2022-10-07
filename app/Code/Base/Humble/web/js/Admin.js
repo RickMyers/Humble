@@ -69,6 +69,15 @@ var Administration = (function () {
                             }).get();                              
                         }
                     },
+                    tests: {
+                        win: false,
+                        home: function () {
+                            let win = (Administration.tests.win = Administration.tests.win ? Administration.tests.win : Desktop.semaphore.checkout(true))._static(true)._title("Unit Test Harness");
+                            (new EasyAjax('/humble/unittests/home')).add('window_id',win.id).then(function (response) {
+                                win._open(response);
+                            }).get();                              
+                        }
+                    },
                     create: {
                         win: {
                             pak: false,
@@ -115,7 +124,7 @@ var Administration = (function () {
                         },
                         review: function () {
                             let win = Desktop.semaphore.checkout(true);
-                            win._title('API Generation')._open();
+                            win._title('API Generation')._open('<h3>Generating Documentation, please wait (it could be a while...</h3>');
                             (new EasyAjax('/humble/documentation/review')).add('window_id',win.id).then(function (response) {
                                 win.set(response);
                             }).post();

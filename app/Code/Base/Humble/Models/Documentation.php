@@ -23,15 +23,17 @@ class Documentation extends Model
     
     //--------------------------------------------------------------------------
     //We will just default to PHP Documentor just for S&Gs
-    private string $documentor          = 'PHPDoc2.phar';
-    private string $documentor_source   = 'https://phpdoc.org/phpDocumentor.phar';
-    private string $command             = 'php PHPDoc2.phar';
+    private string $documentor          = 'PHPDoc2.phar';                           //The default documentation engine
+    private string $documentor_source   = 'https://phpdoc.org/phpDocumentor.phar';  //Where the copy of documentor is stored
+    private string $command             = 'php PHPDoc2.phar';                       //Default execution string
+    private string $location            = '/usr/bin/php';                           //Default location of the PHP engine
 	
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct();
+        $this->location = Environment::PHPLocation();
     }
 
     /**
@@ -50,10 +52,10 @@ class Documentation extends Model
      * @return boolean
      */
     protected function documentorExists() {
-        if ($documentor = Environment::getApplication('documentation')) {
-            $this->documentor        = isset($documentor['engine'])  ? $documentor['engine']  : false;
-            $this->documentor_source = isset($documentor['source'])  ? $documentor['source']  : false;
-            $this->command           = isset($documentor['command']) ? $documentor['command'] : false;
+        if ($documentor = Environment::getApplication('documentation',true)) {
+            $this->documentor        = isset($documentor['engine'])   ? $documentor['engine']   : false;
+            $this->documentor_source = isset($documentor['source'])   ? $documentor['source']   : false;
+            $this->command           = isset($documentor['command'])  ? $documentor['command']  : false;
         }
         if (!$exists = file_exists($this->documentor)) {
             $exists = file_put_contents($this->documentor,file_get_contents($this->documentor_source));
@@ -62,7 +64,7 @@ class Documentation extends Model
     }
     
     /**
-     * Runs the command to generate inline API documentation
+     * Runs the command to generate inline API documentation, though generating documentation in production is forbidden
      * 
      * @workflow use(PROCESS) emit(APIDocumentationGenerated)
      * @return string
@@ -70,17 +72,19 @@ class Documentation extends Model
     public function generate($EVENT=false) {
         $results = 'Documentation Generation Error';
         if (Environment::getApplication('state') !== 'PRODUCTION') {
-            chdir('..');
             if ($this->documentorExists()) {
-                $results = shell_exec(PHP_BINARY.$this->command.' 2>&1');
+                chdir('..');
+                $cmd     = $this->location.' '.$this->command.' 2>&1';
+                $results = shell_exec($cmd);
                 if ($EVENT) {
                     $EVENT->update(['documentation_generation_results'=>$results]);
                 }
+                chdir('app');
                 //$this->trigger('APIDocumentationGenerated',__CLASS__,__METHOD__,['generated'=>date('Y-m-d H:i:s'),'generator'=>Environment::whoAmIReally()]);
             } else {
                 $results = 'Could not resolve the documentation engine to use';
             }
-            chdir('app');
+            
         }
         return $results;
     }

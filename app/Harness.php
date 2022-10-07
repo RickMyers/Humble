@@ -88,7 +88,7 @@ function executeTest($package,$driver) {
     global $output;
     $results = [];
     if (file_exists($file = 'tests/'.$package.'/'.$driver.'Test.php')) {
-        exec('php ../../phpunit/phpunit.phar '.$file,$results);
+        exec(Environment::getPHPLocation.' ../../phpunit/phpunit.phar '.$file,$results);
     } else {
         if ($output == 'JSON') {
             //NOP

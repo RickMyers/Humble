@@ -21,7 +21,13 @@
     </msa>
     <api>
         <enabled>0</enabled>
-    </api>    
+    </api>
+    <engine options="c:\\php\\php.exe,/lib/usr/php/php.exe,etc" comment="This is mainly for Windows, please specify the correct location here">{$engine}</engine>
+    <documentation comment="Documentation will not be generated in environments with a state of PRODUCTION">
+        <engine  options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
+        <command options="PHPDoc2.phar,apigen.phar app/Code --output Docs">php PHPDoc2.phar</command>
+        <source  options="https://humbleprogramming.com/dist/PHPDoc2.phar ,https://humbleprogramming.com/dist/APIGen.phar">https://humbleprogramming.com/dist/PHPDoc2.phar</source>
+    </documentation>
     <support>
         <name>{$support_name}</name>
         <email>{$support_email}</email>

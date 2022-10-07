@@ -35,7 +35,7 @@ class Environment {
      *
      * @return system
      */
-    public static function getClassName() {
+    public function getClassName() {
         return __CLASS__;
     }
 
@@ -78,6 +78,7 @@ class Environment {
         }
         return (isset(self::$project->namespace)) ? self::$project->namespace : '';        
     }
+    
     /**
      * Combines the protocol and server name to construct the complete host name
      *
@@ -90,13 +91,27 @@ class Environment {
     }
 
     /**
+     * Returns the location of the PHP executable
+     * 
+     * @return type
+     */
+    public static function PHPLocation() {
+        if (!self::$application) {
+            print('loading');
+             self::loadApplicationMetaData(true);
+        }
+                print_r(self::$application);
+        return (\Humble::getModel('humble/something')->_isLinux()) ? `which php.exe` : self::$application['engine'];
+    }
+    
+    /**
      * Returns if the Micro-Services Architecture Router Flag is set and activated
      * 
      * @return boolean
      */
     public static function MSARouter() {
         if (!self::$application) {
-            self::loadApplicationMetaData();
+            self::loadApplicationMetaData(true);
         }
         return (isset(self::$application['msa']['router'])
                 && ((self::$application['msa']['router']===1)
@@ -112,7 +127,6 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        $x = self::$application['state'];
         return isset(self::$application['state']) ?  self::$application['state'] : 'Unknown';
     }
     
@@ -196,6 +210,9 @@ class Environment {
         return new \Rain\Tpl;
     }
 
+    /**
+     * Application XML has changed and we need to recache it
+     */
     public static function recacheApplication() {
         self::$application = json_decode(json_encode(simplexml_load_string((file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time."))),true);
         Humble::cache('application',self::$application);        
@@ -207,7 +224,7 @@ class Environment {
      */
     public static function loadApplicationMetaData($dontUseCache=false) {
         if ($dontUseCache) {
-            return json_decode(json_encode(simplexml_load_string((file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time."))),true);
+            return self::$application = json_decode(json_encode(simplexml_load_string((file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("The application is inaccessible at this time."))),true);
         } else {
             if (!self::$application = Humble::cache('application')) {
                 self::recacheApplication();
