@@ -97,10 +97,8 @@ class Environment {
      */
     public static function PHPLocation() {
         if (!self::$application) {
-            print('loading');
              self::loadApplicationMetaData(true);
         }
-                print_r(self::$application);
         return (\Humble::getModel('humble/something')->_isLinux()) ? `which php.exe` : self::$application['engine'];
     }
     

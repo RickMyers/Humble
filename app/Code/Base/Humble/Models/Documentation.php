@@ -23,10 +23,10 @@ class Documentation extends Model
     
     //--------------------------------------------------------------------------
     //We will just default to PHP Documentor just for S&Gs
-    private string $documentor          = 'PHPDoc2.phar';                           //The default documentation engine
-    private string $documentor_source   = 'https://phpdoc.org/phpDocumentor.phar';  //Where the copy of documentor is stored
-    private string $command             = 'php PHPDoc2.phar';                       //Default execution string
-    private string $location            = '/usr/bin/php';                           //Default location of the PHP engine
+    private $documentor          = 'PHPDoc2.phar';                           //The default documentation engine
+    private $documentor_source   = 'https://phpdoc.org/phpDocumentor.phar';  //Where the copy of documentor is stored
+    private $command             = 'php PHPDoc2.phar';                       //Default execution string
+    private $location            = '/usr/bin/php';                           //Default location of the PHP engine
 	
     /**
      * Constructor
