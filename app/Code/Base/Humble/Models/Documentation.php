@@ -25,7 +25,7 @@ class Documentation extends Model
     //We will just default to PHP Documentor just for S&Gs
     private $documentor          = 'PHPDoc2.phar';                           //The default documentation engine
     private $documentor_source   = 'https://phpdoc.org/phpDocumentor.phar';  //Where the copy of documentor is stored
-    private $command             = 'php PHPDoc2.phar';                       //Default execution string
+    private $command             = 'PHPDoc2.phar';                       //Default execution string
     private $location            = '/usr/bin/php';                           //Default location of the PHP engine
 	
     /**
@@ -75,7 +75,7 @@ class Documentation extends Model
         if (Environment::getApplication('state') !== 'PRODUCTION') {
             if ($this->documentorExists()) {
                 chdir('..');
-                $cmd     = $this->location.' '.$this->command.' 2>&1';
+                $cmd     = Environment::PHPLocation().' '.$this->command.' 2>&1';
                 print($cmd);
                 if ($EVENT) {
                     $EVENT->update(['documentation_generation_results'=>$results]);

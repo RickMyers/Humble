@@ -1,0 +1,31 @@
+{
+    "comment": "Read more about the API policy at https://humbleprogramming.com/pages/APIPolicy.htmls",
+    "default": {
+        "read": false,
+        "write": false
+    },
+    "entities": {
+        "vision": {
+            "consultation/forms": {
+                "authenticated" : {
+                    "read": true,
+                    "write": false
+                },
+                "public": {
+                    "*": false
+                }
+            }
+        },
+        "scheduler": {
+            "events": {
+                "authenticated" : {
+                    "read": true,
+                    "write": false
+                },
+                "public": {
+                    "*": false
+                }
+            }
+        }
+    }
+}

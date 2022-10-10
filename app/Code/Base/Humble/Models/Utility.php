@@ -179,9 +179,9 @@ class Utility extends Model
         $user   = Humble::getEntity('humble/users');
         $user->setUid($this->getUid())->load();
         $data   = Humble::getEntity('humble/user_identification')->setId($this->getUid())->load();
-        $cmd    = 'php Module.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' prefix='.$this->getPrefix().' author="'.$data['first_name'].' '.$data['last_name'].'"';
-        \Log::console($cmd);
-        $result = exec($cmd,$output);
+        $cmd    = Environment::PHPLocation().' Module.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' prefix='.$this->getPrefix().' author="'.$data['first_name'].' '.$data['last_name'].'"';
+        \Log::general($cmd);
+        $result = shell_exec($cmd);
         return $result;
     }
 
@@ -337,7 +337,7 @@ class Utility extends Model
      */
     public function generateDocumentation() {
         chdir('../lib/apigen');
-        $cmd = 'php apigen.php -c apigen.ini';
+        $cmd = Environment::PHPLocation.' apigen.php -c apigen.ini';
 
         $output = shell_exec($cmd);
         $output = explode("\n",$output);

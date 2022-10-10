@@ -20,7 +20,7 @@
         </strategy>
     </msa>
     <api>
-        <enabled>0</enabled>
+        <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/APIPolicy.htmls for more information first -->
     </api>
     <engine options="c:\\php\\php.exe,/lib/usr/php/php.exe,etc" comment="This is mainly for Windows, please specify the correct location here">{$engine}</engine>
     <documentation comment="Documentation will not be generated in environments with a state of PRODUCTION">
@@ -35,10 +35,8 @@
     <status>
         <enabled>{$enabled}</enabled>           <!-- Switch to 0 to take the application offline -->
         <quiescing>{$quiescing}</quiescing>     <!-- switch to 1 to being the process of taking the system offline -->
-        <polling>{$polling}</polling>           <!-- Switch to 0 to disable the single poll operation -->
-        <interval>{$interval}</interval>        <!-- Number of seconds between polls -->
         <installer>{$installer}</installer>     <!-- switch to 0 after installation to prevent accidental execution of the install script -->
-        <caching>{$caching}</caching>            <!-- Indicates whether memcached is available to store or retrieve data -->
+        <caching>{$caching}</caching>           <!-- Indicates whether memcached is available to store or retrieve data -->
         <SSO>
             <enabled>{$SSO}</enabled>           <!-- Switch to 0 to use local authentication -->
             <IDP>{$idp}</IDP>

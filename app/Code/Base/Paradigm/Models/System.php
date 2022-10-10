@@ -106,7 +106,7 @@ class System extends Model
                 }
             }
         }
-        return $schedule_log->reset()->setId($schedule_id)->setFinished(date('Y-m-d H:i:s'))->save();    //Save when the scheduler finished, this is also an audit trail since if there are no values for finished... it didn't for some reason
+        return $schedule_log->reset()->setId($schedule_id)->setFinished(date('Y-m-d H:i:s'))->save();    //Save when the scheduler finished, this is also an audit trail since if there are no values for finished... it didn't for some reason work
     }
 
     /**
@@ -119,7 +119,7 @@ class System extends Model
         $jobs   = $queue->setStatus(NEW_EVENT_JOB)->fetch();
         foreach ($jobs as $job) {
             //$cmd = 'php launch.php '.$job['id']." > ../SDSF/job_".$job['id'].".txt 2>&1";
-            $cmd = 'php launch.php '.$job['id'];
+            $cmd = Environment::PHPLocation().' launch.php '.$job['id'].' 2>&1';
             print("Running launcher at ".date("H:i:s")."\n");
             print($cmd."\n");
             if ($this->_isWindows) {
@@ -128,7 +128,6 @@ class System extends Model
                 exec('/usr/bin/nohup '.$cmd.' 2>&1 &');
             }
             print("Done at ".date("H:i:s")."\n");
-
         }
         return true;
     }

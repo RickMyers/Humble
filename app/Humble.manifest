@@ -11,6 +11,8 @@
 ^.tmp
 ^.bak
 ^.well-known/
+^dist/PHPDoc2.phar
+^dist/APIGen.phar
 LICENSE
 index.php
 app/install/index.html index.html
