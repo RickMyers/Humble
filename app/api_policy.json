@@ -1,12 +1,18 @@
 {
     "comment": "Read more about the API policy at https://humbleprogramming.com/pages/APIPolicy.htmls",
     "default": {
-        "read": false,
-        "write": false
+        "authenticated": {
+            "read": false,
+            "write": false
+        },
+        "public": {
+            "read": false,
+            "write": false
+        }
     },
     "entities": {
-        "vision": {
-            "consultation/forms": {
+        "namespace_1": {
+            "entity)11": {
                 "authenticated" : {
                     "read": true,
                     "write": false
@@ -14,10 +20,19 @@
                 "public": {
                     "*": false
                 }
-            }
+            },
+            "entity_2": {
+                "authenticated" : {
+                    "read": true,
+                    "write": false
+                },
+                "public": {
+                    "*": false
+                }
+            }            
         },
-        "scheduler": {
-            "events": {
+        "namespace": {
+            "entity_3": {
                 "authenticated" : {
                     "read": true,
                     "write": false
