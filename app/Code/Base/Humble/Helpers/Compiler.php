@@ -278,6 +278,8 @@ class Compiler extends Directory
         $upper      = (isset($parameter['upper']) ? strtolower((string)$parameter['upper']) : false);
         $lower      = (isset($parameter['lower']) ? strtolower((string)$parameter['lower']) : false);
         $escape     = (isset($parameter['escape']) ? strtolower((string)$parameter['escape']) : false);
+        $encode     = (isset($parameter['encode']) ? strtolower((string)$parameter['encode']) : false);
+        $decode     = (isset($parameter['decode']) ? strtolower((string)$parameter['decode']) : false);
         $unescape   = (isset($parameter['unescape']) ? strtolower((string)$parameter['unescape']) : false);
         $type       = (isset($parameter['type']) ? strtolower((string)$parameter['type']) : false);
         if ($type) {
@@ -364,7 +366,12 @@ PHP;
                 print('                                    $value = htmlspecialchars($value);'."\n");
             } else if ($unescape) {
                 print('                                    $value = htmlspecialchars_decode($value);'."\n");
-            }            
+            }
+            if ($encode) {
+                print('                                    $value = base64_encode($value);'."\n");
+            } else if ($decode) {
+                print('                                    $value = base64_decode($value);'."\n");
+            }
             if ($trim) {
                 print('                                    $value = trim($value);'."\n");
             }
