@@ -337,7 +337,9 @@ class Model implements HumbleComponent
      * @return string
      */
     protected function _hurl($URL,$args,$call,$secure=false,$userid=false,$password=false)	{
-        $URL = $this->substitute($URL,$args);
+        $URL            = $this->substitute($URL,$args);
+        $api_var        = (isset($call['api-var']) && $call['api-var']) ? $call['api-var'] : false;
+        $api_key        = (isset($call['api-key']) && $call['api-key']) ? $call['api-key'] : false;        
         $method         = isset($call['method']) ? strtoupper($call['method']) : 'POST';
         $res            = null; $opts = []; $parms = '';
         $auth           = ($userid && $password) ? array("Authorization"=> "Basic ".base64_encode($userid.":".$password)) : [];
@@ -362,12 +364,19 @@ class Model implements HumbleComponent
                 $protocol = 'http';
             }
         }
+        if ($api_var && $api_key) {
+            //if ($method=='GET') {
+            //    $URL .= $api_key.'='.$api_var;
+            //} else {
+                $args[$api_var] = $api_key;
+            //}
+        }
         /*
          * We need to process "PUT"
          *
          * If Put, we still need to handle HTTPS and HTTP
          */
-        $content = ((isset($call['format']) && (strtoupper($call['format'])) == 'JSON') || (strtoupper($method) === 'PUT')) ? json_encode($args) : http_build_query($args,'','&') ;
+        $content      = ((isset($call['format']) && (strtoupper($call['format'])) == 'JSON') || (strtoupper($method) === 'PUT')) ? json_encode($args) : http_build_query($args,'','&') ;
         $content_type = "Content-Type: application/x-www-form-urlencoded";
         if (isset($call['format'])) {
             switch (strtoupper($call['format'])) {
@@ -629,7 +638,19 @@ SOAP;
         return $this;
     }
 
+    /**
+     * 
+     * 
+     * @param type $namespace
+     * @param type $call_name
+     * @param type $arguments
+     * @param type $expire
+     * @param type $results
+     * @return type
+     */
     protected function pushToCache($namespace=false,$call_name=false,$arguments=[],$expire=0,$results='') {
+        ksort($arguments);
+        array_map('mb_strtoupper',$arguments);
         if ($expire) {
             $unit = substr($expire,-1,1);
             $base = substr($expire,0,strlen($expire)-1);
@@ -661,11 +682,15 @@ SOAP;
              }
              $expire = time()+$expire;          //creates an actual unix date/time for it to expire rather than an offset
         }
-        $x = Humble::cache($namespace.'-'.$call_name.'-'.md5(http_build_query($arguments)),$results,$expire);
+        return Humble::cache($namespace.'-'.$call_name.'-'.md5(http_build_query($arguments)),$results,$expire);
     }
     
     protected function pullFromCache($namespace=false,$call_name=false,$arguments=[]) {
-        return Humble::cache($namespace.'-'.$call_name.'-'.md5(http_build_query($arguments)));
+        ksort($arguments);
+        array_map('mb_strtoupper',$arguments);
+        $res = Humble::cache($namespace.'-'.$call_name.'-'.md5(http_build_query($arguments)));
+        //Log::general($res ? 'Pulled From Cache' : 'Not Cached');
+        return $res;
     }
     
     /**
@@ -681,7 +706,7 @@ SOAP;
                 $call[$key] = $this->processSecrets($val);
             } else {
                 if (strtolower(substr($val,0,5))==='sm://') {
-                    if ($x = $sm->reset()->setSecretName(substr($key,5))->setNamespace($this->_namespace())->load(true)) {
+                    if ($x = $sm->reset()->setSecretName(substr($val,5))->setNamespace($this->_namespace())->load(true)) {
                         $call[$key] = $sm->decrypt(true)->getSecretValue();
                     }
                 }
@@ -699,7 +724,6 @@ SOAP;
     protected function _remoteProcedureCall($name=false) {
         $retval = null;
         if ($name && $this->_RPC()) {
-
             if (!\Singleton::mappings()) {
                 if (!$default_mappings = Humble::cache('yaml-humble')) {
                     Humble::cache('yaml-humble',$default_mappings = yaml_parse(file_get_contents('Code/Base/Humble/RPC/mapping.yaml')));
@@ -721,8 +745,8 @@ SOAP;
                 }
             }
             if (isset(\Singleton::mappings()[$name])) {
-                $call   = $this->processSecrets(\Singleton::mappings()[$name]);
-                $args   = [];
+                $call    = $this->processSecrets(\Singleton::mappings()[$name]);
+                $args    = [];
                 if (isset($call['authentication'])) {
                     switch (strtoupper($call['authentication'])) {
                         case "OAUTH"    :
@@ -746,7 +770,6 @@ SOAP;
                         $secure = (isset($call['secure'])   && $call['secure'])     ? $call['secure']   : false;
                         //$retval = $this->_curl($call['url'],$args,$call['method'],$secure,$userid,$passwd);
                         if (isset($call['cache'])) {
-                            ksort($args);
                             if ($retval = $this->pullFromCache($this->_namespace(),$name,$args)) {
                                 return $retval;                                 //this ain't the way m8
                             }
