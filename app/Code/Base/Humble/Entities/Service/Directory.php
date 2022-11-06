@@ -1,6 +1,6 @@
 <?php
 namespace Code\Base\Humble\Entities\Service;
-use Argus;
+use Humble;
 use Log;
 use Environment;
 /**
