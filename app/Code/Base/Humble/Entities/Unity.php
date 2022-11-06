@@ -1527,7 +1527,10 @@ SQL;
     }
 
     /**
-     *
+     * Adds the order by clause with a default collation of ascending if not passed one
+     * 
+     * @param type $field
+     * @return $this
      */
     public function _orderBy($field) {
         $fields = explode(",",$field);
@@ -1608,42 +1611,6 @@ SQL;
     }
 
     /**
-     * Basic magic method for setting, with an option to encrypt the value before setting it.  If encrypted, the flag is disabled after setting
-     * 
-     * @param string $name
-     * @param mixed $value
-     * @return $this
-     */
-    public function __set($name,$value)   {
-        if ($this->_encrypt) {
-            $value = openssl_decrypt($retval,'aes-128-ctr',Environment::getProject('serial_number'));
-            $this->_encrypt = false;
-        }
-        $this->_data[$name] = $value;
-        return $this;
-    }
-    
-    /**
-     * We don't support the extended RPC functionality in an entity, so we are suppressing that here
-     *
-     * @param type $name
-     * @return type
-     */
-    public function __get($name)   {
-        $retval = null;
-        if (!is_array($name)) {
-            if (isset($this->_data[$name])) {
-                $retval = $this->_data[$name];
-                if ($this->_decrypt) {
-                    $retval = openssl_decrypt($retval,'aes-128-ctr',Environment::getProject('serial_number'));
-                    $this->decrypt(false);
-                }
-            }
-        }
-        return $retval;
-    }
-
-    /**
      * We have to remove the variable from the general data array as well as the fields array
      *
      * @param type $name
@@ -1699,7 +1666,7 @@ SQL;
             return $this;
         }        
         //method couldn't be handled
-        $virtual = $this->_isVirtual() ? 'Real' : 'Virtual';
+        $virtual = $this->_isVirtual() ? 'Virtual' : 'Real';
         die("<pre>\nError:\n\nMethod not found: (".$name.") from (".$virtual.')'.$this->getClassName().".\n\n</pre>");
         return null;
     }
