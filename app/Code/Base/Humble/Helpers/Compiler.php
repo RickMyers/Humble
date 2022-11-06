@@ -192,7 +192,7 @@ class Compiler extends Directory
             case "crypt" :
                 //need to think this through with a salt and all that
                 print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                print($this->tabs(1).$source.'["'.$field.'"] = openssl_encrypt('.$source.'["'.$field.'"]'.',"aes-128-ctr",Environment::getProject("serial_number"));'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = openssl_encrypt('.$source.'["'.$field.'"]'.',"aes-128-ctr",Environment::getApplication("serial_number"),0,$currentModel->iv());'."\n");
                 print($this->tabs(-1)."}\n");
                 break;
             case "json" :
@@ -436,7 +436,7 @@ PHP;
             $this->blockingStatement($node['blocking']);
         }
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
-        print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getModel("'.$namespace.'/'.$node['class'].'");'."\n");
+        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getModel("'.$namespace.'/'.$node['class'].'");'."\n");
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
             $this->processNode($tag,$newNode);
@@ -550,7 +550,7 @@ PHP;
         if (isset($node['blocking'])) {
             $this->blockingStatement($node['blocking']);
         }
-        print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getEntity("'.$namespace.'/'.$node['class'].'");'."\n");
+        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getEntity("'.$namespace.'/'.$node['class'].'");'."\n");
         if (isset($node['page'])) {
             print($this->tabs().'$'.$node['id'].'->_page(null);'."\n");  //essentially, you first make sure that pagination is turned off by passing a null
             print($this->tabs().'if (isset($_REQUEST["'.$node['page'].'"])) {'."\n");  //then you look to see if it is turned on
@@ -677,7 +677,7 @@ PHP;
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
-        print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getHelper("'.$namespace.'/'.$node['class'].'");'."\n");
+        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getHelper("'.$namespace.'/'.$node['class'].'");'."\n");
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
             $this->processNode($tag,$newNode);

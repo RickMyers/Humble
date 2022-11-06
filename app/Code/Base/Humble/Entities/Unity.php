@@ -45,8 +45,6 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_in            = [];
     protected $_betweenField  = '';
     protected $_between       = '';
-    protected $_decrypt       = false;
-    protected $_encrypt       = false;     
     public    $_lastResult    = [];
 
     /**
@@ -118,28 +116,6 @@ class Unity extends \Code\Base\Humble\Models\Model
         $this->clean();
         $this->loadEntityKeys();
         $this->loadEntityColumns();
-        return $this;
-    }
-    
-    /**
-     * Sets the flag on whether something should be encrypted before being set
-     * 
-     * @param type $encrypt
-     * @return $this
-     */    
-    public function encrypt($encrypt=false) {
-        $this->_encrypt  = $encrypt;
-        return $this;
-    }
-    
-    /**
-     * Sets the flag on whether something needs to be decrypt before being returned
-     * 
-     * @param type $decrypt
-     * @return $this
-     */
-    public function decrypt($decrypt=false) {
-        $this->_decrypt = $decrypt;
         return $this;
     }
     
@@ -1681,6 +1657,11 @@ SQL;
         return $this;
     }
     
+    /**
+     * Returns the last result as a serialized (JSON) object
+     * 
+     * @return string
+     */
     public function __toString() {
         return $this->_lastResult->__toString();
     }

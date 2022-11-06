@@ -3,7 +3,7 @@ namespace Code\Base\Humble\Models;
 use Humble;
 use Environment;
 use Log;
-/*use Symfony\Component\Yaml\Yaml;*/
+/*use Symfony\Component\Yaml\Yaml;*/                                            ///not any more
 /**
  *
  * At a minimum, your custom classes should override the getClassName method...
@@ -49,6 +49,9 @@ class Model implements HumbleComponent
     protected           $_isVirtual     = false;
     protected           $_isWindows     = false;
     protected           $_isLinux       = false;
+    protected           $_decrypt       = false;
+    protected           $_encrypt       = false;   
+    protected           $_iv            = 'Humble Framework';                   //Default initialization vector, see 'Securing Your Application' video for ways to improve this
     protected           $_RPC           = true;   /* Enhanced "get" feature is turned on */
 
     public function __construct()    {
@@ -131,6 +134,42 @@ class Model implements HumbleComponent
         } else {
             return $this->_isVirtual;
         }
+    }
+
+    /**
+     * Can set the Initialization Vector for SSL encryption/decryption or just return the current value for that vector
+     * 
+     * @param mixed $vector
+     * @return string
+     */
+    public function iv($vector=false) {
+        if ($vector) {
+            $this->_iv = $vector;
+            return $this;
+        }
+        return $this->_iv;
+    }
+    
+    /**
+     * Sets the flag on whether something should be encrypted before being set
+     * 
+     * @param type $encrypt
+     * @return $this
+     */    
+    public function encrypt($encrypt=false) {
+        $this->_encrypt  = $encrypt;
+        return $this;
+    }
+    
+    /**
+     * Sets the flag on whether something needs to be decrypt before being returned
+     * 
+     * @param type $decrypt
+     * @return $this
+     */
+    public function decrypt($decrypt=false) {
+        $this->_decrypt = $decrypt;
+        return $this;
     }
     
     /**
@@ -365,11 +404,7 @@ class Model implements HumbleComponent
             }
         }
         if ($api_var && $api_key) {
-            //if ($method=='GET') {
-            //    $URL .= $api_key.'='.$api_var;
-            //} else {
-                $args[$api_var] = $api_key;
-            //}
+            $args[$api_var] = $api_key;
         }
         /*
          * We need to process "PUT"
@@ -593,31 +628,6 @@ SOAP;
         file_put_contents('headers/'.$prefix.'_last_response.txt',$client->__getLastResponse());
         file_put_contents('headers/'.$prefix.'_last_response_headers.txt',$client->__getLastResponseHeaders());
         file_put_contents('headers/'.$prefix.'_last_result.txt',$result);
-    }
-
-    /**
-     * Returns a value from a magic method or from a remote resource.
-     *
-     * This method is called when a method has been invoked that does not exist, however
-     * the non-existent method's name began with the convention 'get', thus indicating that
-     * you were trying to retrieve something.  If this request can be satisfied by the magic-
-     * method array, then that value is returned.  If it can't be satisfied by the magic method,
-     * this routine will load a yaml file representing a namespace set of remote resources, and
-     * if the label requested matches any label in the yaml file, that yaml will be invoked.
-     *
-     * @TOOD: For when we "jump" namespaces, figure out how to precede mappings with their namespace
-     *
-     * @param string $name A pnuemonic, label or variable name
-     * @return string Variable value or response from remote resource
-     */
-    public function __get($name) {
-        $retval = null;
-        if (!is_array($name)) {
-             if (isset($this->_data[$name])) {
-                $retval = $this->_data[$name];
-            }
-        }
-        return $retval;
     }
 
     /**
@@ -879,25 +889,61 @@ SOAP;
         return uniqid($moreEntropy);
     }
 
+    /**
+     * Removes an element from the data array
+     * 
+     * @param type $name
+     * @return $this
+     */
     protected function _unset($name=false) {
         if (($name) && isset($this->_data[$name])) {
             unset($this->_data[$name]);
         }
         return $this;
     }
-
     /**
-     * The setter magic method.
-     *
-     * Just stores the name/value pair passed in to the internal array.
-     *
-     * @param string $name Name of variable in the name/value pair
-     *
-     * @param string $value Value of variable in the name/value pair
+     * Basic magic method for setting, with an option to encrypt the value before setting it.  If encrypted, the flag is disabled after setting
+     * 
+     * @param string $name
+     * @param mixed $value
+     * @return $this
      */
     public function __set($name,$value)   {
+        if ($this->_encrypt) {
+            $value = openssl_encrypt($value,'aes-128-ctr',Environment::getApplication('serial_number'),0,$this->iv());
+            $this->_encrypt = false;
+        }
         $this->_data[$name] = $value;
         return $this;
+    }
+    
+    /**
+     * Returns a value from a magic method or from a remote resource.
+     *
+     * This method is called when a method has been invoked that does not exist, however
+     * the non-existent method's name began with the convention 'get', thus indicating that
+     * you were trying to retrieve something.  If this request can be satisfied by the magic-
+     * method array, then that value is returned.  If it can't be satisfied by the magic method,
+     * this routine will load a yaml file representing a namespace set of remote resources, and
+     * if the label requested matches any label in the yaml file, that yaml will be invoked.
+     *
+     * @TODO: For when we "jump" namespaces, figure out how to precede mappings with their namespace
+     *
+     * @param string $name A pnuemonic, label or variable name
+     * @return string Variable value or response from remote resource
+     */
+    public function __get($name)   {
+        $retval = null;
+        if (!is_array($name)) {
+            if (isset($this->_data[$name])) {
+                $retval = $this->_data[$name];
+                if ($this->_decrypt) {
+                    $retval = openssl_decrypt($retval,'aes-128-ctr',Environment::getApplication('serial_number'),0,$this->iv());
+                    $this->_decrypt = false;
+                }
+            }
+        }
+        return $retval;
     }
 
 
