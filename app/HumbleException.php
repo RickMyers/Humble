@@ -47,7 +47,7 @@ class HumbleException {
             $rain->assign('ex',$e);
             $rain->assign('title',$type);
             $rain->assign('dump',htmlentities($e->getTraceAsString()));
-            $rain->assign('filename',(method_exists($e,'getFileName')) ? $e->getFileName() : "N/A");
+            $rain->assign('filename',($filename  = (method_exists($e,'getFileName')) ? $e->getFileName() : "N/A"));
             $rain->draw($template);
             $ts = date('Y-m-d H:i:s');
             $ns = Humble::_namespace();
