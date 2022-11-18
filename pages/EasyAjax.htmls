@@ -11,8 +11,12 @@
 <div class='humble-topic-header'>EasyAjax</div>
 
 <p>
-    Humble ships with an elegant and easy to use JavaScript library for making AJAX based calls
+    Humble ships with an elegant and easy to use JavaScript library for making AJAX based calls, and which also has a number of other helpful features that we will go over here, and these features are used throughout the Humble framework.<br /><br />
+    It is heavily suggested that SPA applications use EasyAjax for their calls because of the framework tie-ins, but of course it isn't required.
 </p>
-
+<div class='humble-section-header'>History</div>
+The first version of EasyAjax was written in 2005 by Rick Myers, and then rewritten by Guillerme Birkan in 2007.  The 2007 version is largely the version that is used today, though the library has evolved with the evolution of JavaScript.  
+<p>
+</p>
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->

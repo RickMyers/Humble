@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="test" use="Twig">
+<controller name="test" use="Twig" blocking="off">
     <actions>
         <action name="promote">
             <description>Does a promotion from the test server to the production server</description>
@@ -50,6 +50,12 @@
             <description>A form allowing you to test an API call through the ESB</description>
         </action>
         
+        <!-- ########################################################################################## -->
+        
+        <action name='test'>
+            <description>Just a test action</description>
+        </action>
+                
     </actions>
 
 

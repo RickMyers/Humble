@@ -21,7 +21,7 @@ class Singleton
     private static $settings         = null;
     private static $environment      = null;
     private static $helper           = [];
-    private static $firephp          = null;
+    private static $console          = null;
     private static $compiler         = null;
     private static $installer        = null;
     private static $updater          = null;
@@ -76,18 +76,14 @@ class Singleton
         }
         return self::$translationTable;
     }
+    
     /**
-     *
+     * Gets a little helper for 
+     * 
+     * @return object
      */
-    public static function getFirePHP()  {
-        if (!isset(self::$firephp)) {
-            if (isset($_SERVER['HUMBLE_IS_DEVELOPER_MODE']) && (strtoupper($_SERVER['HUMBLE_IS_DEVELOPER_MODE']) == "TRUE") && (php_sapi_name() !== 'cli')) {
-                self::$firephp = new \Code\Base\Humble\Helpers\FirePHP();
-            } else {
-                self::$firephp = new \Code\Base\Humble\Helpers\FirePlacebo();
-            }
-        }
-        return self::$firephp;
+    public static function getConsole()  {
+        return (!isset(self::$console)) ? new \Code\Base\Humble\Helpers\Console() : self::$console;
     }
 
     /**

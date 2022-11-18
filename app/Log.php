@@ -41,7 +41,7 @@ class Log {
      * @return mixed
      */
     public static function console($message) {
-        Singleton::getFirePHP()->log($message);
+        Singleton::getConsole()->log($message);
         return $message;
     }
 
@@ -49,7 +49,7 @@ class Log {
      *
      */
     public static function getConsole() {
-        return Singleton::getFirePHP();
+        return Singleton::getConsole();
     }
 
     /**

@@ -238,14 +238,36 @@ EasyAjax.prototype.suppress = function (boolean) {
     return this;
 }
 /* ----------------------------------------------------------------- */
+EasyAjax.prototype.notifications = function (type,notifications) {
+    if (notifications) {
+        var func = window.console.log;
+        switch (type) {
+            case "warning" :
+                func = window.console.warn;
+                break;
+            case "errors" :
+                func = window.console.error;
+                break;
+            default : 
+                break;
+        }
+        for (var i in notifications) {
+            func(notifications[i]);
+        }
+    }
+}
+/* ----------------------------------------------------------------- */
 EasyAjax.prototype.getResponse = function() {
     if (!this.suppressAlerts) {
-        var alerts = JSON.parse(this.xmlHttp.getResponseHeader('Notices'));
+        var alerts = JSON.parse(this.xmlHttp.getResponseHeader('Alerts'));
         if (alerts) {
             for (var i=0; i<alerts.length; i++) {
                 alert(alerts[i].replace(/<br>/g,'\n'));
             }
         }
+        this.notifications('messages',this.xmlHttp.getResponseHeader('Alerts'));
+        this.notifications('warnings',this.xmlHttp.getResponseHeader('Warnings'));
+        this.notifications('errors',this.xmlHttp.getResponseHeader('Errors'));
     }
     return this.xmlHttp.responseText;
 };

@@ -33,6 +33,7 @@ class Compiler extends Directory
     protected $_db          = null;
     private $tabs           = 0;
     private $tabstr         = '';
+    private $blocking       = true;
 
     /**
      *
@@ -74,6 +75,20 @@ class Compiler extends Directory
         return $this->tabstr;
     }
 
+    /**
+     * Determines if the text value resolves to a true or not.  By default, everything that doesn't resolve to true must therefore be false
+     * 
+     * @param string $flag
+     * @return boolean
+     */
+    protected function resolveFlag($flag=false) {
+        if ($flag) {
+            $trueish = ['ON'=>true,'YES'=>true,'Y'=>true,1=>true,'TRUE'=>true];
+            $flag = isset($trueish[strtoupper($flag)]);
+        }
+        return $flag;
+    }
+    
     /**
      *
      * @param type $templater
@@ -432,7 +447,7 @@ PHP;
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
-        if (isset($node['blocking'])) {
+        if (isset($node['blocking'])|| ($this->blocking === false)) {
             $this->blockingStatement($node['blocking']);
         }
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
@@ -876,6 +891,12 @@ PHP;
         }
     }
 
+    /**
+     * Another attempt at resolving flags
+     * 
+     * @param type $val
+     * @return type
+     */
     private function resolveBoolean($val) {
         $val = strtolower($val);
         return (($val===true) || ($val==='y') || ($val==='yes') || ($val==='true') || ($val==='on')) ? true : false;
@@ -1011,21 +1032,11 @@ PHP;
      *
      * @param string $statement
      */
-    private function blockingStatement($statement) {
-        switch (strtolower($statement)) {
-            case "n"        :
-            case "false"    :
-            case "no"       :
-            case "off"      :
-                print($this->tabs()."Environment::unblock();\n");
-                break;
-            case "y"        :
-            case "true"     :
-            case "on"       :
-            case "yes"      :
-                print($this->tabs()."Environment::block();\n");
-                break;
-            default : break;
+    private function blockingStatement($flag) {
+        if ($this->resolveFlag($flag)) {
+            print($this->tabs()."Environment::block();\n");
+        } else {
+           print($this->tabs()."Environment::unblock();\n");
         }
     }
 
@@ -1154,7 +1165,7 @@ PHP;
         $defaultAction    = false;
         foreach ($controller as $tag3 => $actions) {
             print("<?php\n");
-            print($this->tabs(1).'$models["firePHP"] = \Log::getConsole();'."\n");
+            /*print($this->tabs(1).'$models["firePHP"] = \Log::getConsole();'."\n");*/
             print($this->tabs().'function processMethod($method) {'."\n");
             print($this->tabs(1).'global $models;'."\n");
             print($this->tabs().'global $view;'."\n");
@@ -1177,7 +1188,9 @@ PHP;
                 if (isset($action['request']) && (strtoupper($action['request']) == 'JSON')) {
                     $this->handleJSONRequest($action);
                 }
-
+                if (isset($action['blocking'])) {
+                    $this->blocking = $this->resolveFlag($action['blocking']);
+                }
                 print($this->tabs().'$P_'.$this->actionId.' = [];'."\n");
                 if (isset($action['output'])) {
                     switch (strtolower($action['output'])) {
