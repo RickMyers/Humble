@@ -58,7 +58,7 @@ class Console
             if ($list) {
                 header('Messages: ['.$list.']');
             }
-            foreach ($this->alters as $alert) {
+            foreach ($this->alerts as $alert) {
                 $list .= (($list)?",":"").'"'.addslashes($alert).'"';
             }
             if ($list) {

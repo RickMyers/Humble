@@ -242,7 +242,7 @@ EasyAjax.prototype.notifications = function (type,notifications) {
     if (notifications) {
         var func = window.console.log;
         switch (type) {
-            case "warning" :
+            case "warnings" :
                 func = window.console.warn;
                 break;
             case "errors" :
@@ -251,7 +251,7 @@ EasyAjax.prototype.notifications = function (type,notifications) {
             default : 
                 break;
         }
-        for (var i in notifications) {
+        for (var i =0; i<notifications.length; i++) {
             func(notifications[i]);
         }
     }
@@ -265,9 +265,9 @@ EasyAjax.prototype.getResponse = function() {
                 alert(alerts[i].replace(/<br>/g,'\n'));
             }
         }
-        this.notifications('messages',this.xmlHttp.getResponseHeader('Alerts'));
-        this.notifications('warnings',this.xmlHttp.getResponseHeader('Warnings'));
-        this.notifications('errors',this.xmlHttp.getResponseHeader('Errors'));
+        this.notifications('messages',JSON.parse(this.xmlHttp.getResponseHeader('Messages')));
+        this.notifications('warnings',JSON.parse(this.xmlHttp.getResponseHeader('Warnings')));
+        this.notifications('errors',JSON.parse(this.xmlHttp.getResponseHeader('Errors')));
     }
     return this.xmlHttp.responseText;
 };
