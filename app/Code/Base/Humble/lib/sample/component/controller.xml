@@ -6,12 +6,10 @@
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="&&NAME&&" use="&&ENGINE&&" author="&&AUTHORNAME&&" email="&&AUTHOREMAIL&&">
-    <actions>
+    <actions blocking="ON" response="false">
         <action name="&&ACTION&&">
             <description>&&ACTIONDESCRIPTION&&</description>
-            <entity namespace="humble" class="users" id='user'>
-                <parameter name='uid' source='session' value='uid' default='' />
-            </entity>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
         </action>
 
         <!-- ############################################################### -->

@@ -84,18 +84,18 @@ EasyAjax.getElementId	= function (evt) {
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.getTargetURL= function() {
-	return this.targetUrl;
+    return this.targetUrl;
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.then = function(f) {
-	this.callbackFunction = f;
+    this.callbackFunction = f;
     return this;
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.add = function(paramName, paramValue) {
     this.vars[paramName] = paramValue;
 	if (this.queryString && (this.queryString.length > 0)) {
-		this.queryString += "&";
+            this.queryString += "&";
 	}
 	this.queryString += encodeURI(paramName) + "=" + encodeURIComponent(paramValue);
     return this;
@@ -147,20 +147,20 @@ EasyAjax.prototype.addArray             = function (array) {
 }
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.setQueryString	= function (qs) {
-	this.queryString = qs;
+    this.queryString = qs;
     return this;
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.getQueryString = function() {
-	return this.queryString;
+    return this.queryString;
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.getAsync = function() {
-	return this.async;
+    return this.async;
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.setAsync = function(async) {
-	this.async = async;
+    this.async = async;
     return this;
 };
 /* ----------------------------------------------------------------- */
@@ -273,7 +273,7 @@ EasyAjax.prototype.getResponse = function() {
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.ignoreResponse = function() {
-	this.callbackFunction = null;
+    this.callbackFunction = null;
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.executeJavascript = function (html) {
@@ -436,9 +436,9 @@ EasyAjax.getPassedParms = function() {
 EasyAjax.evalJavascript = function (HTML) {
     while (HTML.toLowerCase().indexOf("<script") !== -1)	{
         var startPos 	= HTML.toLowerCase().indexOf("<script");
-        var endPos	 	= HTML.toLowerCase().indexOf("</script");
+        var endPos	= HTML.toLowerCase().indexOf("</script");
         var dynamicJS 	= HTML.substr(startPos,endPos-startPos);
-        dynamicJS 		= dynamicJS.substr(dynamicJS.indexOf(">")+1);
+        dynamicJS 	= dynamicJS.substr(dynamicJS.indexOf(">")+1);
         HTML            = HTML.substr(endPos);
         HTML            = HTML.substr(HTML.indexOf(">")+1);
         try	{

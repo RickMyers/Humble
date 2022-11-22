@@ -41,8 +41,11 @@ class Log {
      * @return mixed
      */
     public static function console($message) {
+        if (is_object($message) || is_array($message)) {
+            $message = print_r($message,true);
+        }
         Singleton::getConsole()->log($message);
-        return $message;
+        return true;
     }
 
     /**

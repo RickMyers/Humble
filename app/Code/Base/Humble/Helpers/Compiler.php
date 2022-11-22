@@ -33,7 +33,10 @@ class Compiler extends Directory
     protected $_db          = null;
     private $tabs           = 0;
     private $tabstr         = '';
-    private $blocking       = true;
+    private $global         = [
+        'blocking' => true,
+        'response' => false
+    ];
 
     /**
      *
@@ -84,7 +87,7 @@ class Compiler extends Directory
     protected function resolveFlag($flag=false) {
         if ($flag) {
             $trueish = ['ON'=>true,'YES'=>true,'Y'=>true,1=>true,'TRUE'=>true];
-            $flag = isset($trueish[strtoupper($flag)]);
+            $flag    = isset($trueish[strtoupper($flag)]);
         }
         return $flag;
     }
@@ -280,7 +283,7 @@ class Compiler extends Directory
         $time       = false;
         $default    = (isset($parameter['default']) ? (($parameter['default']!='') ? '"'.$parameter['default'].'"' : 'null') : 'null');
         $default    = $this->processDefault($default);
-        if (($default == '"now"') && ($format)) {
+        if ($default && (strtolower($default) == '"now"') && ($format)) {
             $timestamp = ($format   == 'timestamp') ? 1 : 0;
             $datestamp = (($format  == 'date') || ($format == "datestamp")) ? 1 : 0;
             $time      = ($format   == 'time') ? 1 : 0;
@@ -299,6 +302,7 @@ class Compiler extends Directory
         $type       = (isset($parameter['type']) ? strtolower((string)$parameter['type']) : false);
         if ($type) {
             switch ($type) {
+                case "integer"  :
                 case "int"      :   $func = "isInteger";
                                     $typeError = 'Not an integer';
                                     break;
@@ -314,6 +318,7 @@ class Compiler extends Directory
                 case "boolean"  :   $func = "isBoolean";
                                     $typeError = 'Not boolean';
                                     break;
+                case "alphanumeric":
                 case "alpha"    :   $func = "ctype_alpha";
                                     $typeError = 'Not alphabetic';
                                     break;
@@ -323,6 +328,12 @@ class Compiler extends Directory
                                     break;
                 case "phone"    :
                                     break;
+                case "hexadecimal":
+                case "hex"      :
+                    break;
+                case "octal"    :
+                case "oct"      :
+                    break;
                 default         :   $func = false;
                                     break;
             }
@@ -373,28 +384,26 @@ PHP;
                                        continue;
                                     }'."\n");
             if ($upper) {
-                print('                                    $value = strtoupper($value);'."\n");
+                print($this->tabs().'$value = strtoupper($value);'."\n");
             } else if ($lower) {
-                print('                                    $value = strtolower($value);'."\n");
+                print($this->tabs().'$value = strtolower($value);'."\n");
             }
             if ($escape) {
-                print('                                    $value = htmlspecialchars($value);'."\n");
+                print($this->tabs().'$value = htmlspecialchars($value);'."\n");
             } else if ($unescape) {
-                print('                                    $value = htmlspecialchars_decode($value);'."\n");
+                print($this->tabs().'$value = htmlspecialchars_decode($value);'."\n");
             }
             if ($encode) {
-                print('                                    $value = base64_encode($value);'."\n");
+                print($this->tabs().'$value = base64_encode($value);'."\n");
             } else if ($decode) {
-                print('                                    $value = base64_decode($value);'."\n");
+                print($this->tabs().'$value = base64_decode($value);'."\n");
             }
             if ($trim) {
-                print('                                    $value = trim($value);'."\n");
+                print($this->tabs().'$value = trim($value);'."\n");
             }
-            print( ' 
-                                    $method = "set".underscoreToCamelCase($name);
-                                    $'.$node['id'].'->$method($value);
-                                }
-');
+            print($this->tabs(). '$method = "set".underscoreToCamelCase($name);'."\n");
+            print($this->tabs().'$'.$node['id'].'->$method($value);'."\n");
+            print($this->tabs(-1).'}'."\n");
         } else if ((string)$parameter['name']=='_id') {
             //Special processing for mongo ID field
             print($this->tabs().'$'.$node['id'].'->set_id'."(new \MongoDB\BSON\ObjectID(isset(".$source.'["'.$field.'"]'.") ? ".$source.'["'.$field.'"]'." : ".$default."));\n");
@@ -447,9 +456,6 @@ PHP;
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
-        if (isset($node['blocking'])|| ($this->blocking === false)) {
-            $this->blockingStatement($node['blocking']);
-        }
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getModel("'.$namespace.'/'.$node['class'].'");'."\n");
         array_push($this->elements,$node);
@@ -458,7 +464,7 @@ PHP;
         }
         $x = array_pop($this->elements);
         if (isset($node['method'])) {
-            if (isset($node['response']) && (strtolower($node['response'])=='true')) {
+            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 if (isset($node['wrapper'])) {
                     print($this->tabs().'Humble::response('.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
                 } else {
@@ -483,9 +489,6 @@ PHP;
        /* if ($collection) {
             $collection = "/".$collection;
         }*/
-        if (isset($node['blocking'])) {
-            $this->blockingStatement($node['blocking']);
-        }
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
         print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getCollection("'.$namespace.'/'.$collection.'");'."\n");
         //maybe select the collection here, either use 'class=""' or 'collection=""'
@@ -495,7 +498,7 @@ PHP;
         }
         $x = array_pop($this->elements);
         if (isset($node['method'])) {
-            if (isset($node['response']) && (strtolower($node['response'])=='true')) {
+            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 if (isset($node['wrapper'])) {
                     print($this->tabs().'Humble::response('.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
                 } else {
@@ -524,7 +527,7 @@ PHP;
         }
         $x = array_pop($this->elements);
         if (isset($node['method'])) {
-            if (isset($node['response']) && (strtolower($node['response'])=='true')) {
+            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 if (isset($node['wrapper'])) {
                     print($this->tabs().'Humble::response('.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
                 } else {
@@ -561,9 +564,6 @@ PHP;
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
-        }
-        if (isset($node['blocking'])) {
-            $this->blockingStatement($node['blocking']);
         }
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getEntity("'.$namespace.'/'.$node['class'].'");'."\n");
         if (isset($node['page'])) {
@@ -650,7 +650,7 @@ PHP;
             if (isset($node['wrapper'])) {
                 $method_str = $node['wrapper'].'('.$method_str.')';
             }
-            if (isset($node['response']) && (strtolower($node['response'])=='true')) {
+            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 $method_str = 'Humble::response('.$method_str.')';
             }
             if ($norm_str) {
@@ -699,7 +699,7 @@ PHP;
         }
         $x = array_pop($this->elements);
         if (isset($node['method'])) {
-            if (isset($node['response']) && (strtolower($node['response'])=='true')) {
+            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 if (isset($node['wrapper'])) {
                     print($this->tabs().'Humble::response('.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
                 } else {
@@ -1032,8 +1032,8 @@ PHP;
      *
      * @param string $statement
      */
-    private function blockingStatement($flag) {
-        if ($this->resolveFlag($flag)) {
+    private function blockingStatement($flag=true) {
+        if ($flag) {
             print($this->tabs()."Environment::block();\n");
         } else {
            print($this->tabs()."Environment::unblock();\n");
@@ -1161,7 +1161,7 @@ PHP;
         print("?>\n");
         print($this->includes['common_header']);
         print($this->includes['templater_header']);
-        $controller = $xml[0];
+        $controller       = $xml[0];
         $defaultAction    = false;
         foreach ($controller as $tag3 => $actions) {
             print("<?php\n");
@@ -1174,6 +1174,13 @@ PHP;
             print($this->tabs().'global $chainControllers;'."\n");
             print($this->tabs().'global $abort;'."\n");
             print($this->tabs().'switch ($method) {'."\n");
+            $attr = $actions->attributes();
+            if (isset($attr['blocking'])) {
+                $this->global['blocking'] = $this->resolveFlag($attr['blocking']);
+            }            
+            if (isset($attr['response'])) {
+                $this->global['response'] = $this->resolveFlag($attr['response']);
+            }                        
             foreach ($actions as $tag2 => $action ) {
                 if ($action['name'] == 'default') {
                     $defaultAction = $action;
@@ -1188,9 +1195,9 @@ PHP;
                 if (isset($action['request']) && (strtoupper($action['request']) == 'JSON')) {
                     $this->handleJSONRequest($action);
                 }
-                if (isset($action['blocking'])) {
-                    $this->blocking = $this->resolveFlag($action['blocking']);
-                }
+                if (!$this->global['blocking']) {
+                    $this->blockingStatement($this->global['blocking']);
+                }                
                 print($this->tabs().'$P_'.$this->actionId.' = [];'."\n");
                 if (isset($action['output'])) {
                     switch (strtolower($action['output'])) {
@@ -1230,9 +1237,6 @@ PHP;
                             //@TODO: do something here7
                             break;
                     }
-                }
-                if (isset($action['blocking'])) {
-                    $this->blockingStatement($action['blocking']);
                 }
                 //Handles options for the variables you want to "pass-along" to the view
                 if (isset($action['passalong'])) {
@@ -1296,6 +1300,8 @@ PHP;
                 }
                 /**
                  * IF A class was specified on the action, instantiate the class, and call the "execute" method after passing in all the models
+                 * 
+                 * This is a rarely used feature which is still hanging around from when this framework was just trying to be a PHP version of Struts II
                  */
                 if (isset($action['class']) && isset($action['namespace'])) {
                     $class  = $action['class'];
@@ -1309,7 +1315,7 @@ PHP;
                     print($this->tabs().'$v_'.$id.'->$mthd($val);'."\n");
                     $this->tabs(-1);
                     print($this->tabs()."}\n");
-                    print($this->tabs().'$v_'.$id.'->execute();'."\n");
+                    print($this->tabs().'$v_'.$id.'->execute();'."\n");         //maybe allow them to pass in the name of the method?  Could be dangerous...
                 }
                 /**
                  * IF the 'event' flag was set on the action, then create a new trigger event and pass in all of the data this action received
@@ -1461,10 +1467,10 @@ SQL;
                     print("Wasn't able to write out compiled controller to $output \n");
                 }
                 if (!$identifier) {
-                    $module = $this->getInfo();
+                    $module     = $this->getInfo();
                     $identifier = $module['namespace'].'/'.$controller;
                 }
-                $this->stampIt($identifier,date("F d Y, H:i:s", filemtime($source)));
+                $this->stampIt($identifier,date("Y-m-d, H:i:s", filemtime($source)));
             } else {
                 $message='';
                 foreach ($this->errors as $idx => $error) {
