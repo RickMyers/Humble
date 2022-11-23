@@ -42,10 +42,6 @@ class Model implements HumbleComponent
     protected           $_mongoServer   = '';
     protected           $_prefix        = null;
     protected           $_namespace     = null;
-    protected           $_errors        = [];
-    protected           $_warnings      = [];
-    protected           $_notices       = [];
-    protected           $_messages      = [];
     protected           $_isVirtual     = false;
     protected           $_isWindows     = false;
     protected           $_isLinux       = false;
@@ -172,41 +168,6 @@ class Model implements HumbleComponent
         return $this;
     }
     
-    /**
-     * Will add to the response headers any messages or errors generated during processing
-     */
-    public function __destruct() {
-        $list = "";
-        if (!(php_sapi_name() === 'cli')) {
-            foreach ($this->_errors() as $error) {
-                $list .= (($list)?",":"").'"'.addslashes($error).'"';
-            }
-            if ($list) {
-                header('Errors: ['.$list.']');
-            }
-            $list = "";
-            foreach ($this->_warnings() as $warning) {
-                $list .= (($list)?",":"").'"'.addslashes($warning).'"';
-            }
-            if ($list) {
-                header('Warnings: ['.$list.']');
-            }
-            $list = "";
-            foreach ($this->_notices() as $notice) {
-                $list .= (($list)?",":"").'"'.addslashes($notice).'"';
-            }
-            if ($list) {
-                header('Notices: ['.$list.']');
-            }
-            $list = "";
-            foreach ($this->_messages() as $message) {
-                $list .= (($list)?",":"").'"'.addslashes($message).'"';
-            }
-            if ($list) {
-                header('Messages: ['.$list.']');
-            }
-        }
-    }
     
     /**
      * For use with template substitution
@@ -1052,42 +1013,6 @@ SOAP;
             return $this->_prefix;
         }
         return $this;
-    }
-
-    public function _messages($msg=null) {
-        if ($msg!==null) {
-            $this->_messages[] = $msg;
-            return $this;
-        } else {
-            return $this->_messages;
-        }
-    }
-
-    public function _errors($msg=null) {
-        if ($msg!==null) {
-            $this->_errors[] = $msg;
-            return $this;
-        } else {
-            return $this->_errors;
-        }return $this;
-    }
-
-    public function _warnings($msg=null) {
-        if ($msg!==null) {
-            $this->_warnings[] = $msg;
-            return $this;
-        } else {
-            return $this->_warnings;
-        }
-    }
-
-    public function _notices($msg=null) {
-        if ($msg!==null) {
-            $this->_notices[] = $msg;
-            return $this;
-        } else {
-            return $this->_notices;
-        }
     }
 
 }

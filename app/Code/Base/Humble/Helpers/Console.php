@@ -85,7 +85,7 @@ class Console
      */
     public function log($message=false) {
         if ($message) {
-            $this->messages[] = $message;
+            $this->messages[] = (is_object($message)) ? print_r($message,true) : $message;
         }
         return $this;
     }
@@ -98,7 +98,7 @@ class Console
      */
     public function error($message=false) {
         if ($message) {
-            $this->errors[] = $message;
+            $this->errors[] = (is_object($message)) ? print_r($message,true) : $message;
         }
         return $this;
     }
@@ -111,9 +111,22 @@ class Console
      */
     public function warn($message=false) {
         if ($message) {
-            $this->warnings[] = $message;
+            $this->warnings[] = (is_object($message)) ? print_r($message,true) : $message;
         }
         return $this;        
     }
+    
+    /**
+     * Stores a warning message
+     * 
+     * @param string $message
+     * @return $this
+     */
+    public function alert($message=false) {
+        if ($message) {
+            $this->alerts[] = (is_object($message)) ? print_r($message,true) : $message;
+        }
+        return $this;        
+    }    
 }
 
