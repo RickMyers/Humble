@@ -239,20 +239,19 @@ EasyAjax.prototype.suppress = function (boolean) {
 }
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.notifications = function (type,notifications) {
-    if (notifications) {
-        var func = window.console.log;
-        switch (type) {
-            case "warnings" :
-                func = window.console.warn;
-                break;
-            case "errors" :
-                func = window.console.error;
-                break;
-            default : 
-                break;
-        }
-        for (var i =0; i<notifications.length; i++) {
-            func(notifications[i]);
+    if (notifications && notifications.length) {
+        for (var i = 0; i<notifications.length; i++) {
+            switch (type) {
+                case "warnings" :
+                    window.console.warn(notifications[i]);
+                    break;
+                case "errors" :
+                    window.console.error(notifications[i]);
+                    break;
+                default : 
+                    window.console.log(notifications[i]);
+                    break;
+            }            
         }
     }
 }

@@ -38,6 +38,13 @@ class Console
     public function __destruct() {
         $list = "";
         if (!(php_sapi_name() === 'cli')) {
+            foreach ($this->messages as $message) {
+                $list .= (($list)?",":"").'"'.addslashes($message).'"';
+            }
+            if ($list) {
+                header('Messages: ['.$list.']');
+            }
+            $list = '';
             foreach ($this->errors as $error) {
                 $list .= (($list)?",":"").'"'.addslashes($error).'"';
             }
@@ -52,19 +59,12 @@ class Console
                 header('Warnings: ['.$list.']');
             }
             $list = "";
-            foreach ($this->messages as $message) {
-                $list .= (($list)?",":"").'"'.addslashes($message).'"';
-            }
-            if ($list) {
-                header('Messages: ['.$list.']');
-            }
             foreach ($this->alerts as $alert) {
                 $list .= (($list)?",":"").'"'.addslashes($alert).'"';
             }
             if ($list) {
                 header('Alerts: ['.$list.']');
             }
-            
         }
     }    
     
