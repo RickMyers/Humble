@@ -147,7 +147,7 @@ if (!$module) {
     if (!\Environment::isProduction()) {
         if (file_exists($include)) {
             $info        = \Humble::getController($namespace.'/'.$controller);
-            $recompile   = ($info['compiled'] != date("F d Y, H:i:s", filemtime($source)));
+            $recompile   = ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
         } else if (file_exists($source)) {
             $recompile   = true;                     //The controller source code exists but it is not currently compiled so flag it for compiling
         } else {
@@ -157,7 +157,7 @@ if (!$module) {
             if (file_exists($include)) {
                 $ns          = $core['namespace'];   //we mark that we are in fact using the default namespace action without specifically changing the official namespace
                 $info        = \Humble::getController($ns.'/'.$controller);
-                $recompile   = ($info['compiled'] != date("F d Y, H:i:s", filemtime($source)));
+                $recompile   = ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
             } else if (file_exists($source)) {
                 $ns          = $core['namespace'];
                 $info        = \Humble::getController($ns.'/'.$controller);
