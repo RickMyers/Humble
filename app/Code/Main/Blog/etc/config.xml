@@ -74,6 +74,8 @@
                 The 'polyglot' attribute is optional.  Only specify when you are actually enabling the polyglot behavior
             -->
             <entities>
+                <whatsnew_code polyglot='Y' />
+                <whatsnew_lexicons polyglot='Y' />
                 <whatsnew polyglot='Y' />
             </entities>
         </orm>

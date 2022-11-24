@@ -6,7 +6,7 @@ Whats new related actions
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="whatsnew" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
-    <actions>
+    <actions blocking="off">
         <action name="home">
             <description>Whats new home page</description>
             <entity namespace="humble" class="user/identification" id='user' method='load'>
@@ -22,7 +22,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <action name="save" blocking='off'>
             <description>Saves the current article</description>
-            <entity namespace="blog" class="whatsnew" id="articles" method='save'>
+            <entity namespace="blog" class="whatsnew" id="articles" method='save' response='true'>
                 <parameter name='id' source='post' required='true' />
                 <parameter name="title" source="post" default="" />
                 <parameter name="version" source="post" default="" />

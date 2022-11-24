@@ -11,10 +11,15 @@
 {if ($first_name)}
     <style type="text/css">
         .whats-new-article-desc { 
-            margin-bottom: 16px; font-family: monospace; font-size: .9em; letter-spacing: 1px
+            margin-bottom: 16px; font-family: monospace; font-size: .85em; letter-spacing: 1px
         }
     </style>
-    <div style="width: 800px; min-width: 500px; margin-left: auto; margin-right: auto">
+    <div style='clear: both'>
+        <img src='/images/blog/expand.png' class='editor_toggle' style='cursor: pointer; height: 22px; float: left; margin-right: 10px' onclick='$("#whats_new_editor").slideToggle(); $(".editor_toggle").hide(); $("#collapse_editor_icon").show()' id='expand_editor_icon' />
+        <img src='/images/blog/collapse.png' class='editor_toggle' style='cursor: pointer; height: 22px; float: left; margin-right: 10px; display: none' onclick='$("#whats_new_editor").slideToggle(); $(".editor_toggle").hide(); $("#expand_editor_icon").show()' id='collapse_editor_icon' />
+        New Article Editor
+    </div>
+    <div style="width: 800px; min-width: 500px; margin-left: auto; margin-right: auto; display: none; font-size: .9em" id='whats_new_editor'>
 
         <form name='whats_new_article_form' id='whats_new_article_form' onsubmit='return false'>
             <input type="hidden" name="id" id="whats_new_article_id" value="" />
@@ -31,7 +36,7 @@
         </form>
     </div>
 {/if}
-{foreach from=$articles->fetch() item=article}
+{foreach from=$articles->setActive('Y')->fetch() item=article}
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
     <div class='humble-topic-header'>{$article.title}</div>
     <div>

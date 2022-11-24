@@ -8,10 +8,46 @@
     </tr>
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-<div class='humble-topic-header'>Section Header</div>
+<div class='humble-topic-header'>My Story (So Far...)</div>
 
+<div style='float: left; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-right: 8px'>
+<img src='/pages/images/misc/rick_and_ian.jpg' style='width: 240px' /><br />
+<div style="text-align: center; font-style: italic">Rick and his Bestie</div>
+</div>
 
+<p>
+Hello!  My name is Rick Myers and I am the principle developer of "The Humble Framework".   A bit about me... my history with programming goes back to my 11<sup>th</sup> birthday in June of 1980, when my parents bought me my first computer (a Vic-20) and on that day I taught myself to code in BASIC.
+I've now been coding for more than 40 years, and I don't think I ever really thought seriously about any other line of work, though I have had misgivings at times.  
+</p>
+<p>
+I've always been one to drive myself to learn, and moved from BASIC to Pascal while in middle school.  The first large system I programmed on was a Honeywell 6000 mainframe using Fortran and CP6, however during the bulk of my college years I developed mostly on PCs
+(even prior to there being something called "Windows") and on DEC-VAX minicomputers.   I graduated with two bachelor degrees, one in Computer Science and the second in Mathematics, and began my professional career with GTE Data Services in early 1994,
+after having been selected to go through their intense "New Recruit Development" program (affectionately called 'The NeRD Program').  It would be a great achievement and honor for me to return to that program years later as an instructor.
+</p>
+<div style='float: right; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-left: 8px; text-align: center'>
+<img src='/pages/images/misc/jeep_and_ian.jpg' style='width: 240px'/><br />
+<div style="text-align: center; font-style: italic">Rick's Bestie and the Jeep</div>
+</div>
 
+<p>
+In April 1995 I brought up my first web server, but there was a catch.  This web server was running on an IBM Mainframe under something at the time called OpenMVS, but later was renamed UNIX System Services.  It was a POSIX compliant UNIX, however,
+it was based on EBCDIC and not ASCII.  From that time until 1999 I spent a lot of time webifying legacy mainframe "green screen" applications with great success.   In 1999 my work got the attention of a company out of Chicago who then presented
+me with the classic "offer that I couldn't refuse" and convinced to leave GTEDS for "greener" pastures with them.  This would be my first experience with a start-up and was 100% remote work requiring regular travel.  This stint only lasted about
+six months, after it was clear they were not going to honor their original offer.
+</p>
+<p>
+After that disappointment (and realizing I'd have to hold off on that Acura NSX purchase) I went back to working with GTEDS for several months, but got another offer from a competitor company in Dallas Texas and moved West for the first time.  Oddly 
+enough this was the highest paid job I had at the time and it was not focused on coding, but rather SEI/CMM and Process Improvement.   I learned a great many things about how organizations and individuals work and get along which has really shaped
+the holistic and humanistic approach to application development that I practice today, after all, technology doesn't innovate -- people do.   How you manage your people is probably more important for success than platform choice or programming language, since those are 
+all fungible.  Read '<a href='/pages/TheHumbleWay.htmls' target='_BLANK'>The Humble Way</a>' for more about this.
+</p>
+<p>
+After a year and a half in Dallas, and not really liking Dallas, I received an offer to come back to GTEDS and teach with the same instructors who had taught me 8 years prior.  GTE had become Verizon and the training department within GTE was recognized
+as the most successful so it was expanded to the new entity (GTE+Bell Atlantic+NYNEX).  Because of my unique experience with "webifying" legacy systems, I ended up teaching courses on Websphere MQ, modern (at the time) web development, heavy JavaScript,
+emerging web standards, and just about everything z/OS except COBOL.  This was my most enjoyable job, even though it was 50% travel.   After 5 years, and so many lay-offs, I grew pretty disillusioned with the direction Verizon was going and left.
+</p>
+<p>
+</p>
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->
 

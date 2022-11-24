@@ -81,9 +81,9 @@
             required:	false,
             force:	false,
             onclick:    function (evt) {
-                if ($('whats_new_article_id').val()) {
-                    (new EasyAjax('/blog/whatsnew/publish')).add('id',$('whats_new_article_id').val()).then(function (response) {
-                        //$('#whats_new_article_id').val(response);
+                if ($('#whats_new_article_id').val()) {
+                    (new EasyAjax('/blog/whatsnew/publish')).add('id',$('#whats_new_article_id').val()).then(function (response) {
+                        window.location.href='/blog/whatsnew/home';
                     }).post();
                 } else {
                     alert('Please save the article at least once before trying to publish');
