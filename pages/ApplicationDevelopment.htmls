@@ -1,0 +1,85 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/MVC.htmls" title="MVC" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Application Development</div>
+
+<div class='humble-section-header'>Why use a framework?</div>
+<p>
+    There are many frameworks, and the sheer number of them should be an indication of their importance.  You can much more easily swap out a technology like PostGREs for MySQL than you can jump from Zend to Yii.  Typically changing frameworks require a rewrite of the application,
+    so carefully assessing the pros/cons of the various frameworks is an important step when you are starting your project.  Humble's big features are multiple layers of abstractions, consistency, and a strong <a href='https://en.wikipedia.org/wiki/Separation_of_concerns' target="blank">Separation of Concerns</a> philosophy.  Humble
+    can be used for any type of development but it favors web application development, so let's now talk about applications in general.
+</p>
+<div class='humble-section-header'>What is an application?</div>
+<p>
+    The Humble Framework is primarily intended for people who wish to build complex web applications.  These can be traditional "POST" based, or a more modern Single Page Application (SPA).  Humble utilizes numerous
+    <a href="https://en.wikipedia.org/wiki/Convention_over_configuration" target="_BLANK">Convention over Configuration</a> techniques that, if utilized properly, can help a code base resist the natural and unfortunate affects of <a href="https://en.wikipedia.org/wiki/Software_entropy" target="_BLANK">Software Entropy</a>.
+</p>
+<p>
+    But first, we have to ask ourselves exactly "What is an application?", or more specifically "What makes a web application different from say a DOS application?".
+</p>
+<p>
+    Defining what is a Web Application has both an objective and a subjective aspect.  The objective aspect to the answer is in identifying the audience... a Web Applications primary audience is an end-user accessing the application through a neutral third-party device like a browser,
+    be that browser on your computer, phone, pad, etc.  The subjective aspect then is what defines the application composition.  Is a collection of static-HTML pages an application?   From the end-users perspective, the answer is most likely "Yes, a static site can be viewed as an application,
+    particularly if more content is continuously added to the site".  From that end-users perspective, the site (even though static) is still useful, so the value is there.
+</p>
+<p>
+    From an application developers point of view, however, there typically have to be certain features, or "mechanisms", in play to really make something a Web Application. The diagram below highlights the at a minimum features a Web Application must have:
+</p>
+<div style='float: left; border: 1px solid #333; padding: 3px; margin-right: 10px; font-style: italic; text-align: center'>
+    <img src='/pages/images/general_stack.png' style='width: 340px' /><br />
+    Basic Features
+</div>
+<p>
+    A well-constructed (not a <a href='https://exceptionnotfound.net/big-ball-of-mud-the-daily-software-anti-pattern/' target='_BLANK'>Big Ball of Mud</a>), should be composed of clearly delineated layers.  These layers should, at a minimum, consist of a Data Presentation layer, a Data Manipulation layer, and a Persistence layer.  Additionally,
+    if so desired there should be a layer for Data Integration (both consumer and producer) for interaction with external applications.  Depending on the intended audience of the app, the Integration layer may not be required, particularly for highly sensitive 
+    applications.  For instance, the computer system that launches the United States ICBMs is not connected to the internet and has no API, and this is intentional to remove any chance of getting hacked one day.
+</p>
+<div style='clear: both'></div>
+<div class='humble-section-header'>Application as layers/stacks</div>
+<ul>
+    <li><b>Presentation</b> - In general, this is information that returns to the user.  It can be processed data like HTML or XML, or more raw data like JSON. Whether this information is rendered using plain text or some web framework is irrelevant. The important thing is that this layer handles the return of information to the end user or requester.</li>
+    <li><b>Manipulation</b> - Typically this is some mechanism to take input from the user and use that data to create information (see, <a href='https://bloomfire.com/blog/data-vs-information/' target="_BLANK">Data vs. Information</a>).  An example is the user may submit a piece of data to their banking app with their 
+    account ID and get back the information on how much money is in the account.  The data manipulation layer is typically under the domain of one or more programming languages, and the logic that governs how the manipulations occur are dictated by those programming it.</li>
+    <li><b>Persistence</b> - This is some form of non-volatile storage.  Most if not all Web Applications need some place to store data between requests, and so use databases (MySQL, PostGREs, SQLSRV, etc), caches (Memcache, REDIS, etc), and other mechanisms (session, file system, etc) to "save stuff"..</li>
+    <li><b>Integration</b> - Stand-alone apps, though not completely gone, are rare these days.  Thought should be given on how to both receive data (consumer) and how to share data (producer) with external systems.  Common schemes to do this are REST, XMLRPC, and SOAP.  It is not uncommon
+    today for applications to support more than one of these schemes, and for the sake (and sanity) of your intended audiences, you should be careful and consistent when defining your integration scheme. </li>
+</ul>
+
+<div class='humble-section-header'>Sample application stacks</div>
+<p>
+    Let's take a look at some common application layers, or "stacks", that you find out in the wild
+</p>
+<div style='float: left; border: 1px solid #333; padding: 3px; margin-right: 10px; font-style: italic; text-align: center; width: 30%; margin-right: 3%'>
+    <img src='/pages/images/script_stack.png' style='width: 100%' /><br />
+    Common Script Stack
+</div>
+<div style='float: left; border: 1px solid #333; padding: 3px; margin-right: 10px; font-style: italic; text-align: center; width: 30%; margin-right: 3%'>
+    <img src='/pages/images/enterprise_stack.png' style='width: 100%' /><br />
+    Enterprise Stack
+</div>
+<div style='float: left; border: 1px solid #333; padding: 3px; margin-right: 10px; font-style: italic; text-align: center; width: 30%;'>
+    <img src='/pages/images/ms_stack.png' style='width: 100%' /><br />
+    Microsoft (closed) Stack
+</div>
+<ul>
+    <li><b>Script Stack</b> - Applications exploiting this stack tend to be quick to start and to prototype, but may have performance issues, and may suffer from the low-bar of entry, since you may find many junior programmers starting with this stack and developing bad habits.  However, this stack in the hands
+    of an experienced developer can do amazing things, the key is in finding the right people and not just any people.</li>
+    <li><b>Enterprise Stack</b> - I typically associate this stack with corporate users who have large budgets and can afford to pay license fees.  Also the highly Object-Orientated structure of the technologies in this stack makes them ideal for very large "production" applications with high uptime and availability.  Rarely do you find this stack utilized in small projects, or even small to medium sized projects.</li>
+    <li><b>Microsoft (proprietary) Stack</b> - This stack in particular is easy to set up and deploy but comes with <a href="http://antipatterns.com/vendorlockin.htm">vendor lock-in</a>, and depending on application evolution or growth, may require a full rewrite to a different stack at some time.</li>
+</ul>
+<p>
+    Probably the most important thing I think you should come away with here is that Web Applications should be composed of a stack of technologies, and that by-and-large, the layers that make up that stack are <a href="https://www.merriam-webster.com/dictionary/fungible" target="_BLANK">fungible</a>, that is, it is entirely common for the Enterprise
+    Stack to use PostGREs instead of Oracle since they both fill the persistence feature.  Likewise you could use JSP in your Script Stack manipulation layer, or any other technology really.  In a sense, other than the Presentation Layer, the other layers are "mix and match".  It seems
+    today that the only consistent layer or tier for a Web Application is the Presentation layer (for better or worse).  Most technologies that fall into the domain of a stack tier/layer can be swapped out for pertty much anything else in that domain.  After all, at the end of the day it is just a string of '1's and '0's, 
+    and nobodies '1's and '0's are better than anyone else's.
+</p>
+<br /><br /><br /><br />
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->
