@@ -4,7 +4,7 @@ $help = <<<HELP
  *  This script is used to manage new projects or update them
  *
  *
- *  Ex: Humble.php option(s)
+ *  Ex: Humble.php option(s) 
  *
  *  option:
  *      --help        This help
@@ -12,6 +12,7 @@ $help = <<<HELP
  *      --init        Same as --project
  *      --fetch       Initial install of repository
  *      --restore     Restores the Humble framework into an existing (Humble based) project
+        --config      Writes apache config, needs servername= passed in
  * -----------------------------------------------------------------------------
  */
 HELP;
@@ -307,7 +308,81 @@ function restoreProject() {
         exec('xdg-open '.$project->project_url.'/install.php');
     }
 }
-
+//------------------------------------------------------------------------------
+//option functions
+//------------------------------------------------------------------------------
+function fetchParameter($parm,$list) {
+    $parms = [];
+    $parms = is_array($parm) ? array_flip($parm) : [$parm=>true];
+    $value=false;
+    foreach ($list as $key => $val) {
+        if (isset($parms[$key])) {
+            $value = $val;
+            break;
+        }
+    }
+    return $value;
+}
+//------------------------------------------------------------------------------
+function processArgs($args) {
+    $parms = array();
+    foreach ($args as $arg) {
+        if (strpos($arg,'=')===false) {
+            die('Invalid argument passed: '.$arg);
+        }
+        $arg = explode('=',$arg);
+        $parms[$arg[0]] = $arg[1];
+    }
+    return $parms;
+}
+//------------------------------------------------------------------------------
+function configProject($dir,$name,$port,$log=false) {
+    $log    = ($log) ? 'ErrorLog "'.$log.'"' : '';
+    $config = <<<CFG
+<VirtualHost *:&&PORT&&>
+	DocumentRoot "&&PATH&&"
+	ServerName &&NAME&&
+	SetEnv HUMBLE_IS_DEVELOPER_MODE "true"
+        &&LOG&&
+	<Directory "&&PATH&&">
+		Require all granted
+		AllowOverride none 
+		DirectoryIndex index.html
+		AddHandler application/x-httpd-php .html .htm
+		Options +FollowSymlinks -Indexes
+		RewriteEngine on
+		RewriteBase /
+		RewriteRule ^app/ - [L,NC]
+		RewriteRule ^lib/ - [L,NC]
+		RewriteRule ^images/ - [L,NC]
+		RewriteRule ^web/ - [L,NC]
+		RewriteRule ^docs/ - [L,NC]
+		RewriteRule ^home/? /humble/home/page [NC,QSA,L]
+		RewriteRule ^admin/? /humble/admin/home [NC,QSA,L]
+		RewriteRule ^admin/(.*)? /humble/admin/home [NC,QSA,L]
+		RewriteRule ^js/([^/\.]+)? /loader.php?type=js&package=$1 [QSA,L]
+		RewriteRule ^css/([^/\.]+)? /loader.php?type=css&package=$1 [QSA,L]
+		RewriteRule ^edits/([^/\.]+)/([^/\.]+)? /loader.php?type=edits&n=$1&f=$2 [QSA,L]
+		RewriteRule ^templates/([^/\.]+)/([^/\.]+)? /loader.php?type=templates&n=$1&f=$2 [QSA,L]
+		RewriteRule ^ckeditor/(.*)? /app/Code/Base/Humble/web/js/ckeditor/$1 [QSA,L]
+		RewriteRule ^ace/(.*)? /app/Code/Base/Paradigm/web/js/ace/$1 [QSA,L]
+		RewriteRule ^api/([^/\.]+)/([^/\.]+)/(.*)?$ /api.php?n=$1&t=$2&m=$3 [QSA,L]
+		RewriteRule ^api/([^/\.]+)/([^/\.]+)?$ /api.php?n=$1&t=$2 [QSA,L]
+		RewriteRule ^hook/([^/\.]+)/([^/\.]+)? /hapi.php?n=$1&hook=$2 [QSA,L]
+		RewriteRule ^mapi/([^/\.]+)/([^/\.]+)/(.*)?$ /mapi.php?n=$1&t=$2&m=$3 [QSA,L]
+		RewriteRule ^mapi/([^/\.]+)/([^/\.]+)?$ /mapi.php?n=$1&t=$2 [QSA,L]
+		RewriteRule ^esb/(.*)? /iapi.php?uri=$1 [QSA,L]
+		RewriteRule ^([^/\.]+)/([^/\.]+)/(.*)?$ /index.php?humble_framework_namespace=$1&humble_framework_controller=$2&humble_framework_action=$3 [QSA,L]
+		RedirectMatch 404 app/allowed.json
+		RedirectMatch 404 msa.php$
+		RedirectMatch 404 \.(xml|yaml|project)$
+		ErrorDocument 404 /fallback.html		
+	</Directory>
+</VirtualHost>
+CFG;
+    file_put_contents('vhost.conf',str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&'],[$name,$port,$dir,$log],$config));
+    print("\nA file called 'vhost.conf' has been written to the current directory.  Use that to configure your Apache server\n\n ");
+}
 /* ----------------------------------------------------------------------------------
  * Main
  * ----------------------------------------------------------------------------------*/
@@ -315,6 +390,7 @@ if (PHP_SAPI === 'cli') {
     $args = array_slice($argv,1);
     if ($action = (($args && isset($args[0])) ? $args[0] : false)) {
        // installedExtensionCheck();
+        $args   = processArgs(array_slice($args,1));
         $action = substr($action,2);
         switch ($action) {
             case "init"     :
@@ -329,6 +405,18 @@ if (PHP_SAPI === 'cli') {
                 break;
             case "restore":
                 restoreProject();
+                break;
+            case "cfg":
+            case "conf":
+            case "config":
+                $name = fetchParameter('servername',$args) ? fetchParameter('servername',$args) : (fetchParameter('name',$args) ? fetchParameter('name',$args) : false) ;
+                $port = fetchParameter('port',$args) ? fetchParameter('port',$args) : (fetchParameter('p',$args) ? fetchParameter('p',$args) : 80);
+                $log  = fetchParameter('log',$args) ? fetchParameter('log',$args) : false;
+                if ($name && $port) {
+                    configProject(getcwd(),$name,$port,$log);
+                } else {
+                    die('Must pass servername');
+                }
                 break;
             case "help" :
                 print($help."\n");
