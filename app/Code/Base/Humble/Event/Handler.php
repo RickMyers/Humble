@@ -118,14 +118,15 @@ trait Handler {
     }
     
     /**
-     * Relay for the fire method
+     * Simplified event triggering
      * 
      * @param type $name
      * @param type $data
      * @return type
      */
     protected function emit($name,$data) {
-        return $this->fire($this->_namespace(),$name,$data);
+        $x = new \Code\Base\Humble\Event\Trigger();
+        return $x->emit($name,$data);
     }
     
     /**

@@ -27,7 +27,9 @@
     </div>
     <div class="toc-section-items">
         <ul>
-            <li><a href="/pages/.htmls" target="_BLANK">topic</a></li>
+            <li><a href="/pages/ReadThisFirst.htmls" target="_BLANK">Read This First</a></li>
+            <li><a href="/pages/Prerequisites.htmls" target="_BLANK">Prerequisites</a></li>
+            <li><a href="/pages/Vhost.htmls" target="_BLANK">VHOST Configuration</a></li>
         </ul>
     </div>
 </div>
@@ -49,11 +51,19 @@
 </div>
 <div class="toc-section">
     <div class="toc-section-title">
-        
+        Administration
     </div>
     <div class="toc-section-items">
         <ul>
-            <li><a href="/pages/.htmls" target="_BLANK">topic</a></li>
+            <li><a href="/pages/Creating.htmls" target="_BLANK">Creating Things</a></li>
+            <li><a href="/pages/Customizing.htmls" target="_BLANK">Customizing Templates</a></li>
+            <li> Logs
+                <ul>
+                    <li><a href="/pages/ApplicationLogs.htmls" target="_BLANK">Application Logs</a></li>
+                    <li><a href="/pages/SystemLogs.htmls" target="_BLANK">System Log</a></li>
+                    <li><a href="/pages/ConsoleLogs.htmls" target="_BLANK">Console Log</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>

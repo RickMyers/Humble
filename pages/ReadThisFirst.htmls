@@ -1,0 +1,43 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Concepts.htmls" title="" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Welcome!  And a warning...</div>
+
+<div class='humble-section-header'>About what is ahead</div>
+
+<p>
+    Humble is an Application Development framework focused on abstraction and making common tasks incredibly easy for the developer.  It is developer focused and relatively forgiving, however, the initial setup can be a bit burdensome.
+</p>
+<p>
+    Most frameworks have a persistence tier that might be focused around a technology like MySQL or PostGREs.  Humble's standard configuration leverages MySQL, MongoDB, and Memcached!  So there is quite a bit more configuration up front to deal with,
+    however, once properly configured you hardly ever have to deal with that again.
+</p>
+<p>
+    Also, due to URL Rewriting which is a feature unique to Apache, some knowledge of Apache Web Server configuration is desirable, however, it isn't required.  We even provide you a tool to generate the necessary Apache configuration files, but some
+    experience with Apache is highly recommended.
+</p>
+<p>
+    Where possible, we will be providing videos for our end users to assist in all these tasks.  Once Humble is set up properly, it is simply amazing what you can do with it, and how <i>little</i> backend code you need to write to do incredible things.
+</p>
+<p>
+    As always, it is not necessary to know everything so long as you have a network of people who can support you.  It is a good idea to have a friend/coworker who is skilled in things like Linux/Mac/Windows arcana to fall back on.  It certainly helps me.
+</p>
+<p>
+    As you begin your journey here, some time spent brushing up on topics and/or acquiring new friends who have the skills you might be rusty on is a good idea.  Don't try to conquer the world yourself...  It is always best to share the burden, and the benefit,
+    from your endeavors!
+</p>
+<p>
+    Best of Luck in everything you are trying to do!
+</p>
+<p>
+    --Rick
+</p>
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->

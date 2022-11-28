@@ -120,14 +120,14 @@ class Trigger  {
      *
      * @param type $eventName
      */
-    public function emit($eventName=false) {
+    public function emit($eventName=false,$arguments=[]) {
         global $workflowRC;
         global $cancelBubble;
         $ok         = true;
         $uid        = \Environment::whoAmI();
         $cleanEvent = Event::get($eventName);
         $action     = 'set'.ucfirst($eventName);
-        $cleanEvent->$action($this->_arguments);
+        $cleanEvent->$action(array_merge($this->_arguments,$arguments));
         if (!$uid) {
             //if no user id, see if this is the login event, and if so, find user based on username
             if ($user_name = $cleanEvent->data('user_name')) {
@@ -155,6 +155,21 @@ class Trigger  {
                             break;  //time to exit! No more workflow processing
                         }
                     }
+                }
+            }
+            
+            if (!$handled) {
+
+                //Still haven't handled the event, so lets try this as a method listener event
+                $method_listeners = Humble::getEntity('paradigm/method/listeners');
+                if ($namespace = ($this->_namespace()) ? $this->_namespace() : false) {
+                    $method_listeners->setNamespace($namespace);
+                }
+                foreach ($method_listeners->setEvent($eventName)->fetch() as $method_listener) {
+                    print_r($method_listener);
+                    $ml = Humble::getModel($method_listener['namespace'].'/'.$method_listener['class']);
+                    $method = $method_listener['method'];
+                    $ml->$method($cleanEvent);
                 }
             }
         }

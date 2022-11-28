@@ -37,7 +37,7 @@
     Basic Features
 </div>
 <p>
-    A well-constructed (not a <a href='https://exceptionnotfound.net/big-ball-of-mud-the-daily-software-anti-pattern/' target='_BLANK'>Big Ball of Mud</a>), should be composed of clearly delineated layers.  These layers should, at a minimum, consist of a Data Presentation layer, a Data Manipulation layer, and a Persistence layer.  Additionally,
+    A well-constructed application (unlike a <a href='https://exceptionnotfound.net/big-ball-of-mud-the-daily-software-anti-pattern/' target='_BLANK'>Big Ball of Mud</a>), should be composed of clearly delineated layers.  These layers should, at a minimum, consist of a Data Presentation layer, a Data Manipulation layer, and a Persistence layer.  Additionally,
     if so desired there should be a layer for Data Integration (both consumer and producer) for interaction with external applications.  Depending on the intended audience of the app, the Integration layer may not be required, particularly for highly sensitive 
     applications.  For instance, the computer system that launches the United States ICBMs is not connected to the internet and has no API, and this is intentional to remove any chance of getting hacked one day.
 </p>

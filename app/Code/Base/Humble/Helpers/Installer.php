@@ -285,7 +285,7 @@ SQL;
      */
     protected function deRegisterWorkflowComponents($namespace=false) {
         $namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
-        $components = Humble::getEntity('paradigm/workflow_components');
+        $components = Humble::getEntity('paradigm/workflow/components');
         $components->setNamespace($namespace);
         $components->delete();
     }
@@ -340,7 +340,6 @@ SQL;
      */
     private function processDocAnnotations($md=false,$method=false) {
         $components = [];
-
         try {
             $comments = explode("\n",$md->getDocComment());
             foreach ($comments as $comment) {
@@ -354,6 +353,14 @@ SQL;
         return $components;
     }
 
+    public function registerMethodListeners($namespace,$class,$listener,$events) {
+        //print($namespace.','.$model.','.$method.','.$value);
+        $method_listener = Humble::getEntity('paradigm/method/listeners');
+        foreach (explode(',',$events) as $event) {
+            $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
+        }
+        die();
+    }
     /**
      * Will search through a modules PHP components and record any that are
      * listed as being workflow components
@@ -362,10 +369,9 @@ SQL;
     protected function registerWorkflowComponents($namespace=false) {
         $namespace  = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
         $models     = Humble::getModels($namespace);
-        $workflowComponent  = Humble::getEntity('paradigm/workflow_components');
-        $workflowComment   = Humble::getEntity('paradigm/workflow_comments');
+        $workflowComponent  = Humble::getEntity('paradigm/workflow/components');
+        $workflowComment    = Humble::getEntity('paradigm/workflow/comments');
         $this->output("WORKFLOW","Processing Namespace [".$namespace."]...");
-        
         foreach ($models as $model) { 
             $this->output("WORKFLOW","");
             $this->output("WORKFLOW","Scanning Model Class ".ucfirst($model)."...");
@@ -400,7 +406,7 @@ SQL;
                     $workflowComment->save();
                 }
                 $customAnnotations      = $this->processDocAnnotations($reflection->getMethod($method->name),$method);
-                $authorization = false;
+                $authorization          = false;
                 foreach ($customAnnotations as $annotation) {
                     $clauses   = explode(' ',$annotation);
                     foreach ($clauses as $clause) {
@@ -425,6 +431,11 @@ SQL;
                                                         break;
                             case "tags"             :
                                                         break;
+                            case "listen"           :
+                            case "listener"         :   $this->registerMethodListeners($namespace,$model,$method->name,$value);
+                                                        continue;               //this is different from a component so just skip to the next one
+                                                        break;
+                            case "auth"             :
                             case "authorization"    :   if (strtolower($value) == 'true') {
                                                             $authorization = true;
                                                         } else if (strtolower($value) == 'false') {
@@ -434,6 +445,9 @@ SQL;
                                                         }
                                                         $workflowComponent->setAuthorization((($authorization) ? 'Y' : 'N'));
                                                         break;
+                            case "conf"             :
+                            case "config"           :
+                            case "cfg"              :
                             case "configuration"    :   $workflowComponent->setConfiguration($value);
                                                         break;
                             default                 :   break;

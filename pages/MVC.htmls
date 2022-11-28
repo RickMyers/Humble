@@ -1,0 +1,22 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/.htmls" title="" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Humble MVC</div>
+
+<div class='humble-section-header'>Model View Controller</div>
+
+<p>
+    Previously we looked at Web Application creation from a generic point of view, identifying that an organized Web App would likely utilize a Separation of Concerns approach to split the application functionality into layers that perform
+    the functions of Presentation, Manipulation, Persistence, and Integration.  We are now moving from those generalized concepts into specific explanations of how The Humble Framework does this, and how you as the developer can leverage the
+    conventions to quickly build scalable and flexible applications.
+</p>
+
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->
