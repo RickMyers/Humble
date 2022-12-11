@@ -65,7 +65,6 @@ class Unity extends \Code\Base\Humble\Models\Model
      */
     public function __destruct()
     {
-        
         //if pagination is set, store the page in the session
         if ($this->_page()) {
             if (!isset($_SESSION['pagination'])) {

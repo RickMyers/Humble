@@ -354,12 +354,10 @@ SQL;
     }
 
     public function registerMethodListeners($namespace,$class,$listener,$events) {
-        //print($namespace.','.$model.','.$method.','.$value);
         $method_listener = Humble::getEntity('paradigm/method/listeners');
         foreach (explode(',',$events) as $event) {
             $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
         }
-        die();
     }
     /**
      * Will search through a modules PHP components and record any that are
@@ -433,7 +431,7 @@ SQL;
                                                         break;
                             case "listen"           :
                             case "listener"         :   $this->registerMethodListeners($namespace,$model,$method->name,$value);
-                                                        continue;               //this is different from a component so just skip to the next one
+                                                        break 2;                //this is different from a component so just skip to the next one
                                                         break;
                             case "auth"             :
                             case "authorization"    :   if (strtolower($value) == 'true') {

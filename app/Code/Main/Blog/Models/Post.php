@@ -5,27 +5,23 @@ use Log;
 use Environment;
 /**
  *
- * Post related stuff
+ * Blog Methods
  *
- * See Title
+ * see title
  *
- * PHP version 7.2+
+ * PHP version 7.0+
  *
  * @category   Logical Model
- * @package    Workflow Editor
+ * @package    Framework
  * @author     Rick Myers <rick@humbleprogramming.com>
- * @copyright  2005-present Humble
- * @license    https://humbleprogramming.com/license.txt
- * @version    <INSERT VERSIONING MECHANISM HERE />
- * @link       https://humbleprogramming.com/docs/class-Post.html
- * @since      File available since Release 1.0.0
  */
 class Post extends Model
 {
 
     use \Code\Base\Humble\Event\Handler;
 
-	/**
+	
+    /**
      * Constructor
      */
     public function __construct() {
@@ -40,15 +36,21 @@ class Post extends Model
     public function getClassName() {
         return __CLASS__;
     }
-    
-    /**
-     * Pre process the post
-     * 
-     * @workflow emit(newPost) comment(A comment about a post) config(/blog/post/new)
-     * 
-     */
-    public function preProcess() {
-        
-    }
 
+    /**
+     * When any of the events below get called, this method will fire
+     * 
+     * @listen event(listenerTest,testAction)
+     * @param type $EVENT
+     */
+    public function listenerAction($EVENT=false) {
+        Log::general('Listener Was Called');
+        Log::general($EVENT);
+        print_r($EVENT->load());
+    }
+    
+    public function doTest() {
+        print('running test'."\n\n");
+        $this->emit('listenerTest',['whoami'=>'a donut']);
+    }
 }

@@ -610,7 +610,7 @@ SOAP;
     }
 
     /**
-     * 
+     * Cache a value, first pre-process the expiration value if passed
      * 
      * @param type $namespace
      * @param type $call_name
@@ -671,12 +671,13 @@ SOAP;
      * @return array
      */
     protected function processSecrets($call=[]) {
-        $sm = Humble::getEntity('humble/secrets/manager');
+        $sm = false;
         foreach ($call as $key => $val) {
             if (is_array($val)) {
                 $call[$key] = $this->processSecrets($val);
             } else {
                 if (strtolower(substr($val,0,5))==='sm://') {
+                    $sm = ($sm) ? $sm : Humble::getEntity('humble/secrets/manager');  //speed up call by only instantiating the orm if a secret is found
                     if ($x = $sm->reset()->setSecretName(substr($val,5))->setNamespace($this->_namespace())->load(true)) {
                         $call[$key] = $sm->decrypt(true)->getSecretValue();
                     }
@@ -693,7 +694,7 @@ SOAP;
      * @return varied
      */
     protected function _remoteProcedureCall($name=false) {
-        $retval = null;
+        $retval = null;                                                         //Will only return a null if the RPC is not found
         if ($name && $this->_RPC()) {
             if (!\Singleton::mappings()) {
                 if (!$default_mappings = Humble::cache('yaml-humble')) {
@@ -716,6 +717,7 @@ SOAP;
                 }
             }
             if (isset(\Singleton::mappings()[$name])) {
+                $retval  = false;                                               //RPC call found, so we set default return value to false
                 $call    = $this->processSecrets(\Singleton::mappings()[$name]);
                 $args    = [];
                 if (isset($call['authentication'])) {
@@ -749,6 +751,7 @@ SOAP;
                         if (isset($call['cache'])) {
                             $this->pushToCache($this->_namespace(),$name,$args,$call['cache'],$retval);
                         }
+                        $retval = ($retval === null) ? false : $retval;         //Only return null when the call wasn't found in the mapping file, otherwise return false
                     } else {
                         //lather it up...
                         $secure     = (isset($call['secure'])   && $call['secure'])     ? $call['secure']    : false;

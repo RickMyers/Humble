@@ -212,7 +212,7 @@ HELP;
             }
         } else {
             $msg = <<<TXT
-            To create a module, you must pass namespace, package, module, prefix, and optionally author email.
+            To create a module, you must pass namespace, package, module and optionally author email.
 TXT;
             print($msg);
         }
@@ -398,7 +398,7 @@ TXT;
         try {
             $comments = explode("\n",$md->getDocComment());
             foreach ($comments as $comment) {
-                if (strpos($comment,'@workflow')!==false) {
+                if ((strpos($comment,'@workflow')!==false) || (strpos($comment,'@listen')!==false)) {
                     $components[] = substr($comment,strpos($comment,'@')+1);
                 }
             }
@@ -440,17 +440,25 @@ TXT;
         }
     }
     //--------------------------------------------------------------------------
+    function registerMethodListener($namespace,$class,$method,$clauses) {
+        $method_listener = Humble::getEntity('paradigm/method/listeners');
+        foreach (explode(',',$events) as $event) {
+            $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
+        }
+        
+    }
+    //--------------------------------------------------------------------------
     function scanForWorkflowComponents($file) {
-        $namespace = false;
-        $file    = str_replace(['\\',"/"],["_","_"],$file[0]);
-        $parts   = explode('_',$file);
-        $package = strtolower($parts[1]);
-        $root    = strtolower($parts[2]."/".$parts[3]);
+        $namespace  = false;
+        $file       = str_replace(['\\',"/"],["_","_"],$file[0]);
+        $parts      = explode('_',$file);
+        $package    = strtolower($parts[1]);
+        $root       = strtolower($parts[2]."/".$parts[3]);
         print($root."\n");
         $data    = \Humble::getEntity('humble/modules')->setModels($root)->fetch();
         if ($data) {
-            $data = $data->pop();
-            $namespace = $data['namespace'];
+            $data       = $data->pop();
+            $namespace  = $data['namespace'];
         }
         if (!$namespace) {
             print(" Could not resolve the namespace for the class: ".$file."\n");
@@ -467,8 +475,8 @@ TXT;
            // $models = array_merge($models,\Humble::getHelpers($namespace)); //no, this is not a good idea, at least not yet
         }
         print('*** Scanning for workflow components within the Models of the Module identified by Namespace: '.$namespace."***\n");
-        $workflowComponent  = \Humble::getEntity('paradigm/workflow_components');
-        $workflowComment    = \Humble::getEntity('paradigm/workflow_comments');
+        $workflowComponent  = \Humble::getEntity('paradigm/workflow/components');
+        $workflowComment    = \Humble::getEntity('paradigm/workflow/comments');
         foreach ($models as $model) {
             print('Processing '.$model."...\n");
             $workflowComponent->reset();
@@ -504,7 +512,7 @@ TXT;
                     if (strtolower(substr(trim($comment),0,8)) === "workflow") {
                         $comment = substr(trim($comment),8);
                     }
-                    $clauses   = explode(')',$comment);
+                    $clauses    = explode(')',$comment);
                     foreach ($clauses as $clause) {
                         $value  = '';
                         $clause = trim($clause).')';
@@ -529,6 +537,9 @@ TXT;
                                                         break;
                             case "emit"             :   registerInlineEvent($namespace,($emit=$value),$inline_comment);
                                                         break;
+                            case "listener"         :
+                            case "listen"           :  registerMethodListener($namespace,$model,$method->name,$clauses);
+                                                       break 2;
                             case "authorization"    :   if (strtolower($value) == 'true') {
                                                             $authorization = true;
                                                         } else if (strtolower($value) == 'false') {
