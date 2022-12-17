@@ -12,7 +12,13 @@
 <form name="unit-test-harness-form" id="unit-test-harness-form-{$window_id}">
     <div id="unit-test-harness-header-{$window_id}">
         <input onclick='Landing.tests.run("{$window_id}")' id='unit-test-harness-run-{$window_id}' type='button' style='color: #333; padding: 2px 5px; float: right; margin-right: 2px' disabled='true' value='  Run  ' />
-        Please Specify Harness Source: <input type="text" id='unit-test-harness-source-{$window_id}' style="width: 200px; background-color: lightcyan; color: #333; padding: 2px; border: 1px solid #aaf" value="tests/connect.xml" />
+        Please Specify Harness Source: 
+        <select name="unit_test_source" id="unit_test_source-{$window_id}" style="width: 200px; background-color: lightcyan; color: #333; padding: 2px; border: 1px solid #aaf" >
+            <option value=""> </option>
+            {foreach from=$directory->listDirectory() item=entry}
+                <option value="tests/{$entry}"> {$entry} </option>
+            {/foreach}
+        </select>
         <input type="button" value=" Load Tests" style="color: #333; padding: 2px 5px" onclick='Landing.tests.load("{$window_id}")'/>
     </div>
     <div id="unit-test-harness-content-{$window_id}">
@@ -38,12 +44,12 @@
                 }).get();
             },
             load: function (window_id) {
-                (new EasyAjax('/humble/unittests/load')).add('window_id',window_id).add('source',$('#unit-test-harness-source-'+window_id).val()).then(function (response) {
+                (new EasyAjax('/humble/unittests/load')).add('window_id',window_id).add('source',$('#unit_test_source-'+window_id).val()).then(function (response) {
                     $('#unit-test-harness-content-{$window_id}').html(response);
                 }).post();
             },
             run: function (window_id) {
-                (new EasyAjax('/humble/unittests/run')).add('window_id',window_id).add('source',$('#unit-test-harness-source-'+window_id).val()).then(function (response) {
+                (new EasyAjax('/humble/unittests/run')).add('window_id',window_id).add('source',$('#unit_test_source-'+window_id).val()).then(function (response) {
                     $('#unit-test-harness-content-{$window_id}').html(response);
                 }).post();
             }
