@@ -12,11 +12,57 @@
 
 <div class='humble-section-header'>Model View Controller</div>
 
+<div style='float: right; border: 1px solid #333; padding: 3px; margin-left: 10px; font-style: italic; text-align: center'>
+    <img src='/pages/images/MVC.png' style='width: 340px' /><br />
+    Simple MVC
+</div>
 <p>
     Previously we looked at Web Application creation from a generic point of view, identifying that an organized Web App would likely utilize a Separation of Concerns approach to split the application functionality into layers that perform
     the functions of Presentation, Manipulation, Persistence, and Integration.  We are now moving from those generalized concepts into specific explanations of how The Humble Framework does this, and how you as the developer can leverage the
     conventions to quickly build scalable and flexible applications.
 </p>
 
+<p>
+    By and large, professional and mature web application development has evolved the idea of 'application as a stack of layers' into a named implementation called MVC, or Model-View-Controller.  MVC identifies at least three disparate layers in
+    the application, but can contain more layers especially if your application is utilizing various <a href='https://www.redhat.com/en/topics/middleware/what-is-middleware' target='_BLANK'>Middleware</a> technologies, defining of which goes beyond 
+    the scope of this document.   MVC is technically part of an <a href='https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/n-tier' target='_BLANK'>N-Tier</a> approach, where the 'N' is the number
+    of tiers, and in a standard MVC application is 3, but again, could be larger.
+</p>
+<div class='humble-section-header'>Humble MVC</div>
+
+<p>
+    As the diagram above indicates, the typical flow of control while servicing a request goes from the Controller, to the Model, which then hands off to the View, which then sends the response to the request back to the requester.  So let us follow that 
+    flow and start with the controller, and note that what follows is Humble's implementation of MVC and will differ significantly from other frameworks.
+</p>
+
+<p class='humble-note'>
+    <b>Note</b>: When creating Controllers and Classes, use either the command line tool covered here: <a href=''>CLI</a>, or better yet use the administration tools covered here: <a href='' target='_BLANK'>Admin</a>.
+</p>
+<div class='humble-section-header' style='font-size: .95em'>Controller</div>
+<p>
+    Controllers in Humble are XML files that perform the tasks of routing, data validation/verification, object allocation, and optional event triggering.  There's a lot going on in the Controller, and it is completely possible to build robust applications
+    with no more code than the XML in the Controllers because of the strong <a href='https://en.wikipedia.org/wiki/Convention_over_configuration' target='_BLANK'>Convention over Configuration</a> approaches used.  Particularly if you are building a 'Decoupled UI', back-end creation can be very simple, and even
+    automatic if you are willing to use the Humble API (which virtualizes the Controller).  The <a href='/pages/API.htmls' target='_BLANK'>API</a> is covered elsewhere.
+</p>
+<div class='humble-section-header' style='font-size: .95em'>Model</div>
+<p>
+    The Model in MVC combines the data persistence layer with the data manipulation layer, as defined in a previous page.  In many cases, an active implementation of a Model may be manifested as nothing more than a SQL statement operating on various parameters
+    passed on by the Controller.  In other cases the Model may contain detailed business logic accessing multiple data sources, and in this case the usual technology is Plain-Old-PHP classes (POP).  Finally, there is the ability to combine Model classes with 
+    the <a href='/pages/Paradigm.htmls' target='_BLANK'>Paradigm Engine</a> to trigger complex workflows that were designed using the Paradigm Workflow Editor.  Workflows combine two advanced concepts, one called <a href='https://en.wikipedia.org/wiki/Orchestration_(computing)' target='_BLANK'>Orchestration</a> and the other is 
+    called <a href='https://en.wikipedia.org/wiki/Service_choreography#Web_Service_Choreography' target='_BLANK'>Choreography</a>.
+</p>
+<div class='humble-section-header' style='font-size: .95em'>View</div>
+<p>
+    Once the request has been handled by the Controller and after potentially passing some or all of the request to the Model, the sum of the request mixed with any objects allocated are passed on to the view (if there is one, 
+    see <a href='/pages/ViewlessActions.htmls' target='_BLANK'>Viewless Actions<a/> for more).  Humble supports at least 10 Server-Side Rendering options, which include <a href='' target='_BLANK'>Smarty3</a>, <a href='' target='_BLANK'>Twig</a>,
+    <a href='' target='_BLANK'>Blade</a>, <a href='' target='_BLANK'>Tiny But Strong (TBS)</a>, <a href='' target='_BLANK'>Latte</a>, <a href='' target='_BLANK'>Savant3</a>, <a href='' target='_BLANK'>PHPTal</a>, and plain old <<a href='' target='_BLANK'>PHP</a>.
+    <br /><br />
+    If you are doing Server-Side Rendering, our philosophy is that "<i>it isn't important which Templating engine you are using, just that you are Templating!</i>"
+    <br /><br />
+</p>
+<p>
+    In a nutshell:  Humble is an MVC framework where the Controllers are XML files, the Models can be PHP Classes, graphical workflows, or implied (more on that later), and the Server-Side View Rendering can be done in a host of Templating engines.
+</p>
+<br /><br /><br /><br /><br />
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->
