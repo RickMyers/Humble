@@ -47,7 +47,7 @@ $results        = [];
 $summary        = [];
 $packages       = [];
 $dependencies   = [];
-$source         = "tests/connect.xml";
+$source         = "tests/humble.xml";
 $order          = [];
 $list           = [];
 $xref           = [];
@@ -88,10 +88,10 @@ function executeTest($package,$driver) {
     global $output;
     $results = [];
     if (file_exists($file = 'tests/'.$package.'/'.$driver.'Test.php')) {
-        exec(Environment::getPHPLocation.' ../../phpunit/phpunit.phar '.$file,$results);
+        exec(Environment::PHPLocation().' ../../phpunit/phpunit.phar '.$file,$results);
     } else {
         if ($output == 'JSON') {
-            //NOP
+            $results[] = "Missing Test Driver: ".$file;
         } else {
             print("#################################################################\n");
             print("# Missing Test Driver: ".$file."\n");
@@ -179,7 +179,7 @@ function outputResults($results) {
 }
 
 //------------------------------------------------------------------------------
-//
+// Standup and Teardown are optional for each unique test
 //------------------------------------------------------------------------------
 function executeTests() {
     global $order,$unit_tests,$xml,$summary,$verbose,$standup,$teardown;

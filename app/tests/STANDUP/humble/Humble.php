@@ -18,7 +18,7 @@ class Humble implements \HarnessStandup {
     }
 
     /**
-     * This method will be called to create or "standup" anything required during the connect.xml run
+     * This method will be called to create or "standup" anything required during the source.xml run
      */
     public function execute() {
       //  print("I am in Standup\n\n");

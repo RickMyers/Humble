@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <unit_tests>
     <packages standup="humble" teardown="humble">
-        <framework>
-            <test class="MongoDB"       description="Tests the basic CRUD functionality with MongoDB"   namespace='humble'        sequence='2' />
-            <test class="MySQL"         description="Tests the basic CRUD functionality with MySQL"     namespace='humble'        sequence='1' />
+        <framework namespace='humble'>
+            <comment>Namespace for test will use the package identified namespace if one is not specified on the 'test' line</comment>
+            <test class="MongoDB"       description="Tests the basic CRUD functionality with MongoDB"                             sequence='2' />
+            <test class="MySQL"         description="Tests the basic CRUD functionality with MySQL"                               sequence='1' />
             <test class="Polyglot"      description="Tests polyglot functionality"                      namespace='humble'        sequence='*' />
             <test class="RPC"           description="Tests simple remote REST/Soap calls"               namespace='humble'        sequence='*' />
         </framework>
         <helpers  depends="framework" dependency='hard'>
             <test class="Log"           description="Tests logging of errors and retrieval"             namespace="humble"        sequence="3" />
+            <test class="Console"       description="Tests logging to browser console via EasyAjax"     namespace="humble"        sequence="3" />
         </helpers>
     </packages>
 </unit_tests>

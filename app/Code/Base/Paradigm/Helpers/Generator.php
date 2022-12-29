@@ -172,7 +172,15 @@ HDR;
                         if ($includeBranch) {
                             $this->workflow .= $tabs."goto label_".$direction['begin']['to']['id'].";\n";
                         }
-                        $this->traverse($this->components[$direction['begin']['to']['id']]);
+                        if (!isset($this->components[$direction['begin']['to']['id']])) {
+                            $this->workflow .= "\n##############################\n# ERROR, BROKEN LINK";
+                            $this->workflow .= "\n##############################\n";
+                            $this->workflow .= print_r($direction,true)."\n\n";
+                            $this->workflow .= "Try deleting the link and redoing it";
+                            $this->workflow .= "\n##############################\n";
+                        } else {
+                            $this->traverse($this->components[$direction['begin']['to']['id']]);
+                        }
                     }
                 }
                 break;
@@ -223,6 +231,7 @@ HDR;
     public function generate() {
         global $tabs;
         $this->workflow = '';
+        $this->trigger  = false;
         $tabs           = '';  //Keeps track of indentation... the number of "tabs" to use...
         $diagram        = $this->getWorkflow();
         $workflow       = Humble::getEntity("paradigm/workflows");
