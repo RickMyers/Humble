@@ -770,7 +770,10 @@ SQL;
      * @param type $query
      * @return type
      */
-    public function query($query) {
+    public function query($query='') {
+        if (!$query) {
+            return $query;
+        }
         if ($this->_dynamic()) {
             $query .= $this->buildWhereClause(true);
         }
@@ -822,8 +825,6 @@ SQL;
                 $mod = $this->_module();
                 $this->_mongodb = $mod['mongodb'];
             }
-            $entity = ($this->_mongocollection) ? $this->_mongocollection : $this->_entity();   //If you had used the "with()" function, you'd have set mongodb variable, otherwise use the entity name from the MySQL query
-            $mdb    = Humble::getCollection($this->_mongodb.'/'.$entity);
             //Get the list of IDs to join with...
             $ids    = [];
             foreach ($results as $row) {
@@ -834,10 +835,9 @@ SQL;
             if (!count($ids)) {
                 //nop - no ids to join with so we all go home
             } else {
-                $id     = array('$in'=>$ids);  //Get all documents with those IDs
-                $mdb->setId($id);
-                $rows   = $mdb->fetch();
-                if ($rows) {
+                $entity = ($this->_mongocollection) ? $this->_mongocollection : $this->_entity();   //If you had used the "with()" function, you'd have set mongodb variable, otherwise use the entity name from the MySQL query
+                $mdb    = Humble::getCollection($this->_mongodb.'/'.$entity);
+                if ($rows = $mdb->setId(['$in'=>$ids])->fetch()) {
                     $int = []; //$key = false;
                     //this builds a reference of every mysql result row that has the join field on it
                     foreach ($results as $idx => $row) {
@@ -870,7 +870,7 @@ SQL;
         if (\Environment::isActiveDebug()) {
             \Log::user(array_merge(['Query'=>$query],$results->toArray()));
         }
-         return $this->_lastResult = (($this->_normalize()) ? $this->normalize($results) : $results);
+        return $this->_lastResult = (($this->_normalize()) ? $this->normalize($results) : $results);
     }
 
     /**

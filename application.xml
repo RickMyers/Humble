@@ -3,7 +3,7 @@
     <name>The Humble Project</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">JSFQ-VSYF-QRKQ-CJQQ</serial_number>
     <version>
-        <framework>0.7.9.6.7</framework>
+        <framework>0.7.9.6.8</framework>
         <app>0.0.0.1</app>
     </version>
     <state>DEVELOPMENT</state>
@@ -19,10 +19,10 @@
             <redirect>0</redirect>
         </strategy>
     </msa>
-    <api>
+    <api comment="Know the risks before enabling.  There is a section in the documentation on this">
         <enabled>0</enabled>
     </api>
-    <engine>c:\\php\\74\\php.exe</engine>
+    <engine comment="Will eventually be determined dynamically">c:\\php\\74\\php.exe</engine>
     <documentation comment="Documentation will not be generated in environments with a state of PRODUCTION">
         <engine  options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
         <command options="PHPDoc2.phar,apigen.phar app/Code --output Docs">PHPDoc2.phar</command>
