@@ -336,7 +336,7 @@ function processArgs($args) {
     return $parms;
 }
 //------------------------------------------------------------------------------
-function configProject($dir,$name,$port,$log=false) {
+function configProject($dir='',$name='localhost',$port=80,$log=false) {
     $log    = ($log) ? 'ErrorLog "'.$log.'"' : '';
     $config = <<<CFG
 <VirtualHost *:&&PORT&&>
@@ -380,7 +380,9 @@ function configProject($dir,$name,$port,$log=false) {
 	</Directory>
 </VirtualHost>
 CFG;
-    file_put_contents('vhost.conf',str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&'],[$name,$port,$dir,$log],$config));
+    $config = str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&'],[$name,$port,$dir,$log],$config);
+    file_put_contents('vhost.conf',$config);
+    print("\n\n".$config."\n\n");
     print("\nA file called 'vhost.conf' has been written to the current directory.  Use that to configure your Apache server\n\n ");
 }
 /* ----------------------------------------------------------------------------------

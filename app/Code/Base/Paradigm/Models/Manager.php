@@ -48,6 +48,9 @@ class Manager extends Model
         $workflow->setMinorVersion($minor_version);
         $workflow->setCreator($this->getCreator());
         $workflow->setTitle($this->getTitle());
+        if ($this->getPartial()) {
+            $workflow->setPartial($this->getPartial());
+        }
         $workflow->setWorkflow($this->getWorkflow());
         $workflow->setDescription($this->getDescription());
         $workflow->setImage($this->getImage());

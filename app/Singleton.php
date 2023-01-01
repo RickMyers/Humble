@@ -27,6 +27,7 @@ class Singleton
     private static $updater          = null;
     private static $translationTable = null;
     private static $mappings         = [];
+    private static $things           = [];
 
     /**
      *
@@ -133,6 +134,22 @@ class Singleton
         return self::$helper[$name];
     }
 
+    /**
+     * Allows us to manage arbitrary elements/objects that don't need to hold state
+     * 
+     * @param type string
+     * @param type object
+     * @return object
+     */
+    public static function manage($alias=false,$thing=null) {
+        if ($alias && $thing) {
+            self::$things[$alias] = $thing;
+        } else if ($alias && !$thing && isset(self::$things[$alias])) {
+            return self::$things[$alias];
+        }
+        return $thing;
+    }
+    
     /**
      * Use this one
      */

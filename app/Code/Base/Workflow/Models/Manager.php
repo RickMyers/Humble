@@ -44,11 +44,12 @@ class Manager extends Model {
         $data    = json_decode($this->getData(),true);
         $element = Humble::getCollection('paradigm/elements');
         $element->setId($data['id']);
-        $b = $element->load();
+        $b       = $element->load();
         $this->setType($b['type']);
         foreach ($data as $var => $val) {
             if ($var == 'windowId') {
                 //we don't need to record this, since it changes each time you edit this component
+                $this->setWindowId($val);
                 continue;
             }            
             $method = 'set'.ucfirst($var);

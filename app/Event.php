@@ -56,10 +56,10 @@ class Event {
      * introduce complexity in the form of custom event methods
      *
      * @param type $identifier
-     * @return \Humble\Event\BaseObject
+     * @return \Humble\Event\Event
      */
     public static function get($identifier,$data=[]) {
-        $event = new \Code\Base\Humble\Event\BaseObject($identifier);
+        $event = new \Code\Base\Humble\Event\Event($identifier);
         $name  = 'set'.ucfirst($identifier);
         $event->$name($data);
         //DO I NEED THIS BELOW?
