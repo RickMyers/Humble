@@ -173,6 +173,8 @@
                                     </ul>
                                 </li>  
                                 {% if (permissions.getSuperUser() == 'Y') %}
+                                    <li><a href='#' onclick='Administration.maintenance.enter(); return false'>Enter Maintenance Mode</a></li>
+                                    <li><a href='#' onclick='Administration.maintenance.leave(); return false'>Leave Maintenance Mode</a></li>
                                     <li><a href='#' onclick='Administration.upload.form(); return false'>Upload File</a></li>
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
                                     <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>

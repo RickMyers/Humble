@@ -832,6 +832,7 @@ SQL;
                     $ids[] = (int)$id;
                 }
             }
+            //print_r($ids);
             if (!count($ids)) {
                 //nop - no ids to join with so we all go home
             } else {

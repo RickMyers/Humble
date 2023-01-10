@@ -284,20 +284,10 @@ SQL;
      *
      */
     protected function deRegisterWorkflowComponents($namespace=false) {
-        if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
-            Humble::getEntity('paradigm/workflow/components')->setNamespace($namespace)->delete(true);
-        }
-    }
-
-    /**
-     *
-     *  Will delete the current crop of workflow components associated to a module
-     *
-     */
-    protected function deRegisterMethodListeners($namespace=false) {
-        if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
-            Humble::getEntity('paradigm/method/listeners')->setNamespace($namespace)->delete(true);
-        }
+        $namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
+        $components = Humble::getEntity('paradigm/workflow/components');
+        $components->setNamespace($namespace);
+        $components->delete();
     }
 
     public function generateWorkflows($namespace=false) {
@@ -353,7 +343,7 @@ SQL;
         try {
             $comments = explode("\n",$md->getDocComment());
             foreach ($comments as $comment) {
-                if ((strpos($comment,'@workflow')!==false) || (strpos($comment,'@listen')!==false)) {
+                if (strpos($comment,'@workflow')!==false) {
                     $components[] = substr($comment,strpos($comment,'@')+1);
                 }
             }
@@ -366,15 +356,9 @@ SQL;
     public function registerMethodListeners($namespace,$class,$listener,$events) {
         $method_listener = Humble::getEntity('paradigm/method/listeners');
         foreach (explode(',',$events) as $event) {
-            $this->output("WORKFLOW","\tRegistering A Method Listener For Event ".$event);            
             $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
         }
     }
-    
-    private function parseTokenValues($token) {
-        
-    }
-    
     /**
      * Will search through a modules PHP components and record any that are
      * listed as being workflow components
@@ -422,7 +406,6 @@ SQL;
                 $customAnnotations      = $this->processDocAnnotations($reflection->getMethod($method->name),$method);
                 $authorization          = false;
                 foreach ($customAnnotations as $annotation) {
-                    $listener  = false;
                     $clauses   = explode(' ',$annotation);
                     foreach ($clauses as $clause) {
                         $value = '';
@@ -446,12 +429,9 @@ SQL;
                                                         break;
                             case "tags"             :
                                                         break;
-                            case "event"            :
-                            case "events"           :   $this->registerMethodListeners($namespace,$model,$method->name,$value);
-                                                        break 2;                //this is different from a component so just skip to the next one
                             case "listen"           :
-                            case "listener"         :   $listener = true;
-                                                        break;                
+                            case "listener"         :   $this->registerMethodListeners($namespace,$model,$method->name,$value);
+                                                        break 2;                //this is different from a component so just skip to the next one
                             case "auth"             :
                             case "authorization"    :   if (strtolower($value) == 'true') {
                                                             $authorization = true;
@@ -470,9 +450,7 @@ SQL;
                             default                 :   break;
                         }
                     }
-                    if (!$listener) {
-                        $workflowComponent->save();
-                    }
+                    $workflowComponent->save();
                 }
             }
             $this->output("WORKFLOW","Finished Scanning ".ucfirst($model)."...");
@@ -839,7 +817,6 @@ SQL;
                         $this->storeStructure($this->prefix,$contents->structure,$contents->module);
                         if (isset($contents->module->workflow) && ($contents->module->workflow==='Y')) {
                             $this->deRegisterWorkflowComponents($this->namespace);
-                            $this->deRegisterMethodListeners($this->namespace);
                             $this->registerWorkflowComponents($this->namespace,$contents->module);
                         }
                     }

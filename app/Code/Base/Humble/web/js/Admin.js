@@ -19,6 +19,22 @@ var Administration = (function () {
                             }
                         }
                     },
+                    maintenance: {
+                        enter: function () {
+                            if (confirm('This action will swap the login page for the maintenance page essentially putting the site into maintenance mode.\n\nDo you wish to continue?')) {
+                                (new EasyAjax('/humble/admin/maintenance')).add('enable','Y').then(function (response) {
+                                    alert(response);
+                                }).post();
+                            }
+                        },
+                        leave: function () {
+                            if (confirm('This action will restore the login page.\n\nDo you wish to continue?')) {
+                                (new EasyAjax('/humble/admin/maintenance')).add('enable','N').then(function (response) {
+                                    alert(response);
+                                }).post();
+                            }
+                        }
+                    },
                     change: {
                         state: function (cs) {
                             if (confirm('Would you like to put the site in '+$(cs).val()+' mode?')) {

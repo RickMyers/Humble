@@ -157,13 +157,14 @@ class Trigger  {
                     }
                 }
             }
+            
             if (!$handled) {
                 //Still haven't handled the event, so lets try this as a method listener event
                 $method_listeners = Humble::getEntity('paradigm/method/listeners');
                 if ($namespace = ($this->_namespace()) ? $this->_namespace() : false) {
                     $method_listeners->setNamespace($namespace);
                 }
-                foreach ($method_listeners->setEvent($eventName)->setActive('Y')->fetch() as $method_listener) {
+                foreach ($method_listeners->setEvent($eventName)->fetch() as $method_listener) {
                     $ml = Humble::getModel($method_listener['namespace'].'/'.$method_listener['class']);
                     $method = $method_listener['method'];
                     $ml->$method($cleanEvent);

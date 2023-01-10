@@ -89,7 +89,7 @@ class Directory extends File
      */
     public function contents($path,$includePath=false,$mask=false)    {
         $entries = [];
-        if ($path = ($path ? $path : ($this->getPath() ? $this->getPath() : false))) {
+        if ($path) {
             $dir = dir($path);
             while (($entry = $dir->read())!==false ) {
                 if (($entry == '.') || ($entry == '..')) {
@@ -115,12 +115,12 @@ class Directory extends File
      * @param type $mask
      * @return type
      */
-    public function listDirectory($path=false,$includePath=false,$mask=false)    {
+    public function listDirectory($path,$includePath=false,$mask=false)    {
         $entries = [];
-        if ($path = ($path ? $path : ($this->getPath() ? $this->getPath() : false))) {
+        if ($path) {
             $dir = dir($path);
             while (($entry = $dir->read())!==false ) {
-                if (($entry == '.') || ($entry == '..') || is_dir($path.'/'.$entry)) {
+                if (($entry == '.') || ($entry == '..')) {
                     continue;
                 }
                 if ($mask && (strpos($entry,$mask) !== false)) {

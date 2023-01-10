@@ -1,0 +1,51 @@
+{
+    "form":
+    {
+        "id":                   "admin_login_form",
+        "drawme":		false,
+        "action":		"",
+        "method":		"post",
+        "style":		"",
+        "onenterkey":           "send"
+    },
+    "fields":
+    [
+
+        {
+            "active":		true,
+            "id": 		"user_name",
+            "longname":		"User Name",
+            "title":            "The user's User Name",
+            "type":		"text",
+            "required":		true,
+            "force":		true,
+            "style":            "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+        },
+        {
+            "active":		true,
+            "id": 		"user_password",
+            "longname":		"User Password",
+            "title":            "The user's Password",
+            "type":		"password",
+            "required":		true,
+            "force":		true,
+            "style":            "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+        }, 
+        {
+            "active":		true,
+            "id":		"admin_login_submit",
+            "longname":		"Submit Button",
+            "type":             "button",
+            "value":            "",
+            "class":            "login login-submit",
+            "style":            "width: 275px",
+            "onclick":          function () {
+                if (Edits['admin_login'].validate()) {
+                    $E('admin_login_form').submit();
+                }
+            }
+        }
+    ]
+}
+
+

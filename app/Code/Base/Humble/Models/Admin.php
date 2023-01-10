@@ -119,4 +119,30 @@ class Admin extends Model
             }
         }        
     }
+    
+    public function maintenance($enable=false) {
+        $enable =  ($enable) ? $enable : ($this->getEnable() ? $this->getEnable() : false);
+        chdir('..');
+        $message = 'No flag was passed, so no action was taken';
+        if ($enable==='Y') {
+            if (file_exists('maint.html')) {
+                rename('index.html','index2.html');
+                rename('maint.html','index.html');
+                $message = 'Now in maintenance mode';
+            } else {
+                $message = 'No maintenance stub page found, aborting';
+            }
+            
+        } else {
+            if (file_exists('index2.html')) {
+                rename('index.html','maint.html');
+                rename('index2.html','index.html');
+                $message = 'Exited maintenance mode';
+            } else {
+                $message = 'Normal login page not found, aborting';
+            }
+        }
+        chdir('app');
+        return $message;
+    }
 }

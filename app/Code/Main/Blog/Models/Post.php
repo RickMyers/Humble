@@ -37,6 +37,33 @@ class Post extends Model
         return __CLASS__;
     }
 
+
+    /**
+     * Will this work?
+     * 
+     * @listen event(methodEventTest)
+     * @param type $EVENT
+     */
+    public function anotherTest($EVENT=false) {
+        if ($EVENT) {
+            $x = $EVENT->load();
+            print('world');
+        }
+    }    
+    
+    /**
+     * Will this work?
+     * 
+     * @listen event(methodEventTest)
+     * @param type $EVENT
+     */
+    public function thisTest($EVENT=false) {
+        if ($EVENT) {
+            $x = $EVENT->load();
+            print('hello');
+        }
+    }    
+    
     /**
      * When any of the events below get called, this method will fire
      * 

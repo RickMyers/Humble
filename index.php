@@ -89,6 +89,12 @@ if (file_exists('CUSTOM.php')) {
 //is on the list, then you are allowed to pass, otherwise you are routed to
 //the login screen
 if (!isset($_SESSION['uid'])) {
+    //Are you trying to get to the admin page?
+    if (($namespace==='humble') && ($controller==='admin') && ($action==='home')) {
+        header('Location: /humble/admin/login');
+        die();
+    }
+    
     //check to see if the service they are trying to access is publicly visible
     $allowed = json_decode(file_get_contents('allowed.json'));
     if (isset($allowed->routes->{'/'.$namespace.'/'.$controller.'/'.$action}) || isset($allowed->namespaces->$namespace) || isset($allowed->controllers->{'/'.$namespace.'/'.$controller})) {

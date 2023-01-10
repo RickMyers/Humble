@@ -6,7 +6,7 @@ Initial Action Controller
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
 <controller name="actions" use="Smarty3"><!-- Default templater uses Smarty-3, change to whatever you like -->
-    <actions>
+    <actions blocking='off' response='true'>
 
         <action name="open">
             <description>Stuff</description>
@@ -20,5 +20,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <description>This is just an example, do whatever you want with it</description>
         </action>
 
+        <!-- ################################################################################################# -->
+        
+        <action name='test' event='methodEventTest' comment='A method event test' passalong='*'>
+            <description>Just a test</description>
+        </action>
     </actions>
 </controller>

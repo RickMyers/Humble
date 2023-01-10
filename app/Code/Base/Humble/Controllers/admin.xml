@@ -25,6 +25,39 @@
         </action>
 
         <!-- ############################################################### -->
+        
+        <action name='login'>
+            <description>The administration login page</description>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="authenticate">
+            <description>Authenticates whether the user is a valid admin or not</description>
+            <model namespace='humble' class='user' id='user'>
+                <parameter name='password'  source='post' value='user_password' format='password' required='true' />
+                <parameter name='user_name' source='post' required='true' />
+            </model>
+            <switch id='user' method='login'>
+                <case value='true'>
+                    <redirect href='/admin' />
+                </case>
+                <default>
+                    <redirect href='/index.html?message=Admin Login Attempt Failed' />
+                </default>
+            </switch>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="maintenance">
+            <description>Will swap out the login page for the maintenance page, or vice versa</description>
+            <model namespace='humble' class='admin' method='maintenance' response='true'>
+                <parameter name='enable' source='request' default='Y' />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
 
         <action name='package' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
             <description>The form that allows you to create a package/directory</description>

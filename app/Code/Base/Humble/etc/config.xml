@@ -98,6 +98,7 @@
                 <apitester>Humble/web/edits/apitester.json</apitester>
                 <importdata>Humble/web/edits/importdata.json</importdata>
                 <installmodule>Humble/web/edits/installmodule.json</installmodule>
+                <login>Humble/web/edits/adminlogin.json</login>
             </edits>
             <common>
                 <js>

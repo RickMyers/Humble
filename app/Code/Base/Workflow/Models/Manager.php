@@ -1,6 +1,7 @@
 <?php
 namespace Code\Base\Workflow\Models;
 use Humble;
+use Log;
 /**
  * General purpose Model file for configuring workflow elements
  *
@@ -42,6 +43,7 @@ class Manager extends Model {
      */
     public function saveComponent() {
         $data    = json_decode($this->getData(),true);
+        Log::console(implode(',',$this->_data));
         $element = Humble::getCollection('paradigm/elements');
         $element->setId($data['id']);
         $b       = $element->load();

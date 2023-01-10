@@ -10,9 +10,6 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="home" passalong="window_id">
             <description>Main Test Harness page</description>
-            <helper namespace='humble' class='directory' id='directory'>
-                <parameter name='path' source='request' default='tests/' />
-            </helper>
         </action>
 
         <!-- ############################################################### -->

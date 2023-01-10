@@ -250,9 +250,9 @@
             <model namespace="workflow" class='manager' id='manager' method='saveComponent'>
                 <parameter name='data'      source='post' required='true' default='' />
                 <parameter name='namespace' source='post' optional="true" default='' />
-                <parameter name='id'        source='post' optional="true"  default='' />
+                <parameter name='id'        source='post' optional="true" default='' />
                 <parameter name='method'    source='post' optional="true" default='' />
-                <parameter name='component' source='post' optional="true"  default='' />
+                <parameter name='component' source='post' optional="true" default='' />
             </model>
         </action>
 

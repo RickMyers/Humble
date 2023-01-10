@@ -342,7 +342,7 @@ class Model implements HumbleComponent
         $api_key        = (isset($call['api-key']) && $call['api-key']) ? $call['api-key'] : false;        
         $method         = isset($call['method']) ? strtoupper($call['method']) : 'POST';
         $res            = null; $opts = []; $parms = '';
-        $auth           = ($userid && $password) ? array("Authorization"=> "Basic ".base64_encode($userid.":".$password)) : [];
+        $auth           = ($userid && $password) ? array("Authorization"=> ["Basic" => base64_encode($userid.":".$password)]) : [];
         $protocol       = ($secure) ? 'ssl' : 'http';
         $sessionControl = isset($this->_data['sessionId']) || ((isset($call['blocking']) && (!$call['blocking'])));  //do I need to suspend the current session to give access to the session during the remote call
 

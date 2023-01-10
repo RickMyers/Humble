@@ -79,15 +79,12 @@ Copyright humbleprogramming.com, all rights reserved
             }
             #humble-app-cssmenu_header > ul > li:first-child > a {
               border-radius: 5px 0 0 0;
-;
             }
             #humble-app-cssmenu_header > ul > li:last-child > a {
               border-radius: 0 5px 0 0;
-
             }
             #humble-app-cssmenu_header > ul > li.active a {
               box-shadow: inset 0 0 3px #000000;
-
               background: #070707;
               background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAxCAIAAACUDVRzAAAAA3NCSVQICAjb4U/gAAAALklEQVQImWNQU9Nh+v//PxMDw3+m//8ZkNj/mRgYIHxy5f//Z0BSi18e2TwS5QG4MGB54HL+mAAAAABJRU5ErkJggg==) 100% 100%;
               background: linear-gradient(to bottom, #26262c 0%, #070707 100%);

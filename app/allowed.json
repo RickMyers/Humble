@@ -10,6 +10,14 @@
            "reason":   "This needs exposed because the user's credentials won't be validated until after this call",
            "description": "The service that validates the user id and password.  The session will not be created until after they login so this needs to be exposed to the public"
        },
+        "/humble/admin/login": {
+           "reason":   "This needs exposed because the user's credentials won't be validated until after this call",
+           "description": "The service that validates the user id and password.  The session will not be created until after they login so this needs to be exposed to the public"
+       },
+        "/humble/admin/authenticate": {
+           "reason":   "This needs exposed because the user's credentials won't be validated until after this call",
+           "description": "The service that validates the user id and password.  The session will not be created until after they login so this needs to be exposed to the public"
+       },       
        "/humble/user/authentication": {
            "reason":   "Remote user interactions",
            "description": "Basic user authentication, returns session token if successful, remote user can then perform certain tasks using that token"
