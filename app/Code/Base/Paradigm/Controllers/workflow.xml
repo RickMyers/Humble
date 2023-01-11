@@ -193,9 +193,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="export" event="workflowExported" comment="A workflow has been packaged and exported" >
             <description>Creates the export format for a workflow and sends to a remote server</description>
-            <model namespace="paradigm" class="workflow" method="export">
+            <model namespace="paradigm" class="workflow" method="export" response='true'>
                 <parameter name='id'                source='post' required='true' default="" />
                 <parameter name='destination_id'    source='post' required='true' default="" />
+                <parameter name='file'              source='post' optional='true' />
             </model>
         </action>
 

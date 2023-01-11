@@ -52,7 +52,12 @@ class Workflow extends Model
             $this->exporter              = Environment::getProject();
             $this->_namespace($this->exporter->namespace);
         }
-        $target                          = Humble::getEntity('paradigm/export/targets')->setId($this->getDestinationId())->load();
+        $target = false; $file = false;
+        if ($this->getFile()) {
+            $file = $this->getFile();
+        } else {
+            $target                          = Humble::getEntity('paradigm/export/targets')->setId($this->getDestinationId())->load();
+        }
         $results                         = [];
         $results[]                       = '#########################################################';
         $results[]                       = 'Beginning Export for '.$this->_namespace();
@@ -69,7 +74,7 @@ class Workflow extends Model
 //        $destination                     = Humble::getEntity('paradigm/import_sources')->setId($this->getDestinationId())->load();
         $element                         = Humble::getCollection('paradigm/elements');
         $results[]                       = 'Exporting To '.$target['target'];
-        if ($workflow['data'] && isset($target['target'])) {
+        if ($workflow['data']) {
             $results[]  = "Sending Components for Workflow [".$workflow['data']['title']."]";
             $component_list = json_decode($workflow['data']['workflow'],true);
             foreach ($component_list as $idx => $component) {
@@ -79,21 +84,27 @@ class Workflow extends Model
                 $workflow['components'][$component['id']] = $element->load();
             }
   //          $whereTo = $destination['name'];
-            Log::warning('Export Target: '.$target['target']);
-            $this->setSessionId(true);
-            $call = [
-                "url" => $target['target'].'/paradigm/workflow/import',
-                "api-key" => '',
-                "api-var" => '',
-                "secure"  => true,
-                "method"  => "POST",
-                "arguments" => [
-                    "workflow" => ''
-                ]
-            ];            
-            
-            $this->setWorkflow(json_encode($workflow));
-            $results[] = $this->_hurl($target['target'].'/paradigm/workflow/import',$this->_processArguments($call),$call);
+            if ($target) {
+                Log::warning('Export Target: '.$target['target']);
+                $this->setSessionId(true);
+                $call = [
+                    "url" => $target['target'].'/paradigm/workflow/import',
+                    "api-key" => '',
+                    "api-var" => '',
+                    "secure"  => true,
+                    "method"  => "POST",
+                    "arguments" => [
+                        "workflow" => ''
+                    ]
+                ];            
+
+                $this->setWorkflow(json_encode($workflow));
+                $results[] = $this->_hurl($target['target'].'/paradigm/workflow/import',$this->_processArguments($call),$call);
+            } else {
+                header('Content-type: application/json');
+                header('Content-Disposition: attachment; filename="'.$file.'"');
+                return json_encode($workflow,JSON_PRETTY_PRINT);
+            }
             //$results[] = $this->$whereTo();
         } else {
             $results[] = 'Missing a workflow '.$this->getId();
