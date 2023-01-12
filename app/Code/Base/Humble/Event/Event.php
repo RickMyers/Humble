@@ -19,7 +19,7 @@ use Humble;
  * @link       https://humbleprogramming.com/docs/class-Core_Model_Event.html
  * @since      File available since Version 1.0.1
  */
-class BaseObject  {
+class Event  {
 
     private     $_configurations = [];     //Custom configurations for stages (if applicable)
     private     $_initiated      = null;   //Time the event was triggered

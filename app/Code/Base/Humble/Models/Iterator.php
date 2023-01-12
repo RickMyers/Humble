@@ -22,10 +22,10 @@ namespace Code\Base\Humble\Models;
 class Iterator extends Model implements \Iterator, \Countable
 {
 
-    private $position   = 0;
-    private $array      = [];
-    private $clean      = true;
-    private $translate  = false;
+    private   $position   = 0;
+    protected $array      = [];
+    private   $clean      = true;
+    private   $translate  = false;
 
     /**
      * Constructor
