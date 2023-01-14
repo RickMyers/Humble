@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <controller name="console" use="Twig">
-    <actions>
+    <actions blocking="false">
 
-        <action name="init">
+        <action name="init" passalong="window_id">
             <description>Lays out the console, intializing it</description>
         </action>
 
@@ -31,6 +31,7 @@
             <helper namespace='paradigm' class='data' id='data'>
                 <parameter name='term' value='term' source='post' default='stupid' />
             </helper>
+
         </action>
 
     </actions>

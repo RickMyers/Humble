@@ -1,4 +1,20 @@
-<div  spellcheck="false" tabindex='0' style='width: 100%; height: 100%; box-sizing: border-box; top: 0px; overflow: auto; margin: 0px'  onfocus='Paradigm.console.capture()' onblur='Paradigm.console.release()' id='paradigmConsole' class='paradigmConsole'></div>
+<style type="text/css">
+    #paradigmConsole {
+        background-color: black; color: #0f0; font-family: monospace, serif; font-size: .9em; margin-left: 0px; 
+        white-space: pre-wrap; overflow: hidden; text-align: left; position: relative
+    } 
+    #paradigm_console {
+        overflow-y: auto;
+    }
+    #paradigm_console_prompt {
+        position: relative; 
+    }
+    #paradigm_console_input {
+        position: relative; border: 1px solid transparent; background-color: #333; color: #0f0; font-family: monospace; text-transform: uppercase; padding: 4px; font-size: 1.2em; margin-bottom: 4px
+    }
+</style>
+<div spellcheck="false" tabindex='0' style='width: 100%; height: 100%; box-sizing: border-box; top: 0px; margin: 0px'  id='paradigmConsole' class='paradigmConsole'
+><div id="paradigm_console"></div><div id="paradigm_console_prompt">Ready</div><input type="text" id="paradigm_console_input" name="paradigm_console_input" value=""  onfocus='Paradigm.console.capture()' onblur='Paradigm.console.release()'/></div>
 <script type='text/javascript'>
-    Paradigm.console.output(Paradigm.console.heading,12,6);
+    Paradigm.console.init(Desktop.window.list['{{ window_id }}']);
 </script>

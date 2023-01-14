@@ -1,7 +1,3 @@
-.paradigmConsole {
-    background-color: black; color: #0f0; font-family: monospace, serif; font-size: .9em; margin-left: 0px; border: 2px solid silver;
-    height: 980px; width: 530px; white-space: pre-wrap; overflow: hidden; text-align: left;
-}
 .glyphDescriptor {
     font-family: sans-serif; font-size: .6em; text-align: center; line-height: 10px
 }

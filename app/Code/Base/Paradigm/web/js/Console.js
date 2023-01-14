@@ -2,10 +2,43 @@
  *  The debug and test console controls are here
  *  --------------------------------------------------------------------*/
 Paradigm.console = (function () {
-    var console_app = false;
+    let console_app     = false;
+    let commands        = [];
+    let messages        = [];
+    let console_command = '';
+    let command_index   = 0;
+    let console_ref     = false;
+    let console_heading = "Humble Paradigm Console\nCopyright 2007-Present\nAll rights reserved\n\n$ Message: Paradigm is Online\n";   
+    let console_output  = false;
+    let console_prompt  = false;
+    let console_input   = false;
     return {
         app: function () {
             return console_app;
+        },
+        ref: function () {
+            return console_ref;
+        },
+        heading: function (){
+            return console_heading;
+        },
+        resize: function () {
+            console_app._resize();
+        },
+        init: function (app) {
+            Paradigm.console.clear();
+            Paradigm.console.output(console_heading,12,6);
+            console_output = $E('paradigm_console');
+            console_prompt = $E('paradigm_console_prompt');
+            console_input  = $E('paradigm_console_input');
+            app._scroll(false);
+            app.resize = function () {
+                if (app.content.offsetHeight) {
+                    $(console_output).height(app.content.offsetHeight - console_prompt.offsetHeight - console_input.offsetHeight);
+                    $(console_output).width(app.content.offsetWidth);
+                    $(console_input).width(app.content.offsetWidth);
+                }
+            }
         },
         service: {
             arguments: [],
@@ -22,7 +55,7 @@ Paradigm.console = (function () {
         initialize:       function () {
             if (!console_app) {
                 console_app = Desktop.semaphore.checkout(true);
-                console_app._title('Console').close = (function (app) {
+                console_app._title('Console')._scroll(false).close = (function (app) {
                     return function () {
                         app.lastState = app.state;
                         app.state = 0;
@@ -30,10 +63,10 @@ Paradigm.console = (function () {
                         return false;
                     }
                 })(console_app);
-                (new EasyAjax('/paradigm/console/init')).then(function (response) {
+                (new EasyAjax('/paradigm/console/init')).add('window_id',console_app.id).then(function (response) {
                     console_app.set(response);
-                    Paradigm.console.ref        = $E('paradigmConsole');
-                    Paradigm.console.ref.style.contentEditable = false;
+                    console_ref = $E('paradigm_console');
+                    console_ref.style.contentEditable = false;
                     console_app._resize();
                 }).get();
             }
@@ -41,211 +74,240 @@ Paradigm.console = (function () {
         view:       function () {
             console_app._reopen();
         },
-        ref:        null,
-        messages:   [],
         active:     false,
-        heading:    "Humble Paradigm Console\nCopyright 2007-Present\nAll rights reserved\n\n$ Message: Paradigm is Online\n",
         text:       "",
         command:    "",
-        commands:   [],
-        currentCommand: 0,
         update: function (evt) {
             var key = evt.keyCode || evt.charCode || evt.which;
             console.log(key);
             switch (key) {
-                case 38     :   Paradigm.console.command = '';
-                                if ((Paradigm.console.commands.length > 0) && (Paradigm.console.currentCommand < Paradigm.console.commands.length) ) {
-                                    Paradigm.console.currentCommand = Paradigm.console.currentCommand-1;
-                                    Paradigm.console.command = Paradigm.console.commands[Paradigm.console.currentCommand];
-                                }
-                                break;
-                case 40     :   Paradigm.console.command = '';
-                                if ((Paradigm.console.commands.length > 0) && (Paradigm.console.currentCommand < Paradigm.console.commands.length) ) {
-                                    Paradigm.console.currentCommand = Paradigm.console.currentCommand+1;
-                                    Paradigm.console.command = Paradigm.console.commands[Paradigm.console.currentCommand];
-                                }
-                                break;
-                case 39     :   //right arrow
-                                break;
-                case 37     :   //left arrow
-                                //break;
-                case 8      :   Paradigm.console.command = Paradigm.console.command.substr(0,Paradigm.console.command.length-1);
-                                break;
+                case 40     :  
+                    console_command = '';
+                    if ((commands.length > 0) && (command_index < commands.length) && (command_index > 0) ) {
+                        command_index = command_index-1;
+                        $(console_input).val(commands[command_index]);
+                    }
+                    break;
+                case 38     : 
+                    if ((commands.length > 0) && (command_index < commands.length) ) {
+                        command_index = command_index+1;
+                        $(console_input).val(commands[command_index]);
+                    } else {
+                        command_index = 0;
+                    }
+                    break;
+                case 39     :   
+                    //right arrow
+                    break;
+                case 37     :
+                case 8      :   
+                    //console_command = console_command.substr(0,console_command.length-1);
+                    break;
                 case 16     :   //shift
-                                break;
+                    break;
                 case 17     :   //ctrl
-                                break;
+                    break;
                 case 18     :   //alt
-                                break;
-                case 13     :   Paradigm.console.process(Paradigm.console.command);
-                                break;
-                default     :   Paradigm.console.command += String.fromCharCode(key);
-                                break;
+                    break;
+                case 13     :   
+                    console.log('doing');
+                    commands[commands.length] = $(console_input).val();
+                    Paradigm.console.process($(console_input).val());
+                    console_input.value = '';
+                    console_input.focus();                    
+                    break;
+                default     :   
+                    console_command += String.fromCharCode(key);
+                    break;
             }
-            $(Paradigm.console.ref).html(Paradigm.console.text+"\n" + Paradigm.console.cursor.text[0] +"\n" + Paradigm.console.command +Paradigm.console.cursor.image);
-            evt.preventDefault();
+            $(console_prompt).html( Paradigm.console.cursor.text[0]);
             evt.stopPropagation();
-            return false;
+            return true;
         },
         process: function (command) {
             var text    = command.substr(command.indexOf(' ')+1);
             if (command.indexOf(' ') != -1) {
                 command = command.substr(0,command.indexOf(' '));
             }
-            Paradigm.console.commands.push(command);
             switch (command.toLowerCase()) {
-                case "time"         :   (new EasyAjax('/paradigm/console/time')).then(function (response) {
-                                            Paradigm.console.add(response,'',1);
-                                        }).post();
-                                        break;
-                case "status"       :   (new EasyAjax('/paradigm/console/status')).then(function (response) {
-                                            Paradigm.console.add(response,'',1);
-                                        }).post();
-                                        break;
+                case "time" :
+                    (new EasyAjax('/paradigm/console/time')).then(function (response) {
+                        Paradigm.console.add(response,'',1);
+                    }).post();
+                    break;
+                case "status" :   
+                    (new EasyAjax('/paradigm/console/status')).then(function (response) {
+                        Paradigm.console.add(response,'',1);
+                    }).post();
+                    break;
                 case "cls"          :
-                case "clear"        :   Paradigm.console.text = '';
-                                        Paradigm.console.reply('Buffer Cleared','',1);
-                                        break;
+                case "clear"        :   
+                    Paradigm.console.text = '';
+                    Paradigm.console.reply('Buffer Cleared','',1);
+                    break;
                 case "inspect"      :
-                                        break;
-                case "whoami"       :   (new EasyAjax('/paradigm/console/whoami')).then(function (response) {
-                                            Paradigm.console.reply(response,'',1);
-                                        }).post();
-                                        break;
-                case "search"       :   Paradigm.console.add(command + ' '+text+'\n','',1);
-                                        (new EasyAjax('/paradigm/console/search')).add('term',text).then(function (response) {
-                                            Paradigm.console.reply(response,'',1);
-                                        }).post();
-                                        break;
-                case "init"         :   Paradigm.console.service.init();
-                                        Paradigm.console.add('Data cleared','',1);
-                                        break;
-                case "save"         :   Paradigm.actions.save();
-                                        break;
-                case "activate"     :   (new EasyAjax('/paradigm/workflow/activate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then(function (response) {
-                                            Paradigm.console.add(response,'',1);
-                                        }).post();
-                                        break;
-                case "id"           :   if (Paradigm.actions.get.mongoWorkflowId()) {
-                                            Paradigm.console.add('Workflow Id: '+Paradigm.actions.get.mongoWorkflowId(),'',1)
-                                        } else {
-                                            Paradigm.console.add('Unavailable, please generate the workflow to set the Id','',1)
-                                        }
-                                        break;
+                    break;
+                case "whoami"       :
+                    (new EasyAjax('/paradigm/console/whoami')).then(function (response) {
+                        Paradigm.console.reply(response,'',1);
+                    }).post();
+                    break;
+                case "search"       :   
+                    Paradigm.console.add(command + ' '+text+'\n','',1);
+                    (new EasyAjax('/paradigm/console/search')).add('term',text).then(function (response) {
+                        Paradigm.console.reply(response,'',1);
+                    }).post();
+                    break;
+                case "init"         :
+                    Paradigm.console.service.init();
+                    Paradigm.console.add('Data cleared','',1);
+                    break;
+                case "save"         :   
+                    Paradigm.actions.save();
+                    break;
+                case "activate"     :  
+                    (new EasyAjax('/paradigm/workflow/activate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then(function (response) {
+                        Paradigm.console.add(response,'',1);
+                    }).post();
+                    break;
+                case "id"           :   
+                    if (Paradigm.actions.get.mongoWorkflowId()) {
+                        Paradigm.console.add('Workflow Id: '+Paradigm.actions.get.mongoWorkflowId(),'',1)
+                    } else {
+                        Paradigm.console.add('Unavailable, please generate the workflow to set the Id','',1)
+                    }
+                    break;
                 case "deactivate"   :
-                case "inactivate"   :   (new EasyAjax('/paradigm/workflow/inactivate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then(function (response) {
-                                            Paradigm.console.add(response,'',1);
-                                        }).post();
-                                        break;
-                case "load"         :   Paradigm.actions.list();
-                                        break;
-                case "target"       :   Paradigm.console.service.url = text;
-                                        Paradigm.console.add('target=['+text+']','',1);
-                                        break;
-                case "format"       :   Paradigm.console.service.format = text;
-                                        Paradigm.console.add('format=['+text+']','',1);
-                                        break;
-                case "method"       :   Paradigm.console.service.method = text.toLowerCase();
-                                        Paradigm.console.add('method=['+text.toLowerCase()+']','',1);
-                                        break;
-                case "arg"          :   var sep = text.indexOf('=');
-                                        Paradigm.console.service.arguments[text.substr(0,sep)]=text.substr(sep+1);
-                                        Paradigm.console.reply('v=['+text.substr(0,sep)+'='+text.substr(sep+1)+']','',1);
-                                        break;
-                case "show"         :   switch (text.toLowerCase()) {
-                                            case "target"   :
-                                                Paradigm.console.reply(Paradigm.console.service.url,'',1);
-                                                break;
-                                            case "args" :
-                                                for (var i in Paradigm.console.service.arguments) {
-                                                    Paradigm.console.reply(i+'='+Paradigm.console.service.arguments[i],'',1);
-                                                }
-                                                break;
-                                            case "format" :
-                                                Paradigm.console.add(Paradigm.console.service.format,'',1);
-                                                break;
-                                        }
-                                        break;
-                case "run"          :   if (Paradigm.console.service.format == 'json') {
-                                            var ao = new EasyAjax(Paradigm.console.service.url);
-                                            ao.setQueryString(JSON.stringify(Paradigm.console.service.arguments));
-                                            ao.then(function (response) {
-                                                var winId = Desktop.semaphore.checkout();
-                                                var win   = Desktop.window.list[winId];
-                                                win.content.style.overflow = 'auto';
-                                                win._title('OUTPUT | Paradigm');
-                                                win.set('<textarea width="100%" height="100%">'+response+'</textarea>');
-                                                win._open();
-                                            });
-                                            switch (Paradigm.console.service.method) {
-                                                case 'get'  :   ao.get();
-                                                                break;
-                                                case 'post' :   ao.post();
-                                                                break;
-                                                case 'put'  :   ao.put();
-                                                                break;
-                                                default     :   Paradigm.console.reply('Unknown method: ['+Paradigm.console.service.method+']','',0);
-                                                                break;
-                                            }
-                                        } else {
-                                            var ao = new EasyAjax(Paradigm.console.service.url);
-                                            ao.addRequestParameters(Paradigm.console.service.arguments)
-                                            ao.then(function (response) {
-                                                var winId = Desktop.semaphore.checkout();
-                                                var win   = Desktop.window.list[winId];
-                                                win._title('OUTPUT | Paradigm');
-                                                win.content.style.overflow = 'auto';
-                                                win.set('<textarea width="100%" height="100%">'+response+'</textarea>');
-                                                win._open();
-                                            });
-                                            switch (Paradigm.console.service.method) {
-                                                case 'get'  :   ao.get();
-                                                                break;
-                                                case 'post' :   ao.post();
-                                                                break;
-                                                case 'put'  :   ao.put();
-                                                                break;
-                                                default     :   Paradigm.console.reply('Unknown method: ['+Paradigm.console.service.method+']','',0);
-                                                                break;
-                                            }
-                                        }
-                                        break;
+                case "inactivate"   :   
+                    (new EasyAjax('/paradigm/workflow/inactivate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then(function (response) {
+                        Paradigm.console.add(response,'',1);
+                    }).post();
+                    break;
+                case "load"         :   
+                    Paradigm.actions.list();
+                    break;
+                case "target"       :  
+                    Paradigm.console.service.url = text;
+                    Paradigm.console.add('target=['+text+']','',1);
+                    break;
+                case "format"       :
+                    Paradigm.console.service.format = text;
+                    Paradigm.console.add('format=['+text+']','',1);
+                    break;
+                case "method"       :   
+                    Paradigm.console.service.method = text.toLowerCase();
+                    Paradigm.console.add('method=['+text.toLowerCase()+']','',1);
+                    break;
+                case "arg"          :   
+                    var sep = text.indexOf('=');
+                    Paradigm.console.service.arguments[text.substr(0,sep)]=text.substr(sep+1);
+                    Paradigm.console.reply('v=['+text.substr(0,sep)+'='+text.substr(sep+1)+']','',1);
+                    break;
+                case "show"         :  
+                    switch (text.toLowerCase()) {
+                        case "target"   :
+                            Paradigm.console.reply(Paradigm.console.service.url,'',1);
+                            break;
+                        case "args" :
+                            for (var i in Paradigm.console.service.arguments) {
+                                Paradigm.console.reply(i+'='+Paradigm.console.service.arguments[i],'',1);
+                            }
+                            break;
+                        case "format" :
+                            Paradigm.console.add(Paradigm.console.service.format,'',1);
+                            break;
+                    }
+                    break;
+                case "run"          :   
+                    if (Paradigm.console.service.format == 'json') {
+                        var ao = new EasyAjax(Paradigm.console.service.url);
+                        ao.setQueryString(JSON.stringify(Paradigm.console.service.arguments));
+                        ao.then(function (response) {
+                            var winId = Desktop.semaphore.checkout();
+                            var win   = Desktop.window.list[winId];
+                            win.content.style.overflow = 'auto';
+                            win._title('OUTPUT | Paradigm');
+                            win.set('<textarea width="100%" height="100%">'+response+'</textarea>');
+                            win._open();
+                        });
+                        switch (Paradigm.console.service.method) {
+                            case 'get'  :   ao.get();
+                                            break;
+                            case 'post' :   ao.post();
+                                            break;
+                            case 'put'  :   ao.put();
+                                            break;
+                            default     :   Paradigm.console.reply('Unknown method: ['+Paradigm.console.service.method+']','',0);
+                                            break;
+                        }
+                    } else {
+                        var ao = new EasyAjax(Paradigm.console.service.url);
+                        ao.addRequestParameters(Paradigm.console.service.arguments)
+                        ao.then(function (response) {
+                            var winId = Desktop.semaphore.checkout();
+                            var win   = Desktop.window.list[winId];
+                            win._title('OUTPUT | Paradigm');
+                            win.content.style.overflow = 'auto';
+                            win.set('<textarea width="100%" height="100%">'+response+'</textarea>');
+                            win._open();
+                        });
+                        switch (Paradigm.console.service.method) {
+                            case 'get'  :   ao.get();
+                                            break;
+                            case 'post' :   ao.post();
+                                            break;
+                            case 'put'  :   ao.put();
+                                            break;
+                            default     :   Paradigm.console.reply('Unknown method: ['+Paradigm.console.service.method+']','',0);
+                                            break;
+                        }
+                    }
+                    break;
                 case "generate"     :
-                                        break;
+                    break;
                 case "validate"     :
-                                        break;
-                case "list"         :   switch (text.toLowerCase()) {
-                                            case "objects"      :
-                                                                    break;
-                                            case "workflows"    :
-                                                                    break;
-                                            case "mine"         :   //all workflows I am the owner of
-                                                                    break;
-                                        }
-                                        break;
+                    break;
+                case "list"         :   
+                    switch (text.toLowerCase()) {
+                        case "objects"      :
+                                                break;
+                        case "workflows"    :
+                                                break;
+                        case "mine"         :   //all workflows I am the owner of
+                                                break;
+                    }
+                    break;
+                case "history" :
+                    for (var i=0; i<commands.length; i++) {
+                        Paradigm.console.reply((''+i).padStart(3,'0')+' '+commands[i]);
+                    }
+                    break;
                 case "sync"         :   //updates the webservice_workflows table with the current workflow_id
-                                        break;
+                    break;
                 case "info"         :   //lists information about the current workflow
-                                        break;
-                default             :   Paradigm.console.add('Unknown command: <i>'+command+'</i>','',1);
-                                        break;
+                    break;
+                default             :   
+                    Paradigm.console.add('Unknown command: <span style="color: red; font-style: italic">'+command+'</span>','',1);
+                    break;
             }
-            Paradigm.console.command = '';
         },
         capture: function () {
-            Desktop.off(Paradigm.console.app().content,'keydown',Paradigm.remove);
-            Desktop.on(Paradigm.console.app().content,'keydown',Paradigm.console.update);
+            Desktop.off(console_input,'keydown',Paradigm.remove);
+            Desktop.on(console_input,'keydown',Paradigm.console.update);
+            return true;
         },
         release: function () {
-            Desktop.off(Paradigm.console.app().content,'keydown',Paradigm.console.update);
-            Desktop.on(Paradigm.console.app().content,'keydown',Paradigm.remove);
+            Desktop.off(console_input,'keydown',Paradigm.console.update);
+            Desktop.on(console_input,'keydown',Paradigm.remove);
+            return true;
         },
         cursor: {
             text: ["READY",">Working...",">Loading...",">Saving...",">Printing...",">Generating...",">Initializing..."],
             image: "<img src='/images/paradigm/clipart/blinking_cursor.gif' />"
         },
         clear:  function () {
-            $(Paradigm.console.ref).html(Paradigm.console.heading+Paradigm.console.cursor.text[0]+Paradigm.console.cursor.image);
+            $(console_prompt).html(Paradigm.console.cursor.text[0]);
+            $(console_ref).html(console_heading+'\n'+Paradigm.console.cursor.image);
             Paradigm.console.text = '';
         },
         add: function (message,token,cursor) {
@@ -257,7 +319,7 @@ Paradigm.console = (function () {
                     speed: 8,
                     cursor: cursor
                 }
-                Paradigm.console.messages.push(m);
+                messages.push(m);
             } else {
                 Paradigm.console.active = true;
                 Paradigm.console.type(message,8,cursor);
@@ -273,7 +335,7 @@ Paradigm.console = (function () {
                     speed: 8,
                     cursor: cursor
                 }
-                Paradigm.console.messages.push(m);
+                messages.push(m);
             } else {
                 Paradigm.console.active = true;
                 Paradigm.console.type(message,8,cursor);
@@ -289,7 +351,7 @@ Paradigm.console = (function () {
                     speed: 8,
                     cursor: cursor
                 }
-                Paradigm.console.messages.push(m);
+                messages.push(m);
             } else {
                 Paradigm.console.active = true;
                 Paradigm.console.type(message,8,cursor);
@@ -304,7 +366,7 @@ Paradigm.console = (function () {
                     speed: speed,
                     cursor: cursor
                 }
-                Paradigm.console.messages.push(m);
+                messages.push(m);
             } else {
                 Paradigm.console.active = true;
                 Paradigm.console.type(message,speed,cursor);
@@ -316,29 +378,34 @@ Paradigm.console = (function () {
             cursor      = (cursor) ? cursor : 0;
             speed       = (speed) ? speed: 20;
             var char    = message.substr(0,1);
-            var cursorT = Paradigm.console.cursor.text[+cursor];
             message     = message.substr(1);
+            if (char=='<') {
+                let x = message.indexOf('>');
+                if (x != -1) {
+                    char += message.substr(0,x);
+                    message = message.substr(x);
+                }
+            }
             var delay   = (char=="\n") ? (speed*10) : speed;
             Paradigm.console.text = Paradigm.console.text+char;
-            $(Paradigm.console.ref).html(Paradigm.console.text+Paradigm.console.cursor.image+'\n'+cursorT);
+            $(console_prompt).html(Paradigm.console.cursor.text[cursor]);
+            $(console_ref).html(Paradigm.console.text+Paradigm.console.cursor.image+'\n');
             if (message) {
                 var fun = function () {
                     Paradigm.console.type(message,speed,cursor);
                 };
                 window.setTimeout(fun,delay);
             } else {
-                var m = Paradigm.console.messages.pop();
+                var m = messages.pop();
                 if (m) {
                     Paradigm.console.type(m.message,m.speed,m.cursor);
                 } else {
                     Paradigm.console.active = false;
-                    $(Paradigm.console.ref).html(Paradigm.console.text+"\n" + Paradigm.console.cursor.text[0] +"\n" + Paradigm.console.cursor.image);
+                    $(console_prompt).html(Paradigm.console.cursor.text[0]);
+                    $(console_ref).html(Paradigm.console.text+"\n" +"\n" + Paradigm.console.cursor.image);
                     $('#paradigmConsole').focus();
                 }
             }
-        },
-        init: function () {
-            Paradigm.console.clear();
         }
     }
 })();

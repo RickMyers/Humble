@@ -106,31 +106,18 @@ class Data extends Helper
      */
     public function search() {
         if ($json = json_decode($this->dictionaryDefinition(),true)) {
-            if (isset($json['suggestion'])) {
-                $this->setSuggestions($json['suggestion']);
-            } else {
-                foreach ($json as $entry => $data) {
-                    if (isset($data['shortdef'])) {
-                        $text = '';
-                        foreach ($data['shortdef'] as $def) {
-                            $text .= ($text) ? ' / '.$def : $def;
-                        }
-                        $this->setText($text);
-                    }
-                }
-/*                $xml    = (string)substr($xml,strpos($xml,'<entry '));
-                $xml    = substr($xml,0,strpos($xml,'</entry>')+8);
+            $text = '';
+            foreach ($json as $entry => $data) {
+                if (isset($data['shortdef'])) {
 
-                $this->setOriginalTerm($this->extractTag($xml,'ew'));
-                $this->setRootWord($this->extractTag($xml,'hw'));
-                $this->setFirstUsed($this->extractTag($xml,'date'));
-                $this->setPronunciation($this->extractTag($xml,'pr'));
-                $this->setWordType($this->extractTag($xml,'fl'));
-                $this->setWordOrigin($this->extractTag($xml,'et'));
-                $this->setText($this->translateDefinition($this->extractTag($xml,'def')));
-                $this->setSynonyms($this->extractTag($xml,'pt'));
-                $this->setEnunciation($this->extractTag($xml,'wav'));
-                $this->setOrly($this->extractTag($xml,'uro'));*/
+                    foreach ($data['shortdef'] as $def) {
+                        $text .= ($text) ? ' / '.$def : $def;
+                    }
+                    $this->setText($text);
+                }
+            }
+            if (!$text) {
+                $this->setSuggestions(implode('/',$json));
             }
         } else {
             $this->setText("No Data");

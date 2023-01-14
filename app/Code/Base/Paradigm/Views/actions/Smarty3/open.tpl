@@ -692,7 +692,7 @@ Copyright humbleprogramming.com, all rights reserved
                                    </li>
                                    <li class='humble-menu-has-sub '><a href='#' onclick="return false"><span>Console</span></a>
                                       <ul>
-                                         <li class='humble-menu-has-sub '><a href='#' onclick="Paradigm.console.view(); return false"><span>View</span></a>
+                                         <li class='humble-menu-has-sub '><a href='#' onclick="Paradigm.console.view(); Paradigm.console.resize(); return false"><span>View</span></a>
                                          </li>
                                          <li class='humble-menu-has-sub '><a href='#' onclick="return false"><span><hr /></span></a></li>
                                          <li class='humble-menu-has-sub '><a href='#' onclick="return false"><span>Activate</span></a>
