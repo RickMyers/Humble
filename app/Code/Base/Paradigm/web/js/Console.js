@@ -12,6 +12,11 @@ Paradigm.console = (function () {
     let console_output  = false;
     let console_prompt  = false;
     let console_input   = false;
+    let console_text    = '';
+    let console_cmd     = false;
+    function updateResponse(response) {
+        return ((console_command) ? console_command+'\n' : '')+response;
+    }
     return {
         app: function () {
             return console_app;
@@ -31,12 +36,13 @@ Paradigm.console = (function () {
             console_output = $E('paradigm_console');
             console_prompt = $E('paradigm_console_prompt');
             console_input  = $E('paradigm_console_input');
+            console_cmd    = $E('paradigm_console_cmd');
             app._scroll(false);
             app.resize = function () {
                 if (app.content.offsetHeight) {
-                    $(console_output).height(app.content.offsetHeight - console_prompt.offsetHeight - console_input.offsetHeight);
+                    $(console_output).height(app.content.offsetHeight - console_prompt.offsetHeight - console_input.offsetHeight-2);
                     $(console_output).width(app.content.offsetWidth);
-                    $(console_input).width(app.content.offsetWidth);
+                    $(console_input).width(app.content.offsetWidth - console_cmd.offsetWidth-10);
                 }
             }
         },
@@ -57,8 +63,8 @@ Paradigm.console = (function () {
                 console_app = Desktop.semaphore.checkout(true);
                 console_app._title('Console')._scroll(false).close = (function (app) {
                     return function () {
-                        app.lastState = app.state;
-                        app.state = 0;
+                        app.lastState           = app.state;
+                        app.state               = 0;
                         app.frame.style.display = "none";
                         return false;
                     }
@@ -68,6 +74,7 @@ Paradigm.console = (function () {
                     console_ref = $E('paradigm_console');
                     console_ref.style.contentEditable = false;
                     console_app._resize();
+                    console_input.focus();
                 }).get();
             }
         },
@@ -79,10 +86,9 @@ Paradigm.console = (function () {
         command:    "",
         update: function (evt) {
             var key = evt.keyCode || evt.charCode || evt.which;
-            console.log(key);
+
             switch (key) {
                 case 40     :  
-                    console_command = '';
                     if ((commands.length > 0) && (command_index < commands.length) && (command_index > 0) ) {
                         command_index = command_index-1;
                         $(console_input).val(commands[command_index]);
@@ -110,8 +116,7 @@ Paradigm.console = (function () {
                 case 18     :   //alt
                     break;
                 case 13     :   
-                    console.log('doing');
-                    commands[commands.length] = $(console_input).val();
+                    console_command = commands[commands.length] = $(console_input).val();
                     Paradigm.console.process($(console_input).val());
                     console_input.value = '';
                     console_input.focus();                    
@@ -120,7 +125,7 @@ Paradigm.console = (function () {
                     console_command += String.fromCharCode(key);
                     break;
             }
-            $(console_prompt).html( Paradigm.console.cursor.text[0]);
+            $(console_prompt).html(Paradigm.console.cursor.text[0]);
             evt.stopPropagation();
             return true;
         },
@@ -132,24 +137,24 @@ Paradigm.console = (function () {
             switch (command.toLowerCase()) {
                 case "time" :
                     (new EasyAjax('/paradigm/console/time')).then(function (response) {
-                        Paradigm.console.add(response,'',1);
+                        Paradigm.console.add(updateResponse(response),'',1);
                     }).post();
                     break;
                 case "status" :   
                     (new EasyAjax('/paradigm/console/status')).then(function (response) {
-                        Paradigm.console.add(response,'',1);
+                        Paradigm.console.add(updateResponse(response),'',1);
                     }).post();
                     break;
                 case "cls"          :
                 case "clear"        :   
-                    Paradigm.console.text = '';
+                    console_text = '';
                     Paradigm.console.reply('Buffer Cleared','',1);
                     break;
                 case "inspect"      :
                     break;
                 case "whoami"       :
                     (new EasyAjax('/paradigm/console/whoami')).then(function (response) {
-                        Paradigm.console.reply(response,'',1);
+                        Paradigm.console.reply(updateResponse(response),'',1);
                     }).post();
                     break;
                 case "search"       :   
@@ -167,7 +172,7 @@ Paradigm.console = (function () {
                     break;
                 case "activate"     :  
                     (new EasyAjax('/paradigm/workflow/activate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then(function (response) {
-                        Paradigm.console.add(response,'',1);
+                        Paradigm.console.add(updateResponse(response),'',1);
                     }).post();
                     break;
                 case "id"           :   
@@ -180,7 +185,7 @@ Paradigm.console = (function () {
                 case "deactivate"   :
                 case "inactivate"   :   
                     (new EasyAjax('/paradigm/workflow/inactivate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then(function (response) {
-                        Paradigm.console.add(response,'',1);
+                        Paradigm.console.add(updateResponse(response),'',1);
                     }).post();
                     break;
                 case "load"         :   
@@ -290,6 +295,7 @@ Paradigm.console = (function () {
                     Paradigm.console.add('Unknown command: <span style="color: red; font-style: italic">'+command+'</span>','',1);
                     break;
             }
+            console_ref.scrollTo(0,console_ref.scrollHeight);
         },
         capture: function () {
             Desktop.off(console_input,'keydown',Paradigm.remove);
@@ -306,9 +312,10 @@ Paradigm.console = (function () {
             image: "<img src='/images/paradigm/clipart/blinking_cursor.gif' />"
         },
         clear:  function () {
+            console_command = '';            
             $(console_prompt).html(Paradigm.console.cursor.text[0]);
             $(console_ref).html(console_heading+'\n'+Paradigm.console.cursor.image);
-            Paradigm.console.text = '';
+            console_text = '';
         },
         add: function (message,token,cursor) {
             cursor = (cursor) ? cursor : 0;
@@ -328,7 +335,7 @@ Paradigm.console = (function () {
         },
         reply: function (message,token,cursor) {
             cursor = (cursor) ? cursor : 0;
-            message = ">"+message.replace('&text&',token)+"\n";
+            message = "$ "+message.replace('&text&',token)+"\n";
             if (Paradigm.console.active) {
                 var m = {
                     message: message,
@@ -372,7 +379,6 @@ Paradigm.console = (function () {
                 Paradigm.console.type(message,speed,cursor);
             }
             return;
-
         },
         type: function (message,speed,cursor) {
             cursor      = (cursor) ? cursor : 0;
@@ -387,9 +393,9 @@ Paradigm.console = (function () {
                 }
             }
             var delay   = (char=="\n") ? (speed*10) : speed;
-            Paradigm.console.text = Paradigm.console.text+char;
+            console_text = console_text+char;
             $(console_prompt).html(Paradigm.console.cursor.text[cursor]);
-            $(console_ref).html(Paradigm.console.text+Paradigm.console.cursor.image+'\n');
+            $(console_ref).html(console_text+Paradigm.console.cursor.image+'\n');
             if (message) {
                 var fun = function () {
                     Paradigm.console.type(message,speed,cursor);
@@ -402,9 +408,12 @@ Paradigm.console = (function () {
                 } else {
                     Paradigm.console.active = false;
                     $(console_prompt).html(Paradigm.console.cursor.text[0]);
-                    $(console_ref).html(Paradigm.console.text+"\n" +"\n" + Paradigm.console.cursor.image);
-                    $('#paradigmConsole').focus();
+                    $(console_ref).html(console_text+"\n"+ Paradigm.console.cursor.image);
+                    $('#paradigm_console_input').focus();
                 }
+            }
+            if (console_ref) {
+                console_ref.scrollTo(0,console_ref.scrollHeight);
             }
         }
     }

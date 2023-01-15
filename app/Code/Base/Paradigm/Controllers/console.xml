@@ -31,7 +31,6 @@
             <helper namespace='paradigm' class='data' id='data'>
                 <parameter name='term' value='term' source='post' default='stupid' />
             </helper>
-
         </action>
 
     </actions>
