@@ -279,20 +279,15 @@
          * @return \Code\Base\Humble\Models\MongoDB
          */
         public static function getCollection($identifier) {
+            $identifier = self::parseResource($identifier);
             $instance   = null;
-            $entity     = explode('/',$identifier);
-            if (count($entity) === 1) {
-                $entity[]  = $entity[0];
-                $entity[0] = self::_namespace();
-            }
-            $module     = self::getModule($entity[0]);
-            if ($module) {
+            if ($module = self::getModule($identifier['namespace'])) {
                 if ($module['mongodb']) {
                     $instance   = new \Code\Base\Humble\Models\Mongo($module['mongodb']);
-                    if (isset($entity[1])) {
-                        $instance->_collection($entity[1]);
+                    if (isset($identifier['resource'])) {
+                        $instance->_collection(str_replace('/','_',$identifier['resource']));
                     }
-                    $instance->_namespace($entity[0]);
+                    $instance->_namespace($identifier['namespace']);
                 }
             }
             return $instance;

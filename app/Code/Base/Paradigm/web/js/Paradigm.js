@@ -743,7 +743,9 @@ var Paradigm = (function () {
             }
         },
         /*  --------------------------------------------------------------------
-         *
+         *  You just clicked on the canvas... this goes through all the elements
+         *  within the canvas trying to determine in 3 dimensions which element
+         *  you most likely clicked on
          *  --------------------------------------------------------------------*/
         selected: function (evt) {
             var candidates  = [];
@@ -860,7 +862,7 @@ var Paradigm = (function () {
                     zIndex      = Paradigm.elements.list[candidates[i]].Z;
                 }
             }
-            return candidate;
+            return Paradigm.console.select(candidate);
         },
         /*  --------------------------------------------------------------------
          *  Draws the connector points on the current element

@@ -14,6 +14,8 @@ Paradigm.console = (function () {
     let console_input   = false;
     let console_text    = '';
     let console_cmd     = false;
+    let console_element = false;
+    let console_test    = false;
     function updateResponse(response) {
         return ((console_command) ? console_command+'\n' : '')+response;
     }
@@ -29,6 +31,13 @@ Paradigm.console = (function () {
         },
         resize: function () {
             console_app._resize();
+        },
+        select: function (candidate) {
+            if (candidate) {
+                console_element = Paradigm.elements.list[candidate];
+                Paradigm.console.reply('Selected '+console_element.label+':'+console_element.id+'['+console_element.text+']','',1);
+            }
+            return candidate;
         },
         init: function (app) {
             Paradigm.console.clear();
@@ -135,6 +144,23 @@ Paradigm.console = (function () {
                 command = command.substr(0,command.indexOf(' '));
             }
             switch (command.toLowerCase()) {
+                case "new"  :
+                    switch (text.toLowerCase()) {
+                        case 'test' :
+                            if (console_element) {
+                                (new EasyAjax('/paradigm/test/init')).add('component_id',console_element.id).then(function (response) {
+                                    console_test = JSON.parse(response);
+                                    console.log(console_test);
+                                }).post();
+                            } else {
+                                Paradigm.console.add(updateResponse("No element selected"),'',1)
+                            }
+                            break;
+                        default :
+                            Paradigm.console.add(updateResponse("I don't know how to do that"),'',1);
+                            break;
+                    } 
+                    break;
                 case "time" :
                     (new EasyAjax('/paradigm/console/time')).then(function (response) {
                         Paradigm.console.add(updateResponse(response),'',1);
@@ -335,7 +361,7 @@ Paradigm.console = (function () {
         },
         reply: function (message,token,cursor) {
             cursor = (cursor) ? cursor : 0;
-            message = "$ "+message.replace('&text&',token)+"\n";
+            message = "> "+message.replace('&text&',token)+"\n";
             if (Paradigm.console.active) {
                 var m = {
                     message: message,
@@ -351,7 +377,7 @@ Paradigm.console = (function () {
         },
         error: function (message,token,cursor) {
             cursor = (cursor) ? cursor : 0;
-            message = "$ <span style='color: red'>"+message.replace('&text&',token)+"</span>\n";
+            message = "> <span style='color: red'>"+message.replace('&text&',token)+"</span>\n";
             if (Paradigm.console.active) {
                 var m = {
                     message: message,

@@ -49,6 +49,8 @@ class Model implements HumbleComponent
     protected           $_encrypt       = false;   
     protected           $_iv            = 'Humble Framework';                   //Default initialization vector, see 'Securing Your Application' video for ways to improve this
     protected           $_RPC           = true;   /* Enhanced "get" feature is turned on */
+    protected           $_DEBUG         = true;
+    protected           $_REPORT        = [];
 
     public function __construct()    {
         $this->_isWindows = (strncasecmp(PHP_OS, 'WIN', 3) === 0);
@@ -115,6 +117,17 @@ class Model implements HumbleComponent
      */
     public function camelCaseToUnderscore($string='',$make_lower_case=true) {
         return $make_lower_case ? strtolower(trim(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $string))): trim(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $string));
+    }
+    
+    /**
+     * Adds arbitrary information to the debug report
+     * 
+     * @param type $data
+     * @return $this
+     */
+    private function addToDebugReport($data=[]) {
+        $this->_REPORT = array_merge($this->_REPORT,$data);
+        return $this;
     }
     
     /**
@@ -364,6 +377,12 @@ class Model implements HumbleComponent
                 $protocol = 'http';
             }
         }
+        if ($this->_DEBUG) {
+            $this->addToDebugReport([
+                'URL' => $URL, 'authorization' => $auth, 'protocol' => $protocol, 'session_control' => $sessionControl
+            ]);
+        }
+
         if ($api_var && $api_key) {
             $args[$api_var] = $api_key;
         }
@@ -407,13 +426,26 @@ class Model implements HumbleComponent
             $parms = ($content) ? '?'.$content : '';
         }
 
+        //print_r($opts);die();
         $context = stream_context_create($opts);
         $hurl    = $URL.$parms;
         $fp      = fopen($hurl, 'rb', false, $context);
+        if ($this->_DEBUG) {
+            $this->addToDebugReport([
+                'context' => $opts,
+                'complete_URL' => $hurl
+            ]);
+        }
+        
         stream_set_timeout($fp,60000);
 
         if ($fp) {
             $res = stream_get_contents($fp);
+            if ($this->_DEBUG) {
+                $this->addToDebugReport([
+                    'response' => $res
+                ]);
+            }
         } else {
             \Log::error("Unable to connect: ".$URL."\nArguments:\n".print_r($args,true));
         }
@@ -421,6 +453,9 @@ class Model implements HumbleComponent
         if ($sessionControl) {
             session_id($args['sessionId']);
             session_start();
+        }
+        if ($this->_DEBUG) {
+            Log::general($this->_REPORT);
         }
 	return $res;
     }
@@ -719,6 +754,14 @@ SOAP;
             if (isset(\Singleton::mappings()[$name])) {
                 $retval  = false;                                               //RPC call found, so we set default return value to false
                 $call    = $this->processSecrets(\Singleton::mappings()[$name]);
+                if ($this->_DEBUG) {
+                    $this->addToDebugReport([
+                        'call' => [
+                            'original' => \Singleton::mappings()[$name],
+                            'processed' => $call
+                        ]
+                    ]);
+                }
                 $args    = [];
                 if (isset($call['authentication'])) {
                     switch (strtoupper($call['authentication'])) {
