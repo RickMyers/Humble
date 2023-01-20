@@ -49,7 +49,7 @@ class Model implements HumbleComponent
     protected           $_encrypt       = false;   
     protected           $_iv            = 'Humble Framework';                   //Default initialization vector, see 'Securing Your Application' video for ways to improve this
     protected           $_RPC           = true;   /* Enhanced "get" feature is turned on */
-    protected           $_DEBUG         = true;
+    protected           $_DEBUG         = false;
     protected           $_REPORT        = [];
 
     public function __construct()    {
@@ -754,7 +754,7 @@ SOAP;
             if (isset(\Singleton::mappings()[$name])) {
                 $retval  = false;                                               //RPC call found, so we set default return value to false
                 $call    = $this->processSecrets(\Singleton::mappings()[$name]);
-                if ($this->_DEBUG) {
+                if ($this->_DEBUG = (isset($call['DEBUG']) && ($call['DEBUG']===true))) {
                     $this->addToDebugReport([
                         'call' => [
                             'original' => \Singleton::mappings()[$name],
