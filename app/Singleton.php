@@ -28,6 +28,11 @@ class Singleton
     private static $translationTable = null;
     private static $mappings         = [];
     private static $things           = [];
+    private static $messages = [];
+    private static $errors   = [];
+    private static $warnings = [];
+    private static $alerts   = [];
+
 
     /**
      *
@@ -112,8 +117,7 @@ class Singleton
     /**
      *
      */
-    public static function getUpdater()
-    {
+    public static function getUpdater() {
         if (!isset(self::$updater)) {
             self::$updater = new \Code\Base\Humble\Helpers\Updater();
         }
@@ -121,10 +125,9 @@ class Singleton
     }
 
     /**
-     *
+     *  @TODO:  Determine if this is obsolete... 
      */
-    public static function getHelper($base,$name='Data')
-    {
+    public static function getHelper($base,$name='Data')    {
         //hit namespace for helper location.... then go after it
         if (!isset(self::$helper[$name])) {
             $helperClass = $base.'_'.$name.'.php';
@@ -161,10 +164,13 @@ class Singleton
     }
 
     /**
-     *
+     * Allows you to override a value in the Settings class
+     * 
+     * @param type $node
+     * @param type $values
+     * @return type
      */
-    public static function setSettings($node,$values=array())
-    {
+    public static function setSettings($node,$values=array())  {
         return self::$settings[$node] = $values;
     }
 
@@ -188,10 +194,71 @@ class Singleton
     }
 
     /**
+     * Stores a normal message
+     * 
+     * @param string $message
+     * @return $this
+     */
+    public static function log($message=false) {
+        if ($message) {
+            self::$messages[] = (is_object($message)) ? print_r($message,true) : $message;
+        } else {
+            $messages         = self::$messages;                                        //so we only return the messages once on first class destruct
+            self::$messages   = [];
+            return $messages;
+        }
+    }
+
+    /**
+     * Stores an error message
+     * 
+     * @param string $message
+     * @return $this
+     */
+    public function error($message=false) {
+        if ($message) {
+            self::$errors[] = (is_object($message)) ? print_r($message,true) : $message;
+        } else {
+            $messages       = self::$errors;                                        //so we only return the messages once on first class destruct
+            self::$errors  = [];
+            return $messages;
+        }
+    }
+    
+    /**
+     * Stores a warning message
+     * 
+     * @param string $message
+     * @return $this
+     */
+    public function warn($message=false) {
+        if ($message) {
+            self::$warnings[] = (is_object($message)) ? print_r($message,true) : $message;
+        } else {
+            $messages       = self::$warnings;                                        //so we only return the messages once on first class destruct
+            self::$warnings = [];
+            return $messages;
+        }
+    }
+    
+    /**
+     * Stores a message meant for an alert prompt
+     * 
+     * @param string $message
+     * @return $this
+     */
+    public function alert($message=false) {
+        if ($message) {
+            self::$alerts[] = (is_object($message)) ? print_r($message,true) : $message;
+        } else {
+            $messages       = self::$alerts;                                        //so we only return the messages once on first class destruct
+            self::$alerts   = [];
+            return $messages;
+        }
+    }        
+    /**
      *
      */
     public function __clone()        {        }
     public function __wakeup()       {        }
 }
-
-?>

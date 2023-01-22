@@ -1,11 +1,10 @@
 <?php
 namespace Code\Base\Humble\Helpers;
 use Humble;
+use Singleton;
 /**   
  *
- * General data helper
- *
- * Some useful functions for managing data
+ * Sends data to the browser console.  To prevent it from possibly sending data more than once, we are using the Singleton manager to handle the data.
  *
  * PHP version 7.2+
  *
@@ -21,11 +20,6 @@ use Humble;
 class Console 
 {
 
-    private $messages = [];
-    private $errors   = [];
-    private $warnings = [];
-    private $alerts   = [];
-    
     /**
      * Constructor
      */
@@ -33,33 +27,34 @@ class Console
     }
 
     /**
-     * If there were any messages we send them back to the requester in the response header
+     * If there were any messages we send them back to the requester in the response header upon instance destruction
      */
     public function __destruct() {
         $list = "";
-        if (!(php_sapi_name() === 'cli')) {
-            foreach ($this->messages as $message) {
-                $list .= (($list)?",":"").'"'.addslashes($message).'"';
+        if (!(php_sapi_name() === 'cli')) { 
+            foreach (Singleton::log() as $message) {
+                $list .= (($list)?",":"").'"'.addslashes(str_replace(['\n','\r'],['',''],$message)).'"';
             }
+
             if ($list) {
                 header('Messages: ['.$list.']');
             }
             $list = '';
-            foreach ($this->errors as $error) {
+            foreach (Singleton::error() as $error) {
                 $list .= (($list)?",":"").'"'.addslashes($error).'"';
             }
             if ($list) {
                 header('Errors: ['.$list.']');
             }
             $list = "";
-            foreach ($this->warnings as $warning) {
+            foreach (Singleton::warn() as $warning) {
                 $list .= (($list)?",":"").'"'.addslashes($warning).'"';
             }
             if ($list) {
                 header('Warnings: ['.$list.']');
             }
             $list = "";
-            foreach ($this->alerts as $alert) {
+            foreach (Singleton::alert() as $alert) {
                 $list .= (($list)?",":"").'"'.addslashes($alert).'"';
             }
             if ($list) {
@@ -84,9 +79,7 @@ class Console
      * @return $this
      */
     public function log($message=false) {
-        if ($message) {
-            $this->messages[] = (is_object($message)) ? print_r($message,true) : $message;
-        }
+        Singleton::log($message);
         return $this;
     }
 
@@ -97,9 +90,7 @@ class Console
      * @return $this
      */
     public function error($message=false) {
-        if ($message) {
-            $this->errors[] = (is_object($message)) ? print_r($message,true) : $message;
-        }
+        Singleton::error($message);
         return $this;
     }
     
@@ -110,23 +101,19 @@ class Console
      * @return $this
      */
     public function warn($message=false) {
-        if ($message) {
-            $this->warnings[] = (is_object($message)) ? print_r($message,true) : $message;
-        }
+        Singleton::warn($message);
         return $this;        
     }
     
     /**
-     * Stores a warning message
+     * Stores a message meant for an alert prompt
      * 
      * @param string $message
      * @return $this
      */
     public function alert($message=false) {
-        if ($message) {
-            $this->alerts[] = (is_object($message)) ? print_r($message,true) : $message;
-        }
-        return $this;        
-    }    
+        Singleton::alert($message);
+        return $this;
+    }      
 }
 
