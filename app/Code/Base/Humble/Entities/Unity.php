@@ -97,8 +97,8 @@ class Unity extends \Code\Base\Humble\Models\Model
     public function clean()  {
         $this->_decrypt     = false;
         $this->_encrypt     = false;
-        $this->_keys        = [];
-        $this->_columns     = [];
+        //$this->_keys        = [];
+       // $this->_columns     = [];
         $this->_fields      = [];
         $this->_orderBy     = [];
         $this->_groupBy     = [];
@@ -113,8 +113,8 @@ class Unity extends \Code\Base\Humble\Models\Model
      */
     public function reset()  {
         $this->clean();
-        $this->loadEntityKeys();
-        $this->loadEntityColumns();
+        //$this->loadEntityKeys();
+        //$this->loadEntityColumns();
         return $this;
     }
     

@@ -460,7 +460,7 @@ class Event  {
      * @return string
      */
     public function lastError() {
-        return (($this->_errors) ? $this->_errors(count($this->_errors)-1) : null);
+        return (($this->_errors) ? $this->_errors[count($this->_errors)-1] : null);
     }
 
     /**

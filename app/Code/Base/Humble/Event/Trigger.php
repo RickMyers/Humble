@@ -88,7 +88,7 @@ class Trigger  {
                 include($source);
                 $ok = $ok && $workflowRC;
             } else {
-                $this->_errors('The source file for workflow '.$source.' was not found');
+                $this->_error('The source file for workflow '.$source.' was not found');
             }
             $EVENT->_workflowStatus($workflowRC);
             $EVENT->close();
@@ -109,7 +109,7 @@ class Trigger  {
             if (count(Humble::getEntity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true))) {
                 $handled = $this->runWorkflow($diagram,clone $cleanEvent);
                 if ($cancelBubble) {
-                    $this->_errors('bubbling was canceled');
+                    $this->_error('bubbling was canceled');
                     break;  //time to exit! No more workflow processing
                 }
             }
@@ -138,10 +138,10 @@ class Trigger  {
         Humble::getEntity('paradigm/event/log')->setEvent($eventName)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
         if ($cleanEvent) {
             $handled = false;
-            foreach (Humble::getEntity('paradigm/workflow/listeners')->setNamespace($this->_namespace())->setMethod($eventName)->fetch() as $diagram) {
+            foreach (Humble::getEntity('paradigm/workflow/listeners')->setNamespace($this->_namespace())->setMethod($eventName)->setActive('Y')->fetch() as $diagram) {
                 $handled = $this->runWorkflow($diagram,$cleanEvent);
                 if ($cancelBubble) {
-                    $this->_errors('bubbling was canceled');
+                    $this->_error('bubbling was canceled');
                     break;  //time to exit! No more workflow processing
                 }
             }
@@ -151,7 +151,7 @@ class Trigger  {
                     if (count(Humble::getEntity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true))) {
                         $handled = $this->runWorkflow($diagram,$cleanEvent);
                         if ($cancelBubble) {
-                            $this->_errors('bubbling was canceled');
+                            $this->_error('bubbling was canceled');
                             break;  //time to exit! No more workflow processing
                         }
                     }

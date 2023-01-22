@@ -53,7 +53,7 @@ class Admin extends Model
                 foreach (Humble::getEntity($namespace.'/'.$entity['entity'])->_polyglot('Y')->fetch() as $row) {
                     $data[] = $row;
                 }
-                $archive->addFromString($entity['entity'].'.json',json_encode($data));
+                $archive->addFromString($entity['entity'].'.json',json_encode($data,JSON_PRETTY_PRINT));
             }
             $archive->close();
             header('Content-Type: application/zip');
