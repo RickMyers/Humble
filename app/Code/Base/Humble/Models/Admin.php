@@ -48,7 +48,7 @@ class Admin extends Model
             @mkdir('export',0775); 
             $file = $namespace.'_'.date('Ymd_His').'.zip';
             $archive->open('export/'.$file,\ZipArchive::CREATE);
-            foreach (Humble::getEntity('humble/entities')->setNamespace($namespace)->fetch() as $entity) {
+            foreach (Humble::getEntity('humble/entities')->setNamespace($namespace)->fetch(true) as $entity) {
                 $data = [];
                 foreach (Humble::getEntity($namespace.'/'.$entity['entity'])->_polyglot('Y')->fetch() as $row) {
                     $data[] = $row;

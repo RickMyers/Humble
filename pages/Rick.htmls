@@ -30,7 +30,7 @@ after having been selected to go through their intense "New Recruit Development"
 </div>
 
 <p>
-In April 1995 I brought up my first web server, but there was a catch.  This web server was running on an IBM Mainframe under something at the time called OpenMVS, but later was renamed UNIX System Services.  It was a POSIX compliant UNIX, however,
+In April 1995 I brought up my first web server, but there was a catch.  This web server was running on an IBM Mainframe under something at the time called OpenEdition MVS, but later was renamed UNIX System Services.  It was a POSIX compliant UNIX, however,
 it was based on EBCDIC and not ASCII.  From that time until 1999 I spent a lot of time webifying legacy mainframe "green screen" applications with great success.   In 1999 my work got the attention of a company out of Chicago who then presented
 me with the classic "offer that I couldn't refuse" and convinced me to leave GTEDS for "greener" pastures with them.  This would be my first experience with a start-up and was 100% remote work requiring regular travel.  This stint only lasted about
 six months, after it was clear they were not going to honor their original offer.
