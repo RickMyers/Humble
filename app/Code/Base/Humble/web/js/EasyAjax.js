@@ -1,7 +1,6 @@
 function $import(jsScriptPath)  { var script = document.createElement("script"); script.type = "text/javascript"; script.src = jsScriptPath; document.getElementsByTagName("head")[0].appendChild(script); }
 function $E(objID)              { if (typeof(objID)=="string") return document.getElementById(objID);	else return objID; }
 /* Main AJAX Class  ************************************************************************************ */
-window.console = (window.console) ? window.console : { log: function (what) { if (window.console.active) alert(what); }, warn: function (what) { if (window.console.active) alert(what); }, error: function (what) { if (window.console.active) alert(what); }, info: function (what) { if (window.console.active) alert(what); } };
 function EasyAjax(targetUrl) {
     var me = this;
     if (!targetUrl) {
@@ -112,7 +111,7 @@ EasyAjax.prototype.addModel     = function (model) {
     return this;
 }
 /* ----------------------------------------------------------------- */
-EasyAjax.prototype.addFiles= function(key,fileField) {
+EasyAjax.prototype.addFiles     = function(key,fileField) {
     if (fileField && fileField.files) {
         if (!this.formData) {
             this.formData = new FormData();
@@ -386,25 +385,27 @@ EasyAjax.prototype.packageEdits = function (edits) {
 }
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.packageForm = function(formName,edits) {
-    var form = $E(formName);
+    var form = $E(formName); var name = '';
     if (form) {
         for (var j=0; j < form.length; j++) {
             var field = form[j];
             if ((!field.id) || (!field.name)) {
                 continue;
             }
+            name = (field.name) ? field.name : field.id;
             if (field.type == 'file') {
-                this.addFiles(field.name,$E(field.id));
+                this.addFiles(name,$E(field.id));
             } else {
                 var val = this.getValue(field);
                 if (val !== null) {
-                    this.add(field.name, this.getValue(field));
+                    this.add(name, val);
                 }
             }
         }
     }
     return this;
 };
+EasyAjax.addForm = EasyAjax.packageForm;            //renaming
 /* Private methods ************************************************************************************ */
 EasyAjax.ajaxHandler = function(cleanAjaxObj) {
     if ((cleanAjaxObj.xmlHttp.readyState === 4) || (cleanAjaxObj.xmlHttp.readyState === "complete")) {
