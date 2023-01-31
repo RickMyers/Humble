@@ -62,7 +62,6 @@
                 <event_log />
                 <export_targets />
                 <import_sources />
-                <import_tokens />
                 <job_queue />
                 <method_listeners />
                 <scheduler_log />

@@ -20,7 +20,7 @@ interface HumbleComponent {
  *
  * The main class of the Humble Framework, it enforces the conventions as defined.
  *
- * PHP version 5.6+
+ * PHP version 7.2+
  *
  * LICENSE:
  *
@@ -48,7 +48,7 @@ class Model implements HumbleComponent
     protected           $_decrypt       = false;
     protected           $_encrypt       = false;   
     protected           $_iv            = 'Humble Framework';                   //Default initialization vector, see 'Securing Your Application' video for ways to improve this
-    protected           $_RPC           = true;   /* Enhanced "get" feature is turned on */
+    protected           $_RPC           = true;                                 // Enhanced "smart-endpoint" feature is turned on 
     protected           $_DEBUG         = false;
     protected           $_REPORT        = [];
 
@@ -269,7 +269,15 @@ class Model implements HumbleComponent
      * @param string $password To conduct a basic validation
      * @return string The body of the response from the remote resource
      */
-	protected function _curl($URL,$args,$method="POST",$secure=false,$userid=false,$password=false)	{
+    protected function _curl($call,$args,$secure=false,$userid=false,$password=false)	{
+        $URL            = $this->substitute($call['url'],array_merge($_REQUEST,$args));
+        $api_var        = (isset($call['api-var']) && $call['api-var']) ? $call['api-var'] : false;
+        $api_key        = (isset($call['api-key']) && $call['api-key']) ? $call['api-key'] : false;        
+        $method         = isset($call['method']) ? strtoupper($call['method']) : 'POST';
+        $res            = null; $opts = []; $parms = '';
+        $auth           = ($userid && $password) ? array("Authorization"=> ["Basic" => base64_encode($userid.":".$password)]) : [];
+        $protocol       = ($secure) ? 'ssl' : 'http';
+        $sessionControl = isset($this->_data['sessionId']) || ((isset($call['blocking']) && (!$call['blocking'])));  //do I need to suspend the current session to give access to the session during the remote call
             
         //--> USE HURL INSTEAD... 
         if (substr($URL,0,4)!=='http') {
@@ -294,10 +302,16 @@ class Model implements HumbleComponent
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.12011-10-16");
 
+        
         if ($method == "POST"){
-                // send via POST instead of GET
-                curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            if (isset($call['format']) && (strtoupper($call['format'])=='JSON')) {
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($args));
+            } else {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($args,'','&'));
+            }
+
         }
 
         if ($userid && $password){
@@ -327,7 +341,6 @@ class Model implements HumbleComponent
         /*maybe?*/
 //      curl_setopt($ch, CURLOPT_FAILONERROR, true);
 //      curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-
         $res 	= curl_exec($ch);
     	$info 	= curl_getinfo($ch);
 
@@ -350,7 +363,7 @@ class Model implements HumbleComponent
      * @return string
      */
     protected function _hurl($URL,$args,$call,$secure=false,$userid=false,$password=false)	{
-        $URL            = $this->substitute($URL,$args);
+        $URL            = $this->substitute($call['url'],array_merge($_REQUEST,$args));
         $api_var        = (isset($call['api-var']) && $call['api-var']) ? $call['api-var'] : false;
         $api_key        = (isset($call['api-key']) && $call['api-key']) ? $call['api-key'] : false;        
         $method         = isset($call['method']) ? strtoupper($call['method']) : 'POST';
@@ -784,13 +797,12 @@ SOAP;
                         $userid = (isset($call['userid'])   && $call['userid'])     ? $call['userid']   : false;
                         $passwd = (isset($call['password']) && $call['password'])   ? $call['password'] : false;
                         $secure = (isset($call['secure'])   && $call['secure'])     ? $call['secure']   : false;
-                        //$retval = $this->_curl($call['url'],$args,$call['method'],$secure,$userid,$passwd);
                         if (isset($call['cache'])) {
                             if ($retval = $this->pullFromCache($this->_namespace(),$name,$args)) {
                                 return $retval;                                 //this ain't the way m8
                             }
                         }
-                        $retval = $this->_hurl($call['url'],$args,$call,$secure,$userid,$passwd);  //going to use _hurl until curl starts working again
+                        $retval = (isset($call['CURL']) && ($call['CURL'])) ? $this->_curl($call,$args,$secure,$userid,$passwd) : $this->_hurl($call['url'],$args,$call,$secure,$userid,$passwd);
                         if (isset($call['cache'])) {
                             $this->pushToCache($this->_namespace(),$name,$args,$call['cache'],$retval);
                         }
