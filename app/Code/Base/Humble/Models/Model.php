@@ -607,7 +607,7 @@ SOAP;
         if (isset($call['arguments']) && $call['arguments']) {
             foreach ($call['arguments'] as $var => $val) {
                 if (!is_numeric($var)) {
-                    if (trim($val) != '') {
+                    if ($val && (trim($val) != '')) {
                         $args[$var] = $val;
                     } else {
                         $method = 'get'.(($cc) ? $this->underscoreToCamelCase($var,true) : ucfirst($var));

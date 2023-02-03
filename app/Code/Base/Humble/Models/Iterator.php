@@ -75,15 +75,16 @@ class Iterator extends Model implements \Iterator, \Countable
     /**
      * Back to the beginning of the array
      */
-    public function rewind() {
+    public function rewind() : void {
         $this->position = 0;
     }
 
     /**
      * Returns the current element of the array, and if translation is requested, then each field is returned as a custom Humble string object
      *
-     * @return type
+     * @return  #[\ReturnTypeWillChange]
      */
+    
     public function current() {
         $record = null;
         if ($this->translate) {
@@ -99,16 +100,20 @@ class Iterator extends Model implements \Iterator, \Countable
         }
         return $record;
     }
-
+    
+    /**
+     * 
+     * @return #[\ReturnTypeWillChange]
+     */
     public function key() {
         return $this->position;
     }
 
-    public function next() {
+    public function next() : void {
         ++$this->position;
     }
 
-    public function valid() {
+    public function valid() : bool {
         return isset($this->array[$this->position]);
     }
 
@@ -120,7 +125,7 @@ class Iterator extends Model implements \Iterator, \Countable
         return json_encode($this->array);
     }
 
-    public function count($mode=0) {
+    public function count($mode=0) : int {
         return count($this->array,$mode);
     }
 

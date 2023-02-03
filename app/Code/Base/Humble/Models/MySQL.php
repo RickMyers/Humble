@@ -62,6 +62,7 @@ class MySQL  {
             \Log::mysql($errorstring);
             $this->_connected = false;
         } else {
+            mysqli_report(MYSQL_REPORT_OFF);
             @ $this->_dbref->select_db($this->_environment->getDatabase());
             if ($this->_dbref->sqlstate != "00000")	{
                 $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";

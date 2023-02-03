@@ -125,7 +125,7 @@ class Users extends Entity
      * @return array
      */
     public function information($id=false) {
-        $id      = ($id!==false) ? $id : ($this->getId() ? $this->getId() : ($this->getUid())?$this->getUid() : false);
+        $id      = ($id!==false) ? $id : (($this->getId() ? $this->getId() : (($this->getUid()) ? $this->getUid() : false)));
         $results = [];
         if ($id !== false) {
             $query = <<<SQL

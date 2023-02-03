@@ -838,7 +838,7 @@ TXT;
             }
         }
         //Now add manifest file in the form of a git ignore...
-        $ignore = array_merge(['/images/*','/app/allowed.json','/app/Constants.php','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
+        $ignore = array_merge(['Docs/*','/images/*','/app/allowed.json','/app/Constants.php','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
         $zip->addFromString('.gitignore',implode("\n",$ignore));
         //$zip->addFromString('.manifest',implode("\n",$content['xref']));
         $zip->close();
@@ -901,7 +901,8 @@ TXT;
         file_put_contents('distro_'.$version.'/humble.zip',file_get_contents($project['framework_url'].'/distro/fetch'));                                               //Download the current source base
         $changed    = []; $insertions = []; $source = []; $contents = []; $ignore = []; $merge = []; $matched = 0;
         $distro     = new ZipArchive();
-        if ($distro->open('distro_'.$version.'/humble.zip')) {
+        $dist_file = 'distro_'.$version.'/humble.zip';
+        if ($distro->open($dist_file)) {
             for ($i=0; $i< $distro->numFiles; $i++) {
                 $contents[] = $distro->getNameIndex($i);
             }
@@ -925,6 +926,7 @@ TXT;
             }
         }
         performCoreUpdate($distro,$changed,$insertions,$matched,$ignore,$merge,$app,$version);
+        @unlink($dist_file);
     }
     //--------------------------------------------------------------------------
     function patchFrameworkCore() {
