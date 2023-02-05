@@ -165,6 +165,83 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
+        <action name='targets' passalong='window_id'>
+            <description>A list of export targets</description>
+            <entity namespace='paradigm' class='export/targets' id='targets' orderby='alias=asc'>
+            </entity>            
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='sources' passalong='window_id'>
+            <description>A list of export targets</description>
+            <entity namespace='paradigm' class='import/sources' id='sources'>
+            </entity>            
+        </action>
+                                
+        <!-- ############################################################### -->
+        
+        <action name='exporthome' passalong='window_id'>
+            <description>A list of import/export sources and their associated security keys</description>
+            <entity namespace='paradigm' class='import/sources' id='sources'>
+            </entity>            
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name='deletetarget'>
+            <description>Removes an export target</description>
+            <entity namespace='paradigm' class='export/targets' method='delete'>
+                <parameter name='id' value='token_id' required='true' source='post' />
+            </entity>
+            <chain>
+                <action name='targets' />
+            </chain>        
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name='updatetoken'>
+            <description>Updates the value of an export target security token</description>
+            <entity namespace='paradigm' class='export/targets' method='save'>
+                <parameter name='id'    value='token_id' required='true' source='post' />
+                <parameter name='token' required='true' source='post' />
+            </entity>
+            <chain>
+                <action name='targets' />
+            </chain>        
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='newexport' passalong='window_id'>
+            <description>Adds a new export target</description>
+            <entity namespace='paradigm' class='export/targets' method='save'>
+                <parameter name='target' value='export_url'   source='post' required='true' />
+                <parameter name='alias' value='export_alias' source='post' required='true' />
+                <parameter name='token' source='post' required='true' />
+            </entity>    
+            <chain>
+                <action name='targets' />
+            </chain>        
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='newimport' passalong='window_id'>
+            <description>Adds a new import source</description>
+            <entity namespace='paradigm' class='import/sources' method='save'>
+                <parameter name='source' value='import_url'   source='post' required='true' />
+                <parameter name='alias'  value='import_alias' source='post' required='true' />
+                <parameter name='token'  source='post' required='true' />
+            </entity>    
+            <chain>
+                <action name='sources' />
+            </chain>        
+        </action>
+                                
+        <!-- ############################################################### -->
+
         <action name="sync" event="workflowsSynced" comment="An inventory of workflows have been synced">
             <description>Will sync the remote workflows to the local repository</description>
             <entity namespace="humble" class="user_permissions" method="load" id="permissions">

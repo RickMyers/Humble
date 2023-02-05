@@ -88,6 +88,8 @@
                 <system>Paradigm/web/edits/system.json</system>
                 <token>Paradigm/web/edits/token.json</token>
                 <target>Paradigm/web/edits/target.json</target>
+                <targets>Paradigm/web/edits/targets.json</targets>
+                <sources>Paradigm/web/edits/sources.json</sources>
             </edits>
             <apptest>
                 <js>

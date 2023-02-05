@@ -643,6 +643,8 @@ Copyright humbleprogramming.com, all rights reserved
                                                 {if ($permissions->getAdmin() == "Y")}
                                                 <li class='humble-menu-has-sub '><a href='#' onclick="Paradigm.actions.sync(); return false"><span>Sync</span></a>
                                                 </li>
+                                                <li class='humble-menu-has-sub '><a href='#' onclick="Paradigm.actions.workflows.manage(); return false"><span>Manage...</span></a>
+                                                </li>                                                
                                                 {/if}
                                             </ul>
                                          </li>

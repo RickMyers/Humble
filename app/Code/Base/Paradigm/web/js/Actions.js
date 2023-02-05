@@ -7,6 +7,7 @@ Paradigm.actions = (function () {
     var loadWindow          = false;
     var newDiagramWindow    = false;
     var generateWindow      = false;
+    var manageWindow        = false;
     var diagramTitle        = '';
     var diagramDescription  = '';
     var currentDiagramId    = '';   //MySQL auto increment Id
@@ -53,6 +54,15 @@ Paradigm.actions = (function () {
                 }
             }
             })(),
+        workflows: {
+            manage: function () {
+                let win = (manageWindow) ? manageWindow : (mangeWindow = Desktop.semaphore.checkout(true));
+                win._static(true)._title('Manage Destinations');
+                (new EasyAjax('/paradigm/workflow/exporthome')).add('window_id',win.id).then(function (response) {
+                    win._open(response);
+                }).post();
+            }
+        },
         get: {
             majorVersion: function () {
                 return major_version;

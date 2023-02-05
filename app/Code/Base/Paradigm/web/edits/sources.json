@@ -1,0 +1,70 @@
+({
+    form:
+    {
+        id: 		"import_export_sources_form",
+        drawme:		false,
+        action:		"",
+        onload:         function () {
+            
+        },
+        method:		"post",
+        style:		"",
+        onenterkey:	"send"
+    },
+    fields:
+    [
+        {
+            active:	    true,
+            id: 	    "import_alias",
+            longname:	    "Alias",
+            title:	    "Alias for environment to export to",
+            type:           "text",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:	   "width: 125px; border: 1px solid #aaf; padding: 3px; border-radius: 3px; color: #222"
+        },
+        {
+            active:	    true,
+            id: 	    "import_url",
+            longname:	    "URL",
+            title:	    "URL of the environment to export to",
+            type:           "text",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:	   "width: 225px; border: 1px solid #aaf; padding: 3px; border-radius: 3px; color: #222"
+        },
+        {
+            active:	    true,
+            id: 	    "token",
+            longname:	    "Security Token",
+            title:	    "Security Token From The Export Environment",
+            type:           "text",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:	   "width: 225px; border: 1px solid #aaf; padding: 3px; border-radius: 3px; color: #222"
+        },        
+        {
+            active:	    true,
+            id: 	    "new_import_button",
+            longname:	    "New Import Source",
+            title:	    "Click to create a new environment to import from",
+            type:           "button",
+            classname:      "",
+            onclick:        function () {
+                if (Edits['import-sources'].validate()) {
+                    if (confirm("Create new export target?\n\nA Security Token will be automatically generated")) {
+                        (new EasyAjax('/paradigm/workflow/newimport')).packageForm('import_export_sources_form').then(function (response) {
+                            $('#paradigm_manage_sources').html(response);
+                        }).post();
+                    }
+                }
+            },
+            style:	    "color: #222; background-color: silver; border-radius: 2px; padding: 2px"
+        }        
+        
+    ]
+})
+
