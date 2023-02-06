@@ -3,7 +3,7 @@
         height: 16px; cursor: pointer
     }
     .source-token {
-        border: 1px solid #333; color: #333; background-color: lightcyan; padding: 2px
+        border: 1px solid #333; color: #333; background-color: lightcyan; padding: 2px; width: 225px
     }
     #import-export-sources-form th {
         text-align: left; font-weight: bolder;
@@ -21,7 +21,7 @@
         {foreach from=$sources->fetch() item=source}
         <tr style="background-color: rgba(202,202,202,{cycle values=".1,.3"})">
             <td><img src='/images/paradigm/clipart/red-x.png' class='source-delete' token_id='{$source.id}' /></td>
-            <td>{$source.name}</td>
+            <td>{$source.alias}</td>
             <td>{$source.source}</td>
             <td><input type="text" token_id="{$source.id}" class="source-token" value="{$source.token}" /></td>
         </tr>
@@ -40,17 +40,20 @@
         new EasyEdits('/edits/paradigm/sources','import-sources');
         $('.source-token').on('change',function (evt) {
             let token_id = evt.target.getAttribute('token_id');
-            alert(token_id);
             if (confirm('Update Security Token For That Source?')) {
-                
+                (new EasyAjax('/paradigm/workflow/updatesourcetoken')).add('token_id',token_id).add('token',$(evt.target).val()).then(function (response) {
+                    $('#paradigm_manage_sources').html(response)
+                }).post(); 
             }
         });
         $('.source-delete').on('click',function (evt) {
             let token_id = evt.target.getAttribute('token_id');
             if (confirm('Delete That Import Source?')) {
+                (new EasyAjax('/paradigm/workflow/deletesourcetoken')).add('token_id',token_id).then(function (response) {
+                    $('#paradigm_manage_sources').html(response)
+                }).post(); 
                 
             }
-            alert(token_id);
         });        
     })();
 </script>

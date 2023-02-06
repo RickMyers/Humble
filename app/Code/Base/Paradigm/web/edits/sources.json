@@ -37,7 +37,7 @@
         },
         {
             active:	    true,
-            id: 	    "token",
+            id: 	    "import_token",
             longname:	    "Security Token",
             title:	    "Security Token From The Export Environment",
             type:           "text",
@@ -55,11 +55,9 @@
             classname:      "",
             onclick:        function () {
                 if (Edits['import-sources'].validate()) {
-                    if (confirm("Create new export target?\n\nA Security Token will be automatically generated")) {
-                        (new EasyAjax('/paradigm/workflow/newimport')).packageForm('import_export_sources_form').then(function (response) {
-                            $('#paradigm_manage_sources').html(response);
-                        }).post();
-                    }
+                    (new EasyAjax('/paradigm/workflow/newimport')).packageForm('import_export_sources_form').then(function (response) {
+                        $('#paradigm_manage_sources').html(response);
+                    }).post();
                 }
             },
             style:	    "color: #222; background-color: silver; border-radius: 2px; padding: 2px"

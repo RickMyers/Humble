@@ -201,6 +201,18 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <!-- ############################################################### -->
 
+        <action name='deletesourcetoken'>
+            <description>Removes an import source</description>
+            <entity namespace='paradigm' class='import/sources' method='delete'>
+                <parameter name='id' value='token_id' required='true' source='post' />
+            </entity>
+            <chain>
+                <action name='sources' />
+            </chain>        
+        </action>
+                
+        <!-- ############################################################### -->
+
         <action name='updatetoken'>
             <description>Updates the value of an export target security token</description>
             <entity namespace='paradigm' class='export/targets' method='save'>
@@ -212,6 +224,18 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             </chain>        
         </action>
 
+        <!-- ############################################################### -->
+
+        <action name='updatesourcetoken'>
+            <description>Updates the value of a source security token</description>
+            <entity namespace='paradigm' class='import/sources' method='save'>
+                <parameter name='id'    value='token_id' required='true' source='post' />
+                <parameter name='token' required='true' source='post' />
+            </entity>
+            <chain>
+                <action name='sources' />
+            </chain>        
+        </action>
         <!-- ############################################################### -->
 
         <action name='newexport' passalong='window_id'>
@@ -233,7 +257,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <entity namespace='paradigm' class='import/sources' method='save'>
                 <parameter name='source' value='import_url'   source='post' required='true' />
                 <parameter name='alias'  value='import_alias' source='post' required='true' />
-                <parameter name='token'  source='post' required='true' />
+                <parameter name='token'  value='import_token' source='post' default='' />
             </entity>    
             <chain>
                 <action name='sources' />

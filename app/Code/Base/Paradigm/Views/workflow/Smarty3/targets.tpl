@@ -1,6 +1,6 @@
 <style type="text/css">
     .target-delete {
-        height: 16px
+        height: 16px; cursor: pointer
     }
     .target-token {
         border: 1px solid #333; color: #333; background-color: lightcyan; padding: 2px; width: 300px; font-family: monospace
