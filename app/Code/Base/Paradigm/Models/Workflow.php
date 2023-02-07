@@ -53,11 +53,11 @@ class Workflow extends Model
             $this->_namespace($this->exporter->namespace);
         }
         $target = false; $file = false;
-        if ($this->getFile()) {
-            $file = $this->getFile();
-        } else {
-            $target                          = Humble::getEntity('paradigm/export/targets')->setId($this->getDestinationId())->load();
+        if ($file = $this->getFile()) {
+
         }
+            $target                      = Humble::getEntity('paradigm/export/targets')->setId($this->getDestinationId())->load();
+        
         $results                         = [];
         $results[]                       = '#########################################################';
         $results[]                       = 'Beginning Export for '.$this->_namespace();
@@ -99,7 +99,8 @@ class Workflow extends Model
                 ];            
 
                 $this->setWorkflow(json_encode($workflow));
-                $results[] = $this->_hurl($target['target'].'/paradigm/workflow/import',$this->_processArguments($call),$call);
+                
+                //$results[] = $this->_hurl($target['target'].'/paradigm/workflow/import',$this->_processArguments($call),$call);
             } else {
                 header('Content-type: application/json');
                 header('Content-Disposition: attachment; filename="'.$file.'"');

@@ -92,7 +92,7 @@ CREATE TABLE `paradigm_export_targets` (
   `id` int NOT NULL AUTO_INCREMENT,
   `alias` char(32) DEFAULT NULL,
   `target` varchar(255) DEFAULT NULL,
-  `token` varchar(255) DEFAULT NULL,
+  `token` varchar(36) DEFAULT NULL,
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -103,16 +103,7 @@ CREATE TABLE `paradigm_import_sources` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` char(32) DEFAULT NULL,
   `source` varchar(255) DEFAULT '',
-  `token` char(32) DEFAULT 'null' COMMENT 'Security Token',
-  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Table structure for table `paradigm_import_tokens` */
-
-CREATE TABLE `paradigm_import_tokens` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `token` varchar(255) DEFAULT NULL,
+  `token` char(36) DEFAULT 'null' COMMENT 'Security Token',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

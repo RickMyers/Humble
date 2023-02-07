@@ -33,7 +33,7 @@ class Console
         $list = "";
         if (!(php_sapi_name() === 'cli')) { 
             foreach (Singleton::log() as $message) {
-                $list .= (($list)?",":"").'"'.addslashes(str_replace(['\n','\r'],['',''],$message)).'"';
+                $list .= (($list)?",":"").'"'.addslashes(str_replace(["\n","\r"],['',''],$message)).'"';
             }
 
             if ($list) {
@@ -41,21 +41,21 @@ class Console
             }
             $list = '';
             foreach (Singleton::error() as $error) {
-                $list .= (($list)?",":"").'"'.addslashes(str_replace(['\n','\r'],['',''],$error)).'"';
+                $list .= (($list)?",":"").'"'.addslashes(str_replace(["\n","\r"],['',''],$error)).'"';
             }
             if ($list) {
                 header('Errors: ['.$list.']');
             }
             $list = "";
             foreach (Singleton::warn() as $warning) {
-                $list .= (($list)?",":"").'"'.addslashes(str_replace(['\n','\r'],['',''],$warning)).'"';
+                $list .= (($list)?",":"").'"'.addslashes(str_replace(["\n","\r"],['',''],$warning)).'"';
             }
             if ($list) {
                 header('Warnings: ['.$list.']');
             }
             $list = "";
             foreach (Singleton::alert() as $alert) {
-                $list .= (($list)?",":"").'"'.addslashes(str_replace(['\n','\r'],['',''],$alert)).'"';
+                $list .= (($list)?",":"").'"'.addslashes(str_replace(["\n","\r"],['',''],$alert)).'"';
             }
             if ($list) {
                 header('Alerts: ['.$list.']');
