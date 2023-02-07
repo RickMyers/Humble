@@ -215,7 +215,7 @@ class Singleton
      * @param string $message
      * @return $this
      */
-    public function error($message=false) {
+    public static function error($message=false) {
         if ($message) {
             self::$errors[] = (is_object($message)) ? print_r($message,true) : $message;
         } else {
@@ -231,7 +231,7 @@ class Singleton
      * @param string $message
      * @return $this
      */
-    public function warn($message=false) {
+    public static function warn($message=false) {
         if ($message) {
             self::$warnings[] = (is_object($message)) ? print_r($message,true) : $message;
         } else {
@@ -247,7 +247,7 @@ class Singleton
      * @param string $message
      * @return $this
      */
-    public function alert($message=false) {
+    public static function alert($message=false) {
         if ($message) {
             self::$alerts[] = (is_object($message)) ? print_r($message,true) : $message;
         } else {

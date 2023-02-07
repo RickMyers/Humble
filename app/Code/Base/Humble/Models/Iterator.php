@@ -82,9 +82,9 @@ class Iterator extends Model implements \Iterator, \Countable
     /**
      * Returns the current element of the array, and if translation is requested, then each field is returned as a custom Humble string object
      *
-     * @return  #[\ReturnTypeWillChange]
+     * @return  
      */
-    
+    #[\ReturnTypeWillChange]
     public function current() {
         $record = null;
         if ($this->translate) {
@@ -103,8 +103,9 @@ class Iterator extends Model implements \Iterator, \Countable
     
     /**
      * 
-     * @return #[\ReturnTypeWillChange]
+     * @return 
      */
+    #[\ReturnTypeWillChange]
     public function key() {
         return $this->position;
     }
