@@ -1,9 +1,9 @@
 {
     "require": {
         "php": "^7.1",
-        "mongodb/mongodb": "~1.0.5",
-        "smarty/smarty": "3.1.43",
-        "twig/twig": "~1.0",
+        "mongodb/mongodb": "^1.1",
+        "smarty/smarty": "^4.1",
+        "twig/twig": "^1.0",
         "mustache/mustache": "~2.14.1",
         "tinybutstrong/tinybutstrong": "~3.10.1",
         "phptal/phptal": "^1.3",
