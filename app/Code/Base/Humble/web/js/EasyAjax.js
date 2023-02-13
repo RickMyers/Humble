@@ -405,7 +405,7 @@ EasyAjax.prototype.packageForm = function(formName,edits) {
     }
     return this;
 };
-EasyAjax.addForm = EasyAjax.packageForm;            //renaming
+EasyAjax.prototype.addForm = EasyAjax.prototype.packageForm;            //renaming
 /* Private methods ************************************************************************************ */
 EasyAjax.ajaxHandler = function(cleanAjaxObj) {
     if ((cleanAjaxObj.xmlHttp.readyState === 4) || (cleanAjaxObj.xmlHttp.readyState === "complete")) {
