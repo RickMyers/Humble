@@ -14,7 +14,7 @@ function manageView($controller,$templater,$tpl) {
         //$template   = $mustache->loadTemplate($tpl.".mustache");
         $mustache->render($tpl,$models);
     } else {
-        \Log::console('A view for action '.$tpl.' was not found');
+      //  \Log::console('A view for action '.$tpl.' was not found');
     }
 }
 //------------------------------------------------------------------------------------------

@@ -30,4 +30,3 @@ if ($permissions && ($permissions['admin'] == 'Y')) {
     print("Not Authorized");
 }
 
-?>

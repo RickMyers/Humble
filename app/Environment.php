@@ -121,9 +121,9 @@ class Environment {
      * 
      * @return boolean
      */
-    public static function state() {
+    public static function state($dontUseCache=false) {
         if (!self::$application) {
-            self::loadApplicationMetaData();
+            self::loadApplicationMetaData($dontUseCache);
         }
         return isset(self::$application['state']) ?  self::$application['state'] : 'Unknown';
     }
@@ -196,9 +196,9 @@ class Environment {
      * @return \Rain\Tpl
      */
     public static function getInternalTemplater($root='',$extension='rain',$cache=false) {
-        $root = ($root) ? $root : getcwd();
-        $root = (substr($root,-1,1)==='/') ? $root : $root.'/';
-        $cache = ($cache) ? $cache : $root.'cache/';
+        $root   = ($root) ? $root : getcwd();
+        $root   = (substr($root,-1,1)==='/') ? $root : $root.'/';
+        $cache  = ($cache) ? $cache : $root.'cache/';
         $config = array(
             'tpl_dir'   => $root,
             'tpl_ext'   => $extension,
@@ -414,7 +414,7 @@ class Environment {
     }
 
     public static function myIPAddress() {
-        return $_SERVER['SERVER_ADDR'];
+        return isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : 'Unknown';
     }
 
     /**

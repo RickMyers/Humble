@@ -20,7 +20,7 @@ function manageView($controller,$templater,$tpl) {
         $template->display($models);
         unset($loader);
     } else {
-        \Log::console('A view for action '.$tpl.' was not found');
+        // \Log::console('A view for action '.$tpl.' was not found');
     }
 }
 if (!$abort) {

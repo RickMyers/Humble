@@ -724,7 +724,7 @@ SOAP;
             if (is_array($val)) {
                 $call[$key] = $this->processSecrets($val);
             } else {
-                if ($val && (strtolower(substr($val,0,5))==='sm://')) {
+                if (strtolower(substr($val,0,5))==='sm://') {
                     $sm = ($sm) ? $sm : Humble::getEntity('humble/secrets/manager');  //speed up call by only instantiating the orm if a secret is found
                     if ($x = $sm->reset()->setSecretName(substr($val,5))->setNamespace($this->_namespace())->load(true)) {
                         $call[$key] = $sm->decrypt(true)->getSecretValue();
@@ -734,9 +734,41 @@ SOAP;
         }
         return $call;
     }
+
+    /**
+     * We are going to allow alternative values to be specified by putting the [ENVIRONMENT] the option is valid in
+     * 
+     * @param array $call
+     * @return array
+     */
+    protected function processEnvironmentSpecificOptions($call=[]) {
+        $options     = [];
+        foreach ($call as $option => $value) {
+            if (strpos($option,'[')) {
+                $opt            = trim(($parts = explode('[',$option))[0]);
+                $target         = trim(strtoupper((explode(']',$parts[1]))[0]));
+                $options[$opt]  = isset($options[$opt]) ? $options[$opt] : [];
+                $options[$opt][$target] = $value;
+                unset($call[$option]);                                          //We will need to remove this row and then figure out what goes here in the next routine
+            }
+        }
+        if (count($options)) {
+            $environment    = Environment::state();
+            print($environment."\n");
+            foreach ($options as $opt => $variant) {
+                if (isset($variant[$environment])) {
+                    $call[$opt] = $options[$opt][$environment];
+                } else if (isset($variant['DEFAULT'])) {
+                    $call[$opt] = $options[$opt]['DEFAULT'];
+                }
+            }
+        }
+        return $call;
+    }
+
     
     /**
-     * 
+     * Identifies if a call is available and pre-processes the call options
      * 
      * @param type $name
      * @return varied
@@ -766,7 +798,7 @@ SOAP;
             }
             if (isset(\Singleton::mappings()[$name])) {
                 $retval  = false;                                               //RPC call found, so we set default return value to false
-                $call    = $this->processSecrets(\Singleton::mappings()[$name]);
+                $call    = $this->processSecrets($this->processEnvironmentSpecificOptions(\Singleton::mappings()[$name]));
                 if ($this->_DEBUG = (isset($call['DEBUG']) && ($call['DEBUG']===true))) {
                     $this->addToDebugReport([
                         'call' => [
