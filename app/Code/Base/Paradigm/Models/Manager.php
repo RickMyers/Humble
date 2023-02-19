@@ -160,7 +160,8 @@ class Manager extends Model
                      * have access to the shared session variable.
                      */
                     $this->setSessionId(true);  //enable session passing
-                    $config = $this->_hurl($configURL,$args,"POST",true,false,false);
+                    $call = ['method'=>'POST','url'=>$configURL];
+                    $config = $this->_hurl($configURL,$args,$call,true,false,false);
                 }
             } else {
                 /*
@@ -257,4 +258,3 @@ class Manager extends Model
     }
 
 }
-?>
