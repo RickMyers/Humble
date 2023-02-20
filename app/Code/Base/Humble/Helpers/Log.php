@@ -68,7 +68,7 @@ class Log extends Helper
                 $data =  'Log '.'['.$log.']'.$this->logs[$log]. ' does not exist';
             } else {
                 $filesize = filesize($this->logs[$log]);
-                $size     = (($size==='*') ? $filesize : (((int)$size > (int) $filesize) ? $size : $filesize));
+                $size     = (($size==='*') ? $filesize : ((((int)$size > (int) $filesize) ? $size : $filesize)));
                 $size     = $size > 250000 ? 250000 : $size;                    //cap it at 250000
                 $fh       = fopen($this->logs[$log],'r');
                 $data     = fread($fh,$size);
