@@ -255,6 +255,60 @@ class Model implements HumbleComponent
     }
 
     /**
+     * Handy-dandy method for converting a JSON string into an XML string
+     * 
+     * @param type $xml
+     * @param type $elements
+     * @return type
+     */
+    private function arrayToXML($xml,$elements) {
+        foreach ($elements as $key => $value) {
+            if (is_int($key)) {
+                $key = 'Element'.$key;  //To avoid numeric tags like <0></0>
+            }
+            if (is_array($value)) {
+                $xml->addChild($key);
+                $xml = arrayToXML($xml, $value);  //Adds nested elements.
+            } else {
+                $xml->addChild($key, $value);
+            }
+        }
+        return $xml;
+        
+    }
+    /**
+     * Will change from one format to another
+     * 
+     * To allow a custom transformer in the future we should support the following syntax:
+     * 
+     * Future Format
+     *    
+     *    transform : 
+     *       class  : myHelperClass
+     *       method : myTransformMethod
+     * 
+     * @param string $transformer
+     * @param string $result
+     * @return string
+     */
+    private function transformResult($transformer=false,$result=false) {
+        if ($transformer && $result) {
+            switch (strtoupper($transformer)) {
+                case 'XML2JSON' :
+                    $result = json_encode(simplexml_load_string($result));
+                    break;
+                case 'JSON2XML' :
+                    if ($json = json_decode($result,true)) {
+                        $result = $this->arrayToXML($json,new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><root></root>'));
+                    }
+                    break;
+                default         :
+                    break;
+            }
+        }
+        return $result;
+    }
+    /**
      * Constructs a CURL call to access a REST style resource.
      *
      * This method is called with 2 to 5 arguments to access a remote resource. The
@@ -348,7 +402,8 @@ class Model implements HumbleComponent
             session_id($SID);
             session_start();
         }
-	return substr($res, $info['header_size']);
+
+	return isset($call['transform']) ? $this->transformResult($call['transform'],substr($res, $info['header_size'])) : substr($res, $info['header_size']);
     }
 
     /**
@@ -439,7 +494,6 @@ class Model implements HumbleComponent
             $parms = ($content) ? '?'.$content : '';
         }
 
-        //print_r($opts);die();
         $context = stream_context_create($opts);
         $hurl    = $URL.$parms;
         $fp      = fopen($hurl, 'rb', false, $context);
@@ -470,7 +524,7 @@ class Model implements HumbleComponent
         if ($this->_DEBUG) {
             Log::general($this->_REPORT);
         }
-	return $res;
+        return isset($call['transform']) ? $this->transformResult($call['transform'],$res) : $res;
     }
 
     /**
@@ -724,7 +778,7 @@ SOAP;
             if (is_array($val)) {
                 $call[$key] = $this->processSecrets($val);
             } else {
-                if ($val && (strtolower(substr($val,0,5))==='sm://')) {
+                if (strtolower(substr($val,0,5))==='sm://') {
                     $sm = ($sm) ? $sm : Humble::getEntity('humble/secrets/manager');  //speed up call by only instantiating the orm if a secret is found
                     if ($x = $sm->reset()->setSecretName(substr($val,5))->setNamespace($this->_namespace())->load(true)) {
                         $call[$key] = $sm->decrypt(true)->getSecretValue();
