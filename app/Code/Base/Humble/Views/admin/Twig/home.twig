@@ -113,20 +113,6 @@
                        <li class='active'><a href='#'>Places</a>
                           <ul>
                              <li><a target="_BLANK" href='/admin/'>Administration</a></li>
-                             <li><a href='#'>Documentation</a>
-                                <ul>
-                                   <li><a href="#" onclick="Administration.documentation.run(); return false;">Generate API Documentation</a></li>
-                                   <li><a target="_BLANK" href='/internal/docs/'>Developer Documentation</a></li>
-                                   <li><a href='/Docs/' onclick="Administration.documentation.review(); return false;">API Documentation</a></li>
-                                   <li><a target="_BLANK" href='#' onclick=" return false">Administration Documentation</a></li>
-                                </ul>
-                             </li>
-                             <li><a href='#'>Services</a>
-                                <ul>
-                                   <li><a target="_BLANK" href='#' onclick="Administration.services.directory.index(); return false;">Directory</a></li>
-                                   <li><a target="_BLANK" href='/humble/directory/authorizations'>Authorizations</a></li>
-                                </ul>
-                             </li>
                              <li><a target="_BLANK" href='/paradigm/actions/open'>Paradigm Editor</a></li>
                              <li><a target="_BLANK" href='/contrive/actions/open'>Contrive Designer</a></li>
                              <li><a target="_BLANK" href='/paradigm/api/home'>API Test App</a></li>
@@ -135,60 +121,84 @@
 
                           </ul>
                         </li>
-                        <li><a href='#'>Create...</a>
-                            <ul>
-                                <li><a href='#' onclick='Administration.create.package(); return false'>New Package</a></li>
-                                <li><a href='#' onclick='Administration.create.module(); return false'>New Module</a></li>
-                                <li><a href='#' onclick='Administration.create.component(); return false'>New Component</a></li>
-                                <li><a href='#' onclick='Administration.create.controller(); return false'>New Controller</a></li>
-                            </ul>
-                        </li>                        
+                        <li><a href='#'>Documentation</a>
+                           <ul>
+                              <li><a href="#" onclick="Administration.documentation.run(); return false;">Generate API Documentation</a></li>
+                              <li><a target="_BLANK" href='/internal/docs/'>Developer Documentation</a></li>
+                              <li><a href='/Docs/' onclick="Administration.documentation.review(); return false;">API Documentation</a></li>
+                              <li><a target="_BLANK" href='#' onclick=" return false">Administration Documentation</a></li>
+                             <li><a href='#'>Services</a>
+                                <ul>
+                                   <li><a target="_BLANK" href='#' onclick="Administration.services.directory.index(); return false;">Directory</a></li>
+                                   <li><a target="_BLANK" href='/humble/directory/authorizations'>Authorizations</a></li>
+                                </ul>
+                             </li>                              
+                           </ul>
+                        </li>                     
                         <li><a href='#'>Admin</a>
                             <ul>
-                                <li><a href='#' onclick='Administration.add.category(); return false'>Add New Category</a></li>
-                                <li><a href='#' onclick='Administration.add.package(); return false'>Add New Package</a></li>
-                                <li><a href='#' onclick='Administration.admin.add.user(); return false'>Add User</a></li>
-                                <li><a href='#' onclick='Administration.admin.add.list(); return false'>Manage User Lists</a></li>
+                                <li><a href='#'>Create...</a>
+                                    <ul>
+                                        <li><a href='#' onclick='Administration.create.package(); return false'>New Package</a></li>
+                                        <li><a href='#' onclick='Administration.create.module(); return false'>New Module</a></li>
+                                        <li><a href='#' onclick='Administration.create.component(); return false'>New Component</a></li>
+                                        <li><a href='#' onclick='Administration.create.controller(); return false'>New Controller</a></li>
+                                    </ul>
+                                </li>                                   
+                                <li> <a href='#'>Utility/Tool</a>
+                                    <ul>
+                                        <li><a href='#' onclick='Administration.add.category(); return false'>Add New Category</a></li>
+                                        <li><a href='#' onclick='Administration.add.package(); return false'>Add New Package</a></li>
+                                        <li><a href='#' onclick='Administration.admin.add.user(); return false'>Add User</a></li>
+                                        <li><a href='#' onclick='Administration.admin.add.list(); return false'>Manage User Lists</a></li>                                        
+                                        <li><a href="#" onclick='Administration.api.tester(); return false'>API Tester</a></li>                                        
+                                        <li><a href='#' onclick='Administration.templates.clone(); return false'>Clone Templates</a></li>
+                                        <li><a href='#' onclick='Administration.upload.form(); return false'>Upload File</a></li>                                        
+                                    </ul>
+                                </li>
+                               
                                 <li><a href="#">Secrets Manager</a>
                                     <ul>
                                         <li><a href='#' onclick='Administration.secrets.add(); return false'>Add Secret</a></li>
                                         <li><a href='#' onclick='Administration.secrets.review(); return false'>Review Secret</a></li>
                                     </ul>
                                 </li> 
-                                <li><a href="#">Query Logging</a>
-                                    <ul>
-                                        <li><a href='/humble/log/queryon' onclick="window.event.stopPropagation()">On</a></li>
-                                        <li><a href='/humble/log/queryoff' onclick="window.event.stopPropagation()">Off</a></li>
-                                    </ul>
-                                </li> 
-                                <li><a href="#" onclick='Administration.api.tester(); return false'>API Tester</a></li>
-                            </ul>
-                        </li>
-                        <li><a href='#'>Environment</a>
-                            <ul>
                                 <li><a href="#">Workflows</a>
+                                      <ul>
+                                          <li><a href='#' onclick='Administration.workflows.add.exportTarget(); return false'>Add Export Target</a></li>
+                                          <li><a href='#' onclick='Administration.workflows.add.importToken(); return false'>Add Import Token</a></li>
+                                      </ul>
+                                  </li>                                  
+                                <li><a href='#'>Environment</a>
                                     <ul>
-                                        <li><a href='#' onclick='Administration.workflows.add.exportTarget(); return false'>Add Export Target</a></li>
-                                        <li><a href='#' onclick='Administration.workflows.add.importToken(); return false'>Add Import Token</a></li>
+                                          <li><a href="#">Query Logging</a>
+                                            <ul>
+                                                <li><a href='/humble/log/queryon' onclick="window.event.stopPropagation()">On</a></li>
+                                                <li><a href='/humble/log/queryoff' onclick="window.event.stopPropagation()">Off</a></li>
+                                            </ul>
+                                        </li>                                         
+                                        {% if (permissions.getSuperUser() == 'Y') %}
+                                            <li><a href='#'> Maintenance Mode </a>
+                                                <ul>
+                                                    <li><a href='#' onclick='Administration.maintenance.enter(); return false'> Enter </a></li>
+                                                    <li><a href='#' onclick='Administration.maintenance.leave(); return false'> Leave </a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
+                                            <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>
+                                            <li><a href='#' onclick="Administration.module.install(); return false">Install Module</a></li>
+                                            <li><a href='#'>Export Data</a>
+                                                <ul>
+                                                {% for module in available_modules.fetch() %}
+                                                    <li><a href='#' onclick="Administration.module.export('{{ module.namespace }}'); return false">{{ module.module|title }}</a></li>
+                                                {% endfor %}
+                                                </ul>
+                                            </li>
+                                            <li><a href='#' onclick="Administration.module.import('{{ module.namespace }}'); return false">Import Data</a></li>
+                                        {% endif %}
                                     </ul>
-                                </li>  
-                                {% if (permissions.getSuperUser() == 'Y') %}
-                                    <li><a href='#' onclick='Administration.maintenance.enter(); return false'>Enter Maintenance Mode</a></li>
-                                    <li><a href='#' onclick='Administration.maintenance.leave(); return false'>Leave Maintenance Mode</a></li>
-                                    <li><a href='#' onclick='Administration.upload.form(); return false'>Upload File</a></li>
-                                    <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
-                                    <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>
-                                    <li><a href='#' onclick='Administration.templates.clone(); return false'>Clone Templates</a></li>
-                                    <li><a href='#' onclick="Administration.module.install(); return false">Install Module</a></li>
-                                    <li><a href='#'>Export Data</a>
-                                        <ul>
-                                        {% for module in available_modules.fetch() %}
-                                            <li><a href='#' onclick="Administration.module.export('{{ module.namespace }}'); return false">{{ module.module|title }}</a></li>
-                                        {% endfor %}
-                                        </ul>
-                                    </li>
-                                    <li><a href='#' onclick="Administration.module.import('{{ module.namespace }}'); return false">Import Data</a></li>
-                                {% endif %}
+                                </li>
+                                
                             </ul>
                         </li>
 

@@ -28,6 +28,8 @@ $help = <<<HELP
  *      --y, --Y, Compile a controller
  *      --x, --X, Check if a module prefix is available
  *      --a, --A, Remove AUTOINCREMENT=# from SQL dumps
+        --cc, --CC, Create a Controller
+        --cm, --CM, Create a Component (Helper,Model,Entiy)
         --activate      Build, Install, and Enable a module
         --use           Update a module using the relative location of a configuration file [etc=Code/Base/Humble/etc/config.xml]
  *      --adduser       Backend workaround to create a user, parameters are *user_name", "password", and optional "uid"       
@@ -41,8 +43,11 @@ $help = <<<HELP
  */
 HELP;
     if (!class_exists('Humble')) {
+        //let's make sure we only include/define these once
         require_once('Humble.php');
+        require_once("Requires.php");
     }
+    
     //ob_start();
     //--------------------------------------------------------------------------
     //Copied from PHPPro.blog
@@ -997,6 +1002,7 @@ TXT;
         die();
     }
     $args = array_slice($argv,1);
+    prep($args);
     if ($args) {
         if (substr($args[0],0,2) == '--') {
             $cmd = substr($args[0],2);
