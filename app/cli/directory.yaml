@@ -1,0 +1,36 @@
+---
+Workflow : 
+    w : Examines and registers workflow components in a modules models
+    z : Generate Workflows
+Framework : 
+    x : Check if a module prefix is available (deprecated)
+    a : Remove AUTOINCREMENT=# from SQL dumps
+    c : Check for namespace availability
+    p : Preserve a directory
+    r : Restore a directory
+System : 
+    o : Toggles the application online or offline
+    l : Toggle local authentication vs SSO
+    s : Application Status
+Module : 
+    b : Build a new module
+    i : Install a module
+    u : Update a module
+    e : Enable a module
+    d : Disable a module
+    k : Uninstall (Kill) a module        
+Component : 
+    cc : Creates a Controller
+    cm : Creates a Component (Model Helper Entity)
+    y  : Compiles a Controller
+    g  : Generate JSON Edits (Not-Implemented)
+Directives : [
+    activate : Build Install and Enable a Module
+    use : Update a module using the relative location of a configuration file
+    adduser : Create a user in the humble user directory
+    package : Creates a new downloadable archive file of the framework
+    increment : Increments the minor version by 1 rolling over if needed
+    initialize : Initializes a new project based on the Humble Framework
+    export : Exports workflows to a pre-defined server/environment
+    patch : Updates teh Humble Base Framework files with any new updates respecting manifested files
+    sync : Updates the core files
