@@ -1,0 +1,19 @@
+---
+o : 
+    description: Toggles the application online or offline
+    function :
+    parameters:
+        required:
+        optional:
+l : 
+    description: Toggle local authentication vs SSO
+    function :
+    parameters:
+        required:
+        optional:
+s : 
+    description: Application Status
+    function :
+    parameters:
+        required:
+        optional:

@@ -1,0 +1,37 @@
+---
+b : 
+    description: Build a new module
+    function :
+    parameters:
+        required:
+        optional:          
+i : 
+    description: Install a module
+    function :
+    parameters:
+        required:
+        optional:          
+u : 
+    description: Update a module
+    function :
+    parameters:
+        required:
+        optional:          
+e : 
+    description: Enable a module
+    function :
+    parameters:
+        required:
+        optional:          
+d : 
+    description: Disable a module
+    function :
+    parameters:
+        required:
+        optional:          
+k : 
+    description: Uninstall (Kill) a module    
+    function :
+    parameters:
+        required:
+        optional:          
