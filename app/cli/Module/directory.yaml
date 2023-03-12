@@ -1,11 +1,19 @@
 ---
 b : 
     description: Build a new module
-    usage:
-    function :
+    usage: 
+        linux:   sudo sh ./humble.sh --b ns=newmod module=NewMod package=Main author="John Doe" email=johndoe@here.com
+        windows: humble --b ns=newmod module=NewMod package=Main author="John Doe" email=johndoe@here.com
+    function : build
     parameters:
         required:
-        optional:          
+            namespace|ns: You must specify the namespace of the new module
+            package|pk: You must specify the "package", or folder, to build the module in
+            module|md|name: You must specify the Module name
+        optional:
+            author|au: The authors name
+            email|em: The authors email address
+            
 i : 
     description: Install a module
     usage:

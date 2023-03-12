@@ -14,6 +14,30 @@ class CLI
     
     private static $args = [];
     
+    public static function describe($command=false,$details=[]) {
+        $usage = $details['usage'][(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? 'windows' : 'linux'];
+        $p = ['required'=>'','optional'=>''];
+        foreach (['required','optional'] as $section) {
+            foreach ($details['parameters'][$section]??[] as $parm => $message) {
+                $p[$section] .= "\t\t".str_replace('|',' or ',$parm).' - '.$message."\n";
+            }
+        }
+        $output = <<<HELP
+                
+        Command: --{$command}    {$details['description']}
+        
+        Required Parameters:
+{$p['required']}
+        
+        Optional Parameters:
+{$p['optional']}
+        
+        Usage: {$usage}
+        
+HELP;
+        print($output);
+    }
+
     /**
      * Set or return the arguments passed in on the command line
      * 

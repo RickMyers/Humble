@@ -33,12 +33,6 @@ function parseCommand($args=[]) {
     return strtolower($command);
 }
 //--------------------------------------------------------------------------
-//Will dynamically generate help information for a command
-//--------------------------------------------------------------------------
-function describe($command=false,$details=[]) {
-    
-}
-//--------------------------------------------------------------------------
 $dh                 = dir('cli');
 $available_commands = [];
 while ($entry = $dh->read()) {
@@ -75,16 +69,14 @@ if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         
                         require_once $file;
                     }
                 }
-                if (strtolower($args[0]) === 'help') {                          //php CLI.php --u help   #handles a request for information on a command
-                    describe($command,$options);
+                if (strtolower($args[0] ?? 'help') === 'help') {                          //php CLI.php --u help   #handles a request for information on a command
+                    $include::describe($command,$options);
                 } else {
                     if (isset($options['function']) && $options['function']) {
                         $method = $options['function'];
                         $include::arguments($include::verifyArguments($args,$options));
                         $include::$method();
                     }
-                    
-                    processCommand($command,$options);                      //ok, lets go handle the command using the custom config included above
                 }
                 break;                                                          //we found our command, no need for more work
             }      
