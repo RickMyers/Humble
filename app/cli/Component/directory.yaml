@@ -1,27 +1,30 @@
 ---
-Component:
-    cc : 
-        description: Creates a Controller
-        function :
-        parameters:
-            required:
-                ns|namespace: Namespace of module is required
-            optional:
-    cm : 
-        description: Creates a Component (Model Helper Entity)
-        function :
-        parameters:
-            required:
-            optional:
-    y  : 
-        description: Compiles a Controller
-        function :
-        parameters:
-            required:
-            optional:
-    g  : 
-        descriptionp: Generate JSON Edits (Not-Implemented)
-        function :
-        parameters:
-            required:
-            optional:
+cc : 
+    description: Creates a Controller
+    usage:
+    function :
+    parameters:
+        required:
+            ns|namespace: Namespace of module is required
+        optional:
+cm : 
+    description: Creates a Component (Model Helper Entity)
+    usage:
+    function :
+    parameters:
+        required:
+        optional:
+y  : 
+    description: Compiles a Controller
+    usage:
+    function :
+    parameters:
+        required:
+        optional:
+g  : 
+    descriptionp: Generate JSON Edits (Not-Implemented)
+    usage:
+    function :
+    parameters:
+        required:
+        optional:

@@ -1,54 +1,63 @@
 ---
 activate : 
     description: Build Install and Enable a Module
+    usage:
     function :
     parameters:
         required:
         optional:    
 use : 
     description: Update a module using the relative location of a configuration file
+    usage:
     function :
     parameters:
         required:
         optional:    
 adduser : 
     description: Create a user in the humble user directory
+    usage:
     function :
     parameters:
         required:
         optional:    
 package : 
     description: Creates a new downloadable archive file of the framework
+    usage:
     function :
     parameters:
         required:
         optional:    
 increment : 
     description: Increments the minor version by 1 rolling over if needed
+    usage:
     function :
     parameters:
         required:
         optional:    
 initialize : 
     description: Initializes a new project based on the Humble Framework
+    usage:
     function :
     parameters:
         required:
         optional:    
 export : 
     description: Exports workflows to a pre-defined server/environment
+    usage:
     function :
     parameters:
         required:
         optional:    
 patch : 
     description: Updates the Humble Base Framework files with any new updates respecting manifested files
+    usage:
     function :
     parameters:
         required:
         optional:    
 sync : 
     description: Updates the core files (deprecated)
+    usage:
     function :
     parameters:
         required:

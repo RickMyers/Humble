@@ -1,12 +1,14 @@
 ---
 w : 
     description: Examines and registers workflow components in a modules models
+    usage:
     function :
     parameters:
         required:
         optional:        
 z : 
     description: Generate Workflows
+    usage:
     function :
     parameters:
         required:

@@ -35,71 +35,56 @@ function parseCommand($args=[]) {
 //--------------------------------------------------------------------------
 //Will dynamically generate help information for a command
 //--------------------------------------------------------------------------
-function describe($command=false) {
+function describe($command=false,$details=[]) {
     
 }
 //--------------------------------------------------------------------------
-// These commands are what we can handle... the following array identifies
-//  the include that contains the command code.  These includes can be found
-//  in the '/app/cli' directory
-//--------------------------------------------------------------------------
-$available_commands = [
-    'Workflow' => [
-        'w' => 'Examines and registers workflow components in a modules models',
-        'z' => 'Generate Workflows'
-    ],
-    'Framework' => [
-        'x' => 'Check if a module prefix is available (deprecated)',
-        'a' => 'Remove AUTOINCREMENT=# from SQL dumps',
-        'c' => 'Check for namespace availability',
-        'p' => 'Preserve a directory',
-        'r' => 'Restore a directory'
-    ],
-    'System' => [
-        'o' => 'Toggles the application online or offline',
-        'l' => 'Toggle local authentication vs SSO',
-        's' => 'Application Status'
-    ],
-    'Module' => [
-        'b' => 'Build a new module',
-        'i' => 'Install a module',
-        'u' => 'Update a module',
-        'e' => 'Enable a module',
-        'd' => 'Disable a module',
-        'k' => 'Uninstall (Kill) a module'        
-    ],
-    'Component' => [
-        'cc' => 'Creates a Controller',
-        'cm' => 'Creates a Component (Model, Helper, Entity)',
-        'y'  => 'Compiles a Controller',
-        'g'  => 'Generate JSON Edits (Not-Implemented)'
-    ],
-    'Directives' => [
-        'activate' => 'Build, Install, and Enable a Module',
-        'use' => 'Update a module using the relative location of a configuration file',
-        'adduser' => 'Create a user in the humble user directory',
-        'package' => 'Creates a new downloadable archive file of the framework',
-        'increment' => 'Increments the minor version by 1, rolling over if needed',
-        'initialize' => 'Initializes a new project based on the Humble Framework',
-        'export' => 'Exports workflows to a pre-defined server/environment',
-        'patch' => 'Updates teh Humble Base Framework files with any new updates, respecting manifested files',
-        'sync' => 'Updates the core files'
-    ]
-];
+$dh                 = dir('cli');
+$available_commands = [];
+while ($entry = $dh->read()) {
+    if (($entry == '.') || ($entry == '..')) {
+        continue;
+    }
+    if (is_dir('cli/'.$entry)) {
+        if (file_exists('cli/'.$entry.'/directory.yaml')) {
+            $available_commands[$entry] = yaml_parse_file('cli/'.$entry.'/directory.yaml');
+        }
+    }
+}
+
 $args = [];                                                                     //declaring global variable
 if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         //pop program name and grab the command they entered
     foreach ($available_commands as $include => $commands) {                    //go find which include we should bring in (functionality)
-        foreach ($commands as $command => $description) {
+        foreach ($commands as $command => $options) {
             if ($entered_command===$command) {
                 array_shift($argv);                                             //drop the entered command
                 foreach ($argv as $arg) {
+                    if (strpos($arg,"'")) {
+                        die("Single quote detected in argument, use double quotes instead\n");
+                    }
                     $args[] = $arg;                                             //we are copying passed in args to a global variable
                 }
-                require_once 'cli/'.$include.'.php';                            //bring in the custom configuratino for this command
+                $files = [
+                    'control'   => 'cli/'.$include.'/control.php',
+                    'classes'   => 'cli/'.$include.'/'.$include.'.php'
+                ];
+                //print_r($options);
+
+                foreach ($files as $type => $file) {
+                    if (file_exists($file)) {
+                        require_once $file;
+                    }
+                }
                 if (strtolower($args[0]) === 'help') {                          //php CLI.php --u help   #handles a request for information on a command
-                    describe($command);
+                    describe($command,$options);
                 } else {
-                    processCommand($command,$description);                      //ok, lets go handle the command using the custom config included above
+                    if (isset($options['function']) && $options['function']) {
+                        $method = $options['function'];
+                        $include::arguments($include::verifyArguments($args,$options));
+                        $include::$method();
+                    }
+                    
+                    processCommand($command,$options);                      //ok, lets go handle the command using the custom config included above
                 }
                 break;                                                          //we found our command, no need for more work
             }      

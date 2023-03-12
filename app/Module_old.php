@@ -83,12 +83,7 @@ HELP;
         return $parms;
     }
     //--------------------------------------------------------------------------
-    function printModule($mod) {
-        print("\n\n");
-        foreach ($mod as $idx => $val) {
-            print("#".$idx."\t = ".$val.";\n");
-        }
-    }
+
 
     //--------------------------------------------------------------------------
     function toggleApplicationStatus() {
@@ -251,11 +246,7 @@ TXT;
         print("\n\n".$xml->version->framework."\n\n");
     }
     //--------------------------------------------------------------------------
-    function getApplicationXML() {
-        $data = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("Error, application file not found");
-        $xml  = simplexml_load_string($data);
-        return $xml;
-    }
+
     //--------------------------------------------------------------------------
     function enableModule($args) {
         $ns = $args[0];
@@ -372,31 +363,7 @@ TXT;
         }
     }
     //--------------------------------------------------------------------------
-    function updateModule($args) {
-        $namespace = fetchParameter(['namespace','ns'],processArgs($args));
-        $workflows = fetchParameter(['w','workflow','workflows'],processArgs($args));
-        if ($namespace) {
-            $modules = ($namespace==='*') ? \Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() : explode(',',$namespace);
-            print("\n\nThe following modules will be updated:\n\n"); $ctr=0;
-            foreach ($modules as $module) {
-                print("\t".++$ctr.') '.(is_array($module) ? $module['namespace'] : $module)."\n");
-            }
-            print("\n");
-            $updater = \Environment::getUpdater();            
-            foreach ($modules as $module) {
-                $namespace = (is_array($module) ? $module['namespace'] : $module);
-                $updater->output('BEGIN','');
-                $updater->output('BEGIN',"=== Beginning update of Namespace: ".$namespace." ===");
-                updateIndividualModule($updater->reset(),$namespace);
-                //if (strtoupper($workflows)==='Y') {
-                    $updater->generateWorkflows($namespace);
-                //}
-                //print(ob_get_clean());
-            }
-        } else {
-            print('I need the namespace of the module to update passed in [namespace=ns]');
-        }
-    }
+
     //--------------------------------------------------------------------------
     function processDocComment($md=false,$method=false) {
         $components = [];

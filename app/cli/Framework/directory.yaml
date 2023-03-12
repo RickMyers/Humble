@@ -1,30 +1,35 @@
 ---
 x : 
     description: Check if a module prefix is available (deprecated)
+    usage:
     function :
     parameters:
         required:
         optional:         
 a : 
     description: Remove AUTOINCREMENT=# from SQL dumps
+    usage:
     function :
     parameters:
         required:
         optional:         
 c : 
     description: Check for namespace availability
+    usage:
     function :
     parameters:
         required:
         optional:         
 p : 
     description: Preserve a directory
+    usage:
     function :
     parameters:
         required:
         optional:         
 r : 
     description: Restore a directory
+    usage:
     function :
     parameters:
         required:

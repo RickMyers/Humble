@@ -1,2 +1,2 @@
 @echo off
-@php Module.php %*
+@php CLI.php %*
