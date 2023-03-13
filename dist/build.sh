@@ -74,11 +74,11 @@ case $1 in
         echo 'composer';;
   'update')
         cd /var/www/$2/app
-        php Module.php --u ns=*
+        php CLI.php --u ns=*
         echo 'update';;
   'package')
         cd /var/www/$2/app
-        php Module.php --package
+        php CLI.php --package
         echo 'package';;
   'assign')
         cd /var/www
@@ -104,7 +104,7 @@ case $1 in
         echo 'npm';;
   'increment')
         cd /var/www/$2/app
-        php Module.php --increment
+        php CLI.php --increment
         echo 'package';;
   'revert')
         cd /var/www

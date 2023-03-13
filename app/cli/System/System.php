@@ -2,6 +2,86 @@
 require 'cli/CLI.php';
 class System extends CLI 
 {
+    
+    /**
+     * Increments the minor version of the application in the application.xml filed
+     * 
+     * @param int $next
+     * @return string
+     */
+    public static function incrementVersion($next=1) {
+        print("CHANGING VERSION"."\n");
+        $data   = self::getApplicationXML();
+        $v      = explode('.',(string)$data->version->framework);
+        for ($i=count($v)-1; $i>=0; $i-=1) {                                    //This is one of those ridiculously evil things in computer science
+            $v[$i] = (int)$v[$i]+$next;
+            if ($next  = ($v[$i]===10)) {
+                $v[$i] = 0;
+            }
+        }
+        $data->version->framework = (string)implode('.',$v);
+        print("\nSetting version to ".$data->version->framework."\n\n");
+        file_put_contents('../application.xml',$data->asXML());
+        return $data->version->framework;
+    }
+        
+    /**
+     * Will take all files that are identifiable on the manifest and put them into a distro/zip
+     */
+    public static function package() {
+        $content = self::getManifestContent();
+        chdir('..');
+        foreach ($content['files'] as $file) {
+            if (!isset($content['xref'][$file])) {
+                $content['xref'][$file] = $file;
+            }
+        }
+        @mkdir('../packages/',0775);
+        $xml        = simplexml_load_file('application.xml');
+        $archive    = '../packages/Humble-Distro-'.(string)$xml->version->framework.'.zip';
+        print("Creating archive ".$archive."\n");
+        if (file_exists($archive)) {
+            unlink($archive);
+        }
+        $zip = new ZipArchive();
+        if ($zip->open($archive, ZipArchive::CREATE) !== true) {
+            die('Wasnt able to create zip');
+        };
+        foreach ($content['xref'] as $src => $dest) {
+            $exclude = false;
+            foreach ($content['exclude'] as $mask => $type) {
+                if (strpos($src,$mask) !== false) {
+                    $exclude = true;
+                }
+            }
+            if ($exclude) {
+                continue;
+            }
+            if (file_exists($src) && is_file($src)) {
+                $zip->addFile($src, $dest);
+            }
+        }
+        //Now add manifest file in the form of a git ignore...
+        $ignore = array_merge(['Docs/*','/images/*','/app/allowed.json','/app/Constants.php','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
+        $ignore = array_merge(['app/cli/Component/*','app/cli/CLI.php','app/cli/Workflow/*','app/cli/Framework/*','app/cli/System/*','app/cli/Module/*'],$ignore);
+        $zip->addFromString('.gitignore',implode("\n",$ignore));
+        //$zip->addFromString('.manifest',implode("\n",$content['xref']));
+        $zip->close();
+        chdir('app');
+    }
+    
+    /**
+     * Takes a bunch of stuff and mixes it together
+     * 
+     * @param type $distro
+     * @param type $changed
+     * @param type $insertions
+     * @param type $matched
+     * @param type $ignored
+     * @param type $merged
+     * @param type $app
+     * @param type $version
+     */
     protected static function performCoreUpdate($distro,$changed,$insertions,$matched,$ignored,$merged,$app,$version) {
         ob_start();
         print("\nPATCH REPORT\n########################################################\n\nMatched Files: ".$matched."\n\nThe following files will be updated by this process:\n\n");
@@ -47,7 +127,14 @@ class System extends CLI
             print("\n\nFramework update aborted.\n\n");
         }
     }
-    //--------------------------------------------------------------------------
+    
+    /**
+     * Compares files in the downloaded distro with the file system and any exceptions identified in the Humble.local.manifest
+     * 
+     * @param type $app
+     * @param type $project
+     * @param type $version
+     */
     protected static function evaluateCoreDifferences($app,$project,$version) {
         $local_manifest = (file_exists('app/Humble.local.manifest')) ? json_decode(file_get_contents('app/Humble.local.manifest'),true) : ['merge'=>[],'ignore'=>[]];   //Load the manifest that tells us what files to not update
         if (file_exists('app/Humble.local.manifest')) {

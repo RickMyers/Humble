@@ -39,23 +39,30 @@ use :
         optional:    
 package : 
     description: Creates a new downloadable archive file of the framework
-    usage:
-    function :
+    extended: This process reads the Humble.manifest file in the 'app/' folder and builds a distro of the Humble Framework as a downloadable .zip file.  The version on the file is obtained by the application version in the /application.xml file
+    usage: 
+        linux:   sudo sh ./humble.sh --package
+        windows: humble --package
+    function : package
     directive: true        
     parameters:
         required:
         optional:    
 increment : 
-    description: Increments the minor version by 1 rolling over if needed
+    description: Increments the minor version of the framework by 1 rolling over if needed
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --increment
+        windows: humble --increment
+    function : increment
     directive: true
     parameters:
         required:
         optional:    
 initialize : 
     description: Initializes a new project based on the Humble Framework
-    usage:
+    usage: 
+        linux:   sudo sh ./humble.sh --init
+        windows: humble --init
     function :
     directive: true
     parameters:
@@ -70,11 +77,11 @@ export :
         optional:    
 patch : 
     description: Updates the Humble Base Framework files with any new updates respecting manifested files
+    extended: The patch process will contact https://humbleprogramming.com to download the latest distro.  The distro will be unpacked and compared with your current distro.  If differences are found you will be prompted (yes/no) to update your current distro to the latest version    
     usage:
         linux:   sudo sh ./humble.sh --patch
         windows: humble --patch
     function : patch
-    extended: The patch process will contact https://humbleprogramming.com to download the latest distro.  The distro will be unpacked and compared with your current distro.  If differences are found you will be prompted (yes/no) to update your current distro to the latest version
     directive: true
     parameters:
         required:

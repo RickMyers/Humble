@@ -13,7 +13,67 @@ class CLI
 {
     
     private static $args = [];
-       
+    
+    protected static function recurseDirectory($path) {
+        $entries = [];
+        if ($path) {
+            if (!is_dir($path)) {
+                print("What is up with this: ".$path."\n");
+            }
+            $dir = dir($path);
+            while (($entry = $dir->read()) !== false ) {
+                if (($entry == '.') || ($entry == '..')) {
+                    continue;
+                }
+                if (is_dir($path.'/'.$entry)) {
+                    $entries = array_merge($entries,self::recurseDirectory($path.'/'.$entry));
+                } else {
+                    $entries[] = $path.'/'.$entry;
+                }
+            }
+        }
+        return $entries;
+    }    
+    
+    /**
+     * Returns what files actually are found by comparing the manifest to the file structure
+     * 
+     * @return type
+     */
+    public static function getManifestContent() {
+        $content = [
+            'manifest' => [],
+            'files' => [],
+            'exclude' => [],
+            'xref' => []
+        ];
+        if (file_exists('Humble.manifest')) {
+            $content['manifest'] = explode("\n",file_get_contents('Humble.manifest'));
+        } else {
+            die('Manifest file not found');
+        }
+        chdir('..');
+        foreach ($content['manifest'] as $file) {
+            if (substr($file,0,1) == '#') {
+                continue;
+            }
+            if (substr($file,0,1) == '^') {
+                $content['exclude'][trim(substr($file,1))] = $file;
+                continue;
+            }
+            $file            = trim($file);
+            $parts           = explode(' ',$file);
+            $content['xref'][$parts[0]] = (isset($parts[1]) ? $parts[1] : $parts[0]);
+            if (substr($file,strlen($file)-1,1)=='*') {
+                $content['files'] = array_merge($content['files'],self::recurseDirectory(substr($file,0,strlen($file)-2)));
+            } else {
+                $content['files'][] = $file;
+            }
+        }
+        chdir('app');
+        return $content;
+    }
+    
     /**
      * Randomly adds some spaces to the end of a word to help with the justify process
      * 
