@@ -62,6 +62,13 @@ function aggregateDirectories($dh) {
     }
     return $available_commands;
 }
+//--------------------------------------------------------------------------
+// Due to different ways we can request help and argument formats...
+//  necessitates this monstrosity
+//--------------------------------------------------------------------------
+function helpRequest($first_parm,$details) {
+    return (($details['directive'] ?? false )===true) ? (strtolower($first_parm) === 'help') : ((!$first_parm) || (strtolower($first_parm) === 'help'));
+}
 
 //==========================================================================
 
@@ -91,11 +98,7 @@ if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         
                             require_once $file;
                         }
                     }
-                    if ($options['directive'] ?? false) {                           //If directive, there are no additional parameters, but can still ask for help  
-                        if (($args[0] ?? false) && (strtolower($args[0])==='help')) {
-                            $include::describe($command,$options);
-                        }
-                    } else if (strtolower($args[0] ?? 'help') === 'help') {         //php CLI.php --u help   #handles a request for information on a command
+                    if (helpRequest(($argv[0] ?? ''),$options)) {         //php CLI.php --u help   #handles a request for information on a command
                         $include::describe($command,$options);
                     } else {
                         if (isset($options['function']) && $options['function']) {

@@ -85,6 +85,17 @@ HELP;
     }
 
     /**
+     * Removes stuff
+     * 
+     * @param string $str
+     * @return string
+     */
+    public static function scrub($str) {
+        $srch = ["\n","\r","\t"];
+        $repl = ["","",""];
+        return str_replace($srch,$repl,$str);
+    }
+    /**
      * Set or return the arguments passed in on the command line
      * 
      * @param array $args

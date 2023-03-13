@@ -25,7 +25,7 @@ class System extends CLI
         file_put_contents('patch_report.txt',$report);
         print("\n\nIf you do not want some files updated, add those files to the Humble.local.manifest file and re-run this process.\n\nA copy of the patch review report shown above can be found in file 'patch_report.txt'.\n\n");
         print("Do you wish to continue [yes/no]? ");
-        if (strtolower(scrub(fgets(STDIN))) === 'yes') {
+        if (strtolower(self::scrub(fgets(STDIN))) === 'yes') {
             $app->version->framework = $version;
             file_put_contents('application.xml',$app->asXML());
             foreach ($changed as $file) {
@@ -88,7 +88,7 @@ class System extends CLI
         @unlink($dist_file);
     }
     //--------------------------------------------------------------------------
-    public static function patchFrameworkCore() {
+    public static function patch() {
         if (file_exists('../Humble.project')) {
             $project = json_decode(file_get_contents('../Humble.project'),true);
         } else {
