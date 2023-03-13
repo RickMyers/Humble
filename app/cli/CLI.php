@@ -13,8 +13,7 @@ class CLI
 {
     
     private static $args = [];
-    
-   
+       
     /**
      * Randomly adds some spaces to the end of a word to help with the justify process
      * 
@@ -33,7 +32,7 @@ class CLI
     /**
      * Justifies and arbitrary piece of text
      * 
-     * @param string $text
+     * @param string $block
      * @param int $width
      * @return string
      */

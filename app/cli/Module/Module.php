@@ -2,10 +2,13 @@
 require 'cli/CLI.php';
 class Module extends CLI 
 {
-    public static function update() {
-        print('did it!');
-    }
     
+    /**
+     * Runs the update process for a single module
+     * 
+     * @param type $updater
+     * @param type $namespace
+     */
     protected static function updateIndividualModule($updater,$namespace) {
         $data = Humble::getEntity('humble/modules')->setNamespace($namespace)->load(true);
         if (isset($data['configuration']) && $data['configuration']) {
@@ -17,8 +20,11 @@ class Module extends CLI
         }
     }
     
-    public static function updateModule() {
-        $args      = self::arguments();
+    /**
+     * Updates a module, running any new pieces of SQL, registering schema changes, generating workflows, documenting, moving images, etc...
+     */
+    public static function updateModule($args=[]) {
+        $args      = count($args) ? $args : self::arguments();
         $namespace = $args['namespace'];
         $workflows = $args['workflow'] ?? false;
         if ($namespace) {
@@ -44,6 +50,11 @@ class Module extends CLI
         }
     }
     
+    /**
+     * Builds a new module, including its file structure
+     * 
+     * @return string
+     */
     public static function build() {
         $args = self::arguments();
         $ns = $args['namespace'];
