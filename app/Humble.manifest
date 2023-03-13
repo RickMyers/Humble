@@ -33,6 +33,7 @@ lib/*
 web/*
 dist/*
 app/Humble.local.manifest
+app/cli/*
 app/Code/Base/*
 app/Exceptions/*
 app/lib/Common/*
@@ -56,7 +57,7 @@ app/Humble.bat
 app/Humble.php
 app/HumbleException.php
 app/Log.php
-app/Module.php
+app/CLI.php
 app/humble.sh
 app/Singleton.php
 app/allowed.json
