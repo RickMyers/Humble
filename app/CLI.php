@@ -33,55 +33,81 @@ function parseCommand($args=[]) {
     return strtolower($command);
 }
 //--------------------------------------------------------------------------
-$dh                 = dir('cli');
-$available_commands = [];
-while ($entry = $dh->read()) {
-    if (($entry == '.') || ($entry == '..')) {
-        continue;
-    }
-    if (is_dir('cli/'.$entry)) {
-        if (file_exists('cli/'.$entry.'/directory.yaml')) {
-            $available_commands[$entry] = yaml_parse_file('cli/'.$entry.'/directory.yaml');
+// Prints the full list of commands we can handle at the command line
+//--------------------------------------------------------------------------
+function printHelp($available_commands=[]) {
+    print('Help is available for the following commands:'."\n");
+    foreach ($available_commands as $include => $commands) {
+        print("\nTopic: ".$include."\n");
+        foreach ($commands as $command => $options) {
+            print("\t--".$command.' - '.($options['description'] ?? 'N/A')."\n");
         }
     }
+    print("\nFor detailed help, type 'humble --command help'\n\n");
+}
+//--------------------------------------------------------------------------
+// Iterates through directories accumulating the various commands
+//--------------------------------------------------------------------------
+function aggregateDirectories($dh) {
+    $available_commands = [];    
+    while ($entry = $dh->read()) {
+        if (($entry == '.') || ($entry == '..')) {
+            continue;
+        }
+        if (is_dir('cli/'.$entry)) {
+            if (file_exists('cli/'.$entry.'/directory.yaml')) {
+                $available_commands[$entry] = yaml_parse_file('cli/'.$entry.'/directory.yaml');
+            }
+        }
+    }
+    return $available_commands;
 }
 
-$args = [];                                                                     //declaring global variable
+//==========================================================================
+
+$args               = [];                                                       //declaring global variable
+$available_commands = aggregateDirectories(dir('cli'));                         //
 if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         //pop program name and grab the command they entered
-    foreach ($available_commands as $include => $commands) {                    //go find which include we should bring in (functionality)
-        foreach ($commands as $command => $options) {
-            if ($entered_command===$command) {
-                array_shift($argv);                                             //drop the entered command
-                foreach ($argv as $arg) {
-                    if (strpos($arg,"'")) {
-                        die("Single quote detected in argument, use double quotes instead\n");
+    if (strtolower($entered_command === 'help')) {
+        printHelp($available_commands);
+    } else {
+        foreach ($available_commands as $include => $commands) {                //go find which include we should bring in (functionality)
+            foreach ($commands as $command => $options) {
+                if ($entered_command===$command) {
+                    array_shift($argv);                                         //drop the entered command
+                    foreach ($argv as $arg) {                                   //Pre-process the passed in arguments, filtering if a ' is found
+                        if (strpos($arg,"'")) {
+                            die("Single quote detected in argument, use double quotes instead\n");
+                        }
+                        $args[] = $arg;                                             //we are copying passed in args to a global variable
                     }
-                    $args[] = $arg;                                             //we are copying passed in args to a global variable
-                }
-                $files = [
-                    'control'   => 'cli/'.$include.'/control.php',
-                    'classes'   => 'cli/'.$include.'/'.$include.'.php'
-                ];
-                //print_r($options);
+                    $files = [
+                        'classes'   => 'cli/'.$include.'/'.$include.'.php'
+                    ];
+                    //print_r($options);
 
-                foreach ($files as $type => $file) {
-                    if (file_exists($file)) {
-                        require_once $file;
+                    foreach ($files as $type => $file) {
+                        if (file_exists($file)) {
+                            require_once $file;
+                        }
                     }
-                }
-                if (strtolower($args[0] ?? 'help') === 'help') {                          //php CLI.php --u help   #handles a request for information on a command
-                    $include::describe($command,$options);
-                } else {
-                    if (isset($options['function']) && $options['function']) {
-                        $method = $options['function'];
-                        $include::arguments($include::verifyArguments($args,$options));
-                        $include::$method();
+                    if ($options['directive'] ?? false) {                           //If directive, there are no additional parameters, but can still ask for help  
+                        if (($args[0] ?? false) && (strtolower($args[0])==='help')) {
+                            $include::describe($command,$options);
+                        }
+                    } else if (strtolower($args[0] ?? 'help') === 'help') {         //php CLI.php --u help   #handles a request for information on a command
+                        $include::describe($command,$options);
+                    } else {
+                        if (isset($options['function']) && $options['function']) {
+                            $method = $options['function'];
+                            $include::arguments($include::verifyArguments($args,$options));
+                            $include::$method();
+                        }
                     }
-                }
-                break;                                                          //we found our command, no need for more work
-            }      
+                    break;                                                          //we found our command, no need for more work
+                }      
+            }
         }
-
     }
 } else {
     print('No command passed to execute, aborting.'."\n");

@@ -3,6 +3,7 @@ o :
     description: Toggles the application online or offline
     usage:
     function :
+    directive: true
     parameters:
         required:
         optional:
@@ -10,6 +11,7 @@ l :
     description: Toggle local authentication vs SSO
     usage:
     function :
+    directive: true
     parameters:
         required:
         optional:
@@ -17,6 +19,70 @@ s :
     description: Application Status
     usage:
     function :
+    directive: true
     parameters:
         required:
         optional:
+adduser : 
+    description: Create a user in the humble user directory
+    usage:
+    function :
+    parameters:
+        required:
+        optional:    
+use : 
+    description: Update a module using the relative location of a configuration file
+    usage:
+    function :
+    parameters:
+        required:
+        optional:    
+package : 
+    description: Creates a new downloadable archive file of the framework
+    usage:
+    function :
+    directive: true        
+    parameters:
+        required:
+        optional:    
+increment : 
+    description: Increments the minor version by 1 rolling over if needed
+    usage:
+    function :
+    directive: true
+    parameters:
+        required:
+        optional:    
+initialize : 
+    description: Initializes a new project based on the Humble Framework
+    usage:
+    function :
+    directive: true
+    parameters:
+        required:
+        optional:    
+export : 
+    description: Exports workflows to a pre-defined server/environment
+    usage:
+    function :
+    parameters:
+        required:
+        optional:    
+patch : 
+    description: Updates the Humble Base Framework files with any new updates respecting manifested files
+    usage:
+        linux:   sudo sh ./humble.sh --patch
+        windows: humble --patch
+    function : patch
+    extended: The patch process will contact https://humbleprogramming.com to download the latest distro.  The distro will be unpacked and compared with your current distro.  If differences are found you will be prompted (yes/no) to update your current distro to the latest version
+    directive: true
+    parameters:
+        required:
+        optional:      
+sync : 
+    description: Updates the core files (deprecated)
+    usage:
+    function :
+    parameters:
+        required:
+        optional:               

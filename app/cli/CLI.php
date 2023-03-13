@@ -14,6 +14,51 @@ class CLI
     
     private static $args = [];
     
+   
+    /**
+     * Randomly adds some spaces to the end of a word to help with the justify process
+     * 
+     * @param string $text
+     * @param int $width
+     * @return string
+     */
+    private static function expandLine($text,$width) {
+        $words = explode(' ',$text);
+        for ($i=0; $i<($width - strlen($text)); $i++) {
+            $words[rand(0,count($words)-2)] .=' ';                              //don't want to pad last word
+        }
+        return implode(' ',$words);
+    }
+    
+    /**
+     * Justifies and arbitrary piece of text
+     * 
+     * @param string $text
+     * @param int $width
+     * @return string
+     */
+    public static function justify($block='',$width=80) {
+        $justified  = [];
+        $text       = trim(str_replace(["\r","\n","\t"],['','',''],$block)); 
+        $ctr        = 25;                                                       //just in case the dish runs away with the spoon... maximum 25 "lines" or iterations
+        while ($text && $width && $ctr--) {
+            if (($pos   = strrpos(trim(substr($text,0,$width)),' ')) && (strlen($text) > $width)) {
+                $justified[] = "\t".self::expandLine(substr($text,0,$pos),$width);
+                $text = substr($text,$pos+1);
+            } else {
+                $justified[] = "\t".$text;
+                $text=false;
+            }
+        }
+        return ($justified ? "\n".implode("\n",$justified)."\n" : '');
+    }
+    
+    /**
+     * Formats the detailed help section for each command based on the YAML contents
+     * 
+     * @param string $command
+     * @param array $details
+     */
     public static function describe($command=false,$details=[]) {
         $usage = $details['usage'][(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? 'windows' : 'linux'];
         $p = ['required'=>'','optional'=>''];
@@ -22,10 +67,12 @@ class CLI
                 $p[$section] .= "\t\t".str_replace('|',' or ',$parm).' - '.$message."\n";
             }
         }
+        $extended = self::justify($details['extended'] ?? '');
+
         $output = <<<HELP
                 
         Command: --{$command}    {$details['description']}
-        
+{$extended}
         Required Parameters:
 {$p['required']}
         
@@ -94,7 +141,7 @@ HELP;
     }
     
     /**
-     * Returns the application xml file as a parsed object
+     * Returns the application XML file as a parsed object
      * 
      * @return object
      */
@@ -109,7 +156,7 @@ HELP;
      * 
      * @param array $mod
      */
-    public static function printModule($mod) {
+    public static function printModule($mod=[]) {
         print("\n\n");
         foreach ($mod as $idx => $val) {
             print("#".$idx."\t = ".$val.";\n");

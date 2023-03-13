@@ -64,4 +64,11 @@ k :
     parameters:
         required:
             namespace|ns: You must specify the namespace of the module to uninstall, or an * to uninstall all non-required modules
-        optional:          
+        optional:  
+activate : 
+    description: Build Install and Enable a Module
+    usage:
+    function :
+    parameters:
+        required:
+        optional:              

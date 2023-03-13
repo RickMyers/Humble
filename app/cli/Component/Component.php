@@ -1,5 +1,5 @@
 <?php
-require '../CLI.php';
+require 'cli/CLI.php';
 class Component extends CLI 
 {
     
