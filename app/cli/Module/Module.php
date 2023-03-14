@@ -2,6 +2,83 @@
 require 'cli/CLI.php';
 class Module extends CLI 
 {
+
+    public static     function install() {
+        $args   = self::arguments();
+        $ns     = $args['namespace'];
+        $etc    = $args['etc'];
+        if ($ns) {
+            if (file_exists($etc) && ($xml = file_get_contents($etc))) {
+                libxml_use_internal_errors(true);
+                $doc    = new \DOMDocument('1.0', 'utf-8');
+                $doc->loadXML($xml);
+                $errors = libxml_get_errors();
+                if ($errors) {
+                    $level = array('1'=>'Warning', '2'=>'Error', '3'=>'Severe');
+                    print("\nThe installation failed.\n\n");
+                    print("Errors have been encountered in the XML configuration file ({$etc})\n\n");
+                    foreach ($errors as $error) {
+                        print("\t".$level[$error->level].": Line {$error->line}, column {$error->column} - ".$error->message);
+                    }
+                } else {
+                    print("Installing...\n");
+                    $utility = \Environment::getInstaller();
+                    $utility->setSource($etc);
+                    $utility->install();
+                }
+            } else {
+                print("Couldn't read the XML config file\n\n");
+            }
+        } else {
+            print("\n\nRequired parameters are namespace and configuration file location\n\n");
+        }
+
+    }
+
+    public static function uninstall() {
+        $args   = self::arguments();
+        $ns     = $args['namespace'];        
+        if ($ns) {
+            $module = \Humble::getModule($ns,true);
+            print_r($module);
+            if ($module) {
+                $utility = \Humble::getModel('humble/utility');
+                $utility->setPackage($module['package']);
+                $utility->setNamespace($module['namespace']);
+                if ($utility->uninstall()) {
+                    print("\n\nThe module was uninstalled, it is now safe to delete the module\n\n");
+                } else {
+                    print("\n\nAn error was encountered during uninstallation, the module was not uninstalled\n\n");
+                };
+            } else {
+                print("\nThe module represented by namespace [".$ns."] has either already been uninstalled or does not exist\n\n");
+            }
+        }
+    }
+
+    /**
+     * Enables a module by setting the enabled flag to 'Y'
+     * 
+     * @param array $args (optional)
+     */    
+    public static function enable($args=false) {
+        $args = $args ? $args :self::arguments();
+        $ns = $args['namespace'];
+        print("Enabling ".$ns."\n\n");
+        $mod = \Humble::getEntity("humble/modules")->setNamespace($ns)->setEnabled('Y')->save();
+    }
+
+    /**
+     * Disables a module by setting the enabled flag to 'N'
+     * 
+     * @param array $args (optional)
+     */
+    public static function disable($args=false) {
+        $args = $args ? $args :self::arguments();
+        $ns = $args['namespace'];        
+        print("Disabling ".$ns."\n\n");
+        \Humble::getEntity("humble/modules")->setNamespace($ns)->setEnabled('N')->save();
+    }
     
     /**
      * Runs the update process for a single module

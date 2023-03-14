@@ -13,17 +13,28 @@ b :
         optional:
             author|au: The authors name
             email|em: The authors email address
-            
 i : 
     description: Install a module
     usage:
         linux:   sudo sh ./humble.sh --i etc=path_to_config.xml or sudo sh ./humble.sh --i etc=path_to_config.xml
         windows: humble --i etc=path_to_config.xml or humble --i etc=path_to_config.xml
-    function :
+    function : install
     parameters:
         required:
             etc: You must specify the path to the module configuration file (i.e. app/Code/Main/MyMod/etc/config.xml)
+            namespace|ns: You must specify the namespace of the module
         optional:          
+k : 
+    description: Uninstall (Kill) a module    
+    usage:
+        linux:   sudo sh ./humble.sh --k ns=module_namespace or sudo sh ./humble.sh --k ns=*
+        windows: humble --k ns=module_namespace or humble --k ns=*
+    function : uninstall
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module to uninstall, or an * to uninstall all non-required modules
+        optional:  
+            
 u : 
     description: Run the Update process on a module or group of modules
     usage: 
@@ -40,7 +51,7 @@ e :
     usage:
         linux:   sudo sh ./humble.sh --e ns=module_namespace or sudo sh ./humble.sh --e ns=*
         windows: humble --e ns=module_namespace or humble --e ns=*
-    function :
+    function : enamble
     parameters:
         required:
             namespace|ns: You must specify the namespace of the module to enable, or an * to enable all modules
@@ -50,21 +61,11 @@ d :
     usage:
         linux:   sudo sh ./humble.sh --d ns=module_namespace or sudo sh ./humble.sh --d ns=*
         windows: humble --d ns=module_namespace or humble --d ns=*
-    function :
+    function : disable
     parameters:
         required:
             namespace|ns: You must specify the namespace of the module to disable, or an * to disable all non-required modules
         optional:          
-k : 
-    description: Uninstall (Kill) a module    
-    usage:
-        linux:   sudo sh ./humble.sh --k ns=module_namespace or sudo sh ./humble.sh --k ns=*
-        windows: humble --k ns=module_namespace or humble --k ns=*
-    function :
-    parameters:
-        required:
-            namespace|ns: You must specify the namespace of the module to uninstall, or an * to uninstall all non-required modules
-        optional:  
 activate : 
     description: Build Install and Enable a Module
     usage:

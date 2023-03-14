@@ -1,8 +1,11 @@
 ---
 o : 
     description: Toggles the application online or offline
-    usage:
-    function :
+    extended: Toggling the system offline will prevent most of the framework functionality from working
+    usage: 
+        linux:   sudo sh ./humble.sh --o
+        windows: humble --o    
+    function : toggle
     directive: true
     parameters:
         required:
@@ -10,15 +13,19 @@ o :
 l : 
     description: Toggle local authentication vs SSO
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --o
+        windows: humble --o    
+    function : toggleAuthentication
     directive: true
     parameters:
         required:
         optional:
 s : 
-    description: Application Status
+    description: Display/Return Application Status
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --s
+        windows: humble --s            
+    function : status
     directive: true
     parameters:
         required:
@@ -48,7 +55,7 @@ package :
     parameters:
         required:
         optional:    
-increment : 
+increment|inc|+ : 
     description: Increments the minor version of the framework by 1 rolling over if needed
     usage:
         linux:   sudo sh ./humble.sh --increment

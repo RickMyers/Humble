@@ -3,13 +3,56 @@ require 'cli/CLI.php';
 class System extends CLI 
 {
     
+    
+    
+    
+    /**
+     * Displays the system status
+     * 
+     * @return boolean
+     */
+    public static function status() {
+        $xml    = simplexml_load_string(file_get_contents('../application.xml'));
+        if ($xml->status->enabled == 1) {
+            print("\n\n".date('Y-m-d H:i:s').'   <Application is enabled>'."\n\n");
+            return true;
+        } else {
+            print("\n\n".date('Y-m-d H:i:s').'   <Application is disabled>'."\n\n");
+            return false;
+        }
+    }
+    
+    /**
+     * Toggles whether we are going to use local authentication or some form of SSO token
+     */
+    public static function toggleAuthentication() {
+        $xml  = simplexml_load_string(file_get_contents('../application.xml'));
+        $enabled = (int)$xml->status->SSO->enabled;
+        $xml->status->SSO->enabled = $enabled ? 0 : 1;
+        file_put_contents('../application.xml',$xml->asXML());
+        $message = ($enabled) ? 'Authentication Engine: LOCAL' : 'Authentication Engine: SSO';
+        print("\n\n".$message."\n\n");
+    }
+    
+    /**
+     * Toggles the application status
+     */
+    public static function toggle() {
+        $xml  = simplexml_load_string(file_get_contents('../application.xml'));
+        $enabled = (int)$xml->status->enabled;
+        $xml->status->enabled = $enabled ? 0 : 1;
+        file_put_contents('../application.xml',$xml->asXML());
+        $message = ($enabled) ? 'System Status: OFFLINE' : 'System Status: ONLINE';
+        print("\n\n".$message."\n\n");
+    }
+    
     /**
      * Increments the minor version of the application in the application.xml filed
      * 
      * @param int $next
      * @return string
      */
-    public static function incrementVersion($next=1) {
+    public static function increment($next=1) {
         print("CHANGING VERSION"."\n");
         $data   = self::getApplicationXML();
         $v      = explode('.',(string)$data->version->framework);

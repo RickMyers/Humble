@@ -80,7 +80,11 @@ if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         
     } else {
         foreach ($available_commands as $include => $commands) {                //go find which include we should bring in (functionality)
             foreach ($commands as $command => $options) {
-                if ($entered_command===$command) {
+                $list = [];
+                foreach (explode('|',$command) as $cmd) {                       //we are going to allow for command aliases specified in the yaml file by pipe delimiters in the command [command|cmd|c]
+                    $list[$cmd] = true;
+                } 
+                if (isset($list[$entered_command])) {
                     array_shift($argv);                                         //drop the entered command
                     foreach ($argv as $arg) {                                   //Pre-process the passed in arguments, filtering if a ' is found
                         if (strpos($arg,"'")) {
