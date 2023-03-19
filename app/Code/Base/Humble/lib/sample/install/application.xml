@@ -2,6 +2,11 @@
 <application>
     <name>{$name}</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">{$serial_number}</serial_number>
+    <comment>
+        The Serial Number is unique to your application and is used when encrypting secrets and caching data.  Changing the Serial
+        Number will make your secrets useless and will fully invalidate your cache.  It is expected that the Serial Number will be
+        shared for all developers of the application.
+    </comment>
     <version>
         <framework>{$version}</framework>
         <app>0.0.0.1</app>
@@ -26,7 +31,7 @@
     <documentation comment="Documentation will not be generated in environments with a state of PRODUCTION">
         <engine  options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
         <command options="PHPDoc2.phar,apigen.phar app/Code --output Docs">php PHPDoc2.phar</command>
-        <source  options="https://humbleprogramming.com/dist/PHPDoc2.phar ,https://humbleprogramming.com/dist/APIGen.phar">https://humbleprogramming.com/dist/PHPDoc2.phar</source>
+        <source  options="https://humbleprogramming.com/dist/phpdoc.php ,https://humbleprogramming.com/dist/apigen.php">https://humbleprogramming.com/dist/phpdoc.php</source>
     </documentation>
     <support>
         <name>{$support_name}</name>
