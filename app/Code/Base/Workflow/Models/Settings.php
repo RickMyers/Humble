@@ -40,10 +40,10 @@ class Settings extends Model
      * We are going to update a value in the settings section of the component
      */
     public function save() {
-        $obj1 = \Humble::getCollection('paradigm/elements');
+        $obj1 = \Humble::collection('paradigm/elements');
         $obj1->setId($this->getId());
         $data = $obj1->load();
-        $obj2 = \Humble::getCollection('paradigm/elements');
+        $obj2 = \Humble::collection('paradigm/elements');
         foreach ($data as $var => $val) {
             if ($var != '_id') {
                 $method = 'set'.ucfirst($var);

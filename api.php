@@ -122,7 +122,7 @@
             $module = \Humble::getModule($namespace);
             if (isset($module['schema_layout']) && ($module['schema_layout'])) {
                 try {
-                    $editForm = \Humble::getModel('humble/renderer');
+                    $editForm = \Humble::model('humble/renderer');
                     $editForm->setNamespace($namespace);
                     $editForm->setPackage($module['package']);
                     $editForm->setId($id);
@@ -144,7 +144,7 @@
         //if (!empty($content)) {
             if ($module) {
                 header('Content-type: application/json');
-                $ref = \Humble::getEntity($namespace.'/'.$table);
+                $ref = \Humble::entity($namespace.'/'.$table);
                 if (isset($_REQUEST['rows']) && isset($_REQUEST['page'])) {
                     $ref->_rows((int)$_REQUEST['rows']);
                     $ref->_page((int)$_REQUEST['page']);

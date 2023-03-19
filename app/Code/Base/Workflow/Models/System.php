@@ -40,7 +40,7 @@ class System extends Model
      *
      */
     private function registerSystemTrigger($id,$data) {
-        $integration_point = Humble::getEntity('paradigm/webservice_workflows');
+        $integration_point = Humble::entity('paradigm/webservice_workflows');
         $integration_point->setWebserviceId($id);
         $integration_point->setWorkflowId($data['workflow_id']);
         $integration_point->setUri($data['uri']);
@@ -54,12 +54,12 @@ class System extends Model
     public function save() {
         $data           = json_decode($this->getData(),true);
         $this->setWindowId($data['windowId']);  //now I need a shower...
-        $component      = Humble::getModel('workflow/manager');
+        $component      = Humble::model('workflow/manager');
         $component->setData($this->getData());
         $component->saveComponent();
         
         
-        /**$webservice     = Humble::getEntity('paradigm/webservices');
+        /**$webservice     = Humble::entity('paradigm/webservices');
         $webservice->setUri($data['uri']);
         $webservice->setWebserviceId($data['id']);
         $webservice->setActive($data['enabled']);

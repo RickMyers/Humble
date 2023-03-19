@@ -45,7 +45,7 @@ class Forms extends Model
     public function fields($formName=false,$fieldset=false) {
         $results = [];
         if ($formName) {
-            $fields = Humble::getEntity('humble/form_fields');
+            $fields = Humble::entity('humble/form_fields');
             $fields->setFormName($formName);
             if ($fieldset) {
                 $fields->setFieldset($fieldset);

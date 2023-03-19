@@ -22,7 +22,7 @@ function secureCheck($file=[]) {
     ob_start();
     chdir('app');                               //always start in this directory
     require_once('Humble.php');                   //our friend
-    $orm = \Humble::getEntity('humble/'.$_GET['type']);
+    $orm = \Humble::entity('humble/'.$_GET['type']);
     $orm->setNamespace('');                     //clear the namespace
     $packages = array();
 

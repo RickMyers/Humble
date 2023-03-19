@@ -42,74 +42,14 @@ $help = <<<HELP
  * -----------------------------------------------------------------------------
  */
 HELP;
-    if (!class_exists('Humble')) {
-        //let's make sure we only include/define these once
-        require_once('Humble.php');
-        require_once("Requires.php");
-    }
-    
-    //ob_start();
-    //--------------------------------------------------------------------------
-    //Copied from PHPPro.blog
-    //--------------------------------------------------------------------------
-    function underscoreToCamelCase( $string, $first_char_caps = false) {
-        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
-    }
-    //--------------------------------------------------------------------------
-    //option functions
-    //--------------------------------------------------------------------------
-    function fetchParameter($parm,$list) {
-        $parms = [];
-        $parms = is_array($parm) ? array_flip($parm) : [$parm=>true];
-        $value=false;
-        foreach ($list as $key => $val) {
-            if (isset($parms[$key])) {
-                $value = $val;
-                break;
-            }
-        }
-        return $value;
-    }
-    //--------------------------------------------------------------------------
-    function processArgs($args) {
-        $parms = array();
-        foreach ($args as $arg) {
-            if (strpos($arg,'=')===false) {
-                die('Invalid argument passed: '.$arg);
-            }
-            $arg = explode('=',$arg);
-            $parms[$arg[0]] = $arg[1];
-        }
-        return $parms;
-    }
-    //--------------------------------------------------------------------------
 
 
-    //--------------------------------------------------------------------------
-    function toggleApplicationStatus() {
-        $xml  = simplexml_load_string(file_get_contents('../application.xml'));
-        $enabled = (int)$xml->status->enabled;
-        $xml->status->enabled = $enabled ? 0 : 1;
-        file_put_contents('../application.xml',$xml->asXML());
-        $message = ($enabled) ? 'System Status: OFFLINE' : 'System Status: ONLINE';
-        print("\n\n".$message."\n\n");
-    }
-
-    //--------------------------------------------------------------------------
-    function toggleLocalAuthentication() {
-        $xml  = simplexml_load_string(file_get_contents('../application.xml'));
-        $enabled = (int)$xml->status->SSO->enabled;
-        $xml->status->SSO->enabled = $enabled ? 0 : 1;
-        file_put_contents('../application.xml',$xml->asXML());
-        $message = ($enabled) ? 'Authentication Engine: LOCAL' : 'Authentication Engine: SSO';
-        print("\n\n".$message."\n\n");
-    }
 
     //--------------------------------------------------------------------------
     function checkNamespaceAvailability($args) {
         $ns = fetchParameter('namespace',processArgs($args));
         if ($ns) {
-            $check = \Humble::getEntity('humble/modules');
+            $check = \Humble::entity('humble/modules');
             $check->setNamespace($ns);
             $mod = $check->load();
             if ($mod) {
@@ -128,7 +68,7 @@ HELP;
     function checkPrefixAvailability($args) {
         $px = fetchParameter('prefix',processArgs($args));
         if ($px) {
-            $check = \Humble::getEntity('humble/modules');
+            $check = \Humble::entity('humble/modules');
             $check->setPrefix($px);
             $mod = $check->fetch();
             if ($mod && count($mod)>0) {
@@ -143,80 +83,6 @@ HELP;
         }
     }
     //--------------------------------------------------------------------------
-    function createModuleDirectories($args) {
-        $ns = fetchParameter('namespace',processArgs($args));
-        $pk = fetchParameter('package',processArgs($args));
-        $px = $ns.'_';
-        $au = fetchParameter('author',processArgs($args));
-        $md = fetchParameter('module',processArgs($args));
-        $em = fetchParameter('email',processArgs($args));
-        if ($ns && $pk && $px && $md) {
-            $base = 'Code/'.$pk;
-            $root = $base."/".$md;
-            if (!is_dir($base)) {
-               @mkdir($base,0775,true);
-            }
-            if (!is_dir($root)) {
-                @mkdir($root);
-                @mkdir($root.'/etc');
-                @mkdir($root.'/Controllers');
-                @mkdir($root.'/Controllers/Cache');
-                @mkdir($root.'/Mobile');
-                @mkdir($root.'/Mobile/Controllers');
-                @mkdir($root.'/Mobile/Controllers/Cache');
-                @mkdir($root.'/Mobile/Views');
-                @mkdir($root.'/Mobile/Views/Cache');
-                @mkdir($root.'/Views');
-                @mkdir($root.'/Views/actions');
-                @mkdir($root.'/Views/actions/Smarty3');
-                @mkdir($root.'/Views/Cache');
-                @mkdir($root.'/Mobile');
-                @mkdir($root.'/Models');
-                @mkdir($root.'/Helpers');
-                @mkdir($root.'/Schema');
-                @mkdir($root.'/Schema/Install');
-                @mkdir($root.'/Schema/Update');
-                @mkdir($root.'/Schema/DSL');
-                @mkdir($root.'/Entities');
-                @mkdir($root.'/RPC');
-                @mkdir($root.'/web');
-                @mkdir($root.'/web/js');
-                @mkdir($root.'/web/app');
-                @mkdir($root.'/web/css');
-                @mkdir($root.'/web/edits');
-                @mkdir($root.'/Images');
-                $project     = Environment::getProject();
-                $module      = Humble::getModule($project->namespace);
-                $is_base     = (string)$project->namespace == $ns;
-                $package     = $is_base ? 'Base'   : (string)$project->package;
-                $module      = $is_base ? 'Humble' : (string)$project->module;
-                $required    = $is_base ? 'Y'      : 'N';
-                $root        = is_dir('Code/'.$project->package.'/'.$project->module.'/lib/sample/module') ? 'Code/'.$project->package.'/'.$project->module : "Code/Base/Humble";
-                $srch        = ["&&namespace&&","&&prefix&&","&&author&&","&&module&&","&&package&&",'&&email&&','&&FACTORY&&','&&base_package&&','&&base_module&&','&&required&&'];
-                $repl        = [$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
-                $templates   = [$root."/lib/sample/module/Controllers/actions.xml"];
-                $out         = ["Code/".$pk."/".$md."/Controllers/actions.xml"];
-                $templates[] = $root."/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
-                $templates[] = $root."/lib/sample/module/RPC/mapping.yaml";                $out[] = "Code/".$pk."/".$md."/RPC/mapping.yaml";
-                $templates[] = $root."/lib/sample/module/Views/actions/Smarty3/open.tpl";  $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty3/open.tpl";
-                $templates[] = $root."/lib/sample/module/web/js/actions.js";               $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
-                $templates[] = $root."/lib/sample/module/web/css/template.css";            $out[] = "Code/".$pk."/".$md."/web/css/".ucfirst($md).".css";
-                $templates[] = $root."/lib/sample/module/Models/Model.php.txt";            $out[] = "Code/".$pk."/".$md."/Models/Model.php";
-                $templates[] = $root."/lib/sample/module/Helpers/Helper.php.txt";          $out[] = "Code/".$pk."/".$md."/Helpers/Helper.php";
-                $templates[] = $root."/lib/sample/module/Entities/Entity.php.txt";         $out[] = "Code/".$pk."/".$md."/Entities/Entity.php";
-                $templates[] = $root."/lib/sample/module/web/edits/template.json";         $out[] = "Code/".$pk."/".$md."/web/edits/sample_edit.json";
-                foreach ($templates as $idx => $template) {
-                    file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)));
-                }
-                print("\n\nIf no errors, then the module was likely built.  At this point, run 'Humble --i namespace=$ns' to install the module, or access it through the administration screens.\n\n");
-            }
-        } else {
-            $msg = <<<TXT
-            To create a module, you must pass namespace, package, module and optionally author email.
-TXT;
-            print($msg);
-        }
-    }
     //--------------------------------------------------------------------------
     function activateModule($args) {
         $ns = fetchParameter('namespace',processArgs($args));
@@ -245,101 +111,11 @@ TXT;
     function displayVersion($xml) {
         print("\n\n".$xml->version->framework."\n\n");
     }
+
+    
+    //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
 
-    //--------------------------------------------------------------------------
-    function enableModule($args) {
-        $ns = $args[0];
-        print("Enabling ".$ns."\n\n");
-        $mod = \Humble::getEntity("humble/modules");
-        $mod->setNamespace($ns);
-        $mod->setEnabled('Y');
-        $mod->save();
-    }
-    //--------------------------------------------------------------------------
-    function disableModule($args) {
-        $ns = $args[0];
-        print("Disabling ".$ns."\n\n");
-        \Humble::getEntity("humble/modules")->setNamespace($ns)->setEnabled('N')->save();
-    }
-    //--------------------------------------------------------------------------
-    function incrementVersion($next=1) {
-        print("CHANGING VERSION");
-        $data   = getApplicationXML();
-        $v      = explode('.',(string)$data->version->framework);
-        for ($i=count($v)-1; $i>=0; $i-=1) {                                    //This is one of those ridiculously evil things in computer science
-            $v[$i] = (int)$v[$i]+$next;
-            if ($next  = ($v[$i]===10)) {
-                $v[$i] = 0;
-            }
-        }
-        $data->version->framework = (string)implode('.',$v);
-        print("\nSetting version to ".$data->version->framework."\n\n");
-        file_put_contents('../application.xml',$data->asXML());
-    }
-
-    //--------------------------------------------------------------------------
-    function installModule($id) {
-        $ns     = (isset($id[0])) ? $id[0] : false;
-        $etc    = (isset($id[1])) ? $id[1] : false;
-        if ($ns) {
-            if (file_exists($id[1]) && ($xml = file_get_contents($id[1]))) {
-                libxml_use_internal_errors(true);
-                $doc = new \DOMDocument('1.0', 'utf-8');
-                $doc->loadXML($xml);
-                $errors = libxml_get_errors();
-                if ($errors) {
-                    $level = array('1'=>'Warning', '2'=>'Error', '3'=>'Severe');
-                    print("\nThe installation failed.\n\n");
-                    print("Errors have been encountered in the XML configuration file ({$etc})\n\n");
-                    foreach ($errors as $error) {
-                        print("\t".$level[$error->level].": Line {$error->line}, column {$error->column} - ".$error->message);
-                    }
-                } else {
-                    print("Installing...\n");
-                    $utility = \Environment::getInstaller();
-                    $utility->setSource($etc);
-                    $utility->install();
-                }
-            } else {
-                print("Couldn't read the XML config file\n\n");
-            }
-        } else {
-            print("\n\nRequired parameters are namespace and configuration file location\n\n");
-        }
-
-    }
-    //--------------------------------------------------------------------------
-    function uninstallModule($id) {
-        $ns     = (isset($id[0])) ? $id[0] : false;
-        if ($ns) {
-            $module = \Humble::getModule($ns,true);
-            print_r($module);
-            if ($module) {
-                $utility = \Humble::getModel('humble/utility');
-                $utility->setPackage($module['package']);
-                $utility->setNamespace($module['namespace']);
-                if ($utility->uninstall()) {
-                    print("\n\nThe module was uninstalled, it is now safe to delete the module\n\n");
-                } else {
-                    print("\n\nAn error was encountered during uninstallation, the module was not uninstalled\n\n");
-                };
-            } else {
-                print("\nThe module represented by namespace [".$ns."] has either already been uninstalled or does not exist\n\n");
-            }
-        }
-    }
-    //--------------------------------------------------------------------------
-    function updateIndividualModule($updater,$namespace) {
-        $data = Humble::getEntity('humble/modules')->setNamespace($namespace)->load(true);
-        if (isset($data['configuration']) && $data['configuration']) {
-            $etc     = 'Code/'.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
-            $updater->output('BEGIN','Update Configuration File: '.$etc);
-            $updater->update($etc);
-        } else {
-            print('===> ERROR: Unable to determine where configuration file is for: '.$namespace.'.  You should review the configuration file manually <==='."\n");
-        }
-    }
     //--------------------------------------------------------------------------
     function updateUsingConfigurationFile($args) {
         $updater = \Environment::getUpdater(); 
@@ -408,12 +184,12 @@ TXT;
     function registerInlineEvent($namespace=false,$emit=false,$comment=false) {
         if ($namespace && $emit && $comment) {
             print('        Registering Inline Event '.$namespace.'/'.$emit.' ==> '.$comment."\n");            
-            \Humble::getEntity('paradigm/events')->setNamespace($namespace)->setEvent($emit)->setComment($comment)->save();
+            \Humble::entity('paradigm/events')->setNamespace($namespace)->setEvent($emit)->setComment($comment)->save();
         }
     }
     //--------------------------------------------------------------------------
     function registerMethodListener($namespace,$class,$method,$clauses) {
-        $method_listener = Humble::getEntity('paradigm/method/listeners');
+        $method_listener = Humble::entity('paradigm/method/listeners');
         foreach (explode(',',$events) as $event) {
             $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
         }
@@ -427,7 +203,7 @@ TXT;
         $package    = strtolower($parts[1]);
         $root       = strtolower($parts[2]."/".$parts[3]);
         print($root."\n");
-        $data    = \Humble::getEntity('humble/modules')->setModels($root)->fetch();
+        $data    = \Humble::entity('humble/modules')->setModels($root)->fetch();
         if ($data) {
             $data       = $data->pop();
             $namespace  = $data['namespace'];
@@ -447,15 +223,15 @@ TXT;
            // $models = array_merge($models,\Humble::getHelpers($namespace)); //no, this is not a good idea, at least not yet
         }
         print('*** Scanning for workflow components within the Models of the Module identified by Namespace: '.$namespace."***\n");
-        $workflowComponent  = \Humble::getEntity('paradigm/workflow/components');
-        $workflowComment    = \Humble::getEntity('paradigm/workflow/comments');
+        $workflowComponent  = \Humble::entity('paradigm/workflow/components');
+        $workflowComment    = \Humble::entity('paradigm/workflow/comments');
         foreach ($models as $model) {
             print('Processing '.$model."...\n");
             $workflowComponent->reset();
             $workflowComponent->setNamespace($namespace);
             $workflowComponent->setComponent($model);
             $workflowComponent->delete();
-            $class          = \Humble::getModel($namespace.'/'.$model);
+            $class          = \Humble::model($namespace.'/'.$model);
             if (!method_exists($class, 'getClassName')) {
                 print($model."\n");
                 continue;
@@ -563,7 +339,7 @@ TXT;
         }
         print('Attempting to copy: '.$directory."\n");
         if ($directory) {
-            $util       = Humble::getHelper('humble/directory');
+            $util       = Humble::helper('humble/directory');
             $directory  = (substr($directory,0,1)==='/') ? substr($directory,1) : $directory;  //convert from absolute to relative path
             if (is_dir('../'.$directory)) {
                 @mkdir('../../'.$directory,0775,true);
@@ -584,7 +360,7 @@ TXT;
         }
         print('Attempting to restore: '.$directory."\n");
         if ($directory) {
-            $util       = Humble::getHelper('humble/directory');
+            $util       = Humble::helper('humble/directory');
             $directory  = (substr($directory,0,1)==='/') ? substr($directory,1) : $directory;  //convert from absolute to relative path
             if (is_dir('../../'.$directory)) {
                 @mkdir('../'.$directory,0775,true);
@@ -627,33 +403,8 @@ TXT;
         $compiler   = \Environment::getCompiler();
         $compiler->compileFile($file);
     }
-    //--------------------------------------------------------------------------
-    function scrub($str) {
-        $srch = ["\n","\r","\t"];
-        $repl = ["","",""];
-        return str_replace($srch,$repl,$str);
-    }
-    //--------------------------------------------------------------------------
-    function recurseDirectory($path) {
-        $entries = [];
-        if ($path) {
-            if (!is_dir($path)) {
-                print("What is up with this: ".$path."\n");
-            }
-            $dir = dir($path);
-            while (($entry = $dir->read()) !== false ) {
-                if (($entry == '.') || ($entry == '..')) {
-                    continue;
-                }
-                if (is_dir($path.'/'.$entry)) {
-                    $entries = array_merge($entries,recurseDirectory($path.'/'.$entry));
-                } else {
-                    $entries[] = $path.'/'.$entry;
-                }
-            }
-        }
-        return $entries;
-    }
+
+
     //--------------------------------------------------------------------------
     function addUser($args) {
         $parms = processArgs($args);
@@ -663,7 +414,7 @@ TXT;
         $last  = fetchParameter('last_name',$parms);
         $uid   = fetchParameter('uid',$parms);
         if ($uname && $passw) {
-            Humble::getEntity('humble/users')->newUser($uname,MD5($passw),$first,$last,$uid);
+            Humble::entity('humble/users')->newUser($uname,MD5($passw),$first,$last,$uid);
         } else {
             print("Not enough data was passed to create a user.  user_name and password are minimum required fields.\n");
         }
@@ -811,139 +562,33 @@ TXT;
         }
         //Now add manifest file in the form of a git ignore...
         $ignore = array_merge(['Docs/*','/images/*','/app/allowed.json','/app/Constants.php','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
+        $ignore = array_merge(['app/cli/Component/*','app/cli/Directive/*','app/cli/Workflow/*','app/cli/Framework/*','app/cli/System/*','app/cli/Module/*'],$ignore);
         $zip->addFromString('.gitignore',implode("\n",$ignore));
         //$zip->addFromString('.manifest',implode("\n",$content['xref']));
         $zip->close();
         chdir('app');
     }
     //--------------------------------------------------------------------------
-    function performCoreUpdate($distro,$changed,$insertions,$matched,$ignored,$merged,$app,$version) {
-        ob_start();
-        print("\nPATCH REPORT\n########################################################\n\nMatched Files: ".$matched."\n\nThe following files will be updated by this process:\n\n");
-        print("\nThe following files are on the local manifest indicating they should be IGNORED in the patch:\n\n");
-        foreach ($ignored as $idx => $file) {
-            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
-        }
-        print("\nThe following files are on the local manifest indicating they should be MERGED in the patch:\n\n");
-        foreach ($merged as $idx => $file) {
-            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
-        }
-        print("\nThe following files will be patched:\n\n");
-        foreach ($changed as $idx => $file) {
-            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
-        }
-        print("\nThe following files are new and will be inserted by this patch:\n\n");
-        foreach ($insertions as $idx => $file) {
-            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
-        }
-        print($report = ob_get_clean());
-        file_put_contents('patch_report.txt',$report);
-        print("\n\nIf you do not want some files updated, add those files to the Humble.local.manifest file and re-run this process.\n\nA copy of the patch review report shown above can be found in file 'patch_report.txt'.\n\n");
-        print("Do you wish to continue [yes/no]? ");
-        if (strtolower(scrub(fgets(STDIN))) === 'yes') {
-            $app->version->framework = $version;
-            file_put_contents('application.xml',$app->asXML());
-            foreach ($changed as $file) {
-                file_put_contents($file,$distro->getFromName($file));
-            }
-            foreach ($insertions as $file) {
-                if (count($parts = explode('/',$file))>1) {
-                    @mkdir(implode('/',array_slice($parts,0,count($parts)-1)),0775,true);
-                }
-                file_put_contents($file,$distro->getFromName($file));
-            }
-            chdir('app');
-            print("Now running update...\n\n");
-            updateModule(['ns=*']);
-            chdir('..');
-        } else {
-            print("\n\nFramework update aborted.\n\n");
-        }
-    }
-    //--------------------------------------------------------------------------
-    function evaluateCoreDifferences($app,$project,$version) {
-        $local_manifest = (file_exists('app/Humble.local.manifest')) ? json_decode(file_get_contents('app/Humble.local.manifest'),true) : ['merge'=>[],'ignore'=>[]];   //Load the manifest that tells us what files to not update
-        if (file_exists('app/Humble.local.manifest')) {
-            print("\n\n".'Found Local Manifest file...'."\n\n");
-        }
-        if (!$local_manifest) {
-            die("\n\nERROR: Could not read Humble.local.manifest.  Check to see it exists or if there is a parsing issue with the file\n\n");
-        }
 
-        file_put_contents('distro_'.$version.'/humble.zip',file_get_contents($project['framework_url'].'/distro/fetch'));                                               //Download the current source base
-        $changed    = []; $insertions = []; $source = []; $contents = []; $ignore = []; $merge = []; $matched = 0;
-        $distro     = new ZipArchive();
-        $dist_file = 'distro_'.$version.'/humble.zip';
-        if ($distro->open($dist_file)) {
-            for ($i=0; $i< $distro->numFiles; $i++) {
-                $contents[] = $distro->getNameIndex($i);
-            }
-        } else {
-            die("\nFailed To open distro zip file\n");
-        }
-        foreach ($contents as $file_idx => $file) {
-            print("processing ".$file."\n");
-            if (file_exists($file)) {
-                if (isset($local_manifest['ignore'][$file]) && $local_manifest['ignore'][$file]) {
-                    $ignore[] = $file;
-                } else if (isset($local_manifest['merge'][$file]) && $local_manifest['merge'][$file]) {
-                    $merge[]  = $file;
-                } else if ($distro->getFromIndex($file_idx) != file_get_contents($file)) {
-                    $changed[] = $file;
-                } else {
-                    $matched++;
-                }
-            } else {
-                $insertions[] = $file;
-            }
-        }
-        performCoreUpdate($distro,$changed,$insertions,$matched,$ignore,$merge,$app,$version);
-        @unlink($dist_file);
-    }
-    //--------------------------------------------------------------------------
-    function patchFrameworkCore() {
-        if (file_exists('../Humble.project')) {
-            $project = json_decode(file_get_contents('../Humble.project'),true);
-        } else {
-            die("\nHumble project file not found.\n");
-        }
-        if (file_exists('../application.xml')) {
-            $app = simplexml_load_file('../application.xml');
-        } else {
-            die("\Application XML file not found\n");
-        }
-        $canonical = json_decode(file_get_contents($project['framework_url']."/distro/version"),true);
-        $canon_version = (int)str_replace(".","",(string)$canonical['version']);
-        $local_version = (int)str_replace(".","",(string)$app->version->framework);
-        $helper = Humble::getHelper('humble/directory');
-        print("\n\nRunning patching report on core framework to version ".$canonical['version'].", please wait...\n\n");
-        $distro = 'distro_'.$canonical['version'];
-        chdir('..');
-        @mkdir($distro,0775,true);
-        evaluateCoreDifferences($app,$project,$canonical['version']);
-        $helper->purgeDirectory($distro,true);
-        @rmdir($distro);
-        chdir('app');
-    }
     //--------------------------------------------------------------------------
     function exportWorkflows($args) {
         if ($target = fetchParameter(['destination','dst','dest','ds'],processArgs($args))) {
             //now get if they want to include all "all = fetchParameter(['all'],processArgs($args))
-            $exporter = Humble::getModel('paradigm/workflow'); $dest_id = '';
+            $exporter = Humble::model('paradigm/workflow'); $dest_id = '';
             if (!preg_match( '/^(http|https):\\/\\/[a-z0-9_]+([\\-\\.]{1}[a-z_0-9]+)*\\.[_a-z]{2,5}'.'((:[0-9]{1,5})?\\/.*)?$/i' ,$target)) {
-                if ($data = Humble::getEntity('paradigm/import/sources')->setName($target)->load(true)) {
+                if ($data = Humble::entity('paradigm/import/sources')->setName($target)->load(true)) {
                     $target = $data['source']; $dest_id = $data['id'];
                 } else {
                     die('You must either pass the URL of the destination, or a valid alias of the destination');
                 }
             } else {
-                if ($data = Humble::getEntity('paradigm/import/sources')->setSource($target)->load(true)) {
+                if ($data = Humble::entity('paradigm/import/sources')->setSource($target)->load(true)) {
                     $dest_id = $data['id'];
                 } else {
                     die('Unable to export to that destination, please consult the import sources table');
                 }
             }
-            foreach (Humble::getEntity('paradigm/workflows')->setActive('Y')->fetch() as $workflow) {
+            foreach (Humble::entity('paradigm/workflows')->setActive('Y')->fetch() as $workflow) {
                 $exporter->setId($workflow['id'])->setDestinationId($dest_id)->export();
             }
         } else {

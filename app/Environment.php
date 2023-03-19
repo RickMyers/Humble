@@ -99,7 +99,7 @@ class Environment {
         if (!self::$application) {
              self::loadApplicationMetaData(true);
         }
-        return (\Humble::getModel('humble/something')->_isLinux()) ? `which php.exe` : self::$application['engine'];
+        return (\Humble::model('humble/something')->_isLinux()) ? `which php.exe` : self::$application['engine'];
     }
     
     /**
@@ -340,7 +340,7 @@ class Environment {
         /*if ($status) {
          * @TODO: Change this so when logged in, the user permissions are cached and we get this from the session
             if (isset($_SESSION['uid']) && $_SESSION['uid']) {
-                $user = \Humble::getEntity('humble/user/permissions')->setId($_SESSION['uid']);
+                $user = \Humble::entity('humble/user/permissions')->setId($_SESSION['uid']);
                 $user->load();
                 if ($user->getSuperUser() == 'Y') {
                     $status = false;
@@ -377,7 +377,7 @@ class Environment {
     public static function whoIs($id=false) {
         $user = false;
         if ($id) {
-            $user = Humble::getEntity('humble/user/identification')->setId($id)->load();
+            $user = Humble::entity('humble/user/identification')->setId($id)->load();
         }
         return $user;
     }

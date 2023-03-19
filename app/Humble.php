@@ -179,6 +179,16 @@
         }
 
         /**
+         * Relay for simpler naming initiative
+         * 
+         * @param type $resource_identifier
+         * @return type
+         */
+        public static function entity($resource_identifier) {
+            return self::getEntity($resource_identifier);
+        }
+        
+        /**
          * Returns an instance of a class or a "virtual class" if that class doesn't exist
          * 
          * @param type $resource_identifier
@@ -210,6 +220,16 @@
             return $instance;
         }
 
+        /**
+         * Relay for simpler naming initiative
+         * 
+         * @param type $resource_identifier
+         * @return type
+         */
+        public static function model($resource_identifier) {
+            return self::getModel($resource_identifier);
+        }
+        
         /**
          * A helper is different from a model in that it should not maintain state, or data, between invocations
          * 
@@ -245,6 +265,16 @@
         }
 
         /**
+         * Relay for simpler naming initiative
+         * 
+         * @param type $resource_identifier
+         * @return type
+         */
+        public static function helper($resource_identifier) {
+            return self::getHelper($resource_identifier);
+        }
+
+        /**
          * Returns the contents of the project file of false if the project hasn't been created yet
          *
          * @return object
@@ -264,7 +294,7 @@
             } else {
                 $data   = Environment::getProject();
             }
-            $res    = Humble::getEntity('humble/modules')->setNamespace($data->namespace)->load();
+            $res    = Humble::entity('humble/modules')->setNamespace($data->namespace)->load();
             $source = 'Code/'.$res['package'].'/'.$res['configuration'].'/config.xml';
             if (file_exists($source)) {
                 $xml =  new \SimpleXMLElement(file_get_contents($source));
@@ -293,6 +323,16 @@
             return $instance;
         }
 
+        /**
+         * Relay for simpler naming initiative
+         * 
+         * @param type $resource_identifier
+         * @return type
+         */
+        public static function collection($resource_identifier) {
+            return self::getCollection($resource_identifier);
+        }
+        
         /**
          *
          * @param string $dir The directory to recurse

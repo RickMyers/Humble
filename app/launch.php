@@ -33,17 +33,17 @@ if (isset($args[1])) {
     }
 }
 $pid        = getmypid();
-$job        = Humble::getEntity('paradigm/job/queue')->setId($job_id);
+$job        = Humble::entity('paradigm/job/queue')->setId($job_id);
 $job->setId($job_id)->setStarted(date('Y-m-d H:i:s'))->setPid($pid)->save();                               //persist the PID of this run
 $job->reset()->setId($job_id)->load();                                          //reload the job
-$event      = Humble::getEntity('paradigm/system/events');
+$event      = Humble::entity('paradigm/system/events');
 $event_data = $event->setId($job->getSystemEventId())->load();
 $event->reset()->setId($event_data['id'])->setLastRun(\date('Y-m-d H:i:s'))->save();
 $workflow   = ($event_data && isset($event_data['workflow_id']) && $event_data['workflow_id']) ? $event_data['workflow_id'] : false;
 if ($workflow) {
     if (file_exists('Workflows/'.$workflow.".php")) {
         print('Executing Workflow: '.$workflow."\n");
-        if ($event_data = Humble::getEntity('paradigm/workflows')->setWorkflowId($workflow)->load(true)) {
+        if ($event_data = Humble::entity('paradigm/workflows')->setWorkflowId($workflow)->load(true)) {
             $data['title']       = $event_data['title'];
             $data['description'] = $event_data['description'];
         }

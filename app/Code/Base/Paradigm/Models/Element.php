@@ -46,7 +46,7 @@ class Element extends Model
      * @return array
      */
     public function create() {
-        $element = Humble::getCollection('paradigm/elements');
+        $element = Humble::collection('paradigm/elements');
         $element->setShape($this->getShape());
         $element->setType($this->getType());
         $element->setConfigured($this->getConfigured());

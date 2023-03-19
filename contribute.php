@@ -106,9 +106,9 @@ function initializeProject() {
                 print('###########################################'."\n\n");
                 $util->update($etc);
             }
-            $uid = Humble::getEntity('humble/users')->setUserName($uname)->setPassword(MD5($passwd))->save();
-            Humble::getEntity('humble/user/identification')->setId($uid)->setFirstName($fname)->setLastName($lname)->save();
-            Humble::getEntity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
+            $uid = Humble::entity('humble/users')->setUserName($uname)->setPassword(MD5($passwd))->save();
+            Humble::entity('humble/user/identification')->setId($uid)->setFirstName($fname)->setLastName($lname)->save();
+            Humble::entity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
             $project = Environment::getProject();
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                 exec('start '.$project->project_url);

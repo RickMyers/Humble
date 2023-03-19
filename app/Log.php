@@ -226,7 +226,7 @@ class Log {
      * @param type $data            An array of values to use to construct the message
      */
     public static function activity($primary=null,$secondary=null,$name=null,$data=[]) {
-        $template = Humble::getEntity('humble/activity_templates')->setName($name)->load(true);
+        $template = Humble::entity('humble/activity_templates')->setName($name)->load(true);
         if ($template) {
             $actors     = ['primary_id'=>null,'secondary_id'=>null];
             if ($template['meta_data']) {
@@ -237,7 +237,7 @@ class Log {
             }
             $primary_id     = (isset($actors['primary_id']) && $actors['primary_id']) ? $actors['primary_id'] : $primary;
             $secondary_id   = (isset($actors['secondary_id']) && $actors['secondary_id']) ? $actors['secondary_id'] : $secondary;
-            Humble::getEntity('humble/activity/log')->setLoggedBy(Environment::whoAmI())->setPrimaryId($primary_id)->setSecondaryId($secondary_id)->setActivity(Humble::getHelper('humble/string')->translate($template['template'],$data))->save();
+            Humble::entity('humble/activity/log')->setLoggedBy(Environment::whoAmI())->setPrimaryId($primary_id)->setSecondaryId($secondary_id)->setActivity(Humble::helper('humble/string')->translate($template['template'],$data))->save();
         }
     }
 
@@ -249,7 +249,7 @@ class Log {
      */
     public static function alert($type=false,$data=[]) {
         if ($type) {
-            \Humble::getModel('humble/system')->systemAlert($type,$data);
+            \Humble::model('humble/system')->systemAlert($type,$data);
         }
     }
     
@@ -261,7 +261,7 @@ class Log {
      */
     public static function notify($type=false,$data=[]) {
         if ($type) {
-            \Humble::getModel('humble/system')->systemNotification($type,$data);
+            \Humble::model('humble/system')->systemNotification($type,$data);
         }
     }    
     /**

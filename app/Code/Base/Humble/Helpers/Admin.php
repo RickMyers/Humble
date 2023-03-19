@@ -67,7 +67,7 @@ class Admin extends Helper
     public function moduleInformation($namespace=false) {
         $data   = [];
         if ($namespace) {
-            $data = Humble::getEntity('humble/modules')->setNamespace($namespace)->load(true);
+            $data = Humble::entity('humble/modules')->setNamespace($namespace)->load(true);
         }
         return $data;
     }

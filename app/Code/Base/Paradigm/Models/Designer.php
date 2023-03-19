@@ -55,7 +55,7 @@ class Designer extends Model
         $desc   = $this->getDescription();
         $url    = $this->getUrl();
         $image  = $this->getImage();
-        $form   = Humble::getEntity('paradigm/designer_forms');
+        $form   = Humble::entity('paradigm/designer_forms');
         if ($url) {
             if ($blob = file_get_contents($url)) {
                 $ok     = true;
@@ -87,7 +87,7 @@ class Designer extends Model
      *
      */
     public function formBackground() {
-        $form = Humble::getEntity('paradigm/designer_forms')->setId($this->getId())->load();
+        $form = Humble::entity('paradigm/designer_forms')->setId($this->getId())->load();
         if  ($form) {
             $p = explode('.',$form['image_name']);
             header('Content-Type: image/'.$p[count($p)-1]);
@@ -99,7 +99,7 @@ class Designer extends Model
      * 
      */
     public function save() {
-       $form = Humble::getEntity('paradigm/designer_forms');
+       $form = Humble::entity('paradigm/designer_forms');
        $form->setId($this->getId())->setName($this->getName())->$this->getDescription($this->getDescription())->setFormData($this->getFormData())->setLayers($this->getLayers())->save();
     }
 }

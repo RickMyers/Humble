@@ -46,7 +46,7 @@ class Sensor extends Model
      *
      */
     private function registerSensorWorkflow($id,$data) {
-        $sensor = Humble::getEntity('paradigm/sensor_workflows');
+        $sensor = Humble::entity('paradigm/sensor_workflows');
         $sensor->setSensorId($id);
         $sensor->setWorkflowId($data['workflow_id']);
         if ($data['sensor']==='other') {
@@ -64,10 +64,10 @@ class Sensor extends Model
     public function save() {
         $data       = json_decode($this->getData(),true);
         $this->setWindowId($data['windowId']);  //now I need a shower...
-        $component  = Humble::getModel('workflow/manager');
+        $component  = Humble::model('workflow/manager');
         $component->setData($this->getData());
         $component->saveComponent();
-        $sensor     = Humble::getEntity('paradigm/sensors');
+        $sensor     = Humble::entity('paradigm/sensors');
         if ($data['sensor']==='other') {
             $sensor->setSensor($data['other_value']);
         } else {

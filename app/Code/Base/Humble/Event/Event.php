@@ -53,7 +53,7 @@ class Event  {
      * @param type $identifier
      */
     public function __construct($identifier='') {
-        $this->_ref(Humble::getCollection('paradigm/events'));
+        $this->_ref(Humble::collection('paradigm/events'));
         $this->_name($identifier);                          //what is my event name
         $this->_initiated(array('date'=>date('Y-m-d H:i:s'),'timestamp'=>time()));             //the event and the workflow are related, this records essentially when the workflow was kicked off
         $doc = $this->save();                               //initial save to get an ID
@@ -87,6 +87,7 @@ class Event  {
     /**
      * Returns the data attached to the original event
      *
+     * @TODO: Again, investigate whether this should be underscoreToCamelCase
      * @return array
      */
     public function load() {
@@ -145,6 +146,7 @@ class Event  {
     /**
      * This appends to the original event data some new information, if there's already a node of the same name and the node is not an array, then the node is converted to an array with an initial value of the original value
      *
+     * @TODO: Review ucfirst below... should be underscoreToCamelCase?
      * @param type $newData
      */
     public function update($newData=[],$persist=false) {
@@ -194,11 +196,23 @@ class Event  {
      * Finalizes the last stage and finishes...
      */
     public function close() {
+        $flow = [];
+        foreach ($this->_stages as $idx => $stage) {
+            $stage['component'] = $this->_configurations[$idx];
+            if (isset($this->_configurations[$stage['id']])) {
+                foreach ($this->_configurations[$stage['id']] as $name => $value) {
+                    $stage[$name] = $value;
+                }
+            }
+            $flow[$idx] = $stage;
+        }
+        $this->setFlow($flow);        
         $x = count($this->_stages);
         if ($x) {
             $this->_stages[$x-1]['finished'] = time();
         }
         $this->_completed(true);
+        return $this;
     }
 
     /**

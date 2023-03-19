@@ -119,7 +119,7 @@ HDR;
         $this->workflow .= $tabs.(($node['element']==='begin') ? "workflow" : "label")."_".$node['id'].":\n";
         switch ($node['element']) {
             case "external"     :
-                $pwf = Humble::getEntity('paradigm/workflows')->setId($cnf['partial-workflow'])->load();
+                $pwf = Humble::entity('paradigm/workflows')->setId($cnf['partial-workflow'])->load();
                 $this->workflow .= "\n".$tabs."include 'Workflows/".$pwf['workflow_id'].".php';\n\n";
                 foreach ($node['connectors'] as $direction) {
                     if (isset($direction['begin']) && (isset($direction['begin']['from'])) && (isset($direction['begin']['from']['id']))) {
@@ -129,7 +129,7 @@ HDR;
                 }
                 break;            
             case "decision"     :
-                $this->workflow .= $tabs.'if (Humble::getModel("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";
+                $this->workflow .= $tabs.'if (Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";
                 $tabs .= "\t";
                 $this->workflow .= $tabs."goto label_".$node['connectors']['E']['begin']['to']['id'].";\n";
                 $this->traverse($this->components[$node['connectors']['E']['begin']['to']['id']]);
@@ -165,7 +165,7 @@ HDR;
                 
             default             :
                 if ($includeBranch) {
-                    $this->workflow .= $tabs.'Humble::getModel("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"));'."\n";
+                    $this->workflow .= $tabs.'Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"));'."\n";
                 }
                 foreach ($node['connectors'] as $direction) {
                     if (isset($direction['begin']) && (isset($direction['begin']['from'])) && (isset($direction['begin']['from']['id']))) {
@@ -198,7 +198,7 @@ HDR;
     protected function preProcess($workflow=false) {
         if ($workflow) {
             foreach ($workflow as $element) {
-                $configuration = Humble::getCollection('paradigm/elements');
+                $configuration = Humble::collection('paradigm/elements');
                 $element['configuration'] = $configuration->setId($element['id'])->load();
                 $this->components[$element['id']] = $element;
                 if ($element['element']!=='connector') {
@@ -234,7 +234,7 @@ HDR;
         $this->trigger  = false;
         $tabs           = '';  //Keeps track of indentation... the number of "tabs" to use...
         $diagram        = $this->getWorkflow();
-        $workflow       = Humble::getEntity("paradigm/workflows");
+        $workflow       = Humble::entity("paradigm/workflows");
         $workflow->setId($this->getId());
         $data           = $workflow->load();
         $namespace      = $this->getNamespace();
@@ -249,7 +249,7 @@ HDR;
                     if ($this->trigger) {
                         //only if this is a trigger caused by an actor or something that hits a URL, not a system thrown event (time based)
                         if (isset($this->trigger['namespace']) && isset($this->trigger['component']) && isset($this->trigger['method'])) {
-                            $event = Humble::getEntity('paradigm/workflow/listeners');
+                            $event = Humble::entity('paradigm/workflow/listeners');
                             $event->setWorkflowId($this->_workflowId());
                             $trigger = $event->load(true);
                             if (!$trigger) {

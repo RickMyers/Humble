@@ -44,7 +44,7 @@ class Compiler extends Directory
     public function __construct()   {
         parent::__construct();
         $this->_db = \Humble::getDatabaseConnection($this);
-        $this->helper = \Humble::getHelper('humble/data');
+        $this->helper = \Humble::helper('humble/data');
     }
 
     /**
@@ -457,7 +457,7 @@ PHP;
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
-        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getModel("'.$namespace.'/'.$node['class'].'");'."\n");
+        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::model("'.$namespace.'/'.$node['class'].'");'."\n");
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
             $this->processNode($tag,$newNode);
@@ -490,7 +490,7 @@ PHP;
             $collection = "/".$collection;
         }*/
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
-        print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getCollection("'.$namespace.'/'.$collection.'");'."\n");
+        print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::collection("'.$namespace.'/'.$collection.'");'."\n");
         //maybe select the collection here, either use 'class=""' or 'collection=""'
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
@@ -565,7 +565,7 @@ PHP;
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
-        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getEntity("'.$namespace.'/'.$node['class'].'");'."\n");
+        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::entity("'.$namespace.'/'.$node['class'].'");'."\n");
         if (isset($node['page'])) {
             print($this->tabs().'$'.$node['id'].'->_page(null);'."\n");  //essentially, you first make sure that pagination is turned off by passing a null
             print($this->tabs().'if (isset($_REQUEST["'.$node['page'].'"])) {'."\n");  //then you look to see if it is turned on
@@ -692,7 +692,7 @@ PHP;
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
-        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getHelper("'.$namespace.'/'.$node['class'].'");'."\n");
+        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::helper("'.$namespace.'/'.$node['class'].'");'."\n");
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
             $this->processNode($tag,$newNode);
@@ -1050,7 +1050,7 @@ PHP;
         if ($audit) {
             if (isset($track[strtoupper($audit)])) {
                 print($this->tabs().'$skip = ["m"=>true,"n"=>true,"c"=>true];'."\n");
-                print($this->tabs().'$audit = \Humble::getEntity("humble/audit/log");'."\n");
+                print($this->tabs().'$audit = \Humble::entity("humble/audit/log");'."\n");
                 print($this->tabs().'$audit->setNamespace(\Humble::_namespace());'."\n");
                 print($this->tabs().'$audit->setController(\Humble::_controller());'."\n");
                 print($this->tabs().'$audit->setAction(\Humble::_action());'."\n");
@@ -1307,7 +1307,7 @@ PHP;
                     $class  = $action['class'];
                     $ns     = $action['namespace'];
                     $id     = (isset($action['id'])) ? $action['id'] : $this->helper->_uniqueId();
-                    print($this->tabs().'$v_'.$id." = \Humble::getModel('".$ns."/".$class."');\n");
+                    print($this->tabs().'$v_'.$id." = \Humble::model('".$ns."/".$class."');\n");
                     //might need to add the action model to the list of models for the view... what are the pros and cons?  DEBATE!
                     print($this->tabs().'foreach ($models as $mdl => $val) {'."\n");
                     $this->tabs(1);
@@ -1321,19 +1321,19 @@ PHP;
                  * IF the 'event' flag was set on the action, then create a new trigger event and pass in all of the data this action received
                  */
                 if (isset($action['event'])) {
-                    $trigger = \Humble::getEntity('paradigm/workflow_components');
+                    $trigger = \Humble::entity('paradigm/workflow_components');
                     $trigger->setNamespace($this->namespace);
                     $trigger->setComponent(ucfirst($this->component));
                     $trigger->setMethod($action['name']);
                     $trigger->setEvent('Y');
                     $trigger->save();
-                    $e = \Humble::getEntity('paradigm/events');
+                    $e = \Humble::entity('paradigm/events');
                     $e->setEvent($action['event']);
                     $e->setComment($action['comment']);
                     $e->setNamespace($this->namespace);
                     $e->save();
                     if (isset($action['comment'])) {
-                        $comment = \Humble::getEntity('paradigm/workflow_comments');
+                        $comment = \Humble::entity('paradigm/workflow_comments');
                         $comment->setNamespace($this->namespace);
                         $comment->setClass($this->component);
                         $comment->setMethod($action['name']);
@@ -1493,7 +1493,7 @@ SQL;
     public function compileFile($file=false) {
        if ($file) {
            $parts       = explode(DIRECTORY_SEPARATOR,$file);
-           $module      = \Humble::getEntity('humble/modules')->setModule($parts[2])->load(true);
+           $module      = \Humble::entity('humble/modules')->setModule($parts[2])->load(true);
            $controller  = explode('.',$parts[count($parts)-1]);
            print("\n".'Compiling controller '.$file."\n\n");
            $this->compile($module['namespace'].'/'.$controller[0]);

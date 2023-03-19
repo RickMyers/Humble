@@ -33,7 +33,7 @@ class Event {
      */
     public static function set($EVENT,$mongoId) {
         $exclude = array('shape'=>true,'type'=>'true','configured'=>true,'_id'=>true,'id'=>true); //this is unnecessary stuff to save
-        $mongo   = Humble::getCollection('paradigm/elements');
+        $mongo   = Humble::collection('paradigm/elements');
         $mongo->setId($mongoId);
         $data    = $mongo->load();
         $cnf     = [];
@@ -104,7 +104,7 @@ class Event {
     public static function isRegistered($namespace=false,$eventName=false) {
         $event_registered = false;
         if ($eventName) {
-            $event = Humble::getEntity('humble/events')->setEvent($eventName);
+            $event = Humble::entity('humble/events')->setEvent($eventName);
             if ($namespace) {
                 $event->setNamespace($namespace);
             }
@@ -124,7 +124,7 @@ class Event {
     public static function register($namespace=false,$eventName=false,$comment=false) {
         $id = false;
         if ($eventName && $comment) {
-            $event_library = Humble::getEntity('humble/events')->setEvent($eventName)->setComment($comment);
+            $event_library = Humble::entity('humble/events')->setEvent($eventName)->setComment($comment);
             if ($namespace) {
                 $event_library->setNamespace($namespace);
             }

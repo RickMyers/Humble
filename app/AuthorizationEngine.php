@@ -19,7 +19,7 @@
 */
 /*
 try {
-    $engine = \Humble::getEntity('humble/service/directory')->setNamespace($namespace)->setRouter($controller)->setService($method)->load(true);
+    $engine = \Humble::entity('humble/service/directory')->setNamespace($namespace)->setRouter($controller)->setService($method)->load(true);
     if (isset($engine['authorized']) && ($engine['authorized']==='Y'))  {
         //do the authorization check, how we do this is a TBD
         $authorized = true;

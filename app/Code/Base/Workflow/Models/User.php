@@ -56,11 +56,11 @@ class User extends Model
                     $id = \Environment::whoAmI();
                 } else {
                     if (isset($cfg['field']) && $cfg['field']) {
-                        $id = \Humble::getHelper('humble/event')->evaluate($data,$cfg['field']);
+                        $id = \Humble::helper('humble/event')->evaluate($data,$cfg['field']);
                     }
                 }
                 if ($id !== false) {
-                    $EVENT->update([$cfg['node']=> \Humble::getEntity('humble/users')->setUid($id)->information()]);
+                    $EVENT->update([$cfg['node']=> \Humble::entity('humble/users')->setUid($id)->information()]);
                 }
             }
         }

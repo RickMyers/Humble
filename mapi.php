@@ -56,7 +56,7 @@
     $namespace       = isset($_GET['n']) ? $_GET['n'] : false;
     if ($module          = \Humble::getModule($namespace)) {
         if ($class && $method && $namespace) {
-            if ($model = Humble::getModel($namespace.'/'.$class)) {
+            if ($model = Humble::model($namespace.'/'.$class)) {
                 foreach ($content as $name => $val) {
                     if ($name !== '') {
                         $setter = 'set'.underscoreToCamelCase($name, true);

@@ -48,6 +48,6 @@ class Trigger extends Model
         $d          = $el->setId($data['id'])->load();
         $enabled    = (isset($data['enabled']) && ($data['enabled']==='Y')) ? 'Y' : 'N';
         $el->setEnabled($enabled)->save();
-        $listen_id  = \Humble::getEntity('paradigm/event/listeners')->setNamespace($d['namespace'])->setEvent($d['method'])->setWorkflowId($data['workflow_id'])->setActive($enabled)->save();
+        $listen_id  = \Humble::entity('paradigm/event/listeners')->setNamespace($d['namespace'])->setEvent($d['method'])->setWorkflowId($data['workflow_id'])->setActive($enabled)->save();
     }
 }

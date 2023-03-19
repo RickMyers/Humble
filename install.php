@@ -333,17 +333,17 @@ switch ($method) {
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing = explode('/',$landing_page);
-        $ins     = Humble::getModel('humble/utility');
+        $ins     = Humble::model('humble/utility');
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();
-        $uid    = \Humble::getEntity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']))->newUser();
+        $uid    = \Humble::entity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']))->newUser();
         $results = ob_get_flush();
         if (!$uid) {
             file_put_contents('oops.txt',$results);
         }
-        \Humble::getEntity('humble/user/identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
-        \Humble::getEntity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
+        \Humble::entity('humble/user/identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
+        \Humble::entity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
         $ins->setUid($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
         if (!$cache) {
 

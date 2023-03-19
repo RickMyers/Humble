@@ -97,9 +97,9 @@ class Updater extends Installer
     protected function updateServiceDirectory($namespace=null) {
         $this->output('DIRECTORY','Generating Service Directory');
         if ($namespace) {
-            Humble::getEntity('humble/service/directory')->setNamespace($namespace)->delete();
+            Humble::entity('humble/service/directory')->setNamespace($namespace)->delete();
             if ($module = Humble::getModule($namespace)) {
-                $services = Humble::getEntity('humble/service/directory');
+                $services = Humble::entity('humble/service/directory');
                 if (is_dir($location = 'Code/'.$module['package'].'/'.$module['controller'])) {
                     $dh = dir($location);
                     while ($controller = $dh->read()) {
@@ -161,7 +161,7 @@ class Updater extends Installer
         if (!$module) {
             $module['last_updated'] = 0;
         }
-        $helper = Humble::getHelper('humble/directory');
+        $helper = Humble::helper('humble/directory');
         if (!is_dir($path)) {
             @mkdir($path,0775,true);
         }
@@ -181,7 +181,7 @@ class Updater extends Installer
         $this->output('SCHEMA','Finished Processing schema updates');
     }
     public function updateStructure($namespace,$structure,$module_data) {
-        $module = Humble::getEntity('humble/modules')->setNamespace($namespace);
+        $module = Humble::entity('humble/modules')->setNamespace($namespace);
         $module->load();
         $module->setRequired(isset($module_data->required) ? $module_data->required : "N");
         $module->setTemplater($module_data->use);
@@ -222,7 +222,7 @@ class Updater extends Installer
      */
     public function update($source=false)  {
         $source = ($source!==false) ? $source : $this->getSource();
-        $helper = Humble::getHelper('humble/data');
+        $helper = Humble::helper('humble/data');
         $xml = '';
         if (file_exists($source)) {
           //  \Log::console('Starting Update Of: '.$source);
@@ -280,7 +280,7 @@ class Updater extends Installer
                     if (isset($contents->structure->frontend)) {
                        // $this->moveFrontEnd($contents->structure->frontend->source);
                     }
-                    $ent = Humble::getEntity('humble/modules');
+                    $ent = Humble::entity('humble/modules');
                     $ent->setNamespace($this->namespace);
                     $now = date('Y-m-d H:i:s');
                     $dat = $ent->load(true);
@@ -293,7 +293,7 @@ class Updater extends Installer
                     $update_file  = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnUpdate.php";
                     $update_class = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnUpdate";
                     if (file_exists($update_file) && class_exists($update_class)) {
-                        $i = Humble::getModel($namespace.'/OnUpdate',true)->execute();
+                        $i = Humble::model($namespace.'/OnUpdate',true)->execute();
                     }
                     $data = $ent->load();
                     Humble::cache('module-'.$namespace,$data);

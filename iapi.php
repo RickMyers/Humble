@@ -130,11 +130,11 @@ $results         = false;
 try {
     $URI         = isset($_GET['uri']) ? $_GET['uri'] : false;
     if ($URI) {
-        $webservice = Humble::getEntity('paradigm/webservices')->setUri($URI)->load(true);
+        $webservice = Humble::entity('paradigm/webservices')->setUri($URI)->load(true);
         if ($webservice) {
             if ($webservice['active']==='Y') {
-                $criteria        = Humble::getCollection('paradigm/elements')->setId($webservice['webservice_id'])->load();
-                $workflows       = Humble::getEntity('paradigm/webservice_workflows');
+                $criteria        = Humble::collection('paradigm/elements')->setId($webservice['webservice_id'])->load();
+                $workflows       = Humble::entity('paradigm/webservice_workflows');
                 $workflows->setWebserviceId($webservice['id']);
                 $workflows->setUri($URI);
                 $security_scheme = isset($criteria['choose-security-scheme']) ? $criteria['choose-security-scheme'] : $criteria['security-scheme'];  //@TODO: remove in the future... just use security-scheme

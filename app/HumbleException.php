@@ -91,7 +91,7 @@ ERRORTEXT;
     <reason>{$ex->getCode()}</reason>
 </error>
 MSG;
-        $file = Humble::getHelper('humble/file');
+        $file = Humble::helper('humble/file');
         if ($file->set('../../logs/humble/mongo.log')) {
             $file->prepend($message);
         }

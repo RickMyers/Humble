@@ -49,7 +49,7 @@ class Operation extends Model
             $data = $EVENT->load();
             $cfg  = $EVENT->fetch();
             if (isset($cfg['program'])) {
-                $str = Humble::getHelper('paradigm/str');
+                $str = Humble::helper('paradigm/str');
                 $pgm = isset($cfg['program'])  ? $cfg['program'] : '';
                 $dir = isset($cfg['directory']) ? $cfg['directory'] : '';
                 $arg = isset($cfg['arguments']) ? $cfg['arguments'] : '';

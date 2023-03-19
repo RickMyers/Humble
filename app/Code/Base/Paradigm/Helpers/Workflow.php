@@ -44,7 +44,7 @@ class Workflow extends Helper
      */
     public function load($id=false) {
         $id = ($id) ? $id : $this->getId();
-        $mongo = \Humble::getCollection('paradigm/elements');
+        $mongo = \Humble::collection('paradigm/elements');
         $mongo->setId($id);
         ($results = $mongo->load()) ? $results : array();
         return json_encode($results);

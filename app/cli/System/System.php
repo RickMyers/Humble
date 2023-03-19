@@ -232,7 +232,7 @@ class System extends CLI
         $canonical = json_decode(file_get_contents($project['framework_url']."/distro/version"),true);
         $canon_version = (int)str_replace(".","",(string)$canonical['version']);
         $local_version = (int)str_replace(".","",(string)$app->version->framework);
-        $helper = Humble::getHelper('humble/directory');
+        $helper = Humble::helper('humble/directory');
         print("\n\nRunning patching report on core framework to version ".$canonical['version'].", please wait...\n\n");
         $distro = 'distro_'.$canonical['version'];
         chdir('..');

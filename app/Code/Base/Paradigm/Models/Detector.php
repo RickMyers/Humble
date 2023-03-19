@@ -59,7 +59,7 @@ class Detector extends Model
                 $cleanEvent->_namespace('paradigm');
                 $cleanEvent->_component('detector');
                 $cleanEvent->_method('trigger');
-                foreach (Humble::getEntity('paradigm/sensor_workflows')->setSensor($cnfg['field'])->fetchActive() as $workflow) {
+                foreach (Humble::entity('paradigm/sensor_workflows')->setSensor($cnfg['field'])->fetchActive() as $workflow) {
                     $EVENT = clone $cleanEvent; //each spawned workflow gets its own event
                     if (file_exists('Workflows/'.$workflow['workflow_id'].'.php')) {
                         include('Workflows/'.$workflow['workflow_id'].'.php');

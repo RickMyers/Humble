@@ -43,7 +43,7 @@ class Webhook extends Model
      *
      */
     private function registerWebhookIntegrationPoint($id,$data) {
-        $integration_point = Humble::getEntity('paradigm/webhook/workflows');
+        $integration_point = Humble::entity('paradigm/webhook/workflows');
         $integration_point->setWebserviceId($id);
         $integration_point->setWorkflowId($data['workflow_id']);
         $integration_point->setUri($data['uri']);
@@ -57,10 +57,10 @@ class Webhook extends Model
     public function save() {
         $data         = json_decode($this->getData(),true);
         $this->setWindowId($data['windowId']);  //now I need a shower...
-        $component    = Humble::getModel('workflow/manager');
+        $component    = Humble::model('workflow/manager');
         $component->setData($this->getData());
         $component->saveComponent();
-        $webhook     = Humble::getEntity('paradigm/webhooks');
+        $webhook     = Humble::entity('paradigm/webhooks');
         $id = $webhook->setWebhook($data['webhook'])->setFormat($data['format'])->setDescription($data['description'])->setField($data['field'])->setActive($data['active'])->save();
         $this->registerWebhookIntegrationPoint($id,$data);
     }

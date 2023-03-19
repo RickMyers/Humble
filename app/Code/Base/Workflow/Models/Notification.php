@@ -63,7 +63,7 @@ class Notification extends Model {
      */
     public function alert($EVENT=false) {
         $alerted = false;
-        $string  = Humble::getHelper('humble/string');
+        $string  = Humble::helper('humble/string');
         if ($EVENT!==false) {
             $mydata = $EVENT->fetch();
             $alert = $string->translate($mydata['message'],$EVENT->load());
@@ -103,7 +103,7 @@ class Notification extends Model {
                 $from       = isset($cfg['from_type'])    && ($cfg['from_type']=='value')      ? $cfg['from']     : ((isset($data[$cfg['from']])    && $data[$cfg['from']])    ? $data[$cfg['from']]    : false);
                 $message    = $this->substitute(isset($cfg['message_field']) && ($cfg['message_field'] && isset($data[$cfg['message_field']]))  ? $data[$cfg['message_field']] : $cfg['email_message'],$data);
                 if (count($recipients = explode(';',$recipients)) && $message) {
-                    $emailed = Humble::getHelper('humble/email')->sendEmail($recipients,$subject,$message,$from);
+                    $emailed = Humble::helper('humble/email')->sendEmail($recipients,$subject,$message,$from);
                 }
 
             }

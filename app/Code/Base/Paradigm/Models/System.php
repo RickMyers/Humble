@@ -42,8 +42,8 @@ class System extends Model
      */
     public function templates() {
         $templates = [];
-        $dir = Humble::getHelper('humble/directory');
-        foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+        $dir = Humble::helper('humble/directory');
+        foreach (Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             $templates[$module['namespace']] = [];
             if (is_dir('Code/'.$module['package'].'/'.$module['module'].'/web/app')) {
                 $d = $dir->contents('Code/'.$module['package'].'/'.$module['module'].'/web/app',true);
@@ -65,11 +65,11 @@ class System extends Model
      */
     public function save() {
         $data           = json_decode($this->getData(),true);
-        $component      = Humble::getModel('workflow/manager');
+        $component      = Humble::model('workflow/manager');
         $component->setData($this->getData());
         $component->saveComponent();
         $this->setWindowId($data['window_id']); //passing on the window id so we can auto close the window
-        $system_event = \Humble::getEntity('paradigm/system_events');
+        $system_event = \Humble::entity('paradigm/system_events');
         $system_event->setWorkflowId($data['workflow_id']);
         $system_event->setEventStart($data['event_date'].' '.$data['event_time']);
         $system_event->setRecurring($data['recurring_flag']);
@@ -86,10 +86,10 @@ class System extends Model
     public function runScheduler() {
         //@TODO: Think about setting a sticky bit that flags the scheduler as running, so we don't launch this thing more than once
         $now             = strtotime(date('Y-m-d H:i:s'));
-        $job_queue       = Humble::getEntity('paradigm/job/queue');
-        $schedule_log    = Humble::getEntity('paradigm/scheduler/log');   
+        $job_queue       = Humble::entity('paradigm/job/queue');
+        $schedule_log    = Humble::entity('paradigm/scheduler/log');   
         $schedule_id     = $schedule_log->setStarted(\date('Y-m-d H:i:s'))->save();    //Let's record when you started
-        foreach (Humble::getEntity('paradigm/system/events')->setActive('Y')->fetch() as $event) {
+        foreach (Humble::entity('paradigm/system/events')->setActive('Y')->fetch() as $event) {
             //if your next execution cycle is within 5 minutes and you haven't been run in the last 10 minutes, you will be queued for execution
             if ((int)$event['period'] == $event['period']) {
                 if ((!$event['last_run']) || ($now - strtotime($event['last_run']) >= 600)) {
@@ -115,7 +115,7 @@ class System extends Model
      * @return boolean
      */
     public function runLauncher() {
-        $queue  = Humble::getEntity('paradigm/job/queue');
+        $queue  = Humble::entity('paradigm/job/queue');
         $jobs   = $queue->setStatus(NEW_EVENT_JOB)->fetch();
         foreach ($jobs as $job) {
             //$cmd = 'php launch.php '.$job['id']." > ../SDSF/job_".$job['id'].".txt 2>&1";

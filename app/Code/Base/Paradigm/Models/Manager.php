@@ -41,7 +41,7 @@ class Manager extends Model
      * @return type
      */
     public function save() {
-        $workflow = Humble::getEntity('paradigm/workflows');
+        $workflow = Humble::entity('paradigm/workflows');
         $major_version = ($this->getMajorVersion()) ? $this->getMajorVersion() : '0';
         $minor_version = ($this->getMinorVersion()) ? $this->getMinorVersion() : '1';
         $workflow->setMajorVersion($major_version);
@@ -78,7 +78,7 @@ class Manager extends Model
      */
     public function configureElement() {
         $id         = $this->getId();
-        $element    = Humble::getCollection('paradigm/elements');
+        $element    = Humble::collection('paradigm/elements');
         $element->setId($id);
         $results    = $element->load();
         $windowId   = $this->getWindowId();
@@ -90,7 +90,7 @@ class Manager extends Model
         if ($results) {
             if (isset($results['configured']) && $results['configured']) {
                 $this->setResults($results);
-                $element = Humble::getEntity('paradigm/workflow_components');
+                $element = Humble::entity('paradigm/workflow_components');
                 //I might need to check if namespace, component, and method are set before doing a lookup.
                 //If they aren't *all* set, just go right down to the switch statement... lemme think about that...
                 $element->setNamespace(isset($results['namespace']) ? $results['namespace'] : null);
@@ -186,7 +186,7 @@ class Manager extends Model
      *
      */
     public function removeElement() {
-        $element = Humble::getCollection('paradigm/elements');
+        $element = Humble::collection('paradigm/elements');
         $element->setId($this->getId());
         if ($data = $element->load()) {
             //######################################################################
@@ -197,10 +197,10 @@ class Manager extends Model
             //######################################################################
             switch ($data['type']) {
                 case    'webservice'    :
-                     $service    = Humble::getEntity('paradigm/webservices');
+                     $service    = Humble::entity('paradigm/webservices');
                      $service->setWebserviceId($data['_id'])->load(true);
                      if ($service->getUri() && $service->getId()) {
-                        Humble::getEntity('paradigm/webservice_workflows')->setWebserviceId($service->getId())->delete(true);
+                        Humble::entity('paradigm/webservice_workflows')->setWebserviceId($service->getId())->delete(true);
                         $service->delete();
                      }
                     break;
@@ -216,7 +216,7 @@ class Manager extends Model
      */
     public function updateElement() {
         $settings = json_decode($this->getData(),true);
-        $element  = Humble::getCollection('paradigm/elements');
+        $element  = Humble::collection('paradigm/elements');
         $this->setWindowId($settings['windowId']);
         $element->setId($settings['id']);
         if ($data = $element->load()) {

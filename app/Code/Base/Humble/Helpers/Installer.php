@@ -195,7 +195,7 @@ SQL;
         $controller = $module['controller'];
         $source     = $module['package'].'/'.str_replace('_','/',$controller);
         $dest       = $source.'/Cache';
-        $files      = \Humble::getHelper('humble/directory')->listDirectory('Code/'.$source,false); //this is weird... where do I prepend 'Code' to the name already?
+        $files      = \Humble::helper('humble/directory')->listDirectory('Code/'.$source,false); //this is weird... where do I prepend 'Code' to the name already?
         $compiler   = \Environment::getCompiler();
         $compiler->setSource($source);
         $compiler->setDestination($dest);
@@ -285,7 +285,7 @@ SQL;
      */
     protected function deRegisterWorkflowComponents($namespace=false) {
         $namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
-        $components = Humble::getEntity('paradigm/workflow/components');
+        $components = Humble::entity('paradigm/workflow/components');
         $components->setNamespace($namespace);
         $components->delete();
     }
@@ -294,8 +294,8 @@ SQL;
         @mkdir('Workflows',0775);
         $this->output('WORKFLOWS','Generating workflows for Namespace '.$namespace);
         if ($namespace) {
-            $generator = \Humble::getHelper('paradigm/generator');
-            foreach (\Humble::getEntity('paradigm/workflows')->setNamespace($namespace)->setActive('Y')->fetch() as $workflow) {
+            $generator = \Humble::helper('paradigm/generator');
+            foreach (\Humble::entity('paradigm/workflows')->setNamespace($namespace)->setActive('Y')->fetch() as $workflow) {
                 $this->output('WORKFLOWS',"     Generating: ".$workflow['title']);
                 $generator->setId($workflow['id'])->setWorkflow($workflow['workflow'])->generate();
             }
@@ -354,7 +354,7 @@ SQL;
     }
 
     public function registerMethodListeners($namespace,$class,$listener,$events) {
-        $method_listener = Humble::getEntity('paradigm/method/listeners');
+        $method_listener = Humble::entity('paradigm/method/listeners');
         foreach (explode(',',$events) as $event) {
             $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
         }
@@ -367,15 +367,15 @@ SQL;
     protected function registerWorkflowComponents($namespace=false) {
         $namespace  = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
         $models     = Humble::getModels($namespace);
-        $workflowComponent  = Humble::getEntity('paradigm/workflow/components');
-        $workflowComment    = Humble::getEntity('paradigm/workflow/comments');
+        $workflowComponent  = Humble::entity('paradigm/workflow/components');
+        $workflowComment    = Humble::entity('paradigm/workflow/comments');
         $this->output("WORKFLOW","Processing Namespace [".$namespace."]...");
         foreach ($models as $model) { 
             $this->output("WORKFLOW","");
             $this->output("WORKFLOW","Scanning Model Class ".ucfirst($model)."...");
             $workflowComponent->setNamespace($namespace);
             $workflowComponent->setComponent($model);
-            $class          = Humble::getModel($namespace.'/'.$model);
+            $class          = Humble::model($namespace.'/'.$model);
             if (!method_exists($class, 'getClassName')) {
                 //$this->output("",$model);
                 continue;
@@ -530,7 +530,7 @@ SQL;
                         $this->_db->query($query);
                     }
                 }
-                if ($e = \Humble::getEntity($this->namespace.'/'.$name)) {
+                if ($e = \Humble::entity($this->namespace.'/'.$name)) {
                     $e->recache();
                 }
             }
@@ -561,7 +561,7 @@ SQL;
                     for ($i=0; $i<5; $i++) {
                         $stamp .= rand(0, 1) ? rand(0, 9) : chr(rand(ord('A'), ord('Z')));
                     }
-                    $table  = Humble::getEntity($namespace.'/'.$name);
+                    $table  = Humble::entity($namespace.'/'.$name);
                     $data   = $table->describe();
                     $fields = '';
                     foreach ($data as $idx => $column) {
@@ -746,7 +746,7 @@ SQL;
      */
     public function uninstall($source=false) {
         $source = ($source!==false) ? $source : $this->getSource();
-        $helper = Humble::getHelper('humble/data');
+        $helper = Humble::helper('humble/data');
         if (file_exists($source)) {
           //  \Log::console('Starting uninstallation of: '.$source);
             if ($helper->isValidXML($xml = file_get_contents($source))) {
@@ -838,7 +838,7 @@ SQL;
                     $install_file  = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnInstall.php";
                     $install_class = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnInstall";
                     if (file_exists($install_file) && class_exists($install_class)) {
-                        $i = Humble::getModel($namespace.'/OnInstall',true)->execute();
+                        $i = Humble::model($namespace.'/OnInstall',true)->execute();
                     }
                     Humble::cache('module-'.$namespace,Humble::getModule($namespace));
                 }
@@ -871,7 +871,7 @@ SQL;
         $modules = [];
         $root    = "Code/";
         $entries = dir($root);
-        $helper  = Humble::getHelper('humble/data');
+        $helper  = Humble::helper('humble/data');
         while (($entry = $entries->read()) !== false) {
             if (($entry == '.') || ($entry == '..')) {
                 continue;

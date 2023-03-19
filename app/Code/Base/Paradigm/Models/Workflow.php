@@ -56,23 +56,23 @@ class Workflow extends Model
         if ($file = $this->getFile()) {
 
         }
-            $target                      = Humble::getEntity('paradigm/export/targets')->setId($this->getDestinationId())->load();
+            $target                      = Humble::entity('paradigm/export/targets')->setId($this->getDestinationId())->load();
         
         $results                         = [];
         $results[]                       = '#########################################################';
         $results[]                       = 'Beginning Export for '.$this->_namespace();
 
         $workflow                        = ["data"  => false,"webservice_workflow" => false,"webservice" => false,"listeners"=>false,"components" => [], "token"=>$target['token']];
-        $workflow['data']                = Humble::getEntity('paradigm/workflows')->setId($this->getId())->load();
+        $workflow['data']                = Humble::entity('paradigm/workflows')->setId($this->getId())->load();
         unset($workflow['data']['image']);  //image sending can cause problems due to size
-        $workflow['webservice_workflow'] = Humble::getEntity('paradigm/webservice_workflows')->setWorkflowId($workflow['data']['workflow_id'])->load(true);
-        $workflow['listeners']           = Humble::getEntity('paradigm/workflow_listeners')->setWorkflowId($workflow['data']['workflow_id'])->load(true);
+        $workflow['webservice_workflow'] = Humble::entity('paradigm/webservice_workflows')->setWorkflowId($workflow['data']['workflow_id'])->load(true);
+        $workflow['listeners']           = Humble::entity('paradigm/workflow_listeners')->setWorkflowId($workflow['data']['workflow_id'])->load(true);
         if (isset($workflow['webservice_workflow']['webservice_id'])) {
-            $workflow['webservice']      = Humble::getEntity('paradigm/webservices')->setId($workflow['webservice_workflow']['webservice_id'])->load();
+            $workflow['webservice']      = Humble::entity('paradigm/webservices')->setId($workflow['webservice_workflow']['webservice_id'])->load();
         }
 
-//        $destination                     = Humble::getEntity('paradigm/import_sources')->setId($this->getDestinationId())->load();
-        $element                         = Humble::getCollection('paradigm/elements');
+//        $destination                     = Humble::entity('paradigm/import_sources')->setId($this->getDestinationId())->load();
+        $element                         = Humble::collection('paradigm/elements');
         $results[]                       = 'Exporting To '.$target['target'];
         if ($workflow['data']) {
             $results[]  = "Sending Components for Workflow [".$workflow['data']['title']."]";
@@ -120,7 +120,7 @@ class Workflow extends Model
      * Will go through all the workflows and perform an export each one to a target server
      */
     public function sync() {
-        foreach (Humble::getEntity('paradigm/workflows')->fetch() as $workflow) {
+        foreach (Humble::entity('paradigm/workflows')->fetch() as $workflow) {
             $this->setId($workflow['id']);
             Log::warning('Exporting '.$workflow['workflow_id'].' @'.date('m/d/Y H:i:s'));
             $this->export();
@@ -140,13 +140,13 @@ class Workflow extends Model
 
         file_put_contents($dest.'workflow_'.time().'.dat',$this->getWorkflow());
         $workflow = json_decode($this->getWorkflow(),true);
-        //&& count(Humble::getEntity('paradigm/import/tokens')->setToken($workflow['token'])->load(true))  do this differently
+        //&& count(Humble::entity('paradigm/import/tokens')->setToken($workflow['token'])->load(true))  do this differently
         if ($workflow) {
-            $mysql                  = Humble::getEntity('paradigm/workflows');
-            $webservice_workflow    = Humble::getEntity('paradigm/webservice_workflows');
-            $webservice             = Humble::getEntity('paradigm/webservices');
-            $listeners              = Humble::getEntity('paradigm/workflow_listeners');
-            $element                = Humble::getCollection('paradigm/elements');
+            $mysql                  = Humble::entity('paradigm/workflows');
+            $webservice_workflow    = Humble::entity('paradigm/webservice_workflows');
+            $webservice             = Humble::entity('paradigm/webservices');
+            $listeners              = Humble::entity('paradigm/workflow_listeners');
+            $element                = Humble::collection('paradigm/elements');
             $results[] = 'Removing Workflow (MySQL): '.$workflow['data']['id'];
             $mysql->setId($workflow['data']['id'])->delete();
             foreach ($workflow['data'] as $key => $value) {
@@ -217,7 +217,7 @@ class Workflow extends Model
     protected function generate($id=false,$namespace=false) {
         $generated = false;
         if ($id && $namespace) {
-            $generator = Humble::getHelper('paradigm/generator');
+            $generator = Humble::helper('paradigm/generator');
             $generator->setId($id);
             $generator->setNamespace($namespace);
             $generator->generate();
@@ -270,10 +270,10 @@ class Workflow extends Model
     public function delete() {
         $id = $this->getId();
         if ($id) {
-            $component      = Humble::getCollection('paradigm/elements');
-            $diagram        = Humble::getEntity('paradigm/workflows')->setId($id);
-            $webservice     = Humble::getEntity('paradigm/webservice_workflows');
-            $listener       = Humble::getEntity('paradigm/workflow_listeners');
+            $component      = Humble::collection('paradigm/elements');
+            $diagram        = Humble::entity('paradigm/workflows')->setId($id);
+            $webservice     = Humble::entity('paradigm/webservice_workflows');
+            $listener       = Humble::entity('paradigm/workflow_listeners');
             $data           = $diagram->load();
             $workflow_id    = $data['workflow_id'];
             $workflow       = json_decode($data['workflow'],true);

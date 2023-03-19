@@ -39,7 +39,7 @@ $namespace       = isset($_GET['n'])    ? $_GET['n'] : false;
 $hook            = isset($_GET['hook']) ? $_GET['hook'] : false;
 print($namespace.'/'.$hook);
 if ($namespace && $hook) {
-    if ($events = Humble::getEntity('paradigm/webhook/workflows')->setNamespace($namespace)->setHook($hook)->setActive('Y')->load(true)) {
+    if ($events = Humble::entity('paradigm/webhook/workflows')->setNamespace($namespace)->setHook($hook)->setActive('Y')->load(true)) {
         print_r($events);
             /*
              * o Turn hook into an event

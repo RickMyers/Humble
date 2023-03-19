@@ -779,7 +779,7 @@ SOAP;
                 $call[$key] = $this->processSecrets($val);
             } else {
                 if ($val && strtolower(substr($val,0,5))==='sm://') {
-                    $sm = ($sm) ? $sm : Humble::getEntity('humble/secrets/manager');  //speed up call by only instantiating the orm if a secret is found
+                    $sm = ($sm) ? $sm : Humble::entity('humble/secrets/manager');  //speed up call by only instantiating the orm if a secret is found
                     if ($x = $sm->reset()->setSecretName(substr($val,5))->setNamespace($this->_namespace())->load(true)) {
                         $call[$key] = $sm->decrypt(true)->getSecretValue();
                     }
@@ -1093,7 +1093,7 @@ SOAP;
         if (isset($this->_modules[$module['type']])) {
             $ok =  ($this->_modules[$module['type']]['enabled'] == 'Y');
         } else {
-            $ref = Humble::getEntity('humble/modules');
+            $ref = Humble::entity('humble/modules');
             if (isset($module['type'])) {
                 $ref->setNamespace($module['type']);
                 $mod = $this->_modules[$module['type']]= $ref->load();

@@ -44,7 +44,7 @@ class Manager extends Model {
     public function saveComponent() {
         $data    = json_decode($this->getData(),true);
         Log::console(implode(',',$this->_data));
-        $element = Humble::getCollection('paradigm/elements');
+        $element = Humble::collection('paradigm/elements');
         $element->setId($data['id']);
         $b       = $element->load();
         $this->setType($b['type']);
@@ -70,7 +70,7 @@ class Manager extends Model {
         $id       = $this->saveComponent();
         $data     = json_decode($this->getData(),true);
         $this->setWindowId($data['windowId']);
-        $listener = Humble::getEntity('paradigm/workflow_listeners');
+        $listener = Humble::entity('paradigm/workflow_listeners');
         $listener->setNamespace($data['namespace']);
         $listener->setComponent($data['component']);
         $listener->setMethod($data['method']);

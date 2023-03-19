@@ -457,7 +457,7 @@ SQL;
             if (isset($this->_collections[$mod['mongodb'].'/'.$this->_entity()])) {
                 $mdb = $this->_collections[$mod['mongodb'].'/'.$this->_entity()]->reset();
             } else {
-                $mdb = $this->_collections[$mod['mongodb'].'/'.$this->_entity()] = Humble::getCollection($mod['mongodb'].'/'.$this->_entity());
+                $mdb = $this->_collections[$mod['mongodb'].'/'.$this->_entity()] = Humble::collection($mod['mongodb'].'/'.$this->_entity());
             }
             if ($id  = isset($result['id']) ? $result['id'] : (isset($result['uid']) ? $col['result'] : false)) {
                 $mdb->setId($id);
@@ -641,7 +641,7 @@ SQL;
             if (isset($this->_collections[$mod['mongodb'].'/'.$this->_entity()])) {
                 $mdb = $this->_collections[$mod['mongodb'].'/'.$this->_entity()]->reset();
             } else {
-                $mdb = $this->_collections[$mod['mongodb'].'/'.$this->_entity()] = Humble::getCollection($mod['mongodb'].'/'.$this->_entity());
+                $mdb = $this->_collections[$mod['mongodb'].'/'.$this->_entity()] = Humble::collection($mod['mongodb'].'/'.$this->_entity());
             }
             //if polyglot, we have to perform a "load" first to fetch the mongo stuff, or else we might accidentally lose the mongo stuff
             //$saved_data = $this->_data;
@@ -837,7 +837,7 @@ SQL;
                 //nop - no ids to join with so we all go home
             } else {
                 $entity = ($this->_mongocollection) ? $this->_mongocollection : $this->_entity();   //If you had used the "with()" function, you'd have set mongodb variable, otherwise use the entity name from the MySQL query
-                $mdb    = Humble::getCollection($this->_mongodb.'/'.$entity);
+                $mdb    = Humble::collection($this->_mongodb.'/'.$entity);
                 if ($rows = $mdb->setId(['$in'=>$ids])->fetch()) {
                     $int = []; //$key = false;
                     //this builds a reference of every mysql result row that has the join field on it
@@ -867,7 +867,7 @@ SQL;
                 }
             }
         } 
-        $results = Humble::getModel('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
+        $results = Humble::model('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
         if (\Environment::isActiveDebug()) {
             \Log::user(array_merge(['Query'=>$query],$results->toArray()));
         }
@@ -1306,7 +1306,7 @@ SQL;
                 if (isset($data['revision_history'])) {
                     unset($data['revision_history']);
                 }
-                $user       = Humble::getEntity('humble/user_identification')->setId(Environment::whoAmI())->load();
+                $user       = Humble::entity('humble/user_identification')->setId(Environment::whoAmI())->load();
                 $revisions[] = [
                     'date'      => date('Y-m-d H:i:s'),
                     'user_id'   => $_SESSION['login'],

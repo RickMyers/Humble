@@ -122,7 +122,7 @@ class HumbleString extends Helper implements \Countable, \ArrayAccess, \Iterator
     private function user($id=false) {
         $text = 'Not Found';
         if ($id) {
-            $user = Humble::getEntity('humble/user_identification')->setId($id)->load();
+            $user = Humble::entity('humble/user_identification')->setId($id)->load();
             if ($user) {
                 $text = '<a href="#" onclick="Landing.user.display('.$id.')">'.$user['last_name'].', '.$user['first_name'].'</a>';
             }

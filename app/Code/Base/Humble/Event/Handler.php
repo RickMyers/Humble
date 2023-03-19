@@ -27,13 +27,13 @@ trait Handler {
         if (!$uid) {
             //if no user id, see if this is the login event, and if so, find user based on username
             if ($user_name = $cleanEvent->data('user_name')) {
-                $user   = Humble::getEntity('humble/users')->setUserName($user_name)->load(true);
+                $user   = Humble::entity('humble/users')->setUserName($user_name)->load(true);
                 $uid    = isset($user['uid']) ? $user['uid'] : 0;  //why not 0?
             }
         }
-        Humble::getEntity('paradigm/event/log')->setEvent($name)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
+        Humble::entity('paradigm/event/log')->setEvent($name)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
         if ($cleanEvent) {
-            $workflows  = Humble::getEntity('paradigm/workflow/listeners');              //now lookup if any workflows are "listening", and then include them
+            $workflows  = Humble::entity('paradigm/workflow/listeners');              //now lookup if any workflows are "listening", and then include them
             $namespace = $cleanEvent->_namespace();
             $component = $cleanEvent->_component();
             $method    = $cleanEvent->_method();

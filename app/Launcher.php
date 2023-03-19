@@ -16,7 +16,7 @@
 require "Humble.php";
 require "Constants.php";
 
-$spooler = Humble::getModel('paradigm/system');
+$spooler = Humble::model('paradigm/system');
 $spooler->runLauncher();
 
 //END

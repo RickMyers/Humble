@@ -42,7 +42,7 @@ class Module extends CLI
             $module = \Humble::getModule($ns,true);
             print_r($module);
             if ($module) {
-                $utility = \Humble::getModel('humble/utility');
+                $utility = \Humble::model('humble/utility');
                 $utility->setPackage($module['package']);
                 $utility->setNamespace($module['namespace']);
                 if ($utility->uninstall()) {
@@ -65,7 +65,7 @@ class Module extends CLI
         $args = $args ? $args :self::arguments();
         $ns = $args['namespace'];
         print("Enabling ".$ns."\n\n");
-        $mod = \Humble::getEntity("humble/modules")->setNamespace($ns)->setEnabled('Y')->save();
+        $mod = \Humble::entity("humble/modules")->setNamespace($ns)->setEnabled('Y')->save();
     }
 
     /**
@@ -77,7 +77,7 @@ class Module extends CLI
         $args = $args ? $args :self::arguments();
         $ns = $args['namespace'];        
         print("Disabling ".$ns."\n\n");
-        \Humble::getEntity("humble/modules")->setNamespace($ns)->setEnabled('N')->save();
+        \Humble::entity("humble/modules")->setNamespace($ns)->setEnabled('N')->save();
     }
     
     /**
@@ -87,7 +87,7 @@ class Module extends CLI
      * @param type $namespace
      */
     protected static function updateIndividualModule($updater,$namespace) {
-        $data = Humble::getEntity('humble/modules')->setNamespace($namespace)->load(true);
+        $data = Humble::entity('humble/modules')->setNamespace($namespace)->load(true);
         if (isset($data['configuration']) && $data['configuration']) {
             $etc     = 'Code/'.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
             $updater->output('BEGIN','Update Configuration File: '.$etc);
@@ -105,7 +105,7 @@ class Module extends CLI
         $namespace = $args['namespace'];
         $workflows = $args['workflow'] ?? false;
         if ($namespace) {
-            $modules = ($namespace==='*') ? \Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() : explode(',',$namespace);
+            $modules = ($namespace==='*') ? \Humble::entity('humble/modules')->setEnabled('Y')->fetch() : explode(',',$namespace);
             print("\n\nThe following modules will be updated:\n\n"); $ctr=0;
             foreach ($modules as $module) {
                 print("\t".++$ctr.') '.(is_array($module) ? $module['namespace'] : $module)."\n");
