@@ -23,6 +23,10 @@
         <enabled>0</enabled>
     </api>
     <engine comment="Will eventually be determined dynamically">c:\\php\\74\\php.exe</engine>
+    <documentation_comment>
+        The next section outlines the choices for creating automated documentation.   Choose either PHPDoc2 or APIGen(PHP 8.2+).  Select the option for each from the options
+        listed on the tag.  PHPDoc2 is the default since it supports more versions of PHP, but if you are using PHP 8.2 and later, APIGen is an excellent option as well.
+    </documentation_comment>
     <documentation comment="Documentation will not be generated in environments with a state of PRODUCTION">
         <engine options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
         <command options="PHPDoc2.phar,apigen.phar app/Code --output Docs">PHPDoc2.phar</command>
@@ -32,6 +36,10 @@
         <name>Rick Myers</name>
         <email>rick@humbleprogramming.com</email>
     </support>
+    <flags>
+        <display_mysql_errors>0</display_mysql_errors>
+        <redis>0</redis>
+    </flags>
     <status>
         <enabled>1</enabled>           <!-- Switch to 0 to take the application offline -->
         <quiescing>0</quiescing>       <!-- switch to 1 to begin the process of taking the system offline -->

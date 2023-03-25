@@ -28,11 +28,19 @@
         <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/APIPolicy.htmls for more information first -->
     </api>
     <engine options="c:\\php\\php.exe,/lib/usr/php/php.exe,etc" comment="This is mainly for Windows, please specify the correct location here">{$engine}</engine>
+    <documentation_comment>
+        The next section outlines the choices for creating automated documentation.   Choose either PHPDoc2 or APIGen(PHP 8.2+).  Select the option for each from the options
+        listed on the tag.  PHPDoc2 is the default since it supports more versions of PHP, but if you are using PHP 8.2 and later, APIGen is an excellent option as well.
+    </documentation_comment>
     <documentation comment="Documentation will not be generated in environments with a state of PRODUCTION">
         <engine  options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
         <command options="PHPDoc2.phar,apigen.phar app/Code --output Docs">php PHPDoc2.phar</command>
         <source  options="https://humbleprogramming.com/dist/phpdoc.php ,https://humbleprogramming.com/dist/apigen.php">https://humbleprogramming.com/dist/phpdoc.php</source>
     </documentation>
+    <flags>
+        <display_mysql_errors comment="Mysql error are always logged but do you want them displayed on the page as well?">0</display_mysql_errors>
+        <redis comment="Use redis instead of memcache for the cache">0</redis>
+    </flags>    
     <support>
         <name>{$support_name}</name>
         <email>{$support_email}</email>

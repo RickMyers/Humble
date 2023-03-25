@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <controller name="module" use="Smarty3">
-    <actions>
+    <actions blocking="off">
 
         <action name="create">
             <description>Will create a new module </description>
@@ -34,5 +34,20 @@
         </action>
 
         <!-- ############################################################################ -->
+        
+        <action name="install">
+            <description>Will take an uploaded file (zip) and extract it into a Package directory</description> 
+            <if sys="files" eq="TRUE">
+                <then>
+                    <helper namespace='humble' class='module' method='install'>
+                        <parameter name='module' source='file' required='true' />
+                    </helper>
+                </then> 
+                <else>
+                    <output text="No file (zip) was uploaded, install of module aborted" />
+                </else>
+            </if>
+        </action>
+        
     </actions>
 </controller>

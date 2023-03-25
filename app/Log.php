@@ -113,7 +113,7 @@ class Log {
     }
 
     /**
-     * Sends data to the general message log
+     * Sends current query to the query log
      *
      * @param mixed $message
      */
@@ -178,11 +178,14 @@ class Log {
         if (is_array($message)) {
             $message = implode("\n",$message);
         }
+        if (false) {
+            print('<pre>'.$message.'</pre>'."\n");
+        }
         self::prependFile($message, $file);
     }
 
     /**
-     *
+     * Sends an email notification to the email address found in the application.xml file identified as primary support email
      */
     public static function signal($subject,$messages) {
         if (is_array($messages)) {
@@ -226,7 +229,7 @@ class Log {
      * @param type $data            An array of values to use to construct the message
      */
     public static function activity($primary=null,$secondary=null,$name=null,$data=[]) {
-        $template = Humble::entity('humble/activity_templates')->setName($name)->load(true);
+        $template = Humble::entity('humble/activity/templates')->setName($name)->load(true);
         if ($template) {
             $actors     = ['primary_id'=>null,'secondary_id'=>null];
             if ($template['meta_data']) {

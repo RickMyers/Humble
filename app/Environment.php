@@ -250,18 +250,23 @@ class Environment {
     }
 
     /**
-     * Returns if caching is enabled.  We are making caching a hard requirement with the new enhancements to caching
+     * Returns if caching is enabled.  Caching is no longer a soft requirement. Trying to make it selectable will lead to infinite loops
      *
      * @return boolean
      */
     public static function cachingEnabled() {
-       // if (!self::$application) {
-       //     self::loadApplicationMetaData();
-       // }
-      //  return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
         return true;
+/*        if (!self::$application) {
+            self::loadApplicationMetaData(true);
+        }
+        return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);*/
     }
     
+    /**
+     * Returns the serial number of this application.  The serial number is used in cryptography and caching.  Arbitrarily changing the serial number can cause the cache to be unreadable, as well as the loss of all secrets in the Secret Manager
+     * 
+     * @return type
+     */
     public static function serialNumber() {
         if (!self::$project) {
            self::$project = self::getProject();

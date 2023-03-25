@@ -961,9 +961,9 @@ PHP;
         }  else if (isset($node['ne'])) {
             $op = ' != '; $val = $node['ne'];
         }
-      //  if (!((strtoupper($val) === 'TRUE') || (strtoupper($val) === 'FALSE'))) {
+        if (!((strtoupper($val) === 'TRUE') || (strtoupper($val) === 'FALSE'))) {
             $val = '"'.$val.'"';
-     //   }
+        }
         $args   = '';
         if (isset($node['arguments'])) {
             $args = "'".$node['arguments']."'";
@@ -975,6 +975,15 @@ PHP;
         } else if (isset($node['assign']) || isset($node['model'])) {
             $var = isset($node['assign']) ? $node['assigm'] : $node['model'];
             print($this->tabs().'if (isset($models["'.$var.'"]) && ($models["'.$var.'"] '.$op." ".$val.")) ");
+        } else if (isset($node['sys'])) {
+            switch (strtolower($node['sys'])) {
+                case 'files' : 
+                    print($this->tabs().'if (count($_FILES) '.$op." ".$val.") ");
+                    break;
+                default;
+                    //@TODO: let them query other super globals and system variables here
+                    break;
+            }
         }
         foreach ($node as $nIdx => $case) {
             $nIdx = strtolower($nIdx);

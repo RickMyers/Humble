@@ -12,18 +12,9 @@
             <div style="padding: 20px; width: 600px; border: 1px solid #333; margin-right: auto; margin-left: auto; border-radius: 10px">
                 <form name="install_humble_module_form" id="install_humble_module_form" onsubmit="return false">
                     <fieldset><legend>Instructions</legend>
+                        This utility allows you to upgrade a module by uploading the module as a compressed (zip) file.
                         Choose the Module to apply the data to below, then click 'Upload'
                         <br /><br />
-                        <div>
-                            <select name="namespace" id="install_humble_namespace" class="admin-install-data">
-                                {% for module in modules.fetch() %}
-                                    <option value="{{ module.namespace }}"> {{ module.module }} [{{ module.namespace }}]</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="admin-install-desc">
-                            Module Namespace
-                        </div>
                         <div>
                             <input type="file" name="module" id="install_humble_module_file" class="admin-install-data" />
                         </div>

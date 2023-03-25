@@ -90,7 +90,7 @@ class CLI
     }
     
     /**
-     * Justifies and arbitrary piece of text
+     * Justifies an arbitrary piece of text
      * 
      * @param string $block
      * @param int $width
@@ -129,6 +129,8 @@ class CLI
         $extended = self::justify($details['extended'] ?? '');
 
         $output = <<<HELP
+        
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
                 
         Command: --{$command}    {$details['description']}
 {$extended}

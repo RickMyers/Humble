@@ -76,7 +76,7 @@ class Documentation extends Model
             if ($this->documentorExists()) {
                 chdir('..');
                 $cmd     = Environment::PHPLocation().' '.$this->command.' 2>&1';
-                print($cmd);
+                $results = shell_exec($cmd);
                 if ($EVENT) {
                     $EVENT->update(['documentation_generation_results'=>$results]);
                 }

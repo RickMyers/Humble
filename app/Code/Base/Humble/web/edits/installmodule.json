@@ -12,15 +12,6 @@
 	[
 		{
 			"active":		true,
-			"id": 			"install_humble_namespace",
-			"longname":		"Namespace",
-			"type":			"select",
-			"required":		true,
-			"force":		true,
-                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
-		},
-		{
-			"active":		true,
 			"id": 			"install_humble_module_file",
 			"longname":		"Module File",
                         "title":                "The module in zipped format",
@@ -39,7 +30,7 @@
                         "value":                "",
                         "onclick":              function () {
                             if (Edits['install_module'].validate()) {
-                                (new EasyAjax('/humble/admin/install')).packageForm('import_humble_data_form').then(function (response) {
+                                (new EasyAjax('/humble/module/install')).packageForm('install_humble_module_form').then(function (response) {
                                     alert(response);
                                 }).post();
                             }
