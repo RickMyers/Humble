@@ -435,11 +435,25 @@ class Environment {
         return $project;
     }
 
+    private static function recurse($struct=false,$nodes=false) {
+        foreach ($nodes as $field => $node) {
+            $app = isset($struct[$field]) ? $struct[$field] : false;
+            $app = ($app && is_array($node)) ? self::recurse($app,$node) : (isset($app[$node]) ? $app[$node] : false);
+        }
+        return $app;
+    }
     
+    /**
+     * Returns (or tries to at least) the value of a node from the application.xml configuration file
+     * 
+     * @param type $node
+     * @param type $dontUseCache
+     * @return type
+     */
     public static function getApplication($node=false,$dontUseCache=false) {
         $app = self::loadApplicationMetaData($dontUseCache);
         if ($node) {
-            $app = (isset($app[$node]) ? $app[$node] : null);
+            $app = is_array($node) ? self::recurse($app,$node) : (isset($app[$node]) ? $app[$node] : null);
         }
         return $app;
     }

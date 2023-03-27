@@ -178,7 +178,7 @@ class Log {
         if (is_array($message)) {
             $message = implode("\n",$message);
         }
-        if (false) {
+        if (Environment::getApplication(['flags'=>'display_mysql_errors'])) {
             print('<pre>'.$message.'</pre>'."\n");
         }
         self::prependFile($message, $file);
