@@ -1,5 +1,17 @@
 var Administration = (function () {
                 var servicesWindow = false;
+                function translate (char) {
+                    let diff;
+                    if (/[A-Z]/.test (char)) {
+                        diff = "𝗔".codePointAt (0) - "A".codePointAt (0);
+                    } else {
+                        diff = "𝗮".codePointAt (0) - "a".codePointAt (0);
+                    }
+                    return String.fromCodePoint (char.codePointAt (0) + diff);
+                }                    
+                function makeItBold(text) {
+                    return text.replace(/[A-Za-z0-9]/g, translate)
+                }
                 return {
                     add: {
                         package: function () {
@@ -92,6 +104,15 @@ var Administration = (function () {
                             (new EasyAjax('/humble/unittests/home')).add('window_id',win.id).then(function (response) {
                                 win._open(response);
                             }).get();                              
+                        }
+                    },
+                    flags: {
+                        toggle: function (flag,status) {
+                            if (confirm('Are you sure you want to set '+makeItBold(flag)+' to '+makeItBold(status)+'?')) {
+                                (new EasyAjax('/humble/flag/state').add('flag',flag)).add('state',status).then(function (f) {
+                                    location.reload();
+                                }).post();
+                            }
                         }
                     },
                     create: {

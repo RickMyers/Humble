@@ -198,7 +198,18 @@
                                         {% endif %}
                                     </ul>
                                 </li>
-                                
+                                <li><a href='#'>Flags</a>
+                                    <ul> 
+                                    {% for flag,status in system.flags() %}
+                                        <li><a href="#">{{ flag }}</a>
+                                            <ul>
+                                                <li><a href='#' onclick="window.event.stopPropagation(); Administration.flags.toggle('{{ flag }}','On'); return false"><span {% if (status==1) %} style='font-weight: bold' {% else %} style='opacity: .4' {% endif %}> On </span></a></li>
+                                                <li><a href='#' onclick="window.event.stopPropagation(); Administration.flags.toggle('{{ flag }}','Off');return false"><span {% if (status==0) %} style='font-weight: bold' {% else %} style='opacity: .4' {% endif %}>Off</span></a></li>
+                                            </ul>
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
 

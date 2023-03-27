@@ -34,6 +34,14 @@ class Module extends Helper
         return __CLASS__;
     }
 
+    
+    /**
+     * Recursively add every file in the module to the archive
+     * 
+     * @param type $zip
+     * @param type $dir
+     * @return type
+     */
     private static function zipDirectory($zip,$dir) {
         $dh = dir($dir);
         while ($entry = $dh->read()) {
@@ -46,9 +54,16 @@ class Module extends Helper
         return $zip;
     }
     
+    /**
+     * Backup the existing module using a timestamp
+     * 
+     * @param type $name
+     * @param type $path
+     */
     protected function saveCurrent($name=false,$path=false) {
-        @mkdir('Code/tmp');
-        $archive = 'Code/tmp/'.$name.'_'.date('YmdHis').'.zip';
+        @mkdir('tmp/Backup/Modules',0775,true);
+        $archive = 'tmp/Backup/Modules/'.$name.'_'.date('YmdHis').'.zip';
+        file_put_contents('tmp/Backup/.gitignore','*');
         $zip    = new \ZipArchive();
         $zip->open($archive,\ZipArchive::CREATE);
         $zip = self::zipDirectory($zip,$path);
@@ -81,8 +96,14 @@ class Module extends Helper
                 break;                                                          //get the first node of the XML structure which is the namespace
             }
             $package = (string)$struct->$namespace->module->package;            //Now we can find the package (directory) name to install the module in.
+            $existing_module = file_exists('Code/'.$package.'/'.$name.'/etc/config.xml');
             self::saveCurrent($name,'Code/'.$package.'/'.$name);
             $zip->extractTo('Code/'.$package);                                  //And now we unzip the module there
+            if (!$existing_module) {
+                print(shell_exec(Environment::PHPLocation().' CLI.php --u ns='.$namespace));
+            } 
+            print(shell_exec(Environment::PHPLocation().' CLI.php --u ns='.$namespace));
+            
         }
     }
 

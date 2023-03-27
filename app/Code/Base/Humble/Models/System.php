@@ -225,4 +225,25 @@ class System extends Model
             $this->trigger('SystemNotification',__CLASS__,__METHOD__,['type'=>$type,'details'=>$data]);
         }
     }    
+    
+    /**
+     * Gets the flag section of the application configuration file
+     * 
+     * @return array
+     */
+    public function flags() {
+        return Environment::getApplication('flags');
+    }
+    
+    /**
+     * Sets the state of a flag in the application configuration file
+     */
+    public function setFlagState() {
+        if ($flag    = $this->getFlag()) {
+            $application = simplexml_load_file('../application.xml');
+            $application->flags->$flag = ($this->getState() == 'On') ? 1 : 0;
+            file_put_contents('../application.xml',$application->asXML());
+            Environment::recacheApplication();
+        }
+    }
 }
