@@ -3,9 +3,6 @@ require 'cli/CLI.php';
 class System extends CLI 
 {
     
-    
-    
-    
     /**
      * Displays the system status
      * 

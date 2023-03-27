@@ -36,6 +36,27 @@ class CLI
     }    
     
     /**
+     * Sorts out what namespaces to use when namespace variable might contain the wildcard '*'
+     * 
+     * @param array $args
+     * @return array
+     */
+    protected function namespaces($args=[]) {
+        $namespaces = [];
+        if (isset($args['namespace'])) {
+            if ($args['namespace'] == '*') {
+                foreach (Humble::getPackages() as $package) {
+                    foreach (Humble::getModules($package) as $module) {
+                        $namespaces[] = $module;
+                    }
+                }
+                
+            }
+        }
+        return $namespaces;
+    }
+    
+    /**
      * Returns what files actually are found by comparing the manifest to the file structure
      * 
      * @return type

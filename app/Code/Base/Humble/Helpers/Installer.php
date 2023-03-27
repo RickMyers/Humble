@@ -364,8 +364,11 @@ SQL;
      * listed as being workflow components
      *
      */
-    protected function registerWorkflowComponents($namespace=false) {
+    public function registerWorkflowComponents($namespace=false) {
         $namespace  = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
+        if ($namespace) {
+            $this->deRegisterWorkflowComponents($namespace);            
+        }
         $models     = Humble::getModels($namespace);
         $workflowComponent  = Humble::entity('paradigm/workflow/components');
         $workflowComment    = Humble::entity('paradigm/workflow/comments');
@@ -816,7 +819,6 @@ SQL;
                     if (isset($contents->structure)) {
                         $this->storeStructure($this->prefix,$contents->structure,$contents->module);
                         if (isset($contents->module->workflow) && ($contents->module->workflow==='Y')) {
-                            $this->deRegisterWorkflowComponents($this->namespace);
                             $this->registerWorkflowComponents($this->namespace,$contents->module);
                         }
                     }
