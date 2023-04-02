@@ -25,12 +25,49 @@ function humbleHeader() {
     $header = <<<HDR
 
 
-    |_   _    |_      ._ _  |_  |  _
-    |_) (/_   | | |_| | | | |_) | (/_
+        |_   _    |_      ._ _  |_  |  _
+        |_) (/_   | | |_| | | | |_) | (/_
 
 
 HDR;
     print($header);
+}
+/**
+ * Randomly adds some spaces to the end of a word to help with the justify process
+ * 
+ * @param string $text
+ * @param int $width
+ * @return string
+ */
+function expandLine($text,$width) {
+    $words = explode(' ',$text);
+    for ($i=0; $i<($width - strlen($text)); $i++) {
+        $words[rand(0,count($words)-2)] .=' ';                              //don't want to pad last word
+    }
+    return implode(' ',$words);
+}
+
+/**
+ * Justifies an arbitrary piece of text
+ * 
+ * @param string $block
+ * @param int $width
+ * @return string
+ */
+function justify($block='',$width=80) {
+    $justified  = [];
+    $text       = trim(str_replace(["\r","\n","\t"],['','',''],$block)); 
+    $ctr        = 25;                                                       //just in case the dish runs away with the spoon... maximum 25 "lines" or iterations
+    while ($text && $width && $ctr--) {
+        if (($pos   = strrpos(trim(substr($text,0,$width)),' ')) && (strlen($text) > $width)) {
+            $justified[] = "\t".expandLine(substr($text,0,$pos),$width);
+            $text = substr($text,$pos+1);
+        } else {
+            $justified[] = "\t".$text;
+            $text=false;
+        }
+    }
+    return ($justified ? "\n".implode("\n",$justified).' ' : '');
 }
 /* ---------------------------------------------------------------------------------- */
 function installedExtensionCheck() {
@@ -135,68 +172,65 @@ function fetchProject($version,$framework_url,$update=false) {
 }
 /* ---------------------------------------------------------------------------------- */
 function initializeProject() {
-    print("\n".'Do you wish to initialize a Humble project? [yes/no]: ');
+    print("\n".justify('Do you wish to initialize a Humble project? [yes/no]:',100));
     if (strtolower(scrub(fgets(STDIN))) === 'yes') {
         $create_project = true;
         if (file_exists('Humble.project')) {
-            print('A Humble project exists already, do you wish to over write? [yes/no]: ');
+            print(justify('A Humble project exists already, do you wish to over write? [yes/no]:',100));
            $create_project = (strtolower(scrub(fgets(STDIN))) === 'yes');
         }
         if ($create_project) {
             humbleHeader();
             $attributes     = ['project_name'=>'','project_url'=>'','factory_name'=>'','framework_url'=>'','module'=>'','namespace'=>'','package'=>'','landing_page'=>'', 'author'=>''];
+            print(justify("Recommended answers to these questions are shown between the square brackets",100)."\n\n");
             while (!$attributes['framework_url']) {
-                print("\n\tHumble has its own framework updater but needs to know where to obtain the source from\n");
-                print("\tPlease enter the URL for the Humble source [https://humbleprogramming.com]: ");
+                print(justify("Humble has its own framework updater but needs to know where to obtain the source from.",100));
+                print(justify("Please enter the URL for the Humble source code repository [https://humbleprogramming.com]:",100));
                 $attributes['framework_url']        = scrub(fgets(STDIN));
             }
             while (!$attributes['project_name']) {
-                print("\n\tThe following question just wants to know an overall name for the project you intend to create with Humble\n");
-                print("\tPlease enter the name for this project: ");
+                print(justify("What is the name of this project? Please enter that name here: ",100));
                 $attributes['project_name']         = scrub(fgets(STDIN));
             }
             while (!$attributes['author']) {
-                print("\n\tEmail for the author of this project (i.e. you@gmail.com):  ");
-                $attributes['author']         = scrub(fgets(STDIN));
+                print(justify("What is the E-Mail address for the author of this project (i.e. you@gmail.com):",100));
+                $attributes['author']               = scrub(fgets(STDIN));
             }
             while (!$attributes['project_url']) {
-                print("\n\tHumble has a two part installation, the first part downloads the framework, and the second part configures the framework for your project.\n");
-                print("\tThe second part is configured using a web form, so a website (likely VHOST) has to already be created for your project.  You specify that website location below:\n");
-                print("\tPlease enter the URL for this project: ");
+                print(justify("Humble has a two part installation, the first part downloads the framework, and the second part configures the framework for your project. The second part is configured using a web form, so a website (likely VHOST) has to already be created for your project.",100));
+                print(justify("Please enter the URL for this project: ",100));
                 $attributes['project_url']          = scrub(fgets(STDIN));
             }
             while (!$attributes['factory_name']) {
-                print("\n\tThis is where it gets personal.  A PHP Static Factory will be created for you which will extend the primary framework's Factory class. \n");
-                print("\tYou will reference most of the Humble framework components through this 'rebranded' Factory.  It's also a great place to keep your own Factory methods.\n");
-                print("\tPlease enter the name for the rebranded main Factory class: ");
+                print(justify("This is where it gets personal.  A PHP Static Factory will be created for you which will extend the primary framework's Factory class. You will reference most of the Humble framework components through this 'rebranded' Factory.  It's also a great place to keep your own Factory methods.",100));
+                print(justify("Please enter the name for the rebranded main Factory class: ",100));
                 $attributes['factory_name']         = scrub(fgets(STDIN));
             }
             while (!$attributes['package']) {
-                print("\n\tA package is nothing more than a directory.  During the creation of your application you can create as many 'packages' as you would like, here you are just creating your first.\n");
-                print("\tPlease enter the package name that will contain the project module: ");
+                print(justify("A package is nothing more than a directory.  During the creation of your application you can create as many 'packages' as you would like, here you are just creating your first.",100));
+                print(justify("Please enter the package (directory) name that will contain the main project module:",100));
                 $attributes['package']              = ucfirst(scrub(fgets(STDIN)));
             }
             while (!$attributes['module']) {
-                print("\n\tA Humble project contains one or more user defined modules.  The components in this module are 'special' in that they factor in an 'Inversion of Control' paradigm that is at the core of Humble.\n");
-                print("\tPlease see the training video on 'Inversion of Control' for more information.\n");
-                print("\tPlease enter the module name that will contain the core (base) classes: ");
+                print(justify("A Humble project contains one or more user defined modules.  The components in the first module are 'special' because they take part in the inheritance hierarchy for all user created components.",100));
+                print(justify("Please enter the module name that will contain the core (base) classes: ",100));
                 $attributes['module']               = ucfirst(scrub(fgets(STDIN)));
             }
             while (!$attributes['namespace']) {
-                print("\n\tEach module has its own internal namespace, and the components of that module are referenced using that namespace.  Note that this namespace is internal, and unlike the application level namespace which is 'Humble'\n");
-                print("\tPlease enter the namespace you will be using to reference the base classes: ");
+                print(justify("Each module has its own internal namespace, and the components of that module are referenced using that namespace.  Note that this namespace is internal to the framework.",100));
+                print(justify("Please enter the namespace you will be using to reference the base classes: ",100));
                 $attributes['namespace']            = scrub(fgets(STDIN));
             }
             while (!$attributes['landing_page']) {
-                print("\n\tHumble ships with a basic login page.  After logging in, you can specify where to get routed to.  Please specify that below.\n");
-                print("\tPlease enter the URI for the initial landing page (i.e. /".$attributes['namespace'].'/home/page): ');
+                print(justify("Humble ships with a basic login page.  After logging in, you can specify where to get routed to.  Please specify that below.",100));
+                print(justify("Please enter the URI for the initial landing page [/".$attributes['namespace'].'/home/page]:',100));
                 $attributes['landing_page']            = scrub(fgets(STDIN));
             }
             $attributes['destination_folder']       = getcwd();
             @mkdir($attributes['destination_folder'],0775);
             file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
-            print("\n\nOk, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n");
-            print("\n\nPlease run 'humble --fetch' to do the initial retrieval of the framework\n\n");
+            print(justify("Ok, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n",100));
+            print(justify("nPlease run 'humble --fetch' to do the initial retrieval of the framework",100)."\n\n");
         } else {
             print("\nAborting creation of Humble project\n\n");
         }
