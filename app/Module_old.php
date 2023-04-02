@@ -46,25 +46,6 @@ HELP;
 
 
     //--------------------------------------------------------------------------
-    function checkNamespaceAvailability($args) {
-        $ns = fetchParameter('namespace',processArgs($args));
-        if ($ns) {
-            $check = \Humble::entity('humble/modules');
-            $check->setNamespace($ns);
-            $mod = $check->load();
-            if ($mod) {
-                print("That namespace is already in use\n\n");
-                print("Information on that module follows:\n");
-                printModule($mod);
-            } else {
-                print("\nThat namespace ($ns) is available\n\n");
-            }
-
-        } else {
-            die('Namespace, in the form of "namespace=myns" was not passed');
-        }
-    }
-    //--------------------------------------------------------------------------
     function checkPrefixAvailability($args) {
         $px = fetchParameter('prefix',processArgs($args));
         if ($px) {

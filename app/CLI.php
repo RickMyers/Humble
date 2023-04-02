@@ -72,6 +72,9 @@ function helpRequest($first_parm,$details) {
 
 //==========================================================================
 
+if (!count($argv ?? []) && (count($args ?? []))) {
+    $argv = $args;  //not called from command line but included by another program so we are faking it
+}
 $args               = [];                                                       //declaring global variable
 $available_commands = aggregateDirectories(dir('cli'));                         //
 if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         //pop program name and grab the command they entered

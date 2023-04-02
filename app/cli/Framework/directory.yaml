@@ -2,9 +2,12 @@
 x : 
     description: Check if a module prefix is available (deprecated)
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --x prefix=desired_prefix
+        windows: humble --x prefix=desired_prefix
+    function : prefixAvailability
     parameters:
         required:
+            prefix|pre|px: The prefix value to check
         optional:         
 a : 
     description: Remove AUTOINCREMENT=# from SQL dumps
@@ -16,10 +19,13 @@ a :
 c : 
     description: Check for namespace availability
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --c namespace=desired_namespace 
+        windows: humble --c namespace=desired_namespace
+    function : namespaceAvailability
     parameters:
         required:
-        optional:         
+            namespace|ns: A namespace to check
+        optional:
 p : 
     description: Preserve a directory
     usage:

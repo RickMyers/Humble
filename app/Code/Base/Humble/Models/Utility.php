@@ -179,7 +179,7 @@ class Utility extends Model
         $user   = Humble::entity('humble/users');
         $user->setUid($this->getUid())->load();
         $data   = Humble::entity('humble/user_identification')->setId($this->getUid())->load();
-        $cmd    = Environment::PHPLocation().' Module.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' prefix='.$this->getPrefix().' author="'.$data['first_name'].' '.$data['last_name'].'"';
+        $cmd    = Environment::PHPLocation().' CLI.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' prefix='.$this->getNamespace().'_ author="'.$data['first_name'].' '.$data['last_name'].'"';
         \Log::general($cmd);
         $result = shell_exec($cmd);
         return $result;

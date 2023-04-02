@@ -323,13 +323,13 @@ switch ($method) {
         }
         
         $args = [
-            "Module.php",
+            "CLI.php",
             "--activate",
             "namespace=".$project->namespace,
             "package=".$project->package,
             "module=".$project->module
         ];
-        include "Module.php";        
+        include "CLI.php";        
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing = explode('/',$landing_page);
