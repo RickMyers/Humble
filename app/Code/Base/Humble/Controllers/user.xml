@@ -4,7 +4,6 @@
 
         <action name="login" passalong="user_name:required=true,user_password:format=password:required=true:value=password" event='userLogin' comment='Triggers the login workflow'>
             <description>Launches the process that a person goes through to login</description>
-            <!--
             <model namespace="humble" class="user" id="user">
                 <parameter name="user_name" source="post" default="" required='true' />
                 <parameter name="password"  source="post" value="user_password" format="password" required='true' />
@@ -16,9 +15,7 @@
                 <default>
                     <redirect href='/index.html?message=Invalid Login Attempt' />   
                 </default>
-                   
             </switch>
-                -->
         </action>
 
         <!-- ############################################################### -->

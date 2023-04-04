@@ -40,6 +40,7 @@ function printHelp($available_commands=[]) {
     foreach ($available_commands as $include => $commands) {
         print("\nTopic: ".$include."\n");
         foreach ($commands as $command => $options) {
+            $command = str_replace('|',' or ',$command);
             print("\t--".$command.' - '.($options['description'] ?? 'N/A')."\n");
         }
     }

@@ -160,7 +160,7 @@ class System extends CLI
             chdir('app');
             print("Now running update...\n\n");
             require 'cli/Module/Module.php';
-            Module::updateModule(['namespace'=>'*']);
+            Module::update(['namespace'=>'*']);
             chdir('..');
         } else {
             print("\n\nFramework update aborted.\n\n");

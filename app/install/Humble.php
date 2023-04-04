@@ -184,7 +184,7 @@ function initializeProject() {
             $attributes     = ['project_name'=>'','project_url'=>'','factory_name'=>'','framework_url'=>'','module'=>'','namespace'=>'','package'=>'','landing_page'=>'', 'author'=>''];
             print(justify("Recommended answers to these questions are shown between the square brackets",100)."\n\n");
             while (!$attributes['framework_url']) {
-                print(justify("Humble has its own framework updater but needs to know where to obtain the source from.",100));
+                print(justify("Humble has its own framework updater but needs to know where to obtain the source from.",100)."\n");
                 print(justify("Please enter the URL for the Humble source code repository [https://humbleprogramming.com]:",100));
                 $attributes['framework_url']        = scrub(fgets(STDIN));
             }
@@ -197,40 +197,40 @@ function initializeProject() {
                 $attributes['author']               = scrub(fgets(STDIN));
             }
             while (!$attributes['project_url']) {
-                print(justify("Humble has a two part installation, the first part downloads the framework, and the second part configures the framework for your project. The second part is configured using a web form, so a website (likely VHOST) has to already be created for your project.",100));
+                print(justify("Humble has a two part installation, the first part downloads the framework, and the second part configures the framework for your project. The second part is configured using a web form, so a website (likely VHOST) has to already be created for your project.",100)."\n");
                 print(justify("Please enter the URL for this project: ",100));
                 $attributes['project_url']          = scrub(fgets(STDIN));
             }
             while (!$attributes['factory_name']) {
-                print(justify("This is where it gets personal.  A PHP Static Factory will be created for you which will extend the primary framework's Factory class. You will reference most of the Humble framework components through this 'rebranded' Factory.  It's also a great place to keep your own Factory methods.",100));
+                print(justify("This is where it gets personal.  A PHP Static Factory will be created for you which will extend the primary framework's Factory class. You will reference most of the Humble framework components through this 'rebranded' Factory.  It's also a great place to keep your own Factory methods.",100)."\n");
                 print(justify("Please enter the name for the rebranded main Factory class: ",100));
                 $attributes['factory_name']         = scrub(fgets(STDIN));
             }
             while (!$attributes['package']) {
-                print(justify("A package is nothing more than a directory.  During the creation of your application you can create as many 'packages' as you would like, here you are just creating your first.",100));
+                print(justify("A package is nothing more than a directory.  During the creation of your application you can create as many 'packages' as you would like, here you are just creating your first.",100)."\n");
                 print(justify("Please enter the package (directory) name that will contain the main project module:",100));
                 $attributes['package']              = ucfirst(scrub(fgets(STDIN)));
             }
             while (!$attributes['module']) {
-                print(justify("A Humble project contains one or more user defined modules.  The components in the first module are 'special' because they take part in the inheritance hierarchy for all user created components.",100));
+                print(justify("A Humble project contains one or more user defined modules.  The components in the first module are 'special' because they take part in the inheritance hierarchy for all user created components.",100)."\n");
                 print(justify("Please enter the module name that will contain the core (base) classes: ",100));
                 $attributes['module']               = ucfirst(scrub(fgets(STDIN)));
             }
             while (!$attributes['namespace']) {
-                print(justify("Each module has its own internal namespace, and the components of that module are referenced using that namespace.  Note that this namespace is internal to the framework.",100));
+                print(justify("Each module has its own internal namespace, and the components of that module are referenced using that namespace.  Note that this namespace is internal to the framework.",100)."\n");
                 print(justify("Please enter the namespace you will be using to reference the base classes: ",100));
                 $attributes['namespace']            = scrub(fgets(STDIN));
             }
             while (!$attributes['landing_page']) {
-                print(justify("Humble ships with a basic login page.  After logging in, you can specify where to get routed to.  Please specify that below.",100));
+                print(justify("Humble ships with a basic login page.  After logging in, you can specify where to get routed to.  Please specify that below.",100)."\n");
                 print(justify("Please enter the URI for the initial landing page [/".$attributes['namespace'].'/home/page]:',100));
                 $attributes['landing_page']            = scrub(fgets(STDIN));
             }
             $attributes['destination_folder']       = getcwd();
             @mkdir($attributes['destination_folder'],0775);
             file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
-            print(justify("Ok, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n",100));
-            print(justify("nPlease run 'humble --fetch' to do the initial retrieval of the framework",100)."\n\n");
+            print(justify("Ok, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n",100)."\n");
+            print(justify("Please run 'humble --fetch' to do the initial retrieval of the framework",100)."\n\n");
         } else {
             print("\nAborting creation of Humble project\n\n");
         }
@@ -446,8 +446,8 @@ if (PHP_SAPI === 'cli') {
             case "conf":
             case "config":
                 $name = fetchParameter('servername',$args) ? fetchParameter('servername',$args) : (fetchParameter('name',$args) ? fetchParameter('name',$args) : false) ;
-                $port = fetchParameter('port',$args) ? fetchParameter('port',$args) : (fetchParameter('p',$args) ? fetchParameter('p',$args) : 80);
-                $log  = fetchParameter('log',$args) ? fetchParameter('log',$args) : false;
+                $port = fetchParameter('port',$args)       ? fetchParameter('port',$args) : (fetchParameter('p',$args) ? fetchParameter('p',$args) : 80);
+                $log  = fetchParameter('log',$args)        ? fetchParameter('log',$args)  : false;
                 if ($name && $port) {
                     configProject(getcwd(),$name,$port,$log);
                 } else {

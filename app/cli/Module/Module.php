@@ -3,7 +3,10 @@ require_once 'cli/CLI.php';
 class Module extends CLI 
 {
 
-    public static     function install() {
+    /**
+     * 
+     */
+    public static function install() {
         $args   = self::arguments();
         $ns     = $args['namespace'];
         $etc    = $args['etc'];
@@ -32,9 +35,11 @@ class Module extends CLI
         } else {
             print("\n\nRequired parameters are namespace and configuration file location\n\n");
         }
-
     }
 
+    /**
+     * 
+     */
     public static function uninstall() {
         $args   = self::arguments();
         $ns     = $args['namespace'];        
@@ -100,7 +105,7 @@ class Module extends CLI
     /**
      * Updates a module, running any new pieces of SQL, registering schema changes, generating workflows, documenting, moving images, etc...
      */
-    public static function updateModule($args=[]) {
+    public static function update($args=[]) {
         $args      = count($args) ? $args : self::arguments();
         $namespace = $args['namespace'];
         $workflows = $args['workflow'] ?? false;
@@ -125,6 +130,19 @@ class Module extends CLI
         } else {
             print('I need the namespace of the module to update passed in [namespace=ns]');
         }
+    }
+    
+    /**
+     * 
+     */
+    public static function activate() {
+        $args = self::arguments;
+        self::createModuleDirectories($args);
+        self::install([
+            $args['namespace'],
+            'Code/'.$args['package'].'/'.$args['module'].'/etc/config.xml'
+        ]);
+        self::enable($args);
     }
     
     /**

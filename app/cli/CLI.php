@@ -141,6 +141,7 @@ class CLI
      */
     public static function describe($command=false,$details=[]) {
         $usage = $details['usage'][(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? 'windows' : 'linux'];
+        $command = str_replace('|',' or ',$command);
         $p = ['required'=>'','optional'=>''];
         foreach (['required','optional'] as $section) {
             foreach ($details['parameters'][$section]??[] as $parm => $message) {

@@ -34,13 +34,12 @@ k :
         required:
             namespace|ns: You must specify the namespace of the module to uninstall, or an * to uninstall all non-required modules
         optional:  
-            
 u : 
     description: Run the Update process on a module or group of modules
     usage: 
         linux:   sudo sh ./humble.sh --u ns=module_namespace or sudo sh ./humble.sh --u ns=*
         windows: humble --u ns=module_namespace or humble --u ns=*
-    function : updateModule
+    function : update
     parameters:
         required:
             namespace|ns: You must specify the namespace of the module to update, or an * to update all modules
@@ -67,9 +66,14 @@ d :
             namespace|ns: You must specify the namespace of the module to disable, or an * to disable all non-required modules
         optional:          
 activate : 
-    description: Build Install and Enable a Module
+    description: Build, Install and Enable (activate) a Module
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --activate namespace=module_namespace package=directory_name module=module_name
+        windows: humble --d --activate namespace=module_namespace package=directory_name module=module_name
+    function : activate
     parameters:
         required:
+            namespace|ns: The module namespace
+            package|pk: Package (which is the directory) to install the module
+            module|mod: The module name
         optional:              

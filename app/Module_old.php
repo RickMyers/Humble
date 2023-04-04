@@ -45,49 +45,7 @@ HELP;
 
 
 
-    //--------------------------------------------------------------------------
-    function checkPrefixAvailability($args) {
-        $px = fetchParameter('prefix',processArgs($args));
-        if ($px) {
-            $check = \Humble::entity('humble/modules');
-            $check->setPrefix($px);
-            $mod = $check->fetch();
-            if ($mod && count($mod)>0) {
-                print("That prefix is already in use\n\n");
-                print("Information on that module follows:\n");
-                printModule($mod[0]);
-            } else {
-                print("\nThat ORM prefix ($px) is available\n\n");
-            }
-        } else {
-            die('Prefix, in the form of "prefix=mypx" was not passed');
-        }
-    }
-    //--------------------------------------------------------------------------
-    //--------------------------------------------------------------------------
-    function activateModule($args) {
-        $ns = fetchParameter('namespace',processArgs($args));
-        $pk = fetchParameter('package',processArgs($args));
-        $md = fetchParameter('module',processArgs($args));        
-        createModuleDirectories($args);
-        installModule([
-            $ns,
-            'Code/'.$pk.'/'.$md.'/etc/config.xml'
-        ]);
-        enableModule([$ns]);
-    }
-    //--------------------------------------------------------------------------
-    function displayHelp($help) {
-        print_r($help);
-    }
-    //--------------------------------------------------------------------------
-    function displayStatus($xml) {
-        if ($xml->status->enabled == 1) {
-            print("\n\n".date('Y-m-d H:i:s').'   <Application is enabled>'."\n\n");
-        } else {
-            print("\n\n".date('Y-m-d H:i:s').'   <Application is disabled>'."\n\n");
-        }
-    }
+   //--------------------------------------------------------------------------
     //--------------------------------------------------------------------------
     function displayVersion($xml) {
         print("\n\n".$xml->version->framework."\n\n");

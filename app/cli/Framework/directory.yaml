@@ -33,6 +33,16 @@ p :
     parameters:
         required:
         optional:         
+v|ver|version : 
+    description: Prints the framework version
+    directive: true
+    usage:
+        linux:   sudo sh ./humble.sh --v
+        windows: humble --v 
+    function : version
+    parameters:
+        required:
+        optional:            
 r : 
     description: Restore a directory
     usage:
