@@ -1,5 +1,5 @@
 ---
-x : 
+x|prefix : 
     description: Check if a module prefix is available (deprecated)
     usage:
         linux:   sudo sh ./humble.sh --x prefix=desired_prefix
@@ -9,14 +9,17 @@ x :
         required:
             prefix|pre|px: The prefix value to check
         optional:         
-a : 
+a|clean : 
     description: Remove AUTOINCREMENT=# from SQL dumps
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --a file=path_to_file
+        windows: humble --a file=path_to_file
+    function : clean
     parameters:
         required:
+            file|fi: The file to clean
         optional:         
-c : 
+c|check : 
     description: Check for namespace availability
     usage:
         linux:   sudo sh ./humble.sh --c namespace=desired_namespace 
@@ -26,12 +29,15 @@ c :
         required:
             namespace|ns: A namespace to check
         optional:
-p : 
-    description: Preserve a directory
+p|preserve : 
+    description: Preserve (copy) a directory off of the application path
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --p dir=path_to_directory
+        windows: humble --p dir=path_to_directory
+    function : preserve
     parameters:
         required:
+            directory|dir: The path to the directory to store/preserve
         optional:         
 v|ver|version : 
     description: Prints the framework version
@@ -43,10 +49,13 @@ v|ver|version :
     parameters:
         required:
         optional:            
-r : 
-    description: Restore a directory
+r|restore : 
+    description: Restore a directory that was previously preserved
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --r dir=path_to_directory
+        windows: humble --r dir=path_to_directory
+    function : restore
     parameters:
         required:
+            directory|dir: The path to the directory to store/preserve
         optional:         

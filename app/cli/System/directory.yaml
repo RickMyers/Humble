@@ -32,11 +32,18 @@ s :
         optional:
 adduser : 
     description: Create a user in the humble user directory
-    usage:
-    function :
+    usage: 
+        linux:   sudo sh ./humble.sh --adduser first=john last=doe user=jdoe pwd=bestpasswordever em=johndoe@gmail.com
+        windows: humble --adduser first=john last=doe user=jdoe pwd=bestpasswordever em=johndoe@gmail.com
+    function : addUser
     parameters:
         required:
-        optional:    
+            first|first_name: The first name of the user
+            last|last_name: The last name of the user
+            user|user_name: Desired username
+        optional:
+            password|pwd: The password for the user, or omit to have a password generated and it will be displayed
+            email|em: Users email address
 use : 
     description: Update a module using the relative location of a configuration file
     usage:
@@ -65,7 +72,7 @@ increment|inc|+ :
     parameters:
         required:
         optional:    
-initialize : 
+initialize|init : 
     description: Initializes a new project based on the Humble Framework
     usage: 
         linux:   sudo sh ./humble.sh --init

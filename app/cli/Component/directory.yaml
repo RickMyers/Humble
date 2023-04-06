@@ -1,29 +1,42 @@
 ---
-cc : 
-    description: Creates a Controller
+bc : 
+    description: Creates (builds) a Controller
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --bc file=path_to_file
+        windows: humble --bc file=path_to_file        
+    function : build
     parameters:
         required:
-            ns|namespace: Namespace of module is required
+            namespace|ns: Namespace of module is required
+            name|nm: Name of the controller
+            action|ac: Name of the action
         optional:
+            description|desc: Description of controller
+            templater|ts: The templater to use
 cm : 
     description: Creates a Component (Model Helper Entity)
     usage:
+        linux:   sudo sh ./humble.sh --a file=path_to_file
+        windows: humble --a file=path_to_file        
     function :
     parameters:
         required:
         optional:
-y  : 
+cc  : 
     description: Compiles a Controller
     usage:
-    function :
+        linux:   sudo sh ./humble.sh --cc file=path_to_file
+        windows: humble --cc file=path_to_file        
+    function : compile
     parameters:
         required:
+            file|fi: path to the file to compile
         optional:
 g  : 
-    descriptionp: Generate JSON Edits (Not-Implemented)
+    description: Generate JSON Edits (Not-Implemented)
     usage:
+        linux:   sudo sh ./humble.sh --a file=path_to_file
+        windows: humble --a file=path_to_file        
     function :
     parameters:
         required:

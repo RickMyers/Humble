@@ -33,6 +33,66 @@ class Framework extends CLI
         }
     }
     
+    public static function preserve() {
+        $args       = self::arguments();
+        $directory  = $args['directory'];
+        print('Attempting to copy: '.$directory."\n");
+        if ($directory) {
+            $util       = Humble::helper('humble/directory');
+            $directory  = (substr($directory,0,1)==='/') ? substr($directory,1) : $directory;  //convert from absolute to relative path
+            if (is_dir('../'.$directory)) {
+                @mkdir('../../'.$directory,0775,true);
+                $util->copyDirectory('../'.$directory,'../../'.$directory);
+            } else {
+                print("Directory doesn't exist\n");
+            }
+        } else {
+            print('Directory not found');
+        }
+    }
+    
+    public static function restore($args) {
+        $args       = self::arguments();
+        $directory  = $args['directory'];
+        print('Attempting to restore: '.$directory."\n");
+        if ($directory) {
+            $util       = Humble::helper('humble/directory');
+            $directory  = (substr($directory,0,1)==='/') ? substr($directory,1) : $directory;  //convert from absolute to relative path
+            if (is_dir('../../'.$directory)) {
+                @mkdir('../'.$directory,0775,true);
+                $util->copyDirectory('../../'.$directory,'../'.$directory);
+            } else {
+                print("Directory doesn't exist\n");
+            }
+        } else {
+            print('Directory not found');
+        }
+    }
+
+    public static function clean() {
+        $parms = self::arguments();
+        $file  = $args['file'];
+        if ($file) {
+            if (file_exists($file)) {
+                $lines = [];
+                foreach (explode("\n",file_get_contents($file)) as $row) {
+                    if (($pos = strpos($row,"AUTO_INCREMENT="))!==false) {
+                        $pre = substr($row,0,$pos);
+                        $post = strpos(substr($row,$pos),' ');
+                        $row = $pre.substr(substr($row,$pos),$post);
+                    }
+                    $lines[] = $row;
+                }
+                file_put_contents($file,implode("\n",$lines));
+            } else {
+                print('File specified ['.$file.'] does not exist');
+            }
+        } else {
+            print('Must pass in an argument of file=###');
+        }
+
+    }    
+    
     /**
      * Just prints the version
      */
