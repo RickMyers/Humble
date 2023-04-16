@@ -15,18 +15,13 @@ namespace Code\Base\Humble\Models;
  * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
  * @version    1.0
  */
-class MySQL  {
+class MySQL extends ORM implements ORMEngine  {
 
     private $_dbref         = NULL;
     private $_state	    = NULL;
     private $_prep	    = NULL;
     private $_connected     = true;
     private $_environment   = null;
-    private $_lastQuery     = null;
-    private $_lastError     = null;
-    private $_prefix        = null;
-    private $_namespace     = null;
-    private $_isVirtual     = false;
 
     /**
      * Loads the environment information, such as userid and password
@@ -34,18 +29,6 @@ class MySQL  {
     public function __construct() {
         $this->_environment = \Singleton::getEnvironment();
         $this->connect();
-    }
-    
-    /**
-     *
-     */
-    public function _isVirtual($state=null) {
-        if ($state === null) {
-            return $this->_isVirtual;
-        } else {
-            $this->_isVirtual = $state;
-        }
-        return $this;
     }
     
     /**
@@ -167,21 +150,6 @@ class MySQL  {
     }
 
     /**
-     *
-     * @param type $rs
-     * @return type
-     */
-    protected function translateResultSet($rs=null)	{
-	$n_rs = [];
-	if (($rs) && $rs->num_rows > 0) {
-            while ($row = $rs->fetch_assoc()) {
-                $n_rs[] = $row;
-            }
-        }
-	return $n_rs;
-    }
-
-    /**
      * Allows you to prepare a query for exectuion
      *
      * @param type $query
@@ -237,59 +205,6 @@ class MySQL  {
      */
     public function getInsertId() {
 	return $this->_dbref->insert_id;
-    }
-
-    /**
-     * Enables or disables query logging
-     * 
-     * @return type
-     */
-    public function logging() {
-       return \Humble::cache('queryLogging',$this->getStatus() ? ($this->getStatus()==='On') : false);
-    }
-
-    /**
-     * Returns the last query executed, or saves it off if passed in
-     *
-     * @param string $qry
-     * @return String
-     */
-    public function _lastQuery($qry=false) {
-        if ($qry) {
-            $this->_lastQuery = $qry;
-        }
-        return $this->_lastQuery;
-    }
-
-    /**
-     * Gets the last error encountered, or sets the last error encountered
-     *
-     * @param type $err
-     * @return type
-     */
-    public function _lastError($err=false) {
-        if ($err) {
-            $this->_lastError = $err;
-        }
-        return $this->_lastError;
-    }
-
-    public function _prefix($prefix=false) {
-        if ($prefix) {
-            $this->_prefix = $prefix;
-        } else {
-            return $this->_prefix;
-        }
-        return $this;
-    }
-
-    public function _namespace($ns=false) {
-        if ($ns) {
-            $this->_namespace = $ns;
-        } else {
-            return $this->_namespace;
-        }
-        return $this;
     }
 
     /**

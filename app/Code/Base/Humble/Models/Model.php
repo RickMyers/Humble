@@ -302,7 +302,13 @@ class Model implements HumbleComponent
                         $result = $this->arrayToXML($json,new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><root></root>'));
                     }
                     break;
-                default         :
+                case 'JSON' :
+                    $result = json_decode($result,true);
+                    break;
+                case 'XML'  :
+                    $result = simplexml_load_string($result);
+                    break;
+                 default         :
                     break;
             }
         }

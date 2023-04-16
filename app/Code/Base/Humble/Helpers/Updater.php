@@ -43,6 +43,14 @@ class Updater extends Installer
         //nulling these out so can't be used
     }
     
+    private function extractParameterOptions($attr) {
+        $options = [];
+        foreach ($attr as $key => $value) {
+            $options[(string)$key] = (string)$value;
+        }
+        return $options;
+    }
+    
     /**
      * We are collecting only certain descriptive elements of the controller to register with the service directory
      * 
@@ -73,11 +81,8 @@ class Updater extends Installer
                     $elements['collections'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
                     break;
                 case 'parameter'    :
-                    $attr = $subelements->attributes();
-                    if (isset($attr->required)) {
-                        $elements['required'] [(string)$attr->name] = true;
-                    }
-                    $elements['parameters'][(string)$attr->name] = true;
+                    $options = $this->extractParameterOptions($attr = $subelements->attributes());
+                    $elements['parameters'][(string)$attr->name] = $options;
                     break;
                 default:
                     break;
@@ -108,10 +113,13 @@ class Updater extends Installer
                         }
                         foreach (simplexml_load_file($location.'/'.$controller) as $actions) {
                             foreach ($actions as $action) {
+                                $attrs      = ['description'=>[],'parameters'=>[],'helpers'=>[],'models'=>[],'entities'=>[],'collections'=>[],'header'=>[]];
                                 $attr       = $action->attributes();
-                                $passalong  = (isset($attr->passalong) ? (string)$attr->passalong : "");
-                                $services->reset()->setNamespace($namespace)->setController(str_replace('.xml','',$controller))->setAction((string)$attr->name)->setOutput(isset($attr->output) ? (string)$attr->output : 'text/html')->setPassed($passalong);
-                                $attrs = ['description'=>[],'parameters'=>[],'helpers'=>[],'models'=>[],'entities'=>[],'collections'=>[],'required'=>[]];
+                                $attrs['header']['passalong']  = (isset($attr->passalong) ? (string)$attr->passalong : "");
+                                $attrs['header']['blocking']   = (isset($attr->blocking)  ? (string)$attr->blocking  : "YES");
+                                $attrs['header']['response']   = (isset($attr->response)  ? (string)$attr->response  : "NO");
+                                $attrs['header']['output']     = (isset($attr->output)    ? (string)$attr->output : 'text/html');
+                                $services->reset()->setNamespace($namespace)->setController(str_replace('.xml','',$controller))->setAction((string)$attr->name);
                                 if (count($action)) {
                                     $attrs       = $this->extractElements($action,$attrs);
                                 }

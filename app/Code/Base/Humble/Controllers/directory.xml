@@ -76,8 +76,8 @@ Actions and views related to directory services
 
         <action name="serviceparms" authorization='true'>
             <description>This builds the paginated page that displays the list of currently available services, and how to call them</description>
-            <entity namespace="humble" class="service/parameters" id="parameters">
-                <parameter name="service_id" source="request" type="int" required="true" />
+            <entity namespace="humble" class="service/directory" id="parameters">
+                <parameter name="id" value="service_id" source="request" type="int" required="true" />
             </entity>
         </action>
 

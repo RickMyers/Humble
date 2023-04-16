@@ -82,7 +82,7 @@ class Directory extends \Code\Base\Humble\Helpers\Directory
                             $parameters = [];
                             foreach ($action as $data) {
 
-                                $actAttr     = $data->attributes();
+                                $actAttr = $data->attributes();
                                 $service->setAuthorized((isset($actAttr['authorization']) && (strtolower($actAttr['authorization'])==='true')) ? "Y" : "N");
                                 $service->setService($actAttr['name']);
                                 $service->setOutput((isset($actAttr['output'])  ? $actAttr['output'] : 'HTML'));
@@ -127,12 +127,13 @@ class Directory extends \Code\Base\Humble\Helpers\Directory
                                         }
                                     }
                                 }
-                                $serviceParms->setServiceId($id);
+                                
+                                $serviceParms->reset()->setServiceId($id);
                                 foreach ($parameters as $name => $parmData) {
                                     $serviceParms->setParameter($name);
                                     $serviceParms->setValue($parmData['value']);
                                     $serviceParms->setSource($parmData['source']);
-                                    $serviceParms->setDatatype($parmData['type']);
+                                    $serviceParms->setType($parmData['type']);
                                     $serviceParms->setDefault($parmData['default']);
                                     $serviceParms->setRequired($parmData['required']);
                                     $serviceParms->add();

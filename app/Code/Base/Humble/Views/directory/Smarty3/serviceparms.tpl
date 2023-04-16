@@ -19,7 +19,7 @@
             Default
         </th>
     </tr>
-{foreach from=$parameters->index() item=service}
+{foreach from=$parameters->load() item=service}
     <tr style="background-color: {cycle values="#cecece,#d5d5d5"}">
         <td class="services-field2">{$service.parameter}</td>
         <td class="services-field2">{$service.value}</td>

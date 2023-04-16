@@ -403,7 +403,7 @@ class Mongo  {
         $mapped = [];
         if ($doc && (is_array($doc) || (is_object($doc)))) {
             foreach ($doc as $var => $val) {
-                if ($var === '_id') {
+                if (($var === '_id') && ($val instanceof MongoDB\BSON\ObjectId)) {
                     $mapped['_id'] = (string)$val;
                 } else {
                     $mapped[$var] = (is_object($val) || is_array($val)) ?  $this->_map($val) : $val;

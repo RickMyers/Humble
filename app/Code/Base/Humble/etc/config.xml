@@ -73,6 +73,7 @@
                 <secrets_manager />
                 <services />
                 <service_directory polyglot="Y" />
+                <service_parameters polyglot="Y" />
                 <templaters />
                 <templates />
                 <userlog />
