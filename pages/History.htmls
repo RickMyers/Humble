@@ -2,7 +2,7 @@
 <!--#include virtual="/pages/includes/container.html" -->
 <style type="text/css">
     .screenshot {
-        height: 325px; margin-right: 2px; border: 1px solid #333; position: relative; padding-bottom: 10px
+        height: 325px; margin-right: 2px; border: 1px solid #333; position: relative; padding-bottom: 10px; cursor: pointer
     }
     .famous_quote {
         background-color: rgba(202,202,202,.2); padding: 10px; font-style: italic; color: #333; margin-bottom: 20px; border: 1px solid silver; border-radius: 5px;
@@ -34,18 +34,18 @@ team had moved on and that I was the primary developer/tester/documenter of both
     <a href="#" onclick="$('#screenshots').slideToggle();return false">Click here to see some screenshots of Cloud-IT.com</a>
 </div>
 <div style="white-space: nowrap; overflow: auto; display: none" id='screenshots'>
-<img src='/pages/images/screens/screen0.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen1.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen2.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen3.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen4.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen5.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen6.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen7.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen8.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen9.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen10.jpg' class='screenshot' />
-<img src='/pages/images/screens/screen11.jpg' class='screenshot' />
+<img src='/pages/images/screens/screen0.jpg' class='screenshot' title="Screenshot" text="Login Page" />
+<img src='/pages/images/screens/screen1.jpg' class='screenshot' title="Screenshot" text="Organize your photos into photosets within albums, and edit them right in the same album" />
+<img src='/pages/images/screens/screen2.jpg' class='screenshot' title="Screenshot" text="" />
+<img src='/pages/images/screens/screen3.jpg' class='screenshot' title="Screenshot" text="" />
+<img src='/pages/images/screens/screen4.jpg' class='screenshot' title="Screenshot" text="" />
+<img src='/pages/images/screens/screen5.jpg' class='screenshot' title="Screenshot" text="" />
+<img src='/pages/images/screens/screen6.jpg' class='screenshot' title="Screenshot" text="" />
+<img src='/pages/images/screens/screen7.jpg' class='screenshot' title="Screenshot" text="" />
+<img src='/pages/images/screens/screen8.jpg' class='screenshot' title="Screenshot" text="" />
+<img src='/pages/images/screens/screen9.jpg' class='screenshot' title="Screenshot" text="" />
+<img src='/pages/images/screens/screen10.jpg' class='screenshot' title="Screenshot" text="" />
+<img src='/pages/images/screens/screen11.jpg' class='screenshot' title="Screenshot" text="" />
 
 </div>
 <p>
