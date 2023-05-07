@@ -7,6 +7,13 @@
         <app>0.0.0.1</app>
     </version>
     <state>DEVELOPMENT</state>
+    <stages>
+        <DEVELOPMENT order="1"/>
+        <TEST order="2"/>
+        <QA order="3"/>
+        <UAT order="4"/>
+        <PRODUCTION order="5"/>
+    </stages>
     <extend>
         <helpers>1</helpers>
         <models>1</models>

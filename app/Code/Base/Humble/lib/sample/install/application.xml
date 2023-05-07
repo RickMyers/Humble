@@ -12,6 +12,11 @@
         <app>0.0.0.1</app>
     </version>    
     <state>DEVELOPMENT</state>
+    <stages>
+        <DEVELOPMENT order="1" />
+        <TEST order="2" />
+        <PRODUCTION order="3" />
+    </stages>    
     <extend>
         <helpers>1</helpers>
         <models>1</models>

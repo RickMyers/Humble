@@ -69,6 +69,10 @@ class System extends Model
         }        
         return $_SESSION['BROWSER_TABS'][$tab_id] = $this->_uniqueId();
     }
+    
+    /**
+     * 
+     */
     public function save() {
         $root       = Environment::getRoot('humble');
         $rain       = Environment::getInternalTemplater($root.'/lib/sample/install','xml');
@@ -126,13 +130,30 @@ class System extends Model
     }
     
     /**
+     * Returns the SDLC of the app...
+     * 
+     * @TODO: Use the order attribute to pre-sort
+     * 
+     * @return array
+     */
+    public function stages() {
+        $stages = [];
+        $this->xml = $this->xml ? $this->xml : Environment::status(true);
+        foreach (($this->xml['stages'] ?? []) as $stage => $attr) {
+            $stages[] = $stage;
+        }
+        \Log::general($stages);
+        return $stages;
+    }
+    
+    /**
      * If available, returns the current state or the default DEVELOPMENT if not set
      * 
      * @return string
      */
     public function state() {
-        $xml    = Environment::status(true);
-        return (isset($xml['state'])) ? $xml['state'] : 'DEVELOPMENT';
+        $this->xml = $this->xml ? $this->xml : Environment::status(true);
+        return (isset($this->xml['state'])) ? $this->xml['state'] : 'DEVELOPMENT';
     }
     
     /**
