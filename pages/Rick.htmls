@@ -11,7 +11,7 @@
 <div class='humble-topic-header'>My Story (So Far...)</div>
 
 <div style='float: left; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-right: 8px'>
-<img src='/pages/images/misc/rick_and_ian.jpg' style='width: 240px' /><br />
+<img src='/pages/images/misc/rick_and_ian.jpg' style='width: 240px' class="screenshot" title="Rick and Ian" text="Me with my Bestie" /><br />
 <div style="text-align: center; font-style: italic">Rick and his Bestie</div>
 </div>
 
@@ -25,7 +25,7 @@ I've always been one to drive myself to learn, and moved from BASIC to Pascal wh
 after having been selected to go through their intense "New Recruit Development" program (affectionately called 'The NeRD Program').  It would be a great achievement and honor for me to return to that program years later as an instructor.
 </p>
 <div style='float: right; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-left: 8px; text-align: center'>
-<img src='/pages/images/misc/jeep_and_ian.jpg' style='width: 240px'/><br />
+<img src='/pages/images/misc/jeep_and_ian.jpg' class="screenshot" style='width: 240px' title="Jeep and Ian" text="Jeep and my Bestie"/><br />
 <div style="text-align: center; font-style: italic">Rick's Bestie and the Jeep</div>
 </div>
 
@@ -42,7 +42,7 @@ the holistic and humanistic approach to application development that I practice 
 all fungible.  Read '<a href='/pages/TheHumbleWay.htmls' target='_BLANK'>The Humble Way</a>' for more about this.
 </p>
 <div style='float: left; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-right: 8px; text-align: center'>
-<img src='/pages/images/misc/rick_2005.jpg' style='width: 240px'/><br />
+<img src='/pages/images/misc/rick_2005.jpg' style='width: 240px' class="screenshot" style='width: 240px' title="Key West" text="Rick in Key West, 2005" /><br />
 <div style="text-align: center; font-style: italic">Rick 2005</div>
 </div>
 <p>
@@ -60,7 +60,7 @@ The previous job had started hard, fast, and wonderful but ended under a toxic c
 could use a semi-abstracted framework like Struts-II.  But the <a href='/pages/History.htmls' target='_BLANK'>history</a> of the framework is covered elsewhere...
 </p>
 <div style='float: right; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-left: 8px; text-align: center'>
-<img src='/pages/images/misc/rick_angel_ian.jpg' style='width: 240px'/><br />
+<img src='/pages/images/misc/rick_angel_ian.jpg' style='width: 240px' class="screenshot" title="Family" text="The family that hikes together..." /><br />
 <div style="text-align: center; font-style: italic">Rick, Wife, &amp; Ian, 2021</div>
 </div>
 <p>
@@ -77,7 +77,7 @@ After about 10 months I took a contract job back in healthcare at a place nearby
 expansion and then contraction (layoffs).  It was not a good place to work, but there were again some great people working hard to help the company survive.
 </p>
 <div style='float: left; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-right: 8px; text-align: center'>
-<img src='/pages/images/misc/family_at_gc.jpg' style='width: 240px'/><br />
+<img src='/pages/images/misc/family_at_gc.jpg' style='width: 240px' class="screenshot" title="Family @ Grand Canyon" text="Watch that last step..."   /><br />
 <div style="text-align: center; font-style: italic">Family @ Grand Canyon, 2022</div>
 </div>
 <p>
@@ -97,7 +97,7 @@ I was tasked (along with a team I could hire) to build their next iteration, whi
 particularly the "Self-Directed" part.  However, constant chaos (turnover) at the C-Suite level undermined my confidence, not in the ability to develop an outstanding product, but for the management and executives to deliver and support it.
 </p>
 <div style='float: right; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-left: 8px; text-align: center'>
-<img src='/pages/images/misc/bordeaux.jpg' style='width: 240px'/><br />
+<img src='/pages/images/misc/bordeaux.jpg' style='width: 240px' class="screenshot" title="Overlord Bordeaux" text="I am but his Humble servant" /><br />
 <div style="text-align: center; font-style: italic">Can't forget Bordeaux,<br /> he actually runs the place</div>
 </div>
 <p>

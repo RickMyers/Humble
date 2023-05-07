@@ -13,7 +13,7 @@
             </div>
         </div>
         <div style="display: none; position: absolute; top: 0px; left: 0px; text-align: center; background-color: #333; padding: 0px; margin: 0px" id="screenshot-frame">
-            <img src="" id="current-screenshot" style="width: 100%;  border: 3px solid #333" title="" /><br />
+            <img src="" id="current-screenshot" style="  border: 3px solid #333" title="" /><br />
             <div style="font-family: sans-serif; font-style: italic; color: ghostwhite; padding: 5px 10px; width: 100%" id="screenshot-text"></div>
             <div style="font-family: sans-serif; font-style: italic; color: #777; padding: 5px 10px; width: 100%; text-align: center"><button onclick="$('#screenshot-frame').hide()"> Close </button>
             </div>
@@ -23,9 +23,11 @@
         <script type="text/javascript">
             $('.screenshot').on('click',function (evt) {
                 let layer = document.getElementById('screenshot-frame');
+                layer.style.display='block';                
                 document.getElementById('current-screenshot').src = evt.target.src;
                 document.getElementById('current-screenshot').title = evt.target.getAttribute('title');
-                layer.style.display='block';
+                $('#current-screenshot').css('max-height','60%');
+                $('#current-screenshot').css('height',Math.floor(screen.height*.6)+"px");
                 layer.style.width = Math.floor(screen.width*.55)+'px';
                 layer.style.top = Math.floor((screen.height - layer.offsetHeight)/2)+'px';
                 layer.style.left = Math.floor((screen.width - layer.offsetWidth)/2)+'px';
