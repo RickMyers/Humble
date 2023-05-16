@@ -38,9 +38,9 @@ adduser :
     function : addUser
     parameters:
         required:
-            first|first_name: The first name of the user
-            last|last_name: The last name of the user
-            user|user_name: Desired username
+            first_name|first: The first name of the user
+            last_name|last: The last name of the user
+            user_name|user: Desired username
         optional:
             password|pwd: The password for the user, or omit to have a password generated and it will be displayed
             email|em: Users email address

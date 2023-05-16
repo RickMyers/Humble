@@ -41,13 +41,13 @@ class Users extends Entity
      * @param type $first_name
      * @return type
      */
-    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='',$uid='',$email='') {
+    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='',$email='',$uid='') {
         $uname  = $user_name ? $user_name       : ($this->getUserName()  ? $this->getUserName()  : false);
         $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
         $fname  = $first_name ? $first_name     : ($this->getFirstName() ? $this->getFirstName() : '');
         $lname  = $last_name ? $last_name       : ($this->getLastName()  ? $this->getLastName()  : '');
-        $uid    = $uid ? $uid                   : ($this->getUid()       ? $this->getUid()  : '');
-        $email  = $email ? $email               : ($this->getEmail()     ? $this->getEmail()  : '');
+        $uid    = $uid ? $uid                   : ($this->getUid()       ? $this->getUid()       : '');
+        $email  = $email ? $email               : ($this->getEmail()     ? $this->getEmail()     : '');
         if ($uname && $pwd) {
             if ($uid) {
                 $this->setUid($uid);

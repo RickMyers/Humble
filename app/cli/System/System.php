@@ -28,9 +28,10 @@ class System extends CLI
         $passw = $args['password'];
         $first = $args['first_name'];
         $last  = $args['last_name'];
-        $uid   = $args['uid'];
+        $email = $args['email']?? null;
+        $uid   = $args['uid']  ?? null;
         if ($uname && $passw) {
-            Humble::entity('humble/users')->newUser($uname,MD5($passw),$first,$last,$uid);
+            Humble::entity('humble/users')->newUser($uname,MD5($passw),$first,$last,$email,$uid);
         } else {
             print("Not enough data was passed to create a user.  user_name and password are minimum required fields.\n");
         }

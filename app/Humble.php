@@ -238,6 +238,7 @@
          */
         public static function getHelper($resource_identifier)  {
             $identifier     = self::parseResource($resource_identifier);
+            $instance       = null;
             if (isset(self::$helpers[$resource_identifier])) {
                 return self::$helpers[$resource_identifier];                    //Static, singleton style, allocation for helpers
             }
@@ -258,7 +259,7 @@
                 }
                 $instance->_namespace($identifier['namespace'])->_isVirtual(!$class);
             }  else {
-                \Log::general($identifier);
+               // \Log::general($identifier);
             }
             
             return self::$helpers[$resource_identifier] = $instance;
