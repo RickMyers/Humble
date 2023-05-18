@@ -276,7 +276,7 @@ FACTORY;
     print('Now running composer...'."\n");
     chdir('app');
     exec('composer install');
-    $cmd = 'php CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'author='.$project->author;
+    $cmd = \Environment::PHPLocation().' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'author='.$project->author;
     print("\nExecuting: ".$cmd."\n\n");
     exec($cmd,$output);
     chdir('..');

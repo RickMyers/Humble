@@ -99,7 +99,7 @@ class Environment {
         if (!self::$application) {
              self::loadApplicationMetaData(true);
         }
-        return (\Humble::model('humble/something')->_isLinux()) ? `which php.exe` : self::$application['engine'];
+        return (\Humble::model('humble/something')->_isLinux()) ? `which php.exe` : `where php.exe`;
     }
     
     /**
