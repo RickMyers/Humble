@@ -37,7 +37,7 @@ function EasyAjax(targetUrl) {
     this.xmlHttp.onreadystatechange = function() {
         EasyAjax.ajaxHandler(me);
     };
-    this.callbackFunction = function() { };
+    this.callbackFunction = [];
     this.getXhr = function () {
         return this.xmlHttp;
     };
@@ -87,7 +87,7 @@ EasyAjax.prototype.getTargetURL= function() {
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.then = function(f) {
-    this.callbackFunction = f;
+    this.callbackFunction[this.callbackFunction.length] = f;
     return this;
 };
 /* ----------------------------------------------------------------- */
@@ -170,12 +170,13 @@ EasyAjax.prototype.get = function(async) {
         this.xmlHttp.open("GET", fullGetUrl, async);
         this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest')
         this.xmlHttp.send(null);
-        if (!this.async && (this.callbackFunction != null)) {
+        if (!this.async && (this.callbackFunction.length)) {
             if ((!this.isIE) && (!this.completed))	{
-                this.callbackFunction(this.getResponse());
-                if (!this.keepAlive) {
-                    delete this; //garbage collection
-                }
+                for (var i=0; i<this.callbackFunction.length; i++)
+                this.callbackFunction[i](this.getResponse());
+            }
+            if (!this.keepAlive) {
+                delete this; //garbage collection
             }
         }
     }
@@ -271,7 +272,7 @@ EasyAjax.prototype.getResponse = function() {
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.ignoreResponse = function() {
-    this.callbackFunction = null;
+    this.callbackFunction = [];
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.executeJavascript = function (html) {
@@ -410,7 +411,9 @@ EasyAjax.prototype.addForm = EasyAjax.prototype.packageForm;            //renami
 EasyAjax.ajaxHandler = function(cleanAjaxObj) {
     if ((cleanAjaxObj.xmlHttp.readyState === 4) || (cleanAjaxObj.xmlHttp.readyState === "complete")) {
         if (!cleanAjaxObj.completed) {
-            cleanAjaxObj.callbackFunction(cleanAjaxObj.getResponse());
+            for (var i=0; i<cleanAjaxObj.callbackFunction.length; i++) {
+                cleanAjaxObj.callbackFunction[i](cleanAjaxObj.getResponse());
+            }
         }
     }
 };
