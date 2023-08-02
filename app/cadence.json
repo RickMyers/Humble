@@ -1,0 +1,10 @@
+{
+    "note": "a period of 20 and multiple of 2 would have this section run at a maximum of every 40 seconds.",
+    "period": 20,
+    "multiple": {
+        "controllers": 2,
+        "classes": 3,
+        "workflows": 4,
+        "files": 10
+    }
+}
