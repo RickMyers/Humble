@@ -1,4 +1,14 @@
 <?php
+if (!isset($origin) || ($origin !=='front_controller')) {
+    print("Invocation Error");
+    $sapi_type = php_sapi_name();
+    if (substr($sapi_type, 0, 3) == 'cgi') {
+        header("Status: 400 Bad Request");
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
+    die();        
+}
 //------------------------------------------------------------------------------
 //Include things you want to do after to application beginning
 $models             = [];

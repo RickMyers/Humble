@@ -35,7 +35,8 @@ class MySQL extends ORM implements ORMEngine  {
      * Connects to a DB source
      */
     public function connect() {
-        $this->_dbref	= @ new \mysqli($this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword());
+        global $use_connection_pool;                                            //use persistent connections?
+        $this->_dbref	= @ new \mysqli((($use_connection_pool) ? 'p:' : '').$this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword());
         if (mysqli_connect_errno()) {
             $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";
             $errorstring .= "\t<class> ".$this->_environment->getDBHost()." </class>\n";

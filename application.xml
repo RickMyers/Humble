@@ -3,16 +3,16 @@
     <name>The Humble Project</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">JSFQ-VSYF-QRKQ-CJQQ</serial_number>
     <version>
-        <framework>0.7.9.8.3</framework>
+        <framework>0.7.9.8.4</framework>
         <app>0.0.0.1</app>
     </version>
     <state>DEVELOPMENT</state>
     <stages>
         <DEVELOPMENT order="1"/>
-        <TEST order="2"/>
-        <QA order="3"/>
-        <UAT order="4"/>
-        <PRODUCTION order="5"/>
+        <TEST        order="2"/>
+        <QA          order="3"/>
+        <UAT         order="4"/>
+        <PRODUCTION  order="5"/>
     </stages>
     <extend>
         <helpers>1</helpers>
@@ -35,9 +35,9 @@
         listed on the tag.  PHPDoc2 is the default since it supports more versions of PHP, but if you are using PHP 8.2 and later, APIGen is an excellent option as well.
     </documentation_comment>
     <documentation comment="Documentation will not be generated in environments with a state of PRODUCTION">
-        <engine options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
+        <engine  options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
         <command options="PHPDoc2.phar,apigen.phar app/Code --output Docs">PHPDoc2.phar</command>
-        <source options="https://humbleprogramming.com/dist/phpdoc.php ,https://humbleprogramming.com/dist/apigen.php">https://humbleprogramming.com/dist/phpdoc.php</source>
+        <source  options="https://humbleprogramming.com/dist/phpdoc.php ,https://humbleprogramming.com/dist/apigen.php">https://humbleprogramming.com/dist/phpdoc.php</source>
     </documentation>
     <support>
         <name>Rick Myers</name>
@@ -45,7 +45,6 @@
     </support>
     <flags>
         <display_mysql_errors>0</display_mysql_errors>
-        <redis>0</redis>
     </flags>
     <status>
         <enabled>1</enabled>           <!-- Switch to 0 to take the application offline -->
