@@ -20,24 +20,28 @@
         </th>
     </tr>
     {assign var=parms value=$parameters->load()}
-    {assign var=n value=\Log::console($parms)}
+    {assign var=n value=\Log::general($parms)}
+    {foreach from=$parms item=section}
+         {assign var=n value=\Log::console($section)}
+    {/foreach}
+   
     {if ($parms['header'])}
         <div>Header</div>
         {foreach from=$parms.header item=val key=k}
             <div>{$k} = {$val}</div>
         {/foreach}
     {/if}
-{foreach from=$parameters->load() item=service}
+{foreach from=$parms['parameters'] key=service item=service}
     
-    {*<tr style="background-color: {cycle values="#cecece,#d5d5d5"}">
-        <td class="services-field2">{$service.parameter}</td>
-        <td class="services-field2">{$service.value}</td>
-        <td class="services-field2">{$service.source}</td>
-        <td class="services-field2">{$service.datatype}</td>
-        <td class="services-field2">{$service.required}</td>
-        <td class="services-field2">{$service.default}</td>
-        <td class="services-field2">{$service.description}</td>
-    </tr>*}
+    <tr style="background-color: {cycle values="#cecece,#d5d5d5"}">
+        <td class="services-field2">{if ($service.parameter)}{$service.parameter}{/if}</td>
+        <td class="services-field2">{if ($service.value)}{$service.value}{/if}</td>
+        <td class="services-field2">{if ($service.source)}{$service.source}{/if}</td>
+        <td class="services-field2">{if ($service.datatype)}{$service.datatype}{/if}</td>
+        <td class="services-field2">{if ($service.required)}{$service.required}{/if}</td>
+        <td class="services-field2">{if ($service.default)}{$service.default}{/if}</td>
+        <td class="services-field2">{if ($service.description)}{$service.description}{/if}</td>
+    </tr>
 {foreachelse}
     <tr>
         <td colspan="5">
@@ -47,4 +51,4 @@
 {/foreach}
 </table>
 <div style="clear: both"><br /></div>
-{debug}
+{*debug*}

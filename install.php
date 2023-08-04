@@ -322,6 +322,7 @@ switch ($method) {
             $util->update($etc);
         }
         
+        //This fakes out the CLI to thinking it was called at the command line
         $args = [
             "CLI.php",
             "--activate",
@@ -330,6 +331,11 @@ switch ($method) {
             "module=".$project->module
         ];
         include "CLI.php";        
+        
+        //----------------------------------------------------------------------------------------------
+        //We are going to have to copy a model and a controller into the new module to handle logging in
+        //----------------------------------------------------------------------------------------------
+        
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing = explode('/',$landing_page);
@@ -337,6 +343,10 @@ switch ($method) {
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();
+        
+        //----------------------------------------------------------------------------------------------
+        //This is wrong, this won't set the cryptographic password correctly
+        //----------------------------------------------------------------------------------------------
         $uid    = \Humble::entity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']))->newUser();
         $results = ob_get_flush();
         if (!$uid) {
@@ -352,8 +362,8 @@ switch ($method) {
         $_SESSION['uid'] = $uid;
         print('Attempting to create drivers'."\n");
         print(getcwd()."\n");
-        copy('humble.bat',strtolower((string)$project->factory_name).'.bat');
-        copy('humble.sh',strtolower((string)$project->factory_name).'.sh');
+        @copy('humble.bat',strtolower((string)$project->factory_name).'.bat');
+        @copy('humble.sh',strtolower((string)$project->factory_name).'.sh');
         print("done with creating drivers\n\n");
  //       unlink('driver.bat');
 //        unlink('humble.sh');

@@ -137,6 +137,16 @@
             </html>
             <?php
             break;
+        case "container":
+        case "docker" :
+        case "config" :
+            /*
+             * Here i will be taking in the project file and returning a zip that will contain the 
+             * docker image definition file, with values substituted from the humble.project file
+             * as well as server configurations taking into consideration if this is a windows
+             * or linux box
+             */
+            break;
         default :
             break;
     }

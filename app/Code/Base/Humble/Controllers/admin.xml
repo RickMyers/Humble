@@ -3,6 +3,17 @@
     <actions>
 
         <!-- ############################################################### -->
+        
+        <action name='testaction'>
+            <description>Used to test service directory</description>
+            <model namespace='humble' class='user' method='fetch'>
+                <parameter name="user_id" value="uid" source="session" required="true" />
+                <parameter name="first_name" source="request" default='' />
+                <parameter name="last_name" source="request" default='' />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->        
 
         <action name='home'>
             <description>The Humble administration home page</description>
@@ -28,6 +39,21 @@
         
         <action name='login'>
             <description>The administration login page</description>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="test">
+            <description>A test action for debugging</description>
+            <entity namespace='humble' class='users' method='stuff'>
+                <parameter name="user_id" value="uid" source="session" required="true" />
+            </entity>
+            <entity namespace="somens" class="myclass" id="bb">
+                <parameter name="*" source="request" />
+            </entity>
+            <model namespace="humble" class="system" method="dostuff">
+                
+            </model>
         </action>
         
         <!-- ############################################################### -->
