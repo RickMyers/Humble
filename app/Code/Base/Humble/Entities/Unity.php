@@ -1543,6 +1543,14 @@ SQL;
     }
 
     /**
+     * Relay... do I really need this?
+     * @param type $field
+     */
+    public function orderBy($field) {
+        $this->_orderBy($field);
+    }
+    
+    /**
      *
      */
     public function _groupBy($field)     {   $this->_groupBy[]     = $field;     }

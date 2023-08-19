@@ -13,13 +13,49 @@ require_once "Humble.php";
 
 $started                    = time();                                           //The time used in all offset calculations
 $pid                        = getmypid();
+$offset_time                = 0;
+$cadence_ctr                = 0;
+$last_run                   = [];
+$is_production              = false;
 
-
-function fileScan() {
-    
+//------------------------------------------------------------------------------
+//Load custom callbacks if any
+//------------------------------------------------------------------------------
+if (file_exists('CALLBACKS.php')) {
+    require_once('CALLBACKS.php');
 }
-function workflowCheck() {
-    
+
+//------------------------------------------------------------------------------
+function scanControllersForChanges($last_run=false) {
+    global $is_production;
+    print("Scanning Controllers...\n\n");
+    $controllers = Humble::getEntity('humble/modules');
+    print_r($contollers); die();
+            
+    $controllers = Humble::getEntity('humble/controllers')->orderBy('namespace=ASC')->fetch();
+    print_r($controllers); die();
+    sleep(2);
+}
+
+//------------------------------------------------------------------------------
+function scanModelsForChanges() {
+    global $is_production;
+    if (!$is_production) {
+        print("Scanning Models...\n\n");
+        sleep(1);
+    }
+}
+
+//------------------------------------------------------------------------------
+function scanFilesForChanges() {
+    print("Scanning Files...\n\n");
+    sleep(1);
+}
+
+//------------------------------------------------------------------------------
+function triggerWorkflows() {
+    print("Triggering Workflows...\n\n");
+    sleep(2);
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,13 +73,35 @@ if (file_exists('cadence.pid') && ($running_pid = trim(file_get_contents('cadenc
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //Check for configuration file, which configures how period for the cadence, and when to do which checks...
 //
-if (file_exists('cadence.json') && ($cadence = json_decode('cadence.json'))) {
-
-    while (file_exists('cadence.pid')) {
-
+if (file_exists('cadence.json') && ($cadence = json_decode(file_get_contents('cadence.json'),true))) {
+    print("Starting Cadence...\n\n");
+    while (file_exists('cadence.pid') && ((int)file_get_contents('cadence.pid')===$pid)) {
+        sleep($cadence['period']);
+        $is_production  = \Environment::isProduction();
+        $duration       = time();
+        $now            = time() - $offset_time - $started;
+        foreach ($cadence['handlers'] as $component => $handler) {
+            $t = $handler['multiple'] * $cadence['period'];
+            if (($now % $t) == 0) {
+                foreach ($handler['callbacks'] as $callback) {
+                    
+                    $callback();
+                }
+            }
+        }
+        $offset_time += time() - $duration;                                     //We 
+        print('Offset: '.$offset_time."\n");
+        if ($cadence_ctr++ > 50) {
+            print("Reseting Cadence...\n");
+            $started        = time();
+            $offset_time    = 0;
+            $cadence_ctr    = 0;
+        }
+        
     }
-
-} else {
-    print('Cadence is not configured, please see https://humbleprogramming.com/pages/Cadence.htmls for instructions on how to configure the service'."\n\n");
+    @unlink('cadence.pid');
+    die("\n\nAborting due to PID file being deleted or PID changed...\n\n");
 }
-@unlink('cadence.pid');
+print("\nCadence is not configured, please see https://humbleprogramming.com/pages/Cadence.htmls for instructions on how to configure the service.\n\n");
+
+
