@@ -15,9 +15,10 @@ $started                    = time();                                           
 $pid                        = getmypid();                                       //My process ID
 $offset_time                = 0;                                                //The cumulative time spent doing stuff
 $cadence_ctr                = 0;                                                //Lets count the beat
-$last_run                   = [];                                               //A collection of times when something was last done
 $is_production              = false;                                            //Are you in production?  Some stuff is turned off if so
 $compiler                   = false;
+$files                      = [];
+$models                     = [];
 
 //------------------------------------------------------------------------------
 //Load custom callbacks if any
@@ -26,28 +27,42 @@ if (file_exists('CALLBACKS.php')) {
     require_once('CALLBACKS.php');
 }
 
-function logMessage($stuff=false) {
+//------------------------------------------------------------------------------
+function calcMaxFileSize($value='1M') {
+    $maxSize = 1000000;  //default
+    $options = [
+        'K'  => 1000,
+        'M'  => 1000000,
+        'G'  => 100000000
+    ];
+    $unit    = strtoupper(substr($value,-1));
+    if (isset($options[$unit])) {
+        $maxSize = substr($value,0,strlen($value)-1) * $options[$unit];
+    }
+    return $maxSize;
+}
+//------------------------------------------------------------------------------
+function logMessage($message=false) {
     global $cadence;
-    if ($stuff && isset($cadence['log']['location'])) {
-        if (isset($cadence['log']['max_size'])) {
-            
+    if ($message && isset($cadence['log']['location'])) {
+        if (!file_exists($cadence['log']['location'])) {
+            file_put_contents($cadence['log']['location'],'');
         }
-        $stuff = is_object($stuff) ? print_r($stuff,true) : $stuff;
-        if (true) {
-            file_put_contents($cadence['log']['location'],$stuff,FILE_APPEND);
+        $message    = '['.date('Y-m-d H:i:s').'] - '.$message."\n";
+        $overwrite  = isset($cadence['log']['max_size']) && filesize($cadence['log']['location']) > calcMaxFileSize($cadence['log']['max_size']);
+        if ($overwrite) {
+            file_put_contents($cadence['log']['location'],$message);
         } else {
-            
+            file_put_contents($cadence['log']['location'],$message,FILE_APPEND);
         }
-        print($stuff."\n");
+        print($message);
     }
 }
 //------------------------------------------------------------------------------
 function scanControllersForChanges($last_run=false) {
     global $compiler,$is_production;
     if (!$is_production) {
-        logMessage("Scanning Controllers...\n\n");
         $compiler    = false;
-        $scan_start  = time();
         $namespaces  = [];
         $controllers = Humble::getEntity('humble/controllers')->orderBy('namespace=ASC')->fetch();
         foreach ($controllers as $idx => $metadata) {
@@ -55,40 +70,61 @@ function scanControllersForChanges($last_run=false) {
                 $file   = 'Code/'.$ns['package'].'/'.$ns['controller'].'/'.$metadata['controller'].'.xml';
                 if (file_exists($file) && ($ft = filemtime($file))) {
                     if ($ft !== ($st = strtotime($metadata['compiled']))) {
-                       print('Going to compile '.$file." [".$ft."/".$st."]\n");
+                       logMessage('Going to compile '.$file." [".$ft."/".$st."]");
                        $compiler   = ($compiler) ? $compiler : \Environment::getCompiler();
                        $compiler->compile($metadata['namespace'].'/'.$metadata['controller']);
                     }
                 }
             } else {
-                logMessage($metadata);
-                logMessage("Namespace ". $metadata['namespace']." found but not valid\n");
+                logMessage("Namespace ". $metadata['namespace']." found but not valid");
             }
         } 
-        logMessage("Controller Scan took ".($scan_start-time())." seconds\n");
-        sleep(2);
     }
 }
 
 //------------------------------------------------------------------------------
+function recurseDirectory($dir=[]) {
+    $list = [];
+    $dh = dir($dir);
+    while ($entry = $dh->read()) {
+        if (($entry == '.') || ($entry == '..')) {
+            continue;
+        }
+        if (is_dir($dir.'/'.$entry)) {
+            array_merge($list,recurseDirectory($dir.'/'.$entry));
+        } else {
+            $list[] = $dir.'/'.$entry;
+        }
+    }
+    return $list;
+}
+//------------------------------------------------------------------------------
 function scanModelsForChanges() {
-    global $is_production;
+    global $is_production,$models;
     if (!$is_production) {
-        logMessage("Scanning Models...\n\n");
-        sleep(1);
+        foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+            $files = recurseDirectory('Code/'.$module['package'].'/'.$module['models']);
+            foreach ($files as $file) {
+                if (isset($models[$file])) {
+                    if ($models[$file] !== $models[$file]) {
+                        //time to re-register all of its workflow components
+                    }
+                } else {
+                    $models[$file] = filemtime($file);
+                }
+            }
+        }
+        print_r($models);
     }
 }
 
 //------------------------------------------------------------------------------
 function scanFilesForChanges() {
-    logMessage("Scanning Files...\n\n");
-    sleep(1);
+    global $files;
 }
 
 //------------------------------------------------------------------------------
 function triggerWorkflows() {
-    logMessage("Triggering Workflows...\n\n");
-    sleep(2);
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -97,7 +133,7 @@ function triggerWorkflows() {
 //
 if (file_exists('cadence.pid') && ($running_pid = trim(file_get_contents('cadence.pid')))) {
     if ($pid !== $running_pid) {
-        die("Cadence appears to be running already.  If not, you may need to manually delete the cadence.pid file before trying again\n\n");
+        die("\nCadence appears to be running already.  If not, you may need to manually delete the cadence.pid file before trying again\n\n");
     }
 } else {
     file_put_contents('cadence.pid',$pid);                                      //alright, let's record your process number
@@ -107,7 +143,7 @@ if (file_exists('cadence.pid') && ($running_pid = trim(file_get_contents('cadenc
 //Check for configuration file, which configures how period for the cadence, and when to do which checks...
 //
 if (file_exists('cadence.json') && ($cadence = json_decode(file_get_contents('cadence.json'),true))) {
-    print("Starting Cadence...\n\n");
+    logMessage("Starting Cadence...");
     while (file_exists('cadence.pid') && ((int)file_get_contents('cadence.pid')===$pid)) {
         sleep($cadence['period']);
         $is_production  = \Environment::isProduction();                         //must do in loop since someone can change this in the admin panel at any time
@@ -116,13 +152,15 @@ if (file_exists('cadence.json') && ($cadence = json_decode(file_get_contents('ca
         foreach ($cadence['handlers'] as $component => $handler) {
             $t = $handler['multiple'] * $cadence['period'];
             if (($now % $t) == 0) {
+                $start  = time();
+                logMessage("Processing ".ucfirst($component)." Now...");
                 foreach ($handler['callbacks'] as $callback) {
-                    
                     $callback();
                 }
+                logMessage(ucfirst($component)." Processing took ".($start - time())." seconds");                
             }
         }
-        $offset_time += (time() - $duration);                                   //We 
+        $offset_time += (time() - $duration);                                   
         if ($cadence_ctr++ > 50) {
             print("Reseting Cadence...\n");
             $started        = time();

@@ -771,7 +771,6 @@ SQL;
      * @return type
      */
     public function query($query='') {
-        print($query."\n");
         if (!$query) {
             return $query;
         }

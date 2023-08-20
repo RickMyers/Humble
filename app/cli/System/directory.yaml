@@ -99,7 +99,19 @@ patch :
     directive: true
     parameters:
         required:
-        optional:      
+        optional:
+install : 
+    description: For Linux users and Systemctl, will install the cadence utility as a service
+    extended: Cadence is the module that monitors for events, file changes, and workflow triggers.  It needs to be running for the Paradigm engine to function.  Please go to https://humbleprogramming.com/pages/Cadence.htmls for detailed information
+    usage:
+        linux:   sudo sh ./humble.sh --install
+        windows: N/A
+    function : install
+    directive: true
+    parameters:
+        required:
+        optional:
+            
 sync : 
     description: Updates the core files (deprecated)
     usage:

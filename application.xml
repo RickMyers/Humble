@@ -3,7 +3,7 @@
     <name>The Humble Project</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">JSFQ-VSYF-QRKQ-CJQQ</serial_number>
     <version>
-        <framework>0.7.9.8.4</framework>
+        <framework>0.7.9.8.5</framework>
         <app>0.0.0.1</app>
     </version>
     <state>DEVELOPMENT</state>
