@@ -45,6 +45,7 @@ class MySQL extends ORM implements ORMEngine  {
             $errorstring .= "</error>\n";
             \Log::mysql($errorstring);
             $this->_connected = false;
+            die('Failure to connect to database server'."\n");
         } else {
             mysqli_report(MYSQLI_REPORT_OFF);
             @ $this->_dbref->select_db($this->_environment->getDatabase());

@@ -46,6 +46,7 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_betweenField  = '';
     protected $_between       = '';
     public    $_lastResult    = [];
+    protected $_noLimitQuery  = '';     //Current query before pagination is added
 
     /**
      * Initial constructor
@@ -95,16 +96,17 @@ class Unity extends \Code\Base\Humble\Models\Model
      *
      */
     public function clean()  {
-        $this->_decrypt     = false;
-        $this->_encrypt     = false;
+        $this->_decrypt      = false;
+        $this->_encrypt      = false;
         //$this->_keys        = [];
        // $this->_columns     = [];
-        $this->_fields      = [];
-        $this->_orderBy     = [];
-        $this->_groupBy     = [];
-        $this->_search      = [];
-        $this->_joins       = [];
-        $this->_data        = [];
+        $this->_fields       = [];
+        $this->_orderBy      = [];
+        $this->_groupBy      = [];
+        $this->_search       = [];
+        $this->_joins        = [];
+        $this->_data         = [];
+        $this->_noLimitQuery = '';
         return $this;
     }
 
@@ -309,7 +311,7 @@ SQL;
     }
 
     /**
-     *
+     *@TODO: Rework this to remove FOUND_ROWS() deprecated function
      */
     public function search($field=false,$text=false)   {
         if (($field !== false) && ($text !== false)) {
@@ -569,9 +571,10 @@ SQL;
                 $this->_currentPage($_SESSION['pagination'][$this->_namespace()][$this->_entity()] + 1);
             }
         }
-        $query   = "select SQL_CALC_FOUND_ROWS ". $this->_distinct() ." ".$this->_fieldList()." from ".$this->_prefix().$this->_entity();
+        $query   = "select ". $this->_distinct() ." ".$this->_fieldList()." from ".$this->_prefix().$this->_entity();
         $query  .= $this->addJoins();
         $query  .= $this->buildWhereClause($useKeys);
+        $this->_noLimitQuery = $query;                                          //for pagination purposes        
         $query  .= $this->buildOrderByClause();
         if (count($this->_groupBy) > 0) {
             //update query with group by clause
@@ -590,12 +593,9 @@ SQL;
     /**
      *
      */
-    protected function calculateStats(&$results) {
-        $query = <<<SQL
-         select FOUND_ROWS()
-SQL;
+    protected function calculateStats($query,&$results) {
         $rows = $this->_db->query($query);
-        $this->_rowCount($rows[0]['FOUND_ROWS()']);
+        $this->_rowCount($rows[0]['FOUND_ROWS']);
         if ($this->_page()) {
             if (count($results) < $this->_rows()) {
                 $_SESSION['pagination'][$this->_namespace()][$this->_entity()] = 0;
@@ -616,7 +616,7 @@ SQL;
                 ]
             ]);
         }
-        return $results;
+        return $this;
     }
 
     /**
@@ -771,6 +771,7 @@ SQL;
      * @return type
      */
     public function query($query='') {
+        print($query."\n");
         if (!$query) {
             return $query;
         }
@@ -780,11 +781,18 @@ SQL;
         if (!$this->_orderBuilt && (count($this->_orderBy)>0)) {
             $query .= $this->buildOrderByClause();
         }
-        $words  = explode(' ',trim($query));
+        $noLimit      = [];
+        $words        = explode(' ',trim($query));
+        $noLimitQuery = ($this->_noLimitQuery) ? $this->_noLimitQuery : $query;
         if (strtoupper($words[0])==='SELECT') {
             if ($this->_page()) {
-                if (strpos(strtoupper($query),'SQL_CALC_FOUND_ROWS')===false) {
-                    $words[0] .= ' SQL_CALC_FOUND_ROWS';
+                if ($noLimitQuery) {
+                    $include = false;                                           //To create the pagination query, we need to drop the column section...
+                    foreach (explode(' ',trim($noLimitQuery)) as $idx => $word) {
+                        if ($token = ($idx) ? (($include = $include || (strtoupper($word)==='FROM')) ? $word : false) : $word.' COUNT(*) AS FOUND_ROWS') {   //this is a total d-bag line... i love it!
+                            $noLimit[] = $token;
+                        }
+                    }
                 }
                 $ctr = 0; $limitFound = false;
                 /* I need to look and see if there's already a limit statement AT THE END of the query.
@@ -803,12 +811,13 @@ SQL;
                 if (!$limitFound) {
                     $query = $query .' '. $this->addLimit($this->_page());
                 }
+                $noLimitQuery = implode(' ',$noLimit);
             }
         }
-        if ($this->_batch && ($words[0]!=="SELECT")) {                          //for insert, update, and deletes we want to enable batch operations
+        if ($this->_batch && ($words[0] !== "SELECT")) {                          //for insert, update, and deletes we want to enable batch operations
             $this->_batchsql[] = $query;
             if (count($this->_batchsql) >= $this->_batch) {
-                //now go execute the batch sql statements
+                //@TODO: now go execute the batch sql statements
                 $this->_batchsql = []; //reset the sql buffer
             }
             return false;
@@ -816,7 +825,7 @@ SQL;
         $results = $this->_db->query($query);
         //\Log::error($query);
         if ($this->_page()) {
-            $this->calculateStats($results);
+            $this->calculateStats($noLimitQuery,$results);
         }
         if ($this->_polyglot()) {
             //now get the mongo document and merge with the mysql row...
@@ -1548,6 +1557,7 @@ SQL;
      */
     public function orderBy($field) {
         $this->_orderBy($field);
+        return $this;
     }
     
     /**

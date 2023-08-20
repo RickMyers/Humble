@@ -1501,12 +1501,13 @@ SQL;
      */
     public function compileFile($file=false) {
        if ($file) {
-           $parts       = explode(DIRECTORY_SEPARATOR,$file);
+           $parts       = explode('/',$file);
            $module      = \Humble::entity('humble/modules')->setModule($parts[2])->load(true);
            $controller  = explode('.',$parts[count($parts)-1]);
            print("\n".'Compiling controller '.$file."\n\n");
            $this->compile($module['namespace'].'/'.$controller[0]);
        }
+       return $this;
     }
 
     /**
