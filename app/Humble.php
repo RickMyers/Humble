@@ -314,7 +314,7 @@
             $instance   = null;
             if ($module = self::getModule($identifier['namespace'])) {
                 if ($module['mongodb']) {
-                    $instance   = new \Code\Base\Humble\Models\Mongo($module['mongodb']);
+                    $instance   = new \Code\Base\Humble\Drivers\Mongo;//What is this for?
                     if (isset($identifier['resource'])) {
                         $instance->_collection(str_replace('/','_',$identifier['resource']));
                     }

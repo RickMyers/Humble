@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Humble\Models;
+namespace Code\Base\Humble\Drivers;
 /**
  * MySQL connection manager
  *

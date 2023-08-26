@@ -59,7 +59,7 @@ class Singleton
      */
     public static function getMySQLAdapter()  {
         if (!isset(self::$mySQLAdapter)) {
-            self::$mySQLAdapter = new \Code\Base\Humble\Models\MySQL();
+            self::$mySQLAdapter = new \Code\Base\Humble\Drivers\MySQL();
         }
         return self::$mySQLAdapter;
     }
@@ -69,7 +69,7 @@ class Singleton
      */
     public static function getMongoAdapter()  {
         if (!isset(self::$mongoAdapter)) {
-            self::$mongoAdapter = new \Code\Base\Humble\Models\Mongo();
+            self::$mongoAdapter = new \Code\Base\Humble\Driver\Mongo();
         }
         return self::$mongoAdapter;
     }

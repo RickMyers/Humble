@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Humble\Models;
+namespace Code\Base\Humble\Drivers;
 
 /**
  * Any ORM Engine (MySQL, Postgres, etc) must implement these methods
