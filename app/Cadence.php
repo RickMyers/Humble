@@ -19,6 +19,7 @@ $is_production              = false;                                            
 $compiler                   = false;
 $files                      = [];
 $models                     = [];
+$installer                  = \Environment::getInstaller();
 
 //------------------------------------------------------------------------------
 //Load custom callbacks if any
@@ -100,21 +101,34 @@ function recurseDirectory($dir=[]) {
 }
 //------------------------------------------------------------------------------
 function scanModelsForChanges() {
-    global $is_production,$models;
+    global $is_production,$models,$installer;
     if (!$is_production) {
         foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
-            $files = recurseDirectory('Code/'.$module['package'].'/'.$module['models']);
-            foreach ($files as $file) {
+            if ($module['namespace']=='humble') {
+                print("Skipping Humble...\n\n");
+                continue;
+            }
+            $files[$module['namespace']] = recurseDirectory('Code/'.$module['package'].'/'.$module['models']);
+            foreach ($files[$module['namespace']] as $file) {
+                if ($file == 'Code/Base/Humble/Models/MySQL.php') {
+                    print("Skipping MySQL\n\n");
+                    continue;
+                }
                 if (isset($models[$file])) {
-                    if ($models[$file] !== $models[$file]) {
-                        //time to re-register all of its workflow components
+                    if ($models[$file] !== filemtime($file)) {
+                        print("Scanning ".$models[$file]."\n");
+                        try {
+                            $installer->registerWorkflowComponents($module['namespace']);
+                        } catch (Exception $ex) {
+                            print_r($ex);
+                        }
+                        $models[$file] = filemtime($file);
                     }
                 } else {
                     $models[$file] = filemtime($file);
                 }
             }
         }
-        print_r($models);
     }
 }
 
