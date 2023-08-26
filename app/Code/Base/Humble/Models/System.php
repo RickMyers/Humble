@@ -20,7 +20,7 @@ use Environment;
  */
 class System extends Model
 {
-    use \Code\Base\Humble\Event\Handler;
+    use \Code\Base\Humble\Traits\EventHandler;
 
     private $xml = false;
 

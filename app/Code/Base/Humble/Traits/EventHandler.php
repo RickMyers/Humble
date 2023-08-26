@@ -9,7 +9,7 @@ use Log;
  * Any class that wants to throw an event needs to "use" this trait...
  *
  */
-trait Handler {
+trait EventHandler {
 
     protected $_errors  = [];    //you can set a singular error message. Otherwise use the _errors() for multiple
     protected $_EVENTS  = [];   //reference to the events being managed

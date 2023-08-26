@@ -17,7 +17,7 @@ namespace Code\Base\Humble\Helpers;
  */
 class Helper {
 
-    use \Code\Base\Humble\Models\Base;    
+    use \Code\Base\Humble\Traits\Base;    
     
     private   $xml          = null;
     protected $errors       = null;

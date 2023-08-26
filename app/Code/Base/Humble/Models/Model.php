@@ -34,7 +34,7 @@ interface HumbleComponent {
 class Model implements HumbleComponent
 {
 
-    use \Code\Base\Humble\Models\Base;  
+    use \Code\Base\Humble\Traits\Base;  
     
     protected           $_data          = [];
     protected static    $_mappings      = null;

@@ -30,7 +30,7 @@ class MySQL extends ORM implements ORMEngine  {
         $this->_environment = \Singleton::getEnvironment();
         $this->connect();
     }
-    
+     
     /**
      * Connects to a DB source
      */
@@ -45,6 +45,9 @@ class MySQL extends ORM implements ORMEngine  {
             $errorstring .= "</error>\n";
             \Log::mysql($errorstring);
             $this->_connected = false;
+            print('<pre>');
+            debug_print_backtrace();
+            print("\n\n");
             die('Failure to connect to database server'."\n");
         } else {
             mysqli_report(MYSQLI_REPORT_OFF);
@@ -67,7 +70,7 @@ class MySQL extends ORM implements ORMEngine  {
      * Closes the DB connection
      */
     public function close() {
-        $this->_dbref->close();
+        //$this->_dbref->close();
         return $this;
     }
 

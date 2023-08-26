@@ -21,7 +21,7 @@ use Environment;
  */
 class User extends Model {
     
-    use \Code\Base\Humble\Event\Handler;
+    use \Code\Base\Humble\Traits\EventHandler;
 
     public function __construct() {
         parent::__construct();

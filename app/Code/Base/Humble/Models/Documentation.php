@@ -19,7 +19,7 @@ use Environment;
 class Documentation extends Model
 {
 
-    use \Code\Base\Humble\Event\Handler;
+    use \Code\Base\Humble\Traits\EventHandler;
     
     //--------------------------------------------------------------------------
     //We will just default to PHP Documentor just for S&Gs

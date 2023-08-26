@@ -23,7 +23,7 @@ use Log;
 class Utility extends Model
 {
 
-    use \Code\Base\Humble\Event\Handler;
+    use \Code\Base\Humble\Traits\EventHandler;
 
     public function __construct()
     {
@@ -206,7 +206,7 @@ class Utility extends Model
         
         $ns             = 'Code_'.$module['package']."_".$module[$this->getType()];
         $root           = $roots[$this->getType()];
-        $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Base\\Humble\\Event\\Handler;\n\n\t" : "" ;
+        $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Base\\Humble\\Traits\\EventHandler;\n\n\t" : "" ;
         $ns             = str_replace(['_','/'],['\\','\\'],$ns);
         $root           = str_replace(['_','/'],['\\','\\'],$root);
         $parts          = explode('_',$this->getName());

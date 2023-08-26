@@ -20,7 +20,7 @@ use Environment;
 class Operation extends Model
 {
 
-    use \Code\Base\Humble\Event\Handler;
+    use \Code\Base\Humble\Traits\EventHandler;
 
     /**
      * Constructor

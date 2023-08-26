@@ -23,7 +23,7 @@ use Environment;
 class Sensor extends Model
 {
 
-    use \Code\Base\Humble\Event\Handler;
+    use \Code\Base\Humble\Traits\EventHandler;
 
 	/**
      * Constructor

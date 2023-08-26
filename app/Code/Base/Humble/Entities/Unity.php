@@ -5,7 +5,7 @@ use Environment;
 use Log;
 class Unity 
 {
-    use \Code\Base\Humble\Models\Base;
+    use \Code\Base\Humble\Traits\Base;
     
     protected $_entity        = null;
     protected $_keys          = [];

@@ -24,7 +24,7 @@ use Log;
 class Detector extends Model
 {
 
-    use \Code\Base\Humble\Event\Handler;
+    use \Code\Base\Humble\Traits\EventHandler;
 
 	/**
      * Constructor
