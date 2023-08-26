@@ -369,7 +369,7 @@ SQL;
         if ($namespace) {
             $this->deRegisterWorkflowComponents($namespace);            
         }
-        $models     = Humble::getModels($namespace);
+        $models             = Humble::getModels($namespace);
         $workflowComponent  = Humble::entity('paradigm/workflow/components');
         $workflowComment    = Humble::entity('paradigm/workflow/comments');
         $this->output("WORKFLOW","Processing Namespace [".$namespace."]...");

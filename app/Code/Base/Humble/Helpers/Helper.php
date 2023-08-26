@@ -15,14 +15,16 @@ namespace Code\Base\Humble\Helpers;
  * @version    1.0.1
  * @since      File available since Version 1.0.1
  */
-class Helper extends \Code\Base\Humble\Models\Model {
+class Helper {
+
+    use \Code\Base\Humble\Models\Base;    
     
     private   $xml          = null;
     protected $errors       = null;
-    protected $isVirtual    = false;
+    protected $whatAmI      = 'helper';
 
     public function __construct()    {
-        parent::__construct();
+        //parent::__construct();
     }
 
     /**
@@ -32,7 +34,7 @@ class Helper extends \Code\Base\Humble\Models\Model {
     public function getClassName()    {
         return __CLASS__;
     }
-
+    
     /**
      *
      * @param type $xml
@@ -367,18 +369,7 @@ class Helper extends \Code\Base\Humble\Models\Model {
         return $files;
     }
 
-    /**
-     *
-     */
-    public function _isVirtual($state=null) {
-        if ($state === null) {
-            return $this->_isVirtual;
-        } else {
-            $this->_isVirtual = $state;
-        }
-        return $this;
-    }
-
+    
     //--------------------------------------------------------------------------------------------------
     // Getters/Setters
     //--------------------------------------------------------------------------------------------------

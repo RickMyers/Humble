@@ -19,12 +19,12 @@ class Admin extends Model
 {
 
     use \Code\Base\Humble\Event\Handler;
-
+      
     /**
      * Constructor
      */
     public function __construct() {
-        parent::__construct();
+        parent::__construct();  
     }
 
     /**

@@ -3,8 +3,10 @@ namespace Code\Base\Humble\Entities;
 use Humble;
 use Environment;
 use Log;
-class Unity extends \Code\Base\Humble\Models\Model
+class Unity 
 {
+    use \Code\Base\Humble\Models\Base;
+    
     protected $_entity        = null;
     protected $_keys          = [];
     protected $_column        = [];
@@ -40,7 +42,6 @@ class Unity extends \Code\Base\Humble\Models\Model
     protected $_alias         = false;
     protected $_batchsql      = [];
     protected $_batch         = false;
-    protected $_isVirtual     = false;
     protected $_inField       = '';
     protected $_in            = [];
     protected $_betweenField  = '';
@@ -57,7 +58,6 @@ class Unity extends \Code\Base\Humble\Models\Model
      *
      */
     public function __construct() {
-        parent::__construct();
         $this->_db = Humble::getDatabaseConnection($this);
     }
 
@@ -1336,17 +1336,6 @@ SQL;
         return $this->_data;
     }
 
-    /**
-     *
-     */
-    public function _isVirtual($state=null) {
-        if ($state === null) {
-            return $this->_isVirtual;
-        } else {
-            $this->_isVirtual = $state;
-        }
-        return $this;
-    }
 
     /**
      *
@@ -1364,18 +1353,6 @@ SQL;
         }
     }
 
-    /**
-     *
-     */
-    public function _namespace($arg=false) {
-        if ($arg) {
-            $this->_namespace = $arg;
-        } else {
-            return $this->_namespace;
-        }
-        return $this;
-    }
-    
     /**
      *
      */
@@ -1634,7 +1611,9 @@ SQL;
      * @return \Code\Base\Core\Entity\BaseObject
      */
     protected function _unset($name=false) {
-        parent::_unset($name);
+        if (($name) && isset($this->_data[$name])) {
+            unset($this->_data[$name]);
+        }
         if (($name) && isset($this->_fields[$name])) {
             unset($this->_fields[$name]);
         }

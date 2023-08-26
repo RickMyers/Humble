@@ -18,6 +18,8 @@ namespace Code\Base\Humble\Entities;
  * @since      File available since Version 1.0.1
  */
 class Entity extends \Code\Base\Humble\Entities\Unity {
-
+    
+    protected $whatAmI      = 'entity';
+    
 }
 ?>
