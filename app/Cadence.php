@@ -19,6 +19,7 @@ $is_production              = false;                                            
 $compiler                   = false;
 $files                      = [];
 $models                     = [];
+$configs                    = [];
 $installer                  = \Environment::getInstaller();
 
 //------------------------------------------------------------------------------
@@ -129,6 +130,28 @@ function scanModelsForChanges() {
                 }
             }
         }
+    }
+}
+function watchApplicationXML() {
+    
+}
+function watchAPIPolicy() {
+    
+}
+function watchAllowedRules() {
+    
+}
+//------------------------------------------------------------------------------
+// Callback to watch application.xml and recache
+// Callback to watch api_policy.json and recache
+// Callback to watch allowed.json and recache
+//------------------------------------------------------------------------------
+function scanConfigurationsForChanges() {
+    global $configs;
+    foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+        print_r($module);
+        die();
+        
     }
 }
 

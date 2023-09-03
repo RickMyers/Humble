@@ -6,6 +6,30 @@
         "max_size": "1m"
     },
     "handlers": {
+        "apipolicy": {
+            "callbacks": [
+                "watchAPIPolicy"
+            ],
+            "multiple": 6
+        },
+        "applicationxml": {
+            "callbacks": [
+                "watchApplicationXML"
+            ],
+            "multiple": 6
+        },
+        "allowedrules": {
+            "callbacks": [
+                "watchAllowedRules"
+            ],
+            "multiple": 6
+        },    
+        "configurations": {
+            "callbacks": [
+                "scanConfigurationsForChanges"
+            ],
+            "multiple": 4
+        },        
         "controllers": {
             "callbacks": [
                 "scanControllersForChanges"
