@@ -19,6 +19,8 @@ $is_production              = false;                                            
 $compiler                   = false;
 $files                      = [];
 $models                     = [];
+$configs                    = [];
+$systemfiles                = [];
 $installer                  = \Environment::getInstaller();
 
 //------------------------------------------------------------------------------
@@ -129,6 +131,43 @@ function scanModelsForChanges() {
                 }
             }
         }
+    }
+}
+//------------------------------------------------------------------------------
+function watchApplicationXML() {
+    global $systemfiles;
+    $systemfiles['../application.xml'] = isset($systemfiles['../application.xml']) ? $systemfiles['../application.xml'] : filemtime('../application.xml');
+    if (filemtime('../application.xml')!==$systemfiles['../application.xml']) {
+        //recache application.xml
+    }
+}
+//------------------------------------------------------------------------------
+function watchAPIPolicy() {
+    global $systemfiles;
+    $systemfiles['api_policy.json'] = isset($systemfiles['api_policy.json']) ? $systemfiles['api_policy.json'] : filemtime('api_policy.json');
+    if (filemtime('api_policy.json')!==$systemfiles['api_policy.json']) {
+        //recache api_policy.json
+    }    
+}
+//------------------------------------------------------------------------------
+function watchAllowedRules() {
+    global $systemfiles;
+    $systemfiles['allowed.json'] = isset($systemfiles['allowed.json']) ? $systemfiles['alowed.json'] : filemtime('allowed.json');
+    if (filemtime('allowed.json')!==$systemfiles['allowed.json']) {
+        //recache allowed.json
+    }        
+}
+//------------------------------------------------------------------------------
+// Callback to watch application.xml and recache
+// Callback to watch api_policy.json and recache
+// Callback to watch allowed.json and recache
+//------------------------------------------------------------------------------
+function scanConfigurationsForChanges() {
+    global $configs;
+    foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+        print_r($module);
+        die();$systemfiles['../application.xml']
+        
     }
 }
 
