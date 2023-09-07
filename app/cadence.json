@@ -3,7 +3,7 @@
     "period":   5,
     "log": {
         "location": "../../logs/cadence.log",
-        "max_size": "1m"
+        "max_size": "1K"
     },
     "handlers": {
         "controllers": {
