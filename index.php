@@ -105,7 +105,8 @@ if (!isset($_SESSION['uid'])) {
     }
     
     //check to see if the service they are trying to access is publicly visible
-    $allowed = json_decode(file_get_contents('allowed.json'));
+    //We are going to try to get a cached copy, otherwise we read the physical file for routes
+    $allowed = ($t = Humble::cache('humble_framework_allowed_routes')) ? $t : json_decode(file_get_contents('allowed.json'));
     if (isset($allowed->routes->{'/'.$namespace.'/'.$controller.'/'.$action}) || isset($allowed->namespaces->$namespace) || isset($allowed->controllers->{'/'.$namespace.'/'.$controller})) {
         $bypass = true;
         //NOP, you are ok to hit that resource

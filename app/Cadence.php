@@ -15,12 +15,13 @@ $started                    = time();                                           
 $pid                        = getmypid();                                       //My process ID
 $offset_time                = 0;                                                //The cumulative time spent doing stuff
 $cadence_ctr                = 0;                                                //Lets count the beat
-$is_production              = false;                                            //Are you in production?  Some stuff is turned off if so
+$cadence                    = [];
 $compiler                   = false;
 $files                      = [];
 $models                     = [];
 $configs                    = [];
 $systemfiles                = [];
+$is_production              = \Environment::isProduction();
 $installer                  = \Environment::getInstaller();
 
 //------------------------------------------------------------------------------
@@ -30,6 +31,20 @@ if (file_exists('CALLBACKS.php')) {
     require_once('CALLBACKS.php');
 }
 
+//------------------------------------------------------------------------------
+function resetCadence() {
+    global $started, $pid, $offset_time, $cadence, $cadence_ctr,$files, $models, $configs, $systemfiles;
+    $started                    = time();                                           //The time used in all offset calculations
+    $pid                        = getmypid();                                       //My process ID
+    $offset_time                = 0;                                                //The cumulative time spent doing stuff
+    $cadence_ctr                = 0;                                                //Lets count the beat
+    $files                      = [];
+    $models                     = [];
+    $configs                    = [];
+    $cadence                    = json_decode(file_get_contents('cadence.json'),true);
+    $is_production              = \Environment::isProduction();
+    $systemfiles                = [];
+}
 //------------------------------------------------------------------------------
 function calcMaxFileSize($value='1M') {
     $maxSize = 1000000;  //default
@@ -137,24 +152,27 @@ function scanModelsForChanges() {
 function watchApplicationXML() {
     global $systemfiles;
     $systemfiles['../application.xml'] = isset($systemfiles['../application.xml']) ? $systemfiles['../application.xml'] : filemtime('../application.xml');
-    if (filemtime('../application.xml')!==$systemfiles['../application.xml']) {
-        //recache application.xml
+    if (filemtime('../application.xml') !== $systemfiles['../application.xml']) {
+        logMessage('Recaching Application.xml');
+        \Environment::recacheApplication();
     }
 }
 //------------------------------------------------------------------------------
 function watchAPIPolicy() {
     global $systemfiles;
     $systemfiles['api_policy.json'] = isset($systemfiles['api_policy.json']) ? $systemfiles['api_policy.json'] : filemtime('api_policy.json');
-    if (filemtime('api_policy.json')!==$systemfiles['api_policy.json']) {
-        //recache api_policy.json
+    if (filemtime('api_policy.json') !== $systemfiles['api_policy.json']) {
+        logMessage('Recaching API Policy');
+        Humble::cache('humble_framework_api_policy',json_decode(file_get_contents('api_policy.json')));
     }    
 }
 //------------------------------------------------------------------------------
 function watchAllowedRules() {
     global $systemfiles;
     $systemfiles['allowed.json'] = isset($systemfiles['allowed.json']) ? $systemfiles['alowed.json'] : filemtime('allowed.json');
-    if (filemtime('allowed.json')!==$systemfiles['allowed.json']) {
-        //recache allowed.json
+    if (filemtime('allowed.json') !== $systemfiles['allowed.json']) {
+        logMessage('Recaching Allowed Routes');
+        Humble::cache('humble_framework_allowed_routes',json_decode(file_get_contents('allowed.json')));
     }        
 }
 //------------------------------------------------------------------------------
@@ -166,7 +184,7 @@ function scanConfigurationsForChanges() {
     global $configs;
     foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
         print_r($module);
-        die();$systemfiles['../application.xml']
+        die();
         
     }
 }
@@ -177,7 +195,25 @@ function scanFilesForChanges() {
 }
 
 //------------------------------------------------------------------------------
-function triggerWorkflows() {
+//function triggerWorkflows() {
+//}
+
+//------------------------------------------------------------------------------
+function processCadenceCommand($cmds) {
+    foreach ($cmds as $cmd) {
+        switch (strtoupper($cmd)) {
+            case 'RESTART'  :
+            case 'RELOAD'   :
+                resetCadence();
+                break;
+            case 'END'      :
+                @unlink('cadence.pid');
+                die('Aborting Cadence');
+                break;
+            default         :
+                break;
+        }
+    }
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -199,7 +235,10 @@ if (file_exists('cadence.json') && ($cadence = json_decode(file_get_contents('ca
     logMessage("Starting Cadence...");
     while (file_exists('cadence.pid') && ((int)file_get_contents('cadence.pid')===$pid)) {
         sleep($cadence['period']);
-        $is_production  = \Environment::isProduction();                         //must do in loop since someone can change this in the admin panel at any time
+        if (file_exists('cadence.cmd') && ($cmds = json_decode(file_get_contents('cadence.cmd')))) {
+            unlink('cadence.cmd');            
+            processCadenceCommand($cmds);
+        }
         $duration       = time();
         $now            = time() - $offset_time - $started;
         foreach ($cadence['handlers'] as $component => $handler) {
