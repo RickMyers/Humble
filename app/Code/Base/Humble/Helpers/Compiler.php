@@ -59,9 +59,10 @@ class Compiler extends Directory
      *
      */
     private function resetParameters() {
-        $this->parameters["GET"]    = [];
-        $this->parameters["POST"]   = [];
-        $this->arguments            = [];
+        $this->parameters['$_GET']    = [];
+        $this->parameters['$_POST']   = [];
+        $this->parameters['$_PUT']    = [];
+        $this->arguments              = [];
     }
 
     /**
@@ -369,7 +370,7 @@ PHP;
         if ($format) {
             $this->processFormat($format,$source,$field,$required,$default);
         }
-        if (($source == "GET") || ($source == "POST")) {
+        if (($source == '$_GET') || ($source == '$_POST')) {
             $this->parameters[$source][] = $field;
         }
 
@@ -409,16 +410,16 @@ PHP;
             print($this->tabs().'$'.$node['id'].'->set_id'."(new \MongoDB\BSON\ObjectID(isset(".$source.'["'.$field.'"]'.") ? ".$source.'["'.$field.'"]'." : ".$default."));\n");
         } else {
             if ($isFile) {
-                 print($this->tabs().'$'.$node['id'].'->set'.ucfirst($this->underscoreToCamelCase($parameter['name']))."( isset(".$source.'["'.$field.'"]'.") ? array('name'=>".$source."['".$field."']['name'],'path'=>".$source."['".$field."']['tmp_name']) : ".$default.");\n");
+                 print($this->tabs().'$'.$node['id'].'->set'.$this->underscoreToCamelCase($parameter['name'],true)."( isset(".$source.'["'.$field.'"]'.") ? array('name'=>".$source."['".$field."']['name'],'path'=>".$source."['".$field."']['tmp_name']) : ".$default.");\n");
             } else if ($source == "CLASS") {
                 if (isset($parameter['method']) && isset($parameter['id'])) {
-                    print($this->tabs().'$'.$node['id'].'->set'.ucfirst($this->underscoreToCamelCase($parameter['name']))."($".$parameter['id']."->".$parameter['method']."());\n");
+                    print($this->tabs().'$'.$node['id'].'->set'.$this->underscoreToCamelCase($parameter['name'],true)."($".$parameter['id']."->".$parameter['method']."());\n");
                 } else {
                     ob_end_clean();
                     throw new \Exceptions\ControllerParameterException("The parameter <i style=\'color: red\'>'".$parameter['name']."'</i> of object <i style=\'color: red\'>'".$node['id']."'</i> is misconfigured or missing required values.  Please refer to documentation to correct this.",16);
                 }
             } else if ($custom) {
-                print($this->tabs().'$'.$node['id'].'->set'.ucfirst($this->underscoreToCamelCase($parameter['name']))."( isset(".$source.'["'.$parameter['source'].'"]'.") ? ".$source.'["'.$parameter['source'].'"]'." : ".$default.");\n");
+                print($this->tabs().'$'.$node['id'].'->set'.$this->underscoreToCamelCase($parameter['name'],true)."( isset(".$source.'["'.$parameter['source'].'"]'.") ? ".$source.'["'.$parameter['source'].'"]'." : ".$default.");\n");
             } else {
                 if ($upper) {
                     print($this->tabs().$source.'["'.$field.'"] = strtoupper('.$source.'["'.$field.'"]);'."\n");    
@@ -433,7 +434,7 @@ PHP;
                 if ($trim) {
                     print($this->tabs().$source.'["'.$field.'"] = trim('.$source.'["'.$field.'"]);'."\n");
                 }
-                print($this->tabs().'$'.$node['id'].'->set'.ucfirst($this->underscoreToCamelCase($parameter['name']))."( isset(".$source.'["'.$field.'"]'.") ? ".$source.'["'.$field.'"]'." : ".$default.");\n");
+                print($this->tabs().'$'.$node['id'].'->set'.$this->underscoreToCamelCase($parameter['name'],true)."( isset(".$source.'["'.$field.'"]'.") ? ".$source.'["'.$field.'"]'." : ".$default.");\n");
             }
         }
         if (isset($parameter["store"]) && (strtoupper($parameter['store'])=='TRUE')) {

@@ -13,7 +13,9 @@ trait Base {
     protected $_decrypt       = false;
     protected $_encrypt       = false;   
     
-    
+    function underscoreToCamelCase( $string, $first_char_caps = false) {
+        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
+    }
     /**
      * Confirm or return what type of component this class is
      * 
