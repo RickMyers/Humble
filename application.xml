@@ -9,10 +9,10 @@
     <state>DEVELOPMENT</state>
     <stages>
         <DEVELOPMENT order="1"/>
-        <TEST        order="2"/>
-        <QA          order="3"/>
-        <UAT         order="4"/>
-        <PRODUCTION  order="5"/>
+        <TEST order="2"/>
+        <QA order="3"/>
+        <UAT order="4"/>
+        <PRODUCTION order="5"/>
     </stages>
     <extend>
         <helpers>1</helpers>
@@ -35,9 +35,9 @@
         listed on the tag.  PHPDoc2 is the default since it supports more versions of PHP, but if you are using PHP 8.2 and later, APIGen is an excellent option as well.
     </documentation_comment>
     <documentation comment="Documentation will not be generated in environments with a state of PRODUCTION">
-        <engine  options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
+        <engine options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
         <command options="PHPDoc2.phar,apigen.phar app/Code --output Docs">PHPDoc2.phar</command>
-        <source  options="https://humbleprogramming.com/dist/phpdoc.php ,https://humbleprogramming.com/dist/apigen.php">https://humbleprogramming.com/dist/phpdoc.php</source>
+        <source options="https://humbleprogramming.com/dist/phpdoc.php ,https://humbleprogramming.com/dist/apigen.php">https://humbleprogramming.com/dist/phpdoc.php</source>
     </documentation>
     <support>
         <name>Rick Myers</name>

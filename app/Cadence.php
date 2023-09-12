@@ -9,20 +9,23 @@
 Let's just do something every so often...
  
  */
+
 require_once "Humble.php";
 
 $started                    = time();                                           //The time used in all offset calculations
 $pid                        = getmypid();                                       //My process ID
 $offset_time                = 0;                                                //The cumulative time spent doing stuff
 $cadence_ctr                = 0;                                                //Lets count the beat
-$cadence                    = [];
-$compiler                   = false;
-$files                      = [];
-$models                     = [];
-$configs                    = [];
-$systemfiles                = [];
-$is_production              = \Environment::isProduction();
-$installer                  = \Environment::getInstaller();
+$cadence                    = [];                                               //The JSON stored instructions for what to run and when
+$compiler                   = false;                                            //Singleton reference to the controller compiler
+$files                      = [];                                               //These are the loose files to watch
+$models                     = [];                                               //These are the models in the modules to watch
+$configs                    = [];                                               //These are the configuration files in the modules to watch
+$systemfiles                = [];                                               //These are the loose files belonging to the framework to watch
+$monitor                    = \Environment::getMonitor();                       //System monitor for checking on performanc
+$updater                    = \Environment::getUpdater();                       //Singleton reference to the module updater
+$installer                  = \Environment::getInstaller();                     //Singleton reference to the module installer
+$is_production              = \Environment::isProduction();                     //Am I in production? Somethings will be skipped if so
 
 //------------------------------------------------------------------------------
 //Load custom callbacks if any
@@ -41,9 +44,9 @@ function resetCadence() {
     $files                      = [];
     $models                     = [];
     $configs                    = [];
+    $systemfiles                = [];    
     $cadence                    = json_decode(file_get_contents('cadence.json'),true);
     $is_production              = \Environment::isProduction();
-    $systemfiles                = [];
 }
 //------------------------------------------------------------------------------
 function calcMaxFileSize($value='1M') {
@@ -60,13 +63,13 @@ function calcMaxFileSize($value='1M') {
     return $maxSize;
 }
 //------------------------------------------------------------------------------
-function logMessage($message=false) {
+function logMessage($message=false,$timestamp=true) {
     global $cadence;
     if ($message && isset($cadence['log']['location'])) {
         if (!file_exists($cadence['log']['location'])) {
             file_put_contents($cadence['log']['location'],'');
         }
-        $message    = '['.date('Y-m-d H:i:s').'] - '.$message."\n";
+        $message    = (($timestamp) ? '['.date('Y-m-d H:i:s').'] - ' : '').$message."\n";
         $overwrite  = isset($cadence['log']['max_size']) && filesize($cadence['log']['location']) > calcMaxFileSize($cadence['log']['max_size']);
         if ($overwrite) {
             file_put_contents($cadence['log']['location'],$message);
@@ -122,13 +125,13 @@ function scanModelsForChanges() {
     if (!$is_production) {
         foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             if ($module['namespace']=='humble') {
-                print("Skipping Humble...\n\n");
+                logMessage("Skipping The Humble Module, if you need to scan this module do it manually...");
                 continue;
             }
             $files[$module['namespace']] = recurseDirectory('Code/'.$module['package'].'/'.$module['models']);
             foreach ($files[$module['namespace']] as $file) {
                 if ($file == 'Code/Base/Humble/Models/MySQL.php') {
-                    print("Skipping MySQL\n\n");
+                    logMessage('Skipping MySQL Model');
                     continue;
                 }
                 if (isset($models[$file])) {
@@ -176,27 +179,33 @@ function watchAllowedRules() {
     }        
 }
 //------------------------------------------------------------------------------
-// Callback to watch application.xml and recache
-// Callback to watch api_policy.json and recache
-// Callback to watch allowed.json and recache
-//------------------------------------------------------------------------------
 function scanConfigurationsForChanges() {
-    global $configs;
+    global $configs,$updater;
     foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
-        print_r($module);
-        die();
-        
+        $file = 'Code/'.$module['package'].'/'.$module['configuration'].'/config.xml';
+        $configs[$file] = $configs[$file] ?? filemtime($file);
+        if ($configs[$file] !== filemtime($file)) {
+            $configs[$file] = filemtime($file);
+            logMessage('Configuration file change detected, updating '.$file);
+            ob_start();
+            try {
+                $updater->update($file);
+            } catch (Exception $ex) {
+                logMessage('Error trying to update module '.$module['namespace']);
+                logMessage($ex->getTraceAsString());
+            }
+            logMessage(ob_end_clean(),false);
+        }
     }
 }
-
 //------------------------------------------------------------------------------
 function scanFilesForChanges() {
     global $files;
 }
 
 //------------------------------------------------------------------------------
-//function triggerWorkflows() {
-//}
+function triggerFileWorkflows() {
+}
 
 //------------------------------------------------------------------------------
 function processCadenceCommand($cmds) {

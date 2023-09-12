@@ -27,12 +27,20 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <!-- ############################################################### -->
 
         <action name="save" passalong="windowId">
-            <description>A</description>
+            <description></description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
         </action>
-        
+        <!-- ############################################################### -->
+
+        <action name="update" passalong="windowId">
+            <description>Updates the information about the file trigger</description>
+            <model namespace='workflow' class='file' id='file' method='save'>
+                <parameter name='data'      source='post' required='true' default='' />
+            </model>
+        </action>
+                
         <!-- ############################################################### -->
 
         <action name="load" passalong="windowId">

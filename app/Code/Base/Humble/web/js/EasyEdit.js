@@ -512,17 +512,20 @@ EasyEdits.execute	= function (easy){
                 /* -- Population of field				-- */
                 if ((typeof(easyField.populator) !== "undefined") && (easyField.populator)) {
                     if (typeof(easyField.populator) === "string") {
+                        let ef = easyField;
                         (new EasyAjax(easyField.populator)).then(function(response) {
                             if (response) {
-                                EasyEdits.populateSelectBox(this.field.id, JSON.parse(response),false);
+                                console.log(ef);
+                                EasyEdits.populateSelectBox(ef.id, JSON.parse(response),false);
                             }
-                        }).get().field = easyField;  //graft an arbitrary field onto the edit ajax call
+                        }).get();
                     } else if (typeof(easyField.populator) === "object") {
+                        let ef = easyField;
                         (new EasyAjax(easyField.populator.url)).then(function(response) {
                             if (response) {
-                                EasyEdits.populateSelectBox(this.field.id, JSON.parse(response),this.field.populator.fieldmap);
+                                EasyEdits.populateSelectBox(ef.id, JSON.parse(response),ef.populator.fieldmap);
                             }
-                        }).get().field = easyField;
+                        }).get();
                     } else {
                         easyField.populator();
                     }

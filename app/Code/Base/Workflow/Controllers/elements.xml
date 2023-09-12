@@ -64,7 +64,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="file">
+        <action name="file" passalong="windowId">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />

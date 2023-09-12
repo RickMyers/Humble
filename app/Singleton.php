@@ -24,6 +24,7 @@ class Singleton
     private static $console          = null;
     private static $compiler         = null;
     private static $installer        = null;
+    private static $monitor          = null;
     private static $updater          = null;
     private static $translationTable = null;
     private static $mappings         = [];
@@ -32,7 +33,6 @@ class Singleton
     private static $errors   = [];
     private static $warnings = [];
     private static $alerts   = [];
-
 
     /**
      *
@@ -114,6 +114,17 @@ class Singleton
         return self::$installer;
     }
 
+    /**
+     *
+     */
+    public static function getMonitor()
+    {
+        if (!isset(self::$monitor)) {
+            self::$monitor = new \Code\Base\Humble\Helpers\Monitor();
+        }
+        return self::$monitor;
+    }
+    
     /**
      *
      */

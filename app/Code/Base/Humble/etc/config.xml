@@ -14,9 +14,9 @@
             <required>Y</required>
             <workflow>Y</workflow>
             <package>Base</package>
-            <use>Smarty3</use>
+            <use>Smarty3</use>  
         </module> 
-        <structure>
+        <structure>     
             <models>
                 <source>Humble/Models</source>
             </models>

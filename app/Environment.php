@@ -574,6 +574,13 @@ class Environment {
     /**
      *
      */
+    public static function getMonitor()  {
+        return Singleton::getMonitor();
+    }
+    
+    /**
+     *
+     */
     public static function getInstaller()  {
         return Singleton::getInstaller();
     }

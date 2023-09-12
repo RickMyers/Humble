@@ -1,9 +1,9 @@
 {
     "note":     "a period of 20 and multiple of 2 would have this section run at a maximum of every 40 seconds.",
-    "period":   5,
+    "period":   3,
     "log": {
         "location": "../../logs/cadence.log",
-        "max_size": "1K"
+        "max_size": "1M"
     },
     "handlers": {
         "apipolicy": {
@@ -37,14 +37,14 @@
             "multiple": 2
         },
         "models": {
-            "callbacks": [
+            "callbacks": [  
                 "scanModelsForChanges"
             ],
             "multiple": 3
         },
         "workflows": {
             "callbacks": [
-                "triggerWorkflows"
+                "triggerFileWorkflows"
             ],
             "multiple": 4            
         },
@@ -52,7 +52,7 @@
             "callbacks": [
                 "scanFilesForChanges"
             ],
-            "multiple": 10
+            "multiple": 5
         }
     }
 }

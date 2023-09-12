@@ -47,7 +47,7 @@ class FileManager extends Model
             $cnf  = $EVENT->fetch();
             if (isset($cnf['field'])) {
                 
-                $data = @file_get_contents($cnf['resoource']);
+                $data = @file_get_contents($cnf['resource']);
                 if ($data) {
                     $EVENT->update([$cnf['field'] => $data]);
                     $loaded = true;
