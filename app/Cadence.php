@@ -22,6 +22,8 @@ $files                      = [];                                               
 $models                     = [];                                               //These are the models in the modules to watch
 $configs                    = [];                                               //These are the configuration files in the modules to watch
 $systemfiles                = [];                                               //These are the loose files belonging to the framework to watch
+$images                     = [];                                               //These are images contained in the image folder
+$modules                    = Humble::getEntity('humble/modules')->setEnabled('Y')->fetch();
 $monitor                    = \Environment::getMonitor();                       //System monitor for checking on performanc
 $updater                    = \Environment::getUpdater();                       //Singleton reference to the module updater
 $installer                  = \Environment::getInstaller();                     //Singleton reference to the module installer
@@ -37,16 +39,16 @@ if (file_exists('CALLBACKS.php')) {
 //------------------------------------------------------------------------------
 function resetCadence() {
     global $started, $pid, $offset_time, $cadence, $cadence_ctr,$files, $models, $configs, $systemfiles;
-    $started                    = time();                                           //The time used in all offset calculations
-    $pid                        = getmypid();                                       //My process ID
-    $offset_time                = 0;                                                //The cumulative time spent doing stuff
-    $cadence_ctr                = 0;                                                //Lets count the beat
-    $files                      = [];
-    $models                     = [];
-    $configs                    = [];
-    $systemfiles                = [];    
-    $cadence                    = json_decode(file_get_contents('cadence.json'),true);
-    $is_production              = \Environment::isProduction();
+    $started                = time();                                           //The time used in all offset calculations
+    $pid                    = getmypid();                                       //My process ID
+    $offset_time            = 0;                                                //The cumulative time spent doing stuff
+    $cadence_ctr            = 0;                                                //Lets count the beat
+    $files                  = [];
+    $models                 = [];
+    $configs                = [];
+    $systemfiles            = [];    
+    $cadence                = json_decode(file_get_contents('cadence.json'),true);
+    $is_production          = \Environment::isProduction();
 }
 //------------------------------------------------------------------------------
 function calcMaxFileSize($value='1M') {
@@ -85,8 +87,7 @@ function scanControllersForChanges($last_run=false) {
     if (!$is_production) {
         $compiler    = false;
         $namespaces  = [];
-        $controllers = Humble::getEntity('humble/controllers')->orderBy('namespace=ASC')->fetch();
-        foreach ($controllers as $idx => $metadata) {
+        foreach (Humble::getEntity('humble/controllers')->orderBy('namespace=ASC')->fetch() as $idx => $metadata) {
             if ($ns     = $namespaces[$metadata['namespace']] = isset($namespaces[$metadata['namespace']]) ? $namespaces[$metadata['namespace']] : Humble::getModule($metadata['namespace'])) {
                 $file   = 'Code/'.$ns['package'].'/'.$ns['controller'].'/'.$metadata['controller'].'.xml';
                 if (file_exists($file) && ($ft = filemtime($file))) {
@@ -121,9 +122,9 @@ function recurseDirectory($dir=[]) {
 }
 //------------------------------------------------------------------------------
 function scanModelsForChanges() {
-    global $is_production,$models,$installer;
+    global $is_production,$models,$installer,$modules;
     if (!$is_production) {
-        foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+        foreach ($modules as $module) {
             if ($module['namespace']=='humble') {
                 logMessage("Skipping The Humble Module, if you need to scan this module do it manually...");
                 continue;
@@ -180,8 +181,8 @@ function watchAllowedRules() {
 }
 //------------------------------------------------------------------------------
 function scanConfigurationsForChanges() {
-    global $configs,$updater;
-    foreach (Humble::getEntity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+    global $configs,$updater,$modules;
+    foreach ($modules as $module) {
         $file = 'Code/'.$module['package'].'/'.$module['configuration'].'/config.xml';
         $configs[$file] = $configs[$file] ?? filemtime($file);
         if ($configs[$file] !== filemtime($file)) {
@@ -197,6 +198,10 @@ function scanConfigurationsForChanges() {
             logMessage(ob_end_clean(),false);
         }
     }
+}
+//------------------------------------------------------------------------------
+function scanForNewImages() {
+    global $images,$modules;
 }
 //------------------------------------------------------------------------------
 function scanFilesForChanges() {
@@ -263,7 +268,7 @@ if (file_exists('cadence.json') && ($cadence = json_decode(file_get_contents('ca
         }
         $offset_time += (time() - $duration);                                   
         if ($cadence_ctr++ > 50) {
-            print("Reseting Cadence...\n");
+            print("Reseting Cadence...\n");                                     //Due to "fuzziness" caused by sleep/awake timer, we need to periodically reset counters
             $started        = time();
             $offset_time    = 0;
             $cadence_ctr    = 0;
