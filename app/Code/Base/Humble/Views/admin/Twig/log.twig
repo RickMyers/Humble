@@ -45,16 +45,22 @@
         <div class="color-palette-cell" log="{{ log }}" style="background-color: fuchsia"   color="fucshia"></div>
         <select name="editor-option" id="editor-option-{{ window_id }}" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top">
             <option value="" disabled selected hidden>Log Color </option>
-            <option value="foreground"> Foreground Color </option>
-            <option value="background"> Background Color </option>
+            <option value="color"> Foreground Color </option>
+            <option value="background-color"> Background Color </option>
         </select>
         <select name="editor-font" id="editor-font-{{ window_id }}" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top; margin: 0px 5px">
             <option value="" disabled selected hidden>Font</option>
             <option value="Monospace"> Monospace </option>
             <option value="Courier New"> Courier New </option>
             <option value="Arial"> Arial </option>
+            <option value="Verdana"> Verdana </option>
+            <option value="Times New Roman"> Times New Roman </option>
+            <option value="Georgia"> Georgia </option>
+            <option value="Garamond"> Garamond </option>
+            <option value="Trebuchet MS"> Trebuchet MS </option>
+            <option value="Brush Script MT"> Cursive </option>
         </select>
-        <select name="editor-font-size" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top">
+        <select name="editor-font-size" id="editor-font-size-{{ window_id }}" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top">
             <option value="" disabled selected hidden>Font Size</option>
             <option value=".5em"> 50% </option>
             <option value=".75em"> 75% </option>
@@ -117,24 +123,48 @@
         $('#collapse-palette-{{ window_id }}').css('display','none');        
         $('#expand-palette-{{ window_id }}').css('display','block');
     });
+    $('#editor-font-{{ window_id }}').on('change',function (evt) {
+        let val = $(this).val();
+        if (val) {
+            EasyAjax.setCookie('log-{{ log }}-font',val);
+            $('#log-viewer-textarea-{{ window_id }}').css('font-family',val);
+        }
+    });
+    $('#editor-font-size-{{ window_id }}').on('change',function (evt) {
+        let val = $(this).val();
+        if (val) {
+            EasyAjax.setCookie('log-{{ log }}-font-size',val);
+            $('#log-viewer-textarea-{{ window_id }}').css('font-size',val);
+        }
+    });
     $('.color-palette-cell').on('click',function (evt) {
         let cell    = evt.target;
         let log     = cell.getAttribute('log');
-        if (log) {
+        let area = $('#editor-option-{{ window_id }}').val();
+        if (area && log) {
             let color = cell.getAttribute('color');
-            let area  = $('#').val();
-            if (!area) {
-                alert('Set log color region first');
-            } else {
-                EasyAjax.setCookie('log-'+log+'-'+)
-            }
+            EasyAjax.setCookie('log-'+log+'-'+area,color);
+            $('#log-viewer-textarea-{{ window_id }}').css(area,color);
         }
-        console.log(target);
-    }); 
-    if (EasyAjax.getCookie('log-{{ log }}-foreground')) {
-        let fg = EasyAjax.getCookie('log-{{ log }}-foreground-color');
-        let bg = EasyAjax.getCookie('log-{{ log }}-backgroundground-color');
+    });
+    if (EasyAjax.getCookie('log-{{ log }}-color')) {
+        let fg = EasyAjax.getCookie('log-{{ log }}-color');
+        let bg = EasyAjax.getCookie('log-{{ log }}-background-color');
         let fn = EasyAjax.getCookie('log-{{ log }}-font');
         let sz = EasyAjax.getCookie('log-{{ log }}-font-size');
+        $('#log-viewer-textarea-{{ window_id }}').css('color',fg);
+        if (bg) {
+            $('#log-viewer-textarea-{{ window_id }}').css('background-color',bg);
+        }
+        if (fn) {
+            $('#log-viewer-textarea-{{ window_id }}').css('font-family',fn);
+            $('#editor-font-{{ window_id }}').val(fn);
+        }
+        if (sz) {
+            $('#log-viewer-textarea-{{ window_id }}').css('font-size',sz);
+            $('#editor-font-size-{{ window_id }}').val(sz);
+        }
+    } else {
+        console.log('no cookie');
     }
 </script>
