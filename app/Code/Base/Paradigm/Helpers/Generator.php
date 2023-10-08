@@ -74,8 +74,8 @@ HDR;
         // o $obj->$method(Event::get(EVENT,this_element_id);   This will load the configuration data stored in mongo into the event object as it's own node,
         //   and then passed-in/returned to the element method after having set what the current id is in the event.  The event ID will change as we progress down the workflow
         global $tabs;
-        $debug = false;
-        $includeBranch = true;  //Do I include the "goto" or "branch" to next statement
+        $debug          = false;
+        $includeBranch  = true;  //Do I include the "goto" or "branch" to next statement
         if (!$node) {
             \Log::console('Got a null one');
             return true;
@@ -86,31 +86,23 @@ HDR;
             'detector'  => true,
             'operation' => true,
             'sensor'    => true,
-            'system'    => true
+            'system'    => true,
+            'trigger'   => true,
+            'external'  => true
         ];
         if (!isset($exclude[$node['element']])) {
-            if (isset($node['configuration'])) {
-                if (!isset($node['configuration']['namespace']) || !($node['configuration']['namespace'])) {
-                    throw new \Exceptions\IncompleteConfigurationException('A namespace has not been set for '.$node['text'].' ['.$node['element'].']',12);
-                }
-                if (!isset($node['configuration']['method']) || !($node['configuration']['method'])) {
-                    throw new \Exceptions\IncompleteConfigurationException('The method has not been set for '.$node['text'].' ['.$node['element'].']',12);
-                }
-                if (!isset($node['configuration']['component']) || !($node['configuration']['component'])) {
-                    throw new \Exceptions\IncompleteConfigurationException('A component has not been set for '.$node['text'].' ['.$node['element'].']',12);
-                }
-            } else {
-                throw new \Exceptions\UnconfiguredException($node['text']." [".$node['element'].'] has not been configured',12);
+            if ( ($node['configuration'] ?? false) || ($node['configuration']['namespace'] ?? false) || ($node['configuration']['method'] ?? false) || ($node['configuration']['component'] ?? false)) {
+                throw new \Exceptions\IncompleteConfigurationException($node['text'].' ['.$node['element'].'] is not completely configured.  Edit the workflow and complete the component',12);
             }
         } else if (($node['element']=='terminus')) {
-            if (!(isset($node['configuration'])) || ($node['configuration']['configured']==0) ) {
+            if (!(isset($node['configuration']['configured'])) || ($node['configuration']['configured']===0) ) {
                 if ($debug) {
                     \Log::console($node);
                 }
                 throw new \Exceptions\UnconfiguredException($node['text']." [".$node['element'].'] has not been configured',12);
             }
         }
-        $cnf = $node['configuration'];
+        $cnf    = $node['configuration'];
         if (isset($node['punched']) && $node['punched']) {
             return;   //what this says is the code/label for this one is already output, so don't generate and output it again
         }
