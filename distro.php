@@ -18,6 +18,8 @@
  
     Facilitates the download and installation of the initial repository
  */
+
+    //-------------------------------------------------------------------------------------
     function recurseDirectory($path=null) {
         $files = [];
         if ($path !== null) {
@@ -137,6 +139,17 @@
             </html>
             <?php
             break;
+        case "vhost":
+            if ($_REQUEST['project_name'] ?? false) {
+                $name      = str_replace(['http://','https://'],['',''],($_REQUEST['name'] && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));
+                $error_log = isset($_REQUEST['error_log']) ? 'ErrorLog '.$_REQUEST['error_log']:'';
+                $port      = $_REQUEST['port'] ?? '80';
+                $dir       = $_REQUEST['destination_folder'] ?? ($_REQUEST['current_dir'] ?? '');
+                print(str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&'],[$name,$port,$dir,$error_log],file_get_contents('app/install/vhost_template.conf')));
+            } else {
+                print('{ "error": "Project data not passed in request" }');
+            }
+            break;
         case "container":
         case "docker" :
         case "config" :
@@ -148,6 +161,8 @@
              */
             break;
         default :
+            header("Content-Type: application/json");
+            print('{ "error": "Unsupported Action: '.$action.'" }');
             break;
     }
 ?>

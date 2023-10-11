@@ -13,6 +13,7 @@ $help = <<<HELP
  *      --fetch       Initial install of repository
  *      --restore     Restores the Humble framework into an existing (Humble based) project
         --config      Writes apache config, needs servername= passed in
+        --dockerme    Fetches a docker configuration, partially tailored
  * -----------------------------------------------------------------------------
  */
 HELP;
@@ -46,7 +47,43 @@ function expandLine($text,$width) {
     }
     return implode(' ',$words);
 }
-
+/**
+ * HTTP Curl, i.e. "HURL"
+ */
+function HURL($URL,$args)	{
+	$res            = null;
+	$opts 			= [];
+	$protocol       = (substr($URL,0,5)!=='https') ? 'ssl' : 'http';
+	$content   		= http_build_query($args,'','&');
+	switch ($protocol) {
+		case "ssl"  :   $opts['ssl'] = [
+							"verify_peer"=>false,
+							"verify_peer_name"=>false,
+							"crypto_method" => STREAM_CRYPTO_METHOD_ANY_SERVER
+						];
+						//Note, no break here, so we are going to continue and add the HTTP options below to the array
+		case "http" :   $opts['http'] = [
+							'header' => "Content-Type: application/x-www-form-urlencoded",
+							"method" => 'POST',
+							'user_agent' => "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.12011-10-16", /*whats a little spoofage between friends? */
+							'Content-Length' => strlen($content),
+							'content' => $content
+						];
+						break;
+		default  :
+						break;
+	}
+	$fp      		= fopen($URL,'rb',false, stream_context_create($opts));
+	stream_set_timeout($fp,60000);
+	if ($fp) {
+		$res 		= stream_get_contents($fp);
+	} else {
+		print("\nError connecting with remote server: ".$URL."\n\n");
+	}
+	print_r($res);
+	die();
+	return $res;
+}
 /**
  * Justifies an arbitrary piece of text
  * 
@@ -71,33 +108,21 @@ function justify($block='',$width=80) {
 }
 /* ---------------------------------------------------------------------------------- */
 function installedExtensionCheck() {
-
     exec('php -m',$modules);
-
-    $required = [
-    'bz2'=>false,
-    'curl'=>false,
-    'fileinfo'=>false,
-    'gd'=>false,
-    'json'=>false,
-    'libxml'=>false,
-    'mbstring'=>false,
-    'memcache'=>false,
-    'mongodb'=>false,
-    'mysqli'=>false,
-    'SimpleXML'=>false,
-    'soap'=>false,
-    'xml'=>false,
-    'zip'=>false
-    ];
-
+    $required 		= ['json'=>false,'libxml'=>false,'mbstring'=>false,'memcache'=>false,'mongodb'=>false,'mysqli'=>false,'SimpleXML'=>false,'xml'=>false,'yaml'=>false,'zip'=>false];
+	$recommended 	= ['fileinfo'=>false,'bz2'=>false,'curl'=>false,'gd'=>false,'soap'=>false];
+	foreach ($recommended as $extension => $status) {
+		if (!($recommend[$extension] = extension_loaded($extension))) {
+			print("The extension ".$extension." is recommended but is not installed.\n");
+		}
+	}	
     $ok = true;
     foreach ($required as $extension => $status) {
         $ok = $ok && ($required[$extension] = extension_loaded($extension));
     }
+
     if (!$ok) {
         print("The following extensions should/must be enabled within your php.ini file, please consult https://www.php.net to determine how to enable them\n\n\n");
-        $ctr = 0;
         foreach ($required as $extension => $installed) {
             if (!$installed) {
                 print(++$ctr.') '.$extension."\n");
@@ -105,7 +130,7 @@ function installedExtensionCheck() {
         }
         print("\nAfter enabling, please re-attempt the installation.\n");
         die();
-    }    
+    }  
 }
 /* ---------------------------------------------------------------------------------- */
 function fetchProject($version,$framework_url,$update=false) {
@@ -370,54 +395,31 @@ function processArgs($args) {
     return $parms;
 }
 //------------------------------------------------------------------------------
-function configProject($dir='',$name='localhost',$port=80,$log=false) {
-    $log    = ($log) ? 'ErrorLog "'.$log.'"' : '';
-    $config = <<<CFG
-<VirtualHost *:&&PORT&&>
-	DocumentRoot "&&PATH&&"
-	ServerName &&NAME&&
-	SetEnv HUMBLE_IS_DEVELOPER_MODE "true"
-        &&LOG&&
-	<Directory "&&PATH&&">
-		Require all granted
-		AllowOverride none 
-		DirectoryIndex index.html
-		AddHandler application/x-httpd-php .html .htm
-		Options +FollowSymlinks -Indexes
-		RewriteEngine on
-		RewriteBase /
-		RewriteRule ^app/ - [L,NC]
-		RewriteRule ^lib/ - [L,NC]
-		RewriteRule ^images/ - [L,NC]
-		RewriteRule ^web/ - [L,NC]
-		RewriteRule ^docs/ - [L,NC]
-		RewriteRule ^home/? /humble/home/page [NC,QSA,L]
-		RewriteRule ^admin/? /humble/admin/home [NC,QSA,L]
-		RewriteRule ^admin/(.*)? /humble/admin/home [NC,QSA,L]
-		RewriteRule ^js/([^/\.]+)? /loader.php?type=js&package=$1 [QSA,L]
-		RewriteRule ^css/([^/\.]+)? /loader.php?type=css&package=$1 [QSA,L]
-		RewriteRule ^edits/([^/\.]+)/([^/\.]+)? /loader.php?type=edits&n=$1&f=$2 [QSA,L]
-		RewriteRule ^templates/([^/\.]+)/([^/\.]+)? /loader.php?type=templates&n=$1&f=$2 [QSA,L]
-		RewriteRule ^ckeditor/(.*)? /app/Code/Base/Humble/web/js/ckeditor/$1 [QSA,L]
-		RewriteRule ^ace/(.*)? /app/Code/Base/Paradigm/web/js/ace/$1 [QSA,L]
-		RewriteRule ^api/([^/\.]+)/([^/\.]+)/(.*)?$ /api.php?n=$1&t=$2&m=$3 [QSA,L]
-		RewriteRule ^api/([^/\.]+)/([^/\.]+)?$ /api.php?n=$1&t=$2 [QSA,L]
-		RewriteRule ^hook/([^/\.]+)/([^/\.]+)? /hapi.php?n=$1&hook=$2 [QSA,L]
-		RewriteRule ^mapi/([^/\.]+)/([^/\.]+)/(.*)?$ /mapi.php?n=$1&t=$2&m=$3 [QSA,L]
-		RewriteRule ^mapi/([^/\.]+)/([^/\.]+)?$ /mapi.php?n=$1&t=$2 [QSA,L]
-		RewriteRule ^esb/(.*)? /iapi.php?uri=$1 [QSA,L]
-		RewriteRule ^([^/\.]+)/([^/\.]+)/(.*)?$ /index.php?humble_framework_namespace=$1&humble_framework_controller=$2&humble_framework_action=$3 [QSA,L]
-		RedirectMatch 404 app/allowed.json
-		RedirectMatch 404 msa.php$
-		RedirectMatch 404 \.(xml|yaml|project)$
-		ErrorDocument 404 /fallback.html		
-	</Directory>
-</VirtualHost>
-CFG;
-    $config = str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&'],[$name,$port,$dir,$log],$config);
-    file_put_contents('vhost.conf',$config);
-    print("\n\n".$config."\n\n");
-    print("\nA file called 'vhost.conf' has been written to the current directory.  Use that to configure your Apache server\n\n ");
+function loadProjectFile() {
+	if (!file_exists('Humble.project')) {
+		die("\n".'Run "Humble --init" first to create your project file'."\n\n");
+	}	
+	return json_decode(str_replace(["\r","\n"],['',''],file_get_contents('Humble.project')),true);
+}
+//------------------------------------------------------------------------------
+function configProject($dir='',$name='localhost',$port=80,$log='') {
+	if ($args    = loadProjectFile()) {
+		if ($vhost = HURL($args['framework_url'].'/distro/vhost',array_merge($args,['name'=>$name,'port'=>$port,'error_log'=>$log,'current_dir'=>getcwd()]))) {
+			file_put_contents('vhost.conf',$config);
+			print("\n\n".$config."\n\n");
+			print("\nA file called 'vhost.conf' has been written to the current directory.  Use that as a start to configure your Apache server\n\n ");
+		} else {
+			die("There was a problem creating a virtual host file for you, please make sure the framework URL found in the Humble.project file is available and then try again.\n");
+		}
+	} else {
+		die("There was a problem reading the Humble.project file, please fix and try again.\n");
+	}
+}
+//------------------------------------------------------------------------------
+function dockerMe() {
+	$project = loadProjectFile();
+	print("\n\n");
+	print($project);
 }
 /* ----------------------------------------------------------------------------------
  * Main
@@ -425,7 +427,7 @@ CFG;
 if (PHP_SAPI === 'cli') {
     $args = array_slice($argv,1);
     if ($action = (($args && isset($args[0])) ? $args[0] : false)) {
-       // installedExtensionCheck();
+        installedExtensionCheck();
         $args   = processArgs(array_slice($args,1));
         $action = substr($action,2);
         switch ($action) {
@@ -439,20 +441,20 @@ if (PHP_SAPI === 'cli') {
             case "prepare":
                 prepareProject();
                 break;
+            case "docker":
+            case "dockerme":
+                dockerMe();
+                break;
             case "restore":
                 restoreProject();
                 break;
             case "cfg":
             case "conf":
             case "config":
-                $name = fetchParameter('servername',$args) ? fetchParameter('servername',$args) : (fetchParameter('name',$args) ? fetchParameter('name',$args) : false) ;
+                $name = fetchParameter('servername',$args) ? fetchParameter('servername',$args) : (fetchParameter('name',$args) ? fetchParameter('name',$args) : (fetchParameter('n',$args) ? fetchParameter('n',$args) : '')) ;
                 $port = fetchParameter('port',$args)       ? fetchParameter('port',$args) : (fetchParameter('p',$args) ? fetchParameter('p',$args) : 80);
-                $log  = fetchParameter('log',$args)        ? fetchParameter('log',$args)  : false;
-                if ($name && $port) {
-                    configProject(getcwd(),$name,$port,$log);
-                } else {
-                    die('Must pass servername');
-                }
+                $log  = fetchParameter('log',$args)        ? fetchParameter('log',$args)  : (fetchParameter('l',$args) ? fetchParameter('l',$args) : false);
+                configProject(getcwd(),$name,$port,$log);
                 break;
             case "help" :
                 print($help."\n");
