@@ -80,8 +80,6 @@ function HURL($URL,$args)	{
 	} else {
 		print("\nError connecting with remote server: ".$URL."\n\n");
 	}
-	print_r($res);
-	die();
 	return $res;
 }
 /**
@@ -405,9 +403,7 @@ function loadProjectFile() {
 function configProject($dir='',$name='localhost',$port=80,$log='') {
 	if ($args    = loadProjectFile()) {
 		if ($vhost = HURL($args['framework_url'].'/distro/vhost',array_merge($args,['name'=>$name,'port'=>$port,'error_log'=>$log,'current_dir'=>getcwd()]))) {
-			file_put_contents('vhost.conf',$config);
-			print("\n\n".$config."\n\n");
-			print("\nA file called 'vhost.conf' has been written to the current directory.  Use that as a start to configure your Apache server\n\n ");
+			file_put_contents('vhost.conf',$vhost);
 		} else {
 			die("There was a problem creating a virtual host file for you, please make sure the framework URL found in the Humble.project file is available and then try again.\n");
 		}
@@ -417,7 +413,15 @@ function configProject($dir='',$name='localhost',$port=80,$log='') {
 }
 //------------------------------------------------------------------------------
 function dockerMe() {
-	$project = loadProjectFile();
+	if ($project = loadProjectFile()) {
+		if ($package = HURL($project['framework_url'].'/distro/docker',$project)) {
+			print_r($package);
+		} else {
+			die("No docker package returned\n");
+		}
+	} else {
+		die('Problem loading the Humble.project file, please fix the file and try again.'."\n");
+	}
 	print("\n\n");
 	print($project);
 }
@@ -444,6 +448,11 @@ if (PHP_SAPI === 'cli') {
             case "docker":
             case "dockerme":
                 dockerMe();
+				if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+					exec('start '.$project->framework_url.'/pages/UsingDocker.htmls');
+				} else  {
+					exec('xdg-open '.$project->framework_url.'/pages/UsingDocker.htmls');
+				}       				
                 break;
             case "restore":
                 restoreProject();
@@ -451,10 +460,12 @@ if (PHP_SAPI === 'cli') {
             case "cfg":
             case "conf":
             case "config":
+			case "vhost":
                 $name = fetchParameter('servername',$args) ? fetchParameter('servername',$args) : (fetchParameter('name',$args) ? fetchParameter('name',$args) : (fetchParameter('n',$args) ? fetchParameter('n',$args) : '')) ;
                 $port = fetchParameter('port',$args)       ? fetchParameter('port',$args) : (fetchParameter('p',$args) ? fetchParameter('p',$args) : 80);
                 $log  = fetchParameter('log',$args)        ? fetchParameter('log',$args)  : (fetchParameter('l',$args) ? fetchParameter('l',$args) : false);
                 configProject(getcwd(),$name,$port,$log);
+				print("\nA file called 'vhost.conf' has been written to the current directory.  Use that as a start to configure your Apache server\n\n ");				
                 break;
             case "help" :
                 print($help."\n");
@@ -469,4 +480,3 @@ if (PHP_SAPI === 'cli') {
 } else {
     print(file_get_contents('Humble.php'));
 }
-?>

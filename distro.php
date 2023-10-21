@@ -20,6 +20,18 @@
  */
 
     //-------------------------------------------------------------------------------------
+    function processVhost($template='',$args=[]) {
+        $name       = $args['name'] ?? '';
+        $port       = $args['port'] ?? '';
+        $path       = $args['destination_folder']  ?? '';
+        $parts      = explode(DIRECTORY_SEPARATOR,$path);
+        $root       = array_pop($parts);
+        $basedir    = implode(DIRECTORY_SEPARATOR,$parts);
+        $ns         = $args['namespace'] ?? '';
+        $error_log  = $args['error_log'] ?? '';
+        return str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&'],[$name,$port,$path,$error_log,$basedir,$ns],file_get_contents('app/install/vhost_template.conf'));
+    }
+    //-------------------------------------------------------------------------------------
     function recurseDirectory($path=null) {
         $files = [];
         if ($path !== null) {
@@ -142,10 +154,11 @@
         case "vhost":
             if ($_REQUEST['project_name'] ?? false) {
                 $name      = str_replace(['http://','https://'],['',''],($_REQUEST['name'] && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));
-                $error_log = isset($_REQUEST['error_log']) ? 'ErrorLog '.$_REQUEST['error_log']:'';
+                $error_log = isset($_REQUEST['error_log'])&& $_REQUEST['error_log'] ? 'ErrorLog '.$_REQUEST['error_log']:'';
                 $port      = $_REQUEST['port'] ?? '80';
                 $dir       = $_REQUEST['destination_folder'] ?? ($_REQUEST['current_dir'] ?? '');
-                print(str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&'],[$name,$port,$dir,$error_log],file_get_contents('app/install/vhost_template.conf')));
+                $vhost     = processVhost(file_get_contents('app/install/vhost_template.conf'),array_merge($_REQUEST,['name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
+                print($vhost);
             } else {
                 print('{ "error": "Project data not passed in request" }');
             }
@@ -153,11 +166,26 @@
         case "container":
         case "docker" :
         case "config" :
+            $ns     = $_REQUEST['namespace'] ?? 'namespace';
+            $dir    = $_REQUEST['destination_folder'] ?? '';
+            $parts  = explode(DIRECTORY_SEPARATOR,$dir);
+            $base   = '';
+            for ($i=0; $i<(count($parts)-1); $i++) {
+                $base.= ($base) ? DIRECTORY_SEPARATOR.$parts[$i]: $parts[$i];
+            }
+            str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&'],[$ns,$dir,$base.DIRECTORY_SEPARATOR],file_get_contents('app/install/Docker/dc_template.txt'));   
+            $zip = new ZipArchive();
+            if ($zip->open('temp.zip',ZipArchive::CREATE)!==true) {
+                //error off
+            }
+            $vhost = processVhost();
+            //print_r($_REQUEST);
             /*
              * Here i will be taking in the project file and returning a zip that will contain the 
              * docker image definition file, with values substituted from the humble.project file
              * as well as server configurations taking into consideration if this is a windows
              * or linux box
+
              */
             break;
         default :
