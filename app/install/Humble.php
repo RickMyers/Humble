@@ -114,7 +114,7 @@ function installedExtensionCheck() {
 			print("The extension ".$extension." is recommended but is not installed.\n");
 		}
 	}	
-    $ok = true;
+    $ok = true; $ctr = 0;
     foreach ($required as $extension => $status) {
         $ok = $ok && ($required[$extension] = extension_loaded($extension));
     }
@@ -444,7 +444,6 @@ function dockerMe() {
 if (PHP_SAPI === 'cli') {
     $args = array_slice($argv,1);
     if ($action = (($args && isset($args[0])) ? $args[0] : false)) {
-        installedExtensionCheck();
         $args   = processArgs(array_slice($args,1));
         $action = substr($action,2);
         switch ($action) {
@@ -456,10 +455,12 @@ if (PHP_SAPI === 'cli') {
             case "fetch":
             case "install":
             case "prepare":
+                installedExtensionCheck();
                 prepareProject();
                 break;
             case "docker":
             case "dockerme":
+                installedExtensionCheck();
                 dockerMe();
                 $project = loadProjectFile();
                 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
@@ -469,6 +470,7 @@ if (PHP_SAPI === 'cli') {
                 }       				
                 break;
             case "restore":
+                installedExtensionCheck();
                 restoreProject();
                 break;
             case "cfg":
@@ -483,6 +485,10 @@ if (PHP_SAPI === 'cli') {
                 break;
             case "help" :
                 print($help."\n");
+                break;
+            case "check" :
+            case "verify":
+                installedExtensionCheck();
                 break;
             default:
                 print('I do not know how to process this action: '.$action);
