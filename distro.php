@@ -84,19 +84,27 @@
         case    "serialnumber" :
         case    "serial_number":
         case    "serialNumber" :
-            //lots of work to be done here...
-            //take in the name of the project and the IP
-            //return a SN based on the IP and project name... they should get the same SN back for matching IP and project name
-            $chars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $num    = '';
-            for ($i=0; $i<4; $i++) {
-                $num = $num ? $num.'-' : $num;
-                for ($j=0; $j<4; $j++) {
-                    $num.=substr($chars,rand(0,strlen($chars)-1),1);
-                }
+            chdir('app');
+            require_once "Humble.php";
+            $serial_number = 'Error';
+            if ($project_attributes = json_decode(urldecode($_REQUEST['project'] ?? ''))) {
+                $serial_number = Humble::getModel('account/registration')->setProjectDetails(urldecode($_REQUEST['project']))->registerNew($project_attributes);
             }
-            // I probably should record the serial number somewhere in a DB and tie to the request IP
-            print('{ "serial_number": "'.$num.'" }');
+            print('{ "serial_number": "'.$serial_number.'" }');
+            chdir('..');
+            break;
+        case    "install":
+            //retrieve somebody's .project file and send it back
+            break;
+        case    "register":
+            chdir('app');
+            require_once "Humble.php";
+            $serial_number = 'Error';
+            if ($project_attributes = json_decode(urldecode($_REQUEST['project'] ?? ''))) {
+                $result = Humble::getModel('account/registration')->setProjectDetials(urldecode($_REQUEST['project'] ?? ''))->registerExisting($project_attributes);
+            }
+            print('{ "result": "'.$result.'" }');
+            chdir('..');
             break;
         case    "version" :
             header("Content-Type: application/json");

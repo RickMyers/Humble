@@ -251,6 +251,7 @@ function initializeProject() {
             }
             $attributes['destination_folder']       = getcwd();
             @mkdir($attributes['destination_folder'],0775);
+			$serial     = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))));
             file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
             print(justify("Ok, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n",100)."\n");
             print(justify("Please run 'humble --fetch' to do the initial retrieval of the framework",100)."\n\n");
@@ -282,7 +283,7 @@ FACTORY;
     }
     file_put_contents('Humble.project',json_encode($project,JSON_PRETTY_PRINT));    
     print("\n\nInstalling Humble distro version ".$remote->version." from ".$project->framework_url."\n\n");
-    print("Serial Number: ".$serial->serial_number."\n\n");
+    print("Serial Number: ".$project->serial_number."\n\n");
     fetchProject($remote->version,$project->framework_url);
     file_put_contents('app/'.$project->factory_name.'.php',str_replace('&&FACTORY&&',$project->factory_name,$template));
     $srch = ['&&PACKAGE&&','&&MODULE&&','&&NAMESPACE&&'];
@@ -441,6 +442,18 @@ function dockerMe() {
         die('Problem loading the Humble.project file, please fix the file and try again.'."\n");
     }
 }
+//------------------------------------------------------------------------------
+function registerExistingProject() {
+    if ($project = loadProjectFile()) {
+        if ($result = HURL($project['framework_url'].'/distro/register',$project)) {
+            print("\n\n".$result."\n\n");
+        } else {
+            print("\n\nA problem was encountered while trying to register, please try again later\n\n");
+	}
+    } else {
+        die('Problem loading the Humble.project file, please fix the file and try again.'."\n");
+    }
+}
 /* ----------------------------------------------------------------------------------
  * Main
  * ----------------------------------------------------------------------------------*/
@@ -455,12 +468,20 @@ if (PHP_SAPI === 'cli') {
             case "project"  :
                 initializeProject();
                 break;
-            case "fetch":
             case "install":
+                //get serial number and try to retrieve the .project file
+            break;
+            case "fetch":
             case "prepare":
                 installedExtensionCheck();
                 prepareProject();
                 break;
+			case "register":
+				if (!file_exists('Humble.project')) {
+					die("\n\nRun 'humble --init' to create the .project file first\n\n");
+				}
+				registerExistingProject();
+				break;
             case "docker":
             case "dockerme":
                 installedExtensionCheck();
