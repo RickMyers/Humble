@@ -108,7 +108,6 @@
             </api>
             <desktop>
                 <js>
-                    <source weight='15'>Paradigm/web/js/Windows.js</source>                    
                     <source weight='5'>Paradigm/web/js/Paradigm.config.js</source>
                     <source weight='10'>Paradigm/web/js/Desktop.js</source>
                 </js>
@@ -119,7 +118,6 @@
             <engine>
                 <js>
                     <source weight='5'>Paradigm/web/js/Paradigm.config.js</source>
-                    <source weight='15'>Paradigm/web/js/Windows.js</source>                    
                     <source weight='10'>Paradigm/web/js/Paradigm.js</source>
                     <source weight='10'>Paradigm/web/js/Desktop.js</source>
                     <source weight='15'>Paradigm/web/js/Actions.js</source>
