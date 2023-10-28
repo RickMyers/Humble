@@ -167,13 +167,13 @@
         case "docker" :
         case "config" :
             $ns     = $_REQUEST['namespace'] ?? 'namespace';
-            $dir    = $_REQUEST['destination_folder'] ?? '';
-            $parts  = explode(DIRECTORY_SEPARATOR,$dir);
+            $dir    = str_replace('\\','/',($_REQUEST['destination_folder'] ?? ''));
+            $parts  = explode('/',$dir);
             $base   = '';
             for ($i=0; $i<(count($parts)-1); $i++) {
-                $base.= ($base) ? DIRECTORY_SEPARATOR.$parts[$i]: $parts[$i];
+                $base.= ($base) ? '/'.$parts[$i]: $parts[$i];
             }
-            $template = str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&'],[$ns,$dir,$base.DIRECTORY_SEPARATOR],file_get_contents('app/install/Docker/dc_template.txt'));   
+            $template = str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&'],[$ns,$dir,$base.'/'],file_get_contents('app/install/Docker/dc_template.txt'));   
             $name     = str_replace(['http://','https://'],['',''],(isset($_REQUEST['name']) && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));            
             $zip = new ZipArchive();
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
