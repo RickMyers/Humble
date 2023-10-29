@@ -448,10 +448,21 @@ function registerExistingProject() {
         if ($result = HURL($project['framework_url'].'/distro/register',$project)) {
             print("\n\n".$result."\n\n");
         } else {
-            print("\n\nA problem was encountered while trying to register, please try again later\n\n");
-	}
+			print("\n\nA problem was encountered while trying to register, please try again later\n\n");
+		}
     } else {
         die('Problem loading the Humble.project file, please fix the file and try again.'."\n");
+    }
+}
+//------------------------------------------------------------------------------
+function installProjectFile($serial_number=false) {
+    if ($serial_number) {
+        if ($json = HURL('https://humbleprogramming.com/distro/install',['serial_number'=>$serial_number])) {
+            file_put_contents('Humble.project',json_encode(json_decode($json),JSON_PRETTY_PRINT));
+            print("\n\nHumble.project file was installed\n\n");
+        } else {
+            die("\n\nFailed to retrieve Humble.project.  Installation aborted\n\n");
+        }
     }
 }
 /* ----------------------------------------------------------------------------------
@@ -469,8 +480,15 @@ if (PHP_SAPI === 'cli') {
                 initializeProject();
                 break;
             case "install":
-                //get serial number and try to retrieve the .project file
-            break;
+				if (!file_exists('Humble.project')) {
+					if ($serial_number = fetchParameter('serial_number',$args) ? fetchParameter('serial_number',$args) : fetchParameter('sn',$args)) {
+						print("\nInstalling SN:".$serial_number."\n");
+						installProjectFile($serial_number);
+					}
+				} else {
+					die("\n\nA Humble.project file already exists.  Installation aborted\n\n");
+				}
+				break;
             case "fetch":
             case "prepare":
                 installedExtensionCheck();

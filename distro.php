@@ -94,16 +94,17 @@
             chdir('..');
             break;
         case    "install":
+            chdir('app');
+            require_once "Humble.php";            
+            print(Humble::getModel('account/registration')->install($_REQUEST['serial_number']));
+            chdir('..');
             //retrieve somebody's .project file and send it back
             break;
         case    "register":
             chdir('app');
             require_once "Humble.php";
-            $serial_number = 'Error';
-            if ($project_attributes = json_decode(urldecode($_REQUEST['project'] ?? ''))) {
-                $result = Humble::getModel('account/registration')->setProjectDetials(urldecode($_REQUEST['project'] ?? ''))->registerExisting($project_attributes);
-            }
-            print('{ "result": "'.$result.'" }');
+            $result = Humble::getModel('account/registration')->setProjectDetails(json_encode($_REQUEST))->registerExisting();
+            print('{ "results": "'.$result.'" }');
             chdir('..');
             break;
         case    "version" :
