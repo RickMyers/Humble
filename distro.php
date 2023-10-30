@@ -87,7 +87,7 @@
             chdir('app');
             require_once "Humble.php";
             $serial_number = 'Error';
-            if ($project_attributes = json_decode(urldecode($_REQUEST['project'] ?? ''))) {
+            if ($project_attributes = json_decode(urldecode($_REQUEST['project'] ?? ''),true)) {
                 $serial_number = Humble::getModel('account/registration')->setProjectDetails(urldecode($_REQUEST['project']))->registerNew($project_attributes);
             }
             print('{ "serial_number": "'.$serial_number.'" }');

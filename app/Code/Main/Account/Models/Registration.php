@@ -63,7 +63,7 @@ class Registration extends Model
     public function registerNew($details) {
         $serial_number  = '';
         $project_name   = $details['project_name'];
-        $email          = $details['author'];
+        $email          = $details['author'] ?? $details['email'];
         $URL            = $details['project_url'];
         $factory        = $details['factory_name'];
         $orm            = Humble::entity('account/registrations')->setEmail($email)->setProject($project_name);
