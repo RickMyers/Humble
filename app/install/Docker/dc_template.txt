@@ -9,7 +9,7 @@ services:
     container_name: &&NAMESPACE&&
     image: &&NAMESPACE&&
     volumes:
-      - "&&BASEDIR&&Settings:/var/www/Settings"
+      - "/&&BASEDIR&&Settings:/var/www/Settings"
       - "&&DIR&&:/var/www/html"
       - &&NAMESPACE&&_web_cfg:/etc/apache2
     ports:
