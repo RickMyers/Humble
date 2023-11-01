@@ -20,16 +20,16 @@
  */
 
     //-------------------------------------------------------------------------------------
-    function processVhost($template='',$args=[]) {
-        $name       = $args['name'] ?? '';
-        $port       = $args['port'] ?? '';
+    function processVhost($template='app/install/vhost_template.conf',$args=[]) {
+        $name       = $args['name'] ?? ($args['project_url'] ?? '' );
+        $port       = $args['port'] ?? '80';
         $path       = $args['destination_folder']  ?? '';
         $parts      = explode(DIRECTORY_SEPARATOR,$path);
         $root       = array_pop($parts);
         $basedir    = implode(DIRECTORY_SEPARATOR,$parts);
         $ns         = $args['namespace'] ?? '';
         $error_log  = $args['error_log'] ?? '';
-        return str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&'],[$name,$port,$path,$error_log,$basedir,$ns],file_get_contents('app/install/vhost_template.conf'));
+        return str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&'],[$name,$port,$path,$error_log,$basedir,$ns],file_get_contents($template));
     }
     //-------------------------------------------------------------------------------------
     function recurseDirectory($path=null) {
@@ -166,7 +166,7 @@
                 $error_log = isset($_REQUEST['error_log'])&& $_REQUEST['error_log'] ? 'ErrorLog '.$_REQUEST['error_log']:'';
                 $port      = $_REQUEST['port'] ?? '80';
                 $dir       = $_REQUEST['destination_folder'] ?? ($_REQUEST['current_dir'] ?? '');
-                $vhost     = processVhost(file_get_contents('app/install/vhost_template.conf'),array_merge($_REQUEST,['name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
+                $vhost     = processVhost('app/install/vhost_template.conf',array_merge($_REQUEST,['name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
                 print($vhost);
             } else {
                 print('{ "error": "Project data not passed in request" }');
@@ -186,7 +186,7 @@
             $name     = str_replace(['http://','https://'],['',''],(isset($_REQUEST['name']) && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));            
             $zip = new ZipArchive();
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
-                $zip->addFromString('vhost.conf',processVhost());
+                $zip->addFromString('vhost.conf',processVhost('app/install/vhost_template.conf',$_REQUEST));
                 $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,$name],file_get_contents('app/install/Docker/Container/container_template.txt')));
                 $zip->addFromString('docker-compose.yaml',$template);
                 $zip->addFromString('docker_instructions.txt'.file_get_contents('app/install/Docker/docker_instructions.txt'));

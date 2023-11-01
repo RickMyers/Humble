@@ -18,13 +18,12 @@ services:
       
   mysql:
     image: mysql:latest
-    container_name: mysql8
+    container_name: &&NAMESPACE&&_mysql8
     restart: unless-stopped
     ports:
       - 3306:3306
     volumes:
       - db_data:/var/lib/mysql
-      - "c:/var/export/mysql:/var/export/mysql"
       - mysql_cfg:/etc
     ############################################################################
     # PROVIDE MySQL AUTH VALUES BELOW BEFORE RUNNING!
@@ -37,7 +36,7 @@ services:
     
   mongodb:
     image: mongo:latest
-    container_name: mongodb
+    container_name: &&NAMESPACE&&_mongodb
     restart: unless-stopped
     ports:
       - 27017:27017
