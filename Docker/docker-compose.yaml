@@ -6,25 +6,26 @@ version: "3.3"
 #####################################
 services:
   php-apache-environment:
-    container_name: &&NAMESPACE&&
-    image: &&NAMESPACE&&
+    container_name: humble
+    image: humble
     volumes:
-      - "&&BASEDIR&&Settings:/var/www/Settings"
-      - "&&DIR&&:/var/www/html"
-      - &&NAMESPACE&&_web_cfg:/etc/apache2
+      - "c:/var/www/Settings:/var/www/Settings"
+      - "c:/var/www/Humble:/var/www/html"
+      - web_cfg:/etc/apache2
     ports:
       - 80:80
       - 443:443
       
   mysql:
     image: mysql:latest
-    container_name: &&NAMESPACE&&_mysql8
+    container_name: mysql8
     restart: unless-stopped
     ports:
       - 3306:3306
     volumes:
-      - &&NAMESPACE&&_db_data:/var/lib/mysql
-      - &&NAMESPACE&&_mysql_cfg:/etc
+      - db_data:/var/lib/mysql
+      - "c:/var/export/mysql:/var/export/mysql"
+      - mysql_cfg:/etc
     ############################################################################
     # PROVIDE MySQL AUTH VALUES BELOW BEFORE RUNNING!
     ############################################################################
@@ -36,19 +37,19 @@ services:
     
   mongodb:
     image: mongo:latest
-    container_name: &&NAMESPACE&&_mongodb
+    container_name: mongodb
     restart: unless-stopped
     ports:
       - 27017:27017
     volumes:
-      - &&NAMESPACE&&_mongodb_cfg:/etc
-      - &&NAMESPACE&&_mongodb_data:/data/db 
+      - mongodb_cfg:/etc
+      - mongodb_data:/data/db 
 
 volumes:
-  &&NAMESPACE&&_db_data:
-  &&NAMESPACE&&_mongodb_data:
-  &&NAMESPACE&&_mysql_cfg:  
-  &&NAMESPACE&&_mongodb_cfg:
-  &&NAMESPACE&&_web_cfg:
+  db_data:
+  mongodb_data:
+  mysql_cfg:  
+  mongodb_cfg:
+  web_cfg:
       
 
