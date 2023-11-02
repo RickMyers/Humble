@@ -23,7 +23,8 @@
     function processVhost($template='app/install/vhost_template.conf',$args=[]) {
         $name       = $args['name'] ?? ($args['project_url'] ?? '' );
         $parts      = explode(':',$name);
-        $port       = $parts[2] ?? '80';
+        //$port       = $parts[2] ?? '80';
+        $port       = '80';         //inside the container it will likely always be 80
         $path       = $args['destination_folder']  ?? '';
         $parts      = explode(DIRECTORY_SEPARATOR,$path);
         $root       = array_pop($parts);
@@ -88,8 +89,6 @@
             chdir('app');
             require_once "Humble.php";
             $serial_number = 'Error';
-            //print_r($_REQUEST);
-            //die();
             if ($project_attributes = json_decode(urldecode($_REQUEST['project'] ?? ''),true)) {
                 $serial_number = Humble::getModel('account/registration')->setProjectDetails(urldecode($_REQUEST['project']))->registerNew($project_attributes);
             }
@@ -185,12 +184,14 @@
             for ($i=0; $i<(count($parts)-1); $i++) {
                 $base.= ($base) ? '/'.$parts[$i]: $parts[$i];
             }
+
             $template = str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&'],[$ns,$dir,$base.'/'],file_get_contents('app/install/Docker/dc_template.txt'));   
             $name     = str_replace(['http://','https://'],['',''],(isset($_REQUEST['name']) && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));            
-            $zip = new ZipArchive();
+            $zip      = new ZipArchive();
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
+                $parts = explode(':',$_REQUEST['project_url']);                
                 $zip->addFromString('vhost.conf',processVhost('app/install/vhost_template.conf',$_REQUEST));
-                $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,$name],file_get_contents('app/install/Docker/Container/container_template.txt')));
+                $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents('app/install/Docker/Container/container_template.txt')));
                 $zip->addFromString('docker-compose.yaml',$template);
                 $zip->addFromString('docker_instructions.txt'.file_get_contents('app/install/Docker/docker_instructions.txt'));
                 $zip->close();
