@@ -251,7 +251,8 @@ function initializeProject() {
             }
             $attributes['destination_folder']       = getcwd();
             @mkdir($attributes['destination_folder'],0775);
-			$serial     = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))));
+			$result = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))),true);
+			$attributes['serial_number'] = $result['serial_number'] ?? 'Error-Try-Again';
             file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
             print(justify("Ok, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n",100)."\n");
             print(justify("Please run 'humble --fetch' to do the initial retrieval of the framework",100)."\n\n");
@@ -422,8 +423,8 @@ function dockerMe() {
             file_put_contents('docker_temp.zip',$package);
             $zip = new ZipArchive();
             if ($zip->open('docker_temp.zip')) {
-                @mkdir('Docker/Container',0775,true);
-                chdir('Docker');
+                @mkdir('Docker/'.$project['namespace'],0775,true);
+                chdir('Docker/'.$project['namespace']);
                 file_put_contents('docker-compose.yaml',$zip->getFromName('docker-compose.yaml'));
                 file_put_contents('docker_instructions.txt',$zip->getFromName('docker_instructions.txt'));
                 chdir('Container');

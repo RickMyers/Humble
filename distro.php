@@ -22,7 +22,8 @@
     //-------------------------------------------------------------------------------------
     function processVhost($template='app/install/vhost_template.conf',$args=[]) {
         $name       = $args['name'] ?? ($args['project_url'] ?? '' );
-        $port       = $args['port'] ?? '80';
+        $parts      = explode(':',$name);
+        $port       = $parts[2] ?? '80';
         $path       = $args['destination_folder']  ?? '';
         $parts      = explode(DIRECTORY_SEPARATOR,$path);
         $root       = array_pop($parts);
@@ -87,6 +88,8 @@
             chdir('app');
             require_once "Humble.php";
             $serial_number = 'Error';
+            //print_r($_REQUEST);
+            //die();
             if ($project_attributes = json_decode(urldecode($_REQUEST['project'] ?? ''),true)) {
                 $serial_number = Humble::getModel('account/registration')->setProjectDetails(urldecode($_REQUEST['project']))->registerNew($project_attributes);
             }
