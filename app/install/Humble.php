@@ -14,6 +14,8 @@ $help = <<<HELP
  *      --restore     Restores the Humble framework into an existing (Humble based) project
         --config      Writes apache config, needs servername= passed in
         --dockerme    Fetches a docker configuration, partially tailored
+        --install     Retrieves a Humble.project file from the project hub by Serial Number
+        --reregister  Gets a serial number for you application
  * -----------------------------------------------------------------------------
  */
 HELP;
@@ -444,6 +446,17 @@ function dockerMe() {
     }
 }
 //------------------------------------------------------------------------------
+function reregisterProject() {
+	$attributes = json_decode(str_replace(["\n","\r","\m"],["","",""],file_get_contents('Humble.project')),true);
+	if (isset($attributes['serial_number'])) {
+		unset($attributes['serial_number']);
+	}
+	$result = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))),true);
+	$attributes['serial_number'] = $result['serial_number'] ?? 'Error-Try-Again';	
+	file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
+	return $attributes;
+}
+//------------------------------------------------------------------------------
 function registerExistingProject() {
     if ($project = loadProjectFile()) {
         if ($result = HURL($project['framework_url'].'/distro/register',$project)) {
@@ -526,6 +539,10 @@ if (PHP_SAPI === 'cli') {
                 configProject(getcwd(),$name,$port,$log);
                 print("\nA file called 'vhost.conf' has been written to the current directory.  Use that as a start to configure your Apache server\n\n ");				
                 break;
+			case "reregister":
+				$attributes = reregisterProject();
+				print_r($attributes);
+				break;
             case "help" :
                 print($help."\n");
                 break;
