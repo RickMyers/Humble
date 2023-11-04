@@ -8,9 +8,9 @@ class Module extends CLI
      */
     public static function install() {
         $args   = self::arguments();
-        $ns     = $args['namespace'];
-        $etc    = $args['etc'];
-        if ($ns) {
+        $ns     = $args['namespace'] ?? false;
+        $etc    = $args['etc'] ?? false;
+        if ($ns && $etc) {
             if (file_exists($etc) && ($xml = file_get_contents($etc))) {
                 libxml_use_internal_errors(true);
                 $doc    = new \DOMDocument('1.0', 'utf-8');
@@ -151,13 +151,14 @@ class Module extends CLI
      * @return string
      */
     public static function build() {
+        $project = \Environment::getProject();
         $args = self::arguments();
         $ns = $args['namespace'];
         $pk = $args['package'];
         $px = $ns.'_';
-        $au = $args['author'];
+        $au = $args['author'] ?? ($project->author ?? '');
         $md = $args['module'];
-        $em = $args['email'];
+        $em = $args['email'] ?? ($project->author ?? '');
         if ($ns && $pk && $px && $md) {
             $base = 'Code/'.$pk;
             $root = $base."/".$md;

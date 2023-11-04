@@ -22,7 +22,7 @@ use Log;
  * @since      File available since Version 1.0.1
  */
 class Trigger  {
-    use Handler;
+    use \Code\Base\Humble\Traits\EventHandler;
 
     private $_arguments  = [];
     private $_data       = [];
