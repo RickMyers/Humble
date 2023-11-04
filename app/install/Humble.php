@@ -280,9 +280,9 @@ FACTORY;
     }
     $project    = json_decode(file_get_contents('Humble.project'));
     $remote     = json_decode(file_get_contents($project->framework_url.'/distro/version'));
-    $serial     = $project->serial_number;
+    
     if (!isset($project->serial_number) || !($project->serial_number)) {
-        $project->serial_number = $serial->serial_number;
+        die('Please run humble --register to get your serial number before tyring to run this again');
     }
     file_put_contents('Humble.project',json_encode($project,JSON_PRETTY_PRINT));    
     print("\n\nInstalling Humble distro version ".$remote->version." from ".$project->framework_url."\n\n");
@@ -295,27 +295,27 @@ FACTORY;
         $srch[] = 'Humble.php';
         $repl[] = $project->factory_name.'.php';
     }
-    //file_put_contents('index.php',str_replace($srch,$repl,file_get_contents('index.php')));  //replacing default Humble factory with the custom one you just created
+    //file_put_contents('index.php',str_replace($srch,$repl,file_get_contents('index.php')));  //replacing default Humble factory with the custom one you just created... bad idea maybe?
     $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}'];
-    $repl = [$project->project_name,$remote->version,$serial->serial_number,1,0,15,1,0,0,0,'',1];
+    $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1'];
     file_put_contents('application.xml',str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/application.xml')));
     print("\n\n");
     print('Now running composer...'."\n");
     chdir('app');
     exec('composer install');
-	require('Environment.php');
-	require('Humble.php');
-	$location = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php.exe`);
-    $cmd = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'author='.$project->author;
+    require('Environment.php');
+    require('Humble.php');
+    $location   = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php.exe`);
+    $cmd        = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'author='.$project->author;
     print("\nExecuting: ".$cmd."\n\n");
-    exec($cmd,$output);
+    $output     = []; $rc = -99;
+    exec($cmd,$output,$rc);
+    print("Result: ".$rc."\nOuput Follows\n");
+    print_r($output);
     chdir('..');
     @unlink('humble.bat');
     @unlink('humble.sh');
     print("\n\nThe framework download is complete, please go to ".$project->project_url."/install.php to install your project\n\n");
-    /**
-     * Must write out the application.xml file
-     */
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('start '.$project->project_url.'/install.php');
     } else  {
