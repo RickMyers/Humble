@@ -1,6 +1,6 @@
 /*
-SQLyog Enterprise v12.5.1 (64 bit)
-MySQL - 5.5.15 : Database - humble
+SQLyog Community
+MySQL - 8.0.23 : Database - humble
 *********************************************************************
 */
 
@@ -15,14 +15,14 @@ MySQL - 5.5.15 : Database - humble
 /*Table structure for table `workflow_sms_carriers` */
 
 CREATE TABLE `workflow_sms_carriers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `carrier` char(32) DEFAULT NULL,
   `sms_domain` char(64) DEFAULT NULL,
   `mms_domain` char(64) DEFAULT NULL,
-  `modified` datetime not NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `carrier` (`carrier`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
