@@ -322,7 +322,6 @@ switch ($method) {
             print('###########################################'."\n\n");
             $util->update($etc);
         }
-        
         //This fakes out the CLI to thinking it was called at the command line
         $args = [
             "CLI.php",
@@ -345,13 +344,13 @@ switch ($method) {
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();
 
-        $uid    = \Humble::entity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']))->newUser();
+        $uid    = \Humble::entity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($pwd))->newUser();
         $results = ob_get_flush();
         if (!$uid) {
             file_put_contents('install_failed.txt',$results);
+        } else {
+            \Humble::entity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
         }
-        \Humble::entity('humble/user/identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
-        \Humble::entity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
         $ins->setUid($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
         if (!$cache) {
 

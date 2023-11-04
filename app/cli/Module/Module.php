@@ -136,8 +136,8 @@ class Module extends CLI
      * 
      */
     public static function activate() {
-        $args = self::arguments;
-        self::createModuleDirectories($args);
+        $args = self::arguments();
+        self::build($args);
         self::install([
             $args['namespace'],
             'Code/'.$args['package'].'/'.$args['module'].'/etc/config.xml'
