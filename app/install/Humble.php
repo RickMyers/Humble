@@ -310,18 +310,20 @@ FACTORY;
     print("\nExecuting: ".$cmd."\n\n");
     $output     = []; $rc = -99;
     exec($cmd,$output,$rc);
-    print("Result: ".$rc."\nOuput Follows\n");
-    print_r($output);
+    print("Return Code: ".$rc."\nOuput Follows\n");
+    foreach ($output as $result) {
+        print($output."\n");
+    }
     chdir('..');
-    @unlink('humble.bat');
-    @unlink('humble.sh');
+    $x = (file_exists('humble.bat')) ? @unlink('humble.bat') : '';
+    $x = (file_exists('humble.sh'))  ? @unlink('humble.sh') : '';
+    $x = (file_exists('Humble.php')) ? @unlink('Humble.bat') : '';
     print("\n\nThe framework download is complete, please go to ".$project->project_url."/install.php to install your project\n\n");
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('start '.$project->project_url.'/install.php');
     } else  {
         exec('xdg-open '.$project->project_url.'/install.php');
     }
-    @unlink('Humble.php');
 }
 /* ---------------------------------------------------------------------------------- */
 function restoreProject() {
