@@ -23,6 +23,10 @@
     function processVhost($template='app/install/vhost_template.conf',$args=[]) {
         $name       = $args['name'] ?? ($args['project_url'] ?? '' );
         $parts      = explode(':',$name);
+        if (count($parts)===3) {
+            unset($parts[2]); //get rid of of the port number
+            $name = $parts[0].':'.$parts[1];
+        }
         //$port       = $parts[2] ?? '80';
         $port       = '80';         //inside the container it will likely always be 80
         $path       = $args['destination_folder']  ?? '';

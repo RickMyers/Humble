@@ -280,7 +280,7 @@ FACTORY;
     }
     $project    = json_decode(file_get_contents('Humble.project'));
     $remote     = json_decode(file_get_contents($project->framework_url.'/distro/version'));
-    $serial     = json_decode(file_get_contents($project->framework_url.'/distro/serialNumber'));
+    $serial     = $project->serial_number;
     if (!isset($project->serial_number) || !($project->serial_number)) {
         $project->serial_number = $serial->serial_number;
     }

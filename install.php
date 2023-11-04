@@ -85,6 +85,7 @@
 $data = "";
 $data = (file_exists('application.xml')) ? file_get_contents('application.xml') : die("Install is not possible at this time.");
 $xml  = simplexml_load_string($data);
+
 if (!empty($xml)) {
     if (isset($xml->status)) {
         if (isset($xml->status->enabled) && ((int)$xml->status->enabled)) {
@@ -103,7 +104,8 @@ if (!empty($xml)) {
 } else {
     die("There is an error in the application configuration file");
 }
-$method = (isset($_POST['method'])) ? $_POST['method'] : "INIT";
+$method     = (isset($_POST['method'])) ? $_POST['method'] : "INIT";
+$project    = json_decode(file_get_contents('Humble.project'));
 switch ($method) {
     case "INIT"         :
         ?>
@@ -140,10 +142,10 @@ switch ($method) {
                             </div>
                             <form name='installer-form' method='post' id='installer-form' onsubmit="return false" action="">
                                 <input type="hidden" name="method" id="method" value="INSTALL" />
-                                <input type="hidden" name="serial_number" id="serial_number" value="<?=$xml->serial_number?>" />
+                                <input type="hidden" name="serial_number" id="serial_number" value="<?=$project->serial_number?>" />
 
                                 <fieldset style="float: left; width: 250px; position: relative" id="div_1"><legend>Administrator Information</legend>
-                                    <div class='installer-field-description'>Serial Number: <b><?=$xml->serial_number?></b></div>
+                                    <div class='installer-field-description'>Serial Number: <b><?=$project->serial_number?></b></div>
                                     <input type='text' class='installer-form-field' id='email' name='email' />
                                     <div class='installer-field-description'>E-Mail</div>
 
@@ -278,7 +280,6 @@ switch ($method) {
         if (!file_exists('Humble.project')) {
             die('<h1>Missing Project File.  Run "humble --project" at the command line to create one</h1>');
         }
-        $project = json_decode(file_get_contents('Humble.project'));
         $registration_data = [
             'serial_number' => $serial,
             'first_name'    => $fname,
@@ -289,8 +290,8 @@ switch ($method) {
             'factory_name'  => $project->factory_name
         ];
 
-        $context = stream_context_create(['http'=>['method'=>'POST','header'=>'Content-type: application/json' ,'content'=>json_encode($registration_data)]]);
-        $response = file_get_contents($project->framework_url.'/account/registration/activation',false,$context);    
+//        $context = stream_context_create(['http'=>['method'=>'POST','header'=>'Content-type: application/json' ,'content'=>json_encode($registration_data)]]);
+//        $response = file_get_contents($project->framework_url.'/account/registration/activation',false,$context);    
         
         @mkdir('../Settings/'.$project->namespace,0775,true);
         @mkdir('images',0775,true);
@@ -343,14 +344,11 @@ switch ($method) {
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();
-        
-        //----------------------------------------------------------------------------------------------
-        //This is wrong, this won't set the cryptographic password correctly
-        //----------------------------------------------------------------------------------------------
+
         $uid    = \Humble::entity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($_POST['pwd']))->newUser();
         $results = ob_get_flush();
         if (!$uid) {
-            file_put_contents('oops.txt',$results);
+            file_put_contents('install_failed.txt',$results);
         }
         \Humble::entity('humble/user/identification')->setId($uid)->setFirstName($_POST['firstname'])->setLastName($_POST['lastname'])->save();
         \Humble::entity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();

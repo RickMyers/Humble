@@ -15,10 +15,14 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 9000:9000
+      - 9001:9001
+      - 9002:9002
+      - 9003:9003
       
   mysql:
-    image: mysql:latest
-    container_name: &&NAMESPACE&&_mysql8
+    image: mysql:5.7
+    container_name: &&NAMESPACE&&_mysql
     restart: unless-stopped
     ports:
       - 3306:3306

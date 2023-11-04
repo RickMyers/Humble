@@ -10,7 +10,34 @@
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Using Docker</div>
 
+The Humble Framework is not in any sense of the way a "light-weight" framework, but it is powerful.  But that power 
+comes at a cost of initial setup complexity.  When you are starting with this framework, you can locally install these
+required applications:<br /><br />
+<ul>
+    <li>Apache 2 Web Server</li>
+    <li>PHP 7+</li>
+    <li>MySQL 5.7+</li>
+    <li>MongoDB</li>
+    <li>Memcached</li>
+    <li>PHP Composer</li>
+</ul>
+But it is recommended you use a Container instead, and The Humble Framework comes with an "Out-Of-The-Box" Docker container
+definition, and a Docker-Compose orchestration file that you can use.  The container definition is "as-is" and won't require
+any tailoring, but the Docker-Compose file will need a minimal amount of tailoring.<br /><br />
 
+To get the current Docker Container files, run the following command (depending on environment:<br /><br />
+<p class='humble-code-like' style='padding: 10px'>
+    (windows)
+    humble --dockerme<br /><br />
+    
+    (linux)
+    ./humble.sh --dockerme
+</p>
+<br />
+The following video will demonstrate the process:<br /><br />
+<div class='humble-static-player' >
+    <iframe controls src="https://www.youtube.com/embed/uQ76MrdEDzA" width="100%" height='100%' frameborder="0"></iframe>
+</div>
 
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->

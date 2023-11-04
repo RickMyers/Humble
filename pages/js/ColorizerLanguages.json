@@ -45,6 +45,7 @@
             },
             "tokens":	 {
                 "var": {"color": "blue"},
+                "let": {"color": "blue"},
                 "function": {"color": "blue"},
                 "null":{"color": "orange"},
                 "true":{"color": "orange"},
