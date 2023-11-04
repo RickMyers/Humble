@@ -5,7 +5,7 @@
 	`event` CHAR(64) DEFAULT NULL,
 	class CHAR(64) DEFAULT NULL,
 	method CHAR(64) DEFAULT NULL,
-        modified timestamp default current_timestamp,
+        modified datetime default current_timestamp,
 	PRIMARY KEY (id),
 	UNIQUE KEY (namespace,`event`,class,method)
  );

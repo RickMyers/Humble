@@ -19,7 +19,7 @@ CREATE TABLE `workflow_sms_carriers` (
   `carrier` char(32) DEFAULT NULL,
   `sms_domain` char(64) DEFAULT NULL,
   `mms_domain` char(64) DEFAULT NULL,
-  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime not NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `carrier` (`carrier`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;

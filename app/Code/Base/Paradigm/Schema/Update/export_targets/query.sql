@@ -7,6 +7,6 @@ create table paradigm_export_targets
     `alias` char(32) default null,
     target varchar(255) default null,
     token char(36) default null,
-    modified timestamp default current_timestamp,
+    modified datetime default current_timestamp,
     primary key (id)
 );

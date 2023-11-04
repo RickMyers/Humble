@@ -7,7 +7,7 @@ create table humble_secrets_manager
     secret_name char(64) default null,
     secret_value varchar(255) default null,
     user_id int default null,
-    modified timestamp default current_timestamp,
+    modified datetime default current_timestamp,
     primary key (id),
     unique key (namespace,secret_name)
 );

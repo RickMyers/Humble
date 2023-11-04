@@ -7,7 +7,7 @@
 	`sample`  CHAR(255) DEFAULT NULL,
 	`scroll`  CHAR(16) DEFAULT '100%',
 	`height`  CHAR(16) DEFAULT '200px',
-	modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	modified datetime default CURRENT_TIMESTAMP,
 	PRIMARY KEY (id)
  );
  
@@ -15,7 +15,7 @@
  (
 	id INT NOT NULL AUTO_INCREMENT,
 	`language` CHAR(32) DEFAULT NULL,
-	modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	modified datetime default CURRENT_TIMESTAMP,
 	PRIMARY KEY (id)
  
  );
@@ -25,7 +25,7 @@
 	id INT NOT NULL AUTO_INCREMENT,
 	`lexicon` CHAR(255) DEFAULT NULL,
 	`description` CHAR(255) DEFAULT NULL,
-	modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	modified datetime default CURRENT_TIMESTAMP,
 	PRIMARY KEY (id)
  
  );

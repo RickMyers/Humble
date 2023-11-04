@@ -7,6 +7,6 @@ create table paradigm_import_sources
     alias char(32) default null,
     source char(255) default null,
     `token` char(32) default null,
-    modified timestamp default current_timestamp,
+    modified datetime default current_timestamp,
     primary key (id)
 );

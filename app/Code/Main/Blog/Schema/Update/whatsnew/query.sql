@@ -8,6 +8,6 @@ CREATE TABLE blog_whatsnew
        author INT DEFAULT NULL,
        `active` CHAR(01) DEFAULT 'N',
        published DATE DEFAULT NULL,
-       modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       modified datetime default CURRENT_TIMESTAMP,
        PRIMARY KEY (id)
 );
