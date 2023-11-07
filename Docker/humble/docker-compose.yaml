@@ -1,0 +1,55 @@
+
+version: "3.3"
+
+#####################################
+#SERVICES
+#####################################
+services:
+  php-apache-environment:
+    container_name: humble
+    image: humble
+    volumes:
+      - "c:/var/www/Settings:/var/www/Settings"
+      - "c:/var/www/logs:/var/www/logs"
+      - "c:/var/www/Humble:/var/www/html"
+      - humble_web_cfg:/etc
+    ports:
+      - 9080:80
+      - 4438:443
+      - 9900:9000
+      - 9903:9003
+      
+  mysql:
+    image: mysql:5.7
+    container_name: humble_mysql
+    restart: unless-stopped
+    ports:
+      - 3386:3306
+    volumes:
+      - humble_db_data:/var/lib/mysql
+      - humble_mysql_cfg:/etc
+    environment:
+      MYSQL_ROOT_PASSWORD: jacob001
+      MYSQL_DATABASE: humble
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: password123
+    
+  mongodb:
+    image: mongo:latest
+    container_name: humble_mongodb
+    restart: unless-stopped
+    ports:
+      - 27817:27017
+    volumes:
+      - humble_mongodb_cfg:/etc
+      - humble_mongodb_data:/data/db
+
+volumes:
+  humble_db_data:
+  humble_mongodb_data:
+  humble_mysql_cfg:  
+  humble_mongodb_cfg:
+  humble_web_cfg:
+  humble_settings:
+      
+

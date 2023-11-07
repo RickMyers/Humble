@@ -34,16 +34,22 @@ RUN apt install -y php-json
 RUN apt install -y php-zip
 RUN apt install -y php-memcached 
 RUN apt install -y php-memcache
-RUN apt install -y php-xdebug
+#RUN apt install -y php-xdebug
 RUN apt install -y php-curl
 RUN apt install -y php-gd
 RUN apt install -y php-dev
+RUN apt install -y libmcrypt-dev
+RUN apt install -y php-xdebug
+#RUN pecl install xdebug
+#RUN docker-php-ext-enable xdebug
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php --install-dir=/usr/bin
 RUN git config --global http.sslverify false
 RUN service memcached start
 RUN mkdir /var/www/logs && chmod -R 0777 /var/www/logs
 RUN mkdir /var/www/logs/humble && chmod -R 0777 /var/www/logs/humble
+RUN mkdir /var/www/Settings
+RUN mkdir /var/www/Settings/humble && chmod -R 0777 /var/www/Settings/humble
 RUN a2enmod rewrite && a2enmod ssl && a2enmod include
 COPY vhost.conf /etc/apache2/sites-enabled/humbleprogramming.com.conf
 RUN apt upgrade -y
