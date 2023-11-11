@@ -186,16 +186,17 @@ class Utility extends Model
     }
 
     /**
-     * Create a new component
+     * Create a new component, allowing for customization
      */
     public function createComponent() {
         $data           = Humble::entity('humble/users')->setUid($this->getUid())->load();
-        $user           = Humble::entity('humble/user_identification')->setId($this->getUid())->load();
+        $user           = Humble::entity('humble/user/identification')->setId($this->getUid())->load();
         $project        = Environment::getProject();
         $module         = Humble::getModule($this->getNamespace());
         $custom_root    = 'Code/'.$project->package.'/'.$project->module.'/lib/sample/component';
         $module_root      = 'Code/'.$module['package'].'/'.$module['module'].'/lib/sample/component';
         $templates      = [];
+        /* The craziness below basically lets you override the default component template with a custom template from the module if they have one */
         $templates['models']   = file_exists($custom_root.'/Model.php.txt')  ? $custom_root.'/Model.php.txt' : 'Code/Base/Humble/lib/sample/component/Model.php.txt';
         $templates['models']   = file_exists($module_root.'/Model.php.txt')  ? $module_root.'/Model.php.txt' : $templates['models'];
         $templates['entities'] = file_exists($custom_root.'/Entity.php.txt') ? $custom_root.'/Entity.php.txt' : 'Code/Base/Humble/lib/sample/component/Entity.php.txt';
@@ -204,11 +205,11 @@ class Utility extends Model
         $templates['helpers']  = file_exists($module_root.'/Helper.php.txt') ? $module_root.'/Helper.php.txt' : $templates['helpers'];        
         $roots          = ['models'=>'Model','helpers'=>'Helper','entities'=>'Entity'];
         
-        $ns             = 'Code_'.$module['package']."_".$module[$this->getType()];
+        $ns             = 'Code/'.$module['package']."/".$module[$this->getType()];
         $root           = $roots[$this->getType()];
         $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Base\\Humble\\Traits\\EventHandler;\n\n\t" : "" ;
         $ns             = str_replace(['_','/'],['\\','\\'],$ns);
-        $root           = str_replace(['_','/'],['\\','\\'],$root);
+        $root           = str_replace(['_','/'],[DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR],$root);
         $parts          = explode('_',$this->getName());
         foreach ($parts as $idx => $part) {
             $parts[$idx] = ucfirst($part);
@@ -217,7 +218,7 @@ class Utility extends Model
         if (count($parts)>1) {
             $root = "\\".$ns.'\\'.$root;
             for ($i=0; $i<count($parts)-1; $i++) {
-                $ns .= '\\'.$parts[$i];
+                $ns .= DIRECTORY_SEPARATOR.$parts[$i];
             }
         }
         @mkdir(str_replace('_','/',$ns),0775,true);
@@ -263,7 +264,11 @@ class Utility extends Model
             $project['module']
         );
         //ADD A CHECK!
-        file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)));
+        if (!file_exists($dest = str_replace('_','/',$dest))) {
+            file_put_contents($dest,str_replace($srch,$repl,file_get_contents($template)));
+        } else {
+            print("A ".$this->getType()." of that name already exists!");
+        }
     }
     
     /**

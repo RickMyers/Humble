@@ -8,8 +8,8 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 <controller name="system" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
    
-        <action name="status">
-            <description>Displays the status of the system from the application.xml file, and allows the user to change the values if they have super-user role</description>
+        <action name="info">
+            <description>Displays the information of the system from the application.xml file, and allows the user to change the values if they have super-user role</description>
             <model namespace="humble" class="system" id='system' />
             <entity namespace="humble" class="user_permissions" id="permissions" method="load">
                 <parameter name="id" value="uid" source="session" default="" />

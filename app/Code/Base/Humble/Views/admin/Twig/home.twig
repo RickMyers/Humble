@@ -156,7 +156,20 @@
                                         <li><a href='#' onclick='Administration.upload.form(); return false'>Upload File</a></li>                                        
                                     </ul>
                                 </li>
-                               
+                                <li><a href="#">System</a>
+                                    <ul>
+                                        <li><a href='#' onclick=' return false'>Information</a></li>
+                                        <li><a href='#' onclick=' return false'>Monitor</a></li>
+                                        <li><a href='#' onclick=' return false'>Status</a></li>
+                                        <li><a href='#' onclick=' return false'>Cadence</a>
+                                            <ul>
+                                                <li><a href='#' onclick=' return false'>Start</a></li>
+                                                <li><a href='#' onclick=' return false'>Stop</a></li>
+                                                <li><a href='#' onclick=' return false'>Tune...</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>                                
                                 <li><a href="#">Secrets Manager</a>
                                     <ul>
                                         <li><a href='#' onclick='Administration.secrets.add(); return false'>Add Secret</a></li>
@@ -230,31 +243,35 @@
                         <i class="glyphicon glyphicon-warning-sign" style="margin-left: 2px; font-size: 30px"></i>
                     </div>
                     <hr style="margin-bottom: 10px; margin-top: 10px"/>
-                    <div class='administration-mini-icon' title='Log Viewer' onclick="Administration.logs.open('General')">
+                    <div class='administration-mini-icon' title='General Log Viewer' onclick="Administration.logs.open('General')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         General
                     </div>
-                    <div class='administration-mini-icon' title='Log Viewer' onclick="Administration.logs.open('Warning')">
+                    <div class='administration-mini-icon' title='Warning Log Viewer' onclick="Administration.logs.open('Warning')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Warning
                     </div>
-                    <div class='administration-mini-icon' title='Log Viewer' onclick="Administration.logs.open('Error')">
+                    <div class='administration-mini-icon' title='Error Log Viewer' onclick="Administration.logs.open('Error')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Error
                     </div>
-                    <div class='administration-mini-icon' title='Log Viewer' onclick="Administration.logs.open('User')">
+                    <div class='administration-mini-icon' title='Access Log Viewer' onclick="Administration.logs.open('Access')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        Access
+                    </div>                      
+                    <div class='administration-mini-icon' title='Users Log Viewer' onclick="Administration.logs.open('User')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Users
                     </div>                    
-                    <div class='administration-mini-icon' title='Log Viewer' onclick="Administration.logs.open('MySQL')">
+                    <div class='administration-mini-icon' title='SQL Log Viewer' onclick="Administration.logs.open('MySQL')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
-                        MySQL
+                        SQL
                     </div>
-                    <div class='administration-mini-icon' title='Log Viewer' onclick="Administration.logs.open('MongoDB')">
+                    <div class='administration-mini-icon' title='MongoDB Log Viewer' onclick="Administration.logs.open('MongoDB')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         MongoDB
                     </div>
-                    <div class='administration-mini-icon' title='Log Viewer' onclick="Administration.logs.open('System')">
+                    <div class='administration-mini-icon' title='System Log Viewer' onclick="Administration.logs.open('System')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         System
                     </div>

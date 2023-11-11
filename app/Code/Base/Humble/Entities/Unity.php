@@ -594,27 +594,28 @@ SQL;
      *
      */
     protected function calculateStats($query,&$results) {
-        $rows = $this->_db->query($query);
-        $this->_rowCount($rows[0]['FOUND_ROWS']);
-        if ($this->_page()) {
-            if (count($results) < $this->_rows()) {
-                $_SESSION['pagination'][$this->_namespace()][$this->_entity()] = 0;
+        if ($rows = $this->_db->query($query)) {
+            $this->_rowCount($rows[0]['FOUND_ROWS']);
+            if ($this->_page()) {
+                if (count($results) < $this->_rows()) {
+                    $_SESSION['pagination'][$this->_namespace()][$this->_entity()] = 0;
+                }
+                if ($this->_toRow() > $this->_rowCount()) {
+                    $this->_toRow($this->_rowCount());
+                }
+                $this->_fromRow($this->_rows() * ($this->_page()-1)+1);
+                $this->_headers['pagination'] = json_encode([
+                    'rows' => [
+                        'from'  => $this->_fromRow(),
+                        'to'    => $this->_toRow(),
+                        'total' => $this->_rowCount()
+                    ],
+                    'pages' => [
+                        'current' => $this->_page(),
+                        'total'   => $this->_pages()
+                    ]
+                ]);
             }
-            if ($this->_toRow() > $this->_rowCount()) {
-                $this->_toRow($this->_rowCount());
-            }
-            $this->_fromRow($this->_rows() * ($this->_page()-1)+1);
-            $this->_headers['pagination'] = json_encode([
-                'rows' => [
-                    'from'  => $this->_fromRow(),
-                    'to'    => $this->_toRow(),
-                    'total' => $this->_rowCount()
-                ],
-                'pages' => [
-                    'current' => $this->_page(),
-                    'total'   => $this->_pages()
-                ]
-            ]);
         }
         return $this;
     }

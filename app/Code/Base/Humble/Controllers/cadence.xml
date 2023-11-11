@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+
+Manages the cadence periodic poller
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="cadence" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="off" response="false">
+        
+        <action name="start">
+            <description>Attempts to start the cadence poller in the background</description>
+            <model namespace="humble" class="cadence" method="start">
+                
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="stop">
+            <description>Attempts to stop the execution of the poller</description>
+            <model namespace="humble" class="cadence" method="stop">
+                
+            </model>
+            
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="reload">
+            <description>Attempts to restart the cadence poller in the background</description>
+            <model namespace="humble" class="cadence" method="reload">
+                
+            </model>
+            
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="tune">
+            <description>Brings up the app to tailor/tune the running of the cadence poller</description>
+            <model namespace="humble" class="cadence" id="cadence">
+                
+            </model>
+            
+        </action>
+
+    </actions>
+</controller>

@@ -84,87 +84,90 @@
     Humble Project, all rights reserved
 </div>
 <script type="text/javascript">
-    var win         = Desktop.window.list['{{ window_id }}'];
-    win.header      = $E('log-viewer-header-{{ window_id }}');
-    win.body        = $E('log-viewer-body-{{ window_id }}');
-    win.footer      = $E('log-viewer-footer-{{ window_id }}');
-    win.viewer      = $E('log-viewer-textarea-{{ window_id }}');
-    win.timer       = null;
-    win.viewing     = '{{ log }}';
-    win.refresh     = (function (win) {
-        return function () {
-            if ($E('log-viewer-textarea-{{ window_id }}')) {
-                Administration.logs.fetch(win.viewing,win.id);
-                window.clearTimeout(win.timer);
-                win.timer = window.setTimeout(win.refresh,10000);
-            } else {
-                window.clearTimeout(win.timer);
+    var {{log}}Window = (function () {
+        var win         = Desktop.window.list['{{ window_id }}'];
+        win.header      = $E('log-viewer-header-{{ window_id }}');
+        win.body        = $E('log-viewer-body-{{ window_id }}');
+        win.footer      = $E('log-viewer-footer-{{ window_id }}');
+        win.viewer      = $E('log-viewer-textarea-{{ window_id }}');
+        win.timer       = null;
+        win.viewing     = '{{ log }}';
+        win.refresh     = (function (win) {
+            return function () {
+                if ($E('log-viewer-textarea-{{ window_id }}')) {
+                    Administration.logs.fetch(win.viewing,win.id);
+                    window.clearTimeout(win.timer);
+                    win.timer = window.setTimeout(win.refresh,10000);
+                } else {
+                    window.clearTimeout(win.timer);
+                }
             }
+        })(win);
+        win.resize      = (function (win) {
+            return function () {
+                var h = (win.content.offsetHeight - win.header.offsetHeight - win.footer.offsetHeight - 5) + "px";
+                win.body.style.height    = h;
+                win.body.style.width     = (win.content.offsetWidth)+"px";
+            };
+        })(win);
+        win.resize();
+        win.timer = window.setTimeout(win.refresh,10000);
+        Administration.logs.fetch(win.viewing,win.id);
+        $('#expand-palette-{{ window_id }}').on('click',function (evt) {
+            let win = Desktop.window.list['{{ window_id }}'];
+            $('#palette-options-{{ window_id }}').slideToggle(win.resize);
+            $('#expand-palette-{{ window_id }}').css('display','none');        
+            $('#collapse-palette-{{ window_id }}').css('display','block');
+        });    
+        $('#collapse-palette-{{ window_id }}').on('click',function (evt) {
+            $('#palette-options-{{ window_id }}').slideToggle(win.resize);
+            $('#collapse-palette-{{ window_id }}').css('display','none');        
+            $('#expand-palette-{{ window_id }}').css('display','block');
+        });
+        $('#editor-font-{{ window_id }}').on('change',function (evt) {
+            let val = $(this).val();
+            if (val) {
+                EasyAjax.setCookie('log-{{ log }}-font',val);
+                $('#log-viewer-textarea-{{ window_id }}').css('font-family',val);
+            }
+        });
+        $('#editor-font-size-{{ window_id }}').on('change',function (evt) {
+            let val = $(this).val();
+            if (val) {
+                EasyAjax.setCookie('log-{{ log }}-font-size',val);
+                $('#log-viewer-textarea-{{ window_id }}').css('font-size',val);
+            }
+        });
+        $('.color-palette-cell').on('click',function (evt) {
+            let cell    = evt.target;
+            let log     = cell.getAttribute('log');
+            let area = $('#editor-option-{{ window_id }}').val();
+            if (area && log) {
+                let color = cell.getAttribute('color');
+                EasyAjax.setCookie('log-'+log+'-'+area,color);
+                $('#log-viewer-textarea-{{ window_id }}').css(area,color);
+            }
+        });
+        if (EasyAjax.getCookie('log-{{ log }}-color')) {
+            let fg = EasyAjax.getCookie('log-{{ log }}-color');
+            let bg = EasyAjax.getCookie('log-{{ log }}-background-color');
+            let fn = EasyAjax.getCookie('log-{{ log }}-font');
+            let sz = EasyAjax.getCookie('log-{{ log }}-font-size');
+            $('#log-viewer-textarea-{{ window_id }}').css('color',fg);
+            if (bg) {
+                $('#log-viewer-textarea-{{ window_id }}').css('background-color',bg);
+            }
+            if (fn) {
+                $('#log-viewer-textarea-{{ window_id }}').css('font-family',fn);
+                $('#editor-font-{{ window_id }}').val(fn);
+            }
+            if (sz) {
+                $('#log-viewer-textarea-{{ window_id }}').css('font-size',sz);
+                $('#editor-font-size-{{ window_id }}').val(sz);
+            }
+        } else {
+            console.log('no cookie');
         }
-    })(win);
-    win.resize      = (function (win) {
-        return function () {
-            var h = (win.content.offsetHeight - win.header.offsetHeight - win.footer.offsetHeight - 5) + "px";
-            win.body.style.height    = h;
-            win.body.style.width     = (win.content.offsetWidth)+"px";
-        };
-    })(win);
-    win.resize();
-    win.timer = window.setTimeout(win.refresh,10000);
-    Administration.logs.fetch(win.viewing,win.id);
-    $('#expand-palette-{{ window_id }}').on('click',function (evt) {
-        let win = Desktop.window.list['{{ window_id }}'];
-        $('#palette-options-{{ window_id }}').slideToggle(win.resize);
-        $('#expand-palette-{{ window_id }}').css('display','none');        
-        $('#collapse-palette-{{ window_id }}').css('display','block');
-    });    
-    $('#collapse-palette-{{ window_id }}').on('click',function (evt) {
-        $('#palette-options-{{ window_id }}').slideToggle(win.resize);
-        $('#collapse-palette-{{ window_id }}').css('display','none');        
-        $('#expand-palette-{{ window_id }}').css('display','block');
-    });
-    $('#editor-font-{{ window_id }}').on('change',function (evt) {
-        let val = $(this).val();
-        if (val) {
-            EasyAjax.setCookie('log-{{ log }}-font',val);
-            $('#log-viewer-textarea-{{ window_id }}').css('font-family',val);
-        }
-    });
-    $('#editor-font-size-{{ window_id }}').on('change',function (evt) {
-        let val = $(this).val();
-        if (val) {
-            EasyAjax.setCookie('log-{{ log }}-font-size',val);
-            $('#log-viewer-textarea-{{ window_id }}').css('font-size',val);
-        }
-    });
-    $('.color-palette-cell').on('click',function (evt) {
-        let cell    = evt.target;
-        let log     = cell.getAttribute('log');
-        let area = $('#editor-option-{{ window_id }}').val();
-        if (area && log) {
-            let color = cell.getAttribute('color');
-            EasyAjax.setCookie('log-'+log+'-'+area,color);
-            $('#log-viewer-textarea-{{ window_id }}').css(area,color);
-        }
-    });
-    if (EasyAjax.getCookie('log-{{ log }}-color')) {
-        let fg = EasyAjax.getCookie('log-{{ log }}-color');
-        let bg = EasyAjax.getCookie('log-{{ log }}-background-color');
-        let fn = EasyAjax.getCookie('log-{{ log }}-font');
-        let sz = EasyAjax.getCookie('log-{{ log }}-font-size');
-        $('#log-viewer-textarea-{{ window_id }}').css('color',fg);
-        if (bg) {
-            $('#log-viewer-textarea-{{ window_id }}').css('background-color',bg);
-        }
-        if (fn) {
-            $('#log-viewer-textarea-{{ window_id }}').css('font-family',fn);
-            $('#editor-font-{{ window_id }}').val(fn);
-        }
-        if (sz) {
-            $('#log-viewer-textarea-{{ window_id }}').css('font-size',sz);
-            $('#editor-font-size-{{ window_id }}').val(sz);
-        }
-    } else {
-        console.log('no cookie');
-    }
+        return true;
+    })();
 </script>

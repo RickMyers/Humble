@@ -204,7 +204,7 @@ var Administration = (function () {
                     },
                     status: {
                         check: function () {
-                            (new EasyAjax('/humble/system/status')).then(function (response) {
+                            (new EasyAjax('/humble/system/info')).then(function (response) {
                                 $('#humble_status').html(response);
                             }).post();
                         },

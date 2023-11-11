@@ -4,7 +4,7 @@
 
         <action name="create">
             <description>Will create a new component, as in Helper, Model, Entity, or Event </description>
-            <model namespace="humble" class="utility" method="createComponent" id='utility' responst="TRUE">
+            <model namespace="humble" class="utility" method="createComponent" id='utility' response="TRUE">
                 <parameter name="uid"           source="session" default="" />
                 <parameter name="namespace"     source="post"    default="" />
                 <parameter name="type"          source="post"    default="" />
