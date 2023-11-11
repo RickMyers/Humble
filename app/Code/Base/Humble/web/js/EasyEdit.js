@@ -515,7 +515,6 @@ EasyEdits.execute	= function (easy){
                         let ef = easyField;
                         (new EasyAjax(easyField.populator)).then(function(response) {
                             if (response) {
-                                console.log(ef);
                                 EasyEdits.populateSelectBox(ef.id, JSON.parse(response),false);
                             }
                         }).get();

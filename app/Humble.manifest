@@ -11,8 +11,8 @@
 ^.tmp
 ^.bak
 ^.well-known/
-^dist/PHPDoc2.phar
-^dist/APIGen.phar
+^dist/
+^Presentations/
 LICENSE
 index.php
 app/install/index.html index.html
@@ -28,7 +28,6 @@ install.php
 installtest.php
 mongotest.php
 loader.php
-phpdoc.dist.xml
 lib/*
 web/*
 dist/*
@@ -42,6 +41,7 @@ app/lib/templaters/*
 app/tests/*
 app/autoload.php
 app/AuthorizationEngine.php
+app/Cadence.php
 app/Compatibility.php
 app/Constants.php
 app/Environment.php
@@ -61,6 +61,8 @@ app/CLI.php
 app/humble.sh
 app/Singleton.php
 app/allowed.json
+app/api_policy.json
+app/cadence.json
 app/composer.json
 app/grunt_instructions.txt
 app/package.json
