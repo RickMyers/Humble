@@ -221,8 +221,8 @@ class Utility extends Model
                 $ns .= DIRECTORY_SEPARATOR.$parts[$i];
             }
         }
-        @mkdir(str_replace('_','/',$ns),0775,true);
-        $dest           = $ns.'_'.$class.'.php';
+        @mkdir(str_replace('_',DIRECTORY_SEPARATOR,$ns),0775,true);
+        $dest           = $ns.DIRECTORY_SEPARATOR.$class.'.php';
         $template       = $templates[$this->getType()];
         $description    = wordwrap($this->getDescription(),70,"\n * ");
         $project        = file_exists('../Humble.project') ? json_decode(file_get_contents('../Humble.project'),true) : ["factory_name" => 'Humble','project_name'=>'Please set your project name in the Humble.project file'];
@@ -266,8 +266,9 @@ class Utility extends Model
         //ADD A CHECK!
         if (!file_exists($dest = str_replace('_','/',$dest))) {
             file_put_contents($dest,str_replace($srch,$repl,file_get_contents($template)));
+            return "Wrote new Class to ".$dest;
         } else {
-            print("A ".$this->getType()." of that name already exists!");
+            return "ERROR: A Class of that name already exists!";
         }
     }
     
