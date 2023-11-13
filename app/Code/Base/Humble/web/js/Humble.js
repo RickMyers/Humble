@@ -1,7 +1,7 @@
 //Establishes a namespace
-var Humble = (function ($) {
-    var templates       = [];
-    var defaultModule   = false;
+var Humble = (function () {
+    var templates   = [];
+    var vars        = [];    
     return {
         init: function (callback) {
             var me = this;
@@ -21,6 +21,24 @@ var Humble = (function ($) {
                 }
             }).get();
         },
+        singleton: {
+            list: function () {
+                var args = [];
+                for (var j in vars) {
+                    args[args.length] = j;
+                }
+                return args;
+            },
+            set: function (v,val) {
+                vars[v] = val;
+            },
+            get: function (v) {
+                return vars[v];
+            },
+            show: function () {
+                console.log(vars);
+            }
+        },        
         template:  function (identifier,defaults) {
             var tp      = '';
             defaults    = (defaults) ? true : false;
@@ -32,5 +50,5 @@ var Humble = (function ($) {
             return tp;
         }
     }
-})($);
+})();
 

@@ -17,6 +17,15 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
+        <action name="status">
+            <description>Returns whether cadence is running</description>
+            <model namespace="humble" class="cadence" method="check">
+                
+            </model>
+        </action>
+
+        <!-- ############################################################### -->                
+
         <action name="stop">
             <description>Attempts to stop the execution of the poller</description>
             <model namespace="humble" class="cadence" method="stop">

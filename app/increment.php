@@ -24,9 +24,9 @@
 */
 function incrementVersion($next=1) {
     print("CHANGING VERSION");
-    $data = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("Error, application file not found");
+    $data  = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("Error, application file not found");
     $data  = simplexml_load_string($data);    
-    $v      = explode('.',(string)$data->version->framework);
+    $v     = explode('.',(string)$data->version->framework);
     for ($i=count($v)-1; $i>=0; $i-=1) {                                    //This is one of those ridiculously evil things in computer science
         $v[$i] = (int)$v[$i]+$next;
         if ($next  = ($v[$i]===10)) {

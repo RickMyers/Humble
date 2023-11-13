@@ -9,10 +9,10 @@ services:
     container_name: humble
     image: humble
     volumes:
-      - "c:/var/www/Settings:/var/www/Settings"
-      - "c:/var/www/logs:/var/www/logs"
+      - humble_settings:/var/www/Settings
+      - humble_logs:/var/www/logs
+      - humble_web_cfg:/etc      
       - "c:/var/www/Humble:/var/www/html"
-      - humble_web_cfg:/etc
     ports:
       - 9080:80
       - 4438:443
@@ -50,6 +50,7 @@ volumes:
   humble_mysql_cfg:  
   humble_mongodb_cfg:
   humble_web_cfg:
+  humble_logs:
   humble_settings:
       
 

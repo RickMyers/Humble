@@ -78,7 +78,7 @@ function logMessage($message=false,$timestamp=true) {
         } else {
             file_put_contents($cadence['log']['location'],$message,FILE_APPEND);
         }
-        print($message);
+        //print($message);
     }
 }
 //------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ function watchAPIPolicy() {
 //------------------------------------------------------------------------------
 function watchAllowedRules() {
     global $systemfiles;
-    $systemfiles['allowed.json'] = isset($systemfiles['allowed.json']) ? $systemfiles['alowed.json'] : filemtime('allowed.json');
+    $systemfiles['allowed.json'] = isset($systemfiles['allowed.json']) ? $systemfiles['allowed.json'] : filemtime('allowed.json');
     if (filemtime('allowed.json') !== $systemfiles['allowed.json']) {
         logMessage('Recaching Allowed Routes');
         Humble::cache('humble_framework_allowed_routes',json_decode(file_get_contents('allowed.json')));
@@ -217,12 +217,19 @@ function processCadenceCommand($cmds) {
     foreach ($cmds as $cmd) {
         switch (strtoupper($cmd)) {
             case 'RESTART'  :
+                @unlink('cadence.pid');
+                logMessage('Restarting Cadence...');
+                exec('php Cadence.php &');
+                die();
+                break;
             case 'RELOAD'   :
                 resetCadence();
                 break;
             case 'END'      :
+            case 'STOP'     :
                 @unlink('cadence.pid');
-                die('Aborting Cadence');
+                logMessage('Ending Cadence...');
+                die('Aborting Cadence'."\n\n");
                 break;
             default         :
                 break;
@@ -260,15 +267,17 @@ if (file_exists('cadence.json') && ($cadence = json_decode(file_get_contents('ca
             if (($now % $t) == 0) {
                 $start  = time();
                 logMessage("Processing ".ucfirst($component)." Now...");
-                foreach ($handler['callbacks'] as $callback) {
-                    $callback();
+                foreach ($handler['callbacks'] as $callback => $status) {
+                    if ($status === true) {
+                        $callback();
+                    }
                 }
                 logMessage(ucfirst($component)." Processing took ".($start - time())." seconds");                
             }
         }
         $offset_time += (time() - $duration);                                   
         if ($cadence_ctr++ > 50) {
-            print("Reseting Cadence...\n");                                     //Due to "fuzziness" caused by sleep/awake timer, we need to periodically reset counters
+            logMessage("Reseting Cadence...");                                     //Due to "fuzziness" caused by sleep/awake timer, we need to periodically reset counters
             $started        = time();
             $offset_time    = 0;
             $cadence_ctr    = 0;

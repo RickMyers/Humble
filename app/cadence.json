@@ -1,57 +1,57 @@
 {
     "note":     "a period of 20 and multiple of 2 would have this section run at a maximum of every 40 seconds.",
-    "period":   3,
+    "period":   5,
     "log": {
         "location": "../../logs/cadence.log",
-        "max_size": "1M"
+        "max_size": "100K"
     },
     "handlers": {
         "apipolicy": {
-            "callbacks": [
-                "watchAPIPolicy"
-            ],
+            "callbacks": {
+                "watchAPIPolicy": true
+            },
             "multiple": 6
         },
         "applicationxml": {
-            "callbacks": [
-                "watchApplicationXML"
-            ],
+            "callbacks": {
+                "watchApplicationXML": true
+            },
             "multiple": 6
         },
         "allowedrules": {
-            "callbacks": [
-                "watchAllowedRules"
-            ],
+            "callbacks": {
+                "watchAllowedRules": true
+            },
             "multiple": 6
         },    
         "configurations": {
-            "callbacks": [
-                "scanConfigurationsForChanges"
-            ],
+            "callbacks": {
+                "scanConfigurationsForChanges": true
+            },
             "multiple": 4
         },        
         "controllers": {
-            "callbacks": [
-                "scanControllersForChanges"
-            ],
+            "callbacks": {
+                "scanControllersForChanges": true
+            },
             "multiple": 2
         },
         "models": {
-            "callbacks": [  
-                "scanModelsForChanges"
-            ],
+            "callbacks": {
+                "scanModelsForChanges": true
+            },
             "multiple": 3
         },
         "workflows": {
-            "callbacks": [
-                "triggerFileWorkflows"
-            ],
+            "callbacks": {
+                "triggerFileWorkflows": true
+            },
             "multiple": 4            
         },
         "files": {
-            "callbacks": [
-                "scanFilesForChanges"
-            ],
+            "callbacks": {
+                "scanFilesForChanges": true
+            },
             "multiple": 5
         }
     }

@@ -109,7 +109,7 @@
                     <source weight='13'>Humble/web/js/EasyForm.js</source>
                     <source weight='14'>Humble/web/js/EasyTabs.js</source>
                     <source weight="15">Humble/web/js/moment.js</source>
-                    <source weight="16">Humble/web/js/socket.io.2.0.4.js</source>
+                    <source weight="16">Humble/web/js/socket.io.2.0.4.js</source><comment>Socket connectivity requires installing the Node.js message router</comment>
                     <source weight="17">Humble/web/js/vue.js</source>
                     <source weight="18">Humble/web/js/vuerouter.js</source>
                 </js>
@@ -148,6 +148,7 @@
                 </css>
                 <js>
                     <source>Humble/web/js/Admin.js</source>
+                    <source>Humble/web/js/Heartbeat.js</source>
                     <source>Humble/web/js/cssmenu.js</source>
                 </js>
             </admin>

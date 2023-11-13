@@ -1,0 +1,3 @@
+{
+    "running": {$cadence->check()}
+}

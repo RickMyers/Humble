@@ -206,8 +206,12 @@ function initializeProject() {
         }
         if ($create_project) {
             humbleHeader();
-            $attributes     = ['project_name'=>'','project_url'=>'','factory_name'=>'','framework_url'=>'','module'=>'','namespace'=>'','package'=>'','landing_page'=>'', 'author'=>''];
+            $attributes     = ['project_name'=>'','project_url'=>'','factory_name'=>'','framework_url'=>'','module'=>'','namespace'=>'','package'=>'','landing_page'=>'', 'author'=>'', 'name'=>''];
             print(justify("Recommended answers to these questions are shown between the square brackets",100)."\n\n");
+            while (!$attributes['name']) {
+                print(justify("First, what is your name [first last]:",100)."\n");
+                $attributes['name']        = scrub(fgets(STDIN));
+            }            
             while (!$attributes['framework_url']) {
                 print(justify("Humble has its own framework updater but needs to know where to obtain the source from.",100)."\n");
                 print(justify("Please enter the URL for the Humble source code repository [https://humbleprogramming.com]:",100));
@@ -257,7 +261,8 @@ function initializeProject() {
 			$attributes['serial_number'] = $result['serial_number'] ?? 'Error-Try-Again';
             file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
             print(justify("Ok, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n",100)."\n");
-            print(justify("Please run 'humble --fetch' to do the initial retrieval of the framework",100)."\n\n");
+            print(justify("Please run 'humble --fetch' to do the initial retrieval of the framework",100)."\n");
+            print(justify("You can also run 'humble --dockerme' for a custom docker container run environment",100)."\n\n");
         } else {
             print("\nAborting creation of Humble project\n\n");
         }

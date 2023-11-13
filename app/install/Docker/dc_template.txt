@@ -9,16 +9,13 @@ services:
     container_name: &&NAMESPACE&&
     image: &&NAMESPACE&&
     volumes:
+      - &&NAMESPACE&&_logs::/var/www/logs
       - "&&NAMESPACE&&_settings:/var/www/Settings"
       - "&&DIR&&:/var/www/html"
       - &&NAMESPACE&&_web_cfg:/etc/apache2
     ports:
       - 80:80
       - 443:443
-      - 9000:9000
-      - 9001:9001
-      - 9002:9002
-      - 9003:9003
       
   mysql:
     image: mysql:5.7
@@ -54,6 +51,7 @@ volumes:
   &&NAMESPACE&&_mysql_cfg:  
   &&NAMESPACE&&_mongodb_cfg:
   &&NAMESPACE&&_web_cfg:
+  &&NAMESPACE&&_logs:
   &&NAMESPACE&&_settings:
       
 

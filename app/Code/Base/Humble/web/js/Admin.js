@@ -1,5 +1,6 @@
 var Administration = (function () {
                 var servicesWindow = false;
+                var poller         = false;
                 function translate (char) {
                     let diff;
                     if (/[A-Z]/.test (char)) {
@@ -13,6 +14,12 @@ var Administration = (function () {
                     return text.replace(/[A-Za-z0-9]/g, translate)
                 }
                 return {
+                    poll: {
+                        ref: false,
+                        add: function () {
+                            Heartbeat.register('humble',TRUE,'/humble/system/status',function (res) { console.log(res) },1,{});
+                        }
+                    },
                     add: {
                         package: function () {
                             var val = prompt("Please enter a new documentation package");
@@ -513,7 +520,7 @@ var Administration = (function () {
                             }
                         },
                         fetch: function (log,win_id) {
-                            var win = Desktop.window.list[win_id];
+                            var win     = Desktop.window.list[win_id];
                             win.viewing = log;
                             (new EasyAjax('/humble/log/fetch')).add('log',log.toLowerCase()).add('size',100000).then(function (response) {
                                 $(win.viewer).val(response);
@@ -528,3 +535,4 @@ var Administration = (function () {
                     }
                 }
             })();
+            $(window).ready(Administration.init);                               //when page is ready, begin!

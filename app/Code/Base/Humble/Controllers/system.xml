@@ -6,7 +6,7 @@ System functions such as status and installation enabled
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="system" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
-    <actions>
+    <actions blocking="off">
    
         <action name="info">
             <description>Displays the information of the system from the application.xml file, and allows the user to change the values if they have super-user role</description>
@@ -23,7 +23,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 </default>
             </switch>
         </action>
+       
+        <!-- ########################################################################################## -->
 
+        <action name="status">
+            <description>Retrieves information about the running environment including usage and thread counts</description>
+            <model namespace="humble" class="system" id='system' />
+        </action>
+                                
         <!-- ########################################################################################## -->
 
         <action name="save">
