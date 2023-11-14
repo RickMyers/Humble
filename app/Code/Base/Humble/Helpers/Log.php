@@ -82,7 +82,7 @@ class Log extends Helper
                     $this->logs[$log] = '/var/log/httpd/error_log';
                 }
                 $filesize   = filesize($this->logs[$log]);
-                $size       = (($size==='*') ? $filesize : ((int)$size > (int)$filesize) ? $filesize : $size);
+                $size       = (($size==='*') ? $filesize : (((int)$size > (int)$filesize) ? $filesize : $size));
                 $size       = ($size > 200000) ? 200000 : $size;                //lets just make it easy on ourselves and limit it to 200K max
                 $startfrom  = $filesize - $size;
                 $fh         = fopen($this->logs[$log],'r');

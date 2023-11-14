@@ -6,29 +6,29 @@ Manages the cadence periodic poller
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="cadence" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
-    <actions blocking="off" response="false">
+    <actions blocking="off" response="true">
         
-        <action name="start">
+        <action name="start" output="JSON">
             <description>Attempts to start the cadence poller in the background</description>
-            <model namespace="humble" class="cadence" method="start">
+            <model namespace="humble" class="cadence" id="cadence">
                 
             </model>
         </action>
 
         <!-- ############################################################### -->
 
-        <action name="status">
+        <action name="status" output="JSON">
             <description>Returns whether cadence is running</description>
-            <model namespace="humble" class="cadence" method="check">
+            <model namespace="humble" class="cadence" id="cadence">
                 
             </model>
         </action>
 
         <!-- ############################################################### -->                
 
-        <action name="stop">
+        <action name="stop" output="JSON">
             <description>Attempts to stop the execution of the poller</description>
-            <model namespace="humble" class="cadence" method="stop">
+            <model namespace="humble" class="cadence" id="cadence">
                 
             </model>
             
@@ -36,14 +36,24 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
-        <action name="reload">
-            <description>Attempts to restart the cadence poller in the background</description>
-            <model namespace="humble" class="cadence" method="reload">
+        <action name="reload" output="JSON">
+            <description>Attempts to reload the cadence poller in the background</description>
+            <model namespace="humble" class="cadence" id="cadence" >
                 
             </model>
             
         </action>
 
+        <!-- ############################################################### -->
+
+        <action name="restart" output="JSON">
+            <description>Attempts to restart the cadence poller in the background</description>
+            <model namespace="humble" class="cadence" id="cadence" >
+                
+            </model>
+            
+        </action>
+        
         <!-- ############################################################### -->
         
         <action name="tune">
