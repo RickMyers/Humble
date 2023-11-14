@@ -1,6 +1,5 @@
 var Administration = (function () {
                 var servicesWindow = false;
-                var poller         = false;
                 function translate (char) {
                     let diff;
                     if (/[A-Z]/.test (char)) {
@@ -14,11 +13,9 @@ var Administration = (function () {
                     return text.replace(/[A-Za-z0-9]/g, translate)
                 }
                 return {
-                    poll: {
-                        ref: false,
-                        add: function () {
-                            Heartbeat.register('humble',TRUE,'/humble/system/status',function (res) { console.log(res) },1,{});
-                        }
+                    init: function () {
+                        Heartbeat.register('humble',TRUE,'/humble/system/status',function (res) { console.log(res) },1,{});
+                        console.log('admin init');
                     },
                     add: {
                         package: function () {
@@ -34,6 +31,17 @@ var Administration = (function () {
                             if (val) {
                                 (new EasyAjax('/humble/admin/addcategory')).add('category',val).then(function () {
                                     //window.location.reload();
+                                }).post();
+                            }
+                        }
+                    },
+                    cadence: {
+                        action: function (action) {
+                            if (action) {
+                                (new EasyAjax('/humble/cadence/'+action)).then(function (response) {
+                                    alert(response);
+                                    response = JSON.parse(response);
+                                    console.log(response);
                                 }).post();
                             }
                         }
@@ -535,4 +543,5 @@ var Administration = (function () {
                     }
                 }
             })();
+//            Administration.init();
             $(window).ready(Administration.init);                               //when page is ready, begin!

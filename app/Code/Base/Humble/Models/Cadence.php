@@ -20,6 +20,7 @@ class Cadence extends Model
 
     use \Code\Base\Humble\Traits\EventHandler;
 	
+    private $RC = null;
     /**
      * Constructor
      */
@@ -35,7 +36,20 @@ class Cadence extends Model
     public function getClassName() {
         return __CLASS__;
     }
-
+    
+    /**
+     * Persists the return code
+     * 
+     * @param int $val
+     * @return int
+     */
+    public function _RC($val=false) {
+        if ($val) {
+            $this->RC = $val;
+        }
+        return $this->RC;
+    }
+    
     /**
      * Puts a command, or stacks one, to the cadence command control file
      * 
@@ -44,8 +58,9 @@ class Cadence extends Model
      */
     protected function addCommand($command=false) {
         if ($command) {
-            $contents = json_decode(file_exists('cadence.cmd') ? file_get_contents('cadence.cmd') : '[]');
-            return file_put_contents('cadence.cmd',json_encode($contents[] = $command,JSON_PRETTY_PRINT));
+            $contents   = json_decode(file_exists('cadence.cmd') ? file_get_contents('cadence.cmd') : "[]");
+            $contents[] = $command;
+            return file_put_contents('cadence.cmd',json_encode($contents,JSON_PRETTY_PRINT));
         }
         return $this;
     }
@@ -56,10 +71,15 @@ class Cadence extends Model
      */
     public function check() {
         if ($running = file_exists('cadence.pid')) {
-            exec('ps -aux',$results);
-            print_r($results);
+            exec('ps -aux | grep Cadence.php',$results);
+            $running = false;
+            foreach ($results as $row) {
+                $row = preg_replace('/\s+/', ' ', $row);
+                $section = explode(" ",$row);
+                $running = $running || (($section[10]=='php') && ($section[11]=='Cadence.php'));
+            }
         } 
-        
+        $rc = $running ? $this->_RC(0) : $this->_RC(4);                         //if it is running return 0, otherwise want that it isnt with a 4
         return $running;
     }
     
@@ -67,36 +87,54 @@ class Cadence extends Model
      * Starts the poller
      */
     public function start() {
-        $message = "Failed To Start";
+        $this->_RC(8);
+        $message = 'Cadence Is Already Running...';
         if (!$this->check()) {
             exec('php Cadence.php &');
             $message = "Cadence Started...";
+            $this->_RC(0);
         }
         return $message;
      }
-    
+     
+    /**
+     * Starts the poller
+     */
+    public function restart() {
+        $this->_RC(8);
+        $message = 'Cadence Not Running';
+        if ($this->check()) {
+            $this->addCommand("RESTART");
+            $message = "Cadence Restarting... Will Stop Shortly";
+            $this->_RC(0);        
+        }
+        return $message;
+     }
+        
     /**
      * Stops the poller
      */
     public function stop() {
+        $this->_RC(8);
         $message = "Cadence Not Running";
         if ($this->check()) {
-            $this->addCommand("END");
+            $this->addCommand('END');
             $message = "Cadence Quiescing... Will Stop Shortly";
+            $this->_RC(0);
         }
         return $message;
-        
-        
     }
     
     /**
      * Restarts the poller
      */
     public function reload() {
+        $this->_RC(8);
         $message = "Cadence Not Running";
         if ($this->check()) {
             $this->addCommand("RELOAD");
             $message = "Cadence Reloading... Will Be Done Shortly";
+            $this->_RC(0);
         }
     }
     

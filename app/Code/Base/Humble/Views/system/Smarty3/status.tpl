@@ -1,21 +1,21 @@
 {
     "cpu": {
-        "percentage": ""
+        "percentage": "{$monitor}"
     },
     "memory": {
-        "usage": "",
-        "percentage": ""    
+        "usage": "{$monitor}",
+        "percentage": "{$monitor}"    
     },
     "apache": {
-        "thread_count": ""
+        "thread_count": "{$monitor}"
     },
     "tasks": {
-        "count": ""
+        "count": "{$monitor}"
     },
     "load": {
-        "average": ""
+        "average": "{$monitor}"
     },
     "uptime": {
-        "duration": ""
+        "duration": "{$monitor}"
     }
 }

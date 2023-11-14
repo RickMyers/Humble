@@ -1,3 +1,4 @@
 {
-    "running": {$cadence->check()}
+    "running": "{$cadence->check()}",
+    "RC": "{$cadence->_RC()}"
 }

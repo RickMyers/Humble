@@ -207,7 +207,7 @@ class Utility extends Model
         
         $ns             = 'Code/'.$module['package']."/".$module[$this->getType()];
         $root           = $roots[$this->getType()];
-        $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Base\\Humble\\Traits\\EventHandler;\n\n\t" : "" ;
+        $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Base\\Humble\\Traits\\EventHandler;\n\t" : "" ;
         $ns             = str_replace(['_','/'],['\\','\\'],$ns);
         $root           = str_replace(['_','/'],[DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR],$root);
         $parts          = explode('_',$this->getName());
@@ -216,7 +216,7 @@ class Utility extends Model
         }
         $class = $parts[count($parts)-1];
         if (count($parts)>1) {
-            $root = "\\".$ns.'\\'.$root;
+            $root = DIRECTORY_SEPARATOR.$ns.DIRECTORY_SEPARATOR.$root;
             for ($i=0; $i<count($parts)-1; $i++) {
                 $ns .= DIRECTORY_SEPARATOR.$parts[$i];
             }
@@ -264,7 +264,8 @@ class Utility extends Model
             $project['module']
         );
         //ADD A CHECK!
-        if (!file_exists($dest = str_replace('_','/',$dest))) {
+        $dest = str_replace(['/','\\','_'],[DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR],$dest);
+        if (!file_exists($dest)) {
             file_put_contents($dest,str_replace($srch,$repl,file_get_contents($template)));
             return "Wrote new Class to ".$dest;
         } else {
