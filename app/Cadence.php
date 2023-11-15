@@ -205,21 +205,24 @@ function scanForNewImages() {
 }
 //------------------------------------------------------------------------------
 function scanFilesForChanges() {
-    global $files;
+    global $files,$modules;
 }
-
+//Are these two the same?
 //------------------------------------------------------------------------------
 function triggerFileWorkflows() {
 }
-
+// To spin off a process in another thread... 'nohup php Program.php > /dev/null &'
 //------------------------------------------------------------------------------
 function processCadenceCommand($cmds) {
     foreach ($cmds as $cmd) {
         switch (strtoupper($cmd)) {
             case 'RESTART'  :
+                //There are problems with restart... the original thread doesn't term, so you get 2 instances of Cadence
+                //Maybe look into ending this thread by writing instructions to a file and have a cron job restart
+                //Cadence if it sees that file.  Maybe run every 10 seconds or so
                 @unlink('cadence.pid');
                 logMessage('Restarting Cadence...');
-                exec('php Cadence.php &');
+                exec('nohup php Cadence.php > /dev/null &');
                 die();
                 break;
             case 'RELOAD'   :

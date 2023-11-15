@@ -206,7 +206,7 @@ function initializeProject() {
         }
         if ($create_project) {
             humbleHeader();
-            $attributes     = ['project_name'=>'','project_url'=>'','factory_name'=>'','framework_url'=>'','module'=>'','namespace'=>'','package'=>'','landing_page'=>'', 'author'=>'', 'name'=>''];
+            $attributes     = ['project_name'=>'','project_url'=>'','project_port'=>'','factory_name'=>'','framework_url'=>'','module'=>'','namespace'=>'','package'=>'','landing_page'=>'', 'author'=>'', 'name'=>'','hub_port'=>''];
             print(justify("Recommended answers to these questions are shown between the square brackets",100)."\n\n");
             while (!$attributes['name']) {
                 print(justify("First, what is your name [first last]:",100)."\n");
@@ -230,6 +230,8 @@ function initializeProject() {
                 print(justify("Please enter the URL for this project: ",100));
                 $attributes['project_url']          = scrub(fgets(STDIN));
             }
+            $parts = explode(':',$attributes['project_url']);
+            $attributes['project_port'] = $parts[2] ?? '80';                    //might make this its own question
             while (!$attributes['factory_name']) {
                 print(justify("This is where it gets personal.  A PHP Static Factory will be created for you which will extend the primary framework's Factory class. You will reference most of the Humble framework components through this 'rebranded' Factory.  It's also a great place to keep your own Factory methods.",100)."\n");
                 print(justify("Please enter the name for the rebranded main Factory class: ",100));
@@ -253,12 +255,13 @@ function initializeProject() {
             while (!$attributes['landing_page']) {
                 print(justify("Humble ships with a basic login page.  After logging in, you can specify where to get routed to.  Please specify that below.",100)."\n");
                 print(justify("Please enter the URI for the initial landing page [/".$attributes['namespace'].'/home/page]:',100));
-                $attributes['landing_page']            = scrub(fgets(STDIN));
+                $attributes['landing_page']         = scrub(fgets(STDIN));
             }
             $attributes['destination_folder']       = getcwd();
+            $attributes['hub_port']                 = "";
             @mkdir($attributes['destination_folder'],0775);
-			$result = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))),true);
-			$attributes['serial_number'] = $result['serial_number'] ?? 'Error-Try-Again';
+            $result = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))),true);
+            $attributes['serial_number'] = $result['serial_number'] ?? 'Error-Try-Again';
             file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
             print(justify("Ok, if you got this far, you are ready to get the framework and then configure it.  Make sure your website is running before you run the next command shown below.\n\n",100)."\n");
             print(justify("Please run 'humble --fetch' to do the initial retrieval of the framework",100)."\n");

@@ -90,10 +90,10 @@ class Cadence extends Model
         $this->_RC(8);
         $message = 'Cadence Is Already Running...';
         if (!$this->check()) {
-            exec('php Cadence.php &');
+            exec('nohup php Cadence.php > /dev/null &');
             $message = "Cadence Started...";
             $this->_RC(0);
-        }
+           }
         return $message;
      }
      

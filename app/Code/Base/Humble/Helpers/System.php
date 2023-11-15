@@ -40,20 +40,18 @@ class System extends Helper
      * @return array
      */
     protected function serverLoadLinuxData() {
-        if (is_readable("/proc/stat")) {
-            if ($stats = @file_get_contents("/proc/stat")) {
-                $stats = preg_replace("/[[:blank:]]+/", " ", $stats);           // Remove double spaces to make it easier to extract values with explode()
-                $stats = str_replace(array("\r\n", "\n\r", "\r"), "\n", $stats);// Separate lines
-                $stats = explode("\n", $stats);
-                foreach ($stats as $statLine) {                                 // Separate values and find line for main CPU load
-                    if ((count($statLineData = explode(" ", trim($statLine))) >= 5) && ($statLineData[0] == "cpu")) {
-                        return [
-                            $statLineData[1],
-                            $statLineData[2],
-                            $statLineData[3],
-                            $statLineData[4],
-                        ];
-                    }
+        if ($stats = @file_get_contents("/proc/stat")) {
+            $stats = preg_replace("/[[:blank:]]+/", " ", $stats);           // Remove double spaces to make it easier to extract values with explode()
+            $stats = str_replace(array("\r\n", "\n\r", "\r"), "\n", $stats);// Separate lines
+            $stats = explode("\n", $stats);
+            foreach ($stats as $statLine) {                                 // Separate values and find line for main CPU load
+                if ((count($statLineData = explode(" ", trim($statLine))) >= 5) && ($statLineData[0] == "cpu")) {
+                    return [
+                        $statLineData[1],
+                        $statLineData[2],
+                        $statLineData[3],
+                        $statLineData[4],
+                    ];
                 }
             }
         }
@@ -61,15 +59,26 @@ class System extends Helper
     }
 
     /**
+     * Just returns how many total running tasks there are, minus the task list command
+     * 
+     * @return type
+     */
+    public function taskCount() {
+        @exec('ps -e',$result);
+        return count($result)-1;
+    }
+    /**
      * Counts the number of times 
      * 
      * @param string $target
      * @return type
      */
     public function threadCount($target) {
-        if ($result = (int)shell_exec('grep -aux | grep -c '.$target)) {
+        
+        if ($result = (int)shell_exec('ps -aux | grep -c "'.$target.'"')) {
             $result--;                                                          //Must remove the observation for running grep
         }
+        print("CNT: ".$result."\n");
         return $result;
     }
     
@@ -77,7 +86,7 @@ class System extends Helper
      * Returns server load in percent (just number, without percent sign)
      * @return type
      */
-    public function getServerLoad() {
+    public function serverLoad() {
         $load = null;
         if (stristr(PHP_OS, "win")) {
             $cmd = "wmic cpu get loadpercentage /all";
@@ -92,6 +101,7 @@ class System extends Helper
             }
         } else {
             if (is_readable("/proc/stat")) {
+                
                 $statData1 = $this->serverLoadLinuxData();
                 sleep(1);
                 $statData2 = $this->serverLoadLinuxData();
@@ -138,21 +148,16 @@ class System extends Helper
             }
         } else {
             if (is_readable("/proc/meminfo")) {
-                if ($stats = @file_get_contents("/proc/meminfo")) {
+                if ($stats = file_get_contents("/proc/meminfo")) {
                     $stats = explode("\n", str_replace(array("\r\n", "\n\r", "\r"), "\n", $stats)); // Separate lines
-                    
                     foreach ($stats as $statLine) {
                         $statLineData = explode(":", trim($statLine));          // Separate values and find correct lines for total and free mem
-
-                        
                         if (count($statLineData) == 2 && trim($statLineData[0]) == "MemTotal") { // Total memory
                             $memoryTotal = trim($statLineData[1]);
                             $memoryTotal = explode(" ", $memoryTotal);
                             $memoryTotal = $memoryTotal[0];
                             $memoryTotal *= 1024;  // convert from kibibytes to bytes
                         }
-
-                        
                         if (count($statLineData) == 2 && trim($statLineData[0]) == "MemFree") { // Free memory
                             $memoryFree = trim($statLineData[1]);
                             $memoryFree = explode(" ", $memoryFree);
@@ -160,13 +165,16 @@ class System extends Helper
                             $memoryFree *= 1024;  // convert from kibibytes to bytes
                         }
                     }
+                } else {
+                    print("No stats\n");
                 }
+            } else {
+                print("/proc/meminfo not readable\n");
             }
         }
-
         return (is_null($memoryTotal) || is_null($memoryFree)) 
                 ? ['0','0','0%'] 
-                : [ "total" => $this->formatFileSize($memoryTotal), "free" => $this->formatFileSize($memoryFree),"percentage" => (100 - ($memoryFree * 100 / $memoryTotal)).'%'];
+                : [ "total" => $this->formatFileSize($memoryTotal), "free" => $this->formatFileSize($memoryFree),"used" => round(100 - ($memoryFree * 100 / $memoryTotal))];
     }
 
     /**

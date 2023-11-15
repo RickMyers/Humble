@@ -9,5 +9,6 @@
     "landing_page": "\/humble\/home\/page",
     "author": "rick@humbleprogramming.com",
     "destination_folder": "c:\\var\\www\\Humble",
-    "serial_number": "JSFQ-VSYF-QRKQ-CJQQ"
+    "serial_number": "JSFQ-VSYF-QRKQ-CJQQ",
+    "hub_port": "3090"
 }
