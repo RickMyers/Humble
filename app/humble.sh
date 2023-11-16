@@ -1,2 +1,2 @@
 #!/bin/bash
-php CLI.php $1
+php CLI.php $1 $@

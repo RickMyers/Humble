@@ -77,7 +77,8 @@ if (!count($argv ?? []) && (count($args ?? []))) {
     $argv = $args;  //not called from command line but included by another program so we are faking it
 }
 $args               = [];                                                       //declaring global variable
-$available_commands = aggregateDirectories(dir('cli'));                         //
+$available_commands = aggregateDirectories(dir('cli'));   
+
 if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         //pop program name and grab the command they entered
     if (strtolower($entered_command === 'help')) {
         printHelp($available_commands);
@@ -99,8 +100,6 @@ if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         
                     $files = [
                         'classes'   => 'cli/'.$include.'/'.$include.'.php'
                     ];
-                    //print_r($options);
-
                     foreach ($files as $type => $file) {
                         if (file_exists($file)) {
                             require_once $file;

@@ -1,2 +1,2 @@
 #!/bin/bash
-php Humble.php $1
+php CLI.php $1 $@

@@ -99,6 +99,7 @@ HDR;
                 if ($debug) {
                     \Log::console($node);
                 }
+                //print('Workflow Error: Component '.$node['text']." [".$node['element'].'] has not been configured. Disable associated Workflow'."\n");
                 throw new \Exceptions\UnconfiguredException($node['text']." [".$node['element'].'] has not been configured',12);
             }
         }

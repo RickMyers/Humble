@@ -62,6 +62,12 @@
             .administration-mini-icon {
                  margin-left: auto; margin-right: auto; font-size: .8em;  padding: 10px; text-align: center
             }
+            .server-status {
+                float: right; width: 100px; background-color: gray; color: black; border: 1px solid #bbb
+            }
+            .server-status-desc {
+                font-size: .6em; font-family: monospace; padding-right: 5px
+            }
         </style>
         <script type="text/javascript">
             var UseTranparentWindows = '{{ settings.getTransparentWindows() }}';
@@ -107,7 +113,21 @@
 
             <div id='main-container'>
                 <div id='navigation-bar'>
-                    <div id='landing-clock' class='landing-clock'></div>
+                    <div id='admin-clock' class='admin-clock'></div>
+                    <div id='server_status' class='server-status'>
+                        <table cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <td>12%</td>
+                                <td>13/31</td>
+                                <td>9/14</td>
+                            </tr>
+                            <tr>
+                                <td class="server-status-desc">Load</td>
+                                <td class="server-status-desc">Memory</td>
+                                <td class="server-status-desc">Threads</td>
+                            </tr>
+                        </table>
+                    </div>
                     <ul style='position: relative; z-index: 3'><!-- humble_logo_white.png -->
                        <li style='padding-top: 6px'><img src='/images/humble/djikstra_light.png' style='height: 30px; position: relative; top: 3px; left: 5px' /></li>
                        <li class='active'><a href='#'>Places</a>

@@ -42,7 +42,7 @@ class System extends Helper
     protected function serverLoadLinuxData() {
         if ($stats = @file_get_contents("/proc/stat")) {
             $stats = preg_replace("/[[:blank:]]+/", " ", $stats);           // Remove double spaces to make it easier to extract values with explode()
-            $stats = str_replace(array("\r\n", "\n\r", "\r"), "\n", $stats);// Separate lines
+            $stats = str_replace(["\r\n", "\n\r", "\r"], "\n", $stats);// Separate lines
             $stats = explode("\n", $stats);
             foreach ($stats as $statLine) {                                 // Separate values and find line for main CPU load
                 if ((count($statLineData = explode(" ", trim($statLine))) >= 5) && ($statLineData[0] == "cpu")) {
@@ -78,7 +78,6 @@ class System extends Helper
         if ($result = (int)shell_exec('ps -aux | grep -c "'.$target.'"')) {
             $result--;                                                          //Must remove the observation for running grep
         }
-        print("CNT: ".$result."\n");
         return $result;
     }
     
@@ -173,7 +172,7 @@ class System extends Helper
             }
         }
         return (is_null($memoryTotal) || is_null($memoryFree)) 
-                ? ['0','0','0%'] 
+                ? ['0','0','0'] 
                 : [ "total" => $this->formatFileSize($memoryTotal), "free" => $this->formatFileSize($memoryFree),"used" => round(100 - ($memoryFree * 100 / $memoryTotal))];
     }
 
