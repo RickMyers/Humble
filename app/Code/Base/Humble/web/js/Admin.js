@@ -13,10 +13,6 @@ var Administration = (function () {
                     return text.replace(/[A-Za-z0-9]/g, translate)
                 }
                 return {
-                    init: function () {
-                        Heartbeat.register('humble',TRUE,'/humble/system/status',function (res) { console.log(res) },1,{});
-                        console.log('admin init');
-                    },
                     add: {
                         package: function () {
                             var val = prompt("Please enter a new documentation package");
@@ -416,10 +412,6 @@ var Administration = (function () {
                     init:   function () {
                         Desktop.init(Desktop.enable);
                         Desktop.semaphore.init();
-                       // new EasyEdits('/web/edits/newmodule.json','newmodule');
-                      //  new EasyEdits('/web/edits/newcomponent.json','newcomponent');
-                       // new EasyEdits('/web/edits/newcontroller.json','newcontroller');
-                      //  new EasyEdits('/web/edits/newpackage.json','newpackage');
                         $(window).resize(function () {
                             $('#widgets-column').height($(window).height() - $E('navigation-bar').offsetHeight - $E('humble-footer').offsetHeight);
                             $(document).css('overflow','hidden');
@@ -428,6 +420,10 @@ var Administration = (function () {
                             $('#modules_list').width($(window).width() - $E('widgets-column').offsetWidth - 20);
                             $('#admin-lightbox').width($(document).width()).height($(document).height());
                         }).resize();
+                        Heartbeat.register('humble',true,'systemStatus',function (res) { console.log(res) },1,{});
+                        Heartbeat.register('humble',true,'systemCheck',function (res) { console.log(res) },1,{});
+                        Heartbeat.init();
+                        console.log('admin init');
                     },
                     action: function (action,pkg,module) {
                         var ao = new EasyAjax('/humble/admin/'+action);
@@ -543,5 +539,3 @@ var Administration = (function () {
                     }
                 }
             })();
-//            Administration.init();
-            $(window).ready(Administration.init);                               //when page is ready, begin!

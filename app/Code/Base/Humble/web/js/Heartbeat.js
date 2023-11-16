@@ -13,7 +13,7 @@
  *
  */
 var Heartbeat = (function ($) {
-    var period      = 15000;    //default to a heartbeat every 15 seconds...but it won't fire unless something requires it
+    var period      = 5000;    //default to a heartbeat every 15 seconds...but it won't fire unless something requires it
     var pulseTimer  = null;     //timer reference
     var beats       = {};       //keeps a record
     var refs        = {};       //hash array of what is currently being polled back to the server
@@ -133,7 +133,7 @@ var Heartbeat = (function ($) {
                 for (var j in args) {
                     opts[args[j]] = Argus.singleton.get(args[j]);
                 }
-                (new EasyAjax('/argus/actions/heartbeat')).add('beats',JSON.stringify(transport)).add('arguments',JSON.stringify(opts)).then(function (response) {
+                (new EasyAjax('/humble/admin/poll')).add('beats',JSON.stringify(transport)).add('arguments',JSON.stringify(opts)).then(function (response) {
                     try {
                         var responses = JSON.parse(response);
                         if (responses) {

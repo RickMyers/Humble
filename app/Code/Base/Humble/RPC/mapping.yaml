@@ -1,14 +1,19 @@
 ---
-currentWeather  :
-  url             : https://weather-ydn-yql.media.yahoo.com/forecastrss
+systemStatus :
+  url             : /humble/system/status
   api-key         :
-  api-var         :
-  arguments       : [p]
-  method          : GET
-openWeatherAPI  :
-  url             : http://weather.yahooapis.com/forecastrss
+  api-var         : 
+  blocking        : off
+  arguments       : 
+            sessionId :
+  method          : POST
+systemCheck :
+  url             : /humble/system/check
   api-key         :
-  api-var         : appid
-  arguments       : [q]
-  method          : GET
+  api-var         : 
+  blocking        : off
+  arguments       : 
+            sessionId : 
+  method          : POST  
+ 
     

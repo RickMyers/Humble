@@ -342,6 +342,9 @@ class Model implements HumbleComponent
 //      curl_setopt($ch, CURLOPT_FAILONERROR, true);
 //      curl_setopt($ch, CURLOPT_AUTOREFERER, true);
         $res 	= curl_exec($ch);
+        if (curl_errno($ch)) {
+            Log::error('CURL Error: '.curl_error($ch));
+        }        
     	$info 	= curl_getinfo($ch);
 
         if ($sessionControl) {

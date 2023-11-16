@@ -30,6 +30,13 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <description>Retrieves information about the running environment including usage and thread counts</description>
             <model namespace="humble" class="monitor" id='monitor' />
         </action>
+        
+        <!-- ########################################################################################## -->
+
+        <action name="check" response="true">
+            <description>Retrieves information about the running environment including usage and thread counts</description>
+            <output text="I am here" />
+        </action>        
                                 
         <!-- ########################################################################################## -->
 
