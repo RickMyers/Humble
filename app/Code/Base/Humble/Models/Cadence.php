@@ -93,7 +93,7 @@ class Cadence extends Model
             exec('nohup php Cadence.php > /dev/null &');
             $message = "Cadence Started...";
             $this->_RC(0);
-           }
+        }
         return $message;
      }
      
@@ -125,6 +125,16 @@ class Cadence extends Model
         return $message;
     }
     
+    public function clear() {
+        $this->_RC(8);
+        $message = "PID Not Found";
+        if (file_exists('cadence.pid')) {
+            @unlink('cadence.pid');
+            $message = "PID Removed";
+            $this->_RC(0);
+        }
+        return $message;
+    }
     /**
      * Restarts the poller
      */

@@ -31,7 +31,6 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             <model namespace="humble" class="cadence" id="cadence">
                 
             </model>
-            
         </action>
 
         <!-- ############################################################### -->
@@ -41,7 +40,6 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             <model namespace="humble" class="cadence" id="cadence" >
                 
             </model>
-            
         </action>
 
         <!-- ############################################################### -->
@@ -51,7 +49,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             <model namespace="humble" class="cadence" id="cadence" >
                 
             </model>
-            
+        </action>
+        <!-- ############################################################### -->
+
+        <action name="clear" output="JSON">
+            <description>Removes the PID and CMD file</description>
+            <model namespace="humble" class="cadence" id="cadence" >
+                
+            </model>
         </action>
         
         <!-- ############################################################### -->
@@ -61,7 +66,6 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             <model namespace="humble" class="cadence" id="cadence">
                 
             </model>
-            
         </action>
 
     </actions>

@@ -37,12 +37,12 @@ var Heartbeat = (function ($) {
         },
         register: function (namespace,element,resource,callback,interval,arguments) {
             /**
-             * ID:  A unique ID to use in the hash array, if not provided, make one
+             * NAMESPACE: The namespace of the module that contains the virtual function to be invoked
              * ELEMENT:  A reference to an ID on an element that will signal whether to keep performing
              *           this heart beat. If the element is no longer there, then remove this ID from the
              *           hash array, unless the value passed is a boolean TRUE. TRUE means that this heartbeat
              *           should be performed regardless
-             * RESOURCE: The URI to the resource that will be invoked.  The results of the resource call will
+             * RESOURCE: The virtual function that will be invoked.  The results of the resource call will
              *           be directed to the callback
              * CALLBACK: A javascript function that will receive the result of the resource as its only argument
              * PERIOD:   (optional), this is an INTEGER multiple of the period.  So if the value is "2", you will
@@ -94,8 +94,8 @@ var Heartbeat = (function ($) {
              *
              */
             var transport = {};  //list of things to update sent to the server
-            var ctr = 0;   //how many things do we need to update?
-            var args = [];
+            var ctr       = 0;   //how many things do we need to update?
+            var args      = [];
             count++;
             for (var i in beats) {
                 try {
@@ -107,8 +107,8 @@ var Heartbeat = (function ($) {
                 } catch (ex) {
                     console.log(beats[i]);
                 }
-                if (count>=100) {
-                    count=0;  //not necessary to do more math than needed
+                if (count >= 100) {
+                    count = 0;  //not necessary to do more math than needed
                 }
                 if (count % beats[i].interval !== 0) {
                     continue;  //not time for you yet
@@ -131,7 +131,7 @@ var Heartbeat = (function ($) {
                 }
                 var opts = { };
                 for (var j in args) {
-                    opts[args[j]] = Argus.singleton.get(args[j]);
+                    opts[args[j]] = Humble.singleton.get(args[j]);
                 }
                 (new EasyAjax('/humble/admin/poll')).add('beats',JSON.stringify(transport)).add('arguments',JSON.stringify(opts)).then(function (response) {
                     try {
@@ -145,7 +145,7 @@ var Heartbeat = (function ($) {
                             }
                         }
                     } catch (ex) {
-                        
+                        console.log(ex);
                     }
                     Heartbeat.reset();
                 }).post();

@@ -161,7 +161,6 @@ Copyright humbleprogramming.com, all rights reserved
         {assign var=tab_id value=$system->browserTabId()}
         EasyAjax.always.add('browser_tab_id','{$tab_id}')
         EasyAjax.always.add('csrf_buster','{$system->csrfBuster($tab_id)}');
-        EasyAjax.always.show();
         Form.set.defaultURL('/workflow/elements/save');
         var Workflows = (function () {
             var available = { };

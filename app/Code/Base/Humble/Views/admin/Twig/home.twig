@@ -63,10 +63,13 @@
                  margin-left: auto; margin-right: auto; font-size: .8em;  padding: 10px; text-align: center
             }
             .server-status {
-                float: right; width: 100px; background-color: gray; color: black; border: 1px solid #bbb
+                float: right; min-width: 270px; background-color: gray; color: black; border: 1px solid #bbb; height: 100%; white-space: nowrap; padding: 5px;
+            }
+            .server-status-field {
+                font-size: .85em; font-family: serif; padding-right: 10px; text-align: center
             }
             .server-status-desc {
-                font-size: .6em; font-family: monospace; padding-right: 5px
+                font-size: .6em; font-family: monospace; padding-right: 5px; text-align: center; font-weight: bolder
             }
         </style>
         <script type="text/javascript">
@@ -88,7 +91,6 @@
             {% set tab_id = system.browserTabId()%}
             EasyAjax.always.add('browser_tab_id','{{ tab_id }}')
             EasyAjax.always.add('csrf_buster','{{ system.csrfBuster(tab_id) }}');
-            EasyAjax.always.show();
         </script>
     </head>
     <body style="overflow: hidden;">
@@ -115,18 +117,22 @@
                 <div id='navigation-bar'>
                     <div id='admin-clock' class='admin-clock'></div>
                     <div id='server_status' class='server-status'>
-                        <table cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                                <td>12%</td>
-                                <td>13/31</td>
-                                <td>9/14</td>
-                            </tr>
-                            <tr>
-                                <td class="server-status-desc">Load</td>
-                                <td class="server-status-desc">Memory</td>
-                                <td class="server-status-desc">Threads</td>
-                            </tr>
-                        </table>
+                        <div style="width: 30px; text-align: center; display: inline-block">
+                            <img src="/images/humble/green_status.png" title="Cadence is running" style="display: none; height: 16px; margin-left: auto; margin-right: auto" id="cadence_running"
+                            /><img src="/images/humble/red_status.png" title="Cadence is stopped" style="display: block; height: 16px; margin-left: auto; margin-right: auto" id="cadence_stopped" />
+                        </div>
+                        <div style="display: inline-block">
+                            <div class="server-status-field" id="server-cpu-load">&nbsp;</div>
+                            <div class="server-status-desc">CPU Load</div>
+                        </div>
+                        <div style="display: inline-block">
+                            <div class="server-status-field" id="server-memory-load">&nbsp;</div>
+                            <div class="server-status-desc">Memory Details</div>
+                        </div>
+                        <div style="display: inline-block">
+                            <div class="server-status-field" id="server-tasks">&nbsp;</div>
+                            <div class="server-status-desc">Threads</div>
+                        </div>                        
                     </div>
                     <ul style='position: relative; z-index: 3'><!-- humble_logo_white.png -->
                        <li style='padding-top: 6px'><img src='/images/humble/djikstra_light.png' style='height: 30px; position: relative; top: 3px; left: 5px' /></li>
@@ -188,6 +194,7 @@
                                                 <li><a href='#' onclick='Administration.cadence.action("stop"); return false'>Stop</a></li>
                                                 <li><a href='#' onclick='alert('Not working at the moment, just do "stop" and "start"'); return false'>Restart</a></li>
                                                 <li><a href='#' onclick='Administration.cadence.action("reload"); return false'>Reload</a></li>
+                                                <li><a href='#' onclick='Administration.cadence.action("clear"); return false'>Clear PID</a></li>
                                                 <li><a href='#' onclick='Administration.cadence.tune(); return false'>Tune...</a></li>
                                             </ul>
                                         </li>

@@ -1,19 +1,20 @@
 ---
 systemStatus :
-  url             : /humble/system/status
-  api-key         :
-  api-var         : 
-  blocking        : off
-  arguments       : 
-            sessionId :
-  method          : POST
-systemCheck :
-  url             : /humble/system/check
-  api-key         :
-  api-var         : 
-  blocking        : off
-  arguments       : 
-            sessionId : 
-  method          : POST  
+    url             : /humble/system/status
+    api-key         :
+    api-var         : 
+    blocking        : off
+    arguments       : 
+              sessionId :
+    method          : POST
+cadenceStatus :
+    url             : /humble/cadence/status
+    api-key         :
+    api-var         : 
+    blocking        : off
+    arguments       : 
+              sessionId :
+    method          : POST
+
  
     

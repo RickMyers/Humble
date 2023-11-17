@@ -1,19 +1,18 @@
 {
     "cpu": {
-        "percentage": ""
+        "load": "{$monitor->getServerLoad()}"
     },
     "memory": {
-        "usage": "",
-        "percentage": ""    
+        "total": "{$monitor->getMemoryTotal()}",
+        "free": "{$monitor->getMemoryFree()}",
+        "used": "{$monitor->getMemoryUsed()}",
+        "percentage": "{$monitor->getMemoryPercentage()}"    
     },
     "apache": {
-        "thread_count": ""
+        "thread_count": "{$monitor->getThreadCount()}"
     },
     "tasks": {
-        "count": ""
-    },
-    "load": {
-        "average": ""
+        "count": "{$monitor->getTaskCount()}"
     },
     "uptime": {
         "duration": ""

@@ -3,7 +3,7 @@
 {
     {% for id,result in results %}
         {% if (comma) %},{% endif %}
-        "{{ id }}": {{ result|json_encode() }}{%set comma = true %}
+        "{{ id }}": {{ result|json_encode()|raw }}{%set comma = true %}
     {% endfor %}
 }
 

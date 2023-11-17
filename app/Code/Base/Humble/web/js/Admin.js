@@ -35,9 +35,8 @@ var Administration = (function () {
                         action: function (action) {
                             if (action) {
                                 (new EasyAjax('/humble/cadence/'+action)).then(function (response) {
-                                    alert(response);
                                     response = JSON.parse(response);
-                                    console.log(response);
+                                    alert(response.result+' ['+response.RC+']');
                                 }).post();
                             }
                         }
@@ -420,10 +419,24 @@ var Administration = (function () {
                             $('#modules_list').width($(window).width() - $E('widgets-column').offsetWidth - 20);
                             $('#admin-lightbox').width($(document).width()).height($(document).height());
                         }).resize();
-                        Heartbeat.register('humble',true,'systemStatus',function (res) { console.log(res) },1,{});
-                        Heartbeat.register('humble',true,'systemCheck',function (res) { console.log(res) },1,{});
+                        var f = (function () {
+                            return function (server) {
+                                server = JSON.parse(server);
+                                $('#server-memory-load').html(server.memory.used+'/'+server.memory.total+' ['+server.memory.percentage+'%]');
+                                $('#server-cpu-load').html((Math.round(server.cpu.load*1000)/1000)+'%');
+                                $('#server-tasks').html(server.apache.thread_count+'/'+server.tasks.count);
+                            }
+                        })();
+                        var g = (function () {
+                            return function (data) {
+                                var cadence = JSON.parse(data);
+                                $('#cadence_stopped').css('display',(cadence.running ? 'none' : 'block'));
+                                $('#cadence_running').css('display',(cadence.running ? 'block' : 'none'));
+                            }
+                        })();                        
+                        Heartbeat.register('humble',true,'systemStatus',f,1,{});
+                        Heartbeat.register('humble',true,'cadenceStatus',g,1,{});
                         Heartbeat.init();
-                        console.log('admin init');
                     },
                     action: function (action,pkg,module) {
                         var ao = new EasyAjax('/humble/admin/'+action);

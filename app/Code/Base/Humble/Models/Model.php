@@ -780,10 +780,10 @@ SOAP;
         $retval = null;                                                         //Will only return a null if the RPC is not found
         if ($name && $this->_RPC()) {
             if (!\Singleton::mappings()) {
-                if (!$default_mappings = Humble::cache('yaml-humble')) {
-                    Humble::cache('yaml-humble',$default_mappings = yaml_parse(file_get_contents('Code/Base/Humble/RPC/mapping.yaml')));
-                }
-                \Singleton::mappings($default_mappings); //default mappings
+               // if (!$default_mappings = Humble::cache('yaml-humble')) {
+               //     Humble::cache('yaml-humble',$default_mappings = yaml_parse(file_get_contents('Code/Base/Humble/RPC/mapping.yaml')));
+               // }
+                \Singleton::mappings(yaml_parse(file_get_contents('Code/Base/Humble/RPC/mapping.yaml'))); //default mappings
             }
             if (strtolower($this->_namespace()) !== 'humble') {
                 if ($me = Humble::getModule($this->_namespace())) {

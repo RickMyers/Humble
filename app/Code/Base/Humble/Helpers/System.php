@@ -7,7 +7,7 @@ use Environment;
  *
  * System Utility Calls
  *
- * Used to check CPU/Memory things
+ * Used to check CPU/Memory things, based on someone else's code (not sure who)
  *
  * PHP version 7.0+
  *
@@ -41,10 +41,10 @@ class System extends Helper
      */
     protected function serverLoadLinuxData() {
         if ($stats = @file_get_contents("/proc/stat")) {
-            $stats = preg_replace("/[[:blank:]]+/", " ", $stats);           // Remove double spaces to make it easier to extract values with explode()
-            $stats = str_replace(["\r\n", "\n\r", "\r"], "\n", $stats);// Separate lines
+            $stats = preg_replace("/[[:blank:]]+/", " ", $stats);               // Remove double spaces to make it easier to extract values with explode()
+            $stats = str_replace(["\r\n", "\n\r", "\r"], "\n", $stats);         // Separate lines
             $stats = explode("\n", $stats);
-            foreach ($stats as $statLine) {                                 // Separate values and find line for main CPU load
+            foreach ($stats as $statLine) {                                     // Separate values and find line for main CPU load
                 if ((count($statLineData = explode(" ", trim($statLine))) >= 5) && ($statLineData[0] == "cpu")) {
                     return [
                         $statLineData[1],
@@ -74,7 +74,6 @@ class System extends Helper
      * @return type
      */
     public function threadCount($target) {
-        
         if ($result = (int)shell_exec('ps -aux | grep -c "'.$target.'"')) {
             $result--;                                                          //Must remove the observation for running grep
         }
@@ -100,11 +99,10 @@ class System extends Helper
             }
         } else {
             if (is_readable("/proc/stat")) {
-                
                 $statData1 = $this->serverLoadLinuxData();
                 sleep(1);
                 $statData2 = $this->serverLoadLinuxData();
-                if ((!is_null($statData1)) &&(!is_null($statData2))) {
+                if ((!is_null($statData1)) && (!is_null($statData2))) {
                     $statData2[0] -= $statData1[0];
                     $statData2[1] -= $statData1[1];
                     $statData2[2] -= $statData1[2];
@@ -173,7 +171,7 @@ class System extends Helper
         }
         return (is_null($memoryTotal) || is_null($memoryFree)) 
                 ? ['0','0','0'] 
-                : [ "total" => $this->formatFileSize($memoryTotal), "free" => $this->formatFileSize($memoryFree),"used" => round(100 - ($memoryFree * 100 / $memoryTotal))];
+                : [ "used" => $this->formatFileSize($memoryTotal-$memoryFree), "total" => $this->formatFileSize($memoryTotal), "free" => $this->formatFileSize($memoryFree),"percent" => round(100 - ($memoryFree * 100 / $memoryTotal))];
     }
 
     /**
