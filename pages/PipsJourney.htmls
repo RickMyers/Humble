@@ -1,0 +1,22 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Rick.htmls" title="Ricks Journey" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>PipsTale - A Programmers Journey</div>
+
+Becoming a better programmer, just like becoming a better person, is a journey.  No two journeys are the same, but there's always the chance to add to our journey and learn something from an other person's journey.<br /><br />
+Click on the image below to read about Pip's Journey, and maybe there's a nugget of wisdom that you can take away from his journey...<br /><br /><br />
+
+<center>
+<a href='/Presentations/PipsTale.pdf' target='_BLANK' style='border: 0px; margin-left: auto; margin-right: auto; position: relative'>
+<img src="/web/images/Pip.png" style=" position: relative" title='Howdy!'/>
+</a>
+</center>
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->

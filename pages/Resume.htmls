@@ -1,0 +1,89 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<style type="text/css">
+    .resume-education-university {
+        letter-spacing: 2px; font-size: .75em; font-family: monospace; margin-bottom: 20px
+    }
+    .resume-block {
+        width: 49.5%; box-sizing: border-box; display: inline-block;
+    }
+    .resume-address {
+        letter-spacing: 2px; font-size: .85em; font-family: monospace
+    }
+    .wh-entry {
+        clear: both;
+    }
+    .wh-left-column {
+        
+    }
+    .wh-center-column {
+        
+    }
+    .wh-right-column {
+        
+    }
+</style>
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Rick.htmls" title="" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+ <div class='humble-topic-header'>Contact</div>
+ <div class="resume-block">
+     <div class="resume-address">Rick Myers</div>
+     <div class="resume-address">4120 Browndeer Circle</div>
+     <div class="resume-address">Las Vegas, NV, 89129</div>
+ </div>
+ <div class="resume-block">
+     <div class="resume-address">
+         <div style="width: 30%; display: inline-block">
+             <b>Phone:</b>
+         </div>
+         <div style="width: 60%; display: inline-block">
+             727-249-2205
+         </div>
+     </div>
+     <div class="resume-address">
+         <div style="width: 30%; display: inline-block; vertical-align: top">
+             <b>Email(s):</b>
+         </div>
+         <div style="width: 60%; display: inline-block">
+             <a href="mailto:rick@humbleprogramming.com?subject=Inquiry">rick@humbleprogramming.com</a><br />
+             <a href="mailto:rickmyers1969@gmail.com?subject=Inquiry">rickmyers1969@gmail.com</a>
+         </div>
+     </div>
+ </div>
+<div class='humble-topic-header'>Synopsis</div>
+A Full-Stack Web Developer and proven innovator using many technologies on diverse platforms with particular expertise in Healthcare, Education, and Telephony.  I have 14 years of experience in Healthcare with specializations in HEDIS, EDI, Claim Adjudication, Outreach
+and Telemedicine.  Additionally, I have spent 12 years in VOIP and other Telephony areas, and 5 years in Education and Training.
+
+<div class='humble-topic-header'>Skills</div>
+
+<div class='humble-topic-header'>Work History</div>
+<div class="">
+    <div class="wh-entry">
+        <div class="wh-left-column">
+        </div>
+        <div class="wh-center-column">
+        </div>
+        <div class="wh-right-column">
+        </div>
+    </div>
+</div>
+
+<div class='humble-topic-header'>Education</div>
+
+B.S. Computer Science, 1992
+<div class="resume-education-university">Edinboro University of Pennsylvania</div>
+B.A. Mathematics, 1993
+<div class="resume-education-university">Edinboro University of Pennsylvania</div>
+
+<div class='humble-topic-header'>References</div>
+* Available upon request
+</div>
+
+
+<!--#include virtual="/pages/includes/footer.html" -->
