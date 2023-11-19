@@ -25,6 +25,19 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         </action>
        
         <!-- ########################################################################################## -->
+        
+        <action name="poll" blocking="off"> 
+            <description>This is the periodic heartbeat</description>
+            <model namespace="humble" class="manager" id="application" response="TRUE">
+                <parameter name="session_user_id" source="post" default="No" />
+                <parameter name="beats"           source="post" default="[]" />
+                <parameter name="id"              source="session" value="uid"    default="" />
+                <parameter name="user_id"         source="session" value="uid"    default="" />
+                <parameter name="arguments"       source="post"  default="" />
+            </model>
+        </action>    
+               
+        <!-- ########################################################################################## -->
 
         <action name="status" output="JSON">
             <description>Retrieves information about the running environment including usage and thread counts</description>

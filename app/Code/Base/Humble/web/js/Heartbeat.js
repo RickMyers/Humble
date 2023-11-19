@@ -4,16 +4,20 @@
  * are added to the page, they can add their own poll to the periodic poll, since
  * this is much more efficient.
  *
+ * FORM:
+ *
+ *      Heartbeat.register(namespace,element id or TRUE,virtual function name, callback, period);
+ *
  * SAMPLE:
  *
- *      Heartbeat.register(EasyAjax.getUniqueId(),TRUE,'/namespace/service/poll', function () {}, 2);
+ *      Heartbeat.register('humble',TRUE,'systemCheck',function (response) { console.log(response); }, 2);
  *
  *
  * @type Heartbeat_L4.HeartbeatAnonym$0|Function
  *
  */
 var Heartbeat = (function ($) {
-    var period      = 5000;    //default to a heartbeat every 15 seconds...but it won't fire unless something requires it
+    var period      = 5000;    //default to a heartbeat every 5 seconds...but it won't fire unless something requires it
     var pulseTimer  = null;     //timer reference
     var beats       = {};       //keeps a record
     var refs        = {};       //hash array of what is currently being polled back to the server
@@ -23,11 +27,13 @@ var Heartbeat = (function ($) {
         responses: {
 
         },
-        init: function (default_period) {
+        init: function (default_period,heartbeat_indicator) {
             default_period = (default_period) ? default_period : period;
-            pulseTimer = window.setTimeout(Heartbeat.pulse,default_period);
-           // indicator  = $E(heartbeat_indicator);
-           // $(indicator).fadeOut();
+            pulseTimer     = window.setTimeout(Heartbeat.pulse,default_period);
+            indicator      = heartbeat_indicator ? document.getElementById(heartbeat_indicator) : false;
+            if (indicator) {
+                $(indicator).fadeOut();
+            }
         },
         stop: function () {
             window.clearTimeout(pulseTimer);
@@ -54,8 +60,8 @@ var Heartbeat = (function ($) {
                 //this poll is currently active, don't add a second instance
                 return;
             }
-            var id      = EasyAjax.uniqueId(13);
-            interval    = (interval)  ? interval : 1;
+            var id      = EasyAjax.uniqueId(13);                                //Every "beat" needs a unique id
+            interval    = (interval)  ? interval : 1;                           //Set interval or default to 1
             namespace   = (namespace) ? namespace : 'humble';                   //don't have namespace? use the default
             if (element !== true) {                                             //if element is true, then always run
                 element = (typeof element === 'string') ? document.getElementById(element) : element;
@@ -66,7 +72,7 @@ var Heartbeat = (function ($) {
              */
             if (arguments) {
                 for (var j in arguments) {
-                    Humble.singleton.set(arguments[j],'');
+                    Humble.singleton.set(arguments[j],'');                      //Store them once...
                 }
             }
             beats[id] = {
@@ -84,7 +90,9 @@ var Heartbeat = (function ($) {
         },
         reset: function () {
             pulseTimer = window.setTimeout(Heartbeat.pulse,period);
-            $('#'+indicator.id).fadeOut();
+            if (indicator) {
+                $('#'+indicator.id).fadeOut();
+            }
         },
         pulse: function () {
             /*
@@ -93,12 +101,14 @@ var Heartbeat = (function ($) {
              * unless the value of element is TRUE, which means "do this regardless"...
              *
              */
-            var transport = {};  //list of things to update sent to the server
-            var ctr       = 0;   //how many things do we need to update?
+            var transport = {};                                                 //list of things to update sent to the server
+            var ctr       = 0;                                                  //how many things do we need to update?
             var args      = [];
             count++;
             for (var i in beats) {
                 try {
+                    //If this beat is tied to a page element, like a stock ticker,
+                    //if the element isn't in the page anymore, delete the beat
                     if ((beats[i].element) && (beats[i].element !== true) && (!document.getElementById(beats[i].element.id))) {
                         delete refs[beats[i].resource];                         //deregister that this poll is active
                         delete beats[i];                                        //whatever you were updating is no longer on the page, so bye bye!
@@ -108,10 +118,10 @@ var Heartbeat = (function ($) {
                     console.log(beats[i]);
                 }
                 if (count >= 100) {
-                    count = 0;  //not necessary to do more math than needed
+                    count = 0;                                                  //not necessary to do more math than needed
                 }
                 if (count % beats[i].interval !== 0) {
-                    continue;  //not time for you yet
+                    continue;                                                   //not time for you yet
                 }
                 ctr++;
                 transport[i] = {
@@ -127,13 +137,13 @@ var Heartbeat = (function ($) {
             }
             if (ctr>0) {
                 if (indicator) {
-                    $('#'+indicator.id).fadeIn();
+                    $('#'+indicator.id).fadeIn();                               //We have work to do so show beat indicator
                 }
                 var opts = { };
                 for (var j in args) {
                     opts[args[j]] = Humble.singleton.get(args[j]);
                 }
-                (new EasyAjax('/humble/admin/poll')).add('beats',JSON.stringify(transport)).add('arguments',JSON.stringify(opts)).then(function (response) {
+                (new EasyAjax('/humble/system/poll')).add('beats',JSON.stringify(transport)).add('arguments',JSON.stringify(opts)).then(function (response) {
                     try {
                         var responses = JSON.parse(response);
                         if (responses) {
