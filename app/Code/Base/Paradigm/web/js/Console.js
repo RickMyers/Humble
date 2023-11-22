@@ -78,7 +78,7 @@ Paradigm.console = (function () {
                         return false;
                     }
                 })(console_app);
-                (new EasyAjax('/paradigm/console/init')).add('window_id',console_app.id).then(function (response) {
+                (new EasyAjax('/paradigm/console/init')).add('window_id',console_app.id).then((response) => {
                     console_app.set(response);
                     console_ref = $E('paradigm_console');
                     console_ref.style.contentEditable = false;
@@ -148,7 +148,7 @@ Paradigm.console = (function () {
                     switch (text.toLowerCase()) {
                         case 'test' :
                             if (console_element) {
-                                (new EasyAjax('/paradigm/test/init')).add('component_id',console_element.id).then(function (response) {
+                                (new EasyAjax('/paradigm/test/init')).add('component_id',console_element.id).then((response) => {
                                     console_test = JSON.parse(response);
                                     console.log(console_test);
                                 }).post();
@@ -162,12 +162,12 @@ Paradigm.console = (function () {
                     } 
                     break;
                 case "time" :
-                    (new EasyAjax('/paradigm/console/time')).then(function (response) {
+                    (new EasyAjax('/paradigm/console/time')).then((response) => {
                         Paradigm.console.add(updateResponse(response),'',1);
                     }).post();
                     break;
                 case "status" :   
-                    (new EasyAjax('/paradigm/console/status')).then(function (response) {
+                    (new EasyAjax('/paradigm/console/status')).then((response) => {
                         Paradigm.console.add(updateResponse(response),'',1);
                     }).post();
                     break;
@@ -179,13 +179,13 @@ Paradigm.console = (function () {
                 case "inspect"      :
                     break;
                 case "whoami"       :
-                    (new EasyAjax('/paradigm/console/whoami')).then(function (response) {
+                    (new EasyAjax('/paradigm/console/whoami')).then((response) => {
                         Paradigm.console.reply(updateResponse(response),'',1);
                     }).post();
                     break;
                 case "search"       :   
                     Paradigm.console.add(command + ' '+text+'\n','',1);
-                    (new EasyAjax('/paradigm/console/search')).add('term',text).then(function (response) {
+                    (new EasyAjax('/paradigm/console/search')).add('term',text).then((response) => {
                         Paradigm.console.reply(response,'',1);
                     }).post();
                     break;
@@ -197,7 +197,7 @@ Paradigm.console = (function () {
                     Paradigm.actions.save();
                     break;
                 case "activate"     :  
-                    (new EasyAjax('/paradigm/workflow/activate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then(function (response) {
+                    (new EasyAjax('/paradigm/workflow/activate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then((response) => {
                         Paradigm.console.add(updateResponse(response),'',1);
                     }).post();
                     break;
@@ -210,7 +210,7 @@ Paradigm.console = (function () {
                     break;
                 case "deactivate"   :
                 case "inactivate"   :   
-                    (new EasyAjax('/paradigm/workflow/inactivate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then(function (response) {
+                    (new EasyAjax('/paradigm/workflow/inactivate')).add('workflow',Paradigm.actions.get.mongoWorkflowId()).then((response) => {
                         Paradigm.console.add(updateResponse(response),'',1);
                     }).post();
                     break;
@@ -253,7 +253,7 @@ Paradigm.console = (function () {
                     if (Paradigm.console.service.format == 'json') {
                         var ao = new EasyAjax(Paradigm.console.service.url);
                         ao.setQueryString(JSON.stringify(Paradigm.console.service.arguments));
-                        ao.then(function (response) {
+                        ao.then((response) => {
                             var winId = Desktop.semaphore.checkout();
                             var win   = Desktop.window.list[winId];
                             win.content.style.overflow = 'auto';
@@ -274,7 +274,7 @@ Paradigm.console = (function () {
                     } else {
                         var ao = new EasyAjax(Paradigm.console.service.url);
                         ao.addRequestParameters(Paradigm.console.service.arguments)
-                        ao.then(function (response) {
+                        ao.then((response) => {
                             var winId = Desktop.semaphore.checkout();
                             var win   = Desktop.window.list[winId];
                             win._title('OUTPUT | Paradigm');

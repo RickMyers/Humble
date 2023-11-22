@@ -47,7 +47,7 @@
                     $E('file-export-form').submit();
                 }
             } else {
-                (new EasyAjax('/paradigm/workflow/export')).add('file',file).add('id','{$id}').add('windowId','{$windowId}').add('destination_id',$('#export-target-{$windowId}').val()).then(function (response) {
+                (new EasyAjax('/paradigm/workflow/export')).add('file',file).add('id','{$id}').add('windowId','{$windowId}').add('destination_id',$('#export-target-{$windowId}').val()).then((response) => {
                     alert((response) ? response : "Exported, I think...");
                     Desktop.window.list['{$windowId}']._close();
                 }).post();

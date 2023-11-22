@@ -47,14 +47,14 @@
         new EasyEdits('/edits/paradigm/targets','export-targets');
         $('.target-token').on('change',function (evt) {
             let token_id = evt.target.getAttribute('token_id');
-            (new EasyAjax('/paradigm/workflow/updatetarget')).add('token_id',token_id).add('token',genToken()).then(function (response) {
+            (new EasyAjax('/paradigm/workflow/updatetarget')).add('token_id',token_id).add('token',genToken()).then((response) => {
                 $('#paradigm_manage_targets').html(response);
             }).post();
         });
         $('.target-delete').on('click',function (evt) {
             let token_id = evt.target.getAttribute('token_id');
             if (confirm('Delete that target?')) {
-                (new EasyAjax('/paradigm/workflow/deletetarget')).add('token_id',token_id).then(function (response) {
+                (new EasyAjax('/paradigm/workflow/deletetarget')).add('token_id',token_id).then((response) => {
                     $('#paradigm_manage_targets').html(response);
                 }).post();
             }

@@ -38,7 +38,7 @@
     Form.intercept($('#config-begin-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
     $('#test_link_for_{$data.id}').on("click",function (evt) {
         if (confirm('Would you like to run this workflow?')) {
-            (new EasyAjax('/paradigm/workflow/run')).add('workflow_id','{$data.id}').then(function (response) {
+            (new EasyAjax('/paradigm/workflow/run')).add('workflow_id','{$data.id}').then((response) => {
                 alert('Done, output is in the console.');
                 console.log(response);
             }).post();

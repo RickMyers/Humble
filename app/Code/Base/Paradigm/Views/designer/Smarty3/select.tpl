@@ -40,7 +40,7 @@
 </table>
 <script type="text/javascript">
     Pagination.init('form-preview',function (page,rows) {
-       (new EasyAjax('/paradigm/designer/forms')).add('page',page).add('rows',rows).then(function (response) {
+       (new EasyAjax('/paradigm/designer/forms')).add('page',page).add('rows',rows).then((response) => {
            $('#designer-available-forms').html(response);
            Pagination.set('form-preview',this.getPagination());
        }).get();

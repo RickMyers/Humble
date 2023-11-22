@@ -46,6 +46,7 @@ class Unity
     protected $_in            = [];
     protected $_betweenField  = '';
     protected $_between       = '';
+    protected $_iv            = 'Humble Framework';     //encryption initialization vector
     public    $_lastResult    = [];
     protected $_noLimitQuery  = '';     //Current query before pagination is added
 
@@ -60,7 +61,21 @@ class Unity
     public function __construct() {
         $this->_db = Humble::getDatabaseConnection($this);
     }
-
+    
+    /**
+     * Can set the Initialization Vector for SSL encryption/decryption or just return the current value for that vector
+     * 
+     * @param mixed $vector
+     * @return string
+     */
+    public function iv($vector=false) {
+        if ($vector) {
+            $this->_iv = $vector;
+            return $this;
+        }
+        return $this->_iv;
+    }
+    
     /**
      *
      */

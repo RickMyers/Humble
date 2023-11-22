@@ -100,7 +100,7 @@ function EasyEdits(source, ref)
         var async = callback ? true : false;
         var me    = this;
         if (JSONsource)	{
-            (new EasyAjax(JSONsource)).then(function (response) {
+            (new EasyAjax(JSONsource)).then((response) => {
                 me.editsJSON = response
                 if (callback) {
                     callback.apply(me,[response]);

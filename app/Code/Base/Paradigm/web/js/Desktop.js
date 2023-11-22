@@ -173,7 +173,7 @@ function DesktopWindow(icon,refId) {
             this.splashScreen.style.zIndex = '9000';
             this.splashScreen.fadeIn();
             var splash = (typeof(this.splash) === "function") ? this.splash() : this.splash;
-            (new EasyAjax(splash)).then(function (response) {
+            (new EasyAjax(splash)).then((response) => {
                $(me.splashScreen).html(response);
                var tt = (function (screen) {
                     return function () {
@@ -792,7 +792,7 @@ var Desktop = {
                 var icon = Desktop.icon.list[Desktop.getDesktopId(evt)];
                 var win  = Desktop.semaphore.checkout(true);
                 if (icon.data.url) {
-                    (new EasyAjax(icon.data.url)).add('window_id',win.id).then(function (response) {
+                    (new EasyAjax(icon.data.url)).add('window_id',win.id).then((response) => {
                         win._open(response)._title(icon.data.app);
                     }).get();
                 }

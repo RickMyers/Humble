@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+SMTP related actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="smtp" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="settings">
+            <description>Initial Settings Page</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

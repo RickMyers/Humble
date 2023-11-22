@@ -27,7 +27,7 @@ function secureCheck($file=[]) {
         $orm = \Humble::entity('humble/'.$_GET['type'])->setNamespace('');
     }
     $packages = array();
-
+    $production = \Environment::isProduction();
     switch ($_GET['type']) {
         case 'js':
             header('Content-Type: application/javascript');
@@ -49,10 +49,14 @@ function secureCheck($file=[]) {
                     } else {
                         $file = 'Code/'.$packages[$file['namespace']]['package'].'/'.$file['source'];
                         if (file_exists($file)) {
-                            print("\n\n// ***************** $file *************\n//\n\n");
+                            if (!$production) {
+                                print("\n\n// ***************** $file *************\n//\n\n");
+                            }
                             print(file_get_contents($file).'; ');
                         } else {
-                            \Log::console("Javascript file not found: ".$file);
+                            if (!$production) {
+                                \Log::console("Javascript file not found: ".$file);
+                            }
                         }
                     }
                 }
@@ -84,10 +88,14 @@ function secureCheck($file=[]) {
                     }
                     $file = 'Code/'.$packages[$file['namespace']]['package'].'/'.$file['source'];
                     if (file_exists($file)) {
-                        print("\n\n/***************** $file *************/\n\n");
+                        if (!$production) {
+                            print("\n\n/***************** $file *************/\n\n");
+                        }
                         print(file_get_contents($file).' ');
                     } else {
-                        \Log::console("CSS file not found: ".$file);
+                        if (!$production) {
+                            \Log::console("CSS file not found: ".$file);
+                        }
                     }
                 }
             }
@@ -101,7 +109,9 @@ function secureCheck($file=[]) {
                 if (file_exists($file)) {
                     print(file_get_contents($file));
                 } else {
-                     \Log::console("EDIT file not found: ".$file);
+                    if (!$production) {
+                        \Log::console("EDIT file not found: ".$file);
+                    }
                 }
             }
             break;

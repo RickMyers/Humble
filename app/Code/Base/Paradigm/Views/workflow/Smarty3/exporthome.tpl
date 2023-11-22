@@ -24,12 +24,12 @@
     (function () {
         let tabs = new EasyTab('paradigm_manage_sources_nav',160);
         tabs.add('Export Targets',function () {
-            (new EasyAjax('/paradigm/workflow/targets')).add('window_id','{$window_id}').then(function (response) {
+            (new EasyAjax('/paradigm/workflow/targets')).add('window_id','{$window_id}').then((response) => {
                 $('#paradigm_manage_targets').html(response);
             }).post();
         },'paradigm_manage_targets');
         tabs.add('Import Sources',function () {
-            (new EasyAjax('/paradigm/workflow/sources')).add('window_id','{$window_id}').then(function (response) {
+            (new EasyAjax('/paradigm/workflow/sources')).add('window_id','{$window_id}').then((response) => {
                 $('#paradigm_manage_sources').html(response);
             }).post();
         },'paradigm_manage_sources');

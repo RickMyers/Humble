@@ -10,7 +10,7 @@
  *
  * SAMPLE:
  *
- *      Heartbeat.register('humble',TRUE,'systemCheck',function (response) { console.log(response); }, 2);
+ *      Heartbeat.register('humble',TRUE,'systemCheck',(response) => { console.log(response); }, 2);
  *
  *
  * @type Heartbeat_L4.HeartbeatAnonym$0|Function
@@ -143,7 +143,7 @@ var Heartbeat = (function ($) {
                 for (var j in args) {
                     opts[args[j]] = Humble.singleton.get(args[j]);
                 }
-                (new EasyAjax('/humble/system/poll')).add('beats',JSON.stringify(transport)).add('arguments',JSON.stringify(opts)).then(function (response) {
+                (new EasyAjax('/humble/system/poll')).add('beats',JSON.stringify(transport)).add('arguments',JSON.stringify(opts)).then((response) => {
                     try {
                         var responses = JSON.parse(response);
                         if (responses) {

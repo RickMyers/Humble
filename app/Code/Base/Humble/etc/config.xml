@@ -74,6 +74,8 @@
                 <services />
                 <service_directory polyglot="Y" />
                 <service_parameters polyglot="Y" />
+                <system_monitor />
+                <system_variables />
                 <templaters />
                 <templates />
                 <userlog />

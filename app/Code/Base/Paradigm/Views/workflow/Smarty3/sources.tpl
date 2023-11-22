@@ -41,7 +41,7 @@
         $('.source-token').on('change',function (evt) {
             let token_id = evt.target.getAttribute('token_id');
             if (confirm('Update Security Token For That Source?')) {
-                (new EasyAjax('/paradigm/workflow/updatesourcetoken')).add('token_id',token_id).add('token',$(evt.target).val()).then(function (response) {
+                (new EasyAjax('/paradigm/workflow/updatesourcetoken')).add('token_id',token_id).add('token',$(evt.target).val()).then((response) => {
                     $('#paradigm_manage_sources').html(response)
                 }).post(); 
             }
@@ -49,7 +49,7 @@
         $('.source-delete').on('click',function (evt) {
             let token_id = evt.target.getAttribute('token_id');
             if (confirm('Delete That Import Source?')) {
-                (new EasyAjax('/paradigm/workflow/deletesourcetoken')).add('token_id',token_id).then(function (response) {
+                (new EasyAjax('/paradigm/workflow/deletesourcetoken')).add('token_id',token_id).then((response) => {
                     $('#paradigm_manage_sources').html(response)
                 }).post(); 
                 

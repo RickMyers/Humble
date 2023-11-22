@@ -43,7 +43,7 @@
                                 x.roles[x.roles.length] = element.value;
                             }
                         }
-                        (new EasyAjax('/humble/services/save')).add('data',JSON.stringify(x)).then(function (response) {
+                        (new EasyAjax('/humble/services/save')).add('data',JSON.stringify(x)).then((response) => {
                             alert(response);
                         }).post();
                     }
