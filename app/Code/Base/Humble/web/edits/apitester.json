@@ -150,7 +150,7 @@
                         "value":                "",
                         "onclick":        function () {
                             var url = ($('#server').val()) ? $('#server').val()+'/esb/api/authorization' : '/esb/api/authorization';
-                            (new EasyAjax(url)).add('api_user_id',$('#api_user_id').val()).add('api_key',$('#api_key').val()).then(function (response) {
+                            (new EasyAjax(url)).add('api_user_id',$('#api_user_id').val()).add('api_key',$('#api_key').val()).then((response) => {
                                 response = JSON.parse(response);
                                 console.log(response);
                                 if (+response.RC === 0) {
@@ -175,7 +175,7 @@
                                         ao.add($('#variable_name_'+i).val(),$('#variable_value_'+i).val());
                                     }
                                 }
-                                ao.then(function (response) {
+                                ao.then((response) => {
                                     console.log(response);
                                 }).post();
                             }

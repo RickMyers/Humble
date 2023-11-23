@@ -182,7 +182,7 @@
             "classname":    "",
             "value":        "",
             "onclick":        function () {
-                (new EasyAjax('/installtest.php')).add('dbhost',$("#dbhost").val()).add('db',$("#db").val()).add('userid',$("#userid").val()).add('password',$("#password").val()).then(function (response) {
+                (new EasyAjax('/installtest.php')).add('dbhost',$("#dbhost").val()).add('db',$("#db").val()).add('userid',$("#userid").val()).add('password',$("#password").val()).then((response) => {
                     alert(response);
                 }).post();
             }
@@ -196,7 +196,7 @@
             "classname":    "",
             "value":        "",
             "onclick":        function () {
-                (new EasyAjax('/mongotest.php')).add('mongo',$("#mongo").val()).add('mongo_userid',$('#mongo_userid').val()).add('mongo_password',$('#mongo_password').val()).then(function (response) {
+                (new EasyAjax('/mongotest.php')).add('mongo',$("#mongo").val()).add('mongo_userid',$('#mongo_userid').val()).add('mongo_password',$('#mongo_password').val()).then((response) => {
                     alert(response);
                 }).post();
             }
@@ -215,7 +215,7 @@
                     $('#installer-form-div').css('display','none');
                     $('#installer-tabs').css('display','none');
                     $('#installer-wait-div').fadeIn();
-                    (new EasyAjax('/install.php')).packageForm('installer-form').then(function (response) {
+                    (new EasyAjax('/install.php')).packageForm('installer-form').then((response) => {
                         window.setTimeout(
                             function () {
                                 window.location.href='/index.html?m=Be%20Humble.';

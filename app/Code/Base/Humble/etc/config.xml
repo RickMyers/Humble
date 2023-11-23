@@ -97,6 +97,7 @@
                 <newpackage>Humble/web/edits/newpackage.json</newpackage>
                 <newcomponent>Humble/web/edits/newcomponent.json</newcomponent>
                 <newsecret>Humble/web/edits/newsecret.json</newsecret>
+                <smtpsettings>Humble/web/edits/smtpsettings.json</smtpsettings>
                 <fetchsecret>Humble/web/edits/fetchsecret.json</fetchsecret>
                 <apitester>Humble/web/edits/apitester.json</apitester>
                 <importdata>Humble/web/edits/importdata.json</importdata>

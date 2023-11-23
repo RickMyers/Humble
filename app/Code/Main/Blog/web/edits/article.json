@@ -65,7 +65,7 @@
             required:	false,
             force:	false,
             onclick:    function (evt) {
-                (new EasyAjax('/blog/whatsnew/save')).packageForm('whats_new_article_form').then(function (response) {
+                (new EasyAjax('/blog/whatsnew/save')).packageForm('whats_new_article_form').then((response) => {
                     $('#whats_new_article_id').val(response);
                 }).post();
             },
@@ -82,7 +82,7 @@
             force:	false,
             onclick:    function (evt) {
                 if ($('#whats_new_article_id').val()) {
-                    (new EasyAjax('/blog/whatsnew/publish')).add('id',$('#whats_new_article_id').val()).then(function (response) {
+                    (new EasyAjax('/blog/whatsnew/publish')).add('id',$('#whats_new_article_id').val()).then((response) => {
                         window.location.href='/blog/whatsnew/home';
                     }).post();
                 } else {

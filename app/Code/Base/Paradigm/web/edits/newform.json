@@ -63,7 +63,7 @@
                     $('#paradigm-save-action').css('visibility','visible');
                     $('#paradigm-generate-action').css('visibility','visible');
                     var partial = $('#paradigm-partial-diagram').prop('checked') ? 'Y' : 'N';
-                    (new EasyAjax('/paradigm/diagram/create')).add('partial',partial).add('namespace',$('#paradigm-new-diagram-client').val()).add('title',$('#paradigm-new-diagram-title').val()).add('description',$('#paradigm-new-diagram-description').val()).then(function (response) {
+                    (new EasyAjax('/paradigm/diagram/create')).add('partial',partial).add('namespace',$('#paradigm-new-diagram-client').val()).add('title',$('#paradigm-new-diagram-title').val()).add('description',$('#paradigm-new-diagram-description').val()).then((response) => {
                         Paradigm.actions.set.diagramTitle($('#paradigm-new-diagram-title').val());
                         Paradigm.actions.set.diagramDescription($('#paradigm-new-diagram-description').val());
                         Paradigm.actions.set.currentDiagramId(response);

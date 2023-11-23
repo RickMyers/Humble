@@ -72,7 +72,7 @@
             "value":        "",
             "onclick":        function () {
                 if (Edits['new-db'].validate()) {
-                    (new EasyAjax('/installtest.php')).add('action','new').add('dbhost',$('#rdms-host').val()).add('userid',$('#rdms-userid').val()).add('password',$('#rdms-password').val()).add('db',$('#rdms-db').val()).then(function (response) {
+                    (new EasyAjax('/installtest.php')).add('action','new').add('dbhost',$('#rdms-host').val()).add('userid',$('#rdms-userid').val()).add('password',$('#rdms-password').val()).add('db',$('#rdms-db').val()).then((response) => {
                         alert(response);
                     }).post();
                 }

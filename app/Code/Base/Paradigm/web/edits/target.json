@@ -78,7 +78,7 @@
             /* tons of options can go here*/
             onclick:        function () {
                 if (Edits['export_target-&window_id&'].validate()) {
-                    (new EasyAjax('/paradigm/io/create')).add('target',$('#target-&window_id&').val()).add('alias',$('#alias-&window_id&').val()).add('token',$('#token-&window_id&').val()).then(function (response) {
+                    (new EasyAjax('/paradigm/io/create')).add('target',$('#target-&window_id&').val()).add('alias',$('#alias-&window_id&').val()).add('token',$('#token-&window_id&').val()).then((response) => {
                         alert('You will now need to import this security token at the target:\n\nToken: '+response+'\n\nGo to the target URL and choose the import token option from the administration menu to do this');
                     }).post();
                 }

@@ -62,7 +62,7 @@
                     form.layer.current  = false;
                     form.layer.previous = false;
                     form = JSON.stringify(form);
-                    (new EasyAjax('/paradigm/designer/save')).add('id',Designer.form.current.id).add('name',$('#save_form_name').val()).add('description',$('#save_form_description').val()).add('form',form).then(function (response) {
+                    (new EasyAjax('/paradigm/designer/save')).add('id',Designer.form.current.id).add('name',$('#save_form_name').val()).add('description',$('#save_form_description').val()).add('form',form).then((response) => {
                         Designer.windows.save._close();
                     }).post();
                 }

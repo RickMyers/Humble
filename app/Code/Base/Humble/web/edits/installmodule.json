@@ -30,7 +30,7 @@
                         "value":                "",
                         "onclick":              function () {
                             if (Edits['install_module'].validate()) {
-                                (new EasyAjax('/humble/module/install')).packageForm('install_humble_module_form').then(function (response) {
+                                (new EasyAjax('/humble/module/install')).packageForm('install_humble_module_form').then((response) => {
                                     alert(response);
                                 }).post();
                             }

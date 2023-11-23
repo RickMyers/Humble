@@ -22,6 +22,9 @@
     .wh-right-column {
         
     }
+    .gallery {
+        position: relative; display: inline-block; border: 1px solid #333; padding: 3px; width: 550px; height: 300px; background-color: silver
+    }
 </style>
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
@@ -73,6 +76,9 @@ and Telemedicine.  Additionally, I have spent 12 years in VOIP and other Telepho
         </div>
     </div>
 </div>
+<div id="gallery_1" class="gallery">
+</div>
+    
 
 <div class='humble-topic-header'>Education</div>
 
@@ -84,6 +90,16 @@ B.A. Mathematics, 1993
 <div class='humble-topic-header'>References</div>
 * Available upon request
 </div>
-
-
+<script type="module">
+    import { gallery } from '/mjs/humble/gallery.js';
+    gallery.set('gallery_1');
+    gallery.add('/web/images/resume/a1.png','image');
+    gallery.add('/web/images/resume/a2.png','image');
+    gallery.add('/web/images/resume/a3.png','image');
+    gallery.add('/web/images/resume/a4.png','image');
+    gallery.add('/web/images/resume/a5.png','image');
+    gallery.add('/web/images/resume/a6.png','image');
+    gallery.add('/web/images/resume/a7.png','image');
+    
+</script>
 <!--#include virtual="/pages/includes/footer.html" -->

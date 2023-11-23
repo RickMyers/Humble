@@ -88,7 +88,7 @@
                     ao.add('templater',$('#controller_templater').val());
                     ao.add('description',$('#controller_description').val());
                     ao.add('actionDescription',$('#action_description').val());
-                    ao.then(function (response) {
+                    ao.then((response) => {
                         alert(response);
                     }).post();
                 }

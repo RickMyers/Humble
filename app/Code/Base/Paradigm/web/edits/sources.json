@@ -55,7 +55,7 @@
             classname:      "",
             onclick:        function () {
                 if (Edits['import-sources'].validate()) {
-                    (new EasyAjax('/paradigm/workflow/newimport')).packageForm('import_export_sources_form').then(function (response) {
+                    (new EasyAjax('/paradigm/workflow/newimport')).packageForm('import_export_sources_form').then((response) => {
                         $('#paradigm_manage_sources').html(response);
                     }).post();
                 }

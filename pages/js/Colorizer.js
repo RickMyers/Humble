@@ -52,7 +52,7 @@ var Colorizer = (function (languageFile) {
                 }).get();
             }
             if (!this.code) {
-                (new EasyAjax(this.source)).then(function (response) {
+                (new EasyAjax(this.source)).then((response) => {
                     me.code = response;
                 }).get();
             }

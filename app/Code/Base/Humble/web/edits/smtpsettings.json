@@ -1,7 +1,7 @@
 {
 	"form":
 	{
-		"id":           "new_secret_form",
+		"id":           "smtp_settings_form",
 		"drawme":		false,
 		"action":		"",
 		"method":		"post",
@@ -12,8 +12,18 @@
 	[
 		{
 			"active":		true,
-			"id": 			"secret_namespace",
+			"id": 			"settings_namespace",
 			"longname":		"Namespace",
+			"type":			"select",
+			"required":		true,
+			"force":		true,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},
+		{
+			"active":		true,
+			"id": 			"smtp_host",
+			"longname":		"SMTP Host",
+                        "title":                "Who is the SMTP Relay Host?",
 			"type":			"text",
 			"required":		true,
 			"force":		true,
@@ -21,19 +31,9 @@
 		},
 		{
 			"active":		true,
-			"id": 			"new_secret_name",
-			"longname":		"Secret Name",
-                        "title":                "Name of new secret",
-			"type":			"text",
-			"required":		true,
-			"force":		true,
-                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
-		},
-		{
-			"active":		true,
-			"id": 			"new_secret_value",
-			"longname":		"Secret Value",
-                        "title":                "The value to store and encrypt",
+			"id": 			"smtp_user_name",
+			"longname":		"User Name",
+                        "title":                "SMTP Relay User Name",
 			"type":			"text",
 			"required":		true,
 			"force":		true,
@@ -41,15 +41,25 @@
 		},                
 		{
 			"active":		true,
-			"id":			"new_secret_submit",
+			"id": 			"smtp_password",
+			"longname":		"Password",
+                        "title":                "SMTP Relay Password",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                                
+		{
+			"active":		true,
+			"id":			"smtp_settings_submit",
 			"longname":		"Submit Button",
 			"type":			"button",
                         "style":                "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
                         "classname":    "settingsButton",
                         "value":        "",
                         "onclick":        function () {
-                            if (Edits['newsecret'].validate()) {
-                                (new EasyAjax('/humble/secrets/add')).packageForm('new_secret_form').then((response) => {
+                            if (Edits['smtp_settings'].validate()) {
+                                (new EasyAjax('/humble/smtp/save')).packageForm('smtp_settings_form').then((response) => {
                                     alert(response);
                                 }).post();
                             }
@@ -57,3 +67,4 @@
 		}
 	]
 }
+

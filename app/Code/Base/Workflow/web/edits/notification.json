@@ -19,7 +19,7 @@
 			title:			"Choose a client or core for namespace",
             onchange:       function (evt) {
                 if (evt.target.value) {
-                    (new EasyAjax('/workflow/component/objects')).add('notification','Y').add('namespace',evt.target.value).then(function (response) {
+                    (new EasyAjax('/workflow/component/objects')).add('notification','Y').add('namespace',evt.target.value).then((response) => {
                         EasyEdits.populateSelectBox($E('humble-paradigm-config-notification-form-component-&id&'),eval(response));
                     }).post();
                 } else {
@@ -38,7 +38,7 @@
 			title:			"title for mouse rollover",
             onchange:       function (evt) {
                 if (evt.target.value) {
-                    (new EasyAjax('/workflow/component/methods')).add('notification','Y').add('namespace',$('#humble-paradigm-config-notification-form-namespace-&id&').val()).add('component',evt.target.value).then(function (response) {
+                    (new EasyAjax('/workflow/component/methods')).add('notification','Y').add('namespace',$('#humble-paradigm-config-notification-form-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
                         EasyEdits.populateSelectBox($E('humble-paradigm-config-notification-form-method-&id&'),eval(response));
                     }).post();
                 } else {

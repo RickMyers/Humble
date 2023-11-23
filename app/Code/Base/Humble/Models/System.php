@@ -96,6 +96,27 @@ class System extends Model
     }
 
     /**
+     * Records the SMTP settings into the generic system variables tables, and should be recorded as secrets
+     * 
+     * @return string
+     */
+    public function smtpSettings() {
+        $message = "Error, was not able to save SMTP settings";
+        $host = $this->getSmtpHost();
+        $user = $this->getSmtpUserName();
+        $pwd  = $this->getSmtpPassword();
+        if ($host && $user && $pwd) {
+            $settings = Humble::getEntity('humble/system/variables');
+            $x = $settings->setVariable('SMTP_Host')->setValue($host)->save();
+            $y = $settings->reset()->setVariable('SMTP_Username')->setValue($name)->save();
+            $z = $settings->reset()->setVariable('SMTP_Password')->setValue($pwd)->save();
+            if ($x && $y && $z) {
+                $message = "SMTP Settings Saved!";
+            }
+        }
+        return $message;
+    }
+    /**
      *
      *
      * @return type

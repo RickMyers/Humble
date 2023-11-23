@@ -82,7 +82,7 @@
             "value":        "",
             "onclick":        function () {
                 if (Edits['new-mongodb'].validate()) {
-                    (new EasyAjax('/mongotest.php')).add('action','new').add('port',$('#mongo-port').val()).add('processname',$('#mongo-processname').val()).add('location',$('#mongo-location').val()).add('datadir',$('#mongo-datadir').val()).then(function (response) {
+                    (new EasyAjax('/mongotest.php')).add('action','new').add('port',$('#mongo-port').val()).add('processname',$('#mongo-processname').val()).add('location',$('#mongo-location').val()).add('datadir',$('#mongo-datadir').val()).then((response) => {
                         response = JSON.parse(response);
                         alert(response.txt);
                         if (response.rc) {

@@ -53,7 +53,7 @@
                             }
                             return token;
                         }
-                        (new EasyAjax('/paradigm/workflow/newexport')).packageForm('import_export_targets_form').add('token',genToken()).then(function (response) {
+                        (new EasyAjax('/paradigm/workflow/newexport')).packageForm('import_export_targets_form').add('token',genToken()).then((response) => {
                             $('#paradigm_manage_targets').html(response);
                         }).post();
                     }

@@ -39,7 +39,7 @@
                         "value":                "",
                         "onclick":              function () {
                             if (Edits['import_data'].validate()) {
-                                (new EasyAjax('/humble/admin/import')).packageForm('import_humble_data_form').then(function (response) {
+                                (new EasyAjax('/humble/admin/import')).packageForm('import_humble_data_form').then((response) => {
                                     alert(response);
                                 }).post();
                             }
