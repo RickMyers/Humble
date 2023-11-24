@@ -16,7 +16,7 @@ function manageView($controller,$templater,$tpl) {
         $cache      =  'Code/'.$module['package'].'/'.str_replace('_','/',$module["views_cache"]);
         $t_plate    = file_exists($template) ? 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater : 'Code/'>
         $loader     = new \Twig\Loader\FilesystemLoader($t_plate);
-        $twig       =   new \Twig\Environment($loader, [
+        $twig       = new \Twig\Environment($loader, [
             'cache' => $cache,
             'auto_reload'=>true
         ]);
