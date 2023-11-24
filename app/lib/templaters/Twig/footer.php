@@ -14,7 +14,7 @@ function manageView($controller,$templater,$tpl) {
     $core_tpl = 'Code/'.$core['package'].'/'.str_replace('_','/',$core["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.twig';
     if (file_exists($template) || file_exists($core_tpl)) {
         $cache      =  'Code/'.$module['package'].'/'.str_replace('_','/',$module["views_cache"]);
-        $t_plate    = file_exists($template) ? 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater : 'Code/'>
+        $t_plate   = file_exists($template) ? 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater : 'Code/'.$core['package'].'/'.str_replace('_','/',$core["views"]).'/'.$controller.'/'.$templater;
         $loader     = new \Twig\Loader\FilesystemLoader($t_plate);
         $twig       = new \Twig\Environment($loader, [
             'cache' => $cache,
