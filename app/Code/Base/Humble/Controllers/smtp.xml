@@ -15,9 +15,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
-        <action name="settings" response="true" blocking="off">
+        <action name="save" response="true" blocking="off">
             <description>Initial Settings Page</description>
             <model namespace="humble" class="system" method="smtpSettings"  >
+                <parameter name="host" value="smtp_host" source="post" required="true" />
                 <parameter name="*" source="post" />
             </model>
         </action>

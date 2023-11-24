@@ -39,6 +39,8 @@ RUN apt install -y php-curl
 RUN apt install -y php-gd
 RUN apt install -y php-dev
 RUN apt install -y nala
+RUN apt install -y mkcert
+RUN mkcert -install
 ################################################################################
 #  THE NEXT FEW LINES ARE FOR IF YOU WANT TO USE THE RTC MESSAGE HUB AND WEBSOCKETS
 #  UNCOMMENT THEM TO ENABLE. https://humbleprogramming.com/pages/MessageHub.html

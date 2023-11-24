@@ -102,10 +102,10 @@ class System extends Model
      */
     public function smtpSettings() {
         $message = "Error, was not able to save SMTP settings";
-        $host = $this->getSmtpHost();
-        $user = $this->getSmtpUserName();
-        $pwd  = $this->getSmtpPassword();
-        if ($host && $user && $pwd) {
+        $host = $this->getHost();
+        $name = $this->getUserName();
+        $pwd  = $this->getPassword();
+        if ($host && $name && $pwd) {
             $settings = Humble::getEntity('humble/system/variables');
             $x = $settings->setVariable('SMTP_Host')->setValue($host)->save();
             $y = $settings->reset()->setVariable('SMTP_Username')->setValue($name)->save();

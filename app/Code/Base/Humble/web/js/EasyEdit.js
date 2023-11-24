@@ -286,9 +286,12 @@ EasyEdits.execute	= function (easy){
                     } else {
                         formField.setAttribute("removeMask","no");
                     }
-                    $(formField).on("change",(function (formField) {
+                    $(formField).on("change",(function (formField,combo) {
                         return function () {
                             formField.setAttribute('comboValue',$(formField).val());
+                            combo.setAttribute('comboValue',$(formField).val());
+                            console.log('i am setting both boxes to '+$(formField).val());
+                            console.log(combo.getAttribute('comboValue'));
                         }
                     })(formField,combo));
                     combo.style.backgroundColor = EasyEdits.getCSSValue(easyField.id, "backgroundColor");
@@ -296,10 +299,13 @@ EasyEdits.execute	= function (easy){
                     combo.style.padding = EasyEdits.getCSSValue(easyField.id, "padding");
                     combo.style.display = "none";
                     combo.setAttribute("comboPair",easyField.id);
-                    combo.onchange = function (evt) {	
+                    combo.onchange = function (evt,calledFromComboPair) {	
                         evt = (evt) ? evt : ((window.event) ? event : null);
-                        evt.target.setAttribute("comboValue",evt.target.value);
-                        $E(evt.target.getAttribute("comboPair")).onchange(evt,true);
+                        if (!calledFromComboPair) {
+                            $E(evt.target.getAttribute("comboPair")).onchange(evt,true);
+                            $E(evt.target.getAttribute("comboPair")).setAttribute('comboValue',$(evt.target).val());
+                        }
+                        evt.target.setAttribute("comboValue",$(evt.target).val());
                     }
                 }
                 formField.isCombo = isCombo;
@@ -311,7 +317,7 @@ EasyEdits.execute	= function (easy){
                             if ($E(this.id).selectedIndex >= 0) {
                                 $E(this.id + "_combo").value = $E(this.id)[$E(this.id).selectedIndex].text;
                                 $E(this.id + "_combo").setAttribute("comboValue", $E(this.id)[$E(this.id).selectedIndex].value);
-                                $('#'+this.id + "_combo").trigger('change');
+                                $E(this.id + "_combo").onchange(evt,calledFromComboPair);
                             }
                         }
                     }

@@ -1,5 +1,5 @@
 <style type="text/css">
-    .secret_field_desc {
+    .smtp_field_desc {
         padding-bottom: 15px; font-family: monospace; font-size: .85em; letter-spacing: 1px
     }
 </style>
@@ -11,23 +11,28 @@
                     <fieldset><legend>SMTP Settings</legend>
                         You should have already entered the SMTP User Name and SMTP Password into the secrets manager.  Below you should then select those secrets
                         to configure at the very least User Name and Password.  You will also need to enter the name of the host below<br /><br />
-                        <select name="namespace" id="secret_namespace">
+                        <select name="namespace" id="smtp_namespace">
                             <option value=""> </option>
                             {% for module in modules.fetch() %}
                                 <option value="{{ module.namespace }}"> {{ module.namespace|capitalize }} </option>
                             {% endfor %}
                         </select><br />
-                        <div class="secret_field_desc">Namespace</div>
-                        <input type="text" name="smtp_host" id="smtp_host" value="" />
-                        <div class="secret_field_desc">SMTP Host</div>
-                        <select name="smtp_user_name" id="smtp_user_name">
+                        <div class="smtp_field_desc">Namespace</div>
+                       
+                        <div style="position: relative">
+                        <select name="smtp_host" id="smtp_host">
+                            <option value=""></option>
+                        </select><input type="text" name="smtp_host_combo" id="smtp_host_combo" value="" />
+                        </div>
+                        <div class="smtp_field_desc">SMTP Host</div>
+                        <select name="user_name" id="smtp_user_name">
                             <option value=""></option>
                         </select>
-                        <div class="secret_field_desc">SMTP User Name</div>
-                        <select name="smtp_password" id="smtp_password">
+                        <div class="smtp_field_desc">SMTP User Name</div>
+                        <select name="password" id="smtp_password">
                             <option value=""></option>
                         </select>
-                        <div class="secret_field_desc">SMTP Password</div>
+                        <div class="smtp_field_desc">SMTP Password</div>
                         <input type="button" value=" Save Settings " name="smtp_settings_submit" id="smtp_settings_submit" />
                     </fieldset>
                 </form>
