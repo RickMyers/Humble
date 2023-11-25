@@ -9,7 +9,6 @@ services:
     container_name: &&NAMESPACE&&
     image: &&NAMESPACE&&
     volumes:
-      - &&NAMESPACE&&_logs::/var/www/logs
       - "&&NAMESPACE&&_settings:/var/www/Settings"
       - "&&DIR&&:/var/www/html"
       - &&NAMESPACE&&_web_cfg:/etc/apache2

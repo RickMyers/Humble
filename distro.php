@@ -21,14 +21,12 @@
 
     //-------------------------------------------------------------------------------------
     function processVhost($template='app/install/vhost_template.conf',$args=[]) {
-        $name       = $args['name'] ?? ($args['project_url'] ?? '' );
+        $name       = $args['project_url'] ?? ($args['project_name'] ?? '' );
         $parts      = explode(':',$name);
+        $port       = $parts[2] ?? '80';
         if (count($parts)===3) {
-            unset($parts[2]); //get rid of of the port number
             $name = $parts[0].':'.$parts[1];
         }
-        //$port       = $parts[2] ?? '80';
-        $port       = '80';         //inside the container it will likely always be 80
         $path       = $args['destination_folder']  ?? '';
         $parts      = explode(DIRECTORY_SEPARATOR,$path);
         $root       = array_pop($parts);
@@ -168,11 +166,11 @@
             break;
         case "vhost":
             if ($_REQUEST['project_name'] ?? false) {
-                $name      = str_replace(['http://','https://'],['',''],($_REQUEST['name'] && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));
+                $name      = str_replace(['http://','https://'],['',''],($_REQUEST['project_name'] && $_REQUEST['project_name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));
                 $error_log = isset($_REQUEST['error_log'])&& $_REQUEST['error_log'] ? 'ErrorLog '.$_REQUEST['error_log']:'';
                 $port      = $_REQUEST['port'] ?? '80';
                 $dir       = $_REQUEST['destination_folder'] ?? ($_REQUEST['current_dir'] ?? '');
-                $vhost     = processVhost('app/install/vhost_template.conf',array_merge($_REQUEST,['name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
+                $vhost     = processVhost('app/install/vhost_template.conf',array_merge($_REQUEST,['project_name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
                 print($vhost);
             } else {
                 print('{ "error": "Project data not passed in request" }');
