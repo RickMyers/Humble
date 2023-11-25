@@ -152,6 +152,7 @@
                 <js>
                     <source weight='30'>Humble/web/js/Admin.js</source>
                     <source weight='10'>Humble/web/js/Heartbeat.js</source>
+                    <source weight='10'>Humble/web/js/Pagination.js</source>
                     <source weight='15'>Humble/web/js/Chart.js</source>
                     <source weight='20'>Humble/web/js/cssmenu.js</source>
                 </js>

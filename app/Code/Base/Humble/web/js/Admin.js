@@ -185,7 +185,6 @@ var Administration = (function () {
                                 (new EasyAjax('/humble/directory/index')).add('all','Y').then((response) => {
                                     servicesWindow.set(response);
                                     servicesWindow.resize = function () {
-                                       console.log(servicesWindow.content.height())
                                        $('#service-directory').height(servicesWindow.content.height() - $('#service-header').height() - $('#service-controls').height());
                                     };
                                     servicesWindow._resize();

@@ -40,6 +40,7 @@ RUN apt install -y php-gd
 RUN apt install -y php-dev
 RUN apt install -y nala
 RUN apt install -y mkcert
+RUN apt install -y xdg-utils
 RUN mkcert -install
 ################################################################################
 #  THE NEXT FEW LINES ARE FOR IF YOU WANT TO USE THE RTC MESSAGE HUB AND WEBSOCKETS
