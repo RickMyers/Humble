@@ -439,7 +439,6 @@ function dockerMe() {
                 chdir('Docker/'.$project['namespace']);
                 file_put_contents('docker-compose.yaml',$zip->getFromName('docker-compose.yaml'));
                 file_put_contents('docker_instructions.txt',$zip->getFromName('docker_instructions.txt'));
-                chdir('Container');
                 file_put_contents('dockerfile',$zip->getFromName('DockerFile'));
                 file_put_contents('vhost.conf',$zip->getFromName('vhost.conf'));
                 $zip->close();
