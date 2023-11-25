@@ -193,11 +193,11 @@
             $name     = str_replace(['http://','https://'],['',''],(isset($_REQUEST['name']) && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));            
             $zip      = new ZipArchive();
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
-                $parts = explode(':',$_REQUEST['project_url']);                
+                $parts = explode(':',$_REQUEST['project_url']??'');                
                 $zip->addFromString('vhost.conf',processVhost('app/install/vhost_template.conf',$_REQUEST));
                 $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents('app/install/Docker/Container/container_template.txt')));
                 $zip->addFromString('docker-compose.yaml',$template);
-                $zip->addFromString('docker_instructions.txt'.file_get_contents('app/install/Docker/Container/docker_instructions.txt'));
+                $zip->addFromString('docker_instructions.txt',file_get_contents('app/install/Docker/Container/docker_instructions.txt'));
                 $zip->close();
                 print(file_get_contents('temp.zip'));
                 @unlink('temp.zip');

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-php CLI.php $1 $@
+php Humble.php $@
