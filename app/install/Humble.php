@@ -442,10 +442,11 @@ function dockerMe() {
                 file_put_contents('dockerfile',$zip->getFromName('DockerFile'));
                 file_put_contents('vhost.conf',$zip->getFromName('vhost.conf'));
                 $zip->close();
+                print(file_get_contents('docker_instructions.txt'));
                 chdir('../../');
             }
             @unlink('docker_temp.zip');
-            print(file_get_contents('docker_instructions.txt'));
+
             print("\n\n".'A docker folder has been created with a sample docker-compose and docker container definition file'."\n\n"."You should now be redirected to ".$project['framework_url']."/pages/UsingDocker.htmls for information on using Docker\n\n");
         } else {
             die("No docker package returned\n");
