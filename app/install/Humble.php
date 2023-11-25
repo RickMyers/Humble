@@ -308,9 +308,14 @@ FACTORY;
     $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1'];
     file_put_contents('application.xml',str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/application.xml')));
     print("\n\n");
-    print('Now running composer...'."\n");
+    
     chdir('app');
-    exec('composer install');
+    print('Now running composer...'."\n");
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        exec('composer install');
+    } else  {
+        exec('php /usr/bin/composer.phar install');
+    }    
     require('Environment.php');
     require('Humble.php');
     $location   = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php.exe`);
@@ -366,7 +371,11 @@ function restoreProject() {
     print("Files skipped: ".$collision_ctr."\n\n\n");
     print('Now running composer...'."\n");
     chdir('app');
-    exec('composer install');
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        exec('composer install');
+    } else  {
+        exec('php /usr/bin/composer.phar install');
+    } 
     chdir('..');
     if (file_exists('humble.bat')) {
         @unlink('humble.bat');
@@ -441,6 +450,7 @@ function dockerMe() {
                 file_put_contents('docker_instructions.txt',$zip->getFromName('docker_instructions.txt'));
                 file_put_contents('dockerfile',$zip->getFromName('DockerFile'));
                 file_put_contents('vhost.conf',$zip->getFromName('vhost.conf'));
+                file_put_contents('ports.conf',$zip->getFromName('ports.conf'));
                 $zip->close();
                 print(file_get_contents('docker_instructions.txt'));
                 chdir('../../');

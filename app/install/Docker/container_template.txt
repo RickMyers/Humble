@@ -60,6 +60,7 @@ RUN mkdir /var/www/Settings
 RUN mkdir /var/www/Settings/&&NAMESPACE&& && chmod -R 0777 /var/www/Settings/&&NAMESPACE&&
 RUN a2enmod rewrite && a2enmod ssl && a2enmod include
 COPY vhost.conf /etc/apache2/sites-enabled/&&NAME&&.conf
+COPY ports.conf /etc/apache2/ports.conf
 RUN apt upgrade -y
 CMD ["apache2ctl", "-D", "FOREGROUND"]
 

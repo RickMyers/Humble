@@ -189,11 +189,14 @@
             $srch = ['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&'];
             $repl = [$ns,$dir,$base.'/'];
             $template = str_replace($srch,$repl,file_get_contents('app/install/Docker/dc_template.txt'));   
-            $name     = str_replace(['http://','https://'],['',''],(isset($_REQUEST['name']) && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));            
+            $name     = str_replace(['http://','https://'],['',''],(isset($_REQUEST['name']) && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));  
+            $port     = explode(':',$name);
+            $port     = $port[1] ?? ($_REQUEST['project_port'] ?? '80');
             $zip      = new ZipArchive();
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
                 $parts = explode(':',$_REQUEST['project_url']??'');                
-                $zip->addFromString('vhost.conf',processVhost('app/install/vhost_template.conf',$_REQUEST));
+                $zip->addFromString('vhost.conf',processVhost('app/install/Docker/vhost_template.conf',$_REQUEST));
+                $zip->addFromString('ports.conf',str_replace(['&&PORT&&'],[$port],file_get_contents('app/install/Docker/ports_template.conf')));
                 $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents('app/install/Docker/container_template.txt')));
                 $zip->addFromString('docker-compose.yaml',$template);
                 $zip->addFromString('docker_instructions.txt',str_replace($srch,$repl,file_get_contents('app/install/Docker/docker_instructions.txt')));
