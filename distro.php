@@ -24,16 +24,18 @@
         $name       = $args['project_url'] ?? ($args['project_name'] ?? '' );
         $parts      = explode(':',$name);
         $port       = $parts[2] ?? '80';
-        if (count($parts)===3) {
-            $name = $parts[0].':'.$parts[1];
-        }
+        $server     = $args['SERVER_NAME'] ?? ($parts[1] ?? 'localhost');
+//        if (count($parts)===3) {
+ //           $name = $parts[0].':'.$parts[1];
+  //      }
+        
         $path       = $args['destination_folder']  ?? '';
         $parts      = explode(DIRECTORY_SEPARATOR,$path);
         $root       = array_pop($parts);
         $basedir    = implode(DIRECTORY_SEPARATOR,$parts);
         $ns         = $args['namespace'] ?? '';
         $error_log  = $args['error_log'] ?? '';
-        return str_replace(['&&NAME&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&'],[$name,$port,$path,$error_log,$basedir,$ns],file_get_contents($template));
+        return str_replace(['&&NAME&&','&&SERVER&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&'],[$name,$server,$port,$path,$error_log,$basedir,$ns],file_get_contents($template));
     }
     //-------------------------------------------------------------------------------------
     function recurseDirectory($path=null) {
@@ -179,27 +181,33 @@
         case "container":
         case "docker" :
         case "config" :
-            $ns     = $_REQUEST['namespace'] ?? 'namespace';
-            $dir    = str_replace('\\','/',($_REQUEST['destination_folder'] ?? ''));
-            $parts  = explode('/',$dir);
-            $base   = '';
+            $ns       = $_REQUEST['namespace'] ?? 'namespace';
+            $engine   = $_REQUEST['engine'] ?? 'MOD_PHP';
+            $dir      = str_replace('\\','/',($_REQUEST['destination_folder'] ?? ''));
+            $parts    = explode('/',$dir);
+            $base     = '';
             for ($i=0; $i<(count($parts)-1); $i++) {
                 $base.= ($base) ? '/'.$parts[$i]: $parts[$i];
             }
-            $srch = ['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&'];
-            $repl = [$ns,$dir,$base.'/'];
-            $template = str_replace($srch,$repl,file_get_contents('app/install/Docker/dc_template.txt'));   
-            $name     = str_replace(['http://','https://'],['',''],(isset($_REQUEST['name']) && $_REQUEST['name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));  
+            $name     = str_replace(['http://','https://'],['',''],(isset($_REQUEST['project_url']) && $_REQUEST['project_url'] ? $_REQUEST['project_url'] : ($_REQUEST['name'] ?? 'localhost')));
             $port     = explode(':',$name);
+            $name     = $port[0];
             $port     = $port[1] ?? ($_REQUEST['project_port'] ?? '80');
+            $srch     = ['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&PORT&&'];
+            $repl     = [$ns,$dir,$base.'/',$port];            
+            $vopttpl  = ['PHP_FPM' => 'app/install/Docker/fpm_vhost_template.conf','MOD_PHP'=>'app/install/Docker/vhost_template.conf'];
+            $copttpl  = ['PHP_FPM' => 'app/install/Docker/fpm_container_template.txt','MOD_PHP'=>'app/install/Docker/container_template.txt'];
             $zip      = new ZipArchive();
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
-                $parts = explode(':',$_REQUEST['project_url']??'');                
-                $zip->addFromString('vhost.conf',processVhost('app/install/Docker/vhost_template.conf',$_REQUEST));
+                $parts  = explode(':',$_REQUEST['project_url']??'');                
+                $zip->addFromString('vhost.conf',processVhost($vopttpl[$engine],array_merge($_REQUEST,['SERVER_NAME'=>$name])));
                 $zip->addFromString('ports.conf',str_replace(['&&PORT&&'],[$port],file_get_contents('app/install/Docker/ports_template.conf')));
-                $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents('app/install/Docker/container_template.txt')));
-                $zip->addFromString('docker-compose.yaml',$template);
+                $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents($copttpl[$engine])));
+                $zip->addFromString('docker-compose.yaml',str_replace($srch,$repl,file_get_contents('app/install/Docker/dc_template.txt')));
                 $zip->addFromString('docker_instructions.txt',str_replace($srch,$repl,file_get_contents('app/install/Docker/docker_instructions.txt')));
+                $zip->addFromString('d.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/d.bat')));
+                $zip->addFromString('d.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/d.sh')));
+                $zip->addFromString('action.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/action.php')));
                 $zip->close();
                 print(file_get_contents('temp.zip'));
                 @unlink('temp.zip');

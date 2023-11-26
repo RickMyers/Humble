@@ -12,10 +12,10 @@ $help = <<<HELP
  *      --init        Same as --project
  *      --fetch       Initial install of repository
  *      --restore     Restores the Humble framework into an existing (Humble based) project
-        --config      Writes apache config, needs servername= passed in
-        --dockerme    Fetches a docker configuration, partially tailored
-        --install     Retrieves a Humble.project file from the project hub by Serial Number
-        --reregister  Gets a serial number for you application
+ *      --config      Writes apache config, needs servername= passed in
+ *      --dockerme    Fetches a docker configuration, partially tailored
+ *      --install     Retrieves a Humble.project file from the project hub by Serial Number
+ *      --reregister  Gets a serial number for you application
  * -----------------------------------------------------------------------------
  */
 HELP;
@@ -53,36 +53,38 @@ function expandLine($text,$width) {
  * HTTP Curl, i.e. "HURL"
  */
 function HURL($URL,$args)	{
-	$res            = null;
-	$opts 			= [];
-	$protocol       = (substr($URL,0,5)!=='https') ? 'ssl' : 'http';
-	$content   		= http_build_query($args,'','&');
-	switch ($protocol) {
-		case "ssl"  :   $opts['ssl'] = [
-							"verify_peer"=>false,
-							"verify_peer_name"=>false,
-							"crypto_method" => STREAM_CRYPTO_METHOD_ANY_SERVER
-						];
-						//Note, no break here, so we are going to continue and add the HTTP options below to the array
-		case "http" :   $opts['http'] = [
-							'header' => "Content-Type: application/x-www-form-urlencoded",
-							"method" => 'POST',
-							'user_agent' => "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.12011-10-16", /*whats a little spoofage between friends? */
-							'Content-Length' => strlen($content),
-							'content' => $content
-						];
-						break;
-		default  :
-						break;
-	}
-	$fp      		= fopen($URL,'rb',false, stream_context_create($opts));
-	stream_set_timeout($fp,60000);
-	if ($fp) {
-		$res 		= stream_get_contents($fp);
-	} else {
-		print("\nError connecting with remote server: ".$URL."\n\n");
-	}
-	return $res;
+    $res      = null;
+    $opts     = [];
+    $protocol = (substr($URL,0,5)!=='https') ? 'ssl' : 'http';
+    $content  = http_build_query($args,'','&');
+    switch ($protocol) {
+            case "ssl"  :   
+                $opts['ssl'] = [
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                    "crypto_method" => STREAM_CRYPTO_METHOD_ANY_SERVER
+                ];
+            //Note, no break here, so we are going to continue and add the HTTP options below to the array
+            case "http" :   
+                $opts['http'] = [
+                    'header' => "Content-Type: application/x-www-form-urlencoded",
+                    "method" => 'POST',
+                    'user_agent' => "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.12011-10-16", /*whats a little spoofage between friends? */
+                    'Content-Length' => strlen($content),
+                    'content' => $content
+                ];
+                break;
+            default  :
+                break;
+    }
+    $fp = fopen($URL,'rb',false, stream_context_create($opts));
+    stream_set_timeout($fp,60000);
+    if ($fp) {
+        $res    = stream_get_contents($fp);
+    } else {
+        print("\nError connecting with remote server: ".$URL."\n\n");
+    }
+    return $res;
 }
 /**
  * Justifies an arbitrary piece of text
@@ -110,12 +112,12 @@ function justify($block='',$width=80) {
 function installedExtensionCheck() {
     exec('php -m',$modules);
     $required 		= ['json'=>false,'libxml'=>false,'mbstring'=>false,'memcache'=>false,'mongodb'=>false,'mysqli'=>false,'SimpleXML'=>false,'xml'=>false,'yaml'=>false,'zip'=>false];
-	$recommended 	= ['fileinfo'=>false,'bz2'=>false,'curl'=>false,'gd'=>false,'soap'=>false];
-	foreach ($recommended as $extension => $status) {
-		if (!($recommend[$extension] = extension_loaded($extension))) {
-			print("The extension ".$extension." is recommended but is not installed.\n");
-		}
-	}	
+    $recommended 	= ['fileinfo'=>false,'bz2'=>false,'curl'=>false,'gd'=>false,'soap'=>false];
+    foreach ($recommended as $extension => $status) {
+        if (!($recommend[$extension] = extension_loaded($extension))) {
+            print("The extension ".$extension." is recommended but is not installed.\n");
+        }
+    }	
     $ok = true; $ctr = 0;
     foreach ($required as $extension => $status) {
         $ok = $ok && ($required[$extension] = extension_loaded($extension));
@@ -206,10 +208,10 @@ function initializeProject() {
         }
         if ($create_project) {
             humbleHeader();
-            $attributes     = ['project_name'=>'','project_url'=>'','project_port'=>'','factory_name'=>'','framework_url'=>'','module'=>'','namespace'=>'','package'=>'','landing_page'=>'', 'author'=>'', 'name'=>'','hub_port'=>''];
+            $attributes     = ['project_name'=>'','project_url'=>'','project_port'=>'','factory_name'=>'','framework_url'=>'','module'=>'','namespace'=>'','package'=>'','landing_page'=>'', 'author'=>'', 'name'=>'','hub_port'=>'','fpm'=>''];
             print(justify("Recommended answers to these questions are shown between the square brackets",100)."\n\n");
             while (!$attributes['name']) {
-                print(justify("First, what is your name [first last]:",100)."\n");
+                print(justify("First, what is your name [first last]:",100));
                 $attributes['name']        = scrub(fgets(STDIN));
             }            
             while (!$attributes['framework_url']) {
@@ -440,6 +442,15 @@ function configProject($dir='',$name='localhost',$port=80,$log='') {
 //------------------------------------------------------------------------------
 function dockerMe() {
     if ($project = loadProjectFile()) {
+        $engine = ''; $options = ['1'=>'MOD_PHP','2'=>'PHP_FPM'];
+        while (!(($engine==='1') || ($engine==='2'))) {
+            print("\nChoose the PHP Engine You'd like to configure from below");
+            print("\n\n1) Apache MOD_PHP\n");
+            print("2) PHP_FPM\n\n");
+            print("Enter selection here: ");
+            $engine = scrub(fgets(STDIN));
+        }
+        $project['engine'] = $options[$engine] ?? 'MOD_PHP';                    //Attach selected engine or MOD_PHP by default
         if ($package = HURL($project['framework_url'].'/distro/docker',$project)) {
             file_put_contents('docker_temp.zip',$package);
             $zip = new ZipArchive();
@@ -451,6 +462,9 @@ function dockerMe() {
                 file_put_contents('dockerfile',$zip->getFromName('DockerFile'));
                 file_put_contents('vhost.conf',$zip->getFromName('vhost.conf'));
                 file_put_contents('ports.conf',$zip->getFromName('ports.conf'));
+                file_put_contents('action.php',$zip->getFromName('action.php'));
+                file_put_contents('d.bat',$zip->getFromName('d.bat'));
+                file_put_contents('d.sh',$zip->getFromName('d.sh'));
                 $zip->close();
                 print(file_get_contents('docker_instructions.txt'));
                 chdir('../../');
@@ -469,7 +483,7 @@ function dockerMe() {
 function reregisterProject() {
 	$attributes = json_decode(str_replace(["\n","\r","\m"],["","",""],file_get_contents('Humble.project')),true);
 	if (isset($attributes['serial_number'])) {
-		unset($attributes['serial_number']);
+            unset($attributes['serial_number']);
 	}
 	$result = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))),true);
 	$attributes['serial_number'] = $result['serial_number'] ?? 'Error-Try-Again';	
@@ -482,8 +496,8 @@ function registerExistingProject() {
         if ($result = HURL($project['framework_url'].'/distro/register',$project)) {
             print("\n\n".$result."\n\n");
         } else {
-			print("\n\nA problem was encountered while trying to register, please try again later\n\n");
-		}
+            print("\n\nA problem was encountered while trying to register, please try again later\n\n");
+        }
     } else {
         die('Problem loading the Humble.project file, please fix the file and try again.'."\n");
     }
@@ -514,35 +528,35 @@ if (PHP_SAPI === 'cli') {
                 initializeProject();
                 break;
             case "install":
-				if (!file_exists('Humble.project')) {
-					if ($serial_number = fetchParameter('serial_number',$args) ? fetchParameter('serial_number',$args) : fetchParameter('sn',$args)) {
-						print("\nInstalling SN:".$serial_number."\n");
-						installProjectFile($serial_number);
-					}
-				} else {
-					die("\n\nA Humble.project file already exists.  Installation aborted\n\n");
-				}
-				break;
+                if (!file_exists('Humble.project')) {
+                        if ($serial_number = fetchParameter('serial_number',$args) ? fetchParameter('serial_number',$args) : fetchParameter('sn',$args)) {
+                                print("\nInstalling SN:".$serial_number."\n");
+                                installProjectFile($serial_number);
+                        }
+                } else {
+                        die("\n\nA Humble.project file already exists.  Installation aborted\n\n");
+                }
+                break;
             case "fetch":
             case "prepare":
                 installedExtensionCheck();
                 prepareProject();
                 break;
-			case "register":
-				if (!file_exists('Humble.project')) {
-					die("\n\nRun 'humble --init' to create the .project file first\n\n");
-				}
-				registerExistingProject();
-				break;
+            case "register":
+                    if (!file_exists('Humble.project')) {
+                            die("\n\nRun 'humble --init' to create the .project file first\n\n");
+                    }
+                    registerExistingProject();
+                    break;
             case "docker":
             case "dockerme":
                 installedExtensionCheck();
                 dockerMe();
                 $project = loadProjectFile();
                 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    exec('start '.$project['framework_url'].'/pages/UsingDocker.htmls');
+                 //   exec('start '.$project['framework_url'].'/pages/UsingDocker.htmls');
                 } else  {
-                    exec('xdg-open '.$project['framework_url'].'/pages/UsingDocker.htmls');
+                 //   exec('xdg-open '.$project['framework_url'].'/pages/UsingDocker.htmls');
                 }       				
                 break;
             case "restore":

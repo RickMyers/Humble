@@ -12,8 +12,9 @@ services:
       - "&&NAMESPACE&&_settings:/var/www/Settings"
       - "&&DIR&&:/var/www/html"
     ports:
-      - 80:80
-      - 443:443
+      - &&PORT&&:&&PORT&&
+    expose:
+      - 9003
       
   mysql:
     image: mysql:5.7
@@ -28,10 +29,10 @@ services:
     # PROVIDE MySQL AUTH VALUES BELOW BEFORE RUNNING!
     ############################################################################
     environment:
-      MYSQL_ROOT_PASSWORD: [[ROOT_PASSWORD]]
-      MYSQL_DATABASE: [[DATABASE_NAME]]
-      MYSQL_USER: [[DATABASE_USER]]
-      MYSQL_PASSWORD: [[DATABASE_USER_PASSWORD]]
+      MYSQL_ROOT_PASSWORD: password123
+      MYSQL_DATABASE: &&NAMESPACEE&&
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: password123
     
   mongodb:
     image: mongo:latest
