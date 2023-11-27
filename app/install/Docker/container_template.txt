@@ -30,7 +30,6 @@ RUN apt install -y php8.2-mongodb
 RUN apt install -y php8.2-mbstring
 RUN apt install -y php8.2-xml
 RUN apt install -y php8.2-yaml
-RUN apt install -y php8.2-json
 RUN apt install -y php8.2-zip
 RUN apt install -y php8.2-memcached 
 RUN apt install -y php8.2-memcache
@@ -62,7 +61,7 @@ RUN mkdir /var/www/Settings/&&NAMESPACE&& && chmod -R 0777 /var/www/Settings/&&N
 RUN a2enmod rewrite && a2enmod ssl && a2enmod include
 COPY vhost.conf /etc/apache2/sites-enabled/&&NAME&&.conf
 COPY ports.conf /etc/apache2/ports.conf
-COPY php.ini /etc/php/8.2/php.ini
+COPY php.ini /etc/php/8.2/apache2/php.ini
 RUN apt upgrade -y
 CMD ["apache2ctl", "-D", "FOREGROUND"]
 
