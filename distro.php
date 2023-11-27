@@ -208,6 +208,9 @@
                 $zip->addFromString('d.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/d.bat')));
                 $zip->addFromString('d.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/d.sh')));
                 $zip->addFromString('action.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/action.php')));
+                $zip->addFromString('php.ini',str_replace($srch,$repl,file_get_contents('app/install/Docker/php.ini')));
+                $zip->addFromString('delay_launch.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/delay_launch.php')));
+                $zip->addFromString('start.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/start.sh')));
                 $zip->close();
                 print(file_get_contents('temp.zip'));
                 @unlink('temp.zip');

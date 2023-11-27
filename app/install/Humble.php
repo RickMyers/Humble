@@ -465,6 +465,9 @@ function dockerMe() {
                 file_put_contents('action.php',$zip->getFromName('action.php'));
                 file_put_contents('d.bat',$zip->getFromName('d.bat'));
                 file_put_contents('d.sh',$zip->getFromName('d.sh'));
+                file_put_contents('php.ini',$zip->getFromName('php.ini'));
+                file_put_contents('start.sh',$zip->getFromName('start.sh'));
+                file_put_contents('delay_launch.php',$zip->getFromName('delay_launch.php'));
                 $zip->close();
                 print(file_get_contents('docker_instructions.txt'));
                 chdir('../../');
@@ -554,9 +557,9 @@ if (PHP_SAPI === 'cli') {
                 dockerMe();
                 $project = loadProjectFile();
                 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                 //   exec('start '.$project['framework_url'].'/pages/UsingDocker.htmls');
+                    exec('start '.$project['framework_url'].'/pages/UsingDocker.htmls');
                 } else  {
-                 //   exec('xdg-open '.$project['framework_url'].'/pages/UsingDocker.htmls');
+                    exec('xdg-open '.$project['framework_url'].'/pages/UsingDocker.htmls');
                 }       				
                 break;
             case "restore":

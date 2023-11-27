@@ -30,7 +30,7 @@ services:
     ############################################################################
     environment:
       MYSQL_ROOT_PASSWORD: password123
-      MYSQL_DATABASE: &&NAMESPACEE&&
+      MYSQL_DATABASE: &&NAMESPACE&&
       MYSQL_USER: appuser
       MYSQL_PASSWORD: password123
     

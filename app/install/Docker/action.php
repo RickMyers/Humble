@@ -29,7 +29,7 @@ if ($cmd = array_shift($argv)) {
             print(shell_exec('docker compose down')."\n");
             break;
         case "build" :
-            print(shell_exec('docker build -t dashboard .')."\n");
+            print(shell_exec('docker build -t '.$ns.' .')."\n");
             break;
         case "listc" :
             print(shell_exec('docker container ls')."\n");
@@ -41,17 +41,17 @@ if ($cmd = array_shift($argv)) {
             print(shell_exec('docker image ls')."\n");
             break;
         case "deli" :
-            if ($img = array_shift($argv)) {
+            if ($img = (array_shift($argv) ?? $ns)) {
                 print(shell_exec('docker image rm '.$img)."\n");
             }
             break;   
         case "delv" :
-            if ($vol = array_shift($argv)) {
+            if ($vol = (array_shift($argv) ?? $ns)) {
                 print(shell_exec('docker volume rm '.$vol)."\n");
             }
             break;  
         case "delc" :
-            if ($con = array_shift($argv)) {
+            if ($con = (array_shift($argv) ?? $ns)) {
                 print(shell_exec('docker container rm '.$con)."\n");
             }
             break;            

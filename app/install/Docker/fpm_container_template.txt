@@ -67,8 +67,10 @@ RUN apt update
 RUN apt upgrade -y
 COPY delay_launch.php /var/www/delay_launch.php
 COPY php.ini /etc/php/8.2/fpm/php.ini
-RUN nohup php /var/www/delay_launch.php > /dev/null &
-#RUN service php8.2-fpm start
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+COPY start.sh /var/www/start.sh
+RUN chmod +x /var/www/start.sh
+WORKDIR /var/www/
+#CMD ["apache2ctl", "-D", "FOREGROUND"]
+CMD ["/bin/bash", "/var/www/start.sh"]
 
 

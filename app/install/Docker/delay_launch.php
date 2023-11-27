@@ -7,12 +7,15 @@
 $cmd      = 'ps -aux | grep -c "apachectl"';
 $ctr      = 0;
 $launched = false;
-while ((++$ctr < 5) && !($launched)) {
-    if (($result = shell_exec($cmd)) == "1") {
+chdir('/var/www/');
+while ((++$ctr < 10) && !($launched)) {
+    if ((int)($result = shell_exec($cmd)) >= 2) {
         exec('service php8.2-fpm start');
+        file_put_contents('results.txt','I launched PHP-FPM');
         die();
     } else {
         sleep(3);
     }
 }
+file_put_contents('results.txt','Did not kick off PHP-FPM');
 print('Did not kick off PHP-FPM');
