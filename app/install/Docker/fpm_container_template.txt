@@ -42,7 +42,8 @@ RUN apt install -y nala
 RUN apt install -y mkcert
 RUN apt install -y xdg-utils
 RUN pecl install xdebug
-RUN mkcert -install
+#RUN mkcert -install
+RUN apt install -y w3m
 ################################################################################
 #  THE NEXT FEW LINES ARE FOR IF YOU WANT TO USE THE RTC MESSAGE HUB AND WEBSOCKETS
 #  UNCOMMENT THEM TO ENABLE. https://humbleprogramming.com/pages/MessageHub.html
@@ -55,6 +56,8 @@ RUN mkcert -install
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php --install-dir=/usr/bin
 RUN git config --global http.sslverify false
+RUN chown -R www-data:root /var/www
+RUN chmod -R 0775 /var/www
 RUN mkdir /var/www/logs && chmod -R 0777 /var/www/logs
 RUN mkdir /var/www/logs/&&NAMESPACE&& && chmod -R 0777 /var/www/logs/&&NAMESPACE&&
 RUN mkdir /var/www/Settings
