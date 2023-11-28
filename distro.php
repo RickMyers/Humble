@@ -193,8 +193,8 @@
             $port     = explode(':',$name);
             $name     = $port[0];
             $port     = $port[1] ?? ($_REQUEST['project_port'] ?? '80');
-            $srch     = ['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&PORT&&'];
-            $repl     = [$ns,$dir,$base.'/',$port];            
+            $srch     = ['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&PORT&&','&&SERVER&&'];
+            $repl     = [$ns,$dir,$base.'/',$port,$name];            
             $vopttpl  = ['PHP_FPM' => 'app/install/Docker/fpm_vhost_template.conf','MOD_PHP'=>'app/install/Docker/vhost_template.conf'];
             $copttpl  = ['PHP_FPM' => 'app/install/Docker/fpm_container_template.txt','MOD_PHP'=>'app/install/Docker/container_template.txt'];
             $zip      = new ZipArchive();
@@ -212,6 +212,7 @@
                 $zip->addFromString('delay_launch.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/delay_launch.php')));
                 $zip->addFromString('start.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/start.sh')));
                 $zip->addFromString('humble.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/humble.sh')));
+                $zip->addFromString('shell.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/shell.bat')));
                 $zip->close();
                 print(file_get_contents('temp.zip'));
                 @unlink('temp.zip');

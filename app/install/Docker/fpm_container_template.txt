@@ -13,7 +13,7 @@ RUN apt install -y wget
 RUN apt install -y curl
 RUN apt install -y apache2
 RUN apt update
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN echo "ServerName &&SERVER&&" >> /etc/apache2/apache2.conf
 RUN apt install -y curl
 RUN apt install -y git
 RUN apt install -y vim

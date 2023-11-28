@@ -13,7 +13,7 @@ RUN apt install -y wget
 RUN apt install -y curl
 RUN apt install -y apache2
 RUN apt update
-RUN echo "ServerName &&NAME&&" >> /etc/apache2/apache2.conf
+RUN echo "ServerName &&SERVER&&" >> /etc/apache2/apache2.conf
 RUN apt install -y curl
 RUN apt install -y git
 RUN apt install -y vim
@@ -36,11 +36,15 @@ RUN apt install -y php8.2-memcache
 RUN apt install -y php8.2-xdebug
 RUN apt install -y php8.2-curl
 RUN apt install -y php8.2-gd
+RUN apt install -y php8.2-bz2
+RUN apt install -y php8.2-soap
 RUN apt install -y php8.2-dev
 RUN apt install -y nala
 RUN apt install -y mkcert
 RUN apt install -y xdg-utils
-RUN mkcert -install
+#RUN mkcert -install
+RUN apt install -y w3m
+RUN apt install -y dos2unix
 ################################################################################
 #  THE NEXT FEW LINES ARE FOR IF YOU WANT TO USE THE RTC MESSAGE HUB AND WEBSOCKETS
 #  UNCOMMENT THEM TO ENABLE. https://humbleprogramming.com/pages/MessageHub.html
@@ -62,6 +66,8 @@ RUN a2enmod rewrite && a2enmod ssl && a2enmod include
 COPY vhost.conf /etc/apache2/sites-enabled/&&NAME&&.conf
 COPY ports.conf /etc/apache2/ports.conf
 COPY php.ini /etc/php/8.2/apache2/php.ini
+COPY humble.sh /var/www/html/humble.sh
+RUN dos2unix /var/www/html/humble.sh
 RUN apt upgrade -y
 CMD ["apache2ctl", "-D", "FOREGROUND"]
 
