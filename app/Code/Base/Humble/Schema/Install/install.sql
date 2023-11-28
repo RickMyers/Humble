@@ -331,11 +331,12 @@ CREATE TABLE `humble_users` (
   `new_password_token` char(16) DEFAULT '',
   `reset_password_token` char(16) DEFAULT '',
   `authentication_token` char(16) DEFAULT '',
-  `logged_in` datetime NULL DEFAULT '0000-00-00 00:00:00',
+  `logged_in` datetime default null,
   `account_status` char(1) DEFAULT '',
   `login_attempts` int DEFAULT '0',
   `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`uid`)
+  PRIMARY KEY (`uid`),
+  unique index (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
