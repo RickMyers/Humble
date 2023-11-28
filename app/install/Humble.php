@@ -334,6 +334,8 @@ FACTORY;
     $x = (file_exists('humble.sh'))  ? @unlink('humble.sh') : '';
     $x = (file_exists('Humble.php')) ? @unlink('Humble.bat') : '';
     print("\n\nThe framework download is complete, please go to ".$project->project_url."/install.php to install your project\n\n");
+    @exec('chown -R www-data:root /var/www');
+    @exec('chmod -R 0775 /var/www');
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('start '.$project->project_url.'/install.php');
     } else  {
@@ -468,6 +470,9 @@ function dockerMe() {
                 file_put_contents('php.ini',$zip->getFromName('php.ini'));
                 file_put_contents('start.sh',$zip->getFromName('start.sh'));
                 file_put_contents('humble.sh',$zip->getFromName('humble.sh'));
+                @exec('dos2unix start.sh');
+                @exec('dos2unix humble.sh');
+                copy('humble.sh','../../humble.sh');
                 file_put_contents('delay_launch.php',$zip->getFromName('delay_launch.php'));
                 $zip->close();
                 print(file_get_contents('docker_instructions.txt'));
