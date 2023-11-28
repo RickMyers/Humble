@@ -44,6 +44,7 @@ RUN apt install -y xdg-utils
 RUN pecl install xdebug
 #RUN mkcert -install
 RUN apt install -y w3m
+RUN apt install -y dos2unix
 ################################################################################
 #  THE NEXT FEW LINES ARE FOR IF YOU WANT TO USE THE RTC MESSAGE HUB AND WEBSOCKETS
 #  UNCOMMENT THEM TO ENABLE. https://humbleprogramming.com/pages/MessageHub.html
