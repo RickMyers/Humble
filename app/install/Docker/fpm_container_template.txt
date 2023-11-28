@@ -37,6 +37,8 @@ RUN apt install -y php8.2-memcache
 RUN apt install -y php8.2-xdebug
 RUN apt install -y php8.2-curl
 RUN apt install -y php8.2-gd
+RUN apt install -y php8.2-bz2
+RUN apt install -y php8.2-soap
 RUN apt install -y php8.2-dev
 RUN apt install -y nala
 RUN apt install -y mkcert
@@ -72,8 +74,11 @@ RUN apt upgrade -y
 COPY delay_launch.php /var/www/delay_launch.php
 COPY php.ini /etc/php/8.2/fpm/php.ini
 COPY start.sh /var/www/start.sh
+COPY ../humble.sh /var/www/html/humble.sh
 RUN chmod +x /var/www/start.sh
 RUN dos2unix /var/www/start.sh
+RUN chmod +x /var/www/html/humble.sh
+RUN dos2unix /var/www/html/humble.sh
 #CMD ["apache2ctl", "-D", "FOREGROUND"]
 CMD ["/bin/bash", "/var/www/start.sh"]
 
