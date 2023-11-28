@@ -179,7 +179,6 @@ class Module extends CLI
                 @mkdir($root.'/Views/actions');
                 @mkdir($root.'/Views/actions/Smarty3');
                 @mkdir($root.'/Views/Cache');
-                @mkdir($root.'/Mobile');
                 @mkdir($root.'/Models');
                 @mkdir($root.'/Helpers');
                 @mkdir($root.'/Schema');
@@ -195,7 +194,6 @@ class Module extends CLI
                 @mkdir($root.'/web/edits');
                 @mkdir($root.'/Images');
                 $project     = Environment::getProject();
-                $module      = Humble::getModule($project->namespace);
                 $is_base     = (string)$project->namespace == $ns;
                 $package     = $is_base ? 'Base'   : (string)$project->package;
                 $module      = $is_base ? 'Humble' : (string)$project->module;
