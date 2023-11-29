@@ -179,6 +179,9 @@ class Module extends CLI
                 @mkdir($root.'/Views/actions');
                 @mkdir($root.'/Views/actions/Smarty3');
                 @mkdir($root.'/Views/Cache');
+                @mkdir($root.'/Resources');
+                @mkdir($root.'/Resources/js');
+                @mkdir($root.'/Resources/SQL');
                 @mkdir($root.'/Models');
                 @mkdir($root.'/Helpers');
                 @mkdir($root.'/Schema');

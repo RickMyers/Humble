@@ -14,21 +14,24 @@
     <state>DEVELOPMENT</state>
     <stages>
         <DEVELOPMENT order="1" />
-        <TEST order="2" />
-        <PRODUCTION order="3" />
+        <TEST        order="2" />
+        <PRODUCTION  order="3" />
     </stages>    
-    <extend>
+    <extend comment="Means whether to look up the Module hierarchy if a specific class is not found (if not found in current module, perhaps the class is in a parent module)">
         <helpers>1</helpers>
         <models>1</models>
         <entities>1</entities>
     </extend>
     <msa>
-        <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application -->
+        <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application (NOT FULLY IMPLEMENTED!)-->
         <strategy>
             <forward>1</forward>
             <redirect>0</redirect>
         </strategy>
     </msa>
+    <default>
+        <inline_templater options="Rain,Latte">Rain</inline_templater>
+    </default>
     <api>
         <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/APIPolicy.htmls for more information first -->
     </api>
@@ -59,7 +62,7 @@
             <enabled>{$SSO}</enabled>           <!-- Switch to 0 to use local authentication -->
             <IDP>{$idp}</IDP>
         </SSO>
-        <authorization>                         <!-- Enable or disable service level authorization checking, turn off temporarily in the event of serious issues -->
+        <authorization>                         <!-- Enable or disable service level authorization checking -->
             <enabled>{$authorized}</enabled>
         </authorization>
     </status>

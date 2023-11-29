@@ -327,7 +327,7 @@ FACTORY;
     exec($cmd,$output,$rc);
     print("Return Code: ".$rc."\nOuput Follows\n");
     foreach ($output as $result) {
-        print($output."\n");
+        print($result."\n");
     }
     chdir('..');
     $x = (file_exists('humble.bat')) ? @unlink('humble.bat') : '';
