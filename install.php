@@ -267,6 +267,7 @@ switch ($method) {
         $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']          : false;
         $uid    = isset($_POST['userid'])           ? $_POST['userid']          : false;
         $pwd    = isset($_POST['password'])         ? $_POST['password']        : false;
+        $upwd   = isset($_POST['pwd'])              ? $_POST['pwd']             : false;
         $mongo  = isset($_POST['mongo'])            ? $_POST['mongo']           : false;
         $mongou = isset($_POST['mongo_userid'])     ? $_POST['mongo_userid']    : false;
         $mongop = isset($_POST['mongo_password'])   ? $_POST['mongo_password']  : false;
@@ -338,14 +339,14 @@ switch ($method) {
         
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
         $landing_page = (string)str_replace("\\","",$project->landing_page);
-        $landing = explode('/',$landing_page);
-        $ins     = Humble::model('humble/utility');
+        $landing      = explode('/',$landing_page);
+        $ins          = Humble::model('humble/utility');
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();
 
-        $uid    = \Humble::entity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($pwd))->newUser();
-        $results = ob_get_flush();
+        $uid          = \Humble::entity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($upwd))->newUser();
+        $results      = ob_get_flush();
         if (!$uid) {
             file_put_contents('install_failed.txt',$results);
         } else {
@@ -362,9 +363,6 @@ switch ($method) {
         @copy('humble.bat',strtolower((string)$project->factory_name).'.bat');
         @copy('humble.sh',strtolower((string)$project->factory_name).'.sh');
         print("done with creating drivers\n\n");
- //       unlink('driver.bat');
-//        unlink('humble.sh');
-        //rmdir('install');
         $log = ob_get_flush();
         print($log);
         file_put_contents('../install_status.json','{ "stage": "Complete", "step": "Finished", "percent": 100 }');

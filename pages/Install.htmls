@@ -19,30 +19,29 @@ to each team to decide, and you can even use a combination of the two.
     <li>MySQL 5.4+</li>
     <li>MongoDB 3.4+</li>
     <li>PHP Composer</li>
+    <li>Memcached</li>    
 </ul>
 <br />
 <h4>Optional</h4>
 <ul>
-    <li><i>For performance optimization</i>
-        <ul>
-            <li>Memcached</li>
-        </ul>
-    </li>
     <li><i>For support for code deployments</i>
         <ul>
             <li>Java JDK 1.8</li>
             <li>Apache Ant 1.8+</li>
         </ul>
     </li>
-    <li><i>For support for developers</i>
+    <li><i>For support for developers and WebSockets</i>
         <ul>
             <li>Node.js</li>
-            <li>Grunt</li>
         </ul>
     </li>
 </ul>
 <hr />
 <h3>Before beginning installation</h3>
+At a minimum, to get the Humble Framework to operate, you need to locally install the software from the Required section above.<br /><br />
+However, for your development environment, you can use our convenient Docker &amp; Docker-Compose option that will install and configure
+all components for you. Go here for a brief guide on <a href='https://humbleprogramming.com/pages/UsingDocker.htmls' target='_BLANK'>Using Docker</a>.<br /><br />
+If you do 
 <ol>
     <li>Install the software listed above</li>
     <li>Additionally:
