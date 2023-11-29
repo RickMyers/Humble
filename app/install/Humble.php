@@ -470,6 +470,7 @@ function dockerMe() {
                 file_put_contents('php.ini',$zip->getFromName('php.ini'));
                 file_put_contents('start.sh',$zip->getFromName('start.sh'));
                 file_put_contents('humble.sh',$zip->getFromName('humble.sh'));
+                file_put_contents('shell.bat',$zip->getFromName('shell.bat'));
                 @exec('dos2unix start.sh');
                 @exec('dos2unix humble.sh');
                 copy('humble.sh','../../humble.sh');
@@ -582,10 +583,10 @@ if (PHP_SAPI === 'cli') {
                 configProject(getcwd(),$name,$port,$log);
                 print("\nA file called 'vhost.conf' has been written to the current directory.  Use that as a start to configure your Apache server\n\n ");				
                 break;
-			case "reregister":
-				$attributes = reregisterProject();
-				print_r($attributes);
-				break;
+            case "reregister":
+                $attributes = reregisterProject();
+                print_r($attributes);
+                break;
             case "help" :
                 print($help."\n");
                 break;
