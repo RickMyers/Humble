@@ -60,7 +60,7 @@ class User extends Model
                     }
                 }
                 if ($id !== false) {
-                    $EVENT->update([$cfg['node']=> \Humble::entity('humble/users')->setUid($id)->information()]);
+                    $EVENT->update([$cfg['node']=> \Humble::entity('default/users')->setUid($id)->information()]);
                 }
             }
         }

@@ -57,19 +57,18 @@
             <prefix>humble_</prefix>
             <mongodb>humble</mongodb>
             <entities>
+                <admins />
+                <admin_identification />
                 <audit_log polyglot="Y" />
                 <categories />
-                <chronicle />
                 <controllers />
                 <css />
                 <edits />
                 <entities />
                 <entity_columns />
-                <ftp_log />
                 <js />
                 <modules />
                 <packages />
-                <pages />
                 <secrets_manager />
                 <services />
                 <service_directory polyglot="Y" />
@@ -78,10 +77,8 @@
                 <system_variables />
                 <templaters />
                 <templates />
-                <userlog />
                 <users />
                 <user_identification polyglot='Y' />
-                <user_permissions />
             </entities>
         </orm>
         <events>

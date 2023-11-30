@@ -106,7 +106,7 @@ function initializeProject() {
                 print('###########################################'."\n\n");
                 $util->update($etc);
             }
-            $uid = Humble::entity('humble/users')->setUserName($uname)->setPassword(MD5($passwd))->save();
+            $uid = Humble::entity('default/users')->setUserName($uname)->setPassword(MD5($passwd))->save();
             Humble::entity('humble/user/identification')->setId($uid)->setFirstName($fname)->setLastName($lname)->save();
             Humble::entity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
             $project = Environment::getProject();

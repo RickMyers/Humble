@@ -20,7 +20,7 @@ class System extends CLI
     }
 
     /**
-     * Adds a new user to Administrators table (humble/users)
+     * Adds a new user to Administrators table (default/users)
      */
     public static function addUser() {
         $args  = self::arguments();
@@ -31,7 +31,7 @@ class System extends CLI
         $email = $args['email']?? null;
         $uid   = $args['uid']  ?? null;
         if ($uname && $passw) {
-            Humble::entity('humble/users')->newUser($uname,MD5($passw),$first,$last,$email,$uid);
+            Humble::entity('default/users')->newUser($uname,MD5($passw),$first,$last,$email,$uid);
         } else {
             print("Not enough data was passed to create a user.  user_name and password are minimum required fields.\n");
         }
@@ -46,6 +46,29 @@ class System extends CLI
         file_put_contents('../application.xml',$xml->asXML());
         $message = ($enabled) ? 'Authentication Engine: LOCAL' : 'Authentication Engine: SSO';
         print("\n\n".$message."\n\n");
+    }
+    
+    /**
+     * Clears the controller cache for all active modules
+     * 
+     * @return string
+     */
+    public static function clear() {
+        $ctr = 0;
+        foreach($modules = \Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+            $cache_dir = 'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module['controller_cache'];
+            if (is_dir($cache_dir)) {
+                $dh = dir($cache_dir);
+                while ($entry = $dh->read()) {
+                    if (($entry == '.') || ($entry == '..')) {
+                        continue;
+                    }
+                    @unlink($cache_dir.DIRECTORY_SEPARATOR.$entry);
+                    $ctr++;
+                }
+            } 
+        }
+        return "Cached Items Cleared: ".$ctr;
     }
     
     /**

@@ -17,7 +17,7 @@
             </model>
             <switch id="util" method="someRandomMethod">
                 <case value="true">
-                    <entity namespace="humble" class="users" id="user" method="load">
+                    <entity namespace="default" class="users" id="user" method="load">
                         <parameter name='uid' source='session' value='uid' default='' required="true" />
                         <parameter name='first_name' source='post' default='' optional="true"/>
                     </entity>
@@ -26,7 +26,7 @@
                     <if id="util" method="getAge" gte="40">
                         <then>
                             <output text="Still Young" />
-                            <entity namespace="humble" class="users" id="mike" method="load">
+                            <entity namespace="default" class="users" id="mike" method="load">
                                 <parameter name='uid' source='session' value='uid' default='' required="true" />
                                 <parameter name='right_now' source='post' format="date" optional="true"/>
                                 <parameter name='last_name' store="true" source='post' optional="true"/>

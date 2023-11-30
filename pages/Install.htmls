@@ -41,7 +41,7 @@ to each team to decide, and you can even use a combination of the two.
 At a minimum, to get the Humble Framework to operate, you need to locally install the software from the Required section above.<br /><br />
 However, for your development environment, you can use our convenient Docker &amp; Docker-Compose option that will install and configure
 all components for you. Go here for a brief guide on <a href='https://humbleprogramming.com/pages/UsingDocker.htmls' target='_BLANK'>Using Docker</a>.<br /><br />
-If you do 
+If you do decide to do a local install, you will need to...
 <ol>
     <li>Install the software listed above</li>
     <li>Additionally:
@@ -56,6 +56,9 @@ If you do
                 <ul>
                     <li>Add <a href='#' onclick='return false'>MongoDB Extension</a></li>
                     <li>Add <a href='#' onclick='return false'>Memcache Extension</a></li>
+                    <li>Add <a href='#' onclick='return false'>Memcached Extension</a></li>
+                    <li>Enable Zip Extension</li>
+                    <li>Enable MBString Extension</li>
                     <li>Enable Mysqli Extension</li>
                     <li>Enable Soap Extension</li>
                 </ul>

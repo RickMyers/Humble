@@ -17,7 +17,7 @@
             <helper namespace='humble' class='log' id='log'>
                 <parameter name='log'    source='request' default='' />
             </helper>
-            <entity namespace='humble' class='users' id='user' method='load'>
+            <entity namespace="default" class="users" id='user' method='load'>
                 <parameter name='id'  value='uid'   source='session' default='' />
             </entity>
             <entity namespace='humble' class='user_permissions' id='permissions' method='load'>

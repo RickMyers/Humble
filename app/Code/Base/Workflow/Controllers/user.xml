@@ -22,7 +22,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
-            <entity namespace="humble" class="users" id="users" />
+            <entity namespace="default" class="users" id="users" />
         </action>
 
         <!-- ############################################################### -->
@@ -32,7 +32,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
-            <entity namespace="humble" class="users" id="users" />
+            <entity namespace="default" class="users" id="users" />
         </action>
 
         <!-- ############################################################### -->

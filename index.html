@@ -154,14 +154,14 @@
                             <center>
                             <img src='/web/images/djikstra.png'  height='100' /><br /><br />
                             </center>
-                            <form name='humble-login-form' id='humble-login-form' onsubmit='return false'  action='/humble/user/login' method='POST'>
+                            <form name='humble-login-form' id='humble-login-form' onsubmit='return false'  action='/default/user/login' method='POST'>
                               <input type="text" name="user_name" id='user_name' placeholder="Username">
                               <input type="password" name="user_password" id='user_password' placeholder="Password">
                               <input type="submit" name="login-submit" id='login-submit' class="login login-submit" value="login">
                             </form>
 
                             <div class="login-help">
-                              <a href="/humble/user/enrollForm" onclick="alert('Registration is suspended... for now.'); return false">Register</a> • <a href="/humble/user/recoverForm" onclick="alert('Action suspended... for now.'); return false">Forgot Password</a>
+                              <a href="/humble/user/enrollForm" onclick="alert('Registration is suspended... for now.'); return false">Register</a> • <a href="/default/user/recoverForm" onclick="alert('Action suspended... for now.'); return false">Forgot Password</a>
                             </div>
                         </div>
                     </td>

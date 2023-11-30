@@ -131,7 +131,7 @@ class Trigger  {
         if (!$uid) {
             //if no user id, see if this is the login event, and if so, find user based on username
             if ($user_name = $cleanEvent->data('user_name')) {
-                $user   = Humble::entity('humble/users')->setUserName($user_name)->load(true);
+                $user   = Humble::entity('default/users')->setUserName($user_name)->load(true);
                 $uid    = isset($user['uid']) ? $user['uid'] : 0;  
             }
         }

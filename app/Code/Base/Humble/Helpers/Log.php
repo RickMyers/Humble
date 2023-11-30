@@ -127,7 +127,7 @@ class Log extends Helper
             }
             $logs[] = str_replace('.log','',$entry);
         }
-        return \Humble::entity('humble/users')->usersById($logs);
+        return \Humble::entity('default/users')->usersById($logs);
     }
 
 }

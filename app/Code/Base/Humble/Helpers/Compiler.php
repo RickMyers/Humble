@@ -129,6 +129,7 @@ class Compiler extends Directory
                 case '"UNIQUEID"' :
                     $default = '"'.$this->_uniqueId(true).'"';
                     break;
+                case '"DATETIME"'  :
                 case '"TIMESTAMP"' :
                     $default = '"'.date("Y-m-d H:i:s").'"';
                     break;
@@ -457,7 +458,8 @@ PHP;
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
+        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\Environment::namespace();" : $node['namespace'] );
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::model("'.$namespace.'/'.$node['class'].'");'."\n");
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
@@ -490,7 +492,8 @@ PHP;
        /* if ($collection) {
             $collection = "/".$collection;
         }*/
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
+        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\Environment::namespace();" : $node['namespace'] );
         print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::collection("'.$namespace.'/'.$collection.'");'."\n");
         //maybe select the collection here, either use 'class=""' or 'collection=""'
         array_push($this->elements,$node);
@@ -520,13 +523,13 @@ PHP;
      * @param string $node
      */
     private function processMongoServer($node) {
-
+        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
         print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getCollectionServer("'.$node['namespace'].'");'."\n");
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
             $this->processNode($tag,$newNode);
         }
-        $x = array_pop($this->elements);
+        array_pop($this->elements);
         if (isset($node['method'])) {
             if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 if (isset($node['wrapper'])) {
@@ -542,6 +545,7 @@ PHP;
                 }
             }
         }
+        return $this;
     }
     
     /**
@@ -555,6 +559,7 @@ PHP;
         print($this->tabs().'foreach ($data as $field => $value) {'."\n");
         print($this->tabs(1).$target.'[$field]= $_REQUEST[$field] = $value;'."\n");
         print($this->tabs(-1).'}'."\n");
+        return $this;
     }
     
     /**
@@ -562,7 +567,8 @@ PHP;
      * @param string $node
      */
     private function processEntity($node) {
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
+        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\Environment::namespace();" : $node['namespace'] );
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
@@ -692,13 +698,14 @@ PHP;
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : $node['namespace'];
+        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\Environment::namespace();" : $node['namespace'] );
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::helper("'.$namespace.'/'.$node['class'].'");'."\n");
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
             $this->processNode($tag,$newNode);
         }
-        $x = array_pop($this->elements);
+        array_pop($this->elements);
         if (isset($node['method'])) {
             if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 if (isset($node['wrapper'])) {

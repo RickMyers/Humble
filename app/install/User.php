@@ -48,7 +48,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
-                $user       = Humble::entity('humble/users')->setUserName($data['user_name']);
+                $user       = Humble::entity('default/users')->setUserName($data['user_name']);
                 $user->load(true);
                 $mydata     = $EVENT->fetch();
                 if (isset($mydata['tries']) && ($mydata['tries'])) {
@@ -79,8 +79,8 @@ class User extends Model {
      * 
      */
     public function resetPasswords() {
-        $user = Humble::entity('humble/users');
-        foreach (Humble::entity('humble/users')->fetch() as $obs) {
+        $user = Humble::entity('default/users');
+        foreach (Humble::entity('default/users')->fetch() as $obs) {
             $user->reset()->setUid($obs['uid'])->setResetPasswordToken($this->resetToken(12))->save();
         }
         return "Passwords were reset (sure)";
@@ -135,7 +135,7 @@ class User extends Model {
         $login      = false;
         $password   = $this->getPassword();
         $user_name  = $this->getUserName();
-        $user       = Humble::entity('humble/users')->setUserName($user_name)->load(true);
+        $user       = Humble::entity('default/users')->setUserName($user_name)->load(true);
         if ($user && ($login = ($user['password'] === crypt($this->getPassword(),$user['salt'])))) {
             Environment::session('uid',$user['uid']);
             Environment::session('login',$user['uid']);
@@ -200,7 +200,7 @@ class User extends Model {
             //@TODO: We need to do a lookup on the attributes returned so that
             //       we can tie this back to a person in our system
             //##################################################################
-            $user     = Humble::entity('humble/users');
+            $user     = Humble::entity('default/users');
             $user->setUserName($attributes['username'][0]);
             $user->load(true);
             if ($user->getUid()) {
@@ -260,7 +260,7 @@ class User extends Model {
         $successful = false;
         if ($EVENT!==false) {
             $data       = $EVENT->load();
-            $user       = Humble::entity('humble/users')->setUserName($data['user_name'])->load(true);
+            $user       = Humble::entity('default/users')->setUserName($data['user_name'])->load(true);
             if (isset($user['password']) && isset($data['password']) && $data['password']) {
                 if (!session_id()) {
                     session_start();
@@ -303,7 +303,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
-                Humble::entity('humble/users')->setUid(Environment::whoAmI())->setLoginAttempts(0)->save();
+                Humble::entity('default/users')->setUid(Environment::whoAmI())->setLoginAttempts(0)->save();
             } else {
                 //throw an exception for insufficient data
             }
@@ -321,7 +321,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
-                $user   = Humble::entity('humble/users')->setUid(Environment::whoAmI());
+                $user   = Humble::entity('default/users')->setUid(Environment::whoAmI());
                 if (count($user->load())) {
                     $user->setLoginAttempts($user->getLoginAttempts()+1)->save();
                 }
@@ -341,7 +341,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
-                Humble::entity('humble/users')->setUid(Environment::whoAmI())->setLoggedIn(date('Y-m-d H:i:s'))->save();
+                Humble::entity('default/users')->setUid(Environment::whoAmI())->setLoggedIn(date('Y-m-d H:i:s'))->save();
             } else {
                 //throw an exception for insufficient data
             }
@@ -355,7 +355,7 @@ class User extends Model {
      */
     public function recoverPasswordEmail() {
         $email = $this->getEmail();
-        $user  = Humble::entity('humble/users');
+        $user  = Humble::entity('default/users');
         $data  = $user->setEmail($email)->load(true);
         if ($data) {
             $token = '';
@@ -382,7 +382,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
-                $user   = Humble::entity('humble/users')->setUserName($data['user_name'])->load(true);
+                $user   = Humble::entity('default/users')->setUserName($data['user_name'])->load(true);
                 $locked = ($user['account_status']===USER_ACCOUNT_LOCKED);
             } else {
                 //throw an exception for insufficient data
@@ -404,7 +404,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
-                $user   = Humble::entity('humble/users')->setUserName($data['user_name']);
+                $user   = Humble::entity('default/users')->setUserName($data['user_name']);
                 $user->load(true);
                 $user->setAccountStatus(USER_ACCOUNT_LOCKED);
                 $user->save();
@@ -428,7 +428,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
-                $user   = Humble::entity('humble/users')->setUserName($data['user_name']);
+                $user   = Humble::entity('default/users')->setUserName($data['user_name']);
                 $user->load(true);
                 $user->setStatus(USER_ACCOUNT_UNLOCKED);
                 $user->save();
@@ -453,7 +453,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data = $EVENT->load();
             if (isset($data['user_name'])) {
-                $user   = Humble::entity('humble/users')->setUserName($data['user_name']);
+                $user   = Humble::entity('default/users')->setUserName($data['user_name']);
                 $user   = $user->load(true);
                 $token  = (isset($user['reset_password_token']) && $user['reset_password_token']) ? $user['reset_password_token'] : false;
                 $EVENT->update(['password-reset-status'=>[
@@ -476,7 +476,7 @@ class User extends Model {
         $confirm  = $this->getConfirm();
         $token    = $this->getResetPasswordToken();
         $email    = $this->getEmail();
-        $user     = Humble::entity('humble/users')->setEmail($email)->setResetPasswordToken($token);
+        $user     = Humble::entity('default/users')->setEmail($email)->setResetPasswordToken($token);
         if (count($user->load(true)) && $password && ($password == $confirm)) {
             $user->setPassword($password);
             $user->setResetPasswordToken(null);

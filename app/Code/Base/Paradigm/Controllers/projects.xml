@@ -9,7 +9,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
     <actions>
         <action name="list">
             <description>Lists the current projects</description>
-            <entity namespace="humble" class="users" id='user'>
+            <entity namespace="default" class="users" id='user'>
                 <parameter name='uid' source='session' value='uid' default='' />
             </entity>
         </action>

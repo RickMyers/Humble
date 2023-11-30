@@ -37,5 +37,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             </mongo>
         </action>
         
+        <action name="user">
+            <entity namespace="default" class="users" id="user"></entity>
+        </action>
+        
     </actions>
 </controller>

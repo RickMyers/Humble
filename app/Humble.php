@@ -117,8 +117,10 @@
          */
         public static function parseResource($resource) {
             if ($sep = strpos($resource,'/')) {
-                $resource = [
-                    'namespace' => substr($resource,0,$sep),
+                $ns        = substr($resource,0,$sep);
+                $namespace = (strtolower($resource)==='default') ? \Environment::namespace() : $ns;
+                $resource  = [
+                    'namespace' => $namespace,
                     'resource'  => str_replace('_','/',substr($resource,$sep+1))
                 ];
             } else {

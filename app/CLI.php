@@ -111,7 +111,9 @@ if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         
                         if (isset($options['function']) && $options['function']) {
                             $method = $options['function'];
                             $include::arguments($include::verifyArguments($args,$options));
-                            $include::$method();
+                            if ($returned = $include::$method()) {
+                                (is_string($returned)) ? print("\n".$returned."\n\n") : print_r($returned);
+                            }
                         }
                     }
                     break;                                                          //we found our command, no need for more work

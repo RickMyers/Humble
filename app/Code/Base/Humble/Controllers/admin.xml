@@ -17,12 +17,12 @@
         
         <action name='home'>
             <description>The Humble administration home page</description>
-            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
-                <parameter name='id' value="uid"  source='session' required='true' />
+            <entity namespace='humble' class='permissions' id='permissions' comment="fake class">
+                <parameter name='admin_id' value="admin_id"  source='session' default='N' />
             </entity>
-            <model namespace="humble" class="system" id="system" />
-            <switch id='permissions' method='getAdmin'>
-                <case value='Y'>
+            <switch id='permissions' method='getAdminId'>
+                <case value='TRUE'>
+                    <model namespace="humble" class="system" id="system" />
                     <entity namespace='humble' class='modules'      id='available_modules' orderby='package=ASC,namespace=ASC' />
                     <helper namespace='humble' class='installer'    id='installer' />
                     <helper namespace='humble' class='admin'        id='directory' />
@@ -45,7 +45,7 @@
         
         <action name="test">
             <description>A test action for debugging</description>
-            <entity namespace='humble' class='users' method='stuff'>
+            <entity namespace="default" class="users" method='stuff'>
                 <parameter name="user_id" value="uid" source="session" required="true" />
             </entity>
             <entity namespace="somens" class="myclass" id="bb">
@@ -64,7 +64,7 @@
                 <parameter name='password'  source='post' value='user_password' format='password' required='true' />
                 <parameter name='user_name' source='post' required='true' />
             </model>
-            <switch id='user' method='login'>
+            <switch id='user' method='adminLogin'>
                 <case value='true'>
                     <redirect href='/admin' />
                 </case>

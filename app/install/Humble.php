@@ -595,7 +595,7 @@ if (PHP_SAPI === 'cli') {
                 installedExtensionCheck();
                 break;
             default:
-                print('I do not know how to process this action: '.$action);
+                print('I do not know how to process this action: '.$action."\n\n");
                 break;
         }
     } else {

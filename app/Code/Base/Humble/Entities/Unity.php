@@ -1065,7 +1065,11 @@ SQL;
         $this->loadEntityColumns(false);
     }
 
-    
+    public function clone($resource=false) {
+        if ($resource) {
+            
+        }
+    }
     /**
      * Gets rows from table where the ID is greater than a set amount
      * 

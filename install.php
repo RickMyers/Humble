@@ -345,7 +345,7 @@ switch ($method) {
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();
 
-        $uid          = \Humble::entity('humble/users')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($upwd))->newUser();
+        $uid          = \Humble::entity('humble/admins')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($upwd))->newUser();
         $results      = ob_get_flush();
         if (!$uid) {
             file_put_contents('install_failed.txt',$results);
@@ -369,7 +369,7 @@ switch ($method) {
         file_put_contents('../install.log',$log);
         break;
     default             :
-        die("I'm not sure what you want, but I'm pretty sure I don't do that");
+        die("I'm not sure what you want, but I'm pretty sure I don't do that\n");
 }
 ?>
     </body>

@@ -176,7 +176,7 @@ class Utility extends Model
      * Create a new module
      */
     public function createModule() {
-        $user   = Humble::entity('humble/users');
+        $user   = Humble::entity('default/users');
         $user->setUid($this->getUid())->load();
         $data   = Humble::entity('humble/user_identification')->setId($this->getUid())->load();
         $cmd    = Environment::PHPLocation().' CLI.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' prefix='.$this->getNamespace().'_ author="'.$data['first_name'].' '.$data['last_name'].'"';
@@ -189,7 +189,7 @@ class Utility extends Model
      * Create a new component, allowing for customization
      */
     public function createComponent() {
-        $data           = Humble::entity('humble/users')->setUid($this->getUid())->load();
+        $data           = Humble::entity('default/users')->setUid($this->getUid())->load();
         $user           = Humble::entity('humble/user/identification')->setId($this->getUid())->load();
         $project        = Environment::getProject();
         $module         = Humble::getModule($this->getNamespace());
@@ -282,7 +282,7 @@ class Utility extends Model
         foreach ($templaters as $engine) {
             $exts[$engine['templater']] = $engine['extension'];
         }
-        $data           = Humble::entity('humble/users')->setUid($this->getUid())->load();
+        $data           = Humble::entity('default/users')->setUid($this->getUid())->load();
         $user           = Humble::entity('humble/user/identification')->setId($this->getUid())->load();
         //need to look for other custom controller template as well...
         $project        = \Environment::getProject();

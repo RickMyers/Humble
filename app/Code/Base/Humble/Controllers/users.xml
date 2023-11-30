@@ -9,7 +9,7 @@
             </entity>
             <entity namespace="humble" class="users_aliases" id="alias">
             </entity>
-            <entity namespace="humble" class="users" id="users">
+            <entity namespace="default" class="users" id="users">
             </entity>
         </action>
 
@@ -20,7 +20,7 @@
             <entity namespace="humble" class="user_permissions" id="user">
                 <parameter name="id" value="uid" source="session" default="" />
             </entity>
-            <entity namespace="humble" class="users" id="users">
+            <entity namespace="default" class="users" id="users">
                 <parameter name="uid" source="post" default="" />
             </entity>
             <entity namespace="humble" class="users_aliases" id="alias">

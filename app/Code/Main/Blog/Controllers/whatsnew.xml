@@ -9,7 +9,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
     <actions blocking="off">
         <action name="home">
             <description>Whats new home page</description>
-            <entity namespace="humble" class="user/identification" id='user' method='load'>
+            <entity namespace="default" class="user/identification" id='user' method='load'>
                 <parameter name='id' source='session' value='uid' default='' />
             </entity>
             <application var='version' assign='app_version' />
