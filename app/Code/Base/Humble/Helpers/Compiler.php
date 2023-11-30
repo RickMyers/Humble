@@ -459,7 +459,7 @@ PHP;
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\Environment::namespace();" : $node['namespace'] );
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::model("'.$namespace.'/'.$node['class'].'");'."\n");
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
@@ -493,7 +493,7 @@ PHP;
             $collection = "/".$collection;
         }*/
         $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\Environment::namespace();" : $node['namespace'] );
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
         print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::collection("'.$namespace.'/'.$collection.'");'."\n");
         //maybe select the collection here, either use 'class=""' or 'collection=""'
         array_push($this->elements,$node);
@@ -568,7 +568,7 @@ PHP;
      */
     private function processEntity($node) {
         $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\Environment::namespace();" : $node['namespace'] );
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
@@ -699,7 +699,7 @@ PHP;
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\Environment::namespace();" : $node['namespace'] );
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::helper("'.$namespace.'/'.$node['class'].'");'."\n");
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {

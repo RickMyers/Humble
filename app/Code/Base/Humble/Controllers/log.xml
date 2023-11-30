@@ -14,15 +14,15 @@
 
         <action name="clearlog">
             <description>Clears the log file</description>
+            <entity namespace="humble" class="admins">
+                <parameter name='user_id'  value='admin_id'   source='session' required="true" />
+            </entity>
+            <entity namespace="humble" class="admin/identification" id='user' method='load'>
+                <parameter name='id'  value='admin_id'   source='session' required="true" />
+            </entity>            
             <helper namespace='humble' class='log' id='log'>
                 <parameter name='log'    source='request' default='' />
-            </helper>
-            <entity namespace="default" class="users" id='user' method='load'>
-                <parameter name='id'  value='uid'   source='session' default='' />
-            </entity>
-            <entity namespace='humble' class='user_permissions' id='permissions' method='load'>
-                <parameter name='id' value="uid" source='session' default='' />
-            </entity>
+            </helper>            
         </action>
 
         <!-- ################################################################### -->

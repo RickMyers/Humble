@@ -161,7 +161,7 @@ if ($mobile_support && $is_mobile) {
 //If the request wasn't handled by the previous step, then drop into the
 //  normal handling for a request
 if (!$request_handled) {
-    $core            = \Humble::getModule(\Environment::namespace);             //A reference to the core functionality held in the applications primary module
+    $core            = \Humble::getModule(\Environment::namespace());             //A reference to the core functionality held in the applications primary module
     $include         = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller_cache']).'/'.$controller.'Controller.php';
     $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']).'/'.$controller.'.xml';
 
