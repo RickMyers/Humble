@@ -145,4 +145,12 @@ class Admin extends Model
         chdir('app');
         return $message;
     }
+    
+    /**
+     * Removes the admin token from the session, thus requiring the user to re-login
+     */
+    public function logout() {
+        unset($_SESSION['admin_id']);
+
+    }
 }

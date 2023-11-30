@@ -66,9 +66,9 @@
 
         <!-- ############################################################### -->
 
-        <action name="logout" event="userLogout" comment="Triggers the logout workflow (if any)" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name="logout" event="userLogout" comment="Triggers the logout workflow (if any)">
             <description>Destroys the session and logs you out...</description>
-            <model namespace="humble" class="user" id="user" method="logout">
+            <model namespace="humble" class="admins" id="user" method="logout">
                 <parameter name="uid" source="session" default="" />
             </model>
             <redirect href="/index.html?message=Logout Successful" />

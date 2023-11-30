@@ -85,87 +85,51 @@
         
         <!-- ############################################################### -->
 
-        <action name='package' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name='package'>
             <description>The form that allows you to create a package/directory</description>
-            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
-                <parameter name='id' value="uid"  source='session' required='true' />
-            </entity>
-            <switch id='permissions' method='getAdmin'>
-                <case value='Y'>
-                    
-                </case>
-                <default>
-                    <redirect href='/index.html?message=Insufficient privilege' />
-                </default>
-            </switch>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="user_id" value="admin_id" source="session" required="true" />
+            </model>
         </action>
         
         <!-- ############################################################### -->
         
-        <action name='module' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name='module'>
             <description>The form that allows you to create a new module</description>
-            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
-                <parameter name='id' value="uid"  source='session' required='true' />
-            </entity>
-            <switch id='permissions' method='getAdmin'>
-                <case value='Y'>
-                    <helper namespace='humble' class='directory'    id='packages' />
-                </case>
-                <default>
-                    <redirect href='/index.html?message=Insufficient privilege' />
-                </default>
-            </switch>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="user_id" value="admin_id" source="session" required="true" />
+            </model>
+            <helper namespace='humble' class='directory'    id='packages' />
         </action>
         
         <!-- ############################################################### -->
         
-        <action name='component' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name='component'>
             <description>The form that allows you to create an Entity, Model, or Helper</description>
-            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
-                <parameter name='id' value="uid"  source='session' required='true' />
-            </entity>
-            <switch id='permissions' method='getAdmin'>
-                <case value='Y'>
-                    <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
-                </case>
-                <default>
-                    <redirect href='/index.html?message=Insufficient privilege' />
-                </default>
-            </switch>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="user_id" value="admin_id" source="session" required="true" />
+            </model>
+            <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
         </action>
         
         <!-- ############################################################### -->
         
-        <action name='controller' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name='controller' >
             <description>The form that allows you to create a controller</description>
-            <entity namespace='humble' class='user_permissions' method='load' id='permissions'>
-                <parameter name='id' value="uid"  source='session' required='true' />
-            </entity>
-            <switch id='permissions' method='getAdmin'>
-                <case value='Y'>
-                    <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
-                </case>
-                <default>
-                    <redirect href='/index.html?message=Insufficient privilege' />
-                </default>
-            </switch>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="user_id" value="admin_id" source="session" required="true" />
+            </model>
+            <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
         </action>
 
         <!-- ############################################################### -->
         
-        <action name='secret' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name='secret' >
             <description>The form that allows you to create a secret</description>
-            <entity namespace='humble' class='user/permissions' method='load' id='permissions'>
-                <parameter name='id' value="uid"  source='session' required='true' />
-            </entity>
-            <switch id='permissions' method='getAdmin'>
-                <case value='Y'>
-                    <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
-                </case>
-                <default>
-                    <redirect href='/index.html?message=Insufficient privilege' />
-                </default>
-            </switch>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="user_id" value="admin_id" source="session" required="true" />
+            </model>
+            <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
         </action>
                         
         <!-- ############################################################### -->
@@ -183,19 +147,11 @@
 
         <action name="clone" event="templatesCloned" comment="Someone has made a copy of the default component templates">
             <description>Clones the default component templates into the application default module</description>
-            <entity namespace="humble" class="user/permissions" method="load" id="permissions">
-                <parameter name='id' source='session' value='uid' default='' />
-            </entity>
-            <if id="permissions" method="getSuperUser" eq="Y">
-                <then>
-                    <model namespace="humble" class="Utility" method="clone">
-                    </model>
-                    <output text="Cloned It!" />
-                </then>
-                <else>
-                    <output text="Ain't happening" />
-                </else>
-            </if>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="user_id" value="admin_id" source="session" required="true" />
+            </model>
+            <model namespace="humble" class="Utility" method="clone" />
+            <output text="Cloned It!" />
         </action>
 
         <!-- ############################################################### -->
@@ -256,22 +212,15 @@
 
         <action name="mongo">
             <description>Routes to the mongo admin utility</description>
-            <entity namespace="humble" class="user_permissions" id="permission" method="load">
-                <parameter name="id" value="id" source="session" default='' />
-            </entity>
-            <switch id="permission" method="getAdmin">
-                <case value="Y">
-                    <redirect href="/mongo/admin" />
-                </case>
-                <default>
-                    <redirect href="/index.html?message=You are not authorized to access that resource" />
-                </default>
-            </switch>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="user_id" value="admin_id" source="session" required="true" />
+            </model>
+            <redirect href="/mongo/admin" />
         </action>
 
         <!-- ############################################################### -->
 
-        <action name="newpackage" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name="newpackage">
             <description>Creates a new directory</description>
             <helper namespace="humble" class='directory' method='create'>
                 <parameter name="directory" value="package" source="post" required="true" />
@@ -280,7 +229,7 @@
 
         <!-- ############################################################### -->
 
-        <action name="addpackage" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name="addpackage">
             <description>Adds a doc block package, don't confuse this with adding a module package (directory)</description>
             <entity namespace="humble" class="packages" method="save">
                 <parameter name="text" value="package" source="post" required="true" />
@@ -289,7 +238,7 @@
 
         <!-- ############################################################### -->
 
-        <action name="addcategory" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name="addcategory">
             <description>Adds a doc block category</description>
             <entity namespace="humble" class="categories" method="save">
                 <parameter name="text" value="category" source="post" required="true" />
@@ -298,42 +247,34 @@
 
         <!-- ############################################################### -->
 
-        <action name="installpage" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name="installpage">
             <description>The page that lets you select which module to upload and install</description>
             <entity namespace='humble' class='modules' id='modules' orderby='module=ASC' />
         </action>
 
         <!-- ############################################################### -->
         
-        <action name="install" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
-            <description>Installs a module by overlaying it in the file system</description>
-            <entity namespace='humble' class='user/permissions' id='perms' method='load'>
-                <parameter name='id' value='uid' source='session' required='true' />
-            </entity>
-            <switch id='perms' method='getSuperUser'>
-                <case value='Y'>
-                    <model namespace='humble' class='admin' method='install' response='true'>
-                        <parameter name='namespace' source='post' required='true' />
-                        <parameter name='module' source='file' required='true' />
-                        <parameter name='uid' source='session' required='true' />
-                    </model>
-                </case>
-                <default>
-                    <redirect href='index.html?message=Unauthorized' />
-                </default>
-            </switch>            
+        <action name="install">
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="user_id" value="admin_id" source="session" required="true" />
+            </model>
+            <model namespace='humble' class='admin' method='install' response='true'>
+                <parameter name='namespace' source='post' required='true' />
+                <parameter name='module' source='file' required='true' />
+                <parameter name='uid' source='session' required='true' />
+            </model>
         </action>
                 
         <!-- ############################################################### -->
 
-        <action name="importpage" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name="importpage" >
             <description>The page that lets you select which module to upload and apply data for</description>
             <entity namespace='humble' class='modules' id='modules' orderby='module=ASC' />
         </action>
                 
         <!-- ############################################################### -->
         
-        <action name="import" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+        <action name="import" >
             <description>Uploads a data file for loading into the DB</description>
             <model namespace='humble' class='admin' method='import' response='true'>
                 <parameter name='namespace' source='post' required='true' />
@@ -346,20 +287,21 @@
         
         <action name="export">
             <description>Exports and zips up data for the user to then download</description>
-            <entity namespace='humble' class='user/permissions' id='perms' method='load'>
-                <parameter name='id' value='uid' source='session' required='true' />
-            </entity>
-            <switch id='perms' method='getSuperUser'>
-                <case value='Y'>
-                    <model namespace='humble' class='admin' method='export' response='true'>
-                        <parameter name='namespace' source='request' required='true' />
-                        <parameter name='uid' source='session' required='true' />
-                    </model>
-                </case>
-                <default>
-                    <redirect href='index.html?message=Unauthorized' />
-                </default>
-            </switch>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="user_id" value="admin_id" source="session" required="true" />
+            </model>
+            <model namespace='humble' class='admin' method='export' response='true'>
+                <parameter name='namespace' source='request' required='true' />
+                <parameter name='uid' source='session' required='true' />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="logout">
+            <description>Removes the admin login token in the session, thus requiring a new login </description>
+            <model namespace="humble" class="admin" method="logout" />
+            <redirect href='index.html?message=Logged Out' />
         </action>
         
     </actions>
