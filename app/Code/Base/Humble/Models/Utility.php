@@ -190,7 +190,7 @@ class Utility extends Model
      */
     public function createComponent() {
         $data           = Humble::entity('default/users')->setUid($this->getUid())->load();
-        $user           = Humble::entity('humble/user/identification')->setId($this->getUid())->load();
+        $user           = Humble::entity('admin/user/identification')->setId($this->getUid())->load();
         $project        = Environment::getProject();
         $module         = Humble::getModule($this->getNamespace());
         $custom_root    = 'Code/'.$project->package.'/'.$project->module.'/lib/sample/component';

@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<config>
+    <admin>
+        <version>0.0.1</version>
+        <title>Framework Administration</title>
+        <description>Functionality for administering the Framework</description>
+        <author>
+            <name>Rick Myers</name>
+            <email>rick@humbleprogramming.com</email>
+        </author>
+        <module>
+            <name>Admin</name>
+            <weight>50</weight>
+            <required>Y</required>
+            <workflow>Y</workflow>
+            <package>Base</package>
+            <use>Twig</use>
+        </module>
+        <structure>
+            <models>
+                <source>Admin/Models</source>
+            </models>
+            <helpers>
+                <source>Admin/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>Admin/Controllers</source>
+                <cache>Admin/Controllers/Cache</cache>
+            </controllers>
+            <mobile>
+                <controllers>
+                    <source>Admin/Mobile/Controllers</source>
+                    <cache>Admin/Mobile/Controllers/Cache</cache>
+                </controllers>
+                <views>
+                    <source>Admin/Mobile/Views</source>
+                    <cache>Admin/Mobile/Views/Cache</cache>
+                </views>
+            </mobile>
+            <schema>
+                <install>Admin/Schema/Install</install>
+                <update>Admin/Schema/Update</update>
+                <layout>Admin/Schema/DSL</layout>
+            </schema>
+            <configuration>
+                <source>Admin/etc</source>
+            </configuration>
+            <views>
+                <source>Admin/Views</source>
+                <cache>Admin/Views/Cache</cache>
+            </views>
+            <images>
+                <source>Admin/Images</source>
+                <cache>Admin/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>Admin/Entities</source>
+            </entities>
+            <RPC>
+                <source>Admin/RPC</source>
+            </RPC>
+            <frontend>
+                <source>Admin/web/app</source>
+            </frontend>
+        </structure>
+        <orm>
+            <prefix>admin_</prefix>
+            <mongodb>admin</mongodb>
+            <entities>
+                <users />
+                <user_identification />
+            </entities>
+        </orm>
+        <events>
+
+        </events>
+        <web>
+            <edits>
+                <edit1>Admin/web/edits/edit.json</edit1>
+            </edits>
+            <admin>
+                <css>
+                    <source>Humble/web/css/cssmenu.css</source>
+                </css>
+                <js>
+                    <source weight='30'>Admin/web/js/Admin.js</source>
+                    <source weight='10'>Admin/web/js/Heartbeat.js</source>
+                    <source weight='10'>Admin/web/js/Pagination.js</source>
+                    <source weight='15'>Admin/web/js/Chart.js</source>
+                    <source weight='20'>Admin/web/js/cssmenu.js</source>
+                </js>
+            </admin>
+            <admintheme>
+                <css>
+                    <source>Humble/web/css/admintheme.css</source>
+                </css>
+            </admintheme>      
+        </web>
+    </admin>
+</config>

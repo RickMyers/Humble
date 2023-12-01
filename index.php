@@ -99,8 +99,8 @@ if (file_exists('CUSTOM.php')) {
 //the login screen
 if (!isset($_SESSION['admin_id'])) {
     //Are you trying to get to the admin page?
-    if (($namespace==='humble') && ($controller==='admin') && ($action==='home')) {
-        header('Location: /humble/admin/login');
+    if (($namespace==='admin') && ($controller==='user') && ($action==='home')) {
+        header('Location: /admin/user/login');
         die();
     }
     

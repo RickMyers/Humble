@@ -94,7 +94,7 @@ class Module extends CLI
     protected static function updateIndividualModule($updater,$namespace) {
         $data = Humble::entity('humble/modules')->setNamespace($namespace)->load(true);
         if (isset($data['configuration']) && $data['configuration']) {
-            $etc     = 'Code/'.$data['package'].'/'.str_replace("_","/",$data['configuration']).'/config.xml';
+            $etc     = 'Code/'.$data['package'].DIRECTORY_SEPARATOR.''.str_replace("_","/",$data['configuration']).DIRECTORY_SEPARATOR.'config.xml';
             $updater->output('BEGIN','Update Configuration File: '.$etc);
             $updater->update($etc);
         } else {
@@ -140,7 +140,7 @@ class Module extends CLI
         self::build($args);
         self::install([
             $args['namespace'],
-            'Code/'.$args['package'].'/'.$args['module'].'/etc/config.xml'
+            'Code/'.$args['package'].DIRECTORY_SEPARATOR.''.$args['module'].DIRECTORY_SEPARATOR.'etc/config.xml'
         ]);
         self::enable($args);
     }
@@ -160,49 +160,49 @@ class Module extends CLI
         $md = $args['module'];
         $em = $args['email'] ?? ($project->author ?? '');
         if ($ns && $pk && $px && $md) {
-            $base = 'Code/'.$pk;
+            $base = 'Code'.DIRECTORY_SEPARATOR.$pk;
             $root = $base."/".$md;
             if (!is_dir($base)) {
                @mkdir($base,0775,true);
             }
             if (!is_dir($root)) {
                 @mkdir($root);
-                @mkdir($root.'/etc');
-                @mkdir($root.'/Controllers');
-                @mkdir($root.'/Controllers/Cache');
-                @mkdir($root.'/Mobile');
-                @mkdir($root.'/Mobile/Controllers');
-                @mkdir($root.'/Mobile/Controllers/Cache');
-                @mkdir($root.'/Mobile/Views');
-                @mkdir($root.'/Mobile/Views/Cache');
-                @mkdir($root.'/Views');
-                @mkdir($root.'/Views/actions');
-                @mkdir($root.'/Views/actions/Smarty3');
-                @mkdir($root.'/Views/Cache');
-                @mkdir($root.'/Resources');
-                @mkdir($root.'/Resources/js');
-                @mkdir($root.'/Resources/SQL');
-                @mkdir($root.'/Models');
-                @mkdir($root.'/Helpers');
-                @mkdir($root.'/Schema');
-                @mkdir($root.'/Schema/Install');
-                @mkdir($root.'/Schema/Update');
-                @mkdir($root.'/Schema/DSL');
-                @mkdir($root.'/Entities');
-                @mkdir($root.'/RPC');
-                @mkdir($root.'/web');
-                @mkdir($root.'/web/js');
-                @mkdir($root.'/web/app');
-                @mkdir($root.'/web/css');
-                @mkdir($root.'/web/edits');
-                @mkdir($root.'/Images');
+                @mkdir($root.DIRECTORY_SEPARATOR.'etc');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Controllers');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Controllers/Cache');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile/Controllers');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile/Controllers/Cache');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile/Views');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile/Views/Cache');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Views');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Views/actions');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Views/actions/Smarty3');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Views/Cache');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Resources');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Resources/js');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Resources/SQL');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Models');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Helpers');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Schema');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Schema/Install');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Schema/Update');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Schema/DSL');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Entities');
+                @mkdir($root.DIRECTORY_SEPARATOR.'RPC');
+                @mkdir($root.DIRECTORY_SEPARATOR.'web');
+                @mkdir($root.DIRECTORY_SEPARATOR.'web/js');
+                @mkdir($root.DIRECTORY_SEPARATOR.'web/app');
+                @mkdir($root.DIRECTORY_SEPARATOR.'web/css');
+                @mkdir($root.DIRECTORY_SEPARATOR.'web/edits');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Images');
                 $project     = Environment::getProject();
                 $is_base     = (string)$project->namespace == $ns;
                 $package     = $is_base ? 'Base'   : (string)$project->package;
                 $module      = $is_base ? 'Humble' : (string)$project->module;
                 $required    = $is_base ? 'Y'      : 'N';
                 $main_module = strtoupper($project->namespace)===strtoupper($ns) ? ucfirst(strtolower($project->namespace))." = {}" : "";  //if this is the main module, of which there can be only one, we will need to add an extra bit of JS
-                $root        = is_dir('Code/'.$project->package.'/'.$project->module.'/lib/sample/module') ? 'Code/'.$project->package.'/'.$project->module : "Code/Base/Humble";
+                $root        = is_dir('Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module.DIRECTORY_SEPARATOR.'lib/sample/module') ? 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module : "Code/Base/Humble";
                 $srch        = ["&&main_module&&","&&project&&","&&namespace&&","&&prefix&&","&&author&&","&&module&&","&&package&&",'&&email&&','&&FACTORY&&','&&base_package&&','&&base_module&&','&&required&&'];
                 $repl        = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
                 $templates   = [$root."/lib/sample/module/Controllers/actions.xml"];

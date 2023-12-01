@@ -233,6 +233,9 @@ switch ($method) {
                                 </form></td></tr>
                             </table>
                         </div>
+                        <div id="installer-options" class='installer-form-div'>
+                            options go here (choice of templater, whether to include default landing)
+                        </div>
                     </td>
                 </tr>
                 <tr style="height: 20px">
@@ -252,6 +255,7 @@ switch ($method) {
                     tabs.add('Installation',null,'installer-form-div');
                     tabs.add('New RDMS DB',null,'installer-new-db');
                     tabs.add('New MongoDB',null,'installer-new-mongodb');
+                    tabs.add('Install Options',null,'installer-options');
                     tabs.tabClick(0);
                 })();
             </script>
