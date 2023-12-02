@@ -7,9 +7,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 -->
 <controller name="home" use="Smarty3" author=" " email="">
     <actions>
-        
         <action name="page">
             <description>The Home Page</description>
+            <helper namespace="humble" class="admin" id='appHomePage' />
         </action>
 
         <!-- ############################################################### -->

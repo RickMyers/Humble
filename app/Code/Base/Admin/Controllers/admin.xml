@@ -13,34 +13,6 @@
             </model>
         </action>
         
-        <!-- ############################################################### -->   
-        
-        <action name='home'>
-            <description>The Humble administration home page</description>
-            <entity namespace='humble' class='permissions' id='permissions' comment="fake class">
-                <parameter name='admin_id' value="admin_id"  source='session' default='N' />
-            </entity>
-            <switch id='permissions' method='getAdminId'>
-                <case value='TRUE'>
-                    <model namespace="humble" class="system" id="system" />
-                    <entity namespace='humble' class='modules'      id='available_modules' orderby='package=ASC,namespace=ASC' />
-                    <helper namespace='humble' class='installer'    id='installer' />
-                    <helper namespace='humble' class='admin'        id='directory' />
-                    <helper namespace='humble' class='directory'    id='packages' />
-                    <cache get='queryLogging' assign='queryLogging' />
-                </case>
-                <default>
-                    <redirect href='/index.html?message=Insufficient privilege' />
-                </default>
-            </switch>
-        </action>
-
-        <!-- ############################################################### -->
-        
-        <action name='login'>
-            <description>The administration login page</description>
-        </action>
-        
         <!-- ############################################################### -->
         
         <action name="test">
@@ -69,7 +41,7 @@
                     <redirect href='/admin' />
                 </case>
                 <default>
-                    <redirect href='/index.html?message=Admin Login Attempt Failed' />
+                    <redirect href='/admin/user/login?message=Admin Login Attempt Failed' />
                 </default>
             </switch>
         </action>

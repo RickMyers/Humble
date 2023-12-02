@@ -50,7 +50,7 @@ e :
     usage:
         linux:   sudo sh ./humble.sh --e ns=module_namespace or sudo sh ./humble.sh --e ns=*
         windows: humble --e ns=module_namespace or humble --e ns=*
-    function : enamble
+    function : enable
     parameters:
         required:
             namespace|ns: You must specify the namespace of the module to enable, or an * to enable all modules
