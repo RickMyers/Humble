@@ -5,11 +5,22 @@ Basic Controller only used to route the person to the application home page
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="home" use="Smarty3" author=" " email="">
+<controller name="home" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
         
         <action name="page">
             <description>The Home Page</description>
+            <model class="dummy" id="admin">
+                <parameter name="admin_id" source="session" value="admin_id" />
+            </model>
+            <switch id="admin" method="getAdminId">
+                <case value="TRUE">
+                    <comment>Good to go, you are logged in as an admin</comment>
+                </case>
+                <default>
+                    <redirect href="/admin/login/form" />
+                </default>
+            </switch>
         </action>
 
         <!-- ############################################################### -->

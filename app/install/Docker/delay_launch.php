@@ -11,6 +11,7 @@ chdir('/var/www/');
 while ((++$ctr < 10) && !($launched)) {
     if ((int)($result = shell_exec($cmd)) >= 2) {
         exec('service php8.2-fpm start');
+        exec('service memcached start');
         file_put_contents('results.txt','I launched PHP-FPM');
         die();
     } else {

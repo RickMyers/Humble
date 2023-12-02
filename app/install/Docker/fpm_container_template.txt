@@ -68,7 +68,6 @@ RUN mkdir /var/www/Settings/&&NAMESPACE&& && chmod -R 0777 /var/www/Settings/&&N
 RUN a2enmod rewrite && a2enmod ssl && a2enmod include && a2enmod proxy_fcgi && a2enmod proxy
 COPY vhost.conf /etc/apache2/sites-enabled/&&NAME&&.conf
 COPY ports.conf /etc/apache2/ports.conf
-RUN service memcached start
 RUN apt update
 RUN apt upgrade -y
 COPY delay_launch.php /var/www/delay_launch.php

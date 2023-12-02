@@ -41,7 +41,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="status" output="JSON">
             <description>Retrieves information about the running environment including usage and thread counts</description>
-            <model namespace="humble" class="monitor" id='monitor' method="snapShot" />
+            <model namespace="admin" class="monitor" id='monitor' method="snapShot" />
         </action>
         
         <!-- ########################################################################################## -->

@@ -85,7 +85,8 @@ if (isset($_REQUEST['sessionId'])) {
 }
 session_start();
 
-$admin = $_SESSION['admin_id'] ?? false;                                        //Are you already logged in as an administrator/super-user?
+$admin      = $_SESSION['admin_id'] ?? false;                                   //Are you already logged in as an administrator/super-user?
+$logged_in  = $_SESSION['uid']      ?? false;                                   //Are you logged in as a normal user?
 
 //###########################################################################
 //Allows for custom code execution at this point if so desired.
@@ -100,7 +101,7 @@ if (file_exists('CUSTOM.php')) {
 //can access without being logged in.  If the service you are trying to load
 //is on the list, then you are allowed to pass, otherwise you are routed to
 //the login screen
-if (!$admin) {
+if (!($admin || $logged_in)) {
     //Are you trying to get to the admin page?
     if (($namespace==='admin') && ($controller==='home') && ($action==='page')) {
         header('Location: /admin/login/form');
@@ -109,7 +110,10 @@ if (!$admin) {
     
     //check to see if the service they are trying to access is publicly visible
     //We are going to try to get a cached copy, otherwise we read the physical file for routes
-    $allowed = ($t = Humble::cache('humble_framework_allowed_routes')) ? $t : json_decode(file_get_contents('allowed.json'));
+//    if (!$allowed = Humble::cache('humble_framework_allowed_routes')) {
+//        Humble::cache($allowed = json_decode(file_get_contents('allowed.json')));
+//    }
+    $allowed = json_decode(file_get_contents('allowed.json'));
     if (isset($allowed->routes->{'/'.$namespace.'/'.$controller.'/'.$action}) || isset($allowed->namespaces->$namespace) || isset($allowed->controllers->{'/'.$namespace.'/'.$controller})) {
         $bypass = true;
         //NOP, you are ok to hit that resource

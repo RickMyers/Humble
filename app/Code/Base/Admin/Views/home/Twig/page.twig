@@ -143,7 +143,7 @@
                              <li><a target="_BLANK" href='/contrive/actions/open'>Contrive Designer</a></li>
                              <li><a target="_BLANK" href='/paradigm/api/home'>API Test App</a></li>
                              <li><a target="_BLANK" href='/paradigm/actions/designer'>Form Designer</a></li>
-                             <li style="border-top: 1px solid silver; "><a target="_BLANK" href='/humble/admin/logout'>Logout</a>
+                             <li style="border-top: 1px solid silver; "><a target="_BLANK" href='/admin/user/logout'>Logout</a>
 
                           </ul>
                         </li>
@@ -156,7 +156,7 @@
                              <li><a href='#'>Services</a>
                                 <ul>
                                    <li><a target="_BLANK" href='#' onclick="Administration.services.directory.index(); return false;">Directory</a></li>
-                                   <li><a target="_BLANK" href='/humble/directory/authorizations'>Authorizations</a></li>
+                                   <li><a target="_BLANK" href='/admin/directory/authorizations'>Authorizations</a></li>
                                 </ul>
                              </li>                              
                            </ul>
@@ -216,8 +216,8 @@
                                     <ul>
                                           <li><a href="#">Query Logging</a>
                                             <ul>
-                                                <li><a href='/humble/log/queryon' onclick="window.event.stopPropagation()">On</a></li>
-                                                <li><a href='/humble/log/queryoff' onclick="window.event.stopPropagation()">Off</a></li>
+                                                <li><a href='/admin/log/queryon' onclick="window.event.stopPropagation()">On</a></li>
+                                                <li><a href='/admin/log/queryoff' onclick="window.event.stopPropagation()">Off</a></li>
                                             </ul>
                                         </li>                                         
                                         {% if (permissions.getSuperUser() == 'Y') %}

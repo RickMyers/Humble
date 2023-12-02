@@ -154,6 +154,11 @@
         <script type="text/javascript">
             $(window).ready(function() {
                 new EasyEdits('/edits/humble/login','admin_login');
+                var loginMessage = window.location.href.split('?message=');
+                if (loginMessage[1]) {
+                    $E('login-error').innerHTML = unescape(loginMessage[1]);
+                }
+                
             });
         </script>
     </head>
@@ -162,8 +167,11 @@
         <table style='width: 100%; height: 100%'>
             <tr>
                 <td style='text-align: center'>
+                    <div style="color: #F33; width: 470px; text-align: center; font-size: 1.3em; margin-left: auto; margin-right: auto; " id="login-error">&nbsp;</div>
                     <div style='margin-left: auto;  display: inline-block; margin-right: auto; border: 1px solid #333; padding: 10px; background-color: ghostwhite'>
+                        
                         <form name='admin_login_form' id='admin_login_form' method='POST' action='/admin/user/login' onsubmit='return false'>
+                            
                             <div style='font-size: .9em; width: 470px; text-align: justify; margin-bottom: 10px'>
                             The administration section is restricted to specific users who have the proper role.
                             Please enter your User Name and Password below to get access to the administration

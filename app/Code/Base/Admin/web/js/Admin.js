@@ -445,8 +445,8 @@ var Administration = (function () {
                                 $('#cadence_running').css('display',(cadence.running ? 'block' : 'none'));
                             }
                         })();                        
-                        Heartbeat.register('humble',true,'systemStatus',f,1,{});
-                        Heartbeat.register('humble',true,'cadenceStatus',g,1,{});
+                        Heartbeat.register('admin',true,'systemStatus',f,1,{});
+                        Heartbeat.register('admin',true,'cadenceStatus',g,1,{});
                         Heartbeat.init();
                     },
                     action: function (action,pkg,module) {

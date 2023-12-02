@@ -381,7 +381,7 @@ class Model implements HumbleComponent
             session_write_close();
          }
         //if you are going to "eat your own dogfood", we need to precede the resource URL with the fully qualified host name
-        $HTTP_HOST = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+        $HTTP_HOST = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '127.0.0.1';
         if (substr($URL,0,4)!=='http') {
             $isHttps = isset($_SERVER['HTTPS']) && strtoupper($_SERVER['HTTPS'])==='ON' ? true :
                        (isset($_SERVER['REQUEST_SCHEME']) && strtoupper($_SERVER['REQUEST_SCHEME']==='HTTPS') ? true : 
@@ -453,9 +453,8 @@ class Model implements HumbleComponent
             ]);
         }
         
-        stream_set_timeout($fp,60000);
-
         if ($fp) {
+            stream_set_timeout($fp,60000);
             $res = stream_get_contents($fp);
             if ($this->_DEBUG) {
                 $this->addToDebugReport([

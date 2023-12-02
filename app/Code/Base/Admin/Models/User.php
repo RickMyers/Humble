@@ -35,4 +35,20 @@ class User extends Model
         return __CLASS__;
     }
 
+        /**
+     * Performs a standard single source authentication
+     *
+     * @return boolean
+     */
+    public function login($resource='admin/users') {
+        $login      = false;
+        $password   = $this->getPassword();
+        $user_name  = $this->getUserName();
+        $user       = Humble::entity($resource)->setUserName($user_name)->load(true);
+        if ($user && ($login = ($user['password'] === crypt($password,$user['salt'])))) {
+            Environment::session('user',$user);
+            Environment::session('admin_id',$user['id']);
+        }
+        return $login;
+    }
 }

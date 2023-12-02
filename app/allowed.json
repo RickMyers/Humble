@@ -6,9 +6,13 @@
 
     },
     "routes": {
-        "/admin/user/login": {
+        "/admin/login/form": {
            "reason":   "User needs to attempt login as an administrator",
            "description": "The administrator login page"
+        },
+        "/admin/user/login": {
+           "reason":   "Admin needs to attempt to authenticate",
+           "description": "The administrator authentication service"
         },
         "/humble/user/login": {
            "reason":   "This needs exposed because the user's credentials won't be validated until after this call",

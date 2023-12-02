@@ -143,7 +143,7 @@ var Heartbeat = (function ($) {
                 for (var j in args) {
                     opts[args[j]] = Humble.singleton.get(args[j]);
                 }
-                (new EasyAjax('/humble/system/poll')).add('beats',JSON.stringify(transport)).add('arguments',JSON.stringify(opts)).then((response) => {
+                (new EasyAjax('/admin/system/poll')).add('beats',JSON.stringify(transport)).add('arguments',JSON.stringify(opts)).then((response) => {
                     try {
                         var responses = JSON.parse(response);
                         if (responses) {
