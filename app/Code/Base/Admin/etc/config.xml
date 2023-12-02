@@ -67,6 +67,7 @@
             <prefix>admin_</prefix>
             <mongodb>admin</mongodb>
             <entities>
+                <system_monitor />
                 <users />
                 <user_identification />
             </entities>
