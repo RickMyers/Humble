@@ -56,7 +56,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <action name="maintenance">
             <description>Will swap out the login page for the maintenance page, or vice versa</description>
-            <model namespace='humble' class='admin' method='maintenance' response='true'>
+            <model namespace='admin' class='actions' method='maintenance' response='true'>
                 <parameter name='enable' source='request' default='Y' />
             </model>
         </action>
@@ -254,7 +254,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <action name="import" >
             <description>Uploads a data file for loading into the DB</description>
-            <model namespace='humble' class='admin' method='import' response='true'>
+            <model namespace='admin' class='actions' method='import' response='true'>
                 <parameter name='namespace' source='post' required='true' />
                 <parameter name='data_file' source='file' required='true' />                
                 <parameter name='uid' source='session' required='true' />
@@ -268,7 +268,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <model namespace="humble" class="permissions" id="permissions">
                 <parameter name="user_id" value="admin_id" source="session" required="true" />
             </model>
-            <model namespace='humble' class='admin' method='export' response='true'>
+            <model namespace='admin' class='actions' method='export' response='true'>
                 <parameter name='namespace' source='request' required='true' />
                 <parameter name='uid' source='session' required='true' />
             </model>

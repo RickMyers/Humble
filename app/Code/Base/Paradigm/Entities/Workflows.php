@@ -37,7 +37,7 @@ class Workflows extends Entity
         $query = <<<SQL
         select a.*, b.first_name, b.last_name
           from paradigm_workflows as a
-         inner join humble_user_identification as b
+         inner join admin_user_identification as b
              on a.creator = b.id
          where namespace = '{$this->getNamespace()}'
 SQL;

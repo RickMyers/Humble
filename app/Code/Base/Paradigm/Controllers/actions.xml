@@ -3,16 +3,15 @@
     <actions>
         <action name="open">
             <description>Main landing for the workflow editor</description>
-            <entity namespace="humble" class="user_permissions" id="permissions" method="load">
-                <parameter name='id' value="uid" source="session" required="true" />
+            <entity namespace="humble" class="permissions" id="permissions">
+                <parameter name='admin_id' source="session" default='' />
             </entity>
-            <switch id='permissions' method='getAdmin'>
+            <switch id='permissions' method='getAdminId'>
                 <case value='Y'>
                     <model namespace="humble" class="system" id="system" />
-                    <model namespace="humble" class="system" id="system" />                
                 </case>
                 <default>
-                    <redirect href='/index.html?message=Insufficient privilege' />
+                    <redirect href='/admin/login/form?message=Insufficient privilege, log in as Admin to access the Workflow Editor' />
                 </default>
             </switch>            
         </action>
@@ -23,11 +22,6 @@
 
         </action>
 
-        <!-- ############################################################### -->
-
-        <action name="research">
-
-        </action>
     </actions>
 
 </controller>

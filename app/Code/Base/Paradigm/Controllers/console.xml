@@ -20,8 +20,8 @@
         <!-- ################################################################################################# -->
 
         <action name='whoami'>
-            <entity namespace='humble' class='user_identification' id='user'>
-                <parameter name='id' value='uid' source='session' default='' />
+            <entity namespace='admin' class='user/identification' id='user'>
+                <parameter name='id' value='admin_id' source='session' required="true" />
             </entity>
         </action>
 

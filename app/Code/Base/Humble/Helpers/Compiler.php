@@ -1071,7 +1071,7 @@ PHP;
                 print($this->tabs().'$audit->setNamespace(\Humble::_namespace());'."\n");
                 print($this->tabs().'$audit->setController(\Humble::_controller());'."\n");
                 print($this->tabs().'$audit->setAction(\Humble::_action());'."\n");
-                print($this->tabs().'$audit->setUid(\Environment::whoAmI())'.";\n");
+                print($this->tabs().'$audit->setId(\Environment::whoAmI())'.";\n");
                 print($this->tabs().'$audit->setIdentity(\Environment::whoAmIReally())'.";\n");
                 print($this->tabs().'$audit->setTimestamp(date("Y-m-d H:i:s"))'.";\n");
                 print($this->tabs().'foreach ($_REQUEST as $var => $val) {'."\n");

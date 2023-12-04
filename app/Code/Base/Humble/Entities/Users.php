@@ -50,7 +50,7 @@ class Users extends Entity
         $email  = $email ? $email               : ($this->getEmail()     ? $this->getEmail()     : '');
         if ($uname && $pwd) {
             if ($uid) {
-                $this->setUid($uid);
+                $this->setId($uid);
             }
             if ($id = $this->setEmail($email)->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setUserName($uname)->save()) {
                 if ($fname && $lname) {
@@ -71,7 +71,7 @@ class Users extends Entity
         $uid    = $uid ? $uid                   : ($this->getUid()  ? $this->getUid()  : '');
         $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
         if ($uid && $pwd) {
-            $this->setUid($uid)->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->save();
+            $this->setId($uid)->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->save();
         }
     }
     

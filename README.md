@@ -37,7 +37,7 @@ as PROCESS, INPUT, NOTIFICATION (e-mail, text, pop-up alert...), DECISION, etc..
         if ($EVENT) {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
-                $user       = Humble::getEntity('humble/users')->setUserName($data['user_name'])->load(true);
+                $user       = Humble::getEntity('default/users')->setUserName($data['user_name'])->load(true);
                 $config     = $EVENT->fetch();
                 if (isset($config['tries']) && ($config['tries'])) {
                     $exceeded   = ((int)$user->getLoginAttempts() > (int)$config['tries']);

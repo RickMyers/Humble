@@ -81,7 +81,7 @@ class User extends Model {
     public function resetPasswords() {
         $user = Humble::entity('default/users');
         foreach (Humble::entity('default/users')->fetch() as $obs) {
-            $user->reset()->setUid($obs['uid'])->setResetPasswordToken($this->resetToken(12))->save();
+            $user->reset()->setId($obs['uid'])->setResetPasswordToken($this->resetToken(12))->save();
         }
         return "Passwords were reset (sure)";
     }
@@ -303,7 +303,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
-                Humble::entity('default/users')->setUid(Environment::whoAmI())->setLoginAttempts(0)->save();
+                Humble::entity('default/users')->setId(Environment::whoAmI())->setLoginAttempts(0)->save();
             } else {
                 //throw an exception for insufficient data
             }
@@ -321,7 +321,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
-                $user   = Humble::entity('default/users')->setUid(Environment::whoAmI());
+                $user   = Humble::entity('default/users')->setId(Environment::whoAmI());
                 if (count($user->load())) {
                     $user->setLoginAttempts($user->getLoginAttempts()+1)->save();
                 }
@@ -341,7 +341,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
-                Humble::entity('default/users')->setUid(Environment::whoAmI())->setLoggedIn(date('Y-m-d H:i:s'))->save();
+                Humble::entity('default/users')->setId(Environment::whoAmI())->setLoggedIn(date('Y-m-d H:i:s'))->save();
             } else {
                 //throw an exception for insufficient data
             }

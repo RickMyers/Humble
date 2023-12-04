@@ -22,7 +22,7 @@
     $('#humble_upload_button').on('click',function (evt) {
         var win = Desktop.window.list[Desktop.whoami('humble_upload_destination')];
         win.splashScreen('<table style="width: 100%; height: 100%"><tr><td style="text-align: center; font-size: 3em; color: white"> Uploading File... </td></tr></table>');
-        (new EasyAjax('/humble/upload/file')).packageForm('humble_upload_form').then((response) => {
+        (new EasyAjax('/admin/upload/file')).packageForm('humble_upload_form').then((response) => {
             win.splashScreen('');
             alert(response); 
             Administration.upload.win._close();

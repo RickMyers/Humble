@@ -15,7 +15,7 @@ use Environment;
  * @package    Core
  * @author     Rick Myers <rick@humbleprogramming.com>
  */
-class Admin extends Model
+class Actions extends Model
 {
 
     use \Code\Base\Humble\Traits\EventHandler;
