@@ -20,7 +20,7 @@
                         "onchange":             (evt) => {
                             let val = $(evt.target).val();
                             if (val) {
-                                (new EasyAjax('/humble/secrets/list')).add('namespace',val).then((response) => {
+                                (new EasyAjax('/admin/secrets/list')).add('namespace',val).then((response) => {
                                     let secrets = JSON.parse(response);
                                     let s_list  = [];
                                     s_list[s_list.length] = { "text": "", "value": "" }
@@ -85,7 +85,7 @@
                         "value":        "",
                         "onclick":        function () {
                             if (Edits['smtp_settings'].validate()) {
-                                (new EasyAjax('/humble/smtp/save')).packageForm('smtp_settings_form').then((response) => {
+                                (new EasyAjax('/admin/smtp/save')).packageForm('smtp_settings_form').then((response) => {
                                     alert(response);
                                 }).post();
                             }

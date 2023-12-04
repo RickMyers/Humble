@@ -1,7 +1,7 @@
 {
 	"form":
 	{
-		"id":                   "import_humble_data_form",
+		"id":                   "install_humble_module_form",
 		"drawme":		false,
 		"action":		"",
 		"method":		"post",
@@ -12,34 +12,25 @@
 	[
 		{
 			"active":		true,
-			"id": 			"import_humble_namespace",
-			"longname":		"Namespace",
-			"type":			"text",
-			"required":		true,
-			"force":		true,
-                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
-		},
-		{
-			"active":		true,
-			"id": 			"import_humble_data_file",
-			"longname":		"Data File",
-                        "title":                "The data in zipped format",
+			"id": 			"install_humble_module_file",
+			"longname":		"Module File",
+                        "title":                "The module in zipped format",
 			"type":			"file",
 			"required":		false,
-			"force":                false,
+			"force":		false,
                         "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
-		},            
+		},      
 		{
 			"active":		true,
-			"id":			"import_data_submit",
+			"id":			"install_module_submit",
 			"longname":		"Submit Button",
 			"type":			"button",
                         "style":                "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
                         "classname":            "settingsButton",
                         "value":                "",
                         "onclick":              function () {
-                            if (Edits['import_data'].validate()) {
-                                (new EasyAjax('/humble/admin/import')).packageForm('import_humble_data_form').then((response) => {
+                            if (Edits['install_module'].validate()) {
+                                (new EasyAjax('/admin/module/install')).packageForm('install_humble_module_form').then((response) => {
                                     alert(response);
                                 }).post();
                             }
@@ -47,4 +38,5 @@
 		}
 	]
 }
+
 

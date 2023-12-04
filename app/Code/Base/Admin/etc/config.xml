@@ -77,11 +77,21 @@
         </events>
         <web>
             <edits>
-                <edit1>Admin/web/edits/edit.json</edit1>
+                <newmodule>Admin/web/edits/newmodule.json</newmodule>
+                <newcontroller>Admin/web/edits/newcontroller.json</newcontroller>
+                <newpackage>Admin/web/edits/newpackage.json</newpackage>
+                <newcomponent>Admin/web/edits/newcomponent.json</newcomponent>
+                <newsecret>Admin/web/edits/newsecret.json</newsecret>
+                <smtpsettings>Admin/web/edits/smtpsettings.json</smtpsettings>
+                <fetchsecret>Admin/web/edits/fetchsecret.json</fetchsecret>
+                <apitester>Admin/web/edits/apitester.json</apitester>
+                <importdata>Admin/web/edits/importdata.json</importdata>
+                <installmodule>Admin/web/edits/installmodule.json</installmodule>
+                <login>Admin/web/edits/adminlogin.json</login>
             </edits>
             <admin>
                 <css>
-                    <source>Humble/web/css/cssmenu.css</source>
+                    <source>Admin/web/css/cssmenu.css</source>
                 </css>
                 <js>
                     <source weight='30'>Admin/web/js/Admin.js</source>
@@ -93,7 +103,7 @@
             </admin>
             <admintheme>
                 <css>
-                    <source>Humble/web/css/admintheme.css</source>
+                    <source>Admin/web/css/admintheme.css</source>
                 </css>
             </admintheme>      
         </web>

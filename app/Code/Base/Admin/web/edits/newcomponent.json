@@ -16,7 +16,7 @@
             "longname":     "Package name",
 			"title":		"The package of this component ",
 			"type":			"select",
-            "populator":    "/humble/component/packages",
+            "populator":    "/admin/component/packages",
 			"required":		true,
 			"force":		true,
             "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
@@ -27,7 +27,7 @@
             "longname":     "Category name",
 			"title":		"The category of this component",
 			"type":			"select",
-            "populator":    "/humble/component/categories",
+            "populator":    "/admin/component/categories",
 			"required":		true,
 			"force":		true,
             "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
@@ -37,7 +37,7 @@
 			"id": 			"component_namespace",
             "longname":     "Namespace",
 			"title":		"The namespace that will control the component",
-            "populator":    "/humble/component/namespaces",
+            "populator":    "/admin/component/namespaces",
 			"type":			"select",
 			"required":		true,
 			"force":		true,
@@ -103,7 +103,7 @@
             "classname":    "settingsButton",
             "onclick":      function () {
                 if (Edits['newcomponent'].validate()) {
-                    var ao = new EasyAjax('/humble/component/create');
+                    var ao = new EasyAjax('/admin/component/create');
                     ao.add('namespace',$('#component_namespace').val());
                     ao.add('name',$('#component_name').val());
                     ao.add('package',$('#component_package').val());

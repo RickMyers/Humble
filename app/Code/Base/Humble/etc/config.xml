@@ -86,17 +86,7 @@
         </webhooks>        
         <web>
             <edits>
-                <newmodule>Humble/web/edits/newmodule.json</newmodule>
-                <newcontroller>Humble/web/edits/newcontroller.json</newcontroller>
-                <newpackage>Humble/web/edits/newpackage.json</newpackage>
-                <newcomponent>Humble/web/edits/newcomponent.json</newcomponent>
-                <newsecret>Humble/web/edits/newsecret.json</newsecret>
-                <smtpsettings>Humble/web/edits/smtpsettings.json</smtpsettings>
-                <fetchsecret>Humble/web/edits/fetchsecret.json</fetchsecret>
-                <apitester>Humble/web/edits/apitester.json</apitester>
-                <importdata>Humble/web/edits/importdata.json</importdata>
-                <installmodule>Humble/web/edits/installmodule.json</installmodule>
-                <login>Humble/web/edits/adminlogin.json</login>
+
             </edits>
             <common>
                 <js>

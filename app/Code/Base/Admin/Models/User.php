@@ -51,4 +51,16 @@ class User extends Model
         }
         return $login;
     }
+    
+    /**
+     * Removes the admin id token from the session, thus requiring the user to log back in as an admin
+     * 
+     * @return bool
+     */
+    public function logout() {
+        if (isset($_SESSION['admin_id'])) {
+            unset($_SESSION['admin_id']);
+        }
+        return true;
+    }
 }

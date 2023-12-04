@@ -89,12 +89,12 @@
 
         <!-- ############################################################### -->
 
-        <action name="logout" event="userLogout" comment="Triggers the logout workflow (if any)">
+        <action name="logout" event="adminLogout" comment="Triggers the admin logout workflow (if any)">
             <description>Destroys the session and logs you out...</description>
             <model namespace="admin" class="user" id="user" method="logout">
-                <parameter name="uid" source="session" default="" required="true" />
+                
             </model>
-            <redirect href="/index.html?message=Logout Successful" />
+            <redirect href="/admin/login/form?message=Logout Successful" />
         </action>
 
     </actions>

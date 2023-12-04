@@ -60,7 +60,7 @@
             "value":        "Create",
             "onclick":        function () {
                 if (Edits['newmodule'].validate()) {
-                    (new EasyAjax('/humble/module/create')).packageForm('new_module_form').then((response) => {
+                    (new EasyAjax('/admin/module/create')).packageForm('new_module_form').then((response) => {
                         window.location.reload(true);
                     }).post();
                 }

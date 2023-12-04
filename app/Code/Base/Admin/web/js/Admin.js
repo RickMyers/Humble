@@ -17,7 +17,7 @@ var Administration = (function () {
                         package: function () {
                             var val = prompt("Please enter a new documentation package");
                             if (val) {
-                                (new EasyAjax('/admin/admin/addpackage')).add('package',val).then(function () {
+                                (new EasyAjax('/admin/actions/addpackage')).add('package',val).then(function () {
                                     //window.location.reload();
                                 }).post();
                             }
@@ -25,7 +25,7 @@ var Administration = (function () {
                         category: function () {
                             var val = prompt("Please enter a new documentation category");
                             if (val) {
-                                (new EasyAjax('/admin/admin/addcategory')).add('category',val).then(function () {
+                                (new EasyAjax('/admin/actions/addcategory')).add('category',val).then(function () {
                                     //window.location.reload();
                                 }).post();
                             }
@@ -44,14 +44,14 @@ var Administration = (function () {
                     maintenance: {
                         enter: function () {
                             if (confirm('This action will swap the login page for the maintenance page essentially putting the site into maintenance mode.\n\nDo you wish to continue?')) {
-                                (new EasyAjax('/admin/admin/maintenance')).add('enable','Y').then((response) => {
+                                (new EasyAjax('/admin/actions/maintenance')).add('enable','Y').then((response) => {
                                     alert(response);
                                 }).post();
                             }
                         },
                         leave: function () {
                             if (confirm('This action will restore the login page.\n\nDo you wish to continue?')) {
-                                (new EasyAjax('/admin/admin/maintenance')).add('enable','N').then((response) => {
+                                (new EasyAjax('/admin/actions/maintenance')).add('enable','N').then((response) => {
                                     alert(response);
                                 }).post();
                             }
@@ -77,18 +77,18 @@ var Administration = (function () {
                     module: {
                         import: function (namespace) {
                             let win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/admin/admin/importpage')).then((response) => {
+                            (new EasyAjax('/admin/actions/importpage')).then((response) => {
                                 win._open(response)._title('Import Data');
                             }).post();
                         },
                         export: function (namespace) {
                             if (confirm('Would you like to export (download) data for the module '+namespace+"?")) {
-                                window.open('/admin/admin/export?namespace='+namespace);
+                                window.open('/admin/actions/export?namespace='+namespace);
                             }
                         },
                         install: function (namespace) {
                             let win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/admin/admin/installpage')).then((response) => {
+                            (new EasyAjax('/admin/actions/installpage')).then((response) => {
                                 win._open(response)._title('Install Module');
                             }).post();                            
                         }
@@ -136,25 +136,25 @@ var Administration = (function () {
                         },
                         package: function () {
                             var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true))._static(true)._title("New Package");
-                            (new EasyAjax('/admin/admin/package')).then((response) => {
+                            (new EasyAjax('/admin/actions/package')).then((response) => {
                                 win._open(response);
                             }).get();
                         },
                         module: function () {
                             var win = (Administration.create.win.mod = Administration.create.win.mod ? Administration.create.win.mod : Desktop.semaphore.checkout(true))._static(true)._title("New Module");
-                            (new EasyAjax('/admin/admin/module')).then((response) => {
+                            (new EasyAjax('/admin/actions/module')).then((response) => {
                                 win._open(response);
                             }).get();                            
                         },
                         component: function () {
                             var win = (Administration.create.win.com = Administration.create.win.com ? Administration.create.win.com : Desktop.semaphore.checkout(true))._static(true)._title("New Component");
-                            (new EasyAjax('/admin/admin/component')).then((response) => {
+                            (new EasyAjax('/admin/actions/component')).then((response) => {
                                 win._open(response);
                             }).get();                            
                         },
                         controller: function () {
                             var win = (Administration.create.win.con = Administration.create.win.con ? Administration.create.win.con : Desktop.semaphore.checkout(true))._static(true)._title("New Controller");
-                            (new EasyAjax('/admin/admin/controller')).then((response) => {
+                            (new EasyAjax('/admin/actions/controller')).then((response) => {
                                 win._open(response);
                             }).get();                            
                         }
@@ -196,7 +196,7 @@ var Administration = (function () {
                     templates: {
                         clone: function () {
                             if (confirm("Do you wish to clone a copy of the framework component templates so that you may customize them?\n\nIf so, they will be in the 'lib' directory of your main application module.")) {
-                                (new EasyAjax('/admin/admin/clone')).then((response) => {
+                                (new EasyAjax('/admin/actions/clone')).then((response) => {
                                     alert(response);
                                 }).post();
                             }
@@ -407,7 +407,7 @@ var Administration = (function () {
                     },
 /*                    create:     function (directory,pkg) {
                         if (confirm('Would you like to create the path '+directory+' in the '+pkg+' package?')) {
-                            (new EasyAjax('/admin/admin/create')).add('package',pkg).add('directory',directory).then(function () {
+                            (new EasyAjax('/admin/actions/create')).add('package',pkg).add('directory',directory).then(function () {
                                 window.location.reload(true);
                             }).post();
                         }
@@ -450,7 +450,7 @@ var Administration = (function () {
                         Heartbeat.init();
                     },
                     action: function (action,pkg,module) {
-                        var ao = new EasyAjax('/admin/admin/'+action);
+                        var ao = new EasyAjax('/admin/actions/'+action);
                         ao.add('package',pkg);
                         ao.add('module',module);
                         $('#admin-lightbox').css('display','block');
@@ -509,7 +509,7 @@ var Administration = (function () {
                        }
                     },
                     enable: function (cb,module,pkg) {
-                       (new EasyAjax('/admin/admin/enable')).add('namespace',module).add('package',pkg).add('enabled',((cb.checked) ? "Y" : "N")).then(function () {
+                       (new EasyAjax('/admin/actions/enable')).add('namespace',module).add('package',pkg).add('enabled',((cb.checked) ? "Y" : "N")).then(function () {
                        }).post();
                     },
                     logs: {
@@ -518,7 +518,7 @@ var Administration = (function () {
                         created: false,
                         users: {
                             open: function (win,win_id) {
-                                (new EasyAjax('/admin/admin/users')).add('viewing',win).add('window_id',win_id).then((response) => {
+                                (new EasyAjax('/admin/actions/users')).add('viewing',win).add('window_id',win_id).then((response) => {
                                     $('#log-viewer-body-'+win_id).html(response);
                                 }).get();
                             },
@@ -536,7 +536,7 @@ var Administration = (function () {
                                 Administration.logs.windows[log]._title(log+ ' Log')._scroll(false)._static(true);
                             }
                             var win = Administration.logs.windows[log]._open();
-                            (new EasyAjax('/admin/admin/log')).add('log',log.toLowerCase()).add('window_id',win.id).then((response) => {
+                            (new EasyAjax('/admin/actions/log')).add('log',log.toLowerCase()).add('window_id',win.id).then((response) => {
                                 win.set(response);
                             }).post();
                         },
