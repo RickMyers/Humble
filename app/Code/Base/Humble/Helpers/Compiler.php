@@ -43,7 +43,7 @@ class Compiler extends Directory
      */
     public function __construct()   {
         parent::__construct();
-        $this->_db = \Humble::connection$this);
+        $this->_db    = \Humble::connection($this);
         $this->helper = \Humble::helper('humble/data');
     }
 
@@ -518,36 +518,6 @@ PHP;
         }
     }
 
-    /**
-     * 
-     * @param string $node
-     */
-    private function processMongoServer($node) {
-        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
-        print($this->tabs().'$'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::getCollectionServer("'.$node['namespace'].'");'."\n");
-        array_push($this->elements,$node);
-        foreach ($node as $tag => $newNode) {
-            $this->processNode($tag,$newNode);
-        }
-        array_pop($this->elements);
-        if (isset($node['method'])) {
-            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
-                if (isset($node['wrapper'])) {
-                    print($this->tabs().'Humble::response('.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
-                } else {
-                    print($this->tabs().'Humble::response($'.$node['id'].'->'.$node['method'].'());'."\n");
-                }
-            } else {
-                if (isset($node['wrapper'])) {
-                    print($this->tabs().$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'());'."\n");
-                } else {
-                    print($this->tabs().'$'.$node['id'].'->'.$node['method'].'();'."\n");
-                }
-            }
-        }
-        return $this;
-    }
-    
     /**
      * We are going to translate JSON input into the super global variables
      * 
@@ -1097,8 +1067,6 @@ PHP;
             case    "model"         :   $this->processModel($node);
                                         break;
             case    "mongo"         :   $this->processMongo($node);
-                                        break;
-            case    "mongoserver"   :   $this->processMongoServer($node);
                                         break;
             case    "entity"        :   $this->processEntity($node);
                                         break;

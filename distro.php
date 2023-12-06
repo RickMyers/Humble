@@ -94,7 +94,7 @@
             require_once "Humble.php";
             $serial_number = 'Error';
             if ($project_attributes = json_decode(urldecode($_REQUEST['project'] ?? ''),true)) {
-                $serial_number = Humble::getModel('account/registration')->setProjectDetails(urldecode($_REQUEST['project']))->registerNew($project_attributes);
+                $serial_number = Humble""::model('account/registration')->setProjectDetails(urldecode($_REQUEST['project']))->registerNew($project_attributes);
             }
             print('{ "serial_number": "'.$serial_number.'" }');
             chdir('..');
@@ -102,14 +102,14 @@
         case    "install":
             chdir('app');
             require_once "Humble.php";            
-            print(Humble::getModel('account/registration')->install($_REQUEST['serial_number']));
+            print(Humble""::model('account/registration')->install($_REQUEST['serial_number']));
             chdir('..');
             //retrieve somebody's .project file and send it back
             break;
         case    "register":
             chdir('app');
             require_once "Humble.php";
-            $result = Humble::getModel('account/registration')->setProjectDetails(json_encode($_REQUEST))->registerExisting();
+            $result = Humble""::model('account/registration')->setProjectDetails(json_encode($_REQUEST))->registerExisting();
             print('{ "results": "'.$result.'" }');
             chdir('..');
             break;

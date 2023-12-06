@@ -158,10 +158,10 @@
          * @param string $identifier
          * @return \Code\Base\Humble\Entity\Entity
          */
-        public static function getEntity($resource_identifier) {
+        public static function entity($resource_identifier) {
             $identifier = self::parseResource($resource_identifier);
             $instance   = null;
-            if ($module = self::getModule($identifier['namespace'])) {
+            if ($module = self::module($identifier['namespace'])) {
                 $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
                     $instance = new class(str_replace('/','\\','\\'.$str)) extends \Code\Base\Humble\Entities\Unity {
@@ -182,16 +182,6 @@
         }
 
         /**
-         * Relay for simpler naming initiative
-         * 
-         * @param type $resource_identifier
-         * @return type
-         */
-        public static function entity($resource_identifier) {
-            return self::getEntity($resource_identifier);
-        }
-        
-        /**
          * Returns an instance of a class or a "virtual class" if that class doesn't exist
          * 
          * @param type $resource_identifier
@@ -199,10 +189,10 @@
          * @param type $arguments
          * @return \class
          */
-        public static function getModel($resource_identifier,$override=false,...$arguments)  {
+        public static function model($resource_identifier,$override=false,...$arguments)  {
             $identifier     = self::parseResource($resource_identifier);
             $instance       = null;
-            if ($module = self::getModule($identifier['namespace'],$override)) {
+            if ($module = self::module($identifier['namespace'],$override)) {
                 $str   = "Code/{$module['package']}/".str_replace("_","/",$module['models'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
                     $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Models\Model {
@@ -222,16 +212,6 @@
             }
             return $instance;
         }
-
-        /**
-         * Relay for simpler naming initiative
-         * 
-         * @param type $resource_identifier
-         * @return type
-         */
-        public static function model($resource_identifier) {
-            return self::getModel($resource_identifier);
-        }
         
         /**
          * A helper is different from a model in that it should not maintain state, or data, between invocations
@@ -239,13 +219,13 @@
          * @param string $resource_identifier
          * @return object
          */
-        public static function getHelper($resource_identifier)  {
+        public static function helper($resource_identifier)  {
             $identifier     = self::parseResource($resource_identifier);
             $instance       = null;
             if (isset(self::$helpers[$resource_identifier])) {
                 return self::$helpers[$resource_identifier];                    //Static, singleton style, allocation for helpers
             }
-            if ($module = self::getModule($identifier['namespace'])) {
+            if ($module = self::module($identifier['namespace'])) {
                 $str   = "Code/{$module['package']}/".str_replace("_","/",$module['helpers'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
                     $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Helpers\Helper {
@@ -269,25 +249,15 @@
         }
 
         /**
-         * Relay for simpler naming initiative
-         * 
-         * @param type $resource_identifier
-         * @return type
-         */
-        public static function helper($resource_identifier) {
-            return self::getHelper($resource_identifier);
-        }
-
-        /**
          * Returns a reference to the a MongoDB Collection
          *
          * @param type $identifier
          * @return \Code\Base\Humble\Models\MongoDB
          */
-        public static function getCollection($identifier) {
+        public static function collection($identifier) {
             $identifier = self::parseResource($identifier);
             $instance   = null;
-            if ($module = self::getModule($identifier['namespace'])) {
+            if ($module = self::module($identifier['namespace'])) {
                 if ($module['mongodb']) {
                     $instance   = new \Code\Base\Humble\Drivers\Mongo;//What is this for?
                     if (isset($identifier['resource'])) {
@@ -299,16 +269,6 @@
             return $instance;
         }
 
-        /**
-         * Relay for simpler naming initiative
-         * 
-         * @param type $resource_identifier
-         * @return type
-         */
-        public static function collection($resource_identifier) {
-            return self::getCollection($resource_identifier);
-        }
-        
         /**
          *
          * @param string $dir The directory to recurse
@@ -340,7 +300,7 @@
             $models = [];
             $dir    = false;
             if ($namespace) {
-                $module = self::getModule($namespace);
+                $module = self::module($namespace);
                 if ($module) {
                     $dir = str_replace('_','/','Code/'.$module['package'].'_'.$module['models']);
                     if (is_dir($dir)) {
@@ -367,7 +327,7 @@
             $entities = [];
             $dir      = false;
             if ($namespace) {
-                $module = self::getModule($namespace);
+                $module = self::module($namespace);
                 if ($module) {
                     $dir = str_replace('_','/','Code/'.$module['package'].'_'.$module['entities']);
                     if (is_dir($dir)) {
@@ -394,7 +354,7 @@
             $helpers = [];
             $dir     = false;
             if ($namespace) {
-                $module = self::getModule($namespace);
+                $module = self::module($namespace);
                 if ($module) {
                     $dir = str_replace('_','/','Code/'.$module['package'].'_'.$module['helpers']);
                     if (is_dir($dir)) {
@@ -427,7 +387,7 @@
                 $data[]  = $data[0];
                 $data[0] = self::_namespace();
             }
-            if ($module     = self::getModule($data[0])) {
+            if ($module     = self::module($data[0])) {
                 $location = 'Code/'.$module['package'].'/'.$module['module'].'/Classes/'.$data[1].'.php';
                 if (file_exists($location)) {
                     include_once($location);
@@ -579,10 +539,16 @@
             if (isset(self::$modules[$namespace])) {
                 return self::$modules[$namespace];
             }
-            if (!$data  = Humble::cache('module-'.$namespace)) {
-                $data = Humble::entity('humble/modules')->setNamespace($namespace)->fetch()->toArray();
+            if (!$data  = self::cache('module-'.$namespace)) {
+                $db     = Humble::connection();
+                $module = explode('/',$namespace);
+                $query  = <<<SQL
+                    select * from humble_modules
+                      where namespace = '{$module[0]}'
+SQL;
+                $data = $db->query($query);                
                 if (count($data) === 1) {
-                    Humble::cache('module-'.$namespace,$data = self::$modules[$namespace] = $data[0]);
+                    self::cache('module-'.$namespace,$data = self::$modules[$namespace] = $data[0]);
                 }
             }
             return (isset($data['enabled']) && ($data['enabled']==='Y') ? $data : ($override ? $data : false));
@@ -597,15 +563,15 @@
                 if (isset(self::$controllers[$identifier])) {
                     return self::$controllers[$identifier];
                 }
-                if (!$data  = Humble::cache('controller-'.$identifier)) {
-                    $identifier = explode('/',$identifier);
-                    $data       = Humble::entity('humble/controllers')->setNamespace($identifier[0])->setController($identifier[1])->fetch()->toArray();
+                if (!$data  = self::cache('controller-'.$identifier)) {
+                    $parts      = explode('/',$identifier);
+                    $data       = self::entity('humble/controllers')->setNamespace($parts[0])->setController($parts[1])->fetch(true)->toArray();
                     if (count($data) === 1) {
-                        Humble::cache('controller-'.$identifier,$data = self::$controllers[$identifier] = $data[0]);
+                        self::cache('controller-'.$identifier,$data = self::$controllers[$identifier] = $data[0]);
                     }
                 }
             }
-            return (count($data) == 1) ? $data[0] : null;
+            return $data;
         }
 
         /**

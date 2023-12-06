@@ -23,6 +23,7 @@ RUN apt install -y nano
 RUN apt install -y htop
 RUN apt install -y memcached
 RUN apt install -y libmemcached-tools
+RUN apt install -y redis-server
 RUN apt install -y mysql-client
 RUN apt install -y libapache2-mod-dnssd
 RUN apt install -y php8.2-fpm

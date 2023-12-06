@@ -23,7 +23,7 @@ $models                     = [];                                               
 $configs                    = [];                                               //These are the configuration files in the modules to watch
 $systemfiles                = [];                                               //These are the loose files belonging to the framework to watch
 $images                     = [];                                               //These are images contained in the image folder
-$modules                    = Humble::getEntity('humble/modules')->setEnabled('Y')->fetch();
+$modules                    = Humble""::entity('humble/modules')->setEnabled('Y')->fetch();
 $monitor                    = \Environment::getMonitor();                       //System monitor for checking on performanc
 $updater                    = \Environment::getUpdater();                       //Singleton reference to the module updater
 $installer                  = \Environment::getInstaller();                     //Singleton reference to the module installer
@@ -87,7 +87,7 @@ function scanControllersForChanges($last_run=false) {
     if (!$is_production) {
         $compiler    = false;
         $namespaces  = [];
-        foreach (Humble::getEntity('humble/controllers')->orderBy('namespace=ASC')->fetch() as $idx => $metadata) {
+        foreach (Humble""::entity('humble/controllers')->orderBy('namespace=ASC')->fetch() as $idx => $metadata) {
             if ($ns     = $namespaces[$metadata['namespace']] = isset($namespaces[$metadata['namespace']]) ? $namespaces[$metadata['namespace']] : Humble::module($metadata['namespace'])) {
                 $file   = 'Code/'.$ns['package'].'/'.$ns['controller'].'/'.$metadata['controller'].'.xml';
                 if (file_exists($file) && ($ft = filemtime($file))) {

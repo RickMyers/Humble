@@ -59,7 +59,7 @@ class Unity
      *
      */
     public function __construct() {
-        $this->_db = Humble::connection$this);
+        $this->_db = Humble::connection($this);
     }
     
     /**
