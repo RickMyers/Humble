@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Humble\Models;
+namespace Code\Base\Admin\Models;
 use Humble;
 use Log;
 use Environment;
@@ -22,10 +22,10 @@ class Documentation extends Model
     use \Code\Base\Humble\Traits\EventHandler;
     
     //--------------------------------------------------------------------------
-    //We will just default to PHP Documentor just for S&Gs
+    //We will default to PHP Documentor just for S&Gs
     private $documentor          = 'PHPDoc2.phar';                           //The default documentation engine
     private $documentor_source   = 'https://phpdoc.org/phpDocumentor.phar';  //Where the copy of documentor is stored
-    private $command             = 'PHPDoc2.phar';                       //Default execution string
+    private $command             = 'PHPDoc2.phar';                           //Default execution string
     private $location            = '/usr/bin/php';                           //Default location of the PHP engine
 	
     /**
@@ -72,10 +72,10 @@ class Documentation extends Model
      */
     public function generate($EVENT=false) {
         $results = 'Documentation Generation Error';
-        if (Environment::getApplication('state') !== 'PRODUCTION') {
+        if (!Environment::isProduction()) {
             if ($this->documentorExists()) {
                 chdir('..');
-                $cmd     = Environment::PHPLocation().' '.$this->command.' 2>&1';
+                $cmd     = Environment::PHPLocation().' '.getcwd().DIRECTORY_SEPARATOR.$this->command.' 2>&1';
                 $results = shell_exec($cmd);
                 if ($EVENT) {
                     $EVENT->update(['documentation_generation_results'=>$results]);

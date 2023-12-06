@@ -89,14 +89,14 @@
         page: {
             goto: function (page) {
                 var hide = $('#hide_framework_services').prop('checked');
-                (new EasyAjax('/humble/directory/services')).add('namespace',$('#module_namespace').val()).add('hide_framework_services',hide).add('page',page).add('rows',$('#service-rows').val()).then((response) => {
+                (new EasyAjax('/admin/directory/services')).add('namespace',$('#module_namespace').val()).add('hide_framework_services',hide).add('page',page).add('rows',$('#service-rows').val()).then((response) => {
                     $('#service-directory').html(response);
                 }).post();
             }
         },
         parms: function (service_id) {
             if (!Services.loaded[service_id]) {
-                (new EasyAjax('/humble/directory/serviceparms')).add('service_id',service_id).then((response) => {
+                (new EasyAjax('/admin/directory/serviceparms')).add('service_id',service_id).then((response) => {
                     $('#service-'+service_id+'-parameters').html(response);
                     $('#service-'+service_id+'-parameters').slideToggle();
                     Services.loaded[service_id] = true;

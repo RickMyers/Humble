@@ -107,7 +107,7 @@ class System extends Model
         $pwd  = $this->getPassword();
         $ns   = $this->getNamespace();
         if ($host && $name && $pwd) {
-            $settings = Humble""::entity('humble/system/variables');
+            $settings = Humble::entity('humble/system/variables');
             $x = $settings->setNamespace($ns)->setVariable('SMTP_Host')->setValue($host)->save();
             $y = $settings->reset()->setNamespace($ns)->setVariable('SMTP_Username')->setValue($name)->save();
             $z = $settings->reset()->setNamespace($ns)->setVariable('SMTP_Password')->setValue($pwd)->save();

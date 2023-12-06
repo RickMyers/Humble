@@ -207,11 +207,12 @@ class Directory extends File
                 $target = $dir.'/'.$entry;
                 if (!is_dir($target) && !is_link($target) && file_exists($target)) {
                     //@TODO: if mask, check if it matches mask before deleting
-                    $removed[] = $target;
                     unlink($target);
                 } else if (is_dir($target) && !is_link($target) && $recurse) {
                     $removed = array_merge($removed,$this->purgeDirectory($target,$recurse));
+                    rmdir($target);
                 }
+                $removed[] = $target;
             }
             $handler->close();
         }

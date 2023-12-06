@@ -4,7 +4,7 @@
 
         <action name="fetch">
             <description>Fetches a certain number of rows from a specified log</description>
-            <helper namespace='humble' class='log' id='log'>
+            <helper namespace='admin' class='log' id='log'>
                 <parameter name='size'   source='request' default='' />
                 <parameter name='log'    source='request' default='' />
             </helper>
@@ -20,7 +20,7 @@
             <entity namespace="humble" class="admin/identification" id='user' method='load'>
                 <parameter name='id'  value='admin_id'   source='session' required="true" />
             </entity>            
-            <helper namespace='humble' class='log' id='log'>
+            <helper namespace='admin' class='log' id='log'>
                 <parameter name='log'    source='request' default='' />
             </helper>            
         </action>

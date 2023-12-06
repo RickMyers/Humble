@@ -45,8 +45,8 @@ class Email extends Helper
      * @return array
      */
     protected function emailSettings() {
-        $settings = Humble""::entity('humble/system/variables');
-        $secrets  = Humble""::entity('humble/secrets/manager');
+        $settings = Humble::entity('humble/system/variables');
+        $secrets  = Humble::entity('humble/secrets/manager');
         $user     = $settings->setVariable('SMTP_UserName')->load(true);
         $host     = $settings->reset()->setVariable('SMTP_Host')->load(true);
         $pass     = $settings->reset()->setVariable('SMTP_Password')->load(true);

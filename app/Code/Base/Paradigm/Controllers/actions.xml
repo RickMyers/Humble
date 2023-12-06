@@ -7,7 +7,7 @@
                 <parameter name='admin_id' source="session" default='' />
             </entity>
             <switch id='permissions' method='getAdminId'>
-                <case value='Y'>
+                <case value='TRUE'>
                     <model namespace="humble" class="system" id="system" />
                 </case>
                 <default>

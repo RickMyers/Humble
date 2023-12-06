@@ -15,7 +15,9 @@
  */
 class Cache {
         
-        private static $cacher = null;
+        private static $cacher      = null;
+        private static $cacheFailed = false;
+        private static $cacheConn   = null;
         /**
          *
          */
@@ -33,14 +35,29 @@ class Cache {
         }
         
         public static function connect() {
+            global $use_redis;
+            if ($use_redis ?? false) {
+                
+            } else {
+                if ($cache_server = Environment::settings()->getCacheHost()) {
+                    $server = explode(':',$cache_server);                
+                    if (self::$cacher = new Memcache()) {
+                        if (!@self::$cacheConn = self::$cache->connect($server[0],($server[1] ?? 11211))) {
+                            self::$cacheFailed = true;
+                        }
+                    }   
+                }
+            }
+            
+            return self::$cacher;
             
         }
         
         public static function get() {
-            
+            global $use_redis;
         }
         
         public static function set() {
-            
+            global $use_redis;
         }
 }

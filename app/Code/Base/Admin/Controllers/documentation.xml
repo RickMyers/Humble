@@ -9,7 +9,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
     <actions>
         <action name="generate" blocking="off">
             <description>Runs the PHPDoc application</description>
-            <model namespace="humble" class="documentation" id="documentor">
+            <model namespace="admin" class="documentation" id="documentor">
                 
             </model>
         </action>
