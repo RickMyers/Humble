@@ -3,7 +3,7 @@ namespace Code\Base\Humble\Entities;
 use Humble;
 /**    
  *
- * .then( Modules queries and related methods
+ * Modules queries and related methods
  *
  * See Title
  *

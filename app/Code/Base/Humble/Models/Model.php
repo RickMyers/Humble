@@ -184,7 +184,7 @@ class Model implements HumbleComponent
      * When you want to suppress the enhanced "get" functionality where we try to map a "getted" request to something configured in the yaml files, set this to false.  Default behavior is to try to do a Remote Procedure Call
      *
      * @param boolean $arg
-     * @return $boolean
+     * @return boolean
      */
     public function _RPC($arg=null) {
         if ($arg !== null) {

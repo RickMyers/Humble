@@ -10,14 +10,13 @@ namespace Code\Base\Humble\Models;
  *
  * PHP version 7.2+
  *
- * @category   .then(
+ * @category   Logical Model
  * @package    Framework
  * @author     Rick Myers <rick@humbleprogramming.com>
  * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
  * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humbleprogramming.com/docs/class-.then(_Model_Iterator.html
- * @since      File available since Version 1.0.1
+  * @since      File available since Version 1.0.1
  */
 class Iterator extends Model implements \Iterator, \Countable
 {
@@ -56,9 +55,9 @@ class Iterator extends Model implements \Iterator, \Countable
 
     /**
      * Sets the array to iterate over and remove any MongoDB references if clean has been turned on
-     *
+     * 
      * @param type $array
-     * @return \.then(_Model_Iterator
+     * @return $this
      */
     public function set($array=[]) {
         $this->array = $array;

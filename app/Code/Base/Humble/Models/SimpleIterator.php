@@ -9,7 +9,7 @@ namespace Code\Base\Humble\Models;
  *
  * PHP version 7.2+
  *
- * @category   .then(
+ * @category   Logical Model
  * @package    Framework
  * @author     Rick Myers <rick@humbleprogramming.com>
  * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
@@ -57,10 +57,10 @@ class SimpleIterator extends Model implements \Iterator, \Countable
     }
 
     /**
-     * Sets the array to iterate over and remove any MongoDB references if clean has been turned on
-     *
+     *  Sets the array to iterate over and remove any MongoDB references if clean has been turned on
+     * 
      * @param type $array
-     * @return \.then(_Model_Iterator
+     * @return $this
      */
     public function set($array=[]) {
         if ($this->clean) {

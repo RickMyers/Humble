@@ -18,7 +18,7 @@ use Log;
  * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
  * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humbleprogramming.com/docs/class-.then(_Model_Event.html
+ * @link       https://humbleprogramming.com/docs/class-Model_Event.html
  * @since      File available since Version 1.0.1
  */
 class Trigger  {
