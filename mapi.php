@@ -54,7 +54,7 @@
     $class           = isset($_GET['t']) ? $_GET['t'] : false;
     $method          = isset($_GET['m']) ? $_GET['m'] : false;
     $namespace       = isset($_GET['n']) ? $_GET['n'] : false;
-    if ($module          = \Humble::getModule($namespace)) {
+    if ($module          = \Humble::module($namespace)) {
         if ($class && $method && $namespace) {
             if ($model = Humble::model($namespace.'/'.$class)) {
                 foreach ($content as $name => $val) {

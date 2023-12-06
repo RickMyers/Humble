@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Humble\Models;
+namespace Code\Base\Admin\Models;
 use Humble;
 use Environment;
 use Log;
@@ -41,30 +41,31 @@ class Utility extends Model
     }
 
     /**
-     * Compiles a controller
+     * Compiles all controllers in a module
+     * 
+     * @return $this
      */
-    public function compile()
-    {
-        $module = Humble::getModule($this->getModule());
-        $sourcedir = 'Code/'.$this->getPackage().'/'.str_replace('_','/',$module['controller']);
-        $dir = dir($sourcedir);
+    public function compile() {
+        $module     = Humble::module($this->getModule());
+        $sourcedir  = 'Code/'.$this->getPackage().'/'.str_replace('_','/',$module['controller']);
+        $dir        = dir($sourcedir);
+        $compiler   = Environment::getCompiler();
         while (($entry = $dir->read()) !== false) {
-            if (($entry == '.') || ($entry == '..'))
+            if (($entry == '.') || ($entry == '..') || (is_dir($sourcedir.'/'.$entry))) {
                 continue;
-            if (is_dir($sourcedir.'/'.$entry))
-                continue;
-            $file = explode('.',$entry);
+            }
+            $file       = explode('.',$entry);
             $controller = $file[0];
             $identifier = $module['namespace'].'/'.$controller;
-            $compiler   = Environment::getCompiler();
             $compiler->setInfo($module);
             $compiler->setController($controller);
             $compiler->setSource($module['package'].'/'.str_replace('_','/',$module['controller']));
             $compiler->setDestination($module['package'].'/'.str_replace('_','/',$module['controller_cache']));
             $compiler->compile($identifier);
         }
-    }
-
+        return $this;
+    }    
+    
     /**
      * Installs a module
      */
@@ -89,7 +90,7 @@ class Utility extends Model
         $installer  = Environment::getInstaller();
         $package    = $this->getPackage();
         $ns = $this->getNamespace();
-        $module     = Humble::getModule($this->getNamespace(),true);
+        $module     = Humble::module($this->getNamespace(),true);
         if ($module['configuration']) {
             $etc        = 'Code/'.$package.'/'.str_replace("_","/",$module['configuration']).'/config.xml';
             if (file_exists($etc)) {
@@ -168,7 +169,7 @@ class Utility extends Model
         if ($ns) {
             $flag = (!$flag) ? "N" : (($flag=='N') ? 'N' : 'Y');
             Humble::entity('humble/modules')->setNamespace($ns)->setEnabled($flag)->save();
-            Humble::cache('module-',Humble::getModule($ns));
+            Humble::cache('module-',Humble::module($ns));
         }
     }
     
@@ -192,7 +193,7 @@ class Utility extends Model
         $data           = Humble::entity('admin/users')->setId($this->getUid())->load();
         $user           = Humble::entity('admin/user/identification')->setId($this->getUid())->load();
         $project        = Environment::getProject();
-        $module         = Humble::getModule($this->getNamespace());
+        $module         = Humble::module($this->getNamespace());
         $custom_root    = 'Code/'.$project->package.'/'.$project->module.'/lib/sample/component';
         $module_root      = 'Code/'.$module['package'].'/'.$module['module'].'/lib/sample/component';
         $templates      = [];
@@ -291,15 +292,15 @@ class Utility extends Model
         //need to look for other custom controller template as well...
         $project        = \Environment::getProject();
         $templates      = [];
-        $main           = Humble::getModule($project->namespace);
-        $current        = Humble::getModule($this->_namespace());
+        $main           = Humble::module($project->namespace);
+        $current        = Humble::module($this->_namespace());
         $templates[]    = 'Code'.$current['package'].'/'.$current['module'].'/lib/sample/component/controller.xml';
         $templates[]    = 'Code'.$main['package'].'/'.$main['module'].'/lib/sample/component/controller.xml';
         $templates[]    = 'Code/Base/Humble/lib/sample/component/controller.xml';
         $template       = $this->resolveLocation($templates);
         
         
-        if (!$module         = Humble::getModule($this->getNamespace())) {
+        if (!$module         = Humble::module($this->getNamespace())) {
             return "The ".$this->getNamespace()." module is disabled or does not exist";
         }
         $dest           = 'Code/'.$module['package']."/".$module['controller'];
@@ -366,7 +367,7 @@ class Utility extends Model
      */
     public function clone() {
         if ($namespace = \Environment::getProject('namespace')) {
-            if ($module = Humble::getModule($namespace)) {
+            if ($module = Humble::module($namespace)) {
                 $base = 'Code/Base/Humble/lib';
                 $dest = 'Code/'.$module['package'].'/'.$module['module'].'/lib';
                 @mkdir($dest,0775,true);

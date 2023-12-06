@@ -45,8 +45,8 @@ class CLI
         $namespaces = [];
         if (isset($args['namespace'])) {
             if ($args['namespace'] == '*') {
-                foreach (Humble::getPackages() as $package) {
-                    foreach (Humble::getModules($package) as $module) {
+                foreach (Humble::packages() as $package) {
+                    foreach (Humble::modules($package) as $module) {
                         $namespaces[] = $module;
                     }
                 }

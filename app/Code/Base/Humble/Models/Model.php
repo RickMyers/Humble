@@ -785,7 +785,7 @@ SOAP;
                 \Singleton::mappings(yaml_parse(file_get_contents('Code/Base/Humble/RPC/mapping.yaml'))); //default mappings
             }
             if (strtolower($this->_namespace()) !== 'humble') {
-                if ($me = Humble::getModule($this->_namespace())) {
+                if ($me = Humble::module($this->_namespace())) {
                     $mappingFile = 'Code/'.$me['package'].'/'.str_replace('_','/',$me['rpc_mapping']).'/mapping.yaml';
                     if (file_exists($mappingFile)) {
                         //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings

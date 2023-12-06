@@ -77,7 +77,7 @@ var Administration = (function () {
                     module: {
                         import: function (namespace) {
                             let win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/admin/actions/importpage')).then((response) => {
+                            (new EasyAjax('/admin/actions/importpage')).add('namespace',namespace).then((response) => {
                                 win._open(response)._title('Import Data');
                             }).post();
                         },
@@ -88,7 +88,7 @@ var Administration = (function () {
                         },
                         install: function (namespace) {
                             let win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/admin/actions/installpage')).then((response) => {
+                            (new EasyAjax('/admin/module/install')).add('namespace',namespace).then((response) => {
                                 win._open(response)._title('Install Module');
                             }).post();                            
                         }
@@ -469,7 +469,8 @@ var Administration = (function () {
                            $('#admin-lightbox').css('display','block');
                            $('#admin-lightbox-output').html('Working...');
                            ao.then((response) => {
-                               window.location.reload();
+                               alert(response);
+                               //window.location.reload();
                            });
                            ao.post();
                        }

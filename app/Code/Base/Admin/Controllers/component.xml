@@ -4,7 +4,7 @@
 
         <action name="create">
             <description>Will create a new component, as in Helper, Model, Entity, or Event </description>
-            <model namespace="humble" class="utility" method="createComponent" id='utility' response="TRUE">
+            <model namespace="admin" class="utility" method="createComponent" id='utility' response="TRUE">
                 <parameter name="uid"           source="session" default="" />
                 <parameter name="namespace"     source="post"    default="" />
                 <parameter name="type"          source="post"    default="" />
@@ -21,7 +21,7 @@
 
         <action name="controller">
             <description>Will create a new component, as in Helper, Model, Entity, or Event </description>
-            <model response="TRUE" namespace="humble" class="utility" method="createController" id='utility'>
+            <model response="TRUE" namespace="admin" class="utility" method="createController" id='utility'>
                 <parameter name="uid"           source="session" default="" />
                 <parameter name="namespace"     source="post"    default="" />
                 <parameter name="engine"        source="post"    value="templater" default="" />

@@ -69,7 +69,7 @@
     $table           = isset($_GET['t'])   ? $_GET['t'] : false;
     $action          = (isset($_GET['m'])) ? $_GET['m'] : ((isset($content['id']) && $content['id']) ? $content['id'] : false);
     $namespace       = isset($_GET['n'])   ? $_GET['n'] : false;
-    $module          = \Humble::getModule($namespace);
+    $module          = \Humble::module($namespace);
     if (isset($illegal[$namespace])) {
         errorOff("Core modules are not accessible via the API");
     }
@@ -119,7 +119,7 @@
         $id     = isset($data[1]) ? $data[1] : null;
         if ($id) {
             \Log::general('id: '.session_id());
-            $module = \Humble::getModule($namespace);
+            $module = \Humble::module($namespace);
             if (isset($module['schema_layout']) && ($module['schema_layout'])) {
                 try {
                     $editForm = \Humble::model('humble/renderer');

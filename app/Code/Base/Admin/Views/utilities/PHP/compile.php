@@ -1,8 +1,11 @@
 <?php
-$permissions = $permissions->load();
-if ($permissions['admin'] == 'Y') {
+/**
+ * This is an example of using PHP as a view.  It does have some vulnerabilities 
+ * so is not recommended... but yes you can do this.
+ */
+if ($_SESSION['admin_id'] ?? false) {
     if ($util->getNamespace()) {
-        $module     = \Humble::getModule($util->getNamespace());
+        $module     = \Humble::module($util->getNamespace());
         $controller = $module['controller'];
         $files      = $util->listDirectory('Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']),true);
         foreach ($files as $file) {
@@ -19,24 +22,17 @@ if ($permissions['admin'] == 'Y') {
         }
     } else {
         //work this later, all modules in a package compiled
-        $packages   = \Humble::getPackages();
-        foreach ($packages as $idx => $package) {
-            $modules = \Humble::getModules($package);
-            foreach ($modules as $iidx => $config) {
-                $module     = \Humble::getModule($config);
-                $controller = $module['controller'];
-                $files      = $util->listDirectory('Code/'.$package.'/'.str_replace('_','/',$controller),true);
+            foreach (\Humble::entities('humble/modules')->setEnabled('Y')->fetch() as $iidx => $module) {
+                $files      = $util->listDirectory('Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']),true);
                 foreach ($files as $file) {
                     if (file_exists($file) && (strpos($file,'.xml')!==false)) {
                         print("Compiling: ".$file."\n");
-                        //$utility->compile($file);
+                        $utility->compile($file);
                     }
                 }
             }
-        }
     }
 } else {
-    print("Not Authorized");
+    print("Not Authorized\n");
 }
 
-?>

@@ -31,6 +31,6 @@
 </table>
 <script type="text/javascript"> 
     (function () {
-        new EasyEdits('/edits/humble/newsecret','newsecret');
+        new EasyEdits('/edits/admin/newsecret','newsecret');
     })();
 </script>

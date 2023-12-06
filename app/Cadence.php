@@ -88,7 +88,7 @@ function scanControllersForChanges($last_run=false) {
         $compiler    = false;
         $namespaces  = [];
         foreach (Humble::getEntity('humble/controllers')->orderBy('namespace=ASC')->fetch() as $idx => $metadata) {
-            if ($ns     = $namespaces[$metadata['namespace']] = isset($namespaces[$metadata['namespace']]) ? $namespaces[$metadata['namespace']] : Humble::getModule($metadata['namespace'])) {
+            if ($ns     = $namespaces[$metadata['namespace']] = isset($namespaces[$metadata['namespace']]) ? $namespaces[$metadata['namespace']] : Humble::module($metadata['namespace'])) {
                 $file   = 'Code/'.$ns['package'].'/'.$ns['controller'].'/'.$metadata['controller'].'.xml';
                 if (file_exists($file) && ($ft = filemtime($file))) {
                     if ($ft !== ($st = strtotime($metadata['compiled']))) {

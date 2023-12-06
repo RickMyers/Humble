@@ -253,6 +253,17 @@ CREATE TABLE `humble_services` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE humble_system_variables
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	namespace CHAR(32) DEFAULT NULL,
+	`variable` CHAR(64) DEFAULT NULL,
+	`value`  VARCHAR(255) DEFAULT NULL,
+	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id)
+); 
+
 /*Table structure for table `humble_templaters` */
 
 CREATE TABLE `humble_templaters` (

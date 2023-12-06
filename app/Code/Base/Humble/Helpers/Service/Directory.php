@@ -48,15 +48,15 @@ class Directory extends \Code\Base\Humble\Helpers\Directory
      * @return array
      */
     public function generate() {
-        $packages     = \Humble::getPackages();
+        $packages     = \Humble::packages();
         $service      = \Humble::entity('humble/service/directory');
         $serviceParms = \Humble::entity('humble/service/parameters');
         $service->truncate();
         $serviceParms->truncate();
         foreach ($packages as $package) {
-            $modules = \Humble::getModules($package);
+            $modules = \Humble::modules($package);
             foreach ($modules as $module) {
-                $mod         = \Humble::getModule($module);
+                $mod         = \Humble::module($module);
                 $controllers = $mod['controller'];
                 $views       = $mod['views'];
                 $directory   = 'Code/'.str_replace('_','/',$package.'_'.$controllers);

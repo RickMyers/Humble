@@ -41,7 +41,7 @@ class Installer extends Directory
      */
     public function __construct()    {
         parent::__construct();
-        $this->_db  = Humble::getDatabaseConnection($this);
+        $this->_db  = Humble::connection$this);
         $project    = Environment::getProject();
         if ($project->namespace) {
             @mkdir('../../logs/'.$project->namespace,0777,true);   //added this later
@@ -191,7 +191,7 @@ SQL;
      */
     public function compileControllers($namespace=false) {
         $namespace  = $namespace ? $namespace : $this->namespace;
-        $module     = \Humble::getModule($namespace);
+        $module     = \Humble::module($namespace);
         $controller = $module['controller'];
         $source     = $module['package'].'/'.str_replace('_','/',$controller);
         $dest       = $source.'/Cache';
@@ -842,7 +842,7 @@ SQL;
                     if (file_exists($install_file) && class_exists($install_class)) {
                         $i = Humble::model($namespace.'/OnInstall',true)->execute();
                     }
-                    Humble::cache('module-'.$namespace,Humble::getModule($namespace));
+                    Humble::cache('module-'.$namespace,Humble::module($namespace));
                 }
                 
             } else {

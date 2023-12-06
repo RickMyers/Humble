@@ -151,7 +151,7 @@ $ns              = $namespace;      //save a copy, since this might change if th
 //###########################################################################
 //Gets information about the module you are trying to interact with, by using
 //the namespace.  If nothing comes back, the module is disabled or does not exist
-if (!($module = \Humble::getModule($namespace))) {
+if (!($module = \Humble::module($namespace))) {
     \HumbleException::standard(new Exception("Namespace Error, Module Missing Or Disabled",16),"Request Error",'routing');
     badRequestError();
 }
@@ -168,7 +168,7 @@ if ($mobile_support && $is_mobile) {
 //If the request wasn't handled by the previous step, then drop into the
 //  normal handling for a request
 if (!$request_handled) {
-    $core            = \Humble::getModule(\Environment::namespace());             //A reference to the core functionality held in the applications primary module
+    $core            = \Humble::module(\Environment::namespace());             //A reference to the core functionality held in the applications primary module
     $include         = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller_cache']).'/'.$controller.'Controller.php';
     $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']).'/'.$controller.'.xml';
 
@@ -179,7 +179,7 @@ if (!$request_handled) {
     //If we find a controller in our base module, with an action that matches the URL, we use that.
     if (!$is_production) {
         if (file_exists($include)) {
-            $info        = \Humble::getController($namespace.'/'.$controller);
+            $info        = \Humble::controller($namespace.'/'.$controller);
             $recompile   = ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
         } else if (file_exists($source)) {
             $recompile   = true;                                                //The controller source code exists but it is not currently compiled so flag it for compiling
@@ -189,11 +189,11 @@ if (!$request_handled) {
             $source          = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/'.$controller.'.xml';
             if (file_exists($include)) {
                 $ns          = $core['namespace'];                              //we mark that we are in fact using the default namespace action without specifically changing the official namespace
-                $info        = \Humble::getController($ns.'/'.$controller);
+                $info        = \Humble::controller($ns.'/'.$controller);
                 $recompile   = ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
             } else if (file_exists($source)) {
                 $ns          = $core['namespace'];
-                $info        = \Humble::getController($ns.'/'.$controller);
+                $info        = \Humble::controller($ns.'/'.$controller);
                 $recompile   = true;
             } else {
                 \HumbleException::standard(new Exception("Can Not Route Request, Resource Does Not Exist",12),"Request Error",'routing');
@@ -212,8 +212,8 @@ if (!$request_handled) {
             $compiler   = \Environment::getCompiler();
             $compiler->setController($controller);
             if ($ns === $core['namespace']) {
-                $core   = \Humble::getModule($ns);
-                $compiler->setInfo(\Humble::getModule($core['namespace']));
+                $core   = \Humble::module($ns);
+                $compiler->setInfo(\Humble::module($core['namespace']));
                 $compiler->setSource($core['package'].'/'.str_replace('_','/',$core['controller']));
                 $compiler->setDestination($core['package'].'/'.str_replace('_','/',$core['controller_cache']));
             } else {

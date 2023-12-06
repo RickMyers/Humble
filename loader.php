@@ -36,7 +36,7 @@ function secureCheck($file=[]) {
             foreach ($packageFiles as $idx => $file) {
                 if (secureCheck($file)) {
                     if (!isset($packages[$file['namespace']])) {
-                        $mod = \Humble::getModule($file['namespace']);
+                        $mod = \Humble::module($file['namespace']);
                         if (!$mod) {
                             continue;
                         }
@@ -80,7 +80,7 @@ function secureCheck($file=[]) {
             foreach ($packageFiles as $idx => $file) {
                 if (secureCheck($file)) {
                     if (!isset($packages[$file['namespace']])) {
-                        $mod = \Humble::getModule($file['namespace']);
+                        $mod = \Humble::module($file['namespace']);
                         if (!$mod) {
                             continue;
                         }
@@ -103,7 +103,7 @@ function secureCheck($file=[]) {
         case 'edits' :
             header('Content-Type: application/json');
             $data = $orm->setNamespace($_GET['n'])->setForm($_GET['f'])->load(true);
-            $module = \Humble::getModule($_GET['n']);
+            $module = \Humble::module($_GET['n']);
             if ($module && secureCheck($data)) {
                 $file = 'Code/'.$module['package'].'/'.$orm->getSource();
                 if (file_exists($file)) {

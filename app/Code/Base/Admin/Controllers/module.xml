@@ -22,9 +22,21 @@
                 </model>
         </action>
 
-        <!-- ############################################################################ -->
-        
+
+
+        <!-- ############################################################### -->
+
         <action name="install">
+            <description>Runs the install script on a config.xml file</description>
+            <model namespace="admin" class="utility" id='utility'>
+                <parameter name='package' source='post' default='' />
+                <parameter name='xml' source='post' default='' />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
+                                
+        <!--action name="install">
             <description>Will take an uploaded file (zip) and extract it into a Package directory</description> 
             <if sys="files" eq="TRUE">
                 <then>
@@ -36,7 +48,7 @@
                     <output text="No file (zip) was uploaded, install of module aborted" />
                 </else>
             </if>
-        </action>
+        </action-->
         
     </actions>
 </controller>

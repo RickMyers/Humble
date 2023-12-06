@@ -42,9 +42,9 @@ class Services extends Model
 
     public function explain($package=false,$main_module=false) {
         $modules    = [];
-        $packages   = ($package) ? [$package] : ($this->getPackage() ? [$this->getPackage()] : Humble::getPackages());
+        $packages   = ($package) ? [$package] : ($this->getPackage() ? [$this->getPackage()] : Humble::packages());
         foreach ($packages as $package) {
-            $modules = ($main_module) ? [$main_module] : ($this->getModule() ? [$this->getModule()] : Humble::getModules($package)); 
+            $modules = ($main_module) ? [$main_module] : ($this->getModule() ? [$this->getModule()] : Humble::modules($package)); 
             foreach ($modules as $module) {
                 
             }

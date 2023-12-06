@@ -114,7 +114,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="compile">
             <description>Compiles (generates) the controllers of a module</description>
-            <model namespace="humble" class="Utility" id='Utility'>
+            <model namespace="admin" class="utility" id='utility'>
                 <parameter name='uid' source='session' value='uid' default='' />
                 <parameter name='package' source='post' value='package' default='' />
                 <parameter name='namespace' source='post' default='' />
@@ -125,28 +125,18 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="clone" event="templatesCloned" comment="Someone has made a copy of the default component templates">
             <description>Clones the default component templates into the application default module</description>
-            <model namespace="humble" class="permissions" id="permissions">
+            <model namespace="admin" class="permissions" id="permissions">
                 <parameter name="user_id" value="admin_id" source="session" required="true" />
             </model>
-            <model namespace="humble" class="Utility" method="clone" />
+            <model namespace="admin" class="utility" method="clone" />
             <output text="Cloned It!" />
-        </action>
-
-        <!-- ############################################################### -->
-
-        <action name="install">
-            <description>Runs the install script on a config.xml file</description>
-            <model namespace="humble" class="Utility" id='Utility'>
-                <parameter name='package' source='post' default='' />
-                <parameter name='xml' source='post' default='' />
-            </model>
         </action>
 
         <!-- ############################################################### -->
 
         <action name="enable">
             <description>Activates or deactivates a module</description>
-            <model namespace="humble" class="utility" response="true" method="toggleEnableFlag">
+            <model namespace="admin" class="utility" response="true" method="toggleEnableFlag">
                 <parameter name='namespace' source='post' default='' />
                 <parameter name='enabled' source='post' default='' />
             </model>
@@ -156,7 +146,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="create">
             <description>Creates a directory inside a module structure</description>
-            <model namespace="humble" class="Utility" id='admin'>
+            <model namespace="admin" class="Utility" id='admin'>
                 <parameter name='uid' source='session' value='uid' default='' />
                 <parameter name='directory' source='post' default='' />
                 <parameter name='package' source='post'   default='' />
@@ -181,7 +171,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <action name="users" blocking="off">
             <description>Generates a list of available user logs</description>
-            <helper namespace="humble" class="log" id="users">
+            <helper namespace="admin" class="log" id="users">
                         
             </helper>            
         </action>
@@ -209,7 +199,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="addpackage">
             <description>Adds a doc block package, don't confuse this with adding a module package (directory)</description>
-            <entity namespace="humble" class="packages" method="save">
+            <entity namespace="admin" class="packages" method="save">
                 <parameter name="text" value="package" source="post" required="true" />
             </entity>
         </action>
@@ -218,7 +208,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="addcategory">
             <description>Adds a doc block category</description>
-            <entity namespace="humble" class="categories" method="save">
+            <entity namespace="admin" class="categories" method="save">
                 <parameter name="text" value="category" source="post" required="true" />
             </entity>
         </action>
@@ -227,7 +217,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="installpage">
             <description>The page that lets you select which module to upload and install</description>
-            <entity namespace='humble' class='modules' id='modules' orderby='module=ASC' />
+            <entity namespace='admin' class='modules' id='modules' orderby='module=ASC' />
         </action>
 
         <!-- ############################################################### -->
@@ -236,7 +226,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <model namespace="humble" class="permissions" id="permissions">
                 <parameter name="user_id" value="admin_id" source="session" required="true" />
             </model>
-            <model namespace='humble' class='admin' method='install' response='true'>
+            <model namespace='admin' class='utility' method='install' response='true'>
                 <parameter name='namespace' source='post' required='true' />
                 <parameter name='module' source='file' required='true' />
                 <parameter name='uid' source='session' required='true' />

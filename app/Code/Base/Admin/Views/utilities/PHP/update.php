@@ -1,10 +1,10 @@
 <?php
 $permissions = $permissions->load();
 if ($permissions && ($permissions['admin'] == 'Y')) {
-    $packages   = \Humble::getPackages();
+    $packages   = \Humble::packages();
     $utility    = \Environment::getUpdater();
     if ($module->getNamespace()) {
-        $module = \Humble::getModule($module->getNamespace(),true);
+        $module = \Humble::module($module->getNamespace(),true);
         if ($module['configuration']) {
             $etc = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['configuration']).'/config.xml';
             if (file_exists($etc)) {
@@ -16,7 +16,7 @@ if ($permissions && ($permissions['admin'] == 'Y')) {
     } else {
         print('processing block');
         foreach ($packages as $idx => $package) {
-           $modules = \Humble::getModules($package);
+           $modules = \Humble::modules($package);
            foreach ($modules as $iidx => $module) {
                $etc = 'Code/'.$package.'/'.$module.'/etc/config.xml';
                if (file_exists($etc)) {

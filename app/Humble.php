@@ -27,7 +27,8 @@
      */
     class Humble  {
         private static $modules     = [];
-        private static $helpers     = [];  //we are not keeping these static anymore
+        private static $controllers = [];
+        private static $helpers     = [];  
         private static $response    = [];
         private static $namespace   = false;
         private static $controller  = false;
@@ -278,34 +279,6 @@
         }
 
         /**
-         * Returns the contents of the project file of false if the project hasn't been created yet
-         *
-         * @return object
-         */
-        public static function getProject() {
-            return (file_exists('../Humble.project')) ? json_decode(file_get_contents('../Humble.project'),true) : false;
-        }
-
-        /**
-         *
-         */
-        public static function getProjectConfiguration($module=false) {
-            $xml    = null;
-            $data   = null;
-            if ($module) {
-                //get module info and substitute that for the namespace to load that modules configuration for some gawd awful reason?  Why was I doing this again?
-            } else {
-                $data   = Environment::getProject();
-            }
-            $res    = Humble::entity('humble/modules')->setNamespace($data->namespace)->load();
-            $source = 'Code/'.$res['package'].'/'.$res['configuration'].'/config.xml';
-            if (file_exists($source)) {
-                $xml =  new \SimpleXMLElement(file_get_contents($source));
-            }
-            return $xml;
-        }
-
-        /**
          * Returns a reference to the a MongoDB Collection
          *
          * @param type $identifier
@@ -515,7 +488,9 @@
          * Caching is implemented here in the factory so that it can be easily switched out to another product (Redis, APC, etc) should it be necessary
          *
          * 'cacheFailed' is set if we tried to connect to memcached but it wasn't available.  It prevents trying multiple times
-         *
+         * 
+         * 
+         * @TODO: Switch to a dependency injection so we can swap in  Redis if we want to
          * @param string $key
          * @param mixed $value
          * @return mixed
@@ -544,6 +519,7 @@
         /**
          * Relays an event to the Node.js Signaling Hub
          * 
+         * @TODO: Switch from using the 'socketserver.txt' to the Humble.project file
          * @param string $eventName
          * @param array $data
          * @return boolean
@@ -569,12 +545,12 @@
         }
 
         /**
-         * To protect yourself from bad impulses, access to the DB is restricted to instances of Entity the object or a short list of privileged classes.  This is to encourage DAO style development
+         * To protect yourself from bad impulses, access to the DB is restricted to instances of Unity (ORM) or a short list of privileged classes.  This is to encourage DAO style development
          *
          * @param \Code\Base\Humble\Entities\Unity $callingClass
          * @return mixed
          */
-        public static function getDatabaseConnection($callingClass=false)        {
+        public static function connection($callingClass=false)        {
             if (!($conn = ($callingClass instanceof \Code\Base\Humble\Entities\Unity))) {
                 if ($callingClass) {
                     $name = $callingClass->getClassName();
@@ -591,23 +567,22 @@
          * Override says, "I don't care if it is disabled, give me the info"
          *   The override option is only to be set by utilities that need to
          *     enable/disable/uninstall the module.  Not by application logic.
+         * 
+         * @param type $namespace
+         * @param type $override
+         * @return type
          */
-        public static function getModule($identifier,$override=false)  {
-            if (isset(self::$modules[$identifier])) {
-                return self::$modules[$identifier];
+        public static function module($namespace=false,$override=false)  {
+            if (!$namespace) {
+                return false;
             }
-            if (!$data  = Humble::cache('module-'.$identifier)) {
-                $db     = Humble::getDatabaseConnection();
-                $module = explode('/',$identifier);
-                $query  = <<<SQL
-                    select * from humble_modules
-                      where namespace = '{$module[0]}'
-SQL;
-                $data = $db->query($query);
-                if (count($data) == 1) {
-                    Humble::cache('module-'.$identifier,$data = self::$modules[$identifier] = $data[0]);
-                } else {
-                    $data = null;
+            if (isset(self::$modules[$namespace])) {
+                return self::$modules[$namespace];
+            }
+            if (!$data  = Humble::cache('module-'.$namespace)) {
+                $data = Humble::entity('humble/modules')->setNamespace($namespace)->fetch()->toArray();
+                if (count($data) === 1) {
+                    Humble::cache('module-'.$namespace,$data = self::$modules[$namespace] = $data[0]);
                 }
             }
             return (isset($data['enabled']) && ($data['enabled']==='Y') ? $data : ($override ? $data : false));
@@ -616,15 +591,20 @@ SQL;
         /**
          *
          */
-        public static function getController($identifier) {
-            $db         = Humble::getDatabaseConnection();
-            $controller = explode('/',$identifier);
-            $query      = <<<SQL
-                select * from humble_controllers
-                  where namespace = '{$controller[0]}'
-                    and controller = '{$controller[1]}'
-SQL;
-            $data = $db->query($query);
+        public static function controller($identifier=false) {
+            $data = [];
+            if ($identifier) {
+                if (isset(self::$controllers[$identifier])) {
+                    return self::$controllers[$identifier];
+                }
+                if (!$data  = Humble::cache('controller-'.$identifier)) {
+                    $identifier = explode('/',$identifier);
+                    $data       = Humble::entity('humble/controllers')->setNamespace($identifier[0])->setController($identifier[1])->fetch()->toArray();
+                    if (count($data) === 1) {
+                        Humble::cache('controller-'.$identifier,$data = self::$controllers[$identifier] = $data[0]);
+                    }
+                }
+            }
             return (count($data) == 1) ? $data[0] : null;
         }
 
@@ -633,7 +613,7 @@ SQL;
          * 
          * @return type
          */
-        public static function getPackages()  {
+        public static function packages()  {
             $packages   = [];
             $handler    = dir('Code/');
             while (($entry = $handler->read()) !== false) {
@@ -648,9 +628,12 @@ SQL;
         }
 
         /**
-         *
+         * "Old" approach... 
+         * 
+         * @param type $package
+         * @return type
          */
-        public static function getModules($package) {
+        public static function modules($package) {
             $modules= [];
             $directory = dir('Code/'.$package);
 
@@ -666,25 +649,6 @@ SQL;
                 }
             }
             return $modules;
-        }
-
-        /**
-         *
-         */
-        public static function getNamespaces($package=false) {
-            $namespaces = [];
-            if ($package) {
-                $db    = Humble::getDatabaseConnection();
-                $query = <<<SQL
-                    select namespace from humble_modules where package = '{$package}' and enabled = 'Y'
-SQL;
-                foreach ($db->query($query) as $idx => $result) {
-                    $namespaces[] = $result['namespace'];
-                }
-            } else {
-                $namespaces[] = "No package specified";
-            }
-            return $namespaces;
         }
 
         public static function hash($number) {

@@ -58,7 +58,7 @@ class Environment {
     public static function getRoot($namespace=false) {
         $root = false;
         if ($namespace) {
-            $module = Humble::getModule($namespace);
+            $module = Humble::module($namespace);
             if ($module) {
                 $name = (strpos($module['models'],"_")) ? explode('_',$module['models']) : explode('/',$module['models']);
                 $root = 'Code/'.$module['package'].'/'.$name[0];

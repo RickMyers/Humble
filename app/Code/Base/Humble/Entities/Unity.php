@@ -59,7 +59,7 @@ class Unity
      *
      */
     public function __construct() {
-        $this->_db = Humble::getDatabaseConnection($this);
+        $this->_db = Humble::connection$this);
     }
     
     /**
@@ -198,11 +198,11 @@ SQL;
             $this->_polyglot = true;
             if (strpos($mongo_source,'/') !== false) {
                 $parts = explode('/',$mongo_source);
-                $data  = Humble::getModule($parts[0]);
+                $data  = Humble::module($parts[0]);
                 $this->_mongodb = $data['mongodb'];
                 $this->_mongocollection = str_replace(["/"],["_"],substr($mongo_source,strpos($mongo_source,'/')+1));
             } else {
-                $data  = Humble::getModule($this->_namespace());
+                $data  = Humble::module($this->_namespace());
                 $this->_mongodb = $data['mongodb'];
                 $this->_mongocollection = $mongo_source;
             }
@@ -240,7 +240,7 @@ SQL;
         $table = explode('/',$table);
         $success = false;
         if (count($table)===2) {
-            $module = Humble::getModule($table[0]);
+            $module = Humble::module($table[0]);
              if (isset($module['prefix']) && ($module['prefix']!="")) {
                 $table = $module['prefix'].$table[1];
                 if ($table && $field_l && $field_r) {
@@ -1152,7 +1152,7 @@ SQL;
     public function loadEntityKeys($useCache=true)  {
         $namespace = $this->_namespace();
         $entity    = $this->_entity();
-        $this->_module(Humble::getModule($namespace));
+        $this->_module(Humble::module($namespace));
         $primary   = ($useCache) ? Humble::cache('entity_keys-'.$namespace.'/'.$entity) : false;
         if (!$primary) {
 

@@ -44,7 +44,7 @@ class Module extends CLI
         $args   = self::arguments();
         $ns     = $args['namespace'];        
         if ($ns) {
-            $module = \Humble::getModule($ns,true);
+            $module = \Humble::module($ns,true);
             print_r($module);
             if ($module) {
                 $utility = \Humble::model('humble/utility');

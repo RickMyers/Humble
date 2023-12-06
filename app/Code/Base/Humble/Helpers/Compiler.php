@@ -43,7 +43,7 @@ class Compiler extends Directory
      */
     public function __construct()   {
         parent::__construct();
-        $this->_db = \Humble::getDatabaseConnection($this);
+        $this->_db = \Humble::connection$this);
         $this->helper = \Humble::helper('humble/data');
     }
 
@@ -1461,13 +1461,13 @@ SQL;
             $this->component = $controller     = $data[1];
             $source          = $this->getSource();
             if (!$source) {
-                $mod    = \Humble::getModule($namespace);
+                $mod    = \Humble::module($namespace);
                 $source = 'Code/'.$mod['package'].'/'.str_replace(['_'],['/'],$mod['controller']);
             }
             $source          = $source.'/'.$controller.'.xml';
         }
         if (!$this->getDestination()) {
-            $mod    = \Humble::getModule($namespace);
+            $mod    = \Humble::module($namespace);
             $this->setDestination($mod['package'].'/'.str_replace(['_'],['/'],$mod['controller_cache']));
         }
         if (file_exists($source)) {

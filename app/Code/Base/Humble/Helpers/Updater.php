@@ -103,7 +103,7 @@ class Updater extends Installer
         $this->output('DIRECTORY','Generating Service Directory');
         if ($namespace) {
             Humble::entity('humble/service/directory')->setNamespace($namespace)->delete();
-            if ($module = Humble::getModule($namespace)) {
+            if ($module = Humble::module($namespace)) {
                 $services = Humble::entity('humble/service/directory');
                 if (is_dir($location = 'Code/'.$module['package'].'/'.$module['controller'])) {
                     $dh = dir($location);
@@ -165,7 +165,7 @@ class Updater extends Installer
     private function updateSchema($package,$namespace,$source)    {
         $this->output('SCHEMA','Processing any schema updates');
         $dir = @dir($path = 'Code/'.$package.'/'.str_replace('_','/',$source));
-        $module = Humble::getModule($namespace);
+        $module = Humble::module($namespace);
         if (!$module) {
             $module['last_updated'] = 0;
         }

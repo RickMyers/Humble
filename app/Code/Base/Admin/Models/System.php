@@ -1,5 +1,5 @@
 <?php
-namespace Code\Base\Humble\Models;
+namespace Code\Base\Admin\Models;
 use Humble;
 use Environment;
 /**    
@@ -105,11 +105,12 @@ class System extends Model
         $host = $this->getHost();
         $name = $this->getUserName();
         $pwd  = $this->getPassword();
+        $ns   = $this->getNamespace();
         if ($host && $name && $pwd) {
             $settings = Humble::getEntity('humble/system/variables');
-            $x = $settings->setVariable('SMTP_Host')->setValue($host)->save();
-            $y = $settings->reset()->setVariable('SMTP_Username')->setValue($name)->save();
-            $z = $settings->reset()->setVariable('SMTP_Password')->setValue($pwd)->save();
+            $x = $settings->setNamespace($ns)->setVariable('SMTP_Host')->setValue($host)->save();
+            $y = $settings->reset()->setNamespace($ns)->setVariable('SMTP_Username')->setValue($name)->save();
+            $z = $settings->reset()->setNamespace($ns)->setVariable('SMTP_Password')->setValue($pwd)->save();
             if ($x && $y && $z) {
                 $message = "SMTP Settings Saved!";
             }

@@ -153,7 +153,7 @@
         <script src="/js/common"></script>
         <script type="text/javascript">
             $(window).ready(function() {
-                new EasyEdits('/edits/humble/login','admin_login');
+                new EasyEdits('/edits/admin/login','admin_login');
                 var loginMessage = window.location.href.split('?message=');
                 if (loginMessage[1]) {
                     $E('login-error').innerHTML = unescape(loginMessage[1]);
