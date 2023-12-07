@@ -9,4 +9,5 @@ $smarty->cache_dir    = 'Code/'.$module['package'].'/'.str_replace('_','/',$modu
 if (!is_dir($smarty->cache_dir)) {
     @mkdir($smarty->cache_dir);
 }
+$smarty->registerPlugin("modifier","ucfirst", "ucfirst");
 ?>
