@@ -364,8 +364,10 @@ switch ($method) {
         $_SESSION['uid'] = $uid;
         print('Attempting to create drivers'."\n");
         print(getcwd()."\n");
-        @copy('humble.bat',strtolower((string)$project->factory_name).'.bat');
-        @copy('humble.sh',strtolower((string)$project->factory_name).'.sh');
+        @copy('../humble.bat',strtolower((string)$project->factory_name).'.bat');
+        @copy('../humble.sh',strtolower((string)$project->factory_name).'.sh');
+        $x = (file_exists('../humble.bat')) ? @unlink('../humble.bat') : '';
+        $x = (file_exists('../humble.sh'))  ? @unlink('../humble.sh') : '';
         print("done with creating drivers\n\n");
         $log = ob_get_flush();
         print($log);

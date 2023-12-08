@@ -31,12 +31,15 @@ if ($cmd = array_shift($argv)) {
         case "build" :
             print(shell_exec('docker build -t '.$ns.' .')."\n");
             break;
+        case "lsc":
         case "listc" :
             print(shell_exec('docker container ls')."\n");
             break;
+        case "lsv":
         case "listv" :
             print(shell_exec('docker volume ls')."\n");
             break;
+        case "lsi":
         case "listi" :
             print(shell_exec('docker image ls')."\n");
             break;
