@@ -348,14 +348,13 @@ switch ($method) {
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
         $util->disable();                                                       //Prevent accidental re-run
         ob_start();
-
-        $uid          = \Humble::entity('humble/admins')->setFirstName($fname)->setLastName($lname)->setEmail($_POST['email'])->setUserName($_POST['username'])->setPassword(MD5($upwd))->newUser();
+        $uid          = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
         $results      = ob_get_flush();
         if (!$uid) {
             file_put_contents('install_failed.txt',$results);
-        } else {
-            \Humble::entity('humble/user/permissions')->setId($uid)->setAdmin('Y')->setSuperUser('Y')->save();
-        }
+            print(file_get_contents('install_failed.txt')."\n");
+            die('Install did not complete, no admin user was created'."\n");
+        } 
         $ins->setId($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
         if (!$cache) {
 

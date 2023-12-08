@@ -3,8 +3,7 @@ namespace Code\&&PACKAGE&&\&&MODULE&&\Models;
 use Humble;
 use Environment; 
 /**
- *
- * Manages core user functions
+  * Manages core user functions
  *
  * Core user functions
  *
@@ -12,12 +11,6 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Framework
- * @author     Rick Myers rick@humbleprogramming.com
- * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
- * @license    https://humbleprogramming.com/license.txt
- * @version    1.0
- * @link       https://humbleprogramming.com/docs/class-Core_Model_User.html
- * @since      File available since Version 1.0.1
  */
 class User extends Model {
     
@@ -75,8 +68,11 @@ class User extends Model {
         }
         return $token;
     }
+
     /**
+     * Will set the flag on ALL user accounts to force users to reset their password... call at your own risk!
      * 
+     * @return string
      */
     public function resetPasswords() {
         $user = Humble::entity('default/users');
@@ -117,7 +113,6 @@ class User extends Model {
      */
     public function routeToHomePage($EVENT=false) {
         if ($EVENT!==false) {
-            //just duplicating for now... not sure if I want special "polymorphic" behavior for this if passed an event
             $project = Environment::getProject();
             header('Location: '.$project->landing_page);
         } else {
@@ -127,11 +122,11 @@ class User extends Model {
     }
 
     /**
-     * Performs a standard single source authentication
+     * Router to switch between an SSO login and standard single source login
      *
      * @return boolean
      */
-    protected function standardLogin() {
+    public function login() {
         $login      = false;
         $password   = $this->getPassword();
         $user_name  = $this->getUserName();
@@ -142,74 +137,6 @@ class User extends Model {
             Environment::session('user',$user);
         }
         return $login;
-    }
-
-    /**
-     * SSO login functionality
-     *
-     * @return boolean
-     */
-    protected function SSOLogin() {
-        return true;
-    }
-
-    /**
-     * Router to switch between an SSO login and standard single source login
-     *
-     * @return boolean
-     */
-    public function login() {
-        $successful = false;
-        $app        = Environment::status();
-        if (isset($app['status']['SSO']['enabled']) && $app['status']['SSO']['enabled'] == 1) {
-            $successful = $this->SSOLogin();
-        } else {
-            $successful = $this->standardLogin();
-        }
-        return $successful;
-    }
-
-    /**
-     * Confirms that an attempt to login by using SSO succeeded
-     *
-     * @workflow use(decision)
-     * @param type $EVENT
-     * @return boolean
-     */
-    public function SSOLoginSuccessful($EVENT=false) {
-        $successful = false;
-        if ($EVENT!==false) {
-            $data   = $EVENT->load();
-            // ‘v3-sp' is a name of the authentication provider setup in simplesamlphp, but it could be anything for any client. Based on how client want to authenticate.
-            // how do we get a value in here?
-            $IDP_Name = 'v3-sp';
-
-            // Basic PHP Code Snippet:
-            \SimpleSAML_Configuration::setConfigDir('vendor/simplesamlphp/simplesamlphp/config/');
-
-            $as = new \SimpleSAML_Auth_Simple($IDP_Name);
-
-            $as->requireAuth();
-            $attributes = $as->getAttributes();
-
-            // This could be username or uid or whatever field we configure SSO to get from an IDP
-            // In fact, I can rename the field before it gets to this module, so we can keep the same variable name
-//            $users->setUserName($attributes['username'][0]);
-
-            //##################################################################
-            //@TODO: We need to do a lookup on the attributes returned so that
-            //       we can tie this back to a person in our system
-            //##################################################################
-            $user     = Humble::entity('default/users');
-            $user->setUserName($attributes['username'][0]);
-            $user->load(true);
-            if ($user->getUid()) {
-                $valid = true;
-            }
-            $user     = $users->load(true);
-            $SSO      = 'goes here';
-        }
-        return $successful;
     }
 
     /**
@@ -227,7 +154,6 @@ class User extends Model {
             ];
         }
         return json_encode($data);
-
     }
 
     /**
@@ -247,34 +173,6 @@ class User extends Model {
                  header('Location: '.$url[0].$extra);
              }
         }
-    }
-
-    /**
-     * This is a standard, non-SSO, login attempt
-     *
-     * @workflow use(decision)
-     * @param type $EVENT
-     * @return boolean
-     */
-    public function standardLoginSuccessful($EVENT=false) {
-        $successful = false;
-        if ($EVENT!==false) {
-            $data       = $EVENT->load();
-            $user       = Humble::entity('default/users')->setUserName($data['user_name'])->load(true);
-            if (isset($user['password']) && isset($data['password']) && $data['password']) {
-                if (!session_id()) {
-                    session_start();
-                }
-                if ($successful = ($user['password'] === crypt($data['password'],$user['salt']))) {
-                    $_SESSION['uid']    = $user['uid'];
-                    $_SESSION['began']  = time();
-                    $_SESSION['login']  = $user['uid']; //This is the id that was actually authenticated... it lets admins jump around posing as other users
-                    $_SESSION['user']   = $user;
-                }
-            }
-            $EVENT->update(['login'=>$successful,'password_expected'=>$user['password']]);
-        }
-        return $successful;
     }
 
     /**
@@ -364,7 +262,7 @@ class User extends Model {
             }
             $user->setResetPasswordToken($token);
             $user->save();
-            $message = "\"<a href='http://humble-project/humble/user/resetform?token={$token}&email={$email}'>Click here to reset your password</a>\"";
+            $message = "\"<a href='&&PROJECT_URL&&/&&NAMESPACE&&/user/resetform?token={$token}&email={$email}'>Click here to reset your password</a>\"";
             $this->email($email,'Reset Password Instructions',$message);
         }
         $this->trigger('recover-password-email-sent',__CLASS__,__METHOD__,array('email'=>$email,"sent"=>date('Y-m-d H:i:s')));

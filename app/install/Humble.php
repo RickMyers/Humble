@@ -330,7 +330,9 @@ FACTORY;
         print($result."\n");
     }
     chdir('..');
-    $x = (file_exists('Humble.php')) ? @unlink('Humble.php') : '';
+    $x = (file_exists('humble.bat')) ? @unlink('humble.bat') : '';
+    $x = (file_exists('humble.sh'))  ? @unlink('humble.sh') : '';
+    $x = (file_exists('Humble.php')) ? @unlink('Humble.bat') : '';
     print("\n\nThe framework download is complete, please go to ".$project->project_url."/install.php to install your project\n\n");
     @exec('chown -R www-data:root /var/www');
     @exec('chmod -R 0775 /var/www');
