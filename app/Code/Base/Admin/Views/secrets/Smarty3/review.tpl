@@ -36,7 +36,7 @@
 </table>
 <script type="text/javascript"> 
     (function () {
-        new EasyEdits('/edits/humble/fetchsecret','fetchsecret');
+        new EasyEdits('/edits/admin/fetchsecret','fetchsecret');
     })();
 </script>
 

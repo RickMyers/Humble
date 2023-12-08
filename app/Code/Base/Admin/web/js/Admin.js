@@ -68,7 +68,7 @@ var Administration = (function () {
                     },
                     api: {
                         tester: function () {
-                            var win = (Administration.create.win.api = Administration.create.win.api ? Administration.create.win.api : Desktop.semaphore.checkout(true))._static(true)._title("API Test");
+                            var win = (Administration.create.win.api = Administration.create.win.api ? Administration.create.win.api : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("API Test");
                             (new EasyAjax('/admin/test/apitester')).then((response) => {
                                 win._open(response);
                             }).get();                              
@@ -78,7 +78,7 @@ var Administration = (function () {
                         import: function (namespace) {
                             let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/actions/importpage')).add('namespace',namespace).then((response) => {
-                                win._open(response)._title('Import Data');
+                                win._open(response)._scroll(true)._title('Import Data');
                             }).post();
                         },
                         export: function (namespace) {
@@ -89,19 +89,19 @@ var Administration = (function () {
                         install: function (namespace) {
                             let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/module/install')).add('namespace',namespace).then((response) => {
-                                win._open(response)._title('Install Module');
+                                win._open(response)._scroll(true)._title('Install Module');
                             }).post();                            
                         }
                     },
                     secrets: {
                         add: function () {
-                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._title("New Secret");
+                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Secret");
                             (new EasyAjax('/admin/secrets/form')).then((response) => {
                                 win._open(response);
                             }).get();                              
                         },
                         review: function () {
-                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._title("New Secret");
+                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Secret");
                             (new EasyAjax('/admin/secrets/review')).then((response) => {
                                 win._open(response);
                             }).get();                              
@@ -110,7 +110,7 @@ var Administration = (function () {
                     tests: {
                         win: false,
                         home: function () {
-                            let win = (Administration.tests.win = Administration.tests.win ? Administration.tests.win : Desktop.semaphore.checkout(true))._static(true)._title("Unit Test Harness");
+                            let win = (Administration.tests.win = Administration.tests.win ? Administration.tests.win : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("Unit Test Harness");
                             (new EasyAjax('/admin/unittests/home')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                              
@@ -135,25 +135,25 @@ var Administration = (function () {
                             api: false
                         },
                         package: function () {
-                            var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true))._static(true)._title("New Package");
+                            var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Package");
                             (new EasyAjax('/admin/actions/package')).then((response) => {
                                 win._open(response);
                             }).get();
                         },
                         module: function () {
-                            var win = (Administration.create.win.mod = Administration.create.win.mod ? Administration.create.win.mod : Desktop.semaphore.checkout(true))._static(true)._title("New Module");
+                            var win = (Administration.create.win.mod = Administration.create.win.mod ? Administration.create.win.mod : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Module");
                             (new EasyAjax('/admin/actions/module')).then((response) => {
                                 win._open(response);
                             }).get();                            
                         },
                         component: function () {
-                            var win = (Administration.create.win.com = Administration.create.win.com ? Administration.create.win.com : Desktop.semaphore.checkout(true))._static(true)._title("New Component");
+                            var win = (Administration.create.win.com = Administration.create.win.com ? Administration.create.win.com : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Component");
                             (new EasyAjax('/admin/actions/component')).then((response) => {
                                 win._open(response);
                             }).get();                            
                         },
                         controller: function () {
-                            var win = (Administration.create.win.con = Administration.create.win.con ? Administration.create.win.con : Desktop.semaphore.checkout(true))._static(true)._title("New Controller");
+                            var win = (Administration.create.win.con = Administration.create.win.con ? Administration.create.win.con : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Controller");
                             (new EasyAjax('/admin/actions/controller')).then((response) => {
                                 win._open(response);
                             }).get();                            
@@ -163,7 +163,7 @@ var Administration = (function () {
                         run: function () {
                             if (confirm("Are you sure you want to run the docs?  It could take a while...")) {
                                 let win = Desktop.semaphore.checkout(true);
-                                win._title('API Generation')._open();
+                                win._title('API Generation')._scroll(true)._open();
                                 (new EasyAjax('/admin/documentation/generate')).add('window_id',win.id).then((response) => {
                                     win.set(response);
                                 }).post();
@@ -216,7 +216,7 @@ var Administration = (function () {
                             win: false,
                             open: function ()  {
                                 let win = Administration.smtp.settings.win = Administration.smtp.settings.win ? Administration.smtp.settings.win : Desktop.semaphore.checkout(true);
-                                win._static(true)._title('SMTP Settings');
+                                win._static(true)._scroll(true)._title('SMTP Settings');
                                 (new EasyAjax('/admin/smtp/settings')).then((response) => {
                                     win._open(response);
                                 }).get();

@@ -38,7 +38,7 @@ class Monitor extends Model
     }
     
     public function snapshot() {
-        $this->system = Humble::helper('humble/system');
+        $this->system = Humble::helper('admin/system');
         $memory = $this->system->serverMemoryUsage();
         print_r($memory);
         $this->setMemoryFree($memory['free'] ?? '0');
