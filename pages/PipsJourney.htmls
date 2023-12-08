@@ -1,5 +1,5 @@
-<!--#include virtual="/pages/includes/header.html" -->
-<!--#include virtual="/pages/includes/container.html" -->
+<!--#include virtual="/pages/header.html" -->
+<!--#include virtual="/pages/container.html" -->
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -19,4 +19,4 @@ Click on the image below to read about Pip's Journey, and maybe there's a nugget
 </a>
 </center>
 </div>
-<!--#include virtual="/pages/includes/footer.html" -->
+<!--#include virtual="/pages/footer.html" -->

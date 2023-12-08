@@ -1,5 +1,5 @@
-<!--#include virtual="/pages/includes/header.html" -->
-<!--#include virtual="/pages/includes/container.html" -->
+<!--#include virtual="/pages/header.html" -->
+<!--#include virtual="/pages/container.html" -->
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -79,4 +79,4 @@ Thank you,<br/>
 <a style="margin-top: 20px" href='/pages/Rick.htmls'>Rick Myers</a>
 </p>
 </div>
-<!--#include virtual="/pages/includes/footer.html" -->
+<!--#include virtual="/pages/footer.html" -->

@@ -11,6 +11,7 @@ services:
     volumes:
       - "&&NAMESPACE&&_settings:/var/www/Settings"
       - "&&DIR&&:/var/www/html"
+      - humble_web_cfg:/etc
     ports:
       - &&PORT&&:&&PORT&&
     expose:

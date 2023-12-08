@@ -1,6 +1,4 @@
-<!--#include virtual="/pages/includes/header.html" -->
-<!--#include virtual="/pages/includes/banner.html" -->
-<!--#include virtual="/pages/includes/container.html" -->
+<!--#include virtual="/pages/header.html"--><!--#include virtual="/pages/banner.html"--><!--#include virtual="/pages/container.html"-->
 <style type="text/css">
     .humble-dmz {
         clear: both; height: 25px
@@ -22,6 +20,8 @@
     }
 </style>
 <script type="text/javascript">
+    console.log('SSI Check');
+    console.log('<!--#config timefmt="%c" --><!--#echo var="DATE_LOCAL" -->');
     var Main = (function () {
         var timer = null;
         var roll  = -1;
@@ -212,4 +212,4 @@
 
 <div class='humble-dmz'></div>
 
-<!--#include virtual="/pages/includes/footer.html" -->
+<!--#include virtual="/pages/footer.html" -->

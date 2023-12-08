@@ -1,5 +1,5 @@
-<!--#include virtual="/pages/includes/header.html" -->
-<!--#include virtual="/pages/includes/container.html" -->
+<!--#include virtual="/pages/header.html" -->
+<!--#include virtual="/pages/container.html" -->
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -65,4 +65,4 @@ After you have defined your entity and registered the entity, you are ready to b
 
 
 </div>
-<!--#include virtual="/pages/includes/footer.html" -->
+<!--#include virtual="/pages/footer.html" -->

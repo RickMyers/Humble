@@ -1,4 +1,4 @@
-<!--#include virtual="/pages/includes/header.html" -->
-<!--#include virtual="/pages/includes/container.html" -->
+<!--#include virtual="/pages/header.html" -->
+<!--#include virtual="/pages/container.html" -->
 
-<!--#include virtual="/pages/includes/footer.html" -->
+<!--#include virtual="/pages/footer.html" -->

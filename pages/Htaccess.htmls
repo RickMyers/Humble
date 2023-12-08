@@ -1,6 +1,6 @@
 
-<!--#include virtual="/pages/includes/header.html" -->
-<!--#include virtual="/pages/includes/container.html" -->
+<!--#include virtual="/pages/header.html" -->
+<!--#include virtual="/pages/container.html" -->
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -39,4 +39,4 @@ values into your Apache VHOST configuration as shown below...<br /><br />
 <br /><br />
 If you do the two things above, you will find that your application will be more performant as well as scale better.
 </div>
-<!--#include virtual="/pages/includes/footer.html" -->
+<!--#include virtual="/pages/footer.html" -->

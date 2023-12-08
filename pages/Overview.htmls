@@ -1,5 +1,5 @@
-<!--#include virtual="/pages/includes/header.html" -->
-<!--#include virtual="/pages/includes/container.html" -->
+<!--#include virtual="/pages/header.html" -->
+<!--#include virtual="/pages/container.html" -->
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -55,6 +55,6 @@ Overall, this helps to manage your application's code complexity and actually fi
 <div style="clear: both"></div><br />
 In the end, if you want to effect rapid development while maintaining code quality and <i><b>not</b></i> over-relying on your development staff, it is a good idea to keep it <i>Humble</i>.<br /><br /><br />
 </div>
-<!--#include virtual="/pages/includes/footer.html" -->
+<!--#include virtual="/pages/footer.html" -->
 
 
