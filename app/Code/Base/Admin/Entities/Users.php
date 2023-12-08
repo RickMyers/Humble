@@ -134,10 +134,10 @@ class Users extends Entity
                     , a.account_status
                     , a.login_attempts
                     , b.*
-                  from humble_users as a
-                  left outer join humble_user_identification as b
-                    on a.uid = b.id
-                 where a.uid = '{$id}'
+                  from admin_users as a
+                  left outer join admin_user_identification as b
+                    on a.id = b.id
+                 where a.id = '{$id}'
 SQL;
                  $results = $this->query($query)->toArray();
         }
@@ -155,12 +155,12 @@ SQL;
         if ($list = ($list) ? $list : ($this->getList() ? $this->getList() : false)) {
             $list = is_array($list) ? implode(',',$list) : $list;
             $query = <<<SQL
-                select a.user_name, a.uid, a.uid as user_id,
+                select a.user_name, a.id, a.id as user_id,
                        b.first_name, b.last_name
-                  from humble_users as a
-                  left outer join humble_user_identification as b
-                    on a.uid = b.id
-                 where a.uid in ({$list})
+                  from admin_users as a
+                  left outer join admin_user_identification as b
+                    on a.id = b.id
+                 where a.id in ({$list})
 SQL;
            $results = $this->query($query);   
         }

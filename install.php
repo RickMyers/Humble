@@ -48,6 +48,7 @@
                 update: function () {
                     (new EasyAjax('/install_status.json')).then(function (response) {
                         var progress = JSON.parse(response);
+                        console.log(progress);
                         if (progress) {
                             $('#install-status-stage').html(progress.stage);
                             $('#install-status-step').html(progress.step);
@@ -265,7 +266,7 @@ switch ($method) {
         break;
     case "INSTALL"      :
         ob_start();
-        $step    = 0;
+        $step   = 0;
         file_put_contents('install_status.json','{ "stage": "Preparing",  "step": "Initializing...", "percent": 0 }');
         $email  = isset($_POST['email'])            ? $_POST['email']           : false;
         $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']          : false;
@@ -305,7 +306,7 @@ switch ($method) {
         require_once('Humble.php');
         $util    = \Environment::getInstaller();
         $modules = \Environment::getRequiredModuleConfigurations();
-        $percent = (count($modules)*2)+4;
+        $percent = 100/((count($modules)+1)*2);                                 //2 steps per module, plus we will be creating a new module in this process
         file_put_contents('../install_status.json','{ "stage": "Starting", "step": "Building Application Module", "percent": '.(++$step*$percent).' }');
         
         foreach ($modules as $idx => $etc) {
@@ -335,20 +336,23 @@ switch ($method) {
             "package=".$project->package,
             "module=".$project->module
         ];
+        file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
         include "CLI.php";        
         
         //----------------------------------------------------------------------------------------------
         //We are going to have to copy a model and a controller into the new module to handle logging in
+        //
+        //NEED TO TAILOR THE SYSTEM
         //----------------------------------------------------------------------------------------------
         
         file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing      = explode('/',$landing_page);
         $ins          = Humble::model('humble/utility');
-        file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
-        $util->disable();                                                       //Prevent accidental re-run
-        ob_start();
         $uid          = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
+        $util->disable();                                                       //Disabling the installer to prevent accidental re-run
+        ob_start();
+        
         $results      = ob_get_flush();
         if (!$uid) {
             file_put_contents('install_failed.txt',$results);
@@ -356,9 +360,6 @@ switch ($method) {
             die('Install did not complete, no admin user was created'."\n");
         } 
         $ins->setId($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
-        if (!$cache) {
-
-        }
         session_start();
         $_SESSION['uid'] = $uid;
         print('Attempting to create drivers'."\n");
