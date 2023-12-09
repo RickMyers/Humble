@@ -1,5 +1,5 @@
-<!--#include virtual="/pages/header.html" -->
-<!--#include virtual="/pages/container.html" -->
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
 <style type="text/css">
     .famous_quote {
         background-color: rgba(202,202,202,.2); padding: 10px; font-style: italic; color: #333; margin-bottom: 20px; border: 1px solid silver; border-radius: 5px;
@@ -126,4 +126,4 @@ That is The Humble Way!
 <br /><br /><br /><br />
 
 </div>
-<!--#include virtual="/pages/footer.html" -->
+<!--#include virtual="/pages/includes/footer.html" -->

@@ -141,7 +141,7 @@ function fetchProject($version,$framework_url,$update=false) {
     file_put_contents('../extract/'.$distro,file_get_contents($framework_url.'/distro/fetch'));
     $new_distro = new ZipArchive();
     if ($new_distro->open('../extract/'.$distro, ZipArchive::CREATE) !== true) {
-        die('Wasnt able to open new distro');
+        die('Wasnt able to open new distro'."\n");
     };
     $ctr = 0; $copy_ctr = 0; $skip_ctr = 0; $merge_ctr = 0; $ignore_ctr = 0;
     $local_manifest = false;
@@ -289,8 +289,10 @@ FACTORY;
         die("\n\n".'Project file not found.  Run "humble --init" to create the project file'."\n\n");
     }
     $project    = json_decode(file_get_contents('Humble.project'));
-    $remote     = json_decode(file_get_contents($project->framework_url.'/distro/version'));
-    
+    if (!$remote     = json_decode(file_get_contents($project->framework_url.'/distro/version'))) {
+        die('Could not get current version number of the framework, check connectivity issues'."\n");
+    }
+
     if (!isset($project->serial_number) || !($project->serial_number)) {
         die('Please run humble --register to get your serial number before tyring to run this again');
     }

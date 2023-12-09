@@ -63,7 +63,7 @@
             $source     = "../packages/Humble-Distro-".(string)$xml->version->framework.".zip";
             if (!file_exists($source)) {
                 header("Content-Type: application/json");
-                print('{ "error": "Missing Distro For Version '.(string)$xml->version->framework.'"');
+                print('{ "error": "Missing Distro For Version '.(string)$xml->version->framework.'" }');
                 die();
             }
             $finfo      = finfo_open(FILEINFO_MIME_TYPE);

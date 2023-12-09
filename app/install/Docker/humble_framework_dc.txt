@@ -11,6 +11,7 @@ services:
     volumes:
       - "&&NAMESPACE&&_settings:/var/www/Settings"
       - "&&DIR&&:/var/www/html"
+      - &&NAMESPACE&&_packages:/var/www/packages
       - &&NAMESPACE&&_web_cfg:/etc
     ports:
       - &&PORT&&:&&PORT&&
@@ -50,7 +51,8 @@ volumes:
   &&NAMESPACE&&_mysql_cfg:  
   &&NAMESPACE&&_mongodb_cfg:
   &&NAMESPACE&&_web_cfg:
-  &&NAMESPACE&&_logs:
+  &&NAMESPACE&&_packages:
   &&NAMESPACE&&_settings:
       
+
 

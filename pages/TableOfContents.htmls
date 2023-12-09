@@ -1,5 +1,5 @@
-<!--#include virtual="/pages/header.html" -->
-<!--#include virtual="/pages/container.html" -->
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
 <style type="text/css">
     .toc-section {
         width: 32%; margin-right: 1%; margin-bottom: 2%; float: left; border: 1px solid #555; border-radius: 10px 10px 0px 0px; height: 200px; padding: 2px 10px 2px 10px
@@ -96,4 +96,4 @@
 </div>
 
 </div>
-<!--#include virtual="/pages/footer.html" -->
+<!--#include virtual="/pages/includes/footer.html" -->

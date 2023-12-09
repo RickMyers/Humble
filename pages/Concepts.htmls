@@ -1,5 +1,5 @@
-<!--#include virtual="/pages/header.html" -->
-<!--#include virtual="/pages/container.html" -->
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
 <style type="text/css">
     li {
         margin: 5px 0px 5px 0px
@@ -35,4 +35,4 @@ Sometimes it is best to not over complicate things, so we are going to just make
 </ul>
 
 </div>
-<!--#include virtual="/pages/footer.html" -->
+<!--#include virtual="/pages/includes/footer.html" -->

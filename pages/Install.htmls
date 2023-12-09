@@ -1,5 +1,5 @@
-<!--#include virtual="/pages/header.html" -->
-<!--#include virtual="/pages/container.html" -->
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
 <h1>Installation</h1>
 <hr />
 <br />
@@ -108,4 +108,4 @@ This video can provide a walk-through:
 
 
 
-<!--#include virtual="/pages/footer.html" -->
+<!--#include virtual="/pages/includes/footer.html" -->
