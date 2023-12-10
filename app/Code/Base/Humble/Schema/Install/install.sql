@@ -14,39 +14,6 @@ MySQL - 8.0.23 : Database - humble
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 /*Table structure for table `humble_categories` */
 
-CREATE TABLE `humble_admin_identification` (
-  `id` int NOT NULL,
-  `first_name` char(96) DEFAULT NULL,
-  `last_name` char(96) DEFAULT NULL,
-  `middle_name` char(96) DEFAULT NULL,
-  `name_suffix` char(36) DEFAULT NULL,
-  `maiden_name` char(96) DEFAULT NULL,
-  `name` char(192) DEFAULT NULL,
-  `entity` int DEFAULT NULL,
-  `gender` char(3) DEFAULT NULL,
-  `date_of_birth` date DEFAULT NULL,
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `humble_admins` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_name` char(30) DEFAULT '',
-  `password` char(13) DEFAULT '',
-  `salt` char(32) DEFAULT NULL,
-  `email` char(128) DEFAULT '',
-  `authenticated` char(1) DEFAULT 'N',
-  `new_password_token` char(16) DEFAULT '',
-  `reset_password_token` char(16) DEFAULT '',
-  `authentication_token` char(16) DEFAULT '',
-  `logged_in` datetime default null,
-  `account_status` char(1) DEFAULT '',
-  `login_attempts` int DEFAULT '0',
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`uid`),
-  unique index (`user_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `humble_categories` (
   `id` int NOT NULL AUTO_INCREMENT,
   `text` char(128) DEFAULT NULL,

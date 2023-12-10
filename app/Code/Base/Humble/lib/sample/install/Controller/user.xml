@@ -22,7 +22,7 @@
 
         <action name="authentication" output="JSON">
             <description>For remote APIs, lets them attempt to authenticate</description>
-            <model namespace="admin" class="user" id="admin">
+            <model class="user" id="admin">
                 <parameter name="user_name" source="post" default="" required='true' />
                 <parameter name="password"  source="post" value="user_password" format="password" required='true' />
             </model>
@@ -53,15 +53,6 @@
             </model>
         </action>
 
-    <!-- ############################################################### -->
-
-        <action name="default">
-            <description>Default Action</description>
-            <model class="user" id="user" method="invite">
-                <parameter name="email" source="request" default="" />
-            </model>
-        </action>
-
         <!-- ############################################################### -->
 
         <action name="reset">
@@ -79,6 +70,15 @@
                 
             </model>
             <redirect href="/index.html?message=Logout Successful" />
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="default">
+            <description>Default Action</description>
+            <model class="user" id="user" method="invite">
+                <parameter name="email" source="request" default="" required="true" />
+            </model>
         </action>
 
     </actions>
