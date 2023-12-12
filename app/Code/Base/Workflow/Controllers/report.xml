@@ -9,7 +9,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
     <actions>
         <action name="add">
             <description>A form to specify a report to add to an event</description>
-            <entity namespace="humble" class="user" id='user'>
+            <entity class="user" id='user'>
                 <parameter name='uid' source='session' value='uid' default='' />
             </entity>
         </action>

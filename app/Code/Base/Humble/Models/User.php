@@ -236,7 +236,7 @@ class User extends Model {
             $data = [
                 'sessionId' => session_id(),
                 'RC' => 0,
-                'user' => Humble::entity('humble/user/identification')->setId($uid)->load()
+                'user' => Humble::entity('default/user/identification')->setId($uid)->load()
             ];
         }
         return json_encode($data);
@@ -377,7 +377,7 @@ class User extends Model {
             }
             $user->setResetPasswordToken($token);
             $user->save();
-            $message = "\"<a href='http://humble-project/humble/user/resetform?token={$token}&email={$email}'>Click here to reset your password</a>\"";
+        //    $message = "\"<a href='http://humble-project/humble/user/resetform?token={$token}&email={$email}'>Click here to reset your password</a>\"";
             $this->email($email,'Reset Password Instructions',$message);
         }
         $this->trigger('recover-password-email-sent',__CLASS__,__METHOD__,array('email'=>$email,"sent"=>date('Y-m-d H:i:s')));

@@ -1334,7 +1334,7 @@ SQL;
                 if (isset($data['revision_history'])) {
                     unset($data['revision_history']);
                 }
-                $user       = Humble::entity('humble/user_identification')->setId(Environment::whoAmI())->load();
+                $user       = Humble::entity('default/user/identification')->setId(Environment::whoAmI())->load();
                 $revisions[] = [
                     'date'      => date('Y-m-d H:i:s'),
                     'user_id'   => $_SESSION['login'],

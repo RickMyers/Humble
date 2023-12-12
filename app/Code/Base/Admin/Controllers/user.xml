@@ -64,7 +64,7 @@
 
         <action name="new">
             <description>Prompts the user to enter their password for the first time</description>
-            <model namespace="humble" class="user" id="user">
+            <model class="user" id="user">
                 <parameter name="new_password_token" value='token' source="get" default="" />
             </model>
         </action>
@@ -73,7 +73,7 @@
 
         <action name="default">
             <description>Default Action</description>
-            <model namespace="humble" class="user" id="user" method="invite">
+            <model class="user" id="user" method="invite">
                 <parameter name="email" source="request" default="" />
             </model>
         </action>
@@ -82,7 +82,7 @@
 
         <action name="reset">
             <description>Password Reset</description>
-            <model namespace="humble" class="user" id="user">
+            <model class="user" id="user">
                 <parameter name="email" value='userid' source="get" default="" />
             </model>
         </action>

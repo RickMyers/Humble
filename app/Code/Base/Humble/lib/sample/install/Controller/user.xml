@@ -57,7 +57,7 @@
 
         <action name="reset">
             <description>Password Reset</description>
-            <model namespace="humble" class="user" id="user">
+            <model class="user" id="user">
                 <parameter name="email" value='userid' source="get" default="" />
             </model>
         </action>

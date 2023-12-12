@@ -150,7 +150,7 @@ class User extends Model {
             $data = [
                 'sessionId' => session_id(),
                 'RC' => 0,
-                'user' => Humble::entity('humble/user/identification')->setId($uid)->load()
+                'user' => Humble::entity('default/user/identification')->setId($uid)->load()
             ];
         }
         return json_encode($data);
