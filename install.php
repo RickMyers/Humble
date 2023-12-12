@@ -1,5 +1,8 @@
 <?php
     ob_start();
+    function postUpdate($stage='Preparing',$step='Initializeing',$percent=0) {
+        file_put_contents('../install_status.json','{ "stage": "'.$stage.'",  "step": "'.$step.'", "percent": '.$percent.' }');        
+    }
 ?>
 <html>
     <head>
@@ -309,7 +312,7 @@ switch ($method) {
     case "INSTALL"      :
         ob_start();
         $step   = 0;
-        file_put_contents('install_status.json','{ "stage": "Preparing",  "step": "Initializing...", "percent": 0 }');
+        postUpdate('Preparing','Initializing',0);
         $email  = isset($_POST['email'])            ? $_POST['email']           : false;
         $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']          : false;
         $uid    = isset($_POST['userid'])           ? $_POST['userid']          : false;
@@ -349,10 +352,9 @@ switch ($method) {
         $util    = \Environment::getInstaller();
         $modules = \Environment::getRequiredModuleConfigurations();
         $percent = 100/((count($modules)+1)*2);                                 //2 steps per module, plus we will be creating a new module in this process
-        file_put_contents('../install_status.json','{ "stage": "Starting", "step": "Building Application Module", "percent": '.(++$step*$percent).' }');
-        
+        postUpdate('Starting','Building Application Module',(++$step*$percent));
         foreach ($modules as $idx => $etc) {
-            file_put_contents('../install_status.json','{ "stage": "Installing", "step": "Installing '.$etc.'", "percent": '.(++$step*$percent).' }');
+            postUpdate('Installing','Installing '.$etc,(++$step*$percent));
             print('###########################################'."\n");
             print('Installing '.$etc."\n");
             print('###########################################'."\n\n");
@@ -364,12 +366,15 @@ switch ($method) {
         //
         $util = \Environment::getUpdater();
         foreach ($modules as $idx => $etc) {
-            file_put_contents('../install_status.json','{ "stage": "Updating", "step": "Updating '.$etc.'", "percent": '.(++$step*$percent).' }');
+            postUpdate('Updating','Updating '.$etc,(++$step*$percent));
             print('###########################################'."\n");
             print('Updating '.$etc."\n");
             print('###########################################'."\n\n");
             $util->update($etc);
         }
+
+        Humble::model('humble/manager')->tailorSystem();                     //We are going to have to copy a model and a controller into the new module to handle logging in
+
         //This fakes out the CLI to thinking it was called at the command line
         $args = [
             "CLI.php",
@@ -378,16 +383,11 @@ switch ($method) {
             "package=".$project->package,
             "module=".$project->module
         ];
-        file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Activiting Application Module", "percent": '.(++$step*$percent).' }');
+        
+        postUpdate('Finalizing','Activating Application Module',(++$step*$percent));
         include "CLI.php";        
         
-        //----------------------------------------------------------------------------------------------
-        //We are going to have to copy a model and a controller into the new module to handle logging in
-        //
-        //NEED TO TAILOR THE SYSTEM
-        //----------------------------------------------------------------------------------------------
-        
-        file_put_contents('../install_status.json','{ "stage": "Finalizing", "step": "Registering Administrator", "percent": '.(++$step*$percent).' }');
+        postUpdate('Finalizing','Registering Administrator',(++$step*$percent));
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing      = explode('/',$landing_page);
         $ins          = Humble::model('humble/utility');
@@ -410,10 +410,11 @@ switch ($method) {
         @copy('../humble.sh',strtolower((string)$project->factory_name).'.sh');
         $x = (file_exists('../humble.bat')) ? @unlink('../humble.bat') : '';
         $x = (file_exists('../humble.sh'))  ? @unlink('../humble.sh') : '';
+        $x = (file_exists('../Humble.php')) ? @unlink('../Humble.php') : '';
         print("done with creating drivers\n\n");
         $log = ob_get_flush();
         print($log);
-        file_put_contents('../install_status.json','{ "stage": "Complete", "step": "Finished", "percent": 100 }');
+        postUpdate('Complete','Finished',100);
         file_put_contents('../install.log',$log);
         break;
     default             :

@@ -341,19 +341,8 @@ class Environment {
                 $status = "There is an error in the application configuration file";
             }
         }
-        //Allows override if you are a super user
-        /*if ($status) {
-         * @TODO: Change this so when logged in, the user permissions are cached and we get this from the session
-            if (isset($_SESSION['uid']) && $_SESSION['uid']) {
-                $user = \Humble::entity('humble/user/permissions')->setId($_SESSION['uid']);
-                $user->load();
-                if ($user->getSuperUser() == 'Y') {
-                    $status = false;
-                }
-            }
-        }*/
         if ($status !== false) {
-            header("location: /index.html?m=".$status);
+            header("location: /index.html?message=".$status);
             die();
         }
         return (isset(self::$application['status']['authorization']) && (int)self::$application['status']['authorization']['enabled']); //this will always, or should always, be false
@@ -382,7 +371,7 @@ class Environment {
     public static function whoIs($id=false) {
         $user = false;
         if ($id) {
-            $user = Humble::entity('humble/user/identification')->setId($id)->load();
+            $user = Humble::entity('default/user/identification')->setId($id)->load();
         }
         return $user;
     }
@@ -435,6 +424,16 @@ class Environment {
         return $project;
     }
 
+    /**
+     * Just a relay for a shorter naming syntax
+     * 
+     * @param type $node
+     * @return type
+     */
+    public static function project($node=false) {
+        return self::getProject($node);
+    }    
+    
     private static function recurse($struct=false,$nodes=false) {
         foreach ($nodes as $field => $node) {
             $app = isset($struct[$field]) ? $struct[$field] : false;

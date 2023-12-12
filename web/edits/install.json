@@ -218,7 +218,7 @@
                     (new EasyAjax('/install.php')).packageForm('installer-form').then((response) => {
                         window.setTimeout(
                             function () {
-                                window.location.href='/index.html?m=Be%20Humble.';
+                                window.location.href='/index.html?message=Be%20Humble.';
                             },2000
                         );
                     }).post();
