@@ -1,5 +1,6 @@
 <?php
 namespace Code\Base\Humble\Models;
+use Environment;
 use Humble;
 use Log;
 /** 
@@ -85,5 +86,43 @@ class Manager extends Model
         return $results;
     }
 
-
+    protected function updateConfig($project) {
+        $xml = simplexml_load_file('Code/'.$project->package.'/'.$project->module.'/etc/config.xml');
+        $xml->{$project->namespace}->orm->entities->addChild('users');
+        $xml->{$project->namespace}->orm->entities->addChild('user_identification');
+        $xml->{$project->namespace}->orm->entities->user_identification->addAttribute('polyglot','Y');
+        return file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/config.xml',$xml->asXML());
+        
+    }
+    /**
+     * Loads the default module with a few classes and tables, but overrides some things
+     * 
+     * @return $this
+     */
+    public function tailorSystem() {
+        $project = Environment::getProject();
+        $sources = [
+            'Controllers' => 'Code/Base/Humble/lib/sample/install/Controllers',
+            'Models' => 'Code/Base/Humble/lib/sample/install/Models',
+            'Schema' => 'Code/Base/Humble/lib/sample/install/Schema/Install'
+        ];
+        $dest = [
+            'Controllers' => 'Code/'.$project->package.'/'.$project->module.'/Controllers',
+            'Models' => 'Code/'.$project->package.'/'.$project->module.'/Models',
+            'Schema' => 'Code/'.$project->package.'/'.$project->module.'/Schema/Install'
+        ];
+        $srch    = ['&&NAMESPACE&&','&&PACKAGE&&','&&MODULE&&'];
+        $repl    = [$project->namespace,$project->package,$project->module];
+        foreach ($sources as $component => $location) {
+            print("Processing ".$component."\n");
+            $dh = dir($location);
+            while ($entry = $dh->read()) {
+                if (($entry == '.') || ($entry == '..')) {
+                    continue;
+                }
+                file_put_contents($dest[$component].'/'.$entry,str_replace($srch,$repl,file_get_contents($sources[$component].'/'.$entry)));
+            }
+        }
+        return $this->updateConfig($project);
+    }
 }

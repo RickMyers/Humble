@@ -353,6 +353,9 @@ switch ($method) {
         $modules = \Environment::getRequiredModuleConfigurations();
         $percent = 100/((count($modules)+1)*2);                                 //2 steps per module, plus we will be creating a new module in this process
         postUpdate('Starting','Building Application Module',(++$step*$percent));
+        
+        Humble::model('humble/manager')->tailorSystem();                     //We are going to have to copy a model and a controller into the new module to handle logging in
+        
         foreach ($modules as $idx => $etc) {
             postUpdate('Installing','Installing '.$etc,(++$step*$percent));
             print('###########################################'."\n");
@@ -373,7 +376,7 @@ switch ($method) {
             $util->update($etc);
         }
 
-        Humble::model('humble/manager')->tailorSystem();                     //We are going to have to copy a model and a controller into the new module to handle logging in
+        
 
         //This fakes out the CLI to thinking it was called at the command line
         $args = [
