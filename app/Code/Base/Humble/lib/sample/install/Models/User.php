@@ -77,7 +77,7 @@ class User extends Model {
     public function resetPasswords() {
         $user = Humble::entity('default/users');
         foreach (Humble::entity('default/users')->fetch() as $obs) {
-            $user->reset()->setId($obs['uid'])->setResetPasswordToken($this->resetToken(12))->save();
+            $user->reset()->setId($obs['id'])->setResetPasswordToken($this->resetToken(12))->save();
         }
         return "Passwords were reset (sure)";
     }
@@ -132,8 +132,8 @@ class User extends Model {
         $user_name  = $this->getUserName();
         $user       = Humble::entity('default/users')->setUserName($user_name)->load(true);
         if ($user && ($login = ($user['password'] === crypt($this->getPassword(),$user['salt'])))) {
-            Environment::session('uid',$user['uid']);
-            Environment::session('login',$user['uid']);
+            Environment::session('uid',$user['id']);
+            Environment::session('login',$user['id']);
             Environment::session('user',$user);
         }
         return $login;

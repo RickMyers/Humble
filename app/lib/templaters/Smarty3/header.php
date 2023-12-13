@@ -10,4 +10,6 @@ if (!is_dir($smarty->cache_dir)) {
     @mkdir($smarty->cache_dir);
 }
 $smarty->registerPlugin("modifier","ucfirst", "ucfirst");
+$smarty->registerPlugin("modifier","json_encode", "json_encode");
+$smarty->registerPlugin("modifier","json_decode", "json_decode");
 ?>
