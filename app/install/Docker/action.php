@@ -57,7 +57,26 @@ if ($cmd = array_shift($argv)) {
             if ($con = (array_shift($argv) ?? $ns)) {
                 print(shell_exec('docker container rm '.$con)."\n");
             }
-            break;            
+            break;   
+        case "remove" :
+            if ($ns) {
+                print(shell_exec('docker container stop '.$ns));
+                print(shell_exec('docker container stop '.$ns.'_mysql'));
+                print(shell_exec('docker container stop '.$ns.'_mongodb'));
+                print(shell_exec('docker container rm '.$ns));
+                print(shell_exec('docker container rm '.$ns.'_mysql'));
+                print(shell_exec('docker container rm '.$ns.'_mongodb'));
+                print(shell_exec('docker image rm '.$ns));
+                print(shell_exec('docker image rm '.$ns.'_mysql'));
+                print(shell_exec('docker image rm '.$ns.'_mongodb'));
+                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_mongodb_cfg'));
+                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_mongodb_data'));
+                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_mysql_cfg'));
+                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_settings'));
+                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_db_data'));
+                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_web_cfg'));
+            }
+            break;
         default:
             print("I don't handle those... [".$cmd."]\n");
             break;
