@@ -277,7 +277,7 @@ class Utility extends Model
     /**
      * Create a new controller
      */
-    public function createController($useLanding=false) {
+    public function createController($useLanding=false,$override=false) {
         $templaters     = Humble::entity('humble/templaters')->fetch();
         $exts           = []; //building an XREF for simplicity...
         foreach ($templaters as $engine) {
@@ -300,7 +300,7 @@ class Utility extends Model
         $template       = $this->resolveLocation($templates);
         
         
-        if (!$module         = Humble::module($this->getNamespace())) {
+        if (!$module         = Humble::module($this->getNamespace(),$override)) {
             return "The ".$this->getNamespace()." module is disabled or does not exist";
         }
         $dest           = 'Code/'.$module['package']."/".$module['controller'];
@@ -321,7 +321,7 @@ class Utility extends Model
             $this->getName(),
             $this->getEngine(),
             $data['email']??'',
-            $user['first_name']??''.' '.$user['last_name']??'',
+            ($user['first_name'] ?? '').' '.($user['last_name'] ?? ''),
             $this->getDescription(),
             $this->getActionDescription(),
             $this->getAction()

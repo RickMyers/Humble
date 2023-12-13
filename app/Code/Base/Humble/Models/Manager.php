@@ -103,15 +103,15 @@ class Manager extends Model
         $project = Environment::getProject();
         $sources = [
             'Controllers' => 'Code/Base/Humble/lib/sample/install/Controllers',
-            'Models' => 'Code/Base/Humble/lib/sample/install/Models',
-            'Schema' => 'Code/Base/Humble/lib/sample/install/Schema/Update',
-            'Entities' => 'Code/Base/Humble/lib/sample/install/Entities'
+            'Models'      => 'Code/Base/Humble/lib/sample/install/Models',
+            'Schema'      => 'Code/Base/Humble/lib/sample/install/Schema/Update',
+            'Entities'    => 'Code/Base/Humble/lib/sample/install/Entities'
         ];
         $dest = [
             'Controllers' => 'Code/'.$project->package.'/'.$project->module.'/Controllers',
-            'Models' => 'Code/'.$project->package.'/'.$project->module.'/Models',
-            'Schema' => 'Code/'.$project->package.'/'.$project->module.'/Schema/Update',
-            'Entities' => 'Code/'.$project->package.'/'.$project->module.'/Entities',
+            'Models'      => 'Code/'.$project->package.'/'.$project->module.'/Models',
+            'Schema'      => 'Code/'.$project->package.'/'.$project->module.'/Schema/Update',
+            'Entities'    => 'Code/'.$project->package.'/'.$project->module.'/Entities',
         ];
         $srch    = ['&&NAMESPACE&&','&&PACKAGE&&','&&MODULE&&'];
         $repl    = [$project->namespace,$project->package,$project->module];
@@ -127,4 +127,16 @@ class Manager extends Model
         }
         return $this->updateConfig($project);
     }
+    
+    /**
+     * 
+     * @param type $project
+     */
+    public function createLandingPage($project) {
+        if ($parts = explode('/',$project->landing_page)) {
+            $util = Humble::model('admin/utility');
+            //TODO: Pass engine in...
+            $util->setNamespace($parts[1])->setEngine('Twig')->setName($parts[2])->setAction($parts[3])->createController(true,true);
+        }
+    }    
 }

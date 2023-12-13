@@ -14,6 +14,24 @@ class Component extends CLI
         $compiler->compileFile($file);
     }
 
+    /**
+     * Builds a controller
+     */
+    public static function build() {
+        $util = Humble::model('admin/utility',true);
+        foreach (self::arguments() as $field => $value) {
+            $method = 'set'.self::underscoreToCamelCase($field,true);
+            $util->$method($value);
+        }
+        $util->createController(true,true);
+    }
+    
+    /**
+     * Builds a component, such as Model, Entity, or Helper
+     */
+    public static function create() {
+        $args       = self::arguments();
+    }
 }
 
 
