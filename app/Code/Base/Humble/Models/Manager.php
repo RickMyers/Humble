@@ -104,13 +104,13 @@ class Manager extends Model
         $sources = [
             'Controllers' => 'Code/Base/Humble/lib/sample/install/Controllers',
             'Models' => 'Code/Base/Humble/lib/sample/install/Models',
-            'Schema' => 'Code/Base/Humble/lib/sample/install/Schema/Install',
+            'Schema' => 'Code/Base/Humble/lib/sample/install/Schema/Update',
             'Entities' => 'Code/Base/Humble/lib/sample/install/Entities'
         ];
         $dest = [
             'Controllers' => 'Code/'.$project->package.'/'.$project->module.'/Controllers',
             'Models' => 'Code/'.$project->package.'/'.$project->module.'/Models',
-            'Schema' => 'Code/'.$project->package.'/'.$project->module.'/Schema/Install',
+            'Schema' => 'Code/'.$project->package.'/'.$project->module.'/Schema/Update',
             'Entities' => 'Code/'.$project->package.'/'.$project->module.'/Entities',
         ];
         $srch    = ['&&NAMESPACE&&','&&PACKAGE&&','&&MODULE&&'];
