@@ -127,6 +127,15 @@ class Environment {
         }
         return isset(self::$application['state']) ?  self::$application['state'] : 'Unknown';
     }
+
+    /**
+     * Returns whether or not the current user has the admin flag set
+     * 
+     * @return type
+     */
+    public static function userIsAdmin() {
+        return $_SESSION['admin_id'] ?? false;
+    }
     
     /**
      * Returns true if the system is in PRODUCTION, which means certain features will be turned on

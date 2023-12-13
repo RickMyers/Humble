@@ -376,8 +376,6 @@ switch ($method) {
             $util->update($etc);
         }
 
-        
-
         //This fakes out the CLI to thinking it was called at the command line
         $args = [
             "CLI.php",
@@ -393,8 +391,9 @@ switch ($method) {
         postUpdate('Finalizing','Registering Administrator',(++$step*$percent));
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing      = explode('/',$landing_page);
-        $ins          = Humble::model('humble/utility');
+        $ins          = \Humble::model('humble/utility');
         $uid          = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
+        $uuid         = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
         $util->disable();                                                       //Disabling the installer to prevent accidental re-run
         ob_start();
         
