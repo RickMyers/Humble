@@ -17,7 +17,7 @@ namespace Code\Main\Account\Helpers;
  * @license    https://humbleprogramming.com/LICENSE.txt
  * @version    3.0.1
  */
-class Helper extends \Code\Base\Humble\Helpers\Helper
+class Helper extends \Code\Framework\Humble\Helpers\Helper
 {
 
 }

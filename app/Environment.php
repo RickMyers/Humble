@@ -575,7 +575,7 @@ class Environment {
      *
      */
     public static function getCompiler()  {
-        return new \Code\Base\Humble\Helpers\Compiler();
+        return new \Code\Framework\Humble\Helpers\Compiler();
         //return Singleton::getCompiler();
     }
 

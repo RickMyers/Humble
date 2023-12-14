@@ -131,7 +131,7 @@ function scanModelsForChanges() {
             }
             $files[$module['namespace']] = recurseDirectory('Code/'.$module['package'].'/'.$module['models']);
             foreach ($files[$module['namespace']] as $file) {
-                if ($file == 'Code/Base/Humble/Models/MySQL.php') {
+                if ($file == 'Code/Framework/Humble/Models/MySQL.php') {
                     logMessage('Skipping MySQL Model');
                     continue;
                 }

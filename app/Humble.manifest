@@ -33,7 +33,7 @@ web/*
 dist/*
 app/Humble.local.manifest
 app/cli/*
-app/Code/Base/*
+app/Code/Framework/*
 app/Exceptions/*
 app/lib/Common/*
 app/lib/fonts/*

@@ -18,7 +18,7 @@ namespace Code\Main\Account\Entities;
  * @link       http://pear.php.net/package/PackageName
 
  */
-class Entity extends \Code\Base\Humble\Entities\Unity
+class Entity extends \Code\Framework\Humble\Entities\Unity
 {
 
 }

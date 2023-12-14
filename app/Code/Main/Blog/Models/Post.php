@@ -18,7 +18,7 @@ use Environment;
 class Post extends Model
 {
 
-    use \Code\Base\Humble\Traits\EventHandler;
+    use \Code\Framework\Humble\Traits\EventHandler;
 
 	
     /**

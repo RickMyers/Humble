@@ -59,7 +59,7 @@ class Singleton
      */
     public static function getMySQLAdapter()  {
         if (!isset(self::$mySQLAdapter)) {
-            self::$mySQLAdapter = new \Code\Base\Humble\Drivers\MySQL();
+            self::$mySQLAdapter = new \Code\Framework\Humble\Drivers\MySQL();
         }
         return self::$mySQLAdapter;
     }
@@ -69,7 +69,7 @@ class Singleton
      */
     public static function getMongoAdapter()  {
         if (!isset(self::$mongoAdapter)) {
-            self::$mongoAdapter = new \Code\Base\Humble\Driver\Mongo();
+            self::$mongoAdapter = new \Code\Framework\Humble\Driver\Mongo();
         }
         return self::$mongoAdapter;
     }
@@ -89,7 +89,7 @@ class Singleton
      * @return object
      */
     public static function getConsole()  {
-        return (!isset(self::$console)) ? new \Code\Base\Humble\Helpers\Console() : self::$console;
+        return (!isset(self::$console)) ? new \Code\Framework\Humble\Helpers\Console() : self::$console;
     }
 
     /**
@@ -98,7 +98,7 @@ class Singleton
     public static function getCompiler()
     {
         if (!isset(self::$compiler)) {
-            self::$compiler = new \Code\Base\Humble\Helpers\Compiler();
+            self::$compiler = new \Code\Framework\Humble\Helpers\Compiler();
         }
         return self::$compiler;
     }
@@ -109,7 +109,7 @@ class Singleton
     public static function getInstaller()
     {
         if (!isset(self::$installer)) {
-            self::$installer = new \Code\Base\Humble\Helpers\Installer();
+            self::$installer = new \Code\Framework\Humble\Helpers\Installer();
         }
         return self::$installer;
     }
@@ -120,7 +120,7 @@ class Singleton
     public static function getMonitor()
     {
         if (!isset(self::$monitor)) {
-            self::$monitor = new \Code\Base\Humble\Helpers\Monitor();
+            self::$monitor = new \Code\Framework\Humble\Helpers\Monitor();
         }
         return self::$monitor;
     }
@@ -130,7 +130,7 @@ class Singleton
      */
     public static function getUpdater() {
         if (!isset(self::$updater)) {
-            self::$updater = new \Code\Base\Humble\Helpers\Updater();
+            self::$updater = new \Code\Framework\Humble\Helpers\Updater();
         }
         return self::$updater;
     }
@@ -142,7 +142,7 @@ class Singleton
         //hit namespace for helper location.... then go after it
         if (!isset(self::$helper[$name])) {
             $helperClass = $base.'_'.$name.'.php';
-            $helperClass = (file_exists($helperClass)) ? $helperClass : '\Code\Base\Humble\Helpers\Helper' ;
+            $helperClass = (file_exists($helperClass)) ? $helperClass : '\Code\Framework\Humble\Helpers\Helper' ;
             self::$helper[$name] = new $helperClass();
         }
         return self::$helper[$name];

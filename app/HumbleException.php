@@ -43,7 +43,7 @@ class HumbleException {
     public static function standard($e=false,$type="An Error Has Occurred",$template='standard') {
         if ($e && ($e instanceof Exception )) {
             header("HTTP/1.1 400 Bad Request");
-            $rain = \Environment::getInternalTemplater('Code/Base/Humble/Views/Exceptions/');
+            $rain = \Environment::getInternalTemplater('Code/Framework/Humble/Views/Exceptions/');
             $rain->assign('ex',$e);
             $rain->assign('title',$type);
             $rain->assign('dump',htmlentities($e->getTraceAsString()));

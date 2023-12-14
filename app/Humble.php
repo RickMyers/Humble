@@ -156,7 +156,7 @@
          * Returns either the specific requested instance of an entity of the parent class of all entities as a "Virtual" entity
          *
          * @param string $identifier
-         * @return \Code\Base\Humble\Entity\Entity
+         * @return \Code\Framework\Humble\Entity\Entity
          */
         public static function entity($resource_identifier) {
             $identifier = self::parseResource($resource_identifier);
@@ -164,7 +164,7 @@
             if ($module = self::module($identifier['namespace'])) {
                 $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\','\\'.$str)) extends \Code\Base\Humble\Entities\Unity {
+                    $instance = new class(str_replace('/','\\','\\'.$str)) extends \Code\Framework\Humble\Entities\Unity {
                         private $anon_class = null;
                         public function __construct($a) {
                             parent::__construct();
@@ -176,7 +176,9 @@
                     $class      = str_replace('/','\\','\\'.$str);
                     $instance   = new $class();
                 }
-                $instance->_prefix($module['prefix'])->_namespace($identifier['namespace'])->_entity(str_replace('/','_',$identifier['resource']))->_isVirtual(!$class);
+                if ($instance) {
+                    $instance->_prefix($module['prefix'])->_namespace($identifier['namespace'])->_entity(str_replace('/','_',$identifier['resource']))->_isVirtual(!$class);
+                }
             }
             return $instance;
         }
@@ -195,7 +197,7 @@
             if ($module = self::module($identifier['namespace'],$override)) {
                 $str   = "Code/{$module['package']}/".str_replace("_","/",$module['models'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Models\Model {
+                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Framework\Humble\Models\Model {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
@@ -228,7 +230,7 @@
             if ($module = self::module($identifier['namespace'])) {
                 $str   = "Code/{$module['package']}/".str_replace("_","/",$module['helpers'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Base\Humble\Helpers\Helper {
+                    $instance = new class(str_replace('/','\\',$str)) extends \Code\Framework\Humble\Helpers\Helper {
                         private $anon_class = null;
                         public function __construct($a) {
                             $this->anon_class = $a;
@@ -252,14 +254,14 @@
          * Returns a reference to the a MongoDB Collection
          *
          * @param type $identifier
-         * @return \Code\Base\Humble\Models\MongoDB
+         * @return \Code\Framework\Humble\Models\MongoDB
          */
         public static function collection($identifier) {
             $identifier = self::parseResource($identifier);
             $instance   = null;
             if ($module = self::module($identifier['namespace'])) {
                 if ($module['mongodb']) {
-                    $instance   = new \Code\Base\Humble\Drivers\Mongo;//What is this for?
+                    $instance   = new \Code\Framework\Humble\Drivers\Mongo;//What is this for?
                     if (isset($identifier['resource'])) {
                         $instance->_collection(str_replace('/','_',$identifier['resource']));
                     }
@@ -507,17 +509,17 @@
         /**
          * To protect yourself from bad impulses, access to the DB is restricted to instances of Unity (ORM) or a short list of privileged classes.  This is to encourage DAO style development
          *
-         * @param \Code\Base\Humble\Entities\Unity $callingClass
+         * @param \Code\Framework\Humble\Entities\Unity $callingClass
          * @return mixed
          */
         public static function connection($callingClass=false)        {
-            if (!($conn = ($callingClass instanceof \Code\Base\Humble\Entities\Unity))) {
+            if (!($conn = ($callingClass instanceof \Code\Framework\Humble\Entities\Unity))) {
                 if ($callingClass) {
                     $name = $callingClass->getClassName();
                 } else {
                     $name = (!isset($this)) ? self::getClassName() : null;
                 }
-                $shortList  = array('Humble','Code\Base\Humble\Helpers\Installer','Code\Base\Humble\Helpers\Updater','Code\Base\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
+                $shortList  = array('Humble','Code\Framework\Humble\Helpers\Installer','Code\Framework\Humble\Helpers\Updater','Code\Framework\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
                 $conn       = in_array($name,$shortList);
             }
             return $conn ? Singleton::getMySQLAdapter() : $conn;
@@ -628,14 +630,14 @@ SQL;
          * Boxes a normal scalar string
          *
          * @param type $string
-         * @return \Code\Base\Humble\Helpers\HumbleString
+         * @return \Code\Framework\Humble\Helpers\HumbleString
          */
         public static function string($string='') {
-            return new \Code\Base\Humble\Helpers\HumbleString($string);
+            return new \Code\Framework\Humble\Helpers\HumbleString($string);
         }
         
         public static function array($arr=[]){
-            return new \Code\Base\Humble\Models\Arr($arr);
+            return new \Code\Framework\Humble\Models\Arr($arr);
         }
 
         /**

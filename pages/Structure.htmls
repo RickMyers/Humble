@@ -26,7 +26,7 @@ Each Module has its own configuration file, and each Module lays claim to its ow
             <td class='humble-sans-serif'>Application root directory, core application factories and key files are located here</td>
         </tr>
         <tr class='humble-zebra-0'>
-            <td class='humble-monospace' width='25%'>/app/Code/Base/</td>
+            <td class='humble-monospace' width='25%'>/app/Code/Framework/</td>
             <td class='humble-sans-serif'>The core framework files and classes.  Don't hack on core if that's not your job</td>
         </tr>
         <tr class='humble-zebra-1'>

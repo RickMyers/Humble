@@ -308,7 +308,7 @@ FACTORY;
     //file_put_contents('index.php',str_replace($srch,$repl,file_get_contents('index.php')));  //replacing default Humble factory with the custom one you just created... bad idea maybe?
     $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}'];
     $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1'];
-    file_put_contents('application.xml',str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/application.xml')));
+    file_put_contents('application.xml',str_replace($srch,$repl,file_get_contents('app/Code/Framework/Humble/lib/sample/install/application.xml')));
     print("\n\n");
     
     chdir('app');

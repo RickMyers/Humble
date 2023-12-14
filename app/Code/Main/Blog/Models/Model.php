@@ -17,7 +17,7 @@ namespace Code\Main\Blog\Models;
  * @license    https://humbleprogramming.com/LICENSE.txt
  * @version    3.0.1
  */
-class Model extends \Code\Base\Humble\Models\Model
+class Model extends \Code\Framework\Humble\Models\Model
 {
 
 }

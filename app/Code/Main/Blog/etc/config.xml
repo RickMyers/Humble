@@ -66,13 +66,6 @@
         <orm>
             <prefix>blog_</prefix>
             <mongodb>blog</mongodb>
-            <!--
-                Register your tables to be managed under this namespace in the entities section below in the following format:
-
-                <table_name polyglot="Y' />
-
-                The 'polyglot' attribute is optional.  Only specify when you are actually enabling the polyglot behavior
-            -->
             <entities>
                 <whatsnew_code polyglot='Y' />
                 <whatsnew_lexicons polyglot='Y' />
@@ -88,12 +81,6 @@
                 <article>Blog/web/edits/article.json</article>
             </edits>
             <hook>
-                <!-- #################################################
-                     This is where the JS lives for your module
-
-                     Set the 'hook' name appropriately, and use as
-                       many hooks as you'd like
-                     #################################################    -->
                 <js>
                     <source>Blog/web/js/Blog.js</source>
                 </js>

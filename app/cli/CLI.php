@@ -14,6 +14,24 @@ class CLI
     
     private static $args = [];
     
+    
+    /**
+     * Converts variable_name to VariableName
+     * 
+     * @param type $string
+     * @param type $first_char_caps
+     * @return type
+     */
+    protected static function underscoreToCamelCase( $string, $first_char_caps = false) {
+        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
+    }
+    
+    /**
+     * Returns files and paths under a directory
+     * 
+     * @param type $path
+     * @return string
+     */
     protected static function recurseDirectory($path) {
         $entries = [];
         if ($path) {

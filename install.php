@@ -346,7 +346,7 @@ switch ($method) {
         
         @mkdir('../Settings/'.$project->namespace,0775,true);
         @mkdir('images',0775,true);
-        file_put_contents("../Settings/".$project->namespace."/Settings.php",str_replace($srch,$repl,file_get_contents('app/Code/Base/Humble/lib/sample/install/Settings.php')));
+        file_put_contents("../Settings/".$project->namespace."/Settings.php",str_replace($srch,$repl,file_get_contents('app/Code/Framework/Humble/lib/sample/install/Settings.php')));
         chdir('app');
         require_once('Humble.php');
         $util    = \Environment::getInstaller();
