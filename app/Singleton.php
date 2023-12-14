@@ -120,7 +120,7 @@ class Singleton
     public static function getMonitor()
     {
         if (!isset(self::$monitor)) {
-            self::$monitor = new \Code\Framework\Humble\Helpers\Monitor();
+            self::$monitor = new \Code\Framework\Admin\Models\Monitor();
         }
         return self::$monitor;
     }
