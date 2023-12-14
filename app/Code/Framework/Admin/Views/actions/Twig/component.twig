@@ -1,0 +1,40 @@
+<div id='new_component_area'>
+    <span style="font-size: 1.5em">Component Creation</span><br /><br />
+    You can build a new component using the form below.  Please specify which namespace your component will be bound to, the type of component, and the name of the new component<br /><br /><br />
+    <form name="new_component_form" id="new_component_form" onsubmit="return false" >
+        <input type='text' name='short_description' id='short_description' /><br />
+        <div class='new-module-desc'>Short Description</div>
+        <textarea name='long_description' id='long_description' ></textarea><br />
+        <div class='new-module-desc'>Long Description</div>
+        <select name="component_namespace" id="component_namespace" class="new-module-field" style='color: #333'>
+        </select><br />
+        <div class='new-module-desc'>Namespace</div>
+        <select name="component_type" id="component_type" class="new-module-field" style='color: #333'>
+            <option value=''>Please select type of component to create</option>
+            <option value='models'>Model Class</option>
+            <option value='entities'>Entity Class</option>
+            <option value='helpers'>Helper Class</option>
+        </select><br />
+        <div class='new-module-desc'>Component Type</div>
+
+        <div style='margin-bottom: 20px; font-size: 1.1em'>
+            <input type='checkbox' value='Y' id='generates_events' name='generates_events' /> Event Generator
+        </div>
+
+        <select name="component_package" id="component_package" class="new-module-field" style='color: #333'>
+        </select><br />
+        <div class='new-module-desc'>Component Package</div>
+        <select name="component_category" id="component_category" class="new-module-field" style='color: #333'>
+        </select><br />
+        <div class='new-module-desc'>Component Category</div>
+        <input type="text" name="component_name" id="component_name" class="new-module-field" style='color: #333'/><br />
+        <div class='new-module-desc'>Component Name</div><br />
+        <input type="button" name="new_component_submit" id="new_component_submit"  value="Build" />
+        <!--input type='text' name='component_package_combo' id='component_package_combo' />
+        <input type='text' name='component_category_combo' id='component_category_combo' /-->
+    </form>
+
+</div>
+<script type="text/javascript">
+    new EasyEdits('edits/admin/newcomponent','newcomponent');
+</script>

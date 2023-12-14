@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<controller name="admin" use="Twig">
+    <actions>
+
+ 
+    </actions>
+</controller>

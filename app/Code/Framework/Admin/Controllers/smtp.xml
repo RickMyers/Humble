@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+
+SMTP related actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="smtp" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        
+        <action name="settings">
+            <description>Initial Settings Page</description>
+            <entity namespace="humble" class="modules" id="modules" orderby="module=ASC" />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="save" response="true" blocking="off">
+            <description>Initial Settings Page</description>
+            <model namespace="admin" class="system" method="smtpSettings"  >
+                <parameter name="host" value="smtp_host" source="post" required="true" />
+                <parameter name="*" source="post" />
+            </model>
+        </action>
+        
+    </actions>
+</controller>

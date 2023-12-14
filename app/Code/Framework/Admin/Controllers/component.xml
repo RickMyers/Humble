@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<controller name="component" use="Smarty3">
+    <actions>
+
+        <action name="create">
+            <description>Will create a new component, as in Helper, Model, Entity, or Event </description>
+            <model namespace="admin" class="utility" method="createComponent" id='utility' response="TRUE">
+                <parameter name="uid"           source="session" default="" />
+                <parameter name="namespace"     source="post"    default="" />
+                <parameter name="type"          source="post"    default="" />
+                <parameter name="generates_events" source="post"    default="" />
+                <parameter name="name"          source="post"    default="" />
+                <parameter name="title"         source="post"    default="" />
+                <parameter name="package"       source="post"    default="" />
+                <parameter name="category"      source="post"    default="" />
+                <parameter name="description"   source="post"    default="" />
+            </model>
+        </action>
+
+        <!-- ############################################################################ -->
+
+        <action name="controller">
+            <description>Will create a new component, as in Helper, Model, Entity, or Event </description>
+            <model response="TRUE" namespace="admin" class="utility" method="createController" id='utility'>
+                <parameter name="uid"           source="session" default="" />
+                <parameter name="namespace"     source="post"    default="" />
+                <parameter name="engine"        source="post"    value="templater" default="" />
+                <parameter name="name"          source="post"    default="" />
+                <parameter name="action"        source="post"    default="" />
+                <parameter name="description"   source="post"    default="" />
+                <parameter name="actionDescription"   source="post"    default="" />
+            </model>
+        </action>
+
+        <!-- ############################################################################ -->
+
+        <action name="packages" output="json">
+            <description>Will generate a list of packages that have been used before </description>
+            <entity namespace="humble" class="packages" id="packages">
+            </entity>
+        </action>
+
+        <!-- ############################################################################ -->
+
+        <action name="categories" output="json">
+            <description>Will generate a list of categories that have been used before  </description>
+            <entity namespace="humble" class="categories" id="categories" responst="TRUE">
+            </entity>
+        </action>
+
+        <!-- ############################################################################ -->
+
+        <action name="namespaces" output="json">
+            <description>Will generate a list of namespaces that are available  </description>
+            <entity namespace="humble" class="modules" id="modules">
+            </entity>
+        </action>
+        \
+        <!-- ############################################################################ -->
+
+        <action name="templaters" output="json">
+            <description>Will generate a list of templaters that are available  </description>
+            <entity namespace="humble" class="templaters" id="templaters" orderby="description=ASC">
+            </entity>
+        </action>
+    </actions>
+</controller>

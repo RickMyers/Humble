@@ -1,0 +1,25 @@
+<div id='new_controller_area'>
+    <span style="font-size: 1.5em">Controller Creation</span><br /><br />
+    You can create a new controller using the form below.  Please specify which namespace your controller will belong to, the templater the controller will be using, a name for the controller, and the name of the first action<br /><br /><br />
+    <form name="new_controller_form" id="new_controller_form" onsubmit="return false" >
+        <select name="controller_namespace" id="controller_namespace" class="new-module-field" style='color: #333'>
+        </select><br />
+        <div class='new-module-desc'>Namespace</div>
+        <select name="controller_templater" id="controller_templater" class="new-module-field" style='color: #333'>
+        </select><br />
+        <div class='new-module-desc'>Templater</div>
+        <input type="text" name="controller_name" id="controller_name" class="new-module-field" style='color: #333'/><br />
+        <div class='new-module-desc'>Controller Name</div>
+        <input type="text" name="controller_description" id="controller_description" class="new-module-field" style='color: #333'/><br />
+        <div class='new-module-desc'>Controller Description</div>
+        <input type="text" name="action_name" id="action_name" class="new-module-field" style='color: #333'/><br />
+        <div class='new-module-desc'>Name of Action</div>
+        <input type="text" name="action_description" id="action_description" class="new-module-field" style='color: #333'/><br />
+        <div class='new-module-desc'>Action Description</div><br />
+        <input type="button" name="new_controller_submit" id="new_controller_submit"  value="Create" />
+    </form>
+
+</div>
+<script type="text/javascript">
+    new EasyEdits('/edits/admin/newcontroller','newcontroller');
+</script>

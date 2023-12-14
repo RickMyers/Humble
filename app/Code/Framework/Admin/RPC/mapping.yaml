@@ -1,0 +1,17 @@
+---
+systemStatus :
+    url             : /admin/system/status
+    api-key         :
+    api-var         : 
+    blocking        : off
+    arguments       : 
+              sessionId : true
+    method          : POST
+cadenceStatus :
+    url             : /admin/cadence/status
+    api-key         :
+    api-var         : 
+    blocking        : off
+    arguments       : 
+              sessionId : true
+    method          : POST  

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Administration | Humble</title>
+        <link rel='stylesheet' href='/css/bootstrap'/>
+        <link rel='stylesheet' href='/css/admintheme'/>
+        <link rel="stylesheet" href="/css/jqueryui" />
+        <link rel="stylesheet" href="/css/widgets" />
+        <link rel='stylesheet' href='/css/desktop'/>
+        <link rel='stylesheet' href='/css/admin'/>
+        <style type="text/css">
+            div > i {
+                color: #333; font-size: 22px; box-sizing: border-box;
+            }
+            div:hover > i {
+                color: #bc2328;
+            }
+            div,table,tr,td,form,input,select { position: relative}
+            td              { font-family: sans-serif; font-size: 9pt; }
+            .pageTitle      { font-family: sans-serif; font-size: 2.2em; color: #006699 }
+            .packageTitle   { clear: left; background-color: #eaeaea; font-family: sans-serif; font-size: 1.2em; color: #222; padding: 10px 2px 10px 2px; border: 1px solid #999; margin: 2px 0px 2px 0px; overflow: hidden }
+            .FL             { float: left; margin: 0px 1px 1px 0px }
+            .FR             { float: right; margin: 1px; }
+            .modfield       { font-family: sans-serif; font-size: 9pt; padding: 3px 2px 3px 2px }
+            .modaction      { font-family: sans-serif; font-size: 8pt;  color: green }
+            .moddesc        { clear: both; font-size: 7pt; color: #888; width: 858px }
+            .humbleModule     { width: 450px; float: left; height: 340px;  margin: 2px;  border-top-right-radius: 20px;   }
+            .cellTitle      { font-size: 9px; font-family: monospace; vertical-align: top }
+            .cellData       { padding-left: 20px; white-space: nowrap; vertical-align: top }
+            .humble-ci        {
+                margin-left: auto; margin-right: auto; width: 600px; border: 1px solid #444; border-radius: 10px; padding: 20px; margin-bottom: 25px
+            }
+            .humble-ci-legend {
+                font-weight: bold; font-family: sans-serif;
+            }
+            .humble-ci-option {
+                padding: 30px 40px; font-size: 1.5em; background-color: #a7cfdf; color: #333; font-weight: bold; border: 1px solid #666; border-radius: 5px; margin-bottom: 10px; opacity: .6
+            }
+            .humble-ci-option:hover {opacity: 1.0; cursor: pointer}
+            .humbleModuleHeader { height: 30px; background: #23538a; /* Old browsers */
+                                background: -moz-linear-gradient(top,  #23538a 0%, #a7cfdf 100%); /* FF3.6+ */
+                                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#23538a), color-stop(100%,#a7cfdf)); /* Chrome,Safari4+ */
+                                background: -webkit-linear-gradient(top,  #23538a 0%,#a7cfdf 100%); /* Chrome10+,Safari5.1+ */
+                                background: -o-linear-gradient(top,  #23538a 0%,#a7cfdf 100%); /* Opera 11.10+ */
+                                background: -ms-linear-gradient(top,  #23538a 0%,#a7cfdf 100%); /* IE10+ */
+                                background: linear-gradient(top,  #23538a 0%,#a7cfdf 100%); /* W3C */
+                                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#23538a', endColorstr='#a7cfdf',GradientType=0 ); /* IE6-9 */
+                                border-top-right-radius: 20px;
+                                color: white; font-size: 12pt; font-family: sans-serif;
+                                }
+            .humble-log-output {
+                width: 90%; height: 500px; font-size: .8em; font-family: monospace, serif;
+            }
+            #configurationPage {  width: 100%; background-color: rgba(255,255,255,.3); overflow: auto}
+            #new_user_area, #new_package_area, #new_module_area, #new_component_area, #new_controller_area {
+                width: 500px; padding: 15px 40px; background-color: rgba(00,102,153,.8); color: white; font-family: sans-serif; font-size: .9em;
+                margin-left: auto; margin-right: auto; margin-bottom: 2px; margin-top: 0px;
+            }
+            .new-module-desc {
+                margin-bottom: 15px; font-size: .8em; letter-spacing: 2px; vertical-align: top;
+            }
+            .administration-mini-icon {
+                 margin-left: auto; margin-right: auto; font-size: .8em;  padding: 10px; text-align: center
+            }
+            .server-status {
+                float: right; min-width: 270px; background-color: gray; color: black; border: 1px solid #bbb; height: 100%; white-space: nowrap; padding: 5px;
+            }
+            .server-status-field {
+                font-size: .85em; font-family: serif; padding-right: 10px; text-align: center
+            }
+            .server-status-desc {
+                font-size: .6em; font-family: monospace; padding-right: 5px; text-align: center; font-weight: bolder
+            }
+        </style>
+        <script type="text/javascript">
+            var UseTranparentWindows = '{{ settings.getTransparentWindows() }}';
+        </script>
+        <script type="text/javascript" src='/js/jquery'></script>
+        <script type='text/javascript' src='/js/bootstrap'></script>
+        <script type='text/javascript' src='/js/common'></script>
+        <script type='text/javascript' src='/js/desktop'></script>
+        <script type='text/javascript' src='/js/jqueryui'></script>
+        <script type='text/javascript' src='/js/widgets'></script>
+        <script type="text/javascript" src='/js/admin'/></script>
+        <script type='text/javascript'>
+            $(document).ready(Administration.init);
+            $(document).ready(function () {
+               $('#state').val('{{ system.state() }}') 
+            });
+            Humble.init();
+            {% set tab_id = system.browserTabId()%}
+            EasyAjax.always.add('browser_tab_id','{{ tab_id }}')
+            EasyAjax.always.add('csrf_buster','{{ system.csrfBuster(tab_id) }}');
+        </script>
+    </head>
+    <body style="overflow: hidden;">
+        <!-- This hidden sizing layer is used to calculate the width of text... by fetching the "scrollAmount", we can determine the width of any block of text placed in the layer -->
+        <div style="position: absolute; top: -100px; left: -200px; overflow: auto; width: 1px" id="hiddenSizingLayer"></div>
+        <div id="admin-lightbox" style="position: absolute; top: 0px; left: 0px; background-color: rgba(50,50,50,.6); display: none; z-index: 9999">
+            <table style="width: 100%; height: 100%;">
+                <tr>
+                    <td>
+                       <div style="margin: auto; height: 500px; width: 800px; padding: 10px; background-color: ghostwhite; border: 1px solid silver; border-radius: 10px">
+                           <div id="admin-lightbox-output" style="height: 455px; border: 1px solid silver; overflow: auto; background-color: lightcyan; white-space: pre; font-family: monospace; font-size: .9em">
+                           </div>
+                           <center>
+                                <button style="margin-left: auto; margin-right: auto; padding: 5px 10px; background-color: dodgerblue; font-family: sans-serif; letter-spacing: 2px; color: ghostwhite" onclick="$('#admin-lightbox').css('display','none')">Close</button>
+                           </center>
+                       </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="paradigm-virtual-desktop" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;">
+
+            <div id='main-container'>
+                <div id='navigation-bar'>
+                    <div id='admin-clock' class='admin-clock'></div>
+                    <div id='server_status' class='server-status'>
+                        <div style="width: 30px; text-align: center; display: inline-block">
+                            <img src="/images/humble/green_status.png" title="Cadence is running" style="display: none; height: 16px; margin-left: auto; margin-right: auto" id="cadence_running"
+                            /><img src="/images/humble/red_status.png" title="Cadence is stopped" style="display: block; height: 16px; margin-left: auto; margin-right: auto" id="cadence_stopped" />
+                        </div>
+                        <div style="display: inline-block">
+                            <div class="server-status-field" id="server-cpu-load">&nbsp;</div>
+                            <div class="server-status-desc">CPU Load</div>
+                        </div>
+                        <div style="display: inline-block">
+                            <div class="server-status-field" id="server-memory-load">&nbsp;</div>
+                            <div class="server-status-desc">Memory Details</div>
+                        </div>
+                        <div style="display: inline-block">
+                            <div class="server-status-field" id="server-tasks">&nbsp;</div>
+                            <div class="server-status-desc">Threads</div>
+                        </div>                        
+                    </div>
+                    <ul style='position: relative; z-index: 3'><!-- humble_logo_white.png -->
+                       <li style='padding-top: 6px'><img src='/images/humble/djikstra_light.png' style='height: 30px; position: relative; top: 3px; left: 5px' /></li>
+                       <li class='active'><a href='#'>Places</a>
+                          <ul>
+                             <li><a target="_BLANK" href='/admin/'>Administration</a></li>
+                             <li><a target="_BLANK" href='/paradigm/actions/open'>Paradigm Editor</a></li>
+                             <li><a target="_BLANK" href='/contrive/actions/open'>Contrive Designer</a></li>
+                             <li><a target="_BLANK" href='/paradigm/api/home'>API Test App</a></li>
+                             <li><a target="_BLANK" href='/paradigm/actions/designer'>Form Designer</a></li>
+                             <li style="border-top: 1px solid silver; "><a href='/admin/user/logout'>Logout</a>
+
+                          </ul>
+                        </li>
+                        <li><a href='#'>Documentation</a>
+                           <ul>
+                              <li><a href="#" onclick="Administration.documentation.run(); return false;">Generate API Documentation</a></li>
+                              <li><a target="_BLANK" href='/internal/docs/'>Developer Documentation</a></li>
+                              <li><a href='/Docs/' onclick="Administration.documentation.review(); return false;">API Documentation</a></li>
+                              <li><a target="_BLANK" href='#' onclick=" return false">Administration Documentation</a></li>
+                             <li><a href='#'>Services</a>
+                                <ul>
+                                   <li><a target="_BLANK" href='#' onclick="Administration.services.directory.index(); return false;">Directory</a></li>
+                                   <li><a target="_BLANK" href='/admin/directory/authorizations'>Authorizations</a></li>
+                                </ul>
+                             </li>                              
+                           </ul>
+                        </li>                     
+                        <li><a href='#'>Admin</a>
+                            <ul>
+                                <li><a href='#'>Create...</a>
+                                    <ul>
+                                        <li><a href='#' onclick='Administration.create.package(); return false'>New Package</a></li>
+                                        <li><a href='#' onclick='Administration.create.module(); return false'>New Module</a></li>
+                                        <li><a href='#' onclick='Administration.create.component(); return false'>New Component</a></li>
+                                        <li><a href='#' onclick='Administration.create.controller(); return false'>New Controller</a></li>
+                                    </ul>
+                                </li>                                   
+                                <li> <a href='#'>Utility/Tool</a>
+                                    <ul>
+                                        <li><a href='#' onclick='Administration.add.category(); return false'>Add New Category</a></li>
+                                        <li><a href='#' onclick='Administration.add.package(); return false'>Add New Package</a></li>
+                                        <li><a href='#' onclick='Administration.admin.add.user(); return false'>Add User</a></li>
+                                        <li><a href='#' onclick='Administration.admin.add.list(); return false'>Manage User Lists</a></li>                                        
+                                        <li><a href="#" onclick='Administration.api.tester(); return false'>API Tester</a></li>                                        
+                                        <li><a href='#' onclick='Administration.templates.clone(); return false'>Clone Templates</a></li>
+                                        <li><a href='#' onclick='Administration.upload.form(); return false'>Upload File</a></li>                                        
+                                    </ul>
+                                </li>
+                                <li><a href="#">System</a>
+                                    <ul>
+                                        <li><a href='#' onclick=' return false'>Information</a></li>
+                                        <li><a href='#' onclick=' return false'>Monitor</a></li>
+                                        <li><a href='#' onclick=' return false'>Status</a></li>
+                                        <li><a href='#' onclick='Administration.smtp.settings.open();return false; '>SMTP Settings</a></li>
+                                        <li><a href='#' onclick=' return false'>Cadence</a>
+                                            <ul>
+                                                <li><a href='#' onclick='Administration.cadence.action("start"); return false'>Start</a></li>
+                                                <li><a href='#' onclick='Administration.cadence.action("stop"); return false'>Stop</a></li>
+                                                <li><a href='#' onclick='alert('Not working at the moment, just do "stop" and "start"'); return false'>Restart</a></li>
+                                                <li><a href='#' onclick='Administration.cadence.action("reload"); return false'>Reload</a></li>
+                                                <li><a href='#' onclick='Administration.cadence.action("clear"); return false'>Clear PID</a></li>
+                                                <li><a href='#' onclick='Administration.cadence.tune(); return false'>Tune...</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>                                
+                                <li><a href="#">Secrets Manager</a>
+                                    <ul>
+                                        <li><a href='#' onclick='Administration.secrets.add(); return false'>Add Secret</a></li>
+                                        <li><a href='#' onclick='Administration.secrets.review(); return false'>Review Secret</a></li>
+                                    </ul>
+                                </li> 
+                                <li><a href="#">Workflows</a>
+                                      <ul>
+                                          <li><a href='#' onclick='Administration.workflows.add.exportTarget(); return false'>Add Export Target</a></li>
+                                          <li><a href='#' onclick='Administration.workflows.add.importToken(); return false'>Add Import Token</a></li>
+                                      </ul>
+                                  </li>                                  
+                                <li><a href='#'>Environment</a>
+                                    <ul>
+                                          <li><a href="#">Query Logging</a>
+                                            <ul>
+                                                <li><a href='/admin/log/queryon' onclick="window.event.stopPropagation()">On</a></li>
+                                                <li><a href='/admin/log/queryoff' onclick="window.event.stopPropagation()">Off</a></li>
+                                            </ul>
+                                        </li>                                         
+                                        {% if (permissions.getSuperUser() == 'Y') %}
+                                            <li><a href='#'> Maintenance Mode </a>
+                                                <ul>
+                                                    <li><a href='#' onclick='Administration.maintenance.enter(); return false'> Enter </a></li>
+                                                    <li><a href='#' onclick='Administration.maintenance.leave(); return false'> Leave </a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
+                                            <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>
+                                            <li><a href='#' onclick="Administration.module.install(); return false">Install Module</a></li>
+                                            <li><a href='#'>Export Data</a>
+                                                <ul>
+                                                {% for module in available_modules.fetch() %}
+                                                    <li><a href='#' onclick="Administration.module.export('{{ module.namespace }}'); return false">{{ module.module|title }}</a></li>
+                                                {% endfor %}
+                                                </ul>
+                                            </li>
+                                            <li><a href='#' onclick="Administration.module.import('{{ module.namespace }}'); return false">Import Data</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                                <li><a href='#'>Flags</a>
+                                    <ul> 
+                                    {% for flag,status in system.flags() %}
+                                        <li><a href="#">{{ flag }}</a>
+                                            <ul>
+                                                <li><a href='#' onclick="window.event.stopPropagation(); Administration.flags.toggle('{{ flag }}','On'); return false"><span {% if (status==1) %} style='font-weight: bold' {% else %} style='opacity: .4' {% endif %}> On </span></a></li>
+                                                <li><a href='#' onclick="window.event.stopPropagation(); Administration.flags.toggle('{{ flag }}','Off');return false"><span {% if (status==0) %} style='font-weight: bold' {% else %} style='opacity: .4' {% endif %}>Off</span></a></li>
+                                            </ul>
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div style='float: left; height: 100%; width: 65px; background-color: rgba(252,252,252,.3); margin-right: 2px' id='widgets-column'>
+
+                    <div class='administration-mini-icon' title='Documentation' style="margin-top: 20px" onclick="Administration.documentation.home()">
+                        <i class="glyphicons glyphicons-book" style="margin-left: 2px; font-size: 30px"> </i>
+                    </div>
+                    <div class='administration-mini-icon' title='Unit Tests' onclick="Administration.tests.home()">
+                        <i class="glyphicons glyphicons-car-wheel" style="margin-left: 2px; font-size: 30px"></i>
+                    </div>
+                    <hr style="margin-bottom: 10px; margin-top: 10px"/>
+
+                    <div class='administration-mini-icon' title='Event Monitor' onclick="Administration.events.open()">
+                        <i class="glyphicon glyphicon-warning-sign" style="margin-left: 2px; font-size: 30px"></i>
+                    </div>
+                    <hr style="margin-bottom: 10px; margin-top: 10px"/>
+                    <div class='administration-mini-icon' title='General Log Viewer' onclick="Administration.logs.open('General')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        General
+                    </div>
+                    <div class='administration-mini-icon' title='Warning Log Viewer' onclick="Administration.logs.open('Warning')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        Warning
+                    </div>
+                    <div class='administration-mini-icon' title='Error Log Viewer' onclick="Administration.logs.open('Error')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        Error
+                    </div>
+                    <div class='administration-mini-icon' title='Access Log Viewer' onclick="Administration.logs.open('Access')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        Access
+                    </div>                      
+                    <div class='administration-mini-icon' title='Users Log Viewer' onclick="Administration.logs.open('User')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        Users
+                    </div>                    
+                    <div class='administration-mini-icon' title='SQL Log Viewer' onclick="Administration.logs.open('MySQL')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        SQL
+                    </div>
+                    <div class='administration-mini-icon' title='MongoDB Log Viewer' onclick="Administration.logs.open('MongoDB')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        MongoDB
+                    </div>
+                    <div class='administration-mini-icon' title='System Log Viewer' onclick="Administration.logs.open('System')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        System
+                    </div>
+                    <hr style="margin-bottom: 5px; margin-top: 5px"/>
+                    <div class='administration-mini-icon' title='Log Viewer' onclick="Administration.logs.open('Query')">
+                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
+                        Query
+                    </div>                    
+                    <hr style="margin-bottom: 10px; margin-top: 5px"/>
+                    <div id="landing-minimized-windows" style=" width: 100%; height: 400px; padding-top: 5px; padding-bottom: 5px; border: 1px solid transparent; border-radius: 5px;">
+
+                    </div>
+                </div>
+
+                <div style='float: left' id='apps-column'>
+
+                    <div id='modules_list' style="display: inline-block">
+                        <div style='background-color: rgba(232,232,232,.3); padding: 10px 0px 10px 0px'>
+                            <div style="float: right; margin-right: 10px; white-space: nowrap">
+                                <b>STATE </b>
+                                <select name="state" id="state" onchange="Administration.change.state(this)" style="background-color: #cc4444; color: ghostwhite; font-size: 1.1em; height: 28px; letter-spacing: 1px; font-family: monospace; font-weight: bold">
+                                    {% for stage in system.stages() %}
+                                        <option value="{{ stage }}" title="">{{ stage }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <select name='globalAction' id='globalAction' style="font-size: 1.1em; height: 28px; width: 300px">
+                                <option style='font-style: italic' value="">Choose a Global action...</option>
+                                <option value="install">Install All</option>
+                                <option value="update">Update All</option>
+                                <option value="recompile">Compile All</option>
+                                <option value="clear">Clear All</option>
+                                <option value="documentation">Generate Docs</option>
+                                <option value="services">Update Service Directory</option>
+                            </select><input type='button' onclick='Administration.globalAction()' value=' Go ' style='font-size: 1em; margin-left: 2px; width: 70px; height: 28px' class="settingsButton" />
+                            <div style='color: red; font-weight: bold; display: inline-block; width: 40%; text-align: right; font-size: 1.5em; '> QUERY LOGGING: <span style="background-color: #333; padding: 2px 10px; border-radius: 5px">{{ queryLogging }}</span> </div>
+                        </div>
+ 
+                        {% for package, modules in installer.getModules() %}
+                            <div class='packageTitle'>Package: <b> {{ package }} </b></div><div style='height: 1px'></div>
+                            {% for module in modules %}
+                                {% set data = directory.moduleInformation(module.namespace) %}
+                                <div class='humbleModule'>
+                                    <div class='humbleModuleHeader'>
+                                        <div style='float:right; margin-right: 15px;'>
+                                            <table>
+                                                <tr>
+                                                    {% if data.installed != '' %}
+                                                        {% set color = 'white' %}
+                                                        <td><img onclick='Administration.update("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/web/images/update.png' height='20' style='cursor: pointer' title='Update...'/></td>
+                                                        <td><img onclick='Administration.compile("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/web/images/compile.gif' height='20' style='cursor: pointer' title='Compile Controllers...'/></td>
+                                                        <td><img onclick='Administration.clearcache("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/web/images/clear.png' height='20' style='cursor: pointer' title='Clear Cache...'/></td>
+                                                        <td>
+                                                        {% if data.required != 'Y' %}
+                                                            <input type='checkbox' onclick='Administration.enable(this,"{{ module.namespace  }}","{{ package }}")' name='{{ module.namespace  }}' id='{{ module.namespace  }}'
+                                                            {% if data.enabled == 'Y' %}
+                                                                checked
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <td><img onclick='Administration.install("{{ package }}","{{ module.module }}","{{ module.namespace }}")' src='/web/images/install.png' height='20' style='cursor: pointer' title='Install...'/></td>
+                                                        {% set color = 'red' %}
+                                                    {% endif %}
+                                                </tr>
+                                            </table></div>
+                                        {% if module.installed == '' %}
+                                            <img onclick='Administration.uninstall("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/web/images/uninstall.png' height='20' style='float: left; margin: 2px ;  cursor: pointer' title='Uninstall...'/>
+                                        {% endif %}
+                                        <span style="color: {{ color }}">{{ module.title }}</span>
+                                    </div>
+                                    <div>
+                                        <table width='100%' border='1px' style='border-collapse: collapse; background-color: white'>
+                                            <tr>
+                                                <td colspan='3'>
+                                                    <div class='cellTitle'>Description</div>
+                                                    <div id="cellData">{{ module.description }}</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class='cellTitle'>Namespace</div><div class="cellData"><b>{{ module.namespace  }}</b></div></td>
+                                                <td><div class='cellTitle'>Author</div><div class="cellData">{{ module.author }}</div></td>
+                                                <td><div class='cellTitle'>Version</div><div class="cellData">{{ module.version }}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class='cellTitle'>Prefix</div><div class="cellData">{{ module.prefix }}</div></td>
+                                                <td><div class='cellTitle'>Email</div><div class="cellData">{{ module.email }}</div></td>
+                                                <td><div class='cellTitle'>Weight</div><div class="cellData">{{ module.weight }}</div></td>
+                                            </tr>
+                                        </table>
+                                        <table width='100%' border='1px' style='border-collapse: collapse; background-color: white'>
+                                            <tr>
+                                                <td>
+                                                    <div class='cellTitle'>Models</div>
+                                                    {% set icon = directory.exists(module.models,module) %}
+                                                    <div class="cellData">{{ icon|raw }}{{ module.models }}</div>
+                                                </td>
+                                                <td>
+                                                    <div class='cellTitle'>Entities</div>
+                                                    <div class="cellData">{{ directory.exists(module.entities,module)|raw }}{{ module.entities }}</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class='cellTitle'>Controllers</div>
+                                                    <div class="cellData">{{ directory.exists(module.controller,module)|raw }}{{ module.controller }}</div>
+                                                </td>
+                                                <td>
+                                                    <div class='cellTitle'>Controllers Cache</div>
+                                                    <div class="cellData">{{ directory.exists(module.controller_cache,module)|raw }}{{ module.controller_cache }}</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class='cellTitle'>Views</div>
+                                                    <div class="cellData">{{ directory.exists(module.views,module)|raw }}{{ module.views }}</div>
+                                                </td>
+                                                <td>
+                                                    <div class='cellTitle'>Views Cache</div>
+                                                    <div class="cellData">{{ directory.exists(module.views_cache,module)|raw }}{{ module.views_cache }}</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class='cellTitle'>Helpers</div>
+                                                    <div class="cellData">{{ directory.exists(module.helpers,module)|raw }}{{ module.helpers }}</div>
+                                                </td>
+                                                <td>
+                                                    <div class='cellTitle'>RPC</div>
+                                                    <div class="cellData">{{ directory.exists(module.RPC,module)|raw }}{{ module.RPC }}</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class='cellTitle'>Schema Install</div>
+                                                    <div class="cellData">{{ directory.exists(module.schema_install,module)|raw }}{{ module.schema_install }}</div>
+                                                </td>
+                                                <td>
+                                                    <div class='cellTitle'>Schema Update</div>
+                                                    <div class="cellData">{{ directory.exists(module.schema_update,module)|raw }}{{ module.schema_update }}</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class='cellTitle'>Images</div>
+                                                    <div class="cellData">{{ directory.exists(module.images,module)|raw }}{{ module.images }}</div>
+                                                </td>
+                                                <td>
+                                                    <div class='cellTitle'>Default Templater</div>
+                                                    <div class="cellData">{{ module.templater }}</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class='cellTitle'> MongoDB</div>
+                                                    <div class="cellData">{{ module.mongodb }}</div>
+                                                </td>
+                                                <td>
+                                                    <div class='cellTitle'>Configuration</div>
+                                                    <div class="cellData">{{ directory.exists(module.configuration,module)|raw }}{{ module.configuration }}</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <!-- ###################################################################################################### -->
+               
+                <div style='clear: both'></div>
+
+            </div>
+            <div style="background-color: #333; color: ghostwhite; font-size: .8; font-style: sans-serif; letter-spacing: 2px" id='humble-footer'>
+                &copy; The Humble Project, All Rights Reserved
+            </div>
+        </div>
+    </body>
+</html>

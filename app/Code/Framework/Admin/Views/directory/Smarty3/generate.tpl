@@ -1,0 +1,3 @@
+<pre>
+{$services->generate()}
+</pre>

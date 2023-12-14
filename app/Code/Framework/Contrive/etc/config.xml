@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<config>
+    <contrive>
+        <version>0.0.1</version>
+        <title>Contrive<!-- This will appear in the administration screens for this module --></title>
+        <description>The Contrive module<!-- This will appear in the admin page --></description>
+        <author>
+            <name>Rick Myers</name>
+            <email>rick@humbleprogramming.com</email>
+        </author>
+        <module>
+            <name>Contrive</name>
+            <weight>50</weight>
+            <required>Y</required>
+            <workflow>Y</workflow>
+            <package>Framework</package>
+            <use>Smarty3</use>
+        </module>
+        <structure>
+            <models>
+                <source>Contrive/Models</source>
+            </models>
+            <helpers>
+                <source>Contrive/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>Contrive/Controllers</source>
+                <cache>Contrive/Controllers/Cache</cache>
+            </controllers>
+            <mobile>
+                <controllers>
+                    <source>Contrive/Mobile/Controllers</source>
+                    <cache>Contrive/Mobile/Controllers/Cache</cache>
+                </controllers>
+                <views>
+                    <source>Contrive/Mobile/Views</source>
+                    <cache>Contrive/Mobile/Views/Cache</cache>
+                </views>
+            </mobile>
+            <schema>
+                <install>Contrive/Schema/Install</install>
+                <update>Contrive/Schema/Update</update>
+                <layout>Contrive/Schema/DSL</layout>
+            </schema>
+            <configuration>
+                <source>Contrive/etc</source>
+            </configuration>
+            <views>
+                <source>Contrive/Views</source>
+                <cache>Contrive/Views/Cache</cache>
+            </views>
+            <images>
+                <source>Contrive/Images</source>
+                <cache>Contrive/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>Contrive/Entities</source>
+            </entities>
+            <RPC>
+                <source>Contrive/RPC</source>
+            </RPC>
+            <frontend>
+                <source>Contrive/web/app</source>
+            </frontend>
+        </structure>
+        <orm>
+            <prefix>contrive_</prefix>
+            <mongodb>contrive</mongodb>
+         
+            <entities>
+
+            </entities>
+        </orm>
+        <events>
+
+        </events>
+        <web>
+            <edits>
+                <edit1>Contrive/web/edits/edit.json</edit1>
+            </edits>
+            <contrive>
+                <js>
+                    <source>Contrive/web/js/Contrive.js</source>
+                </js>
+                <css>
+                    <source>Contrive/web/css/Contrive.css</source>
+                </css>
+            </contrive>
+        </web>
+    </contrive>
+</config>

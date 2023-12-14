@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+
+Application flags actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="flag" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="state">
+            <description>Sets the state of a flag</description>
+            <model namespace='humble' class='system' method='setFlagState'>
+                <parameter name='flag'  source='post' required='true' />
+                <parameter name='state' source='post' default='0' />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

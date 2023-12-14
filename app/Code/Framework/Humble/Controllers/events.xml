@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+
+Viewing of events
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="events" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="open" passalong="window_id">
+            <description>The initial window showing the events</description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="home">
+            <description>The main page</description>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="fetch" output="JSON">
+            <description>The main page</description>
+            <entity namespace="paradigm" response="true" class="event_log" id="log" page="page" rows="rows" defaultRows="30" defaultPage="1" method="fetch" orderby="a.modified=DESC"/>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="explain">
+            <description>Expands an event for viewing</description>
+            <model namespace="paradigm" class="log" id="log">
+                <parameter name="id" source="post" required="true"/>
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

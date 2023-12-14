@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+Shows the innards of an event
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="event" use="PHP" author="Richard Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="expand">
+            <description>Expands an event out</description>
+            <mongo namespace="paradigm" class="events" id='event'>
+                <parameter name='_id' source='post' value='id' default='' />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

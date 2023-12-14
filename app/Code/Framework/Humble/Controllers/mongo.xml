@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+mongo tester
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="mongo" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="fetch">
+            <description>lists stuff</description>
+            <mongo namespace="paradigm" class="events" wrapper='print_r' id='event' response='true' method='load'>
+                <parameter name='_id' value="field" source='request' default='' />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

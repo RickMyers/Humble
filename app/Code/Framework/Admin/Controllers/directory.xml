@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!--
+
+Actions and views related to directory services
+
+-->
+<controller name="directory" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        
+        <action name="generate">
+            <description>Generates a list of services available as an HTML page</description>
+            <entity namespace='humble' class='user/permissions' id='permissions' method='load'>
+                <parameter name='id' value='uid' source='session' default='' />
+            </entity>
+            <switch id='permissions' method='getAdmin'>
+                <case value="Y">
+                    <helper namespace='humble' class='service/directory' id='services'></helper>
+                </case>
+                <default>
+                    <redirect href="/index.html?message=You do not have permission to run that service" />
+                </default>
+            </switch>
+
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="authorizations">
+            <description>Brings up the page that allows you to grant authority to access certain services</description>
+            <entity namespace="humble" class="service/directory" id="services">
+                <parameter name="authorized" source="request" default="Y" />
+            </entity>
+            <entity namespace="humble" class="roles" id="roles">
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="describe" blocking="off">
+            <description>Will produce a more detailed description of a particular service</description>
+            <entity assign="details" namespace="humble" class="service/directory" method="load">
+                <parameter name="id" source="request" required="true" />
+            </entity>
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="index">
+            <description>This builds the paginated page that displays the list of currently available services</description>
+            <entity namespace="humble" class="modules" id="modules" />
+            <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="40" id="services" defaultPage='1'>
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="services" blocking="false">
+            <description>This builds the paginated page that displays the list of currently available services, and how to call them</description>
+            <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="40" id="services">
+                <parameter name="id" source="request" optional="true" />
+                <parameter name="hide_framework_services" source="request" optional="true" />
+                <parameter name="namespace" source="request" optional="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="search">
+            <description>This builds the paginated page that displays the list of currently available services, and how to call them</description>
+            <entity namespace="humble" class="modules" id="modules" />
+            <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="40" id="services">
+                <parameter name="id" source="request" optional="true" />
+            </entity>
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="serviceparms" authorization='true'>
+            <description>This builds the paginated page that displays the list of currently available services, and how to call them</description>
+            <entity namespace="humble" class="service/directory" id="parameters">
+                <parameter name="id" value="service_id" source="request" type="int" required="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="list" output="json">
+            <description>Returns a JSON list of services for page rendering</description>
+            <entity namespace="humble" class="service/directory" page="page" rows='rows'  id="services">
+            </entity>
+        </action>
+
+    </actions>
+</controller>

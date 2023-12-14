@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!--
+
+System functions such as status and installation enabled
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="system" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="off">
+   
+        <action name="info">
+            <description>Displays the information of the system from the application.xml file, and allows the user to change the values if they have super-user role</description>
+            <model namespace="humble" class="system" id='system' >
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
+            <view name="edit" />
+            <comment>Used to be an option for browse, but skipping that now</comment>
+        </action>
+       
+        <!-- ########################################################################################## -->
+        
+        <action name="poll" blocking="off"> 
+            <description>This is the periodic heartbeat</description>
+            <model namespace="humble" class="manager" id="application" response="TRUE">
+                <parameter name="session_user_id" source="post" default="No" />
+                <parameter name="beats"           source="post" default="[]" />
+                <parameter name="id"              source="session" value="uid"    default="" />
+                <parameter name="user_id"         source="session" value="uid"    default="" />
+                <parameter name="arguments"       source="post"  default="" />
+            </model>
+        </action>    
+               
+        <!-- ########################################################################################## -->
+
+        <action name="status" output="JSON">
+            <description>Retrieves information about the running environment including usage and thread counts</description>
+            <model namespace="admin" class="monitor" id='monitor' method="snapShot" />
+        </action>
+        
+        <!-- ########################################################################################## -->
+
+        <action name="save">
+            <description>Will save the system settings if the user has the proper role</description>
+            <model namespace="humble" class="system" method="save" id="system">
+                <parameter name="admin_id"  source="session" required="true" />
+                <parameter name="name"      source="post" required="true" />
+                <parameter name="version"   source="post" required="true" />
+                <parameter name="enabled"   source="post" default="false" />
+                <parameter name="authorization"   source="post" default="false" />
+                <parameter name="quiescing" source="post" default="false" />
+                <parameter name="installer" source="post" default="false" />
+                <parameter name="landing"   source="post" default="false" />
+                <parameter name="login"     source="post" default="false" />
+                <parameter name="logout"    source="post" default="false" />
+                <parameter name="sso"       source="post" default="false" />
+            </model>
+        </action>
+
+        <!-- ########################################################################################## -->
+
+        <action name="active">
+            <description>Is the system active</description>
+            <model namespace="humble" class="system" id='system'>
+            </model>
+        </action>
+
+        <!-- ########################################################################################## -->
+
+        <action name="quiesce">
+            <description>Sets the "quiesce" bit which signals all connected clients that the system is about to shutdown...</description>
+            <model namespace="humble" class="system" id='system' method='quiesce'>
+                <parameter name="admin_id" source="session" required="true" />
+                <parameter name='value' source='post' required='true' />
+            </model>
+        </action>
+
+        <!-- ########################################################################################## -->
+
+        <action name="offline">
+            <description>Sets the "disabled" bit which signals all connected clients that the system is now offline...</description>
+            <model namespace="humble" class="system" id='system' method='offline'>
+                <parameter name="admin_id" source="session" required="true" />
+                <parameter name='value' source='post' required='true' />
+            </model>
+        </action>
+        
+        <!-- ########################################################################################## -->
+        
+        <action name="state" blocking="off">
+            <description>Changes the state that the application is, from DEVELOPMENT, to PRODUCTION, or DEBUG</description>
+            <model namespace="humble" class="system" id='system' method='changeState'>
+                <parameter name="admin_id" source="session" required="true" />
+                <parameter name='state' source='post' required='true' />
+            </model>
+        </action>
+        
+        <!-- ########################################################################################## -->
+        
+        <action name="recache">
+            <description>A service to recache the core application</description>
+            <model namespace="humble" class="system" method="recache">
+                
+            </model>
+        </action>
+        
+    </actions>
+</controller>

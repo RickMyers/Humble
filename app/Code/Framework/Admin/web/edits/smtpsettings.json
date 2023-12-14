@@ -1,0 +1,96 @@
+{
+	"form":
+	{
+		"id":           "smtp_settings_form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+		{
+			"active":		true,
+			"id": 			"smtp_namespace",
+			"longname":		"Namespace",
+			"type":			"select",
+			"required":		true,
+			"force":		true,
+                        "onchange":             (evt) => {
+                            let val = $(evt.target).val();
+                            if (val) {
+                                (new EasyAjax('/admin/secrets/list')).add('namespace',val).then((response) => {
+                                    let secrets = JSON.parse(response);
+                                    let s_list  = [];
+                                    s_list[s_list.length] = { "text": "", "value": "" }
+                                    for (let i=0; i<secrets.length; i++) {
+                                        s_list[s_list.length] = { "text": secrets[i].secret_name, "value": "sm://"+secrets[i].secret_name }
+                                    }
+                                    EasyEdits.populateSelectBox('smtp_host',s_list);
+                                    EasyEdits.populateSelectBox('smtp_user_name',s_list);
+                                    EasyEdits.populateSelectBox('smtp_password',s_list);
+                                }).post();
+                            }
+                        },
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},
+		{
+			"active":		true,
+			"id": 			"smtp_host",
+			"longname":		"SMTP Host",
+                        "title":                "Who is the SMTP Relay Host?",
+			"type":			"combo",
+			"required":		true,
+			"force":		true,
+                        "style":                "position: relative; padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},
+		{
+			"active":		true,
+			"id": 			"smtp_host_combo",
+			"longname":		"SMTP Host",
+                        "title":                "Who is the SMTP Relay Host?",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                "position: relative"
+		},
+		{
+			"active":		true,
+			"id": 			"smtp_user_name",
+			"longname":		"User Name",
+                        "title":                "SMTP Relay User Name",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                
+		{
+			"active":		true,
+			"id": 			"smtp_password",
+			"longname":		"Password",
+                        "title":                "SMTP Relay Password",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		},                                
+		{
+			"active":		true,
+			"id":			"smtp_settings_submit",
+			"longname":		"Submit Button",
+			"type":			"button",
+                        "style":                "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
+                        "classname":    "settingsButton",
+                        "value":        "",
+                        "onclick":        function () {
+                            if (Edits['smtp_settings'].validate()) {
+                                (new EasyAjax('/admin/smtp/save')).packageForm('smtp_settings_form').then((response) => {
+                                    alert(response);
+                                }).post();
+                            }
+                        }
+		}
+	]
+}
+
