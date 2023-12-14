@@ -1,0 +1,60 @@
+.paradigm-window-maximize       { visibility: inherit; float: right; height: 20px; margin-top: 4px; margin-right: 2px; }
+.paradigm-window-close          { visibility: inherit; float: right; height: 19px; margin-top: 1px; margin-right: 2px; }
+.paradigm-window-minimize       { visibility: inherit; float: right; height: 22px; margin-top: 2px; margin-right: 2px; }
+.paradigm-nav-selected          { border-bottom: 1px solid #aaa; height: 24px;  }
+.paradigm-nav-unselected        { border-bottom: 1px dotted #bbb; height: 24px; }
+.paradigm-desktop-window-content {
+    position: relative;  z-index: 5;	font-family: sans-serif; font-size: 9pt; color: black; overflow: hidden; display: inherit; color: black; font-family: sans-serif;
+	box-sizing: border-box;         /* Opera/IE 8+ */
+}.paradigm-desktop-window-titlebar {
+background-color: #2c3e50;
+    color: #eeeeee;
+    display: inherit;
+    font-family: verdana;
+    font-size: 12pt;
+    height: 28px;
+    padding-top: 3px;
+    position: relative;
+    visibility: inherit;
+    z-index: inherit;
+
+}
+.paradigm-desktop-window-frame {
+    background-color: ghostwhite;
+    border-color: #2c3e50;
+    border-image: none;
+    border-radius: 3px;
+    border-style: ridge;
+    border-width: 4px 3px 3px;
+    box-shadow: 3px 3px 4px #aaaaaa;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    overflow: hidden;
+    display: none;
+    z-index: 4;
+}
+.paradigm-window-layout-container {
+    flex-flow: row; width: 44px; background-color: transparent; height: 24px; float: left; display: flex; margin-right: 4px
+}
+.paradigm-window-left-layout {
+    border: 1px solid #999; box-sizing: border-box; width: 9px; height: 100%; margin-right: 1px;  display: flex; cursor: pointer; background-color: #FFF;
+}
+.paradigm-window-right-layout {
+    border: 1px solid #999; box-sizing: border-box; width: 9px; height: 100%;  display: flex; cursor: pointer; background-color: #FFF; margin-left: -1px
+}
+.paradigm-window-center-layout {
+    flex-flow: wrap;  width: 21px; background-color: transparent;  display: flex; margin-right: 0px;
+}
+.paradigm-window-top-left-layout {
+     width: 9px; box-sizing: border-box;
+     height: 46%; border: 1px solid #999; margin-bottom: 1px; display: flex; margin-right: 1px; cursor: pointer; background-color: #FFF;
+}
+.paradigm-window-top-right-layout {
+     width: 9px; box-sizing: border-box; height: 46%; border: 1px solid #999; margin-bottom: 1px; display: flex; cursor: pointer; background-color: #FFF;
+}
+.paradigm-window-bottom-left-layout {
+     width: 9px; box-sizing: border-box; height: 46%; border: 1px solid #999; display: flex;  margin-right: 1px; cursor: pointer; background-color: #FFF;
+}
+.paradigm-window-bottom-right-layout {
+     width: 9px; box-sizing: border-box; height: 46%; border: 1px solid #999; display: flex; cursor: pointer; background-color: #FFF;
+}

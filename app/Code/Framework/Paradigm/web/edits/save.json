@@ -1,0 +1,58 @@
+({
+	form:
+	{
+		id: 		"workflowSaveForm",
+		drawme:		false,
+		action:		"",
+        onload:     function () {
+            //when form is loaded, do something
+        },
+		method:		"post",
+		style:		"",
+		onenterkey:	"send"
+	},
+	fields:
+	[
+		{
+			active:			true,
+			id: 			"shortdesc",
+			longname:		"Workflow Name",
+			title:			"The name of the workflow",
+            type:           "text",
+			required:		true,
+			force:			true,
+            value:          Paradigm.actions.get.diagramTitle(),
+			classname:		"",
+			style:			"width: 340px; padding: 2px; border: 1px solid #aaf; border-radius: 2px; font-size: 1.1em;"
+		},
+		{
+			active:			true,
+			id: 			"description",
+			longname:		"Long Description",
+			title:			"title for mouse rollover",
+            type:           "textarea",
+            value:          Paradigm.actions.get.diagramDescription(),
+			required:		true,
+            maxlength:      512,
+			force:			true,
+			classname:		"",
+			style:			"width: 340px; padding: 2px; border: 1px solid #aaf; border-radius: 2px; font-size: 1.1em;"
+		},
+        {
+			active:			true,
+			id: 			"workflowSaveButton",
+			longname:		"Save Button",
+			title:			"Click to save",
+            type:           "button",
+			required:		false,
+            value:          "Save",
+			classname:		"settingsButton",
+			style:			"width: 100px; font-size: 1em;",
+            onclick:        function () {
+                if (Edits['saveWorkflow'].validate()) {
+                    Paradigm.actions.save();
+                }
+            }
+		}
+	]
+})
