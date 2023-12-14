@@ -1,5 +1,0 @@
-<?php
-require_once 'Humble.php';
-class &&FACTORY_NAME&& extends Humble {
-
-}
