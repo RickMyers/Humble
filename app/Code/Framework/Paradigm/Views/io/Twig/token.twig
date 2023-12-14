@@ -1,0 +1,21 @@
+<table style="width: 100%; height: 100%">
+    <tr>
+        <td>
+            <div style="width: 600px; margin-left: auto; margin-right: auto;">
+                <form onsubmit="return false" name="import_token_form" id="import_token_form-{{window_id}}">
+                    <fieldset style="padding: 20px"><legend>New Import Token</legend>
+                        Enter a token below, created from where you will export from, to enable importing of workflows<br /><br />
+                        <input type="text" name="import_token" id="token-{{window_id}}" style="" /><br />
+                        Token<br /><br/>
+                        <input type="button" name="new_import_token_submit" id="new_import_token_submit-{{window_id}}" value=" Save " />
+                    </fieldset>
+                </form>
+            </div>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    var ee = new EasyEdits(null,'new_import_token-{{window_id}}');
+    ee.fetch('/edits/paradigm/token');
+    ee.process(ee.getJSON().replace(/&window_id&/g,'{{window_id}}'));
+</script>

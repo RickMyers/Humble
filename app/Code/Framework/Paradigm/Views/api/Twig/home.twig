@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <title>Humble | Administration Log-in</title>
+        <link rel="stylesheet" type="text/css" href='/css/bootstrap' />
+        <link rel="stylesheet" type="text/css" href='/css/bootstrap-theme' />
+        <link rel='stylesheet' href='/css/bootstrap'/>
+        <link rel="stylesheet" href="/css/jqueryui" />
+        <link rel="stylesheet" href="/css/widgets" />
+        <link rel='stylesheet' href='/css/desktop'/>
+        <style type='text/css'>
+            body {
+               /* background: rgba(0, 0, 0, 1) url("/web/images/blackwav.gif") no-repeat fixed center center / cover; width: 100%; height: 100%; margin: 0px; padding: 0px*/
+               background-image: url(/images/paradigm/bg_graph.png); overflow: hidden;
+            }
+            #humble-content-area {
+            }
+            .humble-headers {
+                background: rgba(0, 0, 0, 1) url("/web/images/grad.png") no-repeat fixed center center / cover; width: 100%;
+            }
+            .nav-text {
+                float: right; margin-right: 25px; font-size: 1em; color: ghostwhite; cursor: pointer; opacity: .7; letter-spacing: 0.5px; font-weight: normal; position: relative; top: -6px;
+
+                font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif
+            }
+            .nav-text:hover {
+                color: white; opacity: 1.0;
+            }
+            .humble-image {
+                display: inline-block; width: 65%; overflow: hidden; border-radius: 20px; border: 1px solid transparent;
+            }
+            .humble-emphasis {
+                font-size: 1.25em
+            }
+            .header-layer {
+                width: 1280px; padding: 5px 10px; margin-left: auto; margin-right: auto;
+            }
+            .humble-separator {
+                width: 100%; clear: both; height: 10px; background-color: rgba(50,50,50,.8);
+            }
+            .humble-container {
+                padding: 5px 10px; overflow: auto; position: relative; background-color: white; width: 1248px; border-left: 1px solid rgba(190,190,190,.7); border-right: 1px solid rgba(190,190,190,.7); margin-left: auto; margin-right: auto
+            }
+
+            div > i {
+                color: #333; font-size: 22px; box-sizing: border-box;
+            }
+            div:hover > i {
+                color: #bc2328;
+            }
+            div,table,tr,td,form,input,select { 
+                position: relative
+            }
+            .humble-ci        {
+                margin-left: auto; margin-right: auto; width: 600px; border: 1px solid #444; border-radius: 10px; padding: 20px; margin-bottom: 25px
+            }
+            .humble-ci-legend {
+                font-weight: bold; font-family: sans-serif;
+            }
+            .humble-ci-option {
+                padding: 30px 40px; font-size: 1.5em; background-color: #a7cfdf; color: #333; font-weight: bold; border: 1px solid #666; border-radius: 5px; margin-bottom: 10px; opacity: .6
+            }
+            .humble-ci-option:hover {
+                opacity: 1.0; cursor: pointer
+            }
+        </style>
+        <script type='text/javascript' src='/js/jquery'></script>
+        <script type='text/javascript' src='/js/common'></script>
+        <script type="text/javascript" src='/js/bootstrap'></script>
+        <script type="text/javascript">
+            var UseTranparentWindows = 'N';
+        </script>
+        <script type='text/javascript' src='/js/desktop'></script>
+        <script type='text/javascript' src='/js/jqueryui'></script>
+        <script type='text/javascript' src='/js/widgets'></script>
+        <script type='text/javascript' src='/js/api'></script>
+        <script type='text/javascript'>
+            $(document).ready(API.init);
+            //Humble.init();
+            $(document).ready(function () {
+                $(window).resize(function () {
+                    $('#humble-container').height(window.innerHeight - $('#humble-headers').height()- (2*$('.humble-separator').height()) - $('#humble-footer').height());
+                }).resize();
+            });
+         </script>
+    </head>
+
+    <body>
+
+
+    <body style="overflow: hidden;">
+        <!-- This hidden sizing layer is used to calculate the width of text... by fetching the "scrollAmount", we can determine the width of any block of text placed in the layer -->
+        <div id="paradigm-virtual-desktop" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;"></div>
+        <div class="humble-headers" id="humble-headers">
+            <div style="background-color: rgba(50,50,50,.8); padding: 10px; display: flex; flex-wrap: nowrap">
+
+                <div class="header-layer-1"  style="margin-left: auto; margin-right: auto; width: 1248px; white-space: nowrap; ">
+                    <div style="display: inline-block; font-size: 1.7em; vertical-align: bottom; color: ghostwhite; opacity: .7">
+                        <img src="/web/images/djikstra_light.png" alt="djikstra" style=" height: 50px; cursor: pointer; margin-right: 0px" onclick="window.location.href = '/humble.html'"/>
+                        <div style="display: inline-block; position: relative; top: 16px; left: -3px">be humble.</div>
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/index.html'">
+                        Login
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/Blog.htmls'">
+                        Blog
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/About.htmls'">
+                        About
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = 'https://www.github.com/RickMyers/Humble'">
+                        Repository <img src="/web/images/git_squid.png" style="height: 22px"/>
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/Documentation.htmls'">
+                        Documentation
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/Install.htmls'">
+                        Installation
+                    </div>
+
+                    <div class="nav-text" style="padding-left: 70px" onclick="window.location.href = 'Main.htmls'">
+                        Home
+                    </div>
+                </div>
+            </div>                 
+        <div style="clear: both"></div>
+        </div>
+        <div class="humble-separator" style=""></div>
+        <div id="humble-container" style="padding: 5px 10px; overflow: auto; position: relative; background-color: white; width: 1248px; border-left: 1px solid rgba(190,190,190,.7); border-right: 1px solid rgba(190,190,190,.7); margin-left: auto; margin-right: auto">
+
+   
+
+            <div style='clear: both'></div>
+
+
+        </div>
+         <div style="background-color: #333; color: ghostwhite; font-size: .8; font-style: sans-serif; letter-spacing: 2px" id='humble-footer'>
+                &copy; The Humble Project, All Rights Reserved
+         </div>
+    </body>
+</html>
