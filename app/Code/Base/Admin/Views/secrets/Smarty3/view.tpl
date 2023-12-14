@@ -1,1 +1,0 @@
-{$secret->decrypt(true)->getSecretValue()}

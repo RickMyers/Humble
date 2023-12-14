@@ -1,6 +1,0 @@
-{% for log in users.availableUserLogs() %}
-    <div style="white-space: nowrap; background-color: rgba(202,202,202,{{ cycle(['.1','.3'],loop.index0) }}); cursor: pointer" onclick="Administration.logs.users.fetch('{{ log.user_id }}')">
-        <img src="/images/humble/log.png" style="display: inline-block; height: 25px; margin-right: 5px;" />
-        {{ log.user_id }} {{ log.last_name }}, {{ log.first_name }}
-    </div>
-{% endfor %}

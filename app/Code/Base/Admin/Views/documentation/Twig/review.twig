@@ -1,9 +1,0 @@
-<iframe id="review_window-{{ window_id }}" src="/Docs" style="width: 100%; height: 100%; border: 0px; overflow: auto" frameborder="0"></iframe>
-<script type="text/javascript">
-    (function () {
-        let win = Desktop.window.list['{{ window_id }}'];
-        win.resize = function () {
-            $('#review_window-{{ window_id }}').height(win.content.offsetHeight);
-        }
-    })();
-</script>
