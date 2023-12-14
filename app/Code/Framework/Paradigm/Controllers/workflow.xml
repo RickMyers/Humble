@@ -10,7 +10,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="test">
             <description>Tests the workflow trigger mechansim</description>
             <model namespace="paradigm" class="manager" id='workflow'>
-                <parameter name='uid' source='session' value='uid' default='' />
+                <parameter name='uid' source='session' value='admin_id' default='' />
             </model>
         </action>
 
@@ -19,7 +19,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="run" blocking="off">
             <description>Tests the workflow trigger mechansim</description>
             <model namespace="paradigm" class="manager" id='workflow' response="true" method="run">
-                <parameter name='uid' source='session'  required="true" />
+                <parameter name='admin_id' source='session'  required="true" />
                 <parameter name='id' source='post' value='workflow_id' default='' />
             </model>
         </action>
@@ -64,7 +64,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name="namespace"    source='post'  default="" />
                 <parameter name="workflow"     source='post'  default="" />
                 <parameter name="title"         source='post'  default="" />
-                <parameter name='creator'      source='session' value='uid' default='' />
+                <parameter name='creator'      source='session' value='admin_id' default='' />
                 <parameter name="description"  source='post'  default="A workflow diagram" />
                 <parameter name="image"        source='post'  default="" />
                 <parameter name="major_version" source='post'  default="1" />
@@ -269,7 +269,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="sync" event="workflowsSynced" comment="An inventory of workflows have been synced">
             <description>Will sync the remote workflows to the local repository</description>
             <entity namespace="humble" class="user_permissions" method="load" id="permissions">
-                <parameter name='id' value="uid" source="session" required="true" />
+                <parameter name='id' value="admin_id" source="session" required="true" />
             </entity>
             <switch id="permissions" method="getAdmin">
                 <case value="Y">

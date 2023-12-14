@@ -3,6 +3,7 @@
     <actions>
         <action name="open">
             <description>Main landing for the workflow editor</description>
+            <model class='system' id='system' />
             <entity namespace="humble" class="permissions" id="permissions">
                 <parameter name='admin_id' source="session" default='' />
             </entity>

@@ -85,7 +85,27 @@ class Model implements HumbleComponent
     public function underscoreToCamelCase( $string, $first_char_caps = false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }
-
+    
+    /**
+     * Returns a unique identifier to help identify request threads when you come from a client who might have the site open in multiple tabs
+     * 
+     * @return string
+     */
+    public function browserTabId() {
+        $_SESSION['BROWSER_TABS'][$tab_id = $this->_token(6)] = '';
+        return $tab_id;
+    }
+    
+    /**
+     * Used to foil cross-site request forgeries.   A combination of the tab_id token and the csrf token will be used to make sure the request is kosher
+     * 
+     * @param string $tab_id
+     * @return string
+     */
+    public function csrfBuster($tab_id) {
+        return $_SESSION['BROWSER_TABS'][$tab_id] = $this->_token(6);
+    }
+    
     /**
      * Cute routine to insert an underscore prior to any capitalized letter
      *

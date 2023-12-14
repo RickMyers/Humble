@@ -10,45 +10,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="home">
             <description>The landing page for testing API calls</description>
             <entity namespace="default" class="users" id='user'>
-                <parameter name='uid' source='session' value='uid' default='' />
+                <parameter name='uid' source='session' value='admin_id' default='' />
             </entity>
         </action>
 
-        <!-- ############################################################### -->
-        
-        <action name="">
-            <description></description>
-        </action>
-        
-        <!-- ############################################################### -->
-        
-        <action name="">
-            <description></description>
-        </action>
-        
-        <!-- ############################################################### -->
-        
-        <action name="">
-            <description></description>
-        </action>
-        
-        <!-- ############################################################### -->
-        
-        <action name="">
-            <description></description>
-        </action>
-        
-        <!-- ############################################################### -->
-        
-        <action name="">
-            <description></description>
-        </action>
-        
-        <!-- ############################################################### -->
-        
-        <action name="">
-            <description></description>
-        </action>
 
     </actions>
 </controller>

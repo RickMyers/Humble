@@ -84,6 +84,7 @@ class User extends Model {
         }
         return "Passwords were reset (sure)";
     }
+    
     /**
      * Allows you to set a message that will be displayed on the page after a login attempt
      *

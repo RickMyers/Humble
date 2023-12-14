@@ -45,7 +45,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name="namespace"   source='post'  optional='true' default="" />
                 <parameter name="title"       source='post'  optional='true' default="" />
                 <parameter name="partial"     source='post'  optional='true' default="" />
-                <parameter name="creator"     source='session' value='uid' required='true' />
+                <parameter name="creator"     source='session' value='admin_id' required='true' /> 
                 <parameter name="major_version"   source='post'  optional='true' default="" />
                 <parameter name="minor_version"   source='post'  optional='true' default="" />
             </model>
