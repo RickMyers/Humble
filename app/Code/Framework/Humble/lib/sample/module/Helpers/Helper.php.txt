@@ -1,0 +1,21 @@
+<?php
+namespace Code\&&package&&\&&module&&\Helpers;
+/**
+ *
+ * Utility Base Transfer Class
+ *
+ * All helper classes for this module must extend this class
+ *
+ * PHP version 7.0+
+ *
+ * LICENSE:
+ *
+ * @category   Utility
+ * @package    &&module&&
+ * @author     Original Author <&&email&&>
+ */
+class Helper extends \Code\&&base_package&&\&&base_module&&\Helpers\Helper
+{
+
+}
+?>

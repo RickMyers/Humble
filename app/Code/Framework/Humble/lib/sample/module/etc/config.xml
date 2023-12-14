@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<config>
+    <&&namespace&&>
+        <version>0.0.1</version>
+        <title>&&module&&<!-- This will appear in the administration screens for this module --></title>
+        <description>The &&module&& module<!-- This will appear in the admin page --></description>
+        <author>
+            <name>&&author&&</name>
+            <email>&&email&&</email>
+        </author>
+        <module>
+            <name>&&module&&</name>
+            <weight>50</weight>
+            <required>&&required&&</required>
+            <workflow>Y</workflow>
+            <package>&&package&&</package>
+            <use>Smarty3</use>
+        </module>
+        <structure>
+            <models>
+                <source>&&module&&/Models</source>
+            </models>
+            <helpers>
+                <source>&&module&&/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>&&module&&/Controllers</source>
+                <cache>&&module&&/Controllers/Cache</cache>
+            </controllers>
+            <mobile>
+                <controllers>
+                    <source>&&module&&/Mobile/Controllers</source>
+                    <cache>&&module&&/Mobile/Controllers/Cache</cache>
+                </controllers>
+                <views>
+                    <source>&&module&&/Mobile/Views</source>
+                    <cache>&&module&&/Mobile/Views/Cache</cache>
+                </views>
+            </mobile>
+            <schema>
+                <install>&&module&&/Schema/Install</install>
+                <update>&&module&&/Schema/Update</update>
+                <layout>&&module&&/Schema/DSL</layout>
+            </schema>
+            <configuration>
+                <source>&&module&&/etc</source>
+            </configuration>
+            <views>
+                <source>&&module&&/Views</source>
+                <cache>&&module&&/Views/Cache</cache>
+            </views>
+            <images>
+                <source>&&module&&/Images</source>
+                <cache>&&module&&/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>&&module&&/Entities</source>
+            </entities>
+            <RPC>
+                <source>&&module&&/RPC</source>
+            </RPC>
+            <frontend>
+                <source>&&module&&/web/app</source>
+            </frontend>
+        </structure>
+        <orm>
+            <prefix>&&prefix&&</prefix>
+            <mongodb><!-- if you want access to MongoDB, provide a prefix here --></mongodb>
+            <!--
+                Register your tables to be managed under this namespace in the entities section below in the following format:
+
+                <table_name polyglot="Y' />
+
+                The 'polyglot' attribute is optional.  Only specify when you are actually enabling the polyglot behavior
+            -->
+            <entities>
+
+            </entities>
+        </orm>
+        <events>
+
+        </events>
+        <web>
+            <!-- Edits are used for separating form validation from the form -->
+            <edits>
+                <edit1>&&module&&/web/edits/edit.json</edit1>
+            </edits>
+            <hook>
+                <!-- #################################################
+                     This is where the JS lives for your module
+
+                     Set the 'hook' name appropriately, and use as
+                       many hooks as you'd like
+                     #################################################    -->
+                <js>
+                    <source>&&module&&/web/js/&&module&&.js</source>
+                </js>
+                <css>
+                    <source>&&module&&/web/css/&&module&&.css</source>
+                </css>
+            </hook>
+        </web>
+    </&&namespace&&>
+</config>

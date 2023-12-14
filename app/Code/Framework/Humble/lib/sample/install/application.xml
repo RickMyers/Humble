@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<application>
+    <name>{$name}</name>
+    <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">{$serial_number}</serial_number>
+    <comment>
+        The Serial Number is unique to your application and is used when encrypting secrets and caching data.  Changing the Serial
+        Number will make your secrets useless and will fully invalidate your cache.  It is expected that the Serial Number will be
+        shared for all developers of the application.
+    </comment>
+    <version>
+        <framework>{$version}</framework>
+        <app>0.0.0.1</app>
+    </version>    
+    <state>DEVELOPMENT</state>
+    <stages>
+        <DEVELOPMENT order="1" />
+        <TEST        order="2" />
+        <PRODUCTION  order="3" />
+    </stages>    
+    <extend comment="Means whether to look up the Module hierarchy if a specific class is not found (if not found in current module, perhaps the class is in a parent module)">
+        <helpers>1</helpers>
+        <models>1</models>
+        <entities>1</entities>
+    </extend>
+    <msa>
+        <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application (NOT FULLY IMPLEMENTED!)-->
+        <strategy>
+            <forward>1</forward>
+            <redirect>0</redirect>
+        </strategy>
+    </msa>
+    <default>
+        <inline_templater options="Rain,Latte">Rain</inline_templater>
+    </default>
+    <api>
+        <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/APIPolicy.htmls for more information first -->
+    </api>
+    <engine options="c:\\php\\php.exe,/lib/usr/php/php.exe,etc" comment="This is mainly for Windows, please specify the correct location here">{$engine}</engine>
+    <documentation_comment>
+        The next section outlines the choices for creating automated documentation.   Choose either PHPDoc2 or APIGen(PHP 8.2+).  Select the option for each from the options
+        listed on the tag.  PHPDoc2 is the default since it supports more versions of PHP, but if you are using PHP 8.2 and later, APIGen is an excellent option as well.
+    </documentation_comment>
+    <documentation comment="Documentation will not be generated in environments with a state of PRODUCTION">
+        <engine  options="PHPDoc2.phar,APIGen.phar">PHPDoc2.phar</engine>
+        <command options="PHPDoc2.phar,apigen.phar app/Code --output Docs">php PHPDoc2.phar</command>
+        <source  options="https://humbleprogramming.com/dist/phpdoc.php ,https://humbleprogramming.com/dist/apigen.php">https://humbleprogramming.com/dist/phpdoc.php</source>
+    </documentation>
+    <flags>
+        <display_mysql_errors comment="Mysql error are always logged but do you want them displayed on the page as well?">0</display_mysql_errors>
+        <redis comment="Use redis instead of memcache for the cache">0</redis>
+    </flags>    
+    <support>
+        <name>{$support_name}</name>
+        <email>{$support_email}</email>
+    </support>    
+    <status>
+        <enabled>{$enabled}</enabled>           <!-- Switch to 0 to take the application offline -->
+        <quiescing>{$quiescing}</quiescing>     <!-- switch to 1 to being the process of taking the system offline -->
+        <installer>{$installer}</installer>     <!-- switch to 0 after installation to prevent accidental execution of the install script -->
+        <caching>{$caching}</caching>           <!-- Indicates whether memcached is available to store or retrieve data -->
+        <SSO>
+            <enabled>{$SSO}</enabled>           <!-- Switch to 0 to use local authentication -->
+            <IDP>{$idp}</IDP>
+        </SSO>
+        <authorization>                         <!-- Enable or disable service level authorization checking -->
+            <enabled>{$authorized}</enabled>
+        </authorization>
+    </status>
+</application>
