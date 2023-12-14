@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+
+Individual API Test Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="test" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking='off'>
+        
+        <action name="list">
+            <description>Lists the tests associated to a component id</description>
+            <mongo namespace="paradigm" class="component/tests" id="test" wrapper='json_encode' response="true" method='fetch'>
+                <parameter name='component_id' required='true' source='request' />
+            </mongo>
+            
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='init'>
+            <description>Returns the template for a component test</description>
+            <mongo namespace="paradigm" class="component/tests" id="test" wrapper='json_encode' response="true" method='save'>
+                <parameter name='description' source='post' default='Component Test' />
+                <parameter name='component_id' required='true' source='post' />
+            </mongo>
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name='save'>
+            <description>Saves the current test</description>
+            <mongo namespace="paradigm" class="component/tests" id="test" wrapper='json_encode' response="true" method='save'>
+                <parameter name='_id' value='test_id' source='request' />
+                <parameter name='component_id' required='true' source='request' />
+                <parameter name='*' source='request' />
+            </mongo>
+        </action>
+        
+        <action name="user">
+            <entity namespace="default" class="users" id="user"></entity>
+        </action>
+        
+    </actions>
+</controller>

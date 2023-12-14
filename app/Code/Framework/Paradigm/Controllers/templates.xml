@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+
+Fetches the aggregated "decoupled" UI templates
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="templates" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+
+        <action name="fetch" output='JSON'>
+            <description>Retrieve all of the templates by active namespace and engine</description>
+            <model namespace='paradigm' class='system' response='true' method='templates'>
+            </model>
+        </action>
+
+    </actions>
+</controller>
+

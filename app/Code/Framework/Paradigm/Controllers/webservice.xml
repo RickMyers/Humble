@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+
+Manages actions related to workflow webservices
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="webservice" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="activate">
+            <description>Enables or disables a webservice URI</description>
+            <entity namespace="paradigm" class="webservices" method="save">
+                <parameter name='id' source='post' required="true" default='' />
+                <parameter name='active' source='post' required="true" default='' />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

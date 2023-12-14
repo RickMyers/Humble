@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+
+All things around system events, such as timer or cron like functionality
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="system" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        
+        <action name="event">
+            <description>Displays information about the current event</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+            <helper namespace='paradigm' class='data' id='helper'>
+                <parameter name="windowId" source="request" default=""  />
+            </helper>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="save" passalong="window_id">
+            <description>Saves or creates a new integration point</description>
+            <model namespace="paradigm" class="system" id="system" method="save">
+                <parameter name="data" source="post" required="true" />
+            </model>
+        </action>
+        
+    </actions>
+</controller>

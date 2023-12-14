@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+
+Import/Export Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="io" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        
+        <action name="target" blocking="off" passalong="window_id">
+            <description>A page to add an export target location</description>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="token" blocking="off" passalong="window_id">
+            <description>A page to add an export target location</description>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->        
+        
+        <action name="create" blocking="off">
+            <description>Creates an export target</description>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
+            <entity namespace="paradigm" class="export/targets" method="save">
+                <parameter name='*' source='post' />
+            </entity>
+            <output request='token' /> 
+        </action>
+        
+        <!-- ############################################################### -->        
+        
+        <action name="activate" blocking="off">
+            <description>Stores a token to be used in an export/import process</description>
+            <model namespace="humble" class="permissions" id="permissions">
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
+            <entity namespace="paradigm" class="import/tokens" method="save">
+                <parameter name='*' source='post' />
+            </entity>            
+        </action>
+        
+    </actions>
+</controller>

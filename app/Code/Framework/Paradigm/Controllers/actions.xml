@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<controller name="actions" use="Smarty3">
+    <actions>
+        <action name="open">
+            <description>Main landing for the workflow editor</description>
+            <entity namespace="humble" class="permissions" id="permissions">
+                <parameter name='admin_id' source="session" default='' />
+            </entity>
+            <switch id='permissions' method='getAdminId'>
+                <case value='TRUE'>
+                    <model namespace="humble" class="system" id="system" />
+                </case>
+                <default>
+                    <redirect href='/admin/login/form?message=Insufficient privilege, log in as Admin to access the Workflow Editor' />
+                </default>
+            </switch>            
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="designer">
+
+        </action>
+
+    </actions>
+
+</controller>

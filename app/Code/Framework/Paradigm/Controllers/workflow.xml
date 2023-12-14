@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<!--
+
+Manages the actions related to the workflow engine
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="workflow" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="test">
+            <description>Tests the workflow trigger mechansim</description>
+            <model namespace="paradigm" class="manager" id='workflow'>
+                <parameter name='uid' source='session' value='uid' default='' />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="run" blocking="off">
+            <description>Tests the workflow trigger mechansim</description>
+            <model namespace="paradigm" class="manager" id='workflow' response="true" method="run">
+                <parameter name='uid' source='session'  required="true" />
+                <parameter name='id' source='post' value='workflow_id' default='' />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="details" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description>Gets the current workflow information</description>
+            <entity namespace='paradigm' class='workflows' id='workflow' method='load'>
+                <parameter name='id' source='request' default='' />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="activate" event="workflowActivated" comment="A workflow has been toggled on">
+            <description>Sets the status of a workflow to active</description>
+            <entity namespace='paradigm' class='workflows' id='workflow' method='save'>
+                <parameter name='id' source='post' default='' />
+                <parameter name='active' source='post' default='Y' />
+            </entity>
+            <output text="Activated." />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="inactivate" event="workflowInactivated" comment="A workflow has been toggled off">
+            <description>Sets the status of a workflow to inactive</description>
+            <entity namespace='paradigm' class='workflows' id='workflow' method='save'>
+                <parameter name='id' source='post' default='' />
+                <parameter name='active' source='post' default='N' />
+            </entity>
+            <output text="Inactivated." />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="save" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description>Performs the actual save of the workflow</description>
+            <model namespace='paradigm' class='manager' id='workflow'>
+                <parameter name="id"           source='post'  default="" />
+                <parameter name="namespace"    source='post'  default="" />
+                <parameter name="workflow"     source='post'  default="" />
+                <parameter name="title"         source='post'  default="" />
+                <parameter name='creator'      source='session' value='uid' default='' />
+                <parameter name="description"  source='post'  default="A workflow diagram" />
+                <parameter name="image"        source='post'  default="" />
+                <parameter name="major_version" source='post'  default="1" />
+                <parameter name="minor_version" source='post'  default="0" />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="quicksave" CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id" >
+            <description>Saves just an updated diagram of the workflow</description>
+            <entity namespace='paradigm' class='workflows' id='workflow' method='save' response="true">
+                <parameter name="id"           source='post' required="true" default="" />
+                <parameter name="workflow"     source='post' required="true" default="" />
+                <parameter name="image"        source='post' required="true" default="" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="delete" event="paradigmWorkflowDeleted" comment="A workflow has been removed/deleted">
+            <description>Will delete a workflow</description>
+            <entity namespace="paradigm" class="workflows" method="delete">
+                <parameter name="id" source="post" required="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='image'>
+            <description>Retrieves the image for a workflow</description>
+            <entity namespace='paradigm' class='workflow' id='workflow' method='load'>
+                <parameter name="id"           source='post'  default="" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='list' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description>Draws the Load page</description>
+            <entity namespace='paradigm' class='workflows' id='workflows' rows='rows' page='page' defaultRows='10'>
+            </entity>
+
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='inventory' output='json'>
+            <description>Lists the workflows available to a particular namespace</description>
+            <entity namespace='paradigm' class='workflows' id='workflows' rows='rows' page='page' defaultRows='10'>
+                <parameter name="namespace" required='true'  source='request'  default="" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='load' output='json'>
+            <description>Gets the actual diagram json</description>
+            <entity namespace='paradigm' class='workflows' id='diagram'>
+                <parameter name="id" required='true'  source='request'  default="" />
+            </entity>
+            <view name="load" />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='generate'>
+            <description>Will generate the workflow</description>
+            <helper namespace='paradigm' class='generator' id='generator'>
+                <parameter name='id'        source='post' required='true' default="" />
+                <parameter name='workflow'  source='post' required='true' default="" />
+                <parameter name='namespace' source='post' required='true' default="" />
+                <parameter name='image'     source='post' required='true' default="" />
+                <parameter name='windowId'  source='post' required='true' default="" />
+            </helper>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="import" event="workflowImport" comment="A workflow has been imported" passalong="windowId">
+            <description>Imports a serialized workflow</description>
+            <model namespace="paradigm" class="workflow" method='import'>
+                <parameter name='workflow' source='request' default='' required='true' />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="importsource">
+            <description></description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="importlist">
+            <description></description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='targets' passalong='window_id'>
+            <description>A list of export targets</description>
+            <entity namespace='paradigm' class='export/targets' id='targets' orderby='alias=asc'>
+            </entity>            
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='sources' passalong='window_id'>
+            <description>A list of export targets</description>
+            <entity namespace='paradigm' class='import/sources' id='sources'>
+            </entity>            
+        </action>
+                                
+        <!-- ############################################################### -->
+        
+        <action name='exporthome' passalong='window_id'>
+            <description>A list of import/export sources and their associated security keys</description>
+            <entity namespace='paradigm' class='import/sources' id='sources'>
+            </entity>            
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name='deletetarget'>
+            <description>Removes an export target</description>
+            <entity namespace='paradigm' class='export/targets' method='delete'>
+                <parameter name='id' value='token_id' required='true' source='post' />
+            </entity>
+            <chain>
+                <action name='targets' />
+            </chain>        
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name='deletesourcetoken'>
+            <description>Removes an import source</description>
+            <entity namespace='paradigm' class='import/sources' method='delete'>
+                <parameter name='id' value='token_id' required='true' source='post' />
+            </entity>
+            <chain>
+                <action name='sources' />
+            </chain>        
+        </action>
+                
+        <!-- ############################################################### -->
+
+        <action name='updatetoken'>
+            <description>Updates the value of an export target security token</description>
+            <entity namespace='paradigm' class='export/targets' method='save'>
+                <parameter name='id'    value='token_id' required='true' source='post' />
+                <parameter name='token' required='true' source='post' />
+            </entity>
+            <chain>
+                <action name='targets' />
+            </chain>        
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='updatesourcetoken'>
+            <description>Updates the value of a source security token</description>
+            <entity namespace='paradigm' class='import/sources' method='save'>
+                <parameter name='id'    value='token_id' required='true' source='post' />
+                <parameter name='token' required='true' source='post' />
+            </entity>
+            <chain>
+                <action name='sources' />
+            </chain>        
+        </action>
+        <!-- ############################################################### -->
+
+        <action name='newexport' passalong='window_id'>
+            <description>Adds a new export target</description>
+            <entity namespace='paradigm' class='export/targets' method='save'>
+                <parameter name='target' value='export_url'   source='post' required='true' />
+                <parameter name='alias' value='export_alias' source='post' required='true' />
+                <parameter name='token' source='post' required='true' />
+            </entity>    
+            <chain>
+                <action name='targets' />
+            </chain>        
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name='newimport' passalong='window_id'>
+            <description>Adds a new import source</description>
+            <entity namespace='paradigm' class='import/sources' method='save'>
+                <parameter name='source' value='import_url'   source='post' required='true' />
+                <parameter name='alias'  value='import_alias' source='post' required='true' />
+                <parameter name='token'  value='import_token' source='post' default='' />
+            </entity>    
+            <chain>
+                <action name='sources' />
+            </chain>        
+        </action>
+                                
+        <!-- ############################################################### -->
+
+        <action name="sync" event="workflowsSynced" comment="An inventory of workflows have been synced">
+            <description>Will sync the remote workflows to the local repository</description>
+            <entity namespace="humble" class="user_permissions" method="load" id="permissions">
+                <parameter name='id' value="uid" source="session" required="true" />
+            </entity>
+            <switch id="permissions" method="getAdmin">
+                <case value="Y">
+                    <model namespace="paradigm" class="workflow" method="sync" >
+                        <parameter name="destination_id" source="post" required="true" />
+                    </model>
+                </case>
+                <default>
+                    <output text="You lack the required authority to perform a sync" />
+                </default>
+            </switch>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="synclist" passalong='windowId' CSRF_PROTECTION="csrf_token=csrf_buster,csrf_session_variable=BROWSER_TABS,csrf_tab_id=browser_tab_id">
+            <description>Presents a list of destination to sync with</description>
+            <entity namespace="paradigm" class="import_sources" id="sources" />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="export" event="workflowExported" comment="A workflow has been packaged and exported" >
+            <description>Creates the export format for a workflow and sends to a remote server</description>
+            <model namespace="paradigm" class="workflow" method="export" response='true'>
+                <parameter name='id'                source='post' required='true' default="" />
+                <parameter name='destination_id'    source='post' required='true' default="" />
+                <parameter name='file'              source='post' optional='true' />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="exportlist" passalong='id,windowId'>
+            <description>Presents a list of destination to export to</description>
+            <entity namespace="paradigm" class="export/targets" id="targets" orderby="alias=ASC" />
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="delete">
+            <description>Deletes a workflow</description>
+            <model namespace="paradigm" class="workflow" id="workflow" method="delete">
+                <parameter name='id' source='post' required='true' default="" />
+            </model>
+        </action>
+
+
+    </actions>
+</controller>

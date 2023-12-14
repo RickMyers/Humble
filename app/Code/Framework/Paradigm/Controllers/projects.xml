@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+Test API Projects actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="projects" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="list">
+            <description>Lists the current projects</description>
+            <entity namespace="default" class="users" id='user'>
+                <parameter name='uid' source='session' value='uid' default='' />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
