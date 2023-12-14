@@ -1,0 +1,83 @@
+({
+	form:
+	{
+		id: 		"humble-paradigm-config-notification-form-&id&",
+		drawme:		false,
+		action:		"",
+        onload:     function () {
+        },
+		method:		"post",
+		style:		"",
+		onenterkey:	"send"
+	},
+	fields:
+	[
+		{
+			active:			true,
+			id: 			"humble-paradigm-config-notification-form-namespace-&id&",
+			longname:		"Namespace",
+			title:			"Choose a client or core for namespace",
+            onchange:       function (evt) {
+                if (evt.target.value) {
+                    (new EasyAjax('/workflow/component/objects')).add('notification','Y').add('namespace',evt.target.value).then((response) => {
+                        EasyEdits.populateSelectBox($E('humble-paradigm-config-notification-form-component-&id&'),eval(response));
+                    }).post();
+                } else {
+                }
+            },
+            type:           "select",
+			required:		true,
+			force:			true,
+			classname:		"",
+			style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+		},
+		{
+			active:			true,
+			id: 			"humble-paradigm-config-notification-form-component-&id&",
+			longname:		"Component to use",
+			title:			"title for mouse rollover",
+            onchange:       function (evt) {
+                if (evt.target.value) {
+                    (new EasyAjax('/workflow/component/methods')).add('notification','Y').add('namespace',$('#humble-paradigm-config-notification-form-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
+                        EasyEdits.populateSelectBox($E('humble-paradigm-config-notification-form-method-&id&'),eval(response));
+                    }).post();
+                } else {
+
+                }
+            },
+            type:           "select",
+			required:		true,
+			force:			true,
+			classname:		"",
+			style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+		},
+		{
+			active:			true,
+			id: 			"humble-paradigm-config-notification-form-method-&id&",
+			longname:		"Function/Method",
+			title:			"The function to execute",
+            type:           "select",
+			required:		true,
+			force:			true,
+			classname:		"",
+			style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+		},
+		{
+			active:			true,
+			id: 			"humble-paradigm-config-notification-form-save-&id&",
+			longname:		"Configure Save",
+			title:			"Press to initially establish this workflow component",
+            type:           "button",
+			required:		false,
+			force:			false,
+            value:          "Save",
+            onclick:        function (evt) {
+                if (Edits['notification_&id&'].validate()) {
+                    $('#humble-paradigm-config-notification-form-&id&').submit();
+                }
+            },
+			classname:		"settingsButton",
+			style:			"font-size: 1em; padding: 2px 5px"
+		}
+	]
+})

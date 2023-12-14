@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+Configures basic flowchart symbols
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="flowchart" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="if" passalong="windowId">
+            <description>Configures a generic decision</description>
+            <mongo namespace="paradigm" class="elements" id='element'>
+                <parameter name='id' source='post' default='' />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

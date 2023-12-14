@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<config>
+    <workflow>
+        <version>0.0.1</version>
+        <title>Workflows</title>
+        <description>Configures Workflow Components</description>
+        <author>
+            <name>Rick Myers</name>
+            <email>rick@humbleprogramming.com</email>
+        </author>
+
+        <module>
+            <name>Workflow</name>
+            <use>Smarty3</use>
+            <package>Framework</package>
+            <workflow>Y</workflow>
+            <weight>20</weight>
+            <required>Y</required>
+        </module>
+        <structure>
+            <models>
+                <source>Workflow/Models</source>
+            </models>
+            <helpers>
+                <source>Workflow/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>Workflow/Controllers</source>
+                <cache>Workflow/Controllers/Cache</cache>
+            </controllers>
+            <schema>
+                <install>Workflow/Schema/Install</install>
+                <update>Workflow/Schema/Update</update>
+                <layout>Workflow/Schema/DSL</layout>
+            </schema>
+            <configuration>
+                <source>Workflow/etc</source>
+            </configuration>
+            <views>
+                <source>Workflow/Views</source>
+                <cache>Workflow/Views/Cache</cache>
+            </views>
+            <images>
+                <source>Workflow/Images</source>
+                <cache>Workflow/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>Workflow/Entities</source>
+            </entities>
+            <RPC>
+                <source>Workflow/RPC</source>
+            </RPC>
+        </structure>
+        <orm>
+            <prefix>workflow_</prefix>
+            <mongodb>workflow</mongodb>
+            <entities>
+                <sms_carriers />
+            </entities>
+        </orm>
+        <web>
+            <edits>
+                <process>Workflow/web/edits/process.json</process>
+                <actor>Workflow/web/edits/actor.json</actor>
+                <decision>Workflow/web/edits/decision.json</decision>
+                <notification>Workflow/web/edits/notification.json</notification>
+                <email>Workflow/web/edits/mail.json</email>
+                <trigger>Workflow/web/edits/trigger.json</trigger>
+            </edits>
+        </web>
+    </workflow>
+</config>

@@ -1,0 +1,11 @@
+---
+phoneNetworkInformation :
+  url             : https://www.hlr-lookups.com/api
+  api-key         :
+  api-var         :
+  method          : GET
+  secure          : true
+  arguments       :
+      action      :
+      username    : rmyers1969-api-ca1d6baf1b34
+      password    : EbQx-!EYH-FMsY-%Nh%-65pD-F2k7

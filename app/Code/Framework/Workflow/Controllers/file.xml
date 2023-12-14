@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!--
+
+File and URL interactions
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="file" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions>
+        
+        <action name="trigger">
+            <description>Saves or creates a new file trigger </description>
+            <model namespace="paradigm" class="file" id="file" method="save">
+                <parameter name="data" source="post" required="true" />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
+                        
+        <action name="add" passalong="windowId">
+            <description>A form to specify a file or URL location</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="save" passalong="windowId">
+            <description></description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+        <!-- ############################################################### -->
+
+        <action name="update" passalong="windowId">
+            <description>Updates the information about the file trigger</description>
+            <model namespace='workflow' class='file' id='file' method='save'>
+                <parameter name='data'      source='post' required='true' default='' />
+            </model>
+        </action>
+                
+        <!-- ############################################################### -->
+
+        <action name="load" passalong="windowId">
+            <description></description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="copy" passalong="windowId">
+            <description></description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+                
+        <!-- ############################################################### -->
+
+        <action name="store" passalong="windowId">
+            <description>A form to specify a field on the EVENT that contains file data, and a location where to save the file contents off to</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>    
+            
+        <!-- ############################################################### -->
+
+        <action name="validxml" passalong="windowId">
+            <description>A form to specify a field on the EVENT that contains either an attached file or a filename that can be read.  The data will be checked to see if it is validly structured XML</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+    </actions>
+</controller>

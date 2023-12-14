@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+Sensor related actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="sensor" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
+    <actions>
+        <action name="save">
+            <description>Saves the sensor configuration</description>
+            <model namespace="workflow" class="sensor" id="sensor" method="save">
+                <parameter name="data" source="post" required="true" />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

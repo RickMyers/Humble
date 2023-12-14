@@ -1,0 +1,42 @@
+({
+    /* for examples on how to use form edits, please see the help video */
+	form:
+	{
+		id: 		"my_form_name",
+		drawme:		false,
+		action:		"",
+        onload:     function () {
+            //when form is loaded, do something
+        },
+		method:		"post",
+		style:		"",
+		onenterkey:	"send"
+	},
+	fields:
+	[
+		{
+			active:			true,
+			id: 			"a_field_id_1",
+			longname:		"Long name of field",
+			title:			"title for mouse rollover",
+            type:           "text",
+			required:		true,
+			force:			true,
+            /* tons of options can go here*/
+			classname:		"",
+			style:			""
+		},
+		{
+			active:			true,
+			id: 			"a_field_id_2",
+			longname:		"Long name of field",
+			title:			"title for mouse rollover",
+            type:           "text",
+			required:		true,
+			force:			true,
+            /* tons of options can go here*/
+			classname:		"",
+			style:			""
+		}          
+	]
+})

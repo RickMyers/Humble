@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+
+Event trigger configurations
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+-->
+<controller name="trigger" use="Smarty3" author="Rick Myers" email="">
+    <actions>
+        <action name="options" passalong="windowId">
+            <description>The options available to a triggered event</description>
+            <mongo namespace="paradigm" class="elements" id='element'>
+                <parameter name='id' source='post' default='' />
+            </mongo> 
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="save" namespace="workflow" class="trigger" passalong="data" >
+            <description>Saves the event status, and creates a MySQL reference for the event if it doesn't exist.  Note that we are employing the rarely used 'execute' feature off of the action statement</description>
+            <mongo namespace="paradigm" class="elements" id='element' />
+        </action>
+        
+    </actions>
+</controller>
