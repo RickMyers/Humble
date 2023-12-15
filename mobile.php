@@ -14,8 +14,7 @@
  / __  / /_/ / / / / /_/ / /  __/ /     
 /_/ /_/\__,_/_/ /_/\__,_/_/\___/_/      
                                         
-Special handling for requests originating
-  on mobile devices
+Special handling for requests originating on mobile devices
 
  */
 //###########################################################################

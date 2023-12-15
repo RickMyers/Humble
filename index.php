@@ -11,9 +11,8 @@ This software is licensed under GNU GPL.
 
 For more information, see the file LICENSE.txt
 
-*/
-//------------------------------------------------------------------------------
-function underscoreToCamelCase( $string, $first_char_caps = false) {
+ ###############################################################################*/
+function underscoreToCamelCase($string, $first_char_caps=false) {
     return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
 }
 //------------------------------------------------------------------------------
@@ -101,7 +100,7 @@ if (file_exists('CUSTOM.php')) {
 //can access without being logged in.  If the service you are trying to load
 //is on the list, then you are allowed to pass, otherwise you are routed to
 //the login screen
-if (!($admin || $logged_in)) {
+if (!$bypass && (!($admin || $logged_in))) {
     //Are you trying to get to the admin page?
     if (($namespace==='admin') && ($controller==='home') && ($action==='page')) {
         header('Location: /admin/login/form');
@@ -142,8 +141,8 @@ $info            = [];                                                          
 
 //###########################################################################
 //Primes the Humble Engine
-$ns              = $namespace;      //save a copy, since this might change if there's no specific action but there is a default action
-\Humble::_namespace($namespace);    //this will become the inherited namespace if necessary
+$ns              = $namespace;                                                  //save a copy, since this might change if there's no specific action but there is a default action
+\Humble::_namespace($namespace);                                                //this will become the inherited namespace if necessary
 \Humble::_controller($controller);
 \Humble::_action($action);
 \Environment::isAjax(isset($headers['HTTP_X_REQUESTED_WITH']) && ($headers['HTTP_X_REQUESTED_WITH']==='xmlhttprequest'));
@@ -252,16 +251,16 @@ if (!$request_handled) {
     }
 
     //###########################################################################
-    if ($authorizationEngineEnabled && !$bypass) {          //This control is set in the application.xml root file
-       require_once "AuthorizationEngine.php";             //Call out to the authorization engine
+    if ($authorizationEngineEnabled && !$bypass) {          
+       require_once "AuthorizationEngine.php";                                  //Call out to the authorization engine
     }
 
     //###########################################################################
     if (file_exists('Constants.php')) {
-        require_once 'Constants.php';                       //Enumeration type stuff
+        require_once 'Constants.php';                                           //Enumeration type stuff
     }
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {       //This is for handling function that windows PHP is missing
-        require_once "Compatibility.php";
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {       
+        require_once "Compatibility.php";                                       //This is for handling function that windows PHP is missing
     }
 
     if (!file_exists($include)) {

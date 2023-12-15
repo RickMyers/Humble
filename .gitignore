@@ -2,6 +2,7 @@
 **/cache/*
 Docs/*
 /images/*
+/vendor/*
 /app/vendor/*
 /app/node_modules/*
 /app/Workflows/*
