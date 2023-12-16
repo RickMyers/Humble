@@ -78,7 +78,7 @@ function logMessage($message=false,$timestamp=true) {
         } else {
             file_put_contents($cadence['log']['location'],$message,FILE_APPEND);
         }
-        //print($message);
+        print($message);
     }
 }
 //------------------------------------------------------------------------------
