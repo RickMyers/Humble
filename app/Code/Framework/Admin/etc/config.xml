@@ -92,6 +92,7 @@
             <admin>
                 <css>
                     <source>Admin/web/css/cssmenu.css</source>
+                    <source>Admin/web/css/bootstrap.css</source>
                 </css>
                 <js>
                     <source weight='30'>Admin/web/js/Admin.js</source>
