@@ -365,7 +365,7 @@ switch ($method) {
         
         $install_manager = Humble::model('humble/manager');        
         $install_manager->tailorSystem($project);                               //We are going to have to copy a model and a controller into the new module to handle logging in        
-        $install_manager->createLandingPage($project);
+        //$install_manager->createLandingPage($project);
         
         //
         // ###NOW RUN UPDATE ON EACH MODULE!!!!#######
@@ -396,7 +396,7 @@ switch ($method) {
         $landing      = explode('/',$landing_page);
         $ins          = \Humble::model('admin/utility');
         $uid          = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
-        $uuid         = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
+        $user_id      = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
         $util->disable();                                                       //Disabling the installer to prevent accidental re-run
         ob_start();
         
@@ -406,9 +406,9 @@ switch ($method) {
             print(file_get_contents('install_failed.txt')."\n");
             die('Install did not complete, no admin user was created'."\n");
         } 
-        $ins->setId($uid)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Basic Controller')->setActionDescription('The Home Page')->createController(true);
+        $ins->setId($user_id)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Homepage Controller')->setActionDescription('The Home Page')->createController(true);
         session_start();
-        $_SESSION['uid'] = $uid;
+        $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");
         print(getcwd()."\n");
         @copy('../humble.bat',strtolower((string)$project->factory_name).'.bat');

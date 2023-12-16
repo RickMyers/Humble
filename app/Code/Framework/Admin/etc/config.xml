@@ -89,10 +89,14 @@
                 <installmodule>Admin/web/edits/installmodule.json</installmodule>
                 <login>Admin/web/edits/adminlogin.json</login>
             </edits>
+            <bootstrap>
+                <css>
+                    <source>Admin/web/css/bootstrap.css</source>
+                </css>
+            </bootstrap>
             <admin>
                 <css>
                     <source>Admin/web/css/cssmenu.css</source>
-                    <source>Admin/web/css/bootstrap.css</source>
                 </css>
                 <js>
                     <source weight='30'>Admin/web/js/Admin.js</source>
