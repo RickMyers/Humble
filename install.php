@@ -1,6 +1,7 @@
 <?php
     ob_start();
     function postUpdate($stage='Preparing',$step='Initializeing',$percent=0) {
+        $percent = ($percent > 100) ? 100 : $percent;
         file_put_contents('../install_status.json','{ "stage": "'.$stage.'",  "step": "'.$step.'", "percent": '.$percent.' }');        
     }
 ?>
@@ -312,7 +313,6 @@ switch ($method) {
     case "INSTALL"      :
         ob_start();
         $step   = 0;
-        postUpdate('Preparing','Initializing',0);
         $email  = isset($_POST['email'])            ? $_POST['email']           : false;
         $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']          : false;
         $uid    = isset($_POST['userid'])           ? $_POST['userid']          : false;
@@ -348,10 +348,12 @@ switch ($method) {
         @mkdir('images',0775,true);
         file_put_contents("../Settings/".$project->namespace."/Settings.php",str_replace($srch,$repl,file_get_contents('app/Code/Framework/Humble/lib/sample/install/Settings.php')));
         chdir('app');
+        postUpdate('Preparing','Initializing',0);
         require_once('Humble.php');
-        $util    = \Environment::getInstaller();
-        $modules = \Environment::getRequiredModuleConfigurations();
-        $percent = 100/((count($modules)+1)*2);                                 //2 steps per module, plus we will be creating a new module in this process
+        $util            = \Environment::getInstaller();
+        $modules         = \Environment::getRequiredModuleConfigurations();
+        $project         = \Environment::getProject();
+        $percent         = 100/((count($modules)+1)*2);                         //2 steps per module, plus we will be creating a new module in this process
         postUpdate('Starting','Building Application Module',(++$step*$percent));
         foreach ($modules as $idx => $etc) {
             postUpdate('Installing','Installing '.$etc,(++$step*$percent));
@@ -361,8 +363,10 @@ switch ($method) {
             $util->install($etc);
         }
         
-        Humble::model('humble/manager')->tailorSystem();                     //We are going to have to copy a model and a controller into the new module to handle logging in        
-
+        $install_manager = Humble::model('humble/manager');        
+        $install_manager->tailorSystem($project);                               //We are going to have to copy a model and a controller into the new module to handle logging in        
+        $install_manager->createLandingPage($project);
+        
         //
         // ###NOW RUN UPDATE ON EACH MODULE!!!!#######
         //
@@ -390,7 +394,7 @@ switch ($method) {
         postUpdate('Finalizing','Registering Administrator',(++$step*$percent));
         $landing_page = (string)str_replace("\\","",$project->landing_page);
         $landing      = explode('/',$landing_page);
-        $ins          = \Humble::model('humble/utility');
+        $ins          = \Humble::model('admin/utility');
         $uid          = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
         $uuid         = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
         $util->disable();                                                       //Disabling the installer to prevent accidental re-run

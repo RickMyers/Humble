@@ -92,15 +92,14 @@ class Manager extends Model
         $xml->{$project->namespace}->orm->entities->addChild('user_identification');
         $xml->{$project->namespace}->orm->entities->user_identification->addAttribute('polyglot','Y');
         return file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/config.xml',$xml->asXML());
-        
     }
+    
     /**
      * Loads the default module with a few classes and tables, but overrides some things
      * 
      * @return $this
      */
-    public function tailorSystem() {
-        $project = Environment::getProject();
+    public function tailorSystem($project) {
         $sources = [
             'Controllers' => 'Code/Framework/Humble/lib/sample/install/Controllers',
             'Models'      => 'Code/Framework/Humble/lib/sample/install/Models',
