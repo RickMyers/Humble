@@ -365,7 +365,7 @@ switch ($method) {
         
         $install_manager = Humble::model('humble/manager');        
         $install_manager->tailorSystem($project);                               //We are going to have to copy a model and a controller into the new module to handle logging in        
-        //$install_manager->createLandingPage($project);
+        $install_manager->createLandingPage($project);
         
         //
         // ###NOW RUN UPDATE ON EACH MODULE!!!!#######
@@ -406,7 +406,7 @@ switch ($method) {
             print(file_get_contents('install_failed.txt')."\n");
             die('Install did not complete, no admin user was created'."\n");
         } 
-        $ins->setId($user_id)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Homepage Controller')->setActionDescription('The Home Page')->createController(true);
+        //$ins->setId($user_id)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Homepage Controller')->setActionDescription('The Home Page')->createController(true);
         session_start();
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");
