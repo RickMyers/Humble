@@ -89,11 +89,6 @@
                 <installmodule>Admin/web/edits/installmodule.json</installmodule>
                 <login>Admin/web/edits/adminlogin.json</login>
             </edits>
-            <bootstrap>
-                <css>
-                    <source>Admin/web/css/bootstrap.css</source>
-                </css>
-            </bootstrap>
             <admin>
                 <css>
                     <source>Admin/web/css/cssmenu.css</source>
