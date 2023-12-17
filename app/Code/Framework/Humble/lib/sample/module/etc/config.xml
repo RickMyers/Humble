@@ -65,7 +65,7 @@
         </structure>
         <orm>
             <prefix>&&prefix&&</prefix>
-            <mongodb><!-- if you want access to MongoDB, provide a prefix here --></mongodb>
+            <mongodb>&&namespace&&</mongodb>
             <!--
                 Register your tables to be managed under this namespace in the entities section below in the following format:
 
