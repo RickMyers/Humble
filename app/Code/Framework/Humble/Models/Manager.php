@@ -88,9 +88,11 @@ class Manager extends Model
 
     protected function updateConfig($project) {
         $xml = simplexml_load_file('Code/'.$project->package.'/'.$project->module.'/etc/config.xml');
-        $xml->{$project->namespace}->orm->entities->addChild('users');
-        $xml->{$project->namespace}->orm->entities->addChild('user_identification');
-        $xml->{$project->namespace}->orm->entities->user_identification->addAttribute('polyglot','Y');
+        if (!isset($xml->{$project->namespace}->orm->entities->users)) {
+            $xml->{$project->namespace}->orm->entities->addChild('users');
+            $xml->{$project->namespace}->orm->entities->addChild('user_identification');
+            $xml->{$project->namespace}->orm->entities->user_identification->addAttribute('polyglot','Y');
+        }
         return file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/config.xml',$xml->asXML());
     }
     
@@ -129,13 +131,15 @@ class Manager extends Model
     
     /**
      * 
-     * @param type $project
+     * @param object $project
+     * @return $this
      */
-    public function createLandingPage($project) {
+    public function createLandingPage($project='') {
         if ($parts = explode('/',$project->landing_page)) {
             $util = Humble::model('admin/utility');
             //TODO: Pass engine in...
-            $util->setNamespace($parts[1])->setEngine('Twig')->setName($parts[2])->setAction($parts[3])->createController(true,true);
+            $util->setDescription($this->getDescription())->setActionDescription($this->getActionDescription())->setNamespace($parts[1])->setEngine('Twig')->setName($parts[2])->setAction($parts[3])->createController(true,true);
         }
+        return $this;
     }    
 }

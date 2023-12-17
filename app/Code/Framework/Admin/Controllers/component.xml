@@ -22,9 +22,9 @@
         <action name="controller">
             <description>Will create a new component, as in Helper, Model, Entity, or Event </description>
             <model response="TRUE" namespace="admin" class="utility" method="createController" id='utility'>
-                <parameter name="uid"           source="session" default="" />
+                <parameter name="admin_id"      source="session" required="true" />
                 <parameter name="namespace"     source="post"    default="" />
-                <parameter name="engine"        source="post"    value="templater" default="" />
+                <parameter name="engine"        source="post"    value="templater" default="Twig" />
                 <parameter name="name"          source="post"    default="" />
                 <parameter name="action"        source="post"    default="" />
                 <parameter name="description"   source="post"    default="" />

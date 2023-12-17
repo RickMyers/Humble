@@ -284,10 +284,8 @@ class Utility extends Model
             $exts[$engine['templater']] = $engine['extension'];
         }
         $user           = [];
-        if ($data           = Humble::entity('default/users')->setId($this->getUid())->load()) {
-            $user           = Humble::entity('default/user/identification')->setId($this->getUid())->load();
-        } else if ($data    = Humble::entity('admin/users')->setId($this->getAdminId())->load()) {
-            $user           = Humble::entity('admin/user/identification')->setId($this->getUid())->load();
+         if ($data  = Humble::entity('admin/users')->setId($this->getAdminId())->load()) {
+            $user = Humble::entity('admin/user/identification')->setId($this->getAdminId())->load();
         }
         //need to look for other custom controller template as well...
         $project        = \Environment::getProject();
@@ -299,8 +297,7 @@ class Utility extends Model
         $templates[]    = 'Code/Framework/Humble/lib/sample/component/controller.xml';
         $template       = $this->resolveLocation($templates);
         
-        
-        if (!$module         = Humble::module($this->getNamespace(),$override)) {
+        if (!$module    = Humble::module($this->getNamespace(),$override)) {
             return "The ".$this->getNamespace()." module is disabled or does not exist";
         }
         $dest           = 'Code/'.$module['package']."/".$module['controller'];

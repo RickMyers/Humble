@@ -363,9 +363,11 @@ switch ($method) {
             $util->install($etc);
         }
         
+        $admin_id  = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
+        
         $install_manager = Humble::model('humble/manager');        
         $install_manager->tailorSystem($project);                               //We are going to have to copy a model and a controller into the new module to handle logging in        
-        $install_manager->createLandingPage($project);
+        $install_manager->setAdminId($admin_id)->setDescription('Homepage Controller')->setActionDescription('The Home Page')->createLandingPage($project);
         
         //
         // ###NOW RUN UPDATE ON EACH MODULE!!!!#######
@@ -378,7 +380,7 @@ switch ($method) {
             print('###########################################'."\n\n");
             $util->update($etc);
         }
-
+        
         //This fakes out the CLI to thinking it was called at the command line
         $args = [
             "CLI.php",
@@ -392,19 +394,14 @@ switch ($method) {
         include "CLI.php";        
         
         postUpdate('Finalizing','Registering Administrator',(++$step*$percent));
-        $landing_page = (string)str_replace("\\","",$project->landing_page);
-        $landing      = explode('/',$landing_page);
-        $ins          = \Humble::model('admin/utility');
-        $uid          = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
-        $user_id      = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
+        $user_id      = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);        
         $util->disable();                                                       //Disabling the installer to prevent accidental re-run
-        ob_start();
         
         $results      = ob_get_flush();
-        if (!$uid) {
+        if (!$user_id) {
             file_put_contents('install_failed.txt',$results);
             print(file_get_contents('install_failed.txt')."\n");
-            die('Install did not complete, no admin user was created'."\n");
+            die('Install did not complete, no user was created'."\n");
         } 
         //$ins->setId($user_id)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Homepage Controller')->setActionDescription('The Home Page')->createController(true);
         session_start();
