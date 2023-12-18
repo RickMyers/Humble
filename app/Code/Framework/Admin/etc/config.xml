@@ -68,6 +68,8 @@
             <mongodb>admin</mongodb>
             <entities>
                 <system_monitor />
+                <menus />
+                <menu_categories />
                 <users />
                 <user_identification />
             </entities>

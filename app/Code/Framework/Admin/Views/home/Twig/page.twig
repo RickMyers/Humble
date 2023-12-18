@@ -214,31 +214,30 @@
                                   </li>                                  
                                 <li><a href='#'>Environment</a>
                                     <ul>
-                                          <li><a href="#">Query Logging</a>
+                                        <li><a href="#">Query Logging</a>
                                             <ul>
                                                 <li><a href='/admin/log/queryon' onclick="window.event.stopPropagation()">On</a></li>
                                                 <li><a href='/admin/log/queryoff' onclick="window.event.stopPropagation()">Off</a></li>
                                             </ul>
                                         </li>                                         
-                                        {% if (permissions.getSuperUser() == 'Y') %}
-                                            <li><a href='#'> Maintenance Mode </a>
-                                                <ul>
-                                                    <li><a href='#' onclick='Administration.maintenance.enter(); return false'> Enter </a></li>
-                                                    <li><a href='#' onclick='Administration.maintenance.leave(); return false'> Leave </a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
-                                            <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>
-                                            <li><a href='#' onclick="Administration.module.install(); return false">Install Module</a></li>
-                                            <li><a href='#'>Export Data</a>
-                                                <ul>
-                                                {% for module in available_modules.fetch() %}
-                                                    <li><a href='#' onclick="Administration.module.export('{{ module.namespace }}'); return false">{{ module.module|title }}</a></li>
-                                                {% endfor %}
-                                                </ul>
-                                            </li>
-                                            <li><a href='#' onclick="Administration.module.import('{{ module.namespace }}'); return false">Import Data</a></li>
-                                        {% endif %}
+
+                                        <li><a href='#'> Maintenance Mode </a>
+                                            <ul>
+                                                <li><a href='#' onclick='Administration.maintenance.enter(); return false'> Enter </a></li>
+                                                <li><a href='#' onclick='Administration.maintenance.leave(); return false'> Leave </a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
+                                        <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>
+                                        <li><a href='#' onclick="Administration.module.install(); return false">Install Module</a></li>
+                                        <li><a href='#'>Export Data</a>
+                                            <ul>
+                                            {% for module in available_modules.fetch() %}
+                                                <li><a href='#' onclick="Administration.module.export('{{ module.namespace }}'); return false">{{ module.module|title }}</a></li>
+                                            {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li><a href='#' onclick="Administration.module.import('{{ module.namespace }}'); return false">Import Data</a></li>
                                     </ul>
                                 </li>
                                 <li><a href='#'>Flags</a>

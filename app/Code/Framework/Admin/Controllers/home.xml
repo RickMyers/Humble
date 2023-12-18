@@ -17,6 +17,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <case value="TRUE">
                     <model namespace="humble" class="system" id="system" />
                     <entity namespace='humble' class='modules'      id='available_modules' orderby='package=ASC,namespace=ASC' />
+                    <entity namespace='humble' class='menus'        id="menus" />
                     <helper namespace='humble' class='installer'    id='installer' />
                     <helper namespace='humble' class='admin'        id='directory' />
                     <helper namespace='humble' class='directory'    id='packages' />
