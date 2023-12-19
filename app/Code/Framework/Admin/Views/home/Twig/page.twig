@@ -134,128 +134,26 @@
                             <div class="server-status-desc">Threads</div>
                         </div>                        
                     </div>
-                    <ul style='position: relative; z-index: 3'><!-- humble_logo_white.png -->
+                    <ul style='position: relative; z-index: 3; cursor: pointer'><!-- humble_logo_white.png -->
                        <li style='padding-top: 6px'><img src='/images/humble/djikstra_light.png' style='height: 30px; position: relative; top: 3px; left: 5px' /></li>
-                       <li class='active'><a href='#'>Places</a>
-                          <ul>
-                             <li><a target="_BLANK" href='/admin/'>Administration</a></li>
-                             <li><a target="_BLANK" href='/paradigm/actions/open'>Paradigm Editor</a></li>
-                             <li><a target="_BLANK" href='/contrive/actions/open'>Contrive Designer</a></li>
-                             <li><a target="_BLANK" href='/paradigm/api/home'>API Test App</a></li>
-                             <li><a target="_BLANK" href='/paradigm/actions/designer'>Form Designer</a></li>
-                             <li style="border-top: 1px solid silver; "><a href='/admin/user/logout'>Logout</a>
-
-                          </ul>
-                        </li>
-                        <li><a href='#'>Documentation</a>
-                           <ul>
-                              <li><a href="#" onclick="Administration.documentation.run(); return false;">Generate API Documentation</a></li>
-                              <li><a target="_BLANK" href='/internal/docs/'>Developer Documentation</a></li>
-                              <li><a href='/Docs/' onclick="Administration.documentation.review(); return false;">API Documentation</a></li>
-                              <li><a target="_BLANK" href='#' onclick=" return false">Administration Documentation</a></li>
-                             <li><a href='#'>Services</a>
-                                <ul>
-                                   <li><a target="_BLANK" href='#' onclick="Administration.services.directory.index(); return false;">Directory</a></li>
-                                   <li><a target="_BLANK" href='/admin/directory/authorizations'>Authorizations</a></li>
-                                </ul>
-                             </li>                              
-                           </ul>
-                        </li>                     
-                        <li><a href='#'>Admin</a>
+                    {% for category,options in menus.sort() %}
+                        <li class='active'><a href='#'>{{ category }}</a>
                             <ul>
-                                <li><a href='#'>Create...</a>
+                            {% for option in options %}
+                                <li><a {% if option.target %}target="{{ option.target }}"{% endif %} {% if option.href %}href='{{ option.href }}'{% endif %} {% if option.function %}onclick='{{ option.function }}; return false' {% endif %}>{{ option.menu }}</a>
+                                {% if option.children %}
                                     <ul>
-                                        <li><a href='#' onclick='Administration.create.package(); return false'>New Package</a></li>
-                                        <li><a href='#' onclick='Administration.create.module(); return false'>New Module</a></li>
-                                        <li><a href='#' onclick='Administration.create.component(); return false'>New Component</a></li>
-                                        <li><a href='#' onclick='Administration.create.controller(); return false'>New Controller</a></li>
-                                    </ul>
-                                </li>                                   
-                                <li> <a href='#'>Utility/Tool</a>
-                                    <ul>
-                                        <li><a href='#' onclick='Administration.add.category(); return false'>Add New Category</a></li>
-                                        <li><a href='#' onclick='Administration.add.package(); return false'>Add New Package</a></li>
-                                        <li><a href='#' onclick='Administration.admin.add.user(); return false'>Add User</a></li>
-                                        <li><a href='#' onclick='Administration.admin.add.list(); return false'>Manage User Lists</a></li>                                        
-                                        <li><a href="#" onclick='Administration.api.tester(); return false'>API Tester</a></li>                                        
-                                        <li><a href='#' onclick='Administration.templates.clone(); return false'>Clone Templates</a></li>
-                                        <li><a href='#' onclick='Administration.upload.form(); return false'>Upload File</a></li>                                        
-                                    </ul>
-                                </li>
-                                <li><a href="#">System</a>
-                                    <ul>
-                                        <li><a href='#' onclick=' return false'>Information</a></li>
-                                        <li><a href='#' onclick=' return false'>Monitor</a></li>
-                                        <li><a href='#' onclick=' return false'>Status</a></li>
-                                        <li><a href='#' onclick='Administration.smtp.settings.open();return false; '>SMTP Settings</a></li>
-                                        <li><a href='#' onclick=' return false'>Cadence</a>
-                                            <ul>
-                                                <li><a href='#' onclick='Administration.cadence.action("start"); return false'>Start</a></li>
-                                                <li><a href='#' onclick='Administration.cadence.action("stop"); return false'>Stop</a></li>
-                                                <li><a href='#' onclick='alert('Not working at the moment, just do "stop" and "start"'); return false'>Restart</a></li>
-                                                <li><a href='#' onclick='Administration.cadence.action("reload"); return false'>Reload</a></li>
-                                                <li><a href='#' onclick='Administration.cadence.action("clear"); return false'>Clear PID</a></li>
-                                                <li><a href='#' onclick='Administration.cadence.tune(); return false'>Tune...</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>                                
-                                <li><a href="#">Secrets Manager</a>
-                                    <ul>
-                                        <li><a href='#' onclick='Administration.secrets.add(); return false'>Add Secret</a></li>
-                                        <li><a href='#' onclick='Administration.secrets.review(); return false'>Review Secret</a></li>
-                                    </ul>
-                                </li> 
-                                <li><a href="#">Workflows</a>
-                                      <ul>
-                                          <li><a href='#' onclick='Administration.workflows.add.exportTarget(); return false'>Add Export Target</a></li>
-                                          <li><a href='#' onclick='Administration.workflows.add.importToken(); return false'>Add Import Token</a></li>
-                                      </ul>
-                                  </li>                                  
-                                <li><a href='#'>Environment</a>
-                                    <ul>
-                                        <li><a href="#">Query Logging</a>
-                                            <ul>
-                                                <li><a href='/admin/log/queryon' onclick="window.event.stopPropagation()">On</a></li>
-                                                <li><a href='/admin/log/queryoff' onclick="window.event.stopPropagation()">Off</a></li>
-                                            </ul>
-                                        </li>                                         
-
-                                        <li><a href='#'> Maintenance Mode </a>
-                                            <ul>
-                                                <li><a href='#' onclick='Administration.maintenance.enter(); return false'> Enter </a></li>
-                                                <li><a href='#' onclick='Administration.maintenance.leave(); return false'> Leave </a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Quiesce System</a></li>
-                                        <li><a href='#' onclick='Administration.status.quiesce.start(); return false'>Put System Online</a></li>
-                                        <li><a href='#' onclick="Administration.module.install(); return false">Install Module</a></li>
-                                        <li><a href='#'>Export Data</a>
-                                            <ul>
-                                            {% for module in available_modules.fetch() %}
-                                                <li><a href='#' onclick="Administration.module.export('{{ module.namespace }}'); return false">{{ module.module|title }}</a></li>
-                                            {% endfor %}
-                                            </ul>
-                                        </li>
-                                        <li><a href='#' onclick="Administration.module.import('{{ module.namespace }}'); return false">Import Data</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href='#'>Flags</a>
-                                    <ul> 
-                                    {% for flag,status in system.flags() %}
-                                        <li><a href="#">{{ flag }}</a>
-                                            <ul>
-                                                <li><a href='#' onclick="window.event.stopPropagation(); Administration.flags.toggle('{{ flag }}','On'); return false"><span {% if (status==1) %} style='font-weight: bold' {% else %} style='opacity: .4' {% endif %}> On </span></a></li>
-                                                <li><a href='#' onclick="window.event.stopPropagation(); Administration.flags.toggle('{{ flag }}','Off');return false"><span {% if (status==0) %} style='font-weight: bold' {% else %} style='opacity: .4' {% endif %}>Off</span></a></li>
-                                            </ul>
-                                        </li>
+                                    {% for child in option.children %}
+                                        <li><a {% if child.target %}target="{{ child.target }}"{% endif %} {% if child.href %}href='{{ child.href }}'{% endif %} {% if child.function %}onclick='{{ child.function }}; return false'{% endif %}>{{ child.menu }}</a></li>
                                     {% endfor %}
                                     </ul>
+                                {% endif %}
                                 </li>
+                            {% endfor %}
                             </ul>
-                        </li>
-
+                    {% endfor %}
                     </ul>
+                    
                 </div>
 
                 <div style='float: left; height: 100%; width: 65px; background-color: rgba(252,252,252,.3); margin-right: 2px' id='widgets-column'>

@@ -35,7 +35,12 @@ class Menus extends Model
         return __CLASS__;
     }
 
-    public function sort() {
+    /**
+     * Groups the serial menu data from the database into a hierarchical tree
+     * 
+     * @return array
+     */
+    public function sort() : array {
         $categories = [];
         $pointers   = [];
         $menus      = [];
@@ -52,7 +57,7 @@ class Menus extends Model
             
         }
         foreach ($options as $menu) {
-            $menu['children'] = [];
+            //$menu['children'] = [];
             if ($menu['parent_id']) {
                 $pointers[$menu['parent_id']]['children'][$menu['id']] = $menu;
             } 
