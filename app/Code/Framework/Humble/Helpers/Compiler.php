@@ -341,7 +341,7 @@ class Compiler extends Directory
             }
         }
         if ($func) {
-            print($this->tabs().'if (!'.$func.'('.$cast.$source."['".$field."'".'])) { throw new \Exceptions\ValidationDatatypeException("The value in the variable <i style=\'color: red\'>'.$field.'</i> is of an incorrect format ['.$typeError.']",10); }'."\n");
+            print($this->tabs().'if (isset($_REQUEST[\''.$field.'\']) && !'.$func.'('.$cast.$source."['".$field."'".'])) { throw new \Exceptions\ValidationDatatypeException("The value in the variable <i style=\'color: red\'>'.$field.'</i> is of an incorrect format ['.$typeError.']",10); }'."\n");
         }
         if (($minlength !== false) && $minlength) {
             print($this->tabs().'if (strlen('.$source."['".$field."'".']) < '.$minlength.') { throw new \Exceptions\ValidationDatatypeException("The value in the variable <i style=\'color: red\'>'.$field.'</i> is less than the minimum length ['.$minlength.']",10); }'."\n");
@@ -793,11 +793,14 @@ PHP;
         } else {
             print($this->tabs().'$chainControllers[]'." = '".$this->controller."';\n");
         }
-        if (isset($action['add'])) {
-            $fields = explode(',',$action['add']);
+        if (isset($action['map'])) {
+            $fields = explode(',',$action['map']);
             foreach ($fields as $idx => $name) {
-                print($this->tabs().'$_POST["'.$name.'"] = $'.$name.";\n");
-                print($this->tabs().'$_REQUEST["'.$name.'"] = $'.$name.";\n");
+                $parts = explode('=',$name);
+                if (isset($parts[1])) {
+                    print($this->tabs().'$_POST["'.$parts[0].'"] = $'.$parts[1].";\n");
+                    print($this->tabs().'$_REQUEST["'.$parts[0].'"] = $'.$parts[0].";\n");
+                }
             }
         }
     }
