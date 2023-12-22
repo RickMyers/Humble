@@ -1,13 +1,15 @@
 {
     "project_name": "Humble",
-    "project_url": "https:\/\/humbleprogramming.com",
+    "project_url": "http:\/\/humble.com:9080",
+    "project_port": "9080",
     "factory_name": "Humble",
     "framework_url": "https:\/\/humbleprogramming.com",
     "module": "Humble",
     "namespace": "humble",
-    "package": "Base",
+    "package": "Framework",
     "landing_page": "\/humble\/home\/page",
     "author": "rick@humbleprogramming.com",
+    "name": "Rick Myers",
     "destination_folder": "c:\\var\\www\\Humble",
     "serial_number": "JSFQ-VSYF-QRKQ-CJQQ",
     "hub_port": "3090"

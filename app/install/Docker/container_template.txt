@@ -14,6 +14,7 @@ RUN apt install -y curl
 RUN apt install -y apache2
 RUN apt update
 RUN echo "ServerName &&SERVER&&" >> /etc/apache2/apache2.conf
+
 RUN apt install -y curl
 RUN apt install -y git
 RUN apt install -y vim
@@ -23,9 +24,11 @@ RUN apt install -y nano
 RUN apt install -y htop
 RUN apt install -y memcached
 RUN apt install -y libmemcached-tools
+RUN apt install -y redis-server
 RUN apt install -y mysql-client
 RUN apt install -y libapache2-mod-dnssd
-RUN apt install -y php8.2 libapache2-mod-php8.2 php8.2-mysql
+RUN apt install -y php8.2 libapache2-mod-php8.2 
+RUN apt install -y php8.2-mysql
 RUN apt install -y php8.2-mongodb
 RUN apt install -y php8.2-mbstring
 RUN apt install -y php8.2-xml
@@ -42,6 +45,7 @@ RUN apt install -y php8.2-dev
 RUN apt install -y nala
 RUN apt install -y mkcert
 RUN apt install -y xdg-utils
+RUN pecl install xdebug
 #RUN mkcert -install
 RUN apt install -y w3m
 RUN apt install -y dos2unix
@@ -57,16 +61,24 @@ RUN apt install -y dos2unix
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php --install-dir=/usr/bin
 RUN git config --global http.sslverify false
+RUN chown -R www-data:root /var/www
+RUN chmod -R 0775 /var/www
 RUN mkdir /var/www/logs && chmod -R 0777 /var/www/logs
 RUN mkdir /var/www/logs/&&NAMESPACE&& && chmod -R 0777 /var/www/logs/&&NAMESPACE&&
 RUN mkdir /var/www/Settings
 RUN mkdir /var/www/Settings/&&NAMESPACE&& && chmod -R 0777 /var/www/Settings/&&NAMESPACE&&
-RUN a2enmod rewrite && a2enmod ssl && a2enmod include
+RUN a2enmod rewrite && a2enmod ssl && a2enmod include 
 COPY vhost.conf /etc/apache2/sites-enabled/&&NAME&&.conf
 COPY ports.conf /etc/apache2/ports.conf
-COPY php.ini /etc/php/8.2/apache2/php.ini
-COPY humble.sh /var/www/html/humble.sh
-RUN dos2unix /var/www/html/humble.sh
+RUN apt update
 RUN apt upgrade -y
+COPY delay_launch.php /var/www/delay_launch.php
+COPY php.ini /etc/php/8.2/fpm/php.ini
+COPY start.sh /var/www/start.sh
+COPY humble.sh /var/www/html/humble.sh
+RUN chmod +x /var/www/start.sh
+RUN dos2unix /var/www/start.sh
+RUN chmod +x /var/www/html/humble.sh
+RUN dos2unix /var/www/html/humble.sh
 CMD ["apache2ctl", "-D", "FOREGROUND"]
 

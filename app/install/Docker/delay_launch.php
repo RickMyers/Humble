@@ -12,6 +12,8 @@ while ((++$ctr < 10) && !($launched)) {
     if ((int)($result = shell_exec($cmd)) >= 2) {
         exec('service php8.2-fpm start');
         exec('service memcached start');
+        exec('chown -R www-data:root html');
+        exec('chmod -R 0775 html');
         file_put_contents('results.txt','I launched PHP-FPM');
         die();
     } else {

@@ -21,7 +21,7 @@ $ajaxUpload         = false;
 //################### REMOVE BEFORE GOING TO PRODUCTION ########################
 //error_reporting(E_ALL);
 //ini_set('display_errors', 'On');
-ob_start();
+
 //##############################################################################
 function isInteger($i) {
     return ($i == (string)(int)$i);

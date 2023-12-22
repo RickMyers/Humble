@@ -122,7 +122,7 @@
                     <source weight='10'>Paradigm/web/js/Desktop.js</source>
                     <source weight='15'>Paradigm/web/js/Actions.js</source>
                     <source weight='16'>Paradigm/web/js/Console.js</source>
-                    <source weight='17'>Humble/web/js/ckeditor/ckeditor.js</source>
+                    <source weight='17'>Paradigm/web/js/ckeditor/ckeditor.js</source>
                 </js>
                 <css>
                     <source>Paradigm/web/css/Paradigm.css</source>

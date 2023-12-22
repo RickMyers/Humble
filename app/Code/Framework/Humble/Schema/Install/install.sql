@@ -272,7 +272,7 @@ CREATE TABLE `humble_user_identification` (
 /*Table structure for table `humble_users` */
 
 CREATE TABLE `humble_users` (
-  `uid` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `user_name` char(30) DEFAULT '',
   `password` char(13) DEFAULT '',
   `salt` char(32) DEFAULT NULL,
@@ -285,7 +285,7 @@ CREATE TABLE `humble_users` (
   `account_status` char(1) DEFAULT '',
   `login_attempts` int DEFAULT '0',
   `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`uid`),
+  PRIMARY KEY (`id`),
   unique index (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

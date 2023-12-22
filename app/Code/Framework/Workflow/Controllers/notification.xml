@@ -86,5 +86,27 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name='method' source='post' required='true' default='' />
             </helper>
         </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="rainemail" passalong="window_id,windowId,component,method">
+            <description>Manages the email creation form</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+            <entity namespace='argus'    class='email/categories' id='categories' />
+            <helper namespace="workflow" class='data' id='helper' />
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="eventemail" passalong="window_id,windowId,component,method">
+            <description>Manages the creation of an email from event fields</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+        
+      
     </actions>
 </controller>

@@ -95,18 +95,21 @@ if (file_exists('CUSTOM.php')) {
 }
 
 //###########################################################################
+//Are you trying to get to the admin page?
+if (!$admin) {
+    if (($namespace==='admin') && ($controller==='home') && ($action==='page')) {
+        header('Location: /admin/login/form');
+        die();
+    }
+}
+
+//###########################################################################
 //Two phased login check.  If you are not logged in (determined by having a
 //variable called uid in the session, then load the list of services a person
 //can access without being logged in.  If the service you are trying to load
 //is on the list, then you are allowed to pass, otherwise you are routed to
 //the login screen
-if (!$bypass && (!($admin || $logged_in))) {
-    //Are you trying to get to the admin page?
-    if (($namespace==='admin') && ($controller==='home') && ($action==='page')) {
-        header('Location: /admin/login/form');
-        die();
-    }
-    
+if (!$bypass && !$logged_in) {
     //check to see if the service they are trying to access is publicly visible
     //We are going to try to get a cached copy, otherwise we read the physical file for routes
 //    if (!$allowed = Humble::cache('humble_framework_allowed_routes')) {

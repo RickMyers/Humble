@@ -1161,6 +1161,7 @@ PHP;
             print($this->tabs().'global $chainActions;'."\n");
             print($this->tabs().'global $chainControllers;'."\n");
             print($this->tabs().'global $abort;'."\n");
+            print($this->tabs()."ob_start();\n");
             print($this->tabs().'switch ($method) {'."\n");
             $attr = $actions->attributes();
             if (isset($attr['blocking'])) {
@@ -1388,6 +1389,11 @@ PHP;
                 print($this->tabs(-1).'break; '."\n");
             }
             print($this->tabs(-1)."}\n");
+            print($this->tabs().'$output = ob_get_clean();'."\n");
+            print($this->tabs().'if ($output) {' ."\n");
+            print($this->tabs(1).'\Log::console($output);' ."\n");
+            print($this->tabs(-1).'}' ."\n");
+            
             print($this->tabs(-1)."}\n".'processMethod($method);'."\n?>\n");
             print($this->includes['common_body']);
             print($this->includes['templater_footer']);
