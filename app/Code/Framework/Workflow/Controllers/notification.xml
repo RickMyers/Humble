@@ -6,7 +6,7 @@ Handles the different screens for configuring email, alerts, etc
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
 <controller name="notification" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
-    <actions>
+    <actions blocking="off">
 
         <action name="configuration">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>

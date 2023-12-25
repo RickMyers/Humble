@@ -131,7 +131,36 @@ class Notification extends Model {
         }
         return $texted;
 	}
-
+    /**
+     * Custom email handler using the RAIN templating engine
+     * 
+     * @workflow use(notification) configuration(/workflow/notification/rainemail)
+     * @param type $EVENT
+     * @return boolean
+     */
+    public function rainBasedEmail($EVENT=false) {
+        $emailed = false;
+        if ($EVENT!==false) {
+            $data   = $EVENT->load();   //get the original event data, it should have information by now
+            $cfg    = $EVENT->fetch();
+            if (isset($cfg['email_template']) && isset($cfg['recipients']) && ($cfg['recipients'])) {
+                @mkdir('tpl/cache',0775,true);
+                $tpl = Environment::getInternalTemplater('tpl');
+                $template_file = 'tpl/'.md5($cfg['email_template']).'.rain';
+                file_put_contents($template_file,$cfg['email_template']);
+                foreach ($data as $key => $value) {
+                    $tpl->assign($key,$value);
+                }
+                $template = $tpl->draw(md5($cfg['email_template']),true);
+                unlink($template_file);   
+                $recipient = ($cfg['recipients_source']=='field') ? $data[trim($cfg['recipients'])] : $data['recipients'];
+                $subject   = ($cfg['subject_source']=='field')    ? $data[trim($cfg['subject'])] : $data['subject'];
+                $emailed   = Argus::getModel('argus/email')->sendEmail($recipient,$subject,$template,'noreply@aflacbenefitssolutions.com');
+            }
+        }
+        return ($emailed !== false);
+    }
+    
     /**
      * Returns a message as a response, through the response method on our Humble factory
      *

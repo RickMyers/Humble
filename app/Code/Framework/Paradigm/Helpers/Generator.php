@@ -91,7 +91,7 @@ HDR;
             'external'  => true
         ];
         if (!isset($exclude[$node['element']])) {
-            if ( ($node['configuration'] ?? false) || ($node['configuration']['namespace'] ?? false) || ($node['configuration']['method'] ?? false) || ($node['configuration']['component'] ?? false)) {
+            if ( !($node['configuration'] ?? false) || !($node['configuration']['namespace'] ?? false) || !($node['configuration']['method'] ?? false) || !($node['configuration']['component'] ?? false)) {
                 throw new \Exceptions\IncompleteConfigurationException($node['text'].' ['.$node['element'].'] is not completely configured.  Edit the workflow and complete the component',12);
             }
         } else if (($node['element']=='terminus')) {
