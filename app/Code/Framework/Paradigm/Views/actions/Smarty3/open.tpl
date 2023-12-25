@@ -157,6 +157,7 @@ Copyright humbleprogramming.com, all rights reserved
         <script type="text/javascript" src="/js/engine"></script>
         <script type="text/javascript" src="/js/widgets"></script>
         <script type="text/javascript" src="/ace/ace.js"></script>
+        <script type="text/javascript" src="/web/js/ckeditor4/ckeditor.js"></script>
         <script type="text/javascript">
         {assign var=tab_id value=$system->browserTabId()}
         EasyAjax.always.add('browser_tab_id','{$tab_id}')
@@ -236,6 +237,9 @@ Copyright humbleprogramming.com, all rights reserved
                         case    "process"  :
                             Paradigm.elements.process.add($('#new-element-text').val());
                             break;
+                        case    "adapter"  :
+                            Paradigm.elements.adapter.add($('#new-element-text').val());
+                            break;                            
                         case    "file"  :
                             Paradigm.elements.file.add($('#new-element-text').val());
                             break;                            
@@ -570,6 +574,10 @@ Copyright humbleprogramming.com, all rights reserved
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/process.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('process')" /><br />
                             Process
                        </div>
+                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                            <img class='flowchartGlyph' src='/images/paradigm/clipart/jsadapter.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('adapter')" /><br />
+                            Adapter
+                       </div>                        
                         <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/decision.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('decision')" /><br />
                             Decision
