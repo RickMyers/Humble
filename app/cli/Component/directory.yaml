@@ -12,7 +12,7 @@ bc :
             action|ac: Name of the action
         optional:
             description|desc: Description of controller
-            templater|ts:use: The templater to use, if not specified will use default
+            templater|ts|use: The templater to use, if not specified will use default
 cm : 
     description: Creates a Component (Model Helper Entity)
     usage:

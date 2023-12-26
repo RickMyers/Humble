@@ -10,8 +10,7 @@
  *  You can do a lot from here...
  * 
  */
-//print('Working on it...'."\n");
-//ob_start();
+
 if (!class_exists('Humble')) {
     //let's make sure we only include/define these once
     require_once('Humble.php');
@@ -68,19 +67,20 @@ function aggregateDirectories($dh) {
 //  necessitates this monstrosity
 //--------------------------------------------------------------------------
 function helpRequest($first_parm,$details) {
-    return (($details['directive'] ?? false )===true) ? (strtolower($first_parm) === 'help') : ((!$first_parm) || (strtolower($first_parm) === 'help'));
+    global $help_cmd;
+    return (($details['directive'] ?? false )===true) ? (isset($help_cmd[strtolower($first_parm)])) : ((!$first_parm) || (isset($help_cmd[strtolower($first_parm)])));  //Yikes! Now I need a shower...
 }
 
 //==========================================================================
 
+$help_cmd = ['help'=>true,'?'=>true];
 if (!count($argv ?? []) && (count($args ?? []))) {
     $argv = $args;  //not called from command line but included by another program so we are faking it
 }
 $args               = [];                                                       //declaring global variable
 $available_commands = aggregateDirectories(dir('cli'));   
-
 if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         //pop program name and grab the command they entered
-    if (strtolower($entered_command === 'help')) {
+    if (isset($help_cmd[strtolower($entered_command)])) {
         printHelp($available_commands);
     } else {
         foreach ($available_commands as $include => $commands) {                //go find which include we should bring in (functionality)

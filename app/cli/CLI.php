@@ -183,7 +183,7 @@ class CLI
         Usage: {$usage}
         
 HELP;
-        print($output);
+        print($output."\n\n");
     }
 
     /**
