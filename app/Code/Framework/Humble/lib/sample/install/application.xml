@@ -31,6 +31,7 @@
     </msa>
     <default>
         <inline_templater options="Rain,Latte">Rain</inline_templater>
+        <templater options="Smarty,Twig,Latte,Savant,TBS,Rain">Twig</templater>
     </default>
     <api>
         <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/APIPolicy.htmls for more information first -->

@@ -353,7 +353,7 @@ Copyright humbleprogramming.com, all rights reserved
                                    diagram.workflow[i].fillStyle = Paradigm.gradient(diagram.workflow[i].X,diagram.workflow[i].Y,diagram.workflow[i].W,diagram.workflow[i].H);
                                }
                         }
-                        console.log(diagram);
+                        //console.log(diagram);
                         Paradigm.elements.list = diagram.workflow;
                         Paradigm.actions.set.generatedWorkflowId(diagram.generated_workflow_id);
                         Paradigm.actions.set.mongoWorkflowId(diagram.workflow_id);

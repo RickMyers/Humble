@@ -36,19 +36,23 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function connect() {
         global $use_connection_pool;                                            //use persistent connections?
-        $this->_dbref	= @ new \mysqli((($use_connection_pool) ? 'p:' : '').$this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword());
-        if (mysqli_connect_errno()) {
+        if (!$this->_dbref	=  @new \mysqli((($use_connection_pool) ? 'p:' : '').$this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword())) {
+            die('Error attempting to connect to the database.  Is the server running?  If so, check you DB settings'."\n");
+        }
+        if ($this->_dbref->connect_error ?? false) {
             $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";
             $errorstring .= "\t<class> ".$this->_environment->getDBHost()." </class>\n";
             $errorstring .= "\t<errorcode> Connection Error </errorcode>\n";
-            $errorstring .= "\t<errortext> ".mysqli_connect_error()." </errortext>\n";
+            $errorstring .= "\t<errortext> ".$this->_dbref->connect_error." </errortext>\n";
             $errorstring .= "</error>\n";
             \Log::mysql($errorstring);
             $this->_connected = false;
-            print('<pre>');
-            debug_print_backtrace();
-            print("\n\n");
-            die('Failure to connect to database server'."\n");
+            if (php_sapi_name()=='cli') {
+                print($this->_dbref->connect_error."\n");
+                debug_print_backtrace();
+                print("\n");
+            }
+            die('Failed to connect to database server'."\n");
         } else {
             mysqli_report(MYSQLI_REPORT_OFF);
             @ $this->_dbref->select_db($this->_environment->getDatabase());
