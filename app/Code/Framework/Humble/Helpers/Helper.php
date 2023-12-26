@@ -24,7 +24,7 @@ class Helper {
     protected $whatAmI      = 'helper';
 
     public function __construct()    {
-        //parent::__construct();
+        
     }
 
     /**

@@ -116,11 +116,12 @@ class Module extends CLI
                 print("\t".++$ctr.') '.(is_array($module) ? $module['namespace'] : $module)."\n");
             }
             print("\n");
-            $updater = \Environment::getUpdater();            
+            $updater = \Environment::getUpdater();    
             foreach ($modules as $module) {
                 $namespace = (is_array($module) ? $module['namespace'] : $module);
                 $updater->output('BEGIN','');
                 $updater->output('BEGIN',"=== Beginning update of Namespace: ".$namespace." ===");
+                $updater->registerEntities($namespace);
                 self::updateIndividualModule($updater->reset(),$namespace);
                 //if (strtoupper($workflows)==='Y') {
                     $updater->generateWorkflows($namespace);

@@ -12,6 +12,7 @@ class Component extends CLI
         print($file."\n");
         $compiler   = \Environment::getCompiler();
         $compiler->compileFile($file);
+        return self;
     }
 
     /**
@@ -20,10 +21,12 @@ class Component extends CLI
     public static function build() {
         $util = Humble::model('admin/utility',true);
         foreach (self::arguments() as $field => $value) {
-            $method = 'set'.self::underscoreToCamelCase($field,true);
+            $method  = 'set'.self::underscoreToCamelCase($field,true);
             $util->$method($value);
         }
-        $util->createController(true,true);
+        $use_landing = $this->getLanding() ? true : false;
+        $util->createController($use_landing,true);
+        return self;
     }
     
     /**
@@ -31,6 +34,7 @@ class Component extends CLI
      */
     public static function create() {
         $args       = self::arguments();
+        return self;
     }
 }
 

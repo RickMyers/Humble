@@ -60,6 +60,7 @@ class Installer extends Directory
             $this->lastTime  = $now;
         }
         print('['.str_pad($stage,16," ",STR_PAD_RIGHT).']['.date('H:i:s').'] '.str_pad(substr($message,0,80),80," ",STR_PAD_RIGHT)."[".str_pad($now - $this->lastTime,4,0,STR_PAD_LEFT)."][".str_pad($now-$this->init,4,0,STR_PAD_LEFT)."]\n");
+        return $this;
     }
     
     /**
@@ -70,6 +71,24 @@ class Installer extends Directory
         return __CLASS__;
     }
 
+    /**
+     * Returns the entities being managed by a module
+     * 
+     * @param string $prefix
+     * @return iterator
+     */
+    public function moduleEntities($prefix=false) {
+        $modules = [];
+        if ($prefix = ($prefix) ?: ($this->getPrefix() ?: false)) {
+            foreach ($this->_db->query("show tables like '".$prefix."%'") as $module) {
+                foreach ($module as $junk => $entity) {
+                    $modules[] = substr($entity,strpos($entity,'_')+1);
+                }
+            };
+        }
+        return $modules;
+    }
+    
     /**
      *
      * @param type $namespace
@@ -83,6 +102,7 @@ class Installer extends Directory
              where namespace    = '{$namespace}'
 SQL;
         $this->_db->query($query);
+        return $this;
     }
 
     /**
@@ -106,6 +126,7 @@ SQL;
              where namespace    = '{$namespace}'
 SQL;
         $this->_db->query($query);
+        return $this;
     }
 
     /**
@@ -135,6 +156,7 @@ SQL;
                 @mkdir($source,0775,true);
             }
         }
+        return $this;
     }
 
 
@@ -184,6 +206,7 @@ SQL;
                 ('{$title}','{$this->namespace}','{$moduleName}','{$package}','{$installed}','{$configuration}','{$controller}','{$this->version}','{$description}','{$use}','{$s_install}','{$s_update}','{$s_layout}','{$models}','{$prefix}','{$this->mongodb}','{$entities}','{$controllerCache}','{$views}','{$viewsCache}','{$helpers}','{$RPC}','{$images}','{$imagesCache}','{$enabled}','{$required}','{$weight}')
 SQL;
         $this->_db->query($query);
+        return $this;
     }
 
     /**
@@ -205,6 +228,7 @@ SQL;
                 $compiler->compile($namespace.'/'.substr($file,0,strpos($file,'.xml')));
             }
         }
+        return $this;
     }
 
     /**
@@ -216,6 +240,7 @@ SQL;
              where namespace = '{$this->namespace}'
 SQL;
         $this->_db->query($query);
+        return $this;
     }
 
     /**
@@ -237,6 +262,7 @@ SQL;
                 }
             }
         }
+        return $this;
     }
 
     
@@ -246,6 +272,7 @@ SQL;
              where namespace = '{$this->namespace}'
 SQL;
         $this->_db->query($query);
+        return $this;
     }
     
     protected function registerWebHooks($hook_node = false) {
@@ -253,6 +280,7 @@ SQL;
         if ($hook_node) {
             
         }
+        return $this;
     }
     
     /**
@@ -268,6 +296,7 @@ SQL;
             @mkdir($destination,0775,true);
             $this->copyDirectory($sourceDir, $destination);
         }
+        return $this;
     }
 
    /**
@@ -276,6 +305,7 @@ SQL;
      *
      */
     protected function unInstallImages($location)   {
+        return $this;
     }
 
    /**
@@ -288,6 +318,7 @@ SQL;
         $components = Humble::entity('paradigm/workflow/components');
         $components->setNamespace($namespace);
         $components->delete();
+        return $this;
     }
 
     public function generateWorkflows($namespace=false) {
@@ -301,6 +332,7 @@ SQL;
             }
         }
         $this->output('WORKFLOWS','Done Generating workflows');
+        return $this;
     }
     
     /**
@@ -353,12 +385,37 @@ SQL;
         return $components;
     }
 
+    /**
+     * 
+     * 
+     * @param string $namespace
+     * @return $this
+     */
+    public function registerEntities($namespace=false) {
+        $namespace = $namespace ?: ($this->getNamespace() ?: false);
+        if ($namespace) {
+            $module = Humble::module($namespace);
+            if (file_exists($config = 'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module['configuration'].DIRECTORY_SEPARATOR.'config.xml')) {
+                $xml = simplexml_load_file($config);
+                foreach ($this->moduleEntities($prefix = $namespace.'_') as $entity) {
+                    if (!isset($xml->{$namespace}->orm->entities->{$entity})) {
+                        $xml->{$namespace}->orm->entities->addChild($entity);
+                    }
+                 }
+                 file_put_contents($config,$xml->asXML());
+            }
+        }
+        return $this;
+    }
+    
     public function registerMethodListeners($namespace,$class,$listener,$events) {
         $method_listener = Humble::entity('paradigm/method/listeners');
         foreach (explode(',',$events) as $event) {
             $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
         }
+        return $this;
     }
+    
     /**
      * Will search through a modules PHP components and record any that are
      * listed as being workflow components
@@ -458,6 +515,7 @@ SQL;
             }
             $this->output("WORKFLOW","Finished Scanning ".ucfirst($model)."...");
         }
+        return $this;
     }
 
     /**
@@ -473,6 +531,7 @@ SQL;
         if (is_dir($source)) {
             $this->copyDirectory($source,$destination);
         }
+        return $this;
     }
 
     /**
@@ -538,6 +597,7 @@ SQL;
                 }
             }
         }
+        return $this;
     }
 
     /**
@@ -591,6 +651,7 @@ FIELD;
                 }
             }
         }
+        return $this;
     }
 
     /**
@@ -628,6 +689,7 @@ SQL;
              where namespace = '{$namespace}'
 SQL;
         $this->_db->query($query); //remove JS Templates
+        return $this;
     }
 
     /**
@@ -641,6 +703,7 @@ SQL;
                 ('{$namespace}','{$package}','{$file}','{$weight}')
 SQL;
         $this->_db->query($query);
+        return $this;
     }
 
     /**
@@ -654,6 +717,7 @@ SQL;
                 ('{$namespace}','{$form}','{$source}')
 SQL;
         $this->_db->query($query);
+        return $this;
     }
 
     /**
@@ -667,6 +731,7 @@ SQL;
                 ('{$namespace}','{$page}','{$source}')
 SQL;
         $this->_db->query($query);
+        return $this;
     }
 
     /**
@@ -680,6 +745,7 @@ SQL;
                 }
             }
         }
+        return $this;
     }
 
     /**
@@ -693,6 +759,7 @@ SQL;
                 }
             }
         }
+        return $this;
     }
 
     /**
@@ -707,6 +774,7 @@ SQL;
                 }
             }
         }
+        return $this;
     }
 
     /**
@@ -742,6 +810,7 @@ SQL;
         $this->registerWebEdits($web);
         $this->registerWebPages($web);
         $this->output('WEB','Done Registering Web Components');
+        return $this;
     }
 
     /**
@@ -763,6 +832,7 @@ SQL;
         } else {
           //  \Log::console('Could not find source file for uninstallation: '.$source);
         }
+        return $this;
     }
 
     /**
@@ -864,6 +934,7 @@ SQL;
         $xml = simplexml_load_file('../application.xml');
         $xml->status->installer = 0;
         file_put_contents('../application.xml',$xml->asXML());
+        return $this;
     }
 
     /**

@@ -11,7 +11,8 @@ bc :
             name|nm: Name of the controller
             action|ac: Name of the action
         optional:
-            description|desc: Description of controller
+            description|desc: Long description of controller
+            title|tl: Short description of controller
             templater|ts|use: The templater to use, if not specified will use default
 cm : 
     description: Creates a Component (Model Helper Entity)
@@ -29,6 +30,7 @@ cm :
             category|ct: Documentation Category
             description|desc: Long Description
             title|tl: Short Description
+            event|ev: Only for Logical Models, will generate events
 cc  : 
     description: Compiles a Controller
     usage:

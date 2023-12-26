@@ -238,7 +238,6 @@ class Updater extends Installer
                 $xml    = new SimpleXMLElement($xml);
                 foreach ($xml as $namespace => $contents) {
                     $this->namespace    = $namespace;
-
                     $this->title        = $contents->title;
                     $this->version      = $contents->version;
                     $this->description  = $contents->description;

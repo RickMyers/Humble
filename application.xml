@@ -3,7 +3,7 @@
     <name>The Humble Project</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">JSFQ-VSYF-QRKQ-CJQQ</serial_number>
     <version>
-        <framework>0.7.9.9.5</framework>
+        <framework>0.7.9.9.6</framework>
         <app>0.0.0.1</app>
     </version>
     <state>DEVELOPMENT</state>
@@ -27,6 +27,7 @@
         </strategy>
     </msa>
     <default>
+        <inline_templater>Rain</inline_templater>
         <templater>Twig</templater>
     </default>
     <api comment="Know the risks before enabling.  There is a section in the documentation on this">
@@ -47,7 +48,7 @@
         <email>rick@humbleprogramming.com</email>
     </support>
     <flags>
-        <display_mysql_errors>0</display_mysql_errors>
+        <display_mysql_errors>1</display_mysql_errors>
     </flags>
     <status>
         <enabled>1</enabled>           <!-- Switch to 0 to take the application offline -->
@@ -60,7 +61,7 @@
             <enabled>0</enabled>       <!-- Switch to 0 to use local authentication -->
             <IDP/>
         </SSO>
-        <authorization>                <!-- Enable or disable service level authorization checking, turn off temporarily in the event of serious issues -->
+        <authorization>                <!-- Enable or disable service level authorization checking -->
             <enabled>0</enabled>
         </authorization>
     </status>

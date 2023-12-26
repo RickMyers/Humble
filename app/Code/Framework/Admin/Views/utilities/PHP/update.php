@@ -6,11 +6,12 @@
 if ($_SESSION['admin_id'] ?? false) {
     $packages   = \Humble::packages();
     $utility    = \Environment::getUpdater();
-    if ($module->getNamespace()) {
-        $module = \Humble::module($module->getNamespace(),true);
+    if ($namespace  = $module->getNamespace()) {
+        $module = \Humble::module($namespace,true);
         if ($module['configuration']) {
             $etc = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['configuration']).'/config.xml';
             if (file_exists($etc)) {
+                $utility->registerEntities($namespace);
                 $utility->update($etc);
             }
         } else {
