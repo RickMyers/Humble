@@ -2,7 +2,7 @@
 bc : 
     description: Creates (builds) a Controller
     usage:
-        linux:   sudo sh ./humble.sh --bc file=path_to_file
+        linux:   sudo sh ./humble.sh --bc ns=humble nm=test ac=page use=smarty3
         windows: humble --bc file=path_to_file        
     function : build
     parameters:
@@ -12,7 +12,7 @@ bc :
             action|ac: Name of the action
         optional:
             description|desc: Description of controller
-            templater|ts: The templater to use
+            templater|ts:use: The templater to use, if not specified will use default
 cm : 
     description: Creates a Component (Model Helper Entity)
     usage:
@@ -21,7 +21,14 @@ cm :
     function :
     parameters:
         required:
+            namespace|ns: Namespace of module is required
+            name|nm: Name of the controller
+            type|ty: Type of component
         optional:
+            package|pk: Documentation Package
+            category|ct: Documentation Category
+            description|desc: Long Description
+            title|tl: Short Description
 cc  : 
     description: Compiles a Controller
     usage:

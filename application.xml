@@ -26,6 +26,9 @@
             <redirect>0</redirect>
         </strategy>
     </msa>
+    <default>
+        <templater>Twig</templater>
+    </default>
     <api comment="Know the risks before enabling.  There is a section in the documentation on this">
         <enabled>0</enabled>
     </api>
