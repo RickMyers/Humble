@@ -16,7 +16,7 @@
             "callbacks": {
                 "watchApplicationXML": true
             },
-            "multiple": 6
+            "multiple": 4
         },
         "allowedrules": {
             "callbacks": {

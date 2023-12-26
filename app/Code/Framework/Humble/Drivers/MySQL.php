@@ -64,6 +64,9 @@ class MySQL extends ORM implements ORMEngine  {
                 $errorstring .= "\t<errortext> ".$this->_dbref->error." </errortext>\n";
                 $errorstring .= "</error>\n";
                 \Log::mysql($errorstring);
+                if (\Environment::flag('display_mysql_errors')) {
+                    print($errorstring."\n\n");
+                }
                 $this->_connected = false;
             }
         }

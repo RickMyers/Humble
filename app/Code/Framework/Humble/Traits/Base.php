@@ -203,6 +203,8 @@ trait Base {
                         \Log::console("Undefined Method: ".$name." invoked from ".$this->getClassName().".");
                     }
                     return $retval;
+                } else {
+                    die("Undefined Method: ".$name." invoked from ".$this->getClassName().".");
                 }
             }
         }

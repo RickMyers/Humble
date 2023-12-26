@@ -47,6 +47,7 @@
         <source  options="https://humbleprogramming.com/dist/phpdoc.php ,https://humbleprogramming.com/dist/apigen.php">https://humbleprogramming.com/dist/phpdoc.php</source>
     </documentation>
     <flags>
+        <!-- You can insert custom flags here, and query them at runtime -->
         <display_mysql_errors comment="Mysql error are always logged but do you want them displayed on the page as well?">0</display_mysql_errors>
         <redis comment="Use redis instead of memcache for the cache">0</redis>
     </flags>    

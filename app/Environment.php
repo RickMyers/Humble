@@ -39,7 +39,6 @@ class Environment {
         return __CLASS__;
     }
 
-
     /**
      * Returns the user id of the current person
      *
@@ -197,8 +196,6 @@ class Environment {
         return (isset(self::$application['state']) && (self::$application['state']==='DEBUG'));
     }
     
-
-    
     /**
      * We are using Rain 3 for internal "in-line" templating
      *
@@ -259,6 +256,50 @@ class Environment {
     }
 
     /**
+     * Evaluates a flag to see if it is one of the "false" values, otherwise anything else is regarded as true
+     * 
+     * @param mixed $val
+     * @return bool
+     */
+    protected static function truthyOrFalsey($val='') {
+        $t_o_f = true;
+        switch (strtoupper($val)) {
+            case "N":
+            case "NO":
+            case "OFF":
+            case "FALSE":
+            case 0:
+            case null:
+            case "0":
+            case "":
+                $t_o_f = false;
+            default:
+                break;
+        }
+        return $t_o_f;
+    }
+    
+    /**
+     * Returns whether a flag is on (true) or off (false)
+     * 
+     * @param string $flag
+     * @return boolean
+     */
+    public static function flag($flag=false) {
+        $value = '';
+        if ($flag) {
+            if (!self::$application) {
+                self::loadApplicationMetaData();
+            }
+            $value = self::$application['flags'][$flag] ?: null;
+           // return $value;
+            print($value);
+        }
+        print_r(self::$application);
+        return self::truthyOrFalsey($value);
+    }
+    
+    /**
      * Returns if caching is enabled.  Caching is no longer a soft requirement. Trying to make it selectable will lead to infinite loops
      *
      * @return boolean
@@ -281,8 +322,8 @@ class Environment {
            self::$project = self::getProject();
         }
         return (isset(self::$project->serial_number)) ? self::$project->serial_number : '';
-        
     }
+    
     /**
      * This is a wrapper for the session variable.  It will either set a session variable, return a session variable, or return the session array if no parameter is passed
      *
