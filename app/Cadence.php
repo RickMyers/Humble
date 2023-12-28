@@ -126,22 +126,22 @@ function scanModelsForChanges() {
     if (!$is_production) {
         foreach ($modules as $module) {
             if ($module['namespace']=='humble') {
-                logMessage("Skipping The Humble Module, if you need to scan this module do it manually...");
+                //Due to criticality of components, scanning can cause an abend, so do manual scans of this module
                 continue;
             }
             $files[$module['namespace']] = recurseDirectory('Code/'.$module['package'].'/'.$module['models']);
             foreach ($files[$module['namespace']] as $file) {
                 if ($file == 'Code/Framework/Humble/Models/MySQL.php') {
-                    logMessage('Skipping MySQL Model');
+                    //This causes an abend
                     continue;
                 }
                 if (isset($models[$file])) {
                     if ($models[$file] !== filemtime($file)) {
-                        print("Scanning ".$models[$file]."\n");
+                        logMessage("Scanning ".$models[$file]."\n");
                         try {
                             $installer->registerWorkflowComponents($module['namespace']);
                         } catch (Exception $ex) {
-                            print_r($ex);
+                            logMessage($ex->getCode().': '.$ex->getMessage());
                         }
                         $models[$file] = filemtime($file);
                     }
@@ -227,6 +227,9 @@ function processCadenceCommand($cmds) {
                 break;
             case 'RELOAD'   :
                 resetCadence();
+                break;
+            case 'DUMP'     :
+                //dump memory contents to a file
                 break;
             case 'END'      :
             case 'STOP'     :

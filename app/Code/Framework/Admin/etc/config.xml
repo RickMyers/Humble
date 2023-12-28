@@ -67,11 +67,11 @@
             <prefix>admin_</prefix>
             <mongodb>admin</mongodb>
             <entities>
-                <system_monitor />
-                <menus />
-                <menu_categories />
-                <users />
-                <user_identification />
+                <system_monitor/>
+                <menus/>
+                <menu_categories/>
+                <users/>
+                <user_identification/>
             </entities>
         </orm>
         <events>
@@ -93,14 +93,16 @@
             </edits>
             <admin>
                 <css>
+                    <source>Admin/web/css/admin.css</source>
                     <source>Admin/web/css/cssmenu.css</source>
                 </css>
                 <js>
-                    <source weight='30'>Admin/web/js/Admin.js</source>
-                    <source weight='10'>Admin/web/js/Heartbeat.js</source>
-                    <source weight='10'>Admin/web/js/Pagination.js</source>
-                    <source weight='15'>Admin/web/js/Chart.js</source>
-                    <source weight='20'>Admin/web/js/cssmenu.js</source>
+                    <source weight="30">Admin/web/js/Admin.js</source>
+                    <source weight="10">Admin/web/js/Heartbeat.js</source>
+                    <source weight="10">Admin/web/js/Pagination.js</source>
+                    <source weight="15">Admin/web/js/Chart.js</source>
+                    <source weight="20">Admin/web/js/cssmenu.js</source>
+                    <source weight="20">Admin/web/js/tailwindcss.js</source>
                 </js>
             </admin>
             <admintheme>

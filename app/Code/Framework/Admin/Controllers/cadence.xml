@@ -3,14 +3,14 @@
 
 Manages the cadence periodic poller
 
-For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+For Controller reference, please see "Anatomy of a Controller" at https://www.adminprogramming.com/pages/Controllers.htmls
 -->
-<controller name="cadence" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="cadence" use="Smarty3" author="Rick Myers" email="rick@adminprogramming.com">
     <actions blocking="off" response="true">
         
         <action name="start" output="JSON">
             <description>Attempts to start the cadence poller in the background</description>
-            <model namespace="humble" class="cadence" id="cadence">
+            <model namespace="admin" class="cadence" id="cadence">
                 
             </model>
         </action>
@@ -19,7 +19,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <action name="status" output="JSON">
             <description>Returns whether cadence is running</description>
-            <model namespace="humble" class="cadence" id="cadence">
+            <model namespace="admin" class="cadence" id="cadence">
                 
             </model>
         </action>
@@ -28,7 +28,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <action name="stop" output="JSON">
             <description>Attempts to stop the execution of the poller</description>
-            <model namespace="humble" class="cadence" id="cadence">
+            <model namespace="admin" class="cadence" id="cadence">
                 
             </model>
         </action>
@@ -37,7 +37,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <action name="reload" output="JSON">
             <description>Attempts to reload the cadence poller in the background</description>
-            <model namespace="humble" class="cadence" id="cadence" >
+            <model namespace="admin" class="cadence" id="cadence" >
                 
             </model>
         </action>
@@ -46,7 +46,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <action name="restart" output="JSON">
             <description>Attempts to restart the cadence poller in the background</description>
-            <model namespace="humble" class="cadence" id="cadence" >
+            <model namespace="admin" class="cadence" id="cadence" >
                 
             </model>
         </action>
@@ -54,7 +54,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <action name="clear" output="JSON">
             <description>Removes the PID and CMD file</description>
-            <model namespace="humble" class="cadence" id="cadence" >
+            <model namespace="admin" class="cadence" id="cadence" >
                 
             </model>
         </action>
@@ -63,7 +63,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="tune">
             <description>Brings up the app to tailor/tune the running of the cadence poller</description>
-            <model namespace="humble" class="cadence" id="cadence">
+            <model namespace="admin" class="cadence" id="cadence">
                 
             </model>
         </action>

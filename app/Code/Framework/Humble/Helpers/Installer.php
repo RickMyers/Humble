@@ -317,7 +317,7 @@ SQL;
         $namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
         $components = Humble::entity('paradigm/workflow/components');
         $components->setNamespace($namespace);
-        $components->delete();
+        $components->delete(true);
         return $this;
     }
 

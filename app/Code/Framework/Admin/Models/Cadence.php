@@ -1,5 +1,5 @@
 <?php
-namespace Code\Framework\Humble\Models;
+namespace Code\Framework\Admin\Models;
 use Humble;
 use Log;
 use Environment;
@@ -89,7 +89,11 @@ class Cadence extends Model
     public function start() {
         $this->_RC(8);
         $message = 'Cadence Is Already Running...';
-        if (!$this->check()) {
+        if (file_exists('cadence.pid') && !($running = $this->check())) {
+            //Removes PID file so can start cleanly
+            $this->clear();
+        }
+        if (!$running) {
             exec('nohup php Cadence.php > /dev/null &');
             $message = "Cadence Started...";
             $this->_RC(0);

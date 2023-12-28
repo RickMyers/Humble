@@ -1310,7 +1310,7 @@ PHP;
                  * IF the 'event' flag was set on the action, then create a new trigger event and pass in all of the data this action received
                  */
                 if (isset($action['event'])) {
-                    $trigger = \Humble::entity('paradigm/workflow_components');
+                    $trigger = \Humble::entity('paradigm/workflow/components');
                     $trigger->setNamespace($this->namespace);
                     $trigger->setComponent(ucfirst($this->component));
                     $trigger->setMethod($action['name']);
@@ -1322,7 +1322,7 @@ PHP;
                     $e->setNamespace($this->namespace);
                     $e->save();
                     if (isset($action['comment'])) {
-                        $comment = \Humble::entity('paradigm/workflow_comments');
+                        $comment = \Humble::entity('paradigm/workflow/comments');
                         $comment->setNamespace($this->namespace);
                         $comment->setClass($this->component);
                         $comment->setMethod($action['name']);
