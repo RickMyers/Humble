@@ -51,7 +51,7 @@ class Environment {
     /**
      * Returns the location of the modules root, use this instead of hardcoding module paths
      *
-     * @param type $namespace
+     * @param string $namespace
      * @return boolean
      */
     public static function getRoot($namespace=false) {
@@ -92,7 +92,7 @@ class Environment {
     /**
      * Returns the location of the PHP executable
      * 
-     * @return type
+     * @return string
      */
     public static function PHPLocation() {
         if (!self::$application) {

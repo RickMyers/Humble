@@ -678,12 +678,7 @@ SQL;
             delete from humble_edits
              where namespace = '{$namespace}'
 SQL;
-        $this->_db->query($query); //remove Edits
-        $query = <<<SQL
-            delete from humble_pages
-             where namespace = '{$namespace}'
-SQL;
-        $this->_db->query($query); //remove Static web pages
+        $this->_db->query($query); 
         $query = <<<SQL
             delete from humble_templates
              where namespace = '{$namespace}'

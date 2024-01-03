@@ -67,10 +67,10 @@
             <prefix>blog_</prefix>
             <mongodb>blog</mongodb>
             <entities>
-                <whatsnew_code polyglot='Y' />
-                <whatsnew_lexicons polyglot='Y' />
-                <whatsnew polyglot='Y' />
-            </entities>
+                <whatsnew_code polyglot="Y"/>
+                <whatsnew_lexicons polyglot="Y"/>
+                <whatsnew polyglot="Y"/>
+            <whatsnew_languages/></entities>
         </orm>
         <events>
 

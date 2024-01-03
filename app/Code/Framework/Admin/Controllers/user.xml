@@ -61,6 +61,21 @@
         </action>
 
         <!-- ############################################################### -->
+        
+        <action name="form" passalong="window_id">
+            <description>Fetches the new user form</description>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="details">
+            <description>A form showing current user information and allowing for change of password</description>
+            <entity assign="user" namespace="admin" class="users" id="users" method="information">
+                <parameter name="id" value="admin_id" source="session" required="true" />
+            </entity>
+        </action>
+        
+        <!-- ############################################################### -->
 
         <action name="new">
             <description>Prompts the user to enter their password for the first time</description>

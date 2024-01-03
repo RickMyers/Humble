@@ -1,0 +1,95 @@
+
+{
+	"form":
+	{
+		"id":           "user_details_form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+		{
+			"active":		true,
+			"id": 			"details_last_name",
+			"longname":		"Last Name",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},
+		{
+			"active":		true,
+			"id": 			"details_first_name",
+			"longname":		"First Name",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},
+		{
+			"active":		true,
+			"id": 			"details_email",
+			"longname":		"E-Mail",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},
+		{
+			"active":		true,
+			"id": 			"details_user_name",
+			"longname":		"User Name",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},                
+		{
+			"active":		true,
+			"id": 			"details_current_password",
+			"longname":		"Current Password",
+			"type":			"password",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},                                
+		{
+			"active":		true,
+			"id": 			"details_new_password",
+			"longname":		"New Password",
+			"type":			"password",
+                        "confirm":              "details_confirm_password",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},                                
+		{
+			"active":		true,
+			"id": 			"details_confirm_password",
+			"longname":		"Confirm Password",
+			"type":			"password",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},                                
+                
+		{
+			"active":		true,
+			"id":			"user_details_submit",
+			"longname":		"Submit Button",
+			"type":			"button",
+                        "style":                "",
+                        "classname":    "settingsButton",
+                        "value":        "",
+                        "onclick":        function () {
+                            if (Edits['user-details'].validate()) {
+
+                            }
+                        }
+		}
+	]
+}
+

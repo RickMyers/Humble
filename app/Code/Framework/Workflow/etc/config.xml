@@ -55,7 +55,7 @@
             <prefix>workflow_</prefix>
             <mongodb>workflow</mongodb>
             <entities>
-                <sms_carriers />
+                <sms_carriers/>
             </entities>
         </orm>
         <web>

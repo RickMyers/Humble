@@ -90,6 +90,7 @@
                 <importdata>Admin/web/edits/importdata.json</importdata>
                 <installmodule>Admin/web/edits/installmodule.json</installmodule>
                 <login>Admin/web/edits/adminlogin.json</login>
+                <details>Admin/web/edits/userdetails.json</details>
             </edits>
             <admin>
                 <css>
@@ -97,7 +98,6 @@
                     <source>Admin/web/css/cssmenu.css</source>
                 </css>
                 <js>
-                    <source weight="30">Admin/web/js/Admin.js</source>
                     <source weight="10">Admin/web/js/Heartbeat.js</source>
                     <source weight="10">Admin/web/js/Pagination.js</source>
                     <source weight="15">Admin/web/js/Chart.js</source>
@@ -105,11 +105,6 @@
                     <source weight="20">Admin/web/js/tailwindcss.js</source>
                 </js>
             </admin>
-            <admintheme>
-                <css>
-                    <source>Admin/web/css/admintheme.css</source>
-                </css>
-            </admintheme>      
         </web>
     </admin>
 </config>

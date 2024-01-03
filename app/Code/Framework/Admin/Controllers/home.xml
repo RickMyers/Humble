@@ -18,6 +18,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                     <model namespace="humble" class="system" id="system" />
                     <entity namespace='humble' class='modules'      id='available_modules' orderby='package=ASC,namespace=ASC' />
                     <model  namespace='admin'  class='menus'        id="menus" />
+                    <entity namespace='admin'  class='users' assign='user' method='information'>
+                        <parameter name="id" value="admin_id" source="session" />
+                    </entity>
                     <helper namespace='humble' class='installer'    id='installer' />
                     <helper namespace='humble' class='admin'        id='directory' />
                     <helper namespace='humble' class='directory'    id='packages' />

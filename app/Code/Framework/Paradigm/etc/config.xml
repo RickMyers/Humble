@@ -54,29 +54,28 @@
             <prefix>paradigm_</prefix>
             <mongodb>paradigm</mongodb>
             <entities>
-                <api_projects />
-                <api_tests />
-                <audit_log polyglot="Y" />
-                <events />
-                <event_listeners />
-                <event_log />
-                <export_targets />
-                <import_sources />
-                <job_queue />
-                <method_listeners />
-                <scheduler_log />
-                <sensors />
-                <sensor_workflows />
-                <system_events />
-                <webhooks />
-                <webhook_workflows />
-                <webservices />
-                <webservice_workflows />
-                <workflows />
-                <workflow_listeners />
-                <workflow_components />
-                <workflow_comments />
-            </entities>
+                <api_projects/>
+                <api_tests/>
+                <events/>
+                <event_listeners/>
+                <event_log/>
+                <export_targets/>
+                <import_sources/>
+                <job_queue/>
+                <method_listeners/>
+                <scheduler_log/>
+                <sensors/>
+                <sensor_workflows/>
+                <system_events/>
+                <webhooks/>
+                <webhook_workflows/>
+                <webservices/>
+                <webservice_workflows/>
+                <workflows/>
+                <workflow_listeners/>
+                <workflow_components/>
+                <workflow_comments/>
+            <designer_forms/><import_tokens/></entities>
         </orm>
         <events>
         </events>
@@ -106,40 +105,48 @@
                     <source>Paradigm/web/js/API.js</source>
                 </js>
             </api>
-            <desktop>
+            <admin>
                 <js>
-                    <source weight='5'>Paradigm/web/js/Paradigm.config.js</source>
-                    <source weight='10'>Paradigm/web/js/Desktop.js</source>
+                    <source weight="5">Paradigm/web/js/Paradigm.config.js</source>                
                 </js>
                 <css>
-                    <source weight='10'>Paradigm/web/css/Desktop.css</source>
+                    <source weight="10">Paradigm/web/css/Desktop.css</source>
+                </css>                
+            </admin>
+            <desktop>
+                <js>
+                    <source weight="5">Paradigm/web/js/Paradigm.config.js</source>
+                    <source weight="10">Paradigm/web/js/Desktop.js</source>
+                </js>
+                <css>
+                    <source weight="10">Paradigm/web/css/Desktop.css</source>
                 </css>
             </desktop>            
             <engine>
                 <js>
-                    <source weight='5'>Paradigm/web/js/Paradigm.config.js</source>
-                    <source weight='10'>Paradigm/web/js/Paradigm.js</source>
-                    <source weight='10'>Paradigm/web/js/Desktop.js</source>
-                    <source weight='15'>Paradigm/web/js/Actions.js</source>
-                    <source weight='16'>Paradigm/web/js/Console.js</source>
+                    <source weight="5">Paradigm/web/js/Paradigm.config.js</source>
+                    <source weight="10">Paradigm/web/js/Paradigm.js</source>
+                    <source weight="10">Paradigm/web/js/Desktop.js</source>
+                    <source weight="15">Paradigm/web/js/Actions.js</source>
+                    <source weight="16">Paradigm/web/js/Console.js</source>
                 </js>
                 <css>
                     <source>Paradigm/web/css/Paradigm.css</source>
-                    <source weight='10'>Paradigm/web/css/Desktop.css</source>
+                    <source weight="10">Paradigm/web/css/Desktop.css</source>
                 </css>
             </engine>
             <research>
                 <js>
-                    <source weight='10'>Paradigm/web/js/Windows.js</source>                    
-                    <source weight='10'>Paradigm/web/js/Research/Paradigm.js</source>
-                    <source weight='10'>Paradigm/web/js/Desktop.js</source>
-                    <source weight='12'>Paradigm/web/js/Actions.js</source>
-                    <source weight='16'>Paradigm/web/js/Research/Console.js</source>
+                    <source weight="10">Paradigm/web/js/Windows.js</source>                    
+                    <source weight="10">Paradigm/web/js/Research/Paradigm.js</source>
+                    <source weight="10">Paradigm/web/js/Desktop.js</source>
+                    <source weight="12">Paradigm/web/js/Actions.js</source>
+                    <source weight="16">Paradigm/web/js/Research/Console.js</source>
                     <!--source weight='20'>Paradigm/web/js/perfect-scrollbar.js</source-->
                 </js>
                 <css>
                     <source>Paradigm/web/css/Paradigm.css</source>
-                    <source weight='10'>Paradigm/web/css/Desktop.css</source>
+                    <source weight="10">Paradigm/web/css/Desktop.css</source>
                     <!--source weight='20'>Paradigm/web/css/perfect-scrollbar.css</source-->
                 </css>
             </research>
@@ -150,10 +157,10 @@
             </rtc>
             <designer>
                 <js>
-                    <source weight='10'>Paradigm/web/js/Designer.js</source>
+                    <source weight="10">Paradigm/web/js/Designer.js</source>
                 </js>
                 <css>
-                    <source weight='10'>Paradigm/web/css/Designer.css</source>
+                    <source weight="10">Paradigm/web/css/Designer.css</source>
                 </css>
             </designer>
         </web>

@@ -12,7 +12,6 @@ class Component extends CLI
         print($file."\n");
         $compiler   = \Environment::getCompiler();
         $compiler->compileFile($file);
-        return self;
     }
 
     /**
@@ -24,9 +23,8 @@ class Component extends CLI
             $method  = 'set'.self::underscoreToCamelCase($field,true);
             $util->$method($value);
         }
-        $use_landing = $this->getLanding() ? true : false;
+        $use_landing = $util->getLanding() ? true : false;
         $util->createController($use_landing,true);
-        return self;
     }
     
     /**
@@ -34,7 +32,6 @@ class Component extends CLI
      */
     public static function create() {
         $args       = self::arguments();
-        return self;
     }
 }
 

@@ -57,7 +57,7 @@
             <prefix>account_</prefix>
             <mongodb>account</mongodb>
             <entities>
-                <registrations polyglot='Y' />
+                <registrations polyglot="Y"/>
             </entities>
         </orm>
         <events>

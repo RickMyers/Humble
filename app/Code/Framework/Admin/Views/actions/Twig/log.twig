@@ -19,11 +19,10 @@
     }
 </style>
 <div id="log-viewer-header-{{ window_id }}">
-    <div style="float: left; margin-left: 5px; background-color: ghostwhite">
-        <img src="/images/humble/expand.png" style="height: 20px; cursor: pointer" id="expand-palette-{{ window_id }}"/>
-        <img src="/images/humble/collapse.png" style="height: 20px; cursor: pointer; display: none" id="collapse-palette-{{ window_id }}" />
+    <div style="float: left; margin-left: 5px;">
+        <i onclick="tools.toggle(this,document.getElementById('palette-options-{{ window_id }}'));" class="glyphicons glyphicons-collapse" style="transform: rotate(90deg); font-size: 30px; color: ghostwhite" ></i>        
     </div>
-    <input type="button" style="color: #333; float: right" value="  Clear  " onclick="Administration.logs.clear('{{ log }}','{{ window_id }}')" />
+        <button class="pr-2 pl-2 pt-1 pb-1" style="color: #333; background-color: silver; float: right" onclick="Administration.logs.clear('{{ log }}','{{ window_id }}')"> Clear </button>
     <div style="clear: both"></div>
 
     <div style="clear: both; display: none" id="palette-options-{{ window_id }}">
@@ -43,12 +42,12 @@
         <div class="color-palette-cell" log="{{ log }}" style="background-color: olive"     color="olive"></div>
         <div class="color-palette-cell" log="{{ log }}" style="background-color: aqua"      color="aqua"></div>
         <div class="color-palette-cell" log="{{ log }}" style="background-color: fuchsia"   color="fucshia"></div>
-        <select name="editor-option" id="editor-option-{{ window_id }}" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top">
+        <select name="editor-option" id="editor-option-{{ window_id }}" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top; color: #333">
             <option value="" disabled selected hidden>Log Color </option>
             <option value="color"> Foreground Color </option>
             <option value="background-color"> Background Color </option>
         </select>
-        <select name="editor-font" id="editor-font-{{ window_id }}" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top; margin: 0px 5px">
+        <select name="editor-font" id="editor-font-{{ window_id }}" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top; margin: 0px 5px; color: #333">
             <option value="" disabled selected hidden>Font</option>
             <option value="Monospace"> Monospace </option>
             <option value="Courier New"> Courier New </option>
@@ -60,7 +59,7 @@
             <option value="Trebuchet MS"> Trebuchet MS </option>
             <option value="Brush Script MT"> Cursive </option>
         </select>
-        <select name="editor-font-size" id="editor-font-size-{{ window_id }}" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top">
+        <select name="editor-font-size" id="editor-font-size-{{ window_id }}" log="{{ log }}" window_id="{{ window_id }}" style="font-size: .5em; padding: 2px; vertical-align: top; color: #333">
             <option value="" disabled selected hidden>Font Size</option>
             <option value=".5em"> 50% </option>
             <option value=".75em"> 75% </option>
@@ -113,17 +112,6 @@
         win.resize();
         win.timer = window.setTimeout(win.refresh,10000);
         Administration.logs.fetch(win.viewing,win.id);
-        $('#expand-palette-{{ window_id }}').on('click',function (evt) {
-            let win = Desktop.window.list['{{ window_id }}'];
-            $('#palette-options-{{ window_id }}').slideToggle(win.resize);
-            $('#expand-palette-{{ window_id }}').css('display','none');        
-            $('#collapse-palette-{{ window_id }}').css('display','block');
-        });    
-        $('#collapse-palette-{{ window_id }}').on('click',function (evt) {
-            $('#palette-options-{{ window_id }}').slideToggle(win.resize);
-            $('#collapse-palette-{{ window_id }}').css('display','none');        
-            $('#expand-palette-{{ window_id }}').css('display','block');
-        });
         $('#editor-font-{{ window_id }}').on('change',function (evt) {
             let val = $(this).val();
             if (val) {

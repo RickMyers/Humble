@@ -22,8 +22,8 @@ class Workflow extends CLI
      */
     public static function scan() {
         print('Beginning scan for workflow components'."\n");
+        $installer = \Environment::getInstaller();
         foreach (self::namespaces(self::arguments()) as $namespace) {
-            $installer = \Environment::getInstaller();
             $installer->registerWorkflowComponents($namespace);
         }
     }
