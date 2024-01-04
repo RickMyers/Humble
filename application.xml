@@ -14,11 +14,6 @@
         <UAT order="4"/>
         <PRODUCTION order="5"/>
     </stages>
-    <extend>
-        <helpers>1</helpers>
-        <models>1</models>
-        <entities>1</entities>
-    </extend>
     <msa>
         <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application -->
         <strategy>
@@ -48,7 +43,7 @@
         <email>rick@humbleprogramming.com</email>
     </support>
     <flags>
-        <display_mysql_errors>1</display_mysql_errors>
+        <display_mysql_errors>0</display_mysql_errors>
     </flags>
     <status>
         <enabled>1</enabled>           <!-- Switch to 0 to take the application offline -->

@@ -63,6 +63,11 @@
                 <source>&&module&&/web/app</source>
             </frontend>
         </structure>
+        <extend comment="Means whether to look up the Module hierarchy if a specific class is not found (if not found in current module, perhaps the class is in a parent module)">
+            <helpers>1</helpers>
+            <models>1</models>
+            <entities>1</entities>
+        </extend>     
         <orm>
             <prefix>&&prefix&&</prefix>
             <mongodb>&&namespace&&</mongodb>

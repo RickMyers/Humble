@@ -17,11 +17,6 @@
         <TEST        order="2" />
         <PRODUCTION  order="3" />
     </stages>    
-    <extend comment="Means whether to look up the Module hierarchy if a specific class is not found (if not found in current module, perhaps the class is in a parent module)">
-        <helpers>1</helpers>
-        <models>1</models>
-        <entities>1</entities>
-    </extend>
     <msa>
         <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application (NOT FULLY IMPLEMENTED!)-->
         <strategy>
