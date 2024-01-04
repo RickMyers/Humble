@@ -104,6 +104,12 @@ if (!$admin) {
 }
 
 //###########################################################################
+//Logs you in as a general user if you are an admin and are not logged in
+if ($admin && !$logged_in) {
+    \Environment::logAdminIn();
+}
+
+//###########################################################################
 //Two phased login check.  If you are not logged in (determined by having a
 //variable called uid in the session, then load the list of services a person
 //can access without being logged in.  If the service you are trying to load

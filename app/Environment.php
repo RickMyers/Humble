@@ -137,6 +137,17 @@ class Environment {
     }
     
     /**
+     * Logs the admin in as a general user
+     */
+    public static function logAdminIn() {
+        if ($user = self::session('user')) {
+            if ($data = Humble::entity('default/users')->setUserName($user['user_name'])->load(true)) {
+                self::session('uid',$data['id']);
+            }
+        }
+    }
+    
+    /**
      * Returns true if the system is in PRODUCTION, which means certain features will be turned on
      * 
      * @return boolean
