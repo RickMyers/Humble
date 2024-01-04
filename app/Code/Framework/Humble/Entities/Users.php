@@ -111,5 +111,33 @@ class Users extends Entity
             $this->save();
         }
     }
+    
+    /**
+     *
+     * @param int $id
+     * @return array
+     */
+    public function information($id=false) {
+        $id      = ($id!==false) ? $id : (($this->getId() ? $this->getId() : (($this->getUid()) ? $this->getUid() : false)));
+        $results = [];
+        if ($id !== false) {
+            $query = <<<SQL
+                select
+                    a.id,
+                    a.user_name
+                    , a.email
+                    , a.logged_in
+                    , a.account_status
+                    , a.login_attempts
+                    , b.*
+                  from humble_users as a
+                  left outer join humble_user_identification as b
+                    on a.id = b.id
+                 where a.id = '{$id}'
+SQL;
+                 $results = $this->query($query)->toArray();
+        }
+        return isset($results[0]) ? $results[0] : $results;
+    }    
 
 }

@@ -128,6 +128,7 @@ class Users extends Entity
         if ($id !== false) {
             $query = <<<SQL
                 select
+                    a.id,
                     a.user_name
                     , a.email
                     , a.logged_in
