@@ -26,6 +26,7 @@ RUN apt install -y libmemcached-tools
 RUN apt install -y redis-server
 RUN apt install -y mysql-client
 RUN apt install -y libapache2-mod-dnssd
+RUN apt install -y npm
 RUN apt install -y php8.2-fpm
 RUN apt install -y php8.2-mysql
 RUN apt install -y php8.2-mongodb
@@ -45,6 +46,7 @@ RUN apt install -y nala
 RUN apt install -y mkcert
 RUN apt install -y xdg-utils
 RUN pecl install xdebug
+
 #RUN mkcert -install
 RUN apt install -y w3m
 RUN apt install -y dos2unix

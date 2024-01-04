@@ -2,7 +2,7 @@
     <div class="text-base font-sans">
         <input type="text" name="first_name" id="details_first_name" class="standard-field" :value="first_name"/>
     </div>
-    <div class="text-sm font-mono">
+    <div class="text-sm font-mono mb-2">
         First Name
     </div>
     <div class="text-base font-sans">
@@ -48,10 +48,7 @@
         Confirm Password
     </div>
     <div class="">
-        <input type="button" name="user_details_submit" class="bg-gray-100 pt-1 pb-1 pr-2 pl-2" id="user_details_submit" value=" Submit " />
+        <input type="button" v-on:click="saveDetails()" name="user_details_submit" class="bg-gray-100 pt-1 pb-1 pr-2 pl-2" id="user_details_submit" value=" Submit " />
     </div>
 </form>
 
-<script>
-    new EasyEdits('/edits/admin/details','user-details');
-</script>

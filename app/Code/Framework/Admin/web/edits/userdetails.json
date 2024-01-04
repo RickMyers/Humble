@@ -52,8 +52,8 @@
 			"id": 			"details_current_password",
 			"longname":		"Current Password",
 			"type":			"password",
-			"required":		false,
-			"force":		false,
+			"required":		true,
+			"force":		true,
                         "style":                ""
 		},                                
 		{
@@ -82,13 +82,8 @@
 			"longname":		"Submit Button",
 			"type":			"button",
                         "style":                "",
-                        "classname":    "settingsButton",
-                        "value":        "",
-                        "onclick":        function () {
-                            if (Edits['user-details'].validate()) {
-
-                            }
-                        }
+                        "classname":            "",
+                        "value":                ""
 		}
 	]
 }

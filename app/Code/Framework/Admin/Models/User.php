@@ -36,6 +36,36 @@ class User extends Model
     }
 
     /**
+     * Will validate that a users password is correct
+     * 
+     * @return boolean
+     */
+    public function validatePassword() {
+        $password   = $this->getPassword();
+        $user_id    = $this->getUserId();
+        $user       = Humble::entity('admin/users')->setId($user_id)->load();
+        return ($user['password'] === crypt($password,$user['salt']));        
+    }
+    
+    /**
+     * Changes an admins password, optionally compares against a "confirm" password
+     * 
+     * @return bool
+     */
+    public function changePassword() {
+        $password    = $this->getPassword();
+        if ($confirm = $this->getConfirmPassword() && ($confirm !== $password)) {
+            return false;
+        }
+        if ($user_id = $this->getUserId() ? $this->getUserId() : \Environment::session('admin_id')) {
+            $user    = Humble::entity('admin/users')->setId($user_id);          //getting specific ORM reference
+            $data    = $user->load();                                           //Gets user data, 1 use of ORM
+            return $user->setPassword(crypt($password,$data['salt']))->save();  //Changes the data, 2nd use of ORM
+        }
+        return false;
+    }
+    
+    /**
      * Performs a standard single source authentication
      * 
      * @workflow use(DECISION)

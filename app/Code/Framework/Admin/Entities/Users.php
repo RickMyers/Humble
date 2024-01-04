@@ -60,7 +60,7 @@ class Users extends Entity
         $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
         $fname  = $first_name ? $first_name     : ($this->getFirstName() ? $this->getFirstName() : '');
         $lname  = $last_name ? $last_name       : ($this->getLastName()  ? $this->getLastName()  : '');
-        $id    = $id ? $id                   : ($this->getId()        ? $this->getId()        : '');
+        $id     = $id ? $id                     : ($this->getId()        ? $this->getId()        : '');
         $email  = $email ? $email               : ($this->getEmail()     ? $this->getEmail()     : '');
         if ($uname && $pwd) {
             if ($id) {
@@ -117,8 +117,10 @@ class Users extends Entity
             $this->save();
         }
     }
+    
     /**
-     *
+     * Returns user/admin information from multiple tables
+     * 
      * @param int $id
      * @return array
      */

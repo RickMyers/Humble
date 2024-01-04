@@ -458,9 +458,13 @@ PHP;
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
-        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
-        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::model("'.$namespace.'/'.$node['class'].'");'."\n");
+        if (isset($node['use'])) {
+            print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['use'].'"];'."\n");
+        } else {
+            $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
+            $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
+            print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::model("'.$namespace.'/'.$node['class'].'");'."\n");
+        }
         array_push($this->elements,$node);
         foreach ($node as $tag => $newNode) {
             $this->processNode($tag,$newNode);
@@ -995,7 +999,8 @@ PHP;
      * @param type $node
      */
     private function processAbort($node) {
-        print($this->tabs().'$abort = '.$node['value'].';'."\n");
+        $val = $node['value'] ?? 'TRUE';
+        print($this->tabs().'$abort = '.$val.';'."\n");
     }
 
     /**

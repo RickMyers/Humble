@@ -45,7 +45,7 @@ class MySQL extends ORM implements ORMEngine  {
             $errorstring .= "\t<errorcode> Connection Error </errorcode>\n";
             $errorstring .= "\t<errortext> ".$this->_dbref->connect_error." </errortext>\n";
             $errorstring .= "</error>\n";
-            \Log::mysql($errorstring);
+            \Log::sql($errorstring);
             $this->_connected = false;
             if (php_sapi_name()=='cli') {
                 print($this->_dbref->connect_error."\n");
@@ -63,7 +63,7 @@ class MySQL extends ORM implements ORMEngine  {
                 $errorstring .= "\t<errorcode> ".$this->_dbref->errno."</errorcode>\n";
                 $errorstring .= "\t<errortext> ".$this->_dbref->error." </errortext>\n";
                 $errorstring .= "</error>\n";
-                \Log::mysql($errorstring);
+                \Log::sql($errorstring);
                 if (\Environment::flag('display_mysql_errors')) {
                     print($errorstring."\n\n");
                 }
@@ -137,7 +137,12 @@ class MySQL extends ORM implements ORMEngine  {
                     debug_print_backtrace();
                     $errorstring .="\t<trace>".ob_get_clean()."</trace>\n"; */  //@TODO: suspending this until I can come up with something that doesnt clog up the log
                     $errorstring .= "</error>\n";
-                    \Log::mysql($errorstring);
+                    \Log::sql($errorstring);
+                    if (php_sapi_name()=='cli') {
+                        print($errorstring."\n");
+                        debug_print_backtrace();
+                        print("\n");
+                    }                    
                 }
             }
         } else {
@@ -151,7 +156,7 @@ class MySQL extends ORM implements ORMEngine  {
             $errorstring .= "\t\tNot Available\n";
             $errorstring .= "\t</rowsreturned>\n";
             $errorstring .= "</error>\n";
-            \Log::mysql($errorstring);
+            \Log::sql($errorstring);
         }
         if (is_object($resultSet) && $resultSet->num_rows) {
             $resultSet = $this->translateResultSet($resultSet);

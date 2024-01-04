@@ -168,11 +168,11 @@ class Log {
     }
 
     /**
-     * Send data to the mysql error log
+     * Send data to the sql error log
      *
      * @param mixed $message
      */
-    public static function mysql($message) {
+    public static function sql($message) {
         $project = self::getProject();
         $file    = '../../logs/'.$project->namespace.'/mysql.log';
         if (is_array($message)) {

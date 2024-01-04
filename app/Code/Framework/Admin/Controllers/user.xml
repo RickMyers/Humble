@@ -67,12 +67,54 @@
         </action>
         
         <!-- ############################################################### -->
-        
+         
         <action name="details">
             <description>A form showing current user information and allowing for change of password</description>
             <entity assign="user" namespace="admin" class="users" id="users" method="information">
                 <parameter name="id" value="admin_id" source="session" required="true" />
             </entity>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="save">
+            <description>Will update an admin users information</description>
+            <model assign="password_valid" namespace="admin" class="user" method="validatePassword" id="admin_user">
+                <parameter name="password" value="current_password" source="post" format="password" required="true" />
+                <parameter name="user_id"  value="admin_id" source="session" required="true" />
+            </model>
+            <if var="password_valid" eq="true"><comment>If you passed your valid password, you can continue on to change your data</comment>
+                <then>
+                    <if var="new_password" eq="TRUE">
+                        <then>
+                            <model assign="password_changed" use="admin_user" method="changePassword">
+                                <parameter name="user_id" value="admin_id" source="session" required="true" />
+                                <parameter name="new_password" source="post" format="password" required="true" />
+                                <parameter name="confirm_password" source="post" format="password" required="true" />
+                            </model>
+                            <if var="password_changed" eq="FALSE">
+                                <then>
+                                    <output text="Password change attempt failed" />
+                                    <abort />
+                                </then>
+                            </if>
+                        </then>
+                    </if>
+                    <entity namespace="admin" class="users" method="save">
+                        <parameter name="id"  value="admin_id" source="session" required="true" />
+                        <parameter name="email"     source="post" default="" />
+                        <parameter name="user_name" source="post" default="" />
+                    </entity> 
+                    <entity namespace="admin" class="user/identification">
+                        <parameter name="id"  value="admin_id" source="session" required="true" />
+                        <parameter name="first_name" source="post" default="" />
+                        <parameter name="last_name"  source="post" default="" />
+                    </entity>                                          
+                </then>
+                <else>
+                    <output text="Current Password Is Incorrect" />
+                </else>
+            </if>
         </action>
         
         <!-- ############################################################### -->
