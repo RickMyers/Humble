@@ -7,9 +7,9 @@
  *      /js/common   <- Load all javascript that is in the common package
  *      /js/optional <- Load javascript in the 'optional' package
  *      /css/common  <- Load CSS that is in common package
- *      /ijs/humble/myjs.js <- Return the myjs.js file in the Humble package, web/js folder
- *      /edits/desktop/login  <- fetch the login.json edits located in the
- *                               desktop namespace
+ *      /mjs/humble/myjs.js <- Return the myjs.js file in the Humble package, web/js folder
+ *      /edits/desktop/login  <- fetch the login.json edits located in the desktop namespace
+ *                               
  */
 
 //---------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ function secureCheck($file=[]) {
     ob_start();
     chdir('app');                               //always start in this directory
     require_once('Humble.php');                   //our friend
-    if ($_GET['type']!=='ijs') {
+    if ($_GET['type']!=='mjs') {
         $orm = \Humble::entity('humble/'.$_GET['type'])->setNamespace('');
     }
     $packages = array();

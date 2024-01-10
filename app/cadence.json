@@ -6,6 +6,18 @@
         "max_size": "100K"
     },
     "handlers": {
+        "system": {
+            "callbacks": {
+                "snapshotStats": true
+            },
+            "multiple": 6
+        },
+        "housekeeping": {
+            "callbacks": {
+                "clearSystemStats": true
+            },
+            "multiple": 20 
+        },
         "apipolicy": {
             "callbacks": {
                 "watchAPIPolicy": true

@@ -24,6 +24,7 @@ $configs                    = [];                                               
 $systemfiles                = [];                                               //These are the loose files belonging to the framework to watch
 $images                     = [];                                               //These are images contained in the image folder
 $modules                    = Humble::entity('humble/modules')->setEnabled('Y')->fetch();
+$system                     = Humble::entity('admin/system/monitor');
 $monitor                    = \Environment::getMonitor();                       //System monitor for checking on performanc
 $updater                    = \Environment::getUpdater();                       //Singleton reference to the module updater
 $installer                  = \Environment::getInstaller();                     //Singleton reference to the module installer
@@ -103,7 +104,15 @@ function scanControllersForChanges($last_run=false) {
         } 
     }
 }
-
+//------------------------------------------------------------------------------
+function clearSystemStats() {
+    
+}
+//------------------------------------------------------------------------------
+function snapshotSystem() {
+    global $monitor, $system;
+    
+}
 //------------------------------------------------------------------------------
 function recurseDirectory($dir=[]) {
     $list = [];

@@ -108,7 +108,9 @@ class Unity
     }
 
     /**
-     *
+     * Sets the ORM back to pristine state ready to run another query
+     * 
+     * @return $this
      */
     public function clean()  {
         $this->_decrypt      = false;
@@ -278,6 +280,12 @@ SQL;
         return $query;
     }
 
+    /**
+     * Adds an arbitrary condition to the where clause
+     * 
+     * @param string $condition
+     * @return $this
+     */
     public function condition($condition=false) {
         if ($condition) {
             $this->_conditions[] = $condition;
@@ -286,8 +294,12 @@ SQL;
             return $this->_conditions;
         }
     }
+
     /**
-     *
+     * 
+     * 
+     * @param string $list
+     * @return array
      */
     public function _fieldList($list='') {
         if ($list === '') {
@@ -298,7 +310,9 @@ SQL;
     }
 
     /**
-     *
+     * Will remove all rows from a table and reset auto incrementing ID
+     * 
+     * @return type
      */
     public function truncate()  {
         $query = <<<SQL
@@ -308,7 +322,7 @@ SQL;
     }
 
     /**
-     *
+     * Deprecated
      */
     public function average($field)  {
         $group = [];
@@ -327,6 +341,8 @@ SQL;
 
     /**
      *@TODO: Rework this to remove FOUND_ROWS() deprecated function
+     * 
+     * This is likely going for deprecation
      */
     public function search($field=false,$text=false)   {
         if (($field !== false) && ($text !== false)) {
@@ -373,7 +389,9 @@ SQL;
     }
 
     /**
-     *
+     * Counts total rows in teh etable
+     * 
+     * @return int
      */
     public function totalRows()  {
         $query = <<<SQL
@@ -384,7 +402,10 @@ SQL;
     }
 
     /**
-     *
+     * Returns a specific row from the table
+     * 
+     * @param int $rowNum
+     * @return array
      */
     public function fetchRow($rowNum)  {
         $query = <<<SQL
@@ -396,6 +417,7 @@ SQL;
     }
 
     /**
+     * Collects fields/ids to build an in clause later
      * 
      * @param type $args
      * @return $this
@@ -413,6 +435,12 @@ SQL;
         return $this;
     }
     
+    /**
+     * Creates a between condition for the query
+     * 
+     * @param array $args
+     * @return $this
+     */
     public function between($args=false) {
         if ($args) {
             $this->_between = $args;
@@ -423,7 +451,13 @@ SQL;
     }
     
     /**
-     *
+     * Returns a single row in array form from the table
+     * 
+     * By default, load uses the ID field of the table, but pass in true to let
+     * it load by other fields
+     * 
+     * @param type $nonkeys
+     * @return bool
      */
     public function load($nonkeys=false)  {
         $results    = [];
@@ -508,7 +542,10 @@ SQL;
     }
 
     /**
-     *
+     * Builds a where clause for the query
+     * 
+     * @param boolean $useKeys
+     * @return string
      */
     protected function buildWhereClause($useKeys) {
         $query   = '';
@@ -554,7 +591,9 @@ SQL;
     }
 
     /**
-     *
+     * Builds an order by clause for the query
+     * 
+     * @return string
      */
     protected function buildOrderByClause() {
         $query = '';
@@ -576,7 +615,10 @@ SQL;
     }
 
     /**
-     *
+     * Fetches a dataset, normally looks at just fields, pass in true to get it to include the ID primary key in the query
+     * 
+     * @param boolean $useKeys
+     * @return iterator
      */
     public function fetch($useKeys = false) {
         if ($this->_page()) {
@@ -598,15 +640,15 @@ SQL;
             }
         }
         $query  .= $this->addLimit($this->_currentPage);
-        $results = $this->query($query);
-        //if (count($results)==0) {
-        //    $results = [];
-       // }
-        return $results;
+        return $this->query($query);
     }
 
     /**
-     *
+     * Determines pagination values
+     * 
+     * @param string $query
+     * @param iterator $results
+     * @return $this
      */
     protected function calculateStats($query,&$results) {
         if ($rows = $this->_db->query($query)) {
@@ -649,6 +691,7 @@ SQL;
     /**
      *  This save is multi-purpose... works like both an add/save as well as utilizing the polyglot feature
      *
+     *  @return int
      */
     public function save() {
         $mod    = $this->_module();
@@ -749,7 +792,9 @@ SQL;
     }
 
     /**
-     *
+     * Don't use add anymore, just use "save()"... they basically do the same thing
+     * 
+     * @return int
      */
     public function add()  {
         $fields     = $this->_fields;
@@ -798,8 +843,9 @@ SQL;
         }
         $noLimit      = [];
         $words        = explode(' ',trim($query));
-        $noLimitQuery = ($this->_noLimitQuery) ? $this->_noLimitQuery : $query;
-        if (strtoupper($words[0])==='SELECT') {
+        $words[0]     = strtoupper($words[0]);
+        $noLimitQuery = ($this->_noLimitQuery) ? $this->_noLimitQuery : $query; //used for pagination
+        if ($words[0]==='SELECT') {
             if ($this->_page()) {
                 if ($noLimitQuery) {
                     $include = false;                                           //To create the pagination query, we need to drop the column section...
@@ -809,11 +855,11 @@ SQL;
                         }
                     }
                 }
-                $ctr = 0; $limitFound = false;
                 /* I need to look and see if there's already a limit statement AT THE END of the query.
                  * There could be a limit elsewhere, so I am checking to see
                  * if the word LIMIT is present in the last 6 or so words... if so, I don't add a limit
                  */
+                $ctr = 0; $limitFound = false;                
                 foreach (array_reverse($words) as $token) {
                     $ctr++;
                     $limitFound = (strpos(strtoupper($token),'LIMIT')!==false);
@@ -821,7 +867,6 @@ SQL;
                         break;
                     }
                 }
-
                 $query = implode(' ',$words);
                 if (!$limitFound) {
                     $query = $query .' '. $this->addLimit($this->_page());
@@ -856,7 +901,6 @@ SQL;
                     $ids[] = (int)$id;
                 }
             }
-            //print_r($ids);
             if (!count($ids)) {
                 //nop - no ids to join with so we all go home
             } else {
@@ -874,12 +918,11 @@ SQL;
                         }
                     }
                     if (count($int)) {
-                        //And this craziness merges the document data with the mysql data, being careful not to overlay mysql field values with mongo field values if they both happen to have the same field
+                        //And this craziness merges the mongod document data with the mysql data, being careful not to overlay mysql field values with mongo field values if they both happen to have the same field
                         foreach ($rows as $row) {
                             if (isset($int[$row['id']])) {
                                 foreach ($int[$row['id']] as $index => $vindex) {
                                     foreach ($row as $var => $val) {
-                                       // print($int[$row['id']][$index].','.$v."\n");
                                         if (isset($results[$int[$row['id']][$index]]) && !isset($results[$int[$row['id']][$index]][$var])) {
                                             $results[$int[$row['id']][$index]][$var] = $val;
                                         }
@@ -899,8 +942,12 @@ SQL;
     }
 
     /**
-     *
-     * @param type $useFields
+     * Deletes one or more rows from a table, but will not do a delete if no condition is found
+     * 
+     * By default, will only delete by using an ID (primary key), pass in true 
+     * to use fields to construct the delete clause
+     * 
+     * @param boolean $useFields
      */
     public function delete($useFields=false) {
         $results = [];
@@ -940,7 +987,7 @@ SQL;
             //POLYGLOT check here
             //@TODO: Implement a check to see if this is a polyglot table, and remove corresponding row in MongoDB
         } else {
-            Log::console('Ignoring delete since no condition for the delete was found');
+            Log::console('Ignoring delete ['.$query.'] since no condition for the delete was found');
         }
     }
 

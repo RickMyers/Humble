@@ -82,7 +82,8 @@ class System extends Helper
     
     /**
      * Returns server load in percent (just number, without percent sign)
-     * @return type
+     * 
+     * @return int
      */
     public function serverLoad() {
         $load = null;
