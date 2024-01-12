@@ -47,20 +47,20 @@ class Utility extends Model
      */
     public function compile() {
         $module     = Humble::module($this->getModule());
-        $sourcedir  = 'Code/'.$this->getPackage().'/'.str_replace('_','/',$module['controller']);
+        $sourcedir  = 'Code'.DIRECTORY_SEPARATOR.$this->getPackage().''.DIRECTORY_SEPARATOR.str_replace('_','/',$module['controller']);
         $dir        = dir($sourcedir);
         $compiler   = Environment::getCompiler();
         while (($entry = $dir->read()) !== false) {
-            if (($entry == '.') || ($entry == '..') || (is_dir($sourcedir.'/'.$entry))) {
+            if (($entry == '.') || ($entry == '..') || (is_dir($sourcedir.''.DIRECTORY_SEPARATOR.$entry))) {
                 continue;
             }
             $file       = explode('.',$entry);
             $controller = $file[0];
-            $identifier = $module['namespace'].'/'.$controller;
+            $identifier = $module['namespace'].''.DIRECTORY_SEPARATOR.$controller;
             $compiler->setInfo($module);
             $compiler->setController($controller);
-            $compiler->setSource($module['package'].'/'.str_replace('_','/',$module['controller']));
-            $compiler->setDestination($module['package'].'/'.str_replace('_','/',$module['controller_cache']));
+            $compiler->setSource($module['package'].''.DIRECTORY_SEPARATOR.str_replace('_','/',$module['controller']));
+            $compiler->setDestination($module['package'].''.DIRECTORY_SEPARATOR.str_replace('_','/',$module['controller_cache']));
             $compiler->compile($identifier);
         }
         return $this;
@@ -74,7 +74,7 @@ class Utility extends Model
         $installer  = Environment::getInstaller();
         $package    = $this->getPackage();
         $module     = $this->getXml();
-        $etc        = 'Code/'.$package.'/'.str_replace("_","/",$module).'/config.xml';
+        $etc        = 'Code'.DIRECTORY_SEPARATOR.$package.''.DIRECTORY_SEPARATOR.str_replace("_","/",$module).'/config.xml';
         if (file_exists($etc)) {
             $installer->install($etc);
         } else {
@@ -92,7 +92,7 @@ class Utility extends Model
         $ns = $this->getNamespace();
         $module     = Humble::module($this->getNamespace(),true);
         if ($module['configuration']) {
-            $etc        = 'Code/'.$package.'/'.str_replace("_","/",$module['configuration']).'/config.xml';
+            $etc        = 'Code'.DIRECTORY_SEPARATOR.$package.DIRECTORY_SEPARATOR.str_replace("_","/",$module['configuration']).'/config.xml';
             if (file_exists($etc)) {
                 $installer->uninstall($etc);
                 $status = true;
@@ -115,7 +115,7 @@ class Utility extends Model
      */
     public function createPath()
     {
-        $dir = 'Code/'.$this->getPackage().'/'.str_replace('_','/',$this->getDirectory());
+        $dir = 'Code'.DIRECTORY_SEPARATOR.$this->getPackage().''.DIRECTORY_SEPARATOR.str_replace('_','/',$this->getDirectory());
         $paths = explode('/',$dir);
         $dir = '';
         foreach ($paths as $idx => $path) {
@@ -181,6 +181,8 @@ class Utility extends Model
         $user->setId($this->getUid())->load();
         $data   = Humble::entity('admin/user/identification')->setId($this->getUid())->load();
         $cmd    = Environment::PHPLocation().' CLI.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' prefix='.$this->getNamespace().'_ author="'.$data['first_name'].' '.$data['last_name'].'"';
+        $cmd    = str_replace(["\r","\n"],['',''],$cmd);
+        file_put_contents('cmd.txt',$cmd);
         \Log::general("I am going to create a module by executing the following command:\n\n".$cmd);
         $result = shell_exec($cmd);
         return $result;
@@ -194,35 +196,34 @@ class Utility extends Model
         $user           = Humble::entity('admin/user/identification')->setId($this->getUid())->load();
         $project        = Environment::getProject();
         $module         = Humble::module($this->getNamespace());
-        $custom_root    = 'Code/'.$project->package.'/'.$project->module.'/lib/sample/component';
-        $module_root      = 'Code/'.$module['package'].'/'.$module['module'].'/lib/sample/component';
+        $custom_root    = 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.$project->module.'/lib/sample/component';
+        $module_root      = 'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module['module'].'/lib/sample/component';
         $templates      = [];
         /* The craziness below basically lets you override the default component template with a custom template from the module if they have one */
-        $templates['models']   = file_exists($custom_root.'/Model.php.txt')  ? $custom_root.'/Model.php.txt' : 'Code/Framework/Humble/lib/sample/component/Model.php.txt';
-        $templates['models']   = file_exists($module_root.'/Model.php.txt')  ? $module_root.'/Model.php.txt' : $templates['models'];
-        $templates['entities'] = file_exists($custom_root.'/Entity.php.txt') ? $custom_root.'/Entity.php.txt' : 'Code/Framework/Humble/lib/sample/component/Entity.php.txt';
-        $templates['entities'] = file_exists($module_root.'/Entity.php.txt') ? $module_root.'/Entity.php.txt' : $templates['entities'];        
-        $templates['helpers']  = file_exists($custom_root.'/Helper.php.txt') ? $custom_root.'/Helper.php.txt' : 'Code/Framework/Humble/lib/sample/component/Helper.php.txt';
-        $templates['helpers']  = file_exists($module_root.'/Helper.php.txt') ? $module_root.'/Helper.php.txt' : $templates['helpers'];        
+        $templates['models']   = file_exists($custom_root.DIRECTORY_SEPARATOR.'Model.php.txt')  ? $custom_root.DIRECTORY_SEPARATOR.'Model.php.txt' : 'Code/Framework/Humble/lib/sample/component/Model.php.txt';
+        $templates['models']   = file_exists($module_root.DIRECTORY_SEPARATOR.'Model.php.txt')  ? $module_root.DIRECTORY_SEPARATOR.'Model.php.txt' : $templates['models'];
+        $templates['entities'] = file_exists($custom_root.DIRECTORY_SEPARATOR.'Entity.php.txt') ? $custom_root.DIRECTORY_SEPARATOR.'Entity.php.txt' : 'Code/Framework/Humble/lib/sample/component/Entity.php.txt';
+        $templates['entities'] = file_exists($module_root.DIRECTORY_SEPARATOR.'Entity.php.txt') ? $module_root.DIRECTORY_SEPARATOR.'Entity.php.txt' : $templates['entities'];        
+        $templates['helpers']  = file_exists($custom_root.DIRECTORY_SEPARATOR.'Helper.php.txt') ? $custom_root.DIRECTORY_SEPARATOR.'Helper.php.txt' : 'Code/Framework/Humble/lib/sample/component/Helper.php.txt';
+        $templates['helpers']  = file_exists($module_root.DIRECTORY_SEPARATOR.'Helper.php.txt') ? $module_root.DIRECTORY_SEPARATOR.'Helper.php.txt' : $templates['helpers'];        
         $roots          = ['models'=>'Model','helpers'=>'Helper','entities'=>'Entity'];
         
-        $ns             = 'Code/'.$module['package']."/".$module[$this->getType()];
+        $ns             = str_replace(['_','/'],['\\','\\'],'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module[$this->getType()]);
         $root           = $roots[$this->getType()];
         $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Framework\\Humble\\Traits\\EventHandler;\n\t" : "" ;
-        $ns             = str_replace(['_','/'],['\\','\\'],$ns);
         $root           = str_replace(['_','/'],[DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR],$root);
-        $parts          = explode('_',$this->getName());
+        $parts          = explode('_',str_replace('/','_',$this->getName()));
         foreach ($parts as $idx => $part) {
             $parts[$idx] = ucfirst($part);
         }
         $class = $parts[count($parts)-1];
         if (count($parts)>1) {
-            $root = DIRECTORY_SEPARATOR.$ns.DIRECTORY_SEPARATOR.$root;
+            $root = '\\'.$ns.'\\'.$root;
             for ($i=0; $i<count($parts)-1; $i++) {
-                $ns .= DIRECTORY_SEPARATOR.$parts[$i];
+                $ns .= '\\'.$parts[$i];
             }
         }
-        @mkdir(str_replace('_',DIRECTORY_SEPARATOR,$ns),0775,true);
+        @mkdir(str_replace(['\\','/'],[DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR],$ns),0775,true);
         $dest           = $ns.DIRECTORY_SEPARATOR.$class.'.php';
         $template       = $templates[$this->getType()];
         $description    = wordwrap($this->getDescription(),70,"\n * ");
@@ -245,7 +246,7 @@ class Utility extends Model
             '&&base_module&&'
         );
         if (strpos($root,'_')!==false) {
-            $root = '\\'+$root;
+            $root = DIRECTORY_SEPARATOR.$root;
         }
         $repl           = array(
             $ns,
@@ -264,7 +265,6 @@ class Utility extends Model
             $project['package'],
             $project['module']
         );
-        //ADD A CHECK!
         $dest = str_replace(['/','\\','_'],[DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR],$dest);
         if (!file_exists($dest)) {
             file_put_contents($dest,str_replace($srch,$repl,file_get_contents($template)));
@@ -292,16 +292,16 @@ class Utility extends Model
         $templates      = [];
         $main           = Humble::module($project->namespace);
         $current        = Humble::module($this->_namespace());
-        $templates[]    = 'Code'.$current['package'].'/'.$current['module'].'/lib/sample/component/controller.xml';
-        $templates[]    = 'Code'.$main['package'].'/'.$main['module'].'/lib/sample/component/controller.xml';
+        $templates[]    = 'Code'.$current['package'].''.DIRECTORY_SEPARATOR.$current['module'].'/lib/sample/component/controller.xml';
+        $templates[]    = 'Code'.$main['package'].''.DIRECTORY_SEPARATOR.$main['module'].'/lib/sample/component/controller.xml';
         $templates[]    = 'Code/Framework/Humble/lib/sample/component/controller.xml';
         $template       = $this->resolveLocation($templates);
         
         if (!$module    = Humble::module($this->getNamespace(),$override)) {
             return "The ".$this->getNamespace()." module is disabled or does not exist";
         }
-        $dest           = 'Code/'.$module['package']."/".$module['controller'];
-        $dest           = $dest.'/'.$this->getName().'.xml';
+        $dest           = 'Code'.DIRECTORY_SEPARATOR.$module['package']."/".$module['controller'];
+        $dest           = $dest.''.DIRECTORY_SEPARATOR.$this->getName().'.xml';
         if (file_exists($dest)) {
             return "A controller with that name already exists [".$dest."]";
         }
@@ -323,13 +323,13 @@ class Utility extends Model
             $this->getActionDescription(),
             $this->getAction()
         );
-        $newDir = str_replace('_','/','Code/'.$module['package'].'/'.$module['views'].'/'.$this->getName().'/'.$this->getEngine());
+        $newDir = str_replace('_','/','Code'.DIRECTORY_SEPARATOR.$module['package'].''.DIRECTORY_SEPARATOR.$module['views'].''.DIRECTORY_SEPARATOR.$this->getName().''.DIRECTORY_SEPARATOR.$this->getEngine());
         @mkdir($newDir,0775,true);
         if (isset($exts[$this->getEngine()])) {
-            file_put_contents($newDir.'/'.$this->getAction().'.'.$exts[$this->getEngine()],'');
+            file_put_contents($newDir.''.DIRECTORY_SEPARATOR.$this->getAction().'.'.$exts[$this->getEngine()],'');
             if ($useLanding) {
                 $loc = getcwd().$newDir;
-                file_put_contents($newDir.'/'.$this->getAction().'.'.$exts[$this->getEngine()],str_replace('&&HOME&&',$loc,file_get_contents('Code/Framework/Humble/lib/sample/module/Views/actions/Smarty3/landing.tpl')));
+                file_put_contents($newDir.''.DIRECTORY_SEPARATOR.$this->getAction().'.'.$exts[$this->getEngine()],str_replace('&&HOME&&',$loc,file_get_contents('Code/Framework/Humble/lib/sample/module/Views/actions/Smarty3/landing.tpl')));
             }
         }
         if (file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)))) {
@@ -366,7 +366,7 @@ class Utility extends Model
         if ($namespace = \Environment::getProject('namespace')) {
             if ($module = Humble::module($namespace)) {
                 $base = 'Code/Framework/Humble/lib';
-                $dest = 'Code/'.$module['package'].'/'.$module['module'].'/lib';
+                $dest = 'Code'.DIRECTORY_SEPARATOR.$module['package'].''.DIRECTORY_SEPARATOR.$module['module'].'/lib';
                 @mkdir($dest,0775,true);
                 \Humble::helper('humble/directory')->copyDirectory($base,$dest);
             }

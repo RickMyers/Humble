@@ -8,7 +8,7 @@
     "handlers": {
         "system": {
             "callbacks": {
-                "snapshotStats": true
+                "snapshotSystem": true
             },
             "multiple": 6
         },

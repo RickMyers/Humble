@@ -11,8 +11,16 @@
                 }
             },
             methods: {
-                saveDetails: () => {
-                    alert('doing it');
+                saveDetails: async () => {
+                    if (Edits['user-details'].validate()) {
+                        const form = document.querySelector('#user_details_form');
+                        const response = await fetch('/admin/user/save', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        });
+                        let text = await response.text();
+                        alert(text);
+                    }   
                 }
             }
         });

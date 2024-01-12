@@ -54,7 +54,8 @@ class User extends Model
      */
     public function changePassword() {
         $password    = $this->getPassword();
-        if ($confirm = $this->getConfirmPassword() && ($confirm !== $password)) {
+        $confirm     = $this->getConfirmPassword();
+        if (($confirm) && ($confirm !== $password)) {
             return false;
         }
         if ($user_id = $this->getUserId() ? $this->getUserId() : \Environment::session('admin_id')) {

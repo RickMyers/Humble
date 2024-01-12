@@ -4,7 +4,7 @@
 
         <action name="create">
             <description>Will create a new module </description>
-            <model namespace="humble" class="utility" id="module" method='createModule'>
+            <model namespace="admin" class="utility" id="module" method='createModule'>
                 <parameter name="uid"       source="session" default="" />
                 <parameter name="package"   source="post"    default="" />
                 <parameter name="module"    source="post"    default="" />

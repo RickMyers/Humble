@@ -79,7 +79,7 @@ function logMessage($message=false,$timestamp=true) {
         } else {
             file_put_contents($cadence['log']['location'],$message,FILE_APPEND);
         }
-        print($message);
+        //print($message);
     }
 }
 //------------------------------------------------------------------------------
@@ -99,19 +99,23 @@ function scanControllersForChanges($last_run=false) {
                     }
                 }
             } else {
-                logMessage("Namespace ". $metadata['namespace']." found but not valid");
+                logMessage("Namespace ". $metadata['namespace']." Found But Not Valid");
             }
         } 
     }
 }
 //------------------------------------------------------------------------------
 function clearSystemStats() {
+    global $monitor;
+    logMessage('Clearing System Monitoring Data Over Two Weeks Old');
+    $monitor->clear();
     
 }
 //------------------------------------------------------------------------------
 function snapshotSystem() {
     global $monitor, $system;
-    
+    logMessage('Taking A Snapshot Of System Statistics');
+    $monitor->record();
 }
 //------------------------------------------------------------------------------
 function recurseDirectory($dir=[]) {

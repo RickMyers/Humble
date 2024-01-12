@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<config>
+    <chatgpt>
+        <version>0.0.1</version>
+        <title>ChatGPT<!-- This will appear in the administration screens for this module --></title>
+        <description>The ChatGPT module<!-- This will appear in the admin page --></description>
+        <author>
+            <name>Rick Myers</name>
+            <email>rick@humbleprogramming.com</email>
+        </author>
+        <module>
+            <name>ChatGPT</name>
+            <weight>50</weight>
+            <required>N</required>
+            <workflow>Y</workflow>
+            <package>Main</package>
+            <use>Smarty3</use>
+        </module>
+        <structure>
+            <models>
+                <source>ChatGPT/Models</source>
+            </models>
+            <helpers>
+                <source>ChatGPT/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>ChatGPT/Controllers</source>
+                <cache>ChatGPT/Controllers/Cache</cache>
+            </controllers>
+            <mobile>
+                <controllers>
+                    <source>ChatGPT/Mobile/Controllers</source>
+                    <cache>ChatGPT/Mobile/Controllers/Cache</cache>
+                </controllers>
+                <views>
+                    <source>ChatGPT/Mobile/Views</source>
+                    <cache>ChatGPT/Mobile/Views/Cache</cache>
+                </views>
+            </mobile>
+            <schema>
+                <install>ChatGPT/Schema/Install</install>
+                <update>ChatGPT/Schema/Update</update>
+                <layout>ChatGPT/Schema/DSL</layout>
+            </schema>
+            <configuration>
+                <source>ChatGPT/etc</source>
+            </configuration>
+            <views>
+                <source>ChatGPT/Views</source>
+                <cache>ChatGPT/Views/Cache</cache>
+            </views>
+            <images>
+                <source>ChatGPT/Images</source>
+                <cache>ChatGPT/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>ChatGPT/Entities</source>
+            </entities>
+            <RPC>
+                <source>ChatGPT/RPC</source>
+            </RPC>
+            <frontend>
+                <source>ChatGPT/web/app</source>
+            </frontend>
+        </structure>
+        <extend comment="Means whether to look up the Module hierarchy if a specific class is not found (if not found in current module, perhaps the class is in a parent module)">
+            <helpers>1</helpers>
+            <models>1</models>
+            <entities>1</entities>
+        </extend>     
+        <orm>
+            <prefix>chatgpt_</prefix>
+            <mongodb>chatgpt</mongodb>
+            <!--
+                Register your tables to be managed under this namespace in the entities section below in the following format:
+
+                <table_name polyglot="Y' />
+
+                The 'polyglot' attribute is optional.  Only specify when you are actually enabling the polyglot behavior
+            -->
+            <entities>
+
+            </entities>
+        </orm>
+        <events>
+
+        </events>
+        <web>
+            <!-- Edits are used for separating form validation from the form -->
+            <edits>
+                <edit1>ChatGPT/web/edits/edit.json</edit1>
+            </edits>
+            <hook>
+                <!-- #################################################
+                     This is where the JS lives for your module
+
+                     Set the 'hook' name appropriately, and use as
+                       many hooks as you'd like
+                     #################################################    -->
+                <js>
+                    <source>ChatGPT/web/js/ChatGPT.js</source>
+                </js>
+                <css>
+                    <source>ChatGPT/web/css/ChatGPT.css</source>
+                </css>
+            </hook>
+        </web>
+    </chatgpt>
+</config>

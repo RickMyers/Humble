@@ -247,7 +247,7 @@
                             <div id='user-name' class="text-center text-xl">
                                 {{ user.first_name }} {{ user.last_name }}
                             </div>
-                                <div id='user-email'><i onclick="tools.toggle(this,document.getElementById('user_details'),'/admin/user/details');" class="glyphicons glyphicons-collapse" style="transform: rotate(90deg); font-size: 30px" ></i>{% if (user.email) %}{{ user.email }}{% else %}User Information{% endif %}</div>
+                                <div id='user-email'><i id='user_details_toggle' onclick="tools.toggle(this,document.getElementById('user_details'),'/admin/user/details');" class="glyphicons glyphicons-collapse" style="transform: rotate(90deg); font-size: 30px" ></i>{% if (user.email) %}{{ user.email }}{% else %}User Information{% endif %}</div>
                                 <div id="user_details" class="hidden">
                                     User Details Here
                                 </div>

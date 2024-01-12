@@ -89,7 +89,7 @@
                         <then>
                             <model assign="password_changed" use="admin_user" method="changePassword">
                                 <parameter name="user_id" value="admin_id" source="session" required="true" />
-                                <parameter name="new_password" source="post" format="password" required="true" />
+                                <parameter name="password" value="new_password" source="post" format="password" required="true" />
                                 <parameter name="confirm_password" source="post" format="password" required="true" />
                             </model>
                             <if assign="password_changed" eq="FALSE">
@@ -97,6 +97,9 @@
                                     <output text="Password change attempt failed" />
                                     <abort />
                                 </then>
+                                <else>
+                                    <output text="Password changed" />
+                                </else>
                             </if>
                         </then>
                     </if>
@@ -105,7 +108,7 @@
                         <parameter name="email"     source="post" default="" />
                         <parameter name="user_name" source="post" default="" />
                     </entity> 
-                    <entity namespace="admin" class="user/identification">
+                    <entity namespace="admin" class="user/identification" method="save">
                         <parameter name="id"  value="admin_id" source="session" required="true" />
                         <parameter name="first_name" source="post" default="" />
                         <parameter name="last_name"  source="post" default="" />

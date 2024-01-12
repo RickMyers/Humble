@@ -61,7 +61,7 @@
 			"id": 			"details_new_password",
 			"longname":		"New Password",
 			"type":			"password",
-                        "confirm":              "details_confirm_password",
+                        "verify":              "details_confirm_password",
 			"required":		false,
 			"force":		false,
                         "style":                ""
@@ -70,6 +70,7 @@
 			"active":		true,
 			"id": 			"details_confirm_password",
 			"longname":		"Confirm Password",
+                        "verify":               "details_new_password",
 			"type":			"password",
 			"required":		false,
 			"force":		false,

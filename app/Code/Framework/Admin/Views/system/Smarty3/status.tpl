@@ -3,16 +3,16 @@
         "load": "{$monitor->getServerLoad()}"
     },
     "memory": {
-        "total": "{$monitor->getMemoryTotal()}",
-        "free": "{$monitor->getMemoryFree()}",
-        "used": "{$monitor->getMemoryUsed()}",
-        "percentage": "{$monitor->getMemoryPercentage()}"    
+        "total": "{$monitor->getTotalMemory()}",
+        "free": "{$monitor->getFreeMemory()}",
+        "used": "{$monitor->getUsedMemory()}",
+        "percentage": "{$monitor->getPercentMemory()}"    
     },
     "apache": {
-        "thread_count": "{$monitor->getThreadCount()}"
+        "thread_count": "{$monitor->getApacheThreads()}"
     },
     "tasks": {
-        "count": "{$monitor->getTaskCount()}"
+        "count": "{$monitor->getTotalThreads()}"
     },
     "uptime": {
         "duration": ""
