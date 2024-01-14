@@ -5,7 +5,7 @@ Initial Action Controller
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="actions" use="Smarty3"><!-- Default templater uses Smarty-3, change to whatever you like -->
+<controller name="actions" use="Smarty"><!-- Default templater uses Smarty-3, change to whatever you like -->
     <actions>
 
         <action name="open">

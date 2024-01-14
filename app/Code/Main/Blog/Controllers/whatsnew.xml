@@ -5,7 +5,7 @@ Whats new related actions
 
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="whatsnew" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="whatsnew" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="off">
         <action name="home">
             <description>Whats new home page</description>

@@ -5,7 +5,7 @@ Utilities for working with XML
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="xml" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
+<controller name="xml" use="Smarty" author="Richard Myers" email="rick@humbleprogramming.com">
     <actions>
         <action name="translate">
             <description>Translate XML to an array configuration</description>

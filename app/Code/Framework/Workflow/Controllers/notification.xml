@@ -5,7 +5,7 @@ Handles the different screens for configuring email, alerts, etc
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="notification" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="notification" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="off">
 
         <action name="configuration">

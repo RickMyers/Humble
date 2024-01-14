@@ -5,7 +5,7 @@ General actions for inserting data into an event
 
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="input" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="input" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
         <action name="value" passalong="windowId">
             <description>Inserts a value into an event</description>

@@ -21,7 +21,7 @@ class Directory extends \Code\Framework\Humble\Helpers\Directory
 {
 
     private $extensions     = array(
-        'Smarty3' => '.tpl',
+        'Smarty' => '.tpl',
         'Smarty2' => '.tpl',
         'Twig'    => '.twig',
         'PHP'     => '.php'

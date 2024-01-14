@@ -5,7 +5,7 @@ User related configurations
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="user" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="user" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
 
         <action name="tries" passalong="windowId">

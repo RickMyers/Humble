@@ -10,7 +10,7 @@
         </author>
         <module>
             <name>Paradigm</name>
-            <use>Smarty3</use>
+            <use>Smarty</use>
             <package>Framework</package>
             <workflow>Y</workflow>
             <weight>15</weight>

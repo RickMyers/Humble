@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="module" use="Smarty3">
+<controller name="module" use="Smarty">
     <actions blocking="off">
 
         <action name="create">

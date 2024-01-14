@@ -40,15 +40,6 @@
 		},
 		{
 			"active":		true,
-			"id": 			"details_user_name",
-			"longname":		"User Name",
-			"type":			"text",
-			"required":		false,
-			"force":		false,
-                        "style":                ""
-		},                
-		{
-			"active":		true,
 			"id": 			"details_current_password",
 			"longname":		"Current Password",
 			"type":			"password",

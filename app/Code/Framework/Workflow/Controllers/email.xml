@@ -5,7 +5,7 @@ All things relating to managing and creating email notifications
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="email" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="email" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
 
         <action name="templates" output="json">

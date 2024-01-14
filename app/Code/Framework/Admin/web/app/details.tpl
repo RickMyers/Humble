@@ -1,4 +1,7 @@
 <form name="user_details_form" id="user_details_form" class="text-center">
+    <div class='pt-1 pb-2 font-sans text-xl'>
+        User Name: <span class='font-bold'>{{ user_name }}</span>
+    </div>
     <div class="text-base font-sans">
         <input type="text" name="first_name" id="details_first_name" class="standard-field" :value="first_name"/>
     </div>
@@ -16,12 +19,6 @@
     </div>
     <div class="text-sm font-mono mb-2">
         E-Mail
-    </div>
-    <div class="text-base font-sans">
-        <input type="text" name="user_name" id="details_user_name" class="standard-field" :value="user_name"/>
-    </div>
-    <div class="text-sm font-mono mb-2">
-        User Name
     </div>
     <div class="text-base font-sans">
         <input type="file" name="user_photo" id="details_user_photo" class="standard-field w-48" />

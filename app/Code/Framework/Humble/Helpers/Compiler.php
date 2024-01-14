@@ -1475,6 +1475,7 @@ SQL;
                     $identifier = $module['namespace'].'/'.$controller;
                 }
                 $this->stampIt($identifier,date("Y-m-d, H:i:s", filemtime($source)));
+                \Humble::cache('controller-'.$identifier,null);                  //force cache to reload
             } else {
                 $message='';
                 foreach ($this->errors as $idx => $error) {

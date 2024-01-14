@@ -178,7 +178,7 @@ class Module extends CLI
                 @mkdir($root.DIRECTORY_SEPARATOR.'Mobile/Views/Cache');
                 @mkdir($root.DIRECTORY_SEPARATOR.'Views');
                 @mkdir($root.DIRECTORY_SEPARATOR.'Views/actions');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Views/actions/Smarty3');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Views/actions/Smarty');
                 @mkdir($root.DIRECTORY_SEPARATOR.'Views/Cache');
                 @mkdir($root.DIRECTORY_SEPARATOR.'Resources');
                 @mkdir($root.DIRECTORY_SEPARATOR.'Resources/js');
@@ -210,7 +210,7 @@ class Module extends CLI
                 $out         = ["Code/".$pk."/".$md."/Controllers/actions.xml"];
                 $templates[] = $root."/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
                 $templates[] = $root."/lib/sample/module/RPC/mapping.yaml";                $out[] = "Code/".$pk."/".$md."/RPC/mapping.yaml";
-                $templates[] = $root."/lib/sample/module/Views/actions/Smarty3/open.tpl";  $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty3/open.tpl";
+                $templates[] = $root."/lib/sample/module/Views/actions/Smarty/open.tpl";  $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty/open.tpl";
                 $templates[] = $root."/lib/sample/module/web/js/actions.js";               $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
                 $templates[] = $root."/lib/sample/module/web/css/template.css";            $out[] = "Code/".$pk."/".$md."/web/css/".ucfirst($md).".css";
                 $templates[] = $root."/lib/sample/module/Models/Model.php.txt";            $out[] = "Code/".$pk."/".$md."/Models/Model.php";

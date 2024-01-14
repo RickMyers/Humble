@@ -5,7 +5,7 @@ Unit Test Harness
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="unittests" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
+<controller name="unittests" use="Smarty" author="Richard Myers" email="rick@humbleprogramming.com">
     <actions>
 
         <action name="home" passalong="window_id">

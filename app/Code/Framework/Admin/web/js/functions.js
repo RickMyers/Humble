@@ -108,7 +108,7 @@ var Functions = (() => {
                     secrets: {
                         add: () => {
                             var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Secret");
-                            (new EasyAjax('/admin/secrets/form')).then((response) => {
+                            (new EasyAjax('/admin/secrets/form')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                              
                         },

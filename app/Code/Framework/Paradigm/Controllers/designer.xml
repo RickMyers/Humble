@@ -5,7 +5,7 @@ Form Designer Actions
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="designer" use="Smarty3" author=" " email="rick@humbleprogramming.com">
+<controller name="designer" use="Smarty" author=" " email="rick@humbleprogramming.com">
     <actions>
         <action name="save">
             <description>Saves a form in progress</description>

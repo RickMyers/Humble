@@ -5,7 +5,7 @@ System functions such as status and installation enabled
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="system" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="system" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="off">
    
         <action name="info">
@@ -28,7 +28,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name="user_id"         source="session" value="uid"    default="" />
                 <parameter name="arguments"       source="post"  default="" />
             </model>
-        </action>    
+        </action>        
                
         <!-- ########################################################################################## -->
 

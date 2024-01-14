@@ -5,7 +5,7 @@ File and URL interactions
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="file" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="file" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
         
         <action name="trigger">

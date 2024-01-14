@@ -5,7 +5,7 @@ Event trigger configurations
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="trigger" use="Smarty3" author="Rick Myers" email="">
+<controller name="trigger" use="Smarty" author="Rick Myers" email="">
     <actions>
         <action name="options" passalong="windowId">
             <description>The options available to a triggered event</description>

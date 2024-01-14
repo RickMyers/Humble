@@ -14,7 +14,7 @@ Welcome to the home page of your application. Some useful information is below:<
     
     <b>Main View</b>:<br /><br />
     
-    &nbsp;&nbsp;&nbsp;app/Code/&&package&&/&&module&&/Views/actions/Smarty3/open.tpl<br /><br />
+    &nbsp;&nbsp;&nbsp;app/Code/&&package&&/&&module&&/Views/actions/Smarty/open.tpl<br /><br />
 
     <b>JavaScript File</b>:<br /><br />
     

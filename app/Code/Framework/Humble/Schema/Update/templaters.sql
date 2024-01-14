@@ -15,7 +15,7 @@ MySQL - 5.5.15 : Database - humble
 /*Data for the table `humble_templaters` */
 
 insert  into `humble_templaters`(`id`,`templater`,`extension`,`description`) values 
-(2,'Smarty3','tpl','Smarty 3'),
+(2,'Smarty','tpl','Smarty 3'),
 (3,'Twig','twig','Twig'),
 (5,'Rain3','rain','Rain 3'),
 (6,'TBS','tbs','Tiny But Strong'),

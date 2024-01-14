@@ -5,7 +5,7 @@ Configuration for dynamically triggered workflows
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="detector" use="Smarty3" author="Richard Myers" email="rick@humbleprogramming.com">
+<controller name="detector" use="Smarty" author="Richard Myers" email="rick@humbleprogramming.com">
     <actions>
         <action name="event" passalong="windowId">
             <description>Listener of a sensor event (fires on listener event)</description>

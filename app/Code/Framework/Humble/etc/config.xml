@@ -14,7 +14,7 @@
             <required>Y</required>
             <workflow>Y</workflow>
             <package>Framework</package>
-            <use>Smarty3</use>  
+            <use>Smarty</use>  
         </module> 
         <structure>     
             <models>

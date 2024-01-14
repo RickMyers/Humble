@@ -11,7 +11,7 @@
 
         <module>
             <name>Workflow</name>
-            <use>Smarty3</use>
+            <use>Smarty</use>
             <package>Framework</package>
             <workflow>Y</workflow>
             <weight>20</weight>

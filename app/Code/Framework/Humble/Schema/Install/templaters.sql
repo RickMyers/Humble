@@ -1,5 +1,5 @@
 insert  into `humble_templaters`(`id`,`templater`,`extension`,`description`) values 
-(2,'Smarty3','tpl','Smarty 3'),
+(2,'Smarty','tpl','Smarty 3'),
 (3,'Twig','twig','Twig'),
 (4,'Blade','blade','Blade'),
 (5,'Rain3','rain','Rain 3'),

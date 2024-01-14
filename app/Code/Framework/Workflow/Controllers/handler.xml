@@ -5,7 +5,7 @@ Configurations from the parent handler class itself
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="handler" use="Smarty3" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="handler" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
 
         <action name="error">
