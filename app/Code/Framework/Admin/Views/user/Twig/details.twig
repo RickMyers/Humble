@@ -1,7 +1,7 @@
 <script>
     if (typeof details_app === 'undefined') {
         let details_app = Vue.createApp({
-            template: Humble.template('admin/details'),
+            template: Humble.template('admin','details'),
             data: () => {
                 return {
                     first_name: "{{ user.first_name }}",

@@ -209,6 +209,10 @@ EasyEdits.execute	= function (easy){
     }
     //form specific processing
     var form		= $E(easy.edits.form.id);
+    if (!form) {
+        alert('Edits: '+easy.edits.form.id+' Not Found');
+        return false;
+    }
     if (easy.edits.form.action) {
         form.action = easy.edits.form.action;
     }

@@ -20,137 +20,137 @@
         <script type="text/javascript" src='/js/admin'/></script>        
         <script>
             
-            
-/*            $(document).ready(function () {
-               $('#state').val('{{ system.state() }}')
-            });*/
-            {% set tab_id = system.browserTabId()%}
-            EasyAjax.always.add('browser_tab_id','{{ tab_id }}')
-            EasyAjax.always.add('csrf_buster','{{ system.csrfBuster(tab_id) }}');
-            Humble.init();
-            const tools = {
-                encryptFiles: function (source,callback) {
-                    fileInput   = (typeof source === 'string') ? $E(source) : source;
-                    if (fileInput.files) {
-                        files = fileInput.files;
-                        let fp = { }
-                        for (let i in files){ 
-                            if (files[i].lastModified) {
-                                fp[i] = {
-                                    reader: new FileReader(),
-                                    source: files[i].name,
-                                    converted: false
+
+/*      $(document).ready(function () {
+            $('#state').val('{{ system.state() }}')
+        });*/
+        {% set tab_id = system.browserTabId()%}
+        EasyAjax.always.add('browser_tab_id','{{ tab_id }}')
+        EasyAjax.always.add('csrf_buster','{{ system.csrfBuster(tab_id) }}');
+        Humble.init();
+        const tools = {
+            encryptFiles: function (source,callback) {
+                fileInput   = (typeof source === 'string') ? $E(source) : source;
+                if (fileInput.files) {
+                    files = fileInput.files;
+                    let fp = { }
+                    for (let i in files){ 
+                        if (files[i].lastModified) {
+                            fp[i] = {
+                                reader: new FileReader(),
+                                source: files[i].name,
+                                converted: false
+                            }
+                        }
+                    }
+                    for (i in fp) {
+                        fp[i].reader.readAsBinaryString(files[i]);
+                        fp[i].reader.onload = (function (num) {
+                            return function (event) {
+                                fp[num].converted = btoa(event.target.result);
+                                let isDone = true;
+                                for (let j in fp) {
+                                    isDone = isDone && fp[j].converted;
                                 }
-                            }
-                        }
-                        for (i in fp) {
-                            fp[i].reader.readAsBinaryString(files[i]);
-                            fp[i].reader.onload = (function (num) {
-                                return function (event) {
-                                    fp[num].converted = btoa(event.target.result);
-                                    let isDone = true;
-                                    for (let j in fp) {
-                                        isDone = isDone && fp[j].converted;
-                                    }
-                                    if (isDone) {
-                                        callback(fp);
-                                    }
-                                };
-                               })(i);
-                        }
-                    }
-                },
-                id: function (len) {
-                    len = len ? len : 9;                                            //If nothing passed in, create a 9 character ID
-                    var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';                    
-                    var id = '';
-                    for (var i=0; i<len; i++) {
-                        id += alphabet.substr(Math.floor(Math.random() * Math.floor(26)),1);
-                    }
-                    return id;
-                },
-                value:  {
-                    set: function (form,field_id,field_name,value) {
-                        form    = $E(form);
-                        if (!form) {
-                            return;
-                        }
-                        field   = $E(field_id) ? $E(field_id) : form.elements[field_name];
-                        if (!field) {
-    //                        console.log('Missing Field: '+field_name+','+field_id);
-                            return;
-                        }
-                        if (NodeList.prototype.isPrototypeOf(field)) {
-                            if (typeof(value)=='string') {
-                                value = value.toLowerCase();
-                            }
-                            for (var i=0; i<field.length; i++) {
-                                field[i].checked = field[i].value.toLowerCase() == value;
-                            }
-                        } else {
-                            if (field.type) {
-                                switch (field.type.toLowerCase()) {
-                                    case "checkbox" :
-                                        if ((value == 'ON') || (value == 'on')) {
-                                            field.checked = true;
-                                        } else {
-                                            field.checked = (field.value == value);
-                                        }
-                                        break;
-                                    default : 
-                                        $(field).val(value);
-                                        break;
+                                if (isDone) {
+                                    callback(fp);
                                 }
-                            } else if (field.length) {
-                                for (var i=0; i<field.length; i++) {
-                                    field[i].checked = (field[i].value == value)
-                                };
-                            } else {
-                                var cbtitle= $E(field.id);
-                                cbtitle.innerHTML=value;
-                            }
-                        }
-                    }
-                },
-                date: function (d) {
-                    return (d.length==10) ? d.substr(6)+'-'+d.substr(0,2)+'-'+d.substr(3,2) : '';
-                },
-                image: {
-                    align: function (photo) {
-                        var offset;
-                        if (photo.offsetWidth >= photo.offsetHeight) {
-                            photo.style.height = '100%';
-                            if ((offset = photo.offsetWidth - photo.parentNode.offsetWidth) > 50) {
-                                photo.style.left = (-1*Math.round(offset/2))+"px";
-                            }
-                        } else {
-                            photo.style.width = '100%';
-                            if ((offset = photo.offsetHeight - photo.parentNode.offsetHeight) > 50) {
-                                photo.style.top = (-1*Math.round(offset/2))+"px";
-                            }
-                        }
-                    }
-                },
-                toggle: (element,layer,resource) => {
-                    element.style.transform = (element.style.transform=='rotate(90deg)') ? 'rotate(270deg)' : 'rotate(90deg)';
-                    if (!resource) {
-                        $(layer).slideToggle();
-                    } else {
-                        (new EasyAjax(resource)).then((response) => {
-                            $(layer).html(response);
-                            $(layer).slideToggle();
-                        }).get();
+                            };
+                           })(i);
                     }
                 }
-            }            
-            const resize = () => {
-                document.getElementById('outer').style.height = (window.innerHeight - (document.getElementById('navigation-bar').offsetHeight + document.getElementById('status-bar').offsetHeight))+'px';
+            },
+            id: function (len) {
+                len = len ? len : 9;                                            //If nothing passed in, create a 9 character ID
+                var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';                    
+                var id = '';
+                for (var i=0; i<len; i++) {
+                    id += alphabet.substr(Math.floor(Math.random() * Math.floor(26)),1);
+                }
+                return id;
+            },
+            value:  {
+                set: function (form,field_id,field_name,value) {
+                    form    = $E(form);
+                    if (!form) {
+                        return;
+                    }
+                    field   = $E(field_id) ? $E(field_id) : form.elements[field_name];
+                    if (!field) {
+//                        console.log('Missing Field: '+field_name+','+field_id);
+                        return;
+                    }
+                    if (NodeList.prototype.isPrototypeOf(field)) {
+                        if (typeof(value)=='string') {
+                            value = value.toLowerCase();
+                        }
+                        for (var i=0; i<field.length; i++) {
+                            field[i].checked = field[i].value.toLowerCase() == value;
+                        }
+                    } else {
+                        if (field.type) {
+                            switch (field.type.toLowerCase()) {
+                                case "checkbox" :
+                                    if ((value == 'ON') || (value == 'on')) {
+                                        field.checked = true;
+                                    } else {
+                                        field.checked = (field.value == value);
+                                    }
+                                    break;
+                                default : 
+                                    $(field).val(value);
+                                    break;
+                            }
+                        } else if (field.length) {
+                            for (var i=0; i<field.length; i++) {
+                                field[i].checked = (field[i].value == value)
+                            };
+                        } else {
+                            var cbtitle= $E(field.id);
+                            cbtitle.innerHTML=value;
+                        }
+                    }
+                }
+            },
+            date: function (d) {
+                return (d.length==10) ? d.substr(6)+'-'+d.substr(0,2)+'-'+d.substr(3,2) : '';
+            },
+            image: {
+                align: function (photo) {
+                    var offset;
+                    if (photo.offsetWidth >= photo.offsetHeight) {
+                        photo.style.height = '100%';
+                        if ((offset = photo.offsetWidth - photo.parentNode.offsetWidth) > 50) {
+                            photo.style.left = (-1*Math.round(offset/2))+"px";
+                        }
+                    } else {
+                        photo.style.width = '100%';
+                        if ((offset = photo.offsetHeight - photo.parentNode.offsetHeight) > 50) {
+                            photo.style.top = (-1*Math.round(offset/2))+"px";
+                        }
+                    }
+                }
+            },
+            toggle: (element,layer,resource) => {
+                element.style.transform = (element.style.transform=='rotate(90deg)') ? 'rotate(270deg)' : 'rotate(90deg)';
+                if (!resource) {
+                    $(layer).slideToggle();
+                } else {
+                    (new EasyAjax(resource)).then((response) => {
+                        $(layer).html(response);
+                        $(layer).slideToggle();
+                    }).get();
+                }
             }
-            window.onload = () => {
-                resize();
-            }
-            window.onresize = resize;
-        </script>
+        }            
+        const resize = () => {
+            document.getElementById('outer').style.height = (window.innerHeight - (document.getElementById('navigation-bar').offsetHeight + document.getElementById('status-bar').offsetHeight))+'px';
+        }
+        window.onload = () => {
+            resize();
+        }
+        window.onresize = resize;
+    </script>
     </head>
     <body>
     <div id="paradigm-virtual-desktop" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;">                        

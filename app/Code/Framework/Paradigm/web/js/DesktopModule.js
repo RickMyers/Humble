@@ -33,6 +33,13 @@ function DesktopWindow(icon,refId) {
     this.titleText      = this.title.innerHTML;
     this.content        = $E(this.id+"-content");
     this.static         = false;  //if true, the window handle won't be returned to the semaphore
+    this.handlers       = {
+        "open":     [],
+        "close":    [],
+        "resize":   [],
+        "minimize": [],
+        "maximize": []
+    };
     this.content.height = (function (content) {
         return function () {
             return content.offsetHeight;
@@ -83,11 +90,38 @@ function DesktopWindow(icon,refId) {
     };
     this._resize     = function (evt) {
         this.content.style.height = (this.frame.offsetHeight - this.bar.offsetHeight - 4)+"px";
-        if (this.resize) {
-            this.resize(this);
+        if (this.handlers.resize.length) {
+            for (var func in this.handlers.resize) {
+                func(this);
+            }
         }
         //$(window).resize();  //this can fire off a lot of other things
         return this;
+    };
+    this.minimize = (func) => {
+        if (typeof func == 'function') {
+            this.handlers.minimize[this.handlers.minimize.length] = func;
+        }
+    };    
+    this.maximize = (func) => {
+        if (typeof func == 'function') {
+            this.handlers.maximize[this.handlers.maximize.length] = func;
+        }
+    };    
+    this.resize = (func) => {
+        if (typeof func == 'function') {
+            this.handlers.resize[this.handlers.resize.length] = func;
+        }
+    };    
+    this.close = (func) => {
+        if (typeof func == 'function') {
+            this.handlers.close[this.handlers.close.length] = func;
+        }
+    };
+    this.open = (func) => {
+        if (typeof func == 'function') {
+            this.handlers.open[this.handlers.open.length] = func;
+        }
     };
     this._open       = function (evt){
         this.lastState = this.state;
@@ -113,8 +147,10 @@ function DesktopWindow(icon,refId) {
                window.setTimeout(tt,2000);
             }).post();
         }
-        if (this.open) {
-            this.open(this);
+        if (this.handlers.open.length) {
+            for (var func in this.handlers.open) {
+                func(this);
+            }
         }
         return this;
     };
@@ -125,18 +161,25 @@ function DesktopWindow(icon,refId) {
     this._close      = function (evt) {
         if (this.frame) {
             var doit = true;
-            if (this.close) {
-                doit = this.close(this);
+            if (this.handlers.close.length) {
+                for (var func in this.handlers.close) {
+                    doit = doit && this.handlers.close[func](this);
+                }    
             }
             if (doit!==false) {
                 this.lastState = this.state;
                 this.state = 0;
                 this.frame.style.display = "none";
                 this.content.innerHTML = '';
+                this.handlers       = {
+                    "open":     [],
+                    "close":    [],
+                    "resize":   [],
+                    "minimize": [],
+                    "maximize": []
+                };                
             }
         }
-        this.close  = false;
-        this.resize = false;
         if (!this.static) {
             Desktop.semaphore.checkin(this.id);
         }
@@ -178,6 +221,11 @@ function DesktopWindow(icon,refId) {
             this.frame.style.height = (Desktop.height()-32)+"px";
             this.state = 3;
         }
+        if (this.handlers.maximize.length) {
+            for (var func in this.handlers.maximize) {
+                func(this);
+            }
+        }        
         this._resize(this);
         return this;
     };
@@ -199,6 +247,11 @@ function DesktopWindow(icon,refId) {
         if (Desktop.minimized.windows.render) {
             Desktop.minimized.windows.render(this);
         }
+        if (this.handlers.minimize.length) {
+            for (var func in this.handlers.mimize) {
+                func(this);
+            }
+        }        
         return this;
     };
     this.set    = function (html) {
@@ -274,51 +327,6 @@ DesktopWindow.corner = function () {
 //
 //------------------------------------------------------------------------------
 var Desktop = {
-    virtualWindows: (function () {
-        let icons = [];
-        for (var i=0; i<100; i++) {
-            icons[icons.length] = {
-                "id":       "paradigm-window-"+i,
-                "image":    "",
-                "text":     "Website | Paradigm",
-                "namespace":"paradigm",
-                "security": "public",
-                "top":      false,
-                "left":     false,
-                "width":    false,
-                "height":   false,
-                "minimize": false,
-                "maximize": false,
-                "close":    false,
-                "open":     function (win) {
-                    if (win._front) {
-                        win._front();
-                    }
-                    return true;
-                },
-                "resize":   false,
-                "handler":  false
-            }
-        }
-        return {
-            "application": {
-                windowStyle: "solid",
-                desktop: {
-                },
-                owner: {
-                },
-                appearance: {
-                }
-            },
-            "controls": [
-            ],
-            "icons": icons
-        }
-    })(),
-    /*  --------------------------------------------------------------------
-     *  A semaphore is a style of programming involving the management of a
-     *    fixed number of resources, in this case, the dynamic windows
-     *  --------------------------------------------------------------------*/
     sync: {
         list: {},
         toggle: function (icon) {
@@ -343,6 +351,10 @@ var Desktop = {
             }
         }
     },
+    /*  --------------------------------------------------------------------
+     *  A semaphore is a style of programming involving the management of a
+     *    fixed number of resources, in this case, the dynamic windows
+     *  --------------------------------------------------------------------*/    
     semaphore: {
         list: [],
         lastElement: null,
@@ -441,15 +453,6 @@ var Desktop = {
         var win     = null;
         var status  = true;
         if ((!Desktop.refreshing) && (Desktop.logoffOnReload)) {
-           /* if (Desktop.virtualWindows.application.user) {
-                for (var i in Desktop.window.list) {
-                    win = Desktop.window.list[i];
-                    if ((win.state === 1) || (win.state === 2) || (win.state === 3)) {
-                        status = status && win.close();
-                    }
-                }
-                return ((status) ? "You are about to logoff, is this what you want to do?" : "One or more of the windows you have opened require attention, would you still like leave?");
-            }*/
         }
         Desktop.logoff = true;
     },
@@ -461,14 +464,6 @@ var Desktop = {
         }
     },
     logoff:  function () {
-  /*      if (Desktop.virtualWindows.application.user)	{
-            Desktop.logoffOnReload  = false;
-            Desktop.refreshing      = true;
-            (new EasyAjax("/desktop/actions/logoff")).then(function () {
-                window.location.replace("/index.html");
-                return true;
-            }).post(false);
-        }*/
     },
     templates: {
         icon:   '<div id="&&w_id&&-icon" class="paradigm-desktop-icon" desktop_id="&&w_id&&" style="width: 64px">'+
@@ -539,17 +534,6 @@ var Desktop = {
             interval: interval
         }).handler();
 
-    },
-    suppressIcons:  function ()	{
-        for (var i in Desktop.icon.list) {
-            if (Desktop.icon.list[i].ref) {
-                $E(Desktop.icon.list[i].ref).style.display = "none";
-            }
-        }
-    },
-    showIcons:  function () {
-        for (var i in Desktop.icon.list)
-            $E(Desktop.icon.list[i].ref).style.display = "none";
     },
     ref: null,
     drag: {
@@ -675,17 +659,10 @@ var Desktop = {
     },
     enable: function () {
         Desktop.render().activate().position();
-        try {
-        //    if (UseTranparentWindows) {
-         //       Desktop.virtualWindows.application.windowStyle = 'transparent';
-         //   }
-        } catch (ex) {
-            console.log(ex);
-        }
     },
     render: function () {
-        var win,icon = null;  //refId is for the special case of processing numeric ids... so javascript doesn't go crazy
-        for (var i=0; i<Desktop.elements.apps.length; i++) {
+        var win,i;  //refId is for the special case of processing numeric ids... so javascript doesn't go crazy
+        /*for (var i=0; i<Desktop.elements.apps.length; i++) {
             icon = Desktop.elements.apps[i];
             icon.refId = icon.id;
             icon.id = Desktop.id(icon.id); //adjust for numeric ids
@@ -699,11 +676,10 @@ var Desktop = {
             icon = Desktop.elements.apps[i];
             var x = new DesktopIcon(icon,icon.refId);
             Desktop.icon.list[icon.id]     = x;
-        }
+        }*/
         Desktop.window.list = {};
         for (i=0; i<Desktop.elements.windows.length; i++) {
             Desktop.window.add(Desktop.elements.windows[i]);
-            //Desktop.window.list[Desktop.window.list.length] = Desktop.elements.windows[i];
         };
         Desktop.ref.innerHTML += Desktop.window.HTML;        
         for (i=0; i<Desktop.elements.windows.length; i++) {
@@ -738,7 +714,7 @@ var Desktop = {
             Desktop.on(win.content,"mouseover", Desktop.stopPropagation);
             Desktop.on(win.frame,"mousedown", Desktop.window.drag.start);
             Desktop.on(win.content,"scroll",Desktop.sync.windows);
-            win.close = Desktop.window.close;
+            //win.close = Desktop.window.close;
             var tt = function (evt) {
                 var win = Desktop.window.list[Desktop.getDesktopId(evt)];
                 if (win._close) {
@@ -925,9 +901,9 @@ var Desktop = {
                     if (win.frame.style.display === "block")	{
                         win.frame.style.zIndex  = 6;
                         win.content.style.zIndex = 7;
-                        if ((Desktop.virtualWindows.application.windowStyle == "transparent") && (Desktop.isModern)) {
+                        //if ((Desktop.virtualWindows.application.windowStyle == "transparent") && (Desktop.isModern)) {
                             win.frame.style.opacity = 0.65;
-                        }
+                        //}
                     }
                 }
             }

@@ -7,7 +7,7 @@
 <script type="text/javascript"> 
     if (typeof add_secret_app === 'undefined') {
         let add_secret_app = Vue.createApp({
-            template: Humble.template('admin/newsecret'),
+            template: Humble.template('admin','newsecret'),
             data: () => {
                 return {
                     namespaces: [
@@ -23,11 +23,24 @@
                     ]
                 }
             },
+            mounted: () => {
+                console.log('mounted');
+                new EasyEdits('/edits/admin/newsecret','new-secret');
+            },
+            created: () => {
+                console.log('created');
+            },
+            updated: () => {
+                console.log('updated');
+            },
+            destroyed: () => {
+                console.log('destroyed');
+            },
             methods: {
-                saveDetails: async () => {
+                addSecret: async () => {
                     if (Edits['new-secret'].validate()) {
-                        const form = document.querySelector('#user_details_form');
-                        const response = await fetch('/admin/user/save', {
+                        const form = document.querySelector('#new_secret_form');
+                        const response = await fetch('/admin/secrets/new', {
                             method: 'POST',
                             body: new FormData(form)
                         });
@@ -37,12 +50,18 @@
                 }
             }
         });
-        console.log('{$window_id}');
-        console.log(Desktop.window.list['{$window_id}'].content);
-        add_secret_app.mount(Desktop.window.list['{$window_id}'].content);
-        
+        var win = Desktop.window.list['{$window_id}'];
+        const secret_app = add_secret_app.mount('#'+win.content.id);
+        win.close(((app) => {
+            return function () {
+                app.unmount();
+            };
+        })(add_secret_app));
     }    
-    (function () {
-        new EasyEdits('/edits/admin/newsecret','new-secret');
-    })();
+
+</script>
+<script type='module'>
+    import Counter from '/comp/admin/counter.vue';
+    console.log('here');
+    console.log(Counter);
 </script>
