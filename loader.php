@@ -73,6 +73,17 @@ function secureCheck($file=[]) {
                 }
             }
             break;
+        case 'component' :
+            header('Content-Type: application/javascript');            
+            $ns   = $_GET['namespace'];
+            if ($module = Humble::entity('humble/modules')->setNamespace($ns)->load(true)) {
+                $file   = $_GET['file'];
+                $source = 'Code/'.$module['package'].'/'.$module['module'].'/web/components/'.$file;
+                if (file_exists($source)) {
+                    print(file_get_contents($source));
+                }
+            }
+            break;            
         case 'css' :   
             header('Content-Type: text/css');
             $orm->setPackage(str_replace('.css','',$_GET['package']))->_orderBy('weight');

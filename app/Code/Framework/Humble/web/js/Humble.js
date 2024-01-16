@@ -12,7 +12,6 @@ var Humble = (function () {
                         templates[namespace] = {};
                         for (var template in tpls[namespace]) {
                             templates[namespace][template] = tpls[namespace][template];
-                            //if default, mark as default
                         }
                     }
                 }
@@ -39,15 +38,12 @@ var Humble = (function () {
                 console.log(vars);
             }
         },        
-        template:  function (identifier,defaults) {
-            var tp      = '';
-            defaults    = (defaults) ? true : false;
-            identifier  = identifier.split('/');
-            tp = templates[identifier[0]] ? (templates[identifier[0]][identifier[1]] ? templates[identifier[0]][identifier[1]] : '')   : '';
-            if (!tp && defaults) {
-                //now try to find the same template in the default app library
+        template:  function (namespace,identifier) {
+            let template = templates[namespace] ? (templates[namespace][identifier] ? templates[namespace][identifier] : '')  : '';
+            if (!template) {
+                console.log('Attempt to fetch template ['+namespace+','+identifier+'] failed, the template was not found');
             }
-            return tp;
+            return template;
         }
     }
 })();

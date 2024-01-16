@@ -47,12 +47,10 @@ class System extends Model
             $templates[$module['namespace']] = [];
             if (is_dir('Code/'.$module['package'].'/'.$module['module'].'/web/app')) {
                 $d = $dir->contents('Code/'.$module['package'].'/'.$module['module'].'/web/app',true);
-                foreach ($dir->contents('Code/'.$module['package'].'/'.$module['module'].'/web/app',true) as $file) {
+                $root = 'Code/'.$module['package'].'/'.$module['module'].'/web/app';
+                foreach ($dir->contents($root,true) as $file) {
                     if (!is_dir($file)) {
-                        $parts = explode('/',$file);
-                        $template = $parts[count($parts)-1];
-                        $template = explode('.',$template);
-                        $templates[$module['namespace']][$template[0]] = str_replace(['\r','\n'],['',''],file_get_contents($file));
+                        $templates[$module['namespace']][str_replace([$root.'/','.tpl'],'',$file)] = str_replace(['\r','\n'],['',''],file_get_contents($file));
                     }
                 }
             }
@@ -69,7 +67,7 @@ class System extends Model
         $component->setData($this->getData());
         $component->saveComponent();
         $this->setWindowId($data['window_id']); //passing on the window id so we can auto close the window
-        $system_event = \Humble::entity('paradigm/system_events');
+        $system_event   = \Humble::entity('paradigm/system_events');
         $system_event->setWorkflowId($data['workflow_id']);
         $system_event->setEventStart($data['event_date'].' '.$data['event_time']);
         $system_event->setRecurring($data['recurring_flag']);
