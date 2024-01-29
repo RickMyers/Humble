@@ -63,5 +63,10 @@
             <entity namespace="humble" class="templaters" id="templaters" orderby="description=ASC">
             </entity>
         </action>
+        
+        <!-- ############################################################################ -->        
+        
+        <action name="form">
+        </action>
     </actions>
 </controller>

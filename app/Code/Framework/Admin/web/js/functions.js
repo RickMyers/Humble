@@ -113,8 +113,8 @@ var Functions = (() => {
                             }).get();                              
                         },
                         review: () => {
-                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Secret");
-                            (new EasyAjax('/admin/secrets/review')).then((response) => {
+                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("Review Secret");
+                            (new EasyAjax('/admin/secrets/review')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                              
                         }

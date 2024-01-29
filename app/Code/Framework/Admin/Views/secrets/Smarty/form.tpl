@@ -7,7 +7,7 @@
 <script type="text/javascript"> 
     if (typeof add_secret_app === 'undefined') {
         let add_secret_app = Vue.createApp({
-            template: Humble.template('admin','newsecret'),
+            template: Humble.template('admin','secrets/new'),
             data: () => {
                 return {
                     namespaces: [

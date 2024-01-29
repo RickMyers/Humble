@@ -309,7 +309,9 @@
                                             </table>
                                         </div>
                                         {% if module.installed == '' %}
+                                            {% if data.required != 'Y' %}
                                             <img onclick='Administration.uninstall("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/uninstall.png' class="cursor-pointer float-left h-6 mr-1 align-top" title='Uninstall...'/>
+                                            {% endif %}
                                         {% endif %}
                                         <span class="text-lg font-black font-sans">{{ module.title }}</span>
                                     </div>

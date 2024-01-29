@@ -113,8 +113,8 @@
         /**
          * Returns the resource that is trying to be allocated broken into parts
          *
-         * @param type $resource
-         * @return type
+         * @param string $resource
+         * @return string
          */
         public static function parseResource($resource) {
             if ($sep = strpos($resource,'/')) {
@@ -186,10 +186,10 @@
         /**
          * Returns an instance of a class or a "virtual class" if that class doesn't exist
          * 
-         * @param type $resource_identifier
-         * @param type $override
-         * @param type $arguments
-         * @return \class
+         * @param string $resource_identifier
+         * @param boolean $override
+         * @param list $arguments
+         * @return object
          */
         public static function model($resource_identifier,$override=false,...$arguments)  {
             $identifier     = self::parseResource($resource_identifier);
@@ -253,8 +253,8 @@
         /**
          * Returns a reference to the a MongoDB Collection
          *
-         * @param type $identifier
-         * @return \Code\Framework\Humble\Models\MongoDB
+         * @param string $identifier
+         * @return object
          */
         public static function collection($identifier) {
             $identifier = self::parseResource($identifier);
@@ -405,8 +405,8 @@
         /**
          * Used for workflow "bubbling"
          * 
-         * @param type $workflowId
-         * @return type
+         * @param string $workflowId
+         * @return array
          */
         public static function pushWorkflow($workflowId) {
             return array_push(self::$workflow,$workflowId);
@@ -415,8 +415,8 @@
         /**
          * Used for workflow "bubbling"
          * 
-         * @param type $peek
-         * @return type
+         * @param boolean $peek
+         * @return string
          */
         public static function popWorkflow($peek=false) {
             if (!$peek) {
@@ -429,9 +429,9 @@
         /**
          * From a blog post, a super fast caching mechanism for php objects, that doesn't seem to actually work
          * 
-         * @param type $key
-         * @param type $val
-         * @return type
+         * @param string $key
+         * @param string $val
+         * @return string
          */
         public static function opcache($key, $val=false) {
             if ($val) {
@@ -463,7 +463,7 @@
                 if (!self::$cache && !self::$cacheFailed) {
                     if ($cache_server = Environment::settings()->getCacheHost()) {
                         $cache_server = explode(':',$cache_server);
-                        if (self::$cache = new Memcache()) {
+                        if (self::$cache = new \Memcache()) {
                             if (!@self::$cacheConn = self::$cache->connect($cache_server[0],(isset($cache_server[1]) ? $cache_server[1] : 11211))) {
                                 self::$cacheFailed = true;
                             }
@@ -490,6 +490,7 @@
             $success = false;
             $project = Environment::getProject();
             if ($server = file_get_contents('../../socketserver_'.$project->namespace.'.txt')) {
+                //change to read from Humble.project file
                 $data['event'] = $eventName;
                 $ch = curl_init($server.'/emit');
                 curl_setopt($ch, CURLOPT_POST,1);
@@ -504,6 +505,7 @@
                 $info       = curl_getinfo($ch);
                 $success    = ($info && isset($info['http_code']) && (($info['http_code'] == '200') || ($info['http_code'] == '100')));
             }
+            return $success;
         }
 
         /**
@@ -530,13 +532,13 @@
          *   The override option is only to be set by utilities that need to
          *     enable/disable/uninstall the module.  Not by application logic.
          * 
-         * @param type $namespace
-         * @param type $override
-         * @return type
+         * @param string $namespace
+         * @param boolean $override
+         * @return array
          */
         public static function module($namespace=false,$override=false)  {
             if (!$namespace) {
-                return false;
+                return [];
             }
             if (isset(self::$modules[$namespace])) {
                 return self::$modules[$namespace];
@@ -557,7 +559,10 @@ SQL;
         }
 
         /**
-         *
+         * 
+         * 
+         * @param  string $identifier
+         * @return array
          */
         public static function controller($identifier=false) {
             $data = [];
@@ -579,7 +584,7 @@ SQL;
         /**
          * Returns a list of the folders/directories that modules are stored in... a "package" is just a directory containing modules
          * 
-         * @return type
+         * @return array
          */
         public static function packages()  {
             $packages   = [];

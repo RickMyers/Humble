@@ -36,7 +36,7 @@ class Mongo  {
     /**
      * Constructor, allows for the setting of mongoDB, otherwise uses default
      *
-     * @param type $db
+     * @param object $db
      */
     public function __construct($db=false) {
         $this->_db = ($db) ? $db : false;
@@ -79,7 +79,7 @@ class Mongo  {
     /**
      * Allows this to be reused... returns a itself to a pristine state
      *
-     * @return \Code\Framework\Humble\Models\Mongo
+     * @return object
      */
     public function reset() {
         $this->_data = [];
@@ -212,8 +212,8 @@ class Mongo  {
     /**
      * Relays the functions that return a set of rows
      *
-     * @param type $doc
-     * @return type
+     * @param object $doc
+     * @return object|array
      */
     public function fetch($doc=false) {
         if ($doc) {
@@ -237,8 +237,8 @@ class Mongo  {
     /**
      * Relays the load/findOne functions
      *
-     * @param type $doc
-     * @return type
+     * @param object $doc
+     * @return object|array
      */
     public function load($doc=false) {
         if ($doc) {
@@ -256,8 +256,8 @@ class Mongo  {
     /**
      * Relays the write functions
      *
-     * @param type $doc
-     * @return type
+     * @param object $doc
+     * @return object|array
      */
     public function write($doc=false) {
         if ($doc) {
@@ -287,8 +287,8 @@ class Mongo  {
     /**
      * Relays the update function
      *
-     * @param type $doc
-     * @return type
+     * @param string $doc
+     * @return object|array
      */
     public function update($doc=false) {
         if ($doc) {
@@ -300,8 +300,8 @@ class Mongo  {
     /**
      * Relays the delete function
      *
-     * @param type $doc
-     * @return type
+     * @param string $doc
+     * @return object
      */
     public function delete($doc=false) {
         if ($doc) {
@@ -323,8 +323,8 @@ class Mongo  {
     /**
      * Relays the stats function
      *
-     * @param type $doc
-     * @return type
+     * @param object $doc
+     * @return object|array
      */
     public function stats($doc=false) {
         return $this->_execute('stats');
@@ -381,8 +381,8 @@ class Mongo  {
     /**
      * Records or returns the collection name
      *
-     * @param type $arg
-     * @return type
+     * @param string $arg
+     * @return string|object
      */
     public function _collection($arg=false) {
         if ($arg) {
@@ -396,8 +396,8 @@ class Mongo  {
     /**
      * Converts any objects to associative arrays
      *
-     * @param type $doc
-     * @return type
+     * @param object $doc
+     * @return array
      */
     protected function _map($doc) {
         $mapped = [];
@@ -417,7 +417,7 @@ class Mongo  {
      * If you did not specifically pass in a document, maybe I can build one for you.  Very important, if the variable _id is set, it will create a mongo object out of it
      *
      * @param mixed $doc
-     * @return Humble_Model_Mongo or the document
+     * @return object|array
      */
     public function _document($doc=false) {
         if ($doc!==false) {
