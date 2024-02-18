@@ -278,8 +278,8 @@ class Compiler extends Directory
         }
         $this->arguments[$source][$field] = (string)$parameter['name'];
         $format     = isset($parameter['format'])    ? strtolower((string)$parameter['format']) : false;
-        $minlength  = isset($parameter['minlength']) ? (int)$parameter['minlength'] : false;
-        $maxlength  = isset($parameter['maxlength']) ? (int)$parameter['maxlength'] : false;
+        $minlength  = isset($parameter['min']) ? (int)$parameter['min'] : false;
+        $maxlength  = isset($parameter['max']) ? (int)$parameter['max'] : false;
         $timestamp  = false;
         $datestamp  = false;
         $time       = false;
@@ -300,29 +300,30 @@ class Compiler extends Directory
         $escape     = (isset($parameter['escape']) ? strtolower((string)$parameter['escape']) : false);
         $encode     = (isset($parameter['encode']) ? strtolower((string)$parameter['encode']) : false);
         $decode     = (isset($parameter['decode']) ? strtolower((string)$parameter['decode']) : false);
+        $range      = isset($parameter['range'])  ? (string)$parameter['range'] : false;
         $unescape   = (isset($parameter['unescape']) ? strtolower((string)$parameter['unescape']) : false);
         $type       = (isset($parameter['type']) ? strtolower((string)$parameter['type']) : false);
         if ($type) {
             switch ($type) {
                 case "integer"  :
-                case "int"      :   $func = "isInteger";
-                                    $typeError = 'Not an integer';
+                case "int"      :   $func       = "isInteger";
+                                    $typeError  = 'Not an integer';
                                     break;
-                case "float"    :   $func = "isFloat";
-                                    $typeError = 'Not a floating point number';
+                case "float"    :   $func       = "isFloat";
+                                    $typeError  = 'Not a floating point number';
                                     break;
-                case "numeric"  :   $func = "ctype_digit";
-                                    $typeError = 'Not numeric';
+                case "numeric"  :   $func       = "ctype_digit";
+                                    $typeError  = 'Not numeric';
                                     break;
-                case "string"   :   $func = "ctype_alnum";
-                                    $typeError = 'Not alphanumeric';
+                case "string"   :   $func       = "ctype_alnum";
+                                    $typeError  = 'Not alphanumeric';
                                     break;
-                case "boolean"  :   $func = "isBoolean";
-                                    $typeError = 'Not boolean';
+                case "boolean"  :   $func       = "isBoolean";
+                                    $typeError  = 'Not boolean';
                                     break;
                 case "alphanumeric":
-                case "alpha"    :   $func = "ctype_alpha";
-                                    $typeError = 'Not alphabetic';
+                case "alpha"    :   $func       = "ctype_alpha";
+                                    $typeError  = 'Not alphabetic';
                                     break;
                 case "email"    :
                                     break;
@@ -403,7 +404,8 @@ PHP;
             if ($trim) {
                 print($this->tabs().'$value = trim($value);'."\n");
             }
-            print($this->tabs(). '$method = "set".underscoreToCamelCase($name);'."\n");
+            print($this->tabs().$source.'["'.$field.'"] = $value;'."\n");       //if modified...
+            print($this->tabs().'$method = "set".underscoreToCamelCase($name);'."\n");
             print($this->tabs().'$'.$node['id'].'->$method($value);'."\n");
             print($this->tabs(-1).'}'."\n");
         } else if ((string)$parameter['name']=='_id') {
@@ -438,6 +440,9 @@ PHP;
                 print($this->tabs().'$'.$node['id'].'->set'.$this->underscoreToCamelCase($parameter['name'],true)."( isset(".$source.'["'.$field.'"]'.") ? ".$source.'["'.$field.'"]'." : ".$default.");\n");
             }
         }
+        if ($range) {
+            print($this->tabs().'if (!(\Validator::range('.$source."['".$field."'".'],"'.$range.'"))) { throw new \Exceptions\ValidationDatatypeException("The value in the variable <i style=\'color: red\'>'.$field.'</i> is outside the range ['.$range.']",10); }'."\n");
+        }        
         if (isset($parameter["store"]) && (strtoupper($parameter['store'])=='TRUE')) {
             if ($custom) {
                 print($this->tabs().'$_SESSION["'.$parameter['name'].'"] = isset('.$source.'["'.$parameter['value'].'"]) ? '.$source.'["'.$parameter['value'].'"] : '.$default.';'."\n");

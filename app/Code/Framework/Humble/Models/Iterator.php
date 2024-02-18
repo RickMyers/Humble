@@ -52,6 +52,59 @@ class Iterator extends Model implements \Iterator, \Countable
         $this->clean = $arg;
         return $this;
     }
+    
+    /**
+     * Because of the variable number of columns per row in a polyglot entity, this method "normalizes" the result set, which means all rows will have the same number of columns
+     * 
+     * @param iterator $iterator (optional
+     * @return iterator
+     */
+    public function normalize() {
+        $columns    = [];
+        foreach ($this->array as $row) {
+            foreach ($row as $column => $value) {
+                $columns[$column] = $column;
+            }
+        }
+        foreach ($this->array as $index => $row) {
+            $newRow = [];
+            foreach ($columns as $column) {
+                $newRow[$column] = $row[$column] ?: '';
+            }
+            $this->array[$index] = $newRow;
+        }
+        return $this;
+    }
+    
+    /**
+     * Takes the current result set and returns it as 
+     * 
+     * @param type $data
+     * @param type $delimiter
+     * @param type $enclosure
+     * @return string
+     */
+    public function toCSV($data, $delimiter = ',', $enclosure = '"',$value_headers=false) {
+        $handle = fopen('php://temp', 'r+');
+        $headers=[]; $contents = '';
+        foreach ($data as $idx => $line) {
+            if (!$headers) {
+                foreach ($line as $field => $value) {   
+                    $headers[] = trim(preg_replace("/[^A-Za-z0-9 _]/", '', ($value_headers ? $value : $field)));
+                }
+                if (!$value_headers) {
+                    fputcsv($handle, $headers, $delimiter, $enclosure);
+                }
+            }            
+            fputcsv($handle, $line, $delimiter, $enclosure);
+        }
+        rewind($handle);
+        while (!feof($handle)) {
+            $contents .= fread($handle, 8192);
+        }
+        fclose($handle);
+        return $contents;
+    }    
 
     /**
      * Sets the array to iterate over and remove any MongoDB references if clean has been turned on

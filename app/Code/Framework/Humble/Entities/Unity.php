@@ -49,6 +49,7 @@ class Unity
     protected $_iv            = 'Humble Framework';     //encryption initialization vector
     public    $_lastResult    = [];
     protected $_noLimitQuery  = '';     //Current query before pagination is added
+    protected $_cursor        = false;
 
     /**
      * Initial constructor
@@ -1333,6 +1334,20 @@ SQL;
     //                      END OF SPECIAL METHODS FOR XML CONTROLLERS
     //###############################################################################################
 
+    /**
+     * For pagination, can set whether to use a cursor or not.  Primarily for use when in a controller
+     * 
+     * @param bool $cursor
+     * @return $this
+     */
+    public function _cursor($cursor=null) {
+        if ($cursor!==null) {
+            $this->_cursor = $cursor;
+            return $this;
+        }
+        return $this->_cursor;
+    }
+    
     /**
      * Gets the 'revision_history' array from the polyglot source
      *
