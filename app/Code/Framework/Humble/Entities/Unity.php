@@ -25,6 +25,9 @@ class Unity
     protected $_rows          = 0;
     protected $_fromRow       = 0;
     protected $_toRow         = 0;
+    protected $_cursor        = false;
+    protected $_cursorId      = 0;
+    protected $_rowsReturned  = 0;
     protected $_joins         = [];
     protected $_conditions    = [];
     protected $_distinct      = false;
@@ -35,10 +38,10 @@ class Unity
     protected $_module        = null;
     protected $_headersSent   = false;
     protected $_headers       = [];
-    protected $_clean         = true;   //if polyglot, clean out MongoDB _id references in the result set
-    protected $_translation   = false;  //if true, parse result set looking for tokens and replace them with corresponding value from lookup table
-    private   $_collections   = [];     //a hash table of connections to be used in a polyglot transaction.  This is used to improve performance
-    protected $_dynamic       = false; //Dynamically build the where clause on my query?    
+    protected $_clean         = true;                                           //if polyglot, clean out MongoDB _id references in the result set
+    protected $_translation   = false;                                          //if true, parse result set looking for tokens and replace them with corresponding value from lookup table
+    private   $_collections   = [];                                             //a hash table of connections to be used in a polyglot transaction.  This is used to improve performance
+    protected $_dynamic       = false;                                          //Dynamically build the where clause on my query?    
     protected $_alias         = false;
     protected $_batchsql      = [];
     protected $_batch         = false;
@@ -46,10 +49,9 @@ class Unity
     protected $_in            = [];
     protected $_betweenField  = '';
     protected $_between       = '';
-    protected $_iv            = 'Humble Framework';     //encryption initialization vector
+    protected $_iv            = 'Humble Framework';                             //encryption initialization vector
+    protected $_noLimitQuery  = '';                                             //Current query before pagination is added
     public    $_lastResult    = [];
-    protected $_noLimitQuery  = '';     //Current query before pagination is added
-    protected $_cursor        = false;
 
     /**
      * Initial constructor
@@ -80,9 +82,9 @@ class Unity
     /**
      *
      */
-    public function __destruct()
-    {
+    public function __destruct()   {
         //if pagination is set, store the page in the session
+        //@TODO: Evaluate whether this is a good idea anymore...
         if ($this->_page()) {
             if (!isset($_SESSION['pagination'])) {
                 $_SESSION['pagination'] = [];
@@ -117,7 +119,7 @@ class Unity
         $this->_decrypt      = false;
         $this->_encrypt      = false;
         //$this->_keys        = [];
-       // $this->_columns     = [];
+        //$this->_columns     = [];
         $this->_fields       = [];
         $this->_orderBy      = [];
         $this->_groupBy      = [];
@@ -271,12 +273,15 @@ SQL;
      *
      */
     protected function addLimit($page) {
-       $query = '';
-       $p = $this->_page();
-       if ($this->_rows() && $this->_page() && $page) {
-            $this->_fromRow($pre = (($page-1) * $this->_rows()));
-            $this->_toRow($page * $this->_rows());
-            $query .= ' limit '.$pre.','.$this->_rows();
+        $query = '';
+        if ($this->_rows()) {
+             if ($this->_page() && $page) {
+                  $this->_fromRow($pre = (($page-1) * $this->_rows()));
+                  $this->_toRow($page * $this->_rows());
+                  $query .= ' limit '.$pre.','.$this->_rows();
+             } else if ($this->_cursor()) {
+                 $query .= ' limit '.$this->_rows();
+             }
         }
         return $query;
     }
@@ -390,7 +395,7 @@ SQL;
     }
 
     /**
-     * Counts total rows in teh etable
+     * Counts total rows in the table
      * 
      * @return int
      */
@@ -477,8 +482,8 @@ SQL;
                 $results[$idx] = $this->$method();
             }
         }
-        $query = "select * from ".$this->_prefix().$this->_entity();
-        $andFlag = false;
+        $query      = "select * from ".$this->_prefix().$this->_entity();
+        $andFlag    = false;
         foreach ($results as $field => $value) {
             if (isset($this->_keys[$field]) || isset($this->_column[$field])) {
                 if ($andFlag == false) {
@@ -587,6 +592,10 @@ SQL;
                 $query .= " ".$condition." ";                
                 $andFlag = true;
             }
+        }   
+        if ($this->_cursor()) {
+            $query .= ($andFlag) ? " and " : ' where ';
+            $query .= $this->_prefix().$this->_entity().'.id > '.$this->_cursor.' ';
         }        
         return $query;
     }
@@ -645,6 +654,21 @@ SQL;
     }
 
     /**
+     * Get the max id in the result set
+     * 
+     * @param iterator $rows
+     * @return int
+     */
+    protected function cursorId(&$rows): int {
+        $max_id = 0;
+        foreach ($rows as $row) {
+            $max_id = ($row['id'] ?? 0) > $max_id ? $row['id'] : $max_id;
+        }
+        $this->_cursor($max_id);
+        return $max_id;
+    }
+    
+    /**
      * Determines pagination values
      * 
      * @param string $query
@@ -652,12 +676,9 @@ SQL;
      * @return $this
      */
     protected function calculateStats($query,&$results) {
-        if ($rows = $this->_db->query($query)) {
-            $this->_rowCount($rows[0]['FOUND_ROWS']);
+        $this->_rowCount(count($this->_db->query($query)));
+        if ($this->_rowCount()) {
             if ($this->_page()) {
-                if (count($results) < $this->_rows()) {
-                    $_SESSION['pagination'][$this->_namespace()][$this->_entity()] = 0;
-                }
                 if ($this->_toRow() > $this->_rowCount()) {
                     $this->_toRow($this->_rowCount());
                 }
@@ -671,6 +692,20 @@ SQL;
                     'pages' => [
                         'current' => $this->_page(),
                         'total'   => $this->_pages()
+                    ]
+                ]);
+            } else if ($this->_cursor()) {
+                $this->cursorId($results);
+                $this->_rowsReturned(count($results));
+                $this->_pages(floor($this->_rowsReturned() / $this->_rows()));
+                $this->_headers['pagination'] = json_encode([
+                    'cursor_id' => $this->_cursor(),
+                    'pages' => [
+                        'total' => $this->_pages()
+                    ],
+                    'rows' => [
+                        'returned' => $this->_rowsReturned(),
+                        'total' => $this->_rowCount()
                     ]
                 ]);
             }
@@ -885,7 +920,7 @@ SQL;
         }
         $results = $this->_db->query($query);
         //\Log::error($query);
-        if ($this->_page()) {
+        if ($this->_page() || $this->_cursor()) {
             $this->calculateStats($noLimitQuery,$results);
         }
         if ($this->_polyglot()) {
@@ -1570,7 +1605,9 @@ SQL;
     }
 
     /**
-     *
+     * 
+     * @param type $arg
+     * @return $this
      */
     public function _toRow($arg=false) {
         if ($arg === false) {
@@ -1581,6 +1618,20 @@ SQL;
         return $this;
     }
 
+    /**
+     * 
+     * @param type $arg
+     * @return mixed
+     */
+    public function _rowsReturned($arg=false) {
+        if ($arg === false) {
+            return $this->_rowsReturned;
+        } else {
+            $this->_rowsReturned    = $arg;
+        }
+        return $this;
+    }
+    
     /**
      *
      */

@@ -567,6 +567,11 @@ PHP;
                 print($this->tabs(-1)."}\n");
             }
         }
+        if (isset($node['cursor'])) {
+            print($this->tabs().'if (isset($_REQUEST["'.$node['cursor'].'"])) {'."\n");  //then you look to see if it is turned on
+            print($this->tabs(1).'$'.$node['id'].'->_cursor($_REQUEST["'.$node['cursor'].'"])'.";\n");            
+            print($this->tabs(-1)."}\n");
+        }
         if (isset($node['polyglot'])) {
             print($this->tabs().'$'.$node['id'].'->_polyglot('.$node['polyglot'].');'."\n");
         }
@@ -575,12 +580,12 @@ PHP;
         }
         if (isset($node['rows'])) {
             print($this->tabs().'if (!$'.$node['id'].'->_rows()) {'."\n");
-            print($this->tabs(1).'$'.$node['id'].'->_rows(null);'."\n");  //essentially, you first make sure that pagination is turned off by passing a null
+            print($this->tabs(1).'$'.$node['id'].'->_rows(null);'."\n");        //essentially, you first make sure that pagination is turned off by passing a null
             print($this->tabs(-1)."}\n");
             if (isset($node['defaultRows'])) {
-                print($this->tabs().'$'.$node['id'].'->_rows('.$node['defaultRows'].');'."\n");
+                print($this->tabs().'$'.$node['id'].'->_rows('.$node['defaultRows'].');'."\n");  //then set the default rows
             }
-            print($this->tabs().'if (isset($_REQUEST["'.$node['rows'].'"])) {'."\n");  //then you look to see if it is turned on
+            print($this->tabs().'if (isset($_REQUEST["'.$node['rows'].'"])) {'."\n");  //then you look to see if the rows value has been passed, and if so, then use that value by assigning the rows
             print($this->tabs(1).'if (intval($_REQUEST["'.$node['rows'].'"])) {'."\n");
             print($this->tabs(1).'$'.$node['id'].'->_rows($_REQUEST["'.$node['rows'].'"]);'."\n");  //and then you set the corresponding variable from the request
             print($this->tabs(-1)."}\n");

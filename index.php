@@ -34,7 +34,6 @@ require_once('Humble.php');                                                     
 //Scrubba-dub-dub
 foreach ($_GET as $var => $val) {
     $_REQUEST[$var] = $_GET[$var] = htmlspecialchars($val,ENT_QUOTES);
-    
 }
 $namespace              = ($_GET['humble_framework_namespace'] === 'default') ? \Environment::namespace : $_GET['humble_framework_namespace'];
 $controller             = $_GET['humble_framework_controller'];
@@ -215,7 +214,7 @@ if (!$request_handled) {
     //directory from the module and compile and place the new controller there
     if ($recompile) {
         try {
-            \Log::console('Recompiling: '.$source.' into '.$include);
+            //\Log::console('Recompiling: '.$source.' into '.$include);
             $identifier = $ns.'/'.$controller;
             $compiler   = \Environment::getCompiler();
             $compiler->setController($controller);
@@ -280,7 +279,7 @@ if (!$request_handled) {
     //###########################################################################
     //If we got this far, hand off to the controllers
     try {
-        require_once($include);                             //This is where we bring in the controller and the actual action/view processing takes place
+        require_once($include);                                                 //This is where we bring in the controller and the actual action/view processing takes place
     } catch (ValidationRequiredException $e) {
         \HumbleException::standard($e,'Required Parameter Missing','custom');
     } catch (ValidationDatatypeException $e) {
