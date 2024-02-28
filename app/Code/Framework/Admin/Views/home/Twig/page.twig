@@ -29,7 +29,7 @@
         EasyAjax.always.add('csrf_buster','{{ system.csrfBuster(tab_id) }}');
         Humble.init();
         const tools = {
-            encryptFiles: function (source,callback) {
+            encryptFiles: (source,callback) => {
                 fileInput   = (typeof source === 'string') ? $E(source) : source;
                 if (fileInput.files) {
                     files = fileInput.files;
@@ -60,7 +60,7 @@
                     }
                 }
             },
-            id: function (len) {
+            id: (len) => {
                 len = len ? len : 9;                                            //If nothing passed in, create a 9 character ID
                 var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';                    
                 var id = '';
@@ -70,7 +70,7 @@
                 return id;
             },
             value:  {
-                set: function (form,field_id,field_name,value) {
+                set: (form,field_id,field_name,value) => {
                     form    = $E(form);
                     if (!form) {
                         return;
@@ -112,11 +112,11 @@
                     }
                 }
             },
-            date: function (d) {
+            date: (d) => {
                 return (d.length==10) ? d.substr(6)+'-'+d.substr(0,2)+'-'+d.substr(3,2) : '';
             },
             image: {
-                align: function (photo) {
+                align: (photo) => {
                     var offset;
                     if (photo.offsetWidth >= photo.offsetHeight) {
                         photo.style.height = '100%';
@@ -280,6 +280,12 @@
                     </div>                                
                 </div>
                 <div id="right-col" class="w-full bg-gray-300 overflow-auto grow">
+                    <div class="py-2 px-1 w-[1000] flex flex-row justify-start gap-8">
+                        <div onclick="Administration.create.package()"    class="drop-shadow-xl flex-initial basis-1/5 bg-blue-600 text-white p-2 rounded-3xl cursor-pointer hover:bg-blue-500 tracking-wider text-center" title="Create New Package (Module Directory)"><span class="text-xl font-bold">+</span> Package</div>
+                        <div onclick="Administration.create.module()"     class="drop-shadow-xl flex-initial basis-1/5 bg-blue-600 text-white p-2 rounded-3xl cursor-pointer hover:bg-blue-500 tracking-wider text-center" title="Create New Module"><span class="text-xl font-bold">+</span> Module</div>
+                        <div onclick="Administration.create.controller()" class="drop-shadow-xl flex-initial basis-1/5 bg-blue-600 text-white p-2 rounded-3xl cursor-pointer hover:bg-blue-500 tracking-wider text-center" title="Create New Controller"><span class="text-xl font-bold">+</span> Controller</div>
+                        <div onclick="Administration.create.component()"  class="drop-shadow-xl flex-initial basis-1/5 bg-blue-600 text-white p-2 rounded-3xl cursor-pointer hover:bg-blue-500 tracking-wider text-center" title="Create New Component (Model, Entity, or Helper)"><span class="text-xl font-bold">+</span> Component</div>
+                    </div>
                        {% for package, modules in installer.getModules() %}
                             <div class='w-full bold pt-2 pb-2 text-lg clear-both font-black border-2 border-solid border-black bg-white'>Package: <b> {{ package }} </b></div><div class='h-1'></div>
                             {% for module in modules %}
@@ -291,10 +297,10 @@
                                                 <tr>
                                                     {% if data.installed != '' %}
                                                         {% set color = 'white' %}
-                                                        <td  class="border-solid"><img onclick='Administration.update("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/update.png' class="cursor-pointer h-7"   title='Update...'/></td>
-                                                        <td  class="border-solid"><img onclick='Administration.compile("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/compile.png' class="cursor-pointer h-6"  title='Compile Controllers...'/></td>
-                                                        <td  class="border-solid"><img onclick='Administration.clearcache("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/clearcache.png' class="cursor-pointer h-8" title='Clear Cache...'/></td>
-                                                        <td  class="border-solid">
+                                                        <td class="border-solid"><img onclick='Administration.update("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/update.png' class="cursor-pointer h-7"   title='Update...'/></td>
+                                                        <td class="border-solid"><img onclick='Administration.compile("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/compile.png' class="cursor-pointer h-6"  title='Compile Controllers...'/></td>
+                                                        <td class="border-solid"><img onclick='Administration.clearcache("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/clearcache.png' class="cursor-pointer h-8" title='Clear Cache...'/></td>
+                                                        <td class="border-solid">
                                                         {% if data.required != 'Y' %}
                                                             <input type='checkbox' onclick='Administration.enable(this,"{{ module.namespace  }}","{{ package }}")' name='{{ module.namespace  }}' id='{{ module.namespace  }}'
                                                             {% if data.enabled == 'Y' %}

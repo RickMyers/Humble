@@ -92,7 +92,7 @@ function DesktopWindow(icon,refId) {
         this.content.style.height = (this.frame.offsetHeight - this.bar.offsetHeight - 4)+"px";
         if (this.handlers.resize.length) {
             for (var func in this.handlers.resize) {
-                func(this);
+                this.handlers.resize[func](this);
             }
         }
         //$(window).resize();  //this can fire off a lot of other things
@@ -111,6 +111,8 @@ function DesktopWindow(icon,refId) {
     this.resize = (func) => {
         if (typeof func == 'function') {
             this.handlers.resize[this.handlers.resize.length] = func;
+        } else {
+            this._resize();
         }
     };    
     this.close = (func) => {
@@ -621,7 +623,12 @@ var Desktop = {
         }
         return objectId;
     },
+    initialized: false,
     init: function (doAfter) {
+        if (Desktop.initialized) {
+            return;
+        }
+        
         Desktop.ref = $E("paradigm-virtual-desktop"); //hardcoded
         Desktop.icon = {
             "HTML": ""
@@ -654,11 +661,12 @@ var Desktop = {
         if (doAfter) {
             doAfter();
         }
-        Desktop.enable();
-        Desktop.semaphore.init(Desktop.window.list);                        
+        Desktop.render().activate().position();
+        Desktop.semaphore.init(Desktop.window.list); 
+        Desktop.initialized = true;
     },
     enable: function () {
-        Desktop.render().activate().position();
+//        Desktop.render().activate().position();
     },
     render: function () {
         var win,i;  //refId is for the special case of processing numeric ids... so javascript doesn't go crazy
@@ -682,9 +690,10 @@ var Desktop = {
             Desktop.window.add(Desktop.elements.windows[i]);
         };
         Desktop.ref.innerHTML += Desktop.window.HTML;        
+        
         for (i=0; i<Desktop.elements.windows.length; i++) {
             win = Desktop.elements.windows[i];
-            Desktop.window.list[win.id]   = new DesktopWindow(win,win.id);      
+            Desktop.window.list[win.id]   = new DesktopWindow(win,win.id);
         }
         return Desktop;
     },
@@ -742,7 +751,7 @@ var Desktop = {
             };
             Desktop.on(win.minimizeIcon,"click",tt);
             Desktop.on(win.minimizeIcon,"mouseover",Desktop.stopPropagation);
-            win.resize = Desktop.window.resize;
+            //win.resize = Desktop.window.resize;
             win.splash = false;
         }
         return Desktop;
@@ -883,7 +892,7 @@ var Desktop = {
             };
         },
         close: function (evt)   {   this.set(''); return true;  },
-        resize: function (evt)  {   return true;    },
+        resize: function (evt)  {  console.log('wrong');  return true;    },
         minimize: function (evt) {  return true;    },
         maximize: function (evt) {  return true;    },
         set: function (win) {
@@ -1106,7 +1115,6 @@ var Desktop = {
 };
 Desktop.whoAmI = Desktop.whoami;                                                //because I always screw up the case
 //oh boy!
-//$(document).ready(Desktop.init);
 window.onbeforeunload   = Desktop.promptBeforeLeaving;
 window.onunload         = Desktop.unload;
 Desktop.minimized.windows.renderer((function () {

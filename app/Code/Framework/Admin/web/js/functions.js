@@ -538,8 +538,6 @@ var Functions = (() => {
                         },
                         open: function (log) {
                             if (!Administration.logs.windows[log]) {
-                                console.log('co');
-                                console.log(Desktop.semaphore.checkout(true));
                                 Administration.logs.windows[log] = Desktop.semaphore.checkout(true);
                                 Administration.logs.windows[log]._title(log+ ' Log')._scroll(false)._static(true);
                             }

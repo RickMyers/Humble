@@ -20,7 +20,7 @@
         <!-- ############################################################################ -->
 
         <action name="controller">
-            <description>Will create a new component, as in Helper, Model, Entity, or Event </description>
+            <description>Will create a new controller</description>
             <model response="TRUE" namespace="admin" class="utility" method="createController" id='utility'>
                 <parameter name="admin_id"      source="session" required="true" />
                 <parameter name="namespace"     source="post"    default="" />
