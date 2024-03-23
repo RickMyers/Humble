@@ -20,7 +20,7 @@
   <!--link rel="apple-touch-icon" href="/apple-touch-icon.png"-->
 
   <link rel="stylesheet" type="text/css" href="/css/common" />
-  <script src="/js/jquery"></script>
+  <script src="/js/humble-jquery"></script>
   <script src="/js/common"></script>
   <script src="/js/contrive"></script>
 </head>

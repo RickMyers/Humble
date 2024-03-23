@@ -76,14 +76,14 @@ colored XML tags below are the hooks:
 <p class="humble-code-like" style="margin-bottom: 50px">
     &lt;script type="text/javascript" src="/css/common" /&gt;<br />
     &lt;script type="text/javascript" src="/css/widgets" /&gt;<br />
-    &lt;script type="text/javascript" src="/css/bootstrap-theme" /&gt;<br />
+    &lt;script type="text/javascript" src="/css/humble-bootstrap-theme" /&gt;<br />
     &lt;script type="text/javascript" src="/css/admintheme" /&gt;<br />
     <br />
     &lt;script type="text/javascript" src="/js/common" /&gt;<br />
     &lt;script type="text/javascript" src="/js/widgets" /&gt;<br />
     &lt;script type="text/javascript" src="/js/admin" /&gt;<br />
     &lt;script type="text/javascript" src="/js/bootstrap" /&gt;<br />
-    &lt;script type="text/javascript" src="/js/jquery" /&gt;
+    &lt;script type="text/javascript" src="/js/humble-jquery" /&gt;
 </p>
 </div>
 

@@ -3,10 +3,10 @@
     <head>
         <title>Form Designer Try Number 3</title>
         <link rel="stylesheet" type="text/css" href="/css/common" />
-        <link rel="stylesheet" type="text/css" href="/css/bootstrap" />
+        <link rel="stylesheet" type="text/css" href="/css/humble-bootstrap" />
         <link rel="stylesheet" type="text/css" href="/css/desktop" />
         <link rel="stylesheet" type="text/css" href="/css/designer" />
-        <script type="text/javascript" src="/js/jquery"></script>
+        <script type="text/javascript" src="/js/humble-jquery"></script>
         <script type="text/javascript" src="/js/common"></script>
         <script type="text/javascript" src="/js/bootstrap"></script>
         <script type="text/javascript" src="/js/desktop"></script>

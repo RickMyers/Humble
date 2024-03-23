@@ -149,7 +149,7 @@ Copyright humbleprogramming.com, all rights reserved
                 height: 28px; visibility: hidden; cursor: pointer
             }
         </style>
-        <script type="text/javascript" src="/js/jquery"></script>
+        <script type="text/javascript" src="/js/humble-jquery"></script>
         <script type="text/javascript" src="/js/common"></script>
         <script type="text/javascript">
             var UseTranparentWindows = 'N';

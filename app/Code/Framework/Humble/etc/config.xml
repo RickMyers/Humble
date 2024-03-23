@@ -115,7 +115,7 @@
                     <source weight="29">Humble/web/css/jquery.filthypillow.css</source>
                 </css>
             </widgets>
-            <bootstrap>
+            <humble-bootstrap>
                 <js>
                     <source>Humble/web/bootstrap-4.3.0/js/bootstrap.min.js</source>
                 </js>
@@ -123,17 +123,17 @@
                     <source>Humble/web/bootstrap-4.3.0/css/bootstrap.min.css</source>
                     <source>Humble/web/htmlcss/css/glyphicons.css</source>
                 </css>
-            </bootstrap>
-            <bootstrap-theme>
+            </humble-bootstrap>
+            <humble-bootstrap-theme>
                 <css>
                     <source>Humble/web/bootstrap-3.3.7/css/bootstrap-theme.css</source>
                 </css>
-            </bootstrap-theme>
-            <jquery>
+            </humble-bootstrap-theme>
+            <humble-jquery>
                 <js>
                     <source weight="5">Humble/web/js/jquery.3.6.0.min.js</source>
                 </js>
-            </jquery>
+            </humble-jquery>
         </web>
     </humble>
 </config>

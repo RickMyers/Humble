@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Humble Home Page</title>
-		<link rel="stylesheet" type="text/css" href="/css/bootstrap" />
+		<link rel="stylesheet" type="text/css" href="/css/humble-bootstrap" />
 		<style type="text/css">
 			.column {
 				display: inline-block; box-sizing: border-box; vertical-align: top
@@ -10,7 +10,7 @@
 			.side-column {
 				width: 15%; background-color: #445348;
 		</style>
-		<script type="text/javascript" src="/js/jquery"></script>
+		<script type="text/javascript" src="/js/humble-jquery"></script>
 		<script type="text/javascript">
 		$(document).ready(function () {
 			$(document).resize(function () {
