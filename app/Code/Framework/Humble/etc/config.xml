@@ -73,10 +73,10 @@
                 <service_parameters polyglot="Y"/>
                 <system_variables/>
                 <templaters/>
-                <templates/>
                 <users/>
                 <user_identification polyglot="Y"/>
-            <entity_keys/></entities>
+                <entity_keys/>
+            </entities>
         </orm>
         <events>
 

@@ -667,6 +667,7 @@ FIELD;
              where namespace = '{$namespace}'
                {$clause}
 SQL;
+        print($query."\n\n");
         $this->_db->query($query); //remove JS
         $query = <<<SQL
             delete from humble_css
@@ -679,11 +680,6 @@ SQL;
              where namespace = '{$namespace}'
 SQL;
         $this->_db->query($query); 
-        $query = <<<SQL
-            delete from humble_templates
-             where namespace = '{$namespace}'
-SQL;
-        $this->_db->query($query); //remove JS Templates
         return $this;
     }
 
@@ -718,20 +714,6 @@ SQL;
     /**
      *
      */
-    protected function registerWebPage($namespace,$page,$source)    {
-        $query = <<<SQL
-            insert into humble_pages
-                (namespace,page,source)
-            values
-                ('{$namespace}','{$page}','{$source}')
-SQL;
-        $this->_db->query($query);
-        return $this;
-    }
-
-    /**
-     *
-     */
     protected function registerWebEdits($web)    {
         if (isset($web->edits)) {
             foreach ($web->edits as $node => $edits) {
@@ -746,44 +728,12 @@ SQL;
     /**
      *
      */
-    protected function registerJsTemplates($web)    {
-        if (isset($web->templates)) {
-            foreach ($web->templates as $node => $template) {
-                foreach ($template as $resource => $source) {
-                    $this->registerJsTemplate($this->namespace,$resource,str_replace('_','/',$source));
-                }
-            }
-        }
-        return $this;
-    }
-
-    /**
-     *
-     */
-    protected function registerWebPages($web)
-    {
-        if (isset($web->pages)) {
-            foreach ($web->pages as $node => $pages) {
-                foreach ($pages as $page => $webPage) {
-                    $this->registerWebPage($this->namespace,$page,str_replace('_','/',$webPage));
-                }
-            }
-        }
-        return $this;
-    }
-
-    /**
-     *
-     */
     public function registerWebComponents($web,$module=false)
     {
         $this->output('WEB','Registering Web Components');
         foreach ($web as $node => $items) {
+            $this->deRegisterWebComponents($this->namespace,false);            
             foreach ($items as $package => $item) {
-                if (($package === 'edits') || ($package === "routes") || ($package=="templates")) {
-                    continue;
-                }
-                $this->deRegisterWebComponents($this->namespace,$package);
                 if (isset($item->js)) {
                     foreach ($item->js->source as $jsFile) {
                         if ((string)$jsFile) {
@@ -803,7 +753,6 @@ SQL;
             }
         }
         $this->registerWebEdits($web);
-        $this->registerWebPages($web);
         $this->output('WEB','Done Registering Web Components');
         return $this;
     }
@@ -850,8 +799,7 @@ SQL;
     public function install($source=false)  {
         $source = ($source!==false) ? $source : $this->getSource();
         if (file_exists($source)) {
-            if ($xml = file_get_contents($source)) {
-                $xml    = new SimpleXMLElement($xml);
+            if ($xml = new SimpleXMLElement(file_get_contents($source))) {
                 foreach ($xml as $namespace => $contents) {
                     Humble::cache('module-'.$namespace,null);                   //removes any data we might have had in the cache
                     $this->namespace    = $namespace;
@@ -917,7 +865,7 @@ SQL;
             }
             Environment::recacheApplication();
         } else {
-          //  \Log::console('Could not find source file for installation: '.$source);
+            \Log::console('Could not find source file for installation: '.$source);
         }
         return $xml;
     }
@@ -1026,4 +974,3 @@ SQL;
      */
     public function getSource()                 { return $this->source;         }
 }
-?>
