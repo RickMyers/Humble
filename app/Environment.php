@@ -140,11 +140,15 @@ class Environment {
      * Logs the admin in as a general user
      */
     public static function logAdminIn() {
-        if ($user = self::session('user')) {
+        $logged_in = false;
+        if ($user  = self::session('user')) {
             if ($data = Humble::entity('default/users')->setUserName($user['user_name'])->load(true)) {
                 self::session('uid',$data['id']);
+                self::session('user',$data);
+                $logged_in = true;
             }
         }
+        return $logged_in;
     }
     
     /**

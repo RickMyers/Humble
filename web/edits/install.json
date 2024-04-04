@@ -8,6 +8,7 @@
         "style":		"",
         "onload":       function () {
             $('#div_1').height($('#div_2').height()+1);
+            $('#cache').change();
         },
         "onenterkey":	"send"
     },
@@ -166,7 +167,7 @@
             "longname":         "Caching Server Location",
             "value":            "",
             "title":		"The location of the Cache Server",
-            "type":		"text",
+            "type":		"combo",
             "style":            "",
             "required":		false,
             "force":		false,
@@ -247,7 +248,7 @@
             "id":		"install-submit",
             "longname":		"Submit Button",
             "type":		"text",
-            "style":            "font-family: sans-serif; cursor: pointer; position: absolute; bottom: 10px; font-size: 2.4em; width: 275px; padding: 10px; background-color: #0F3F3F; color: white ",
+            "style":            "font-family: sans-serif; cursor: pointer; margin: auto; font-size: 2.4em; width: 275px; padding: 10px; background-color: #0F3F3F; color: white ",
             "classname":        "",
             "value":            "",
             "onclick":          function () {

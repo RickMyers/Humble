@@ -1,8 +1,6 @@
 {
     "merge": {
     },
-    "ignore": {
-        "index.html": true,
         "app/Humble.local.manifest": true,
 	"app/allowed.json": true,
         "app/Constants.php": true

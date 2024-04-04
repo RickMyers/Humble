@@ -2,10 +2,11 @@
 <application>
     <name>{$name}</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">{$serial_number}</serial_number>
+    <iv comment="Initial Vector, see our section on encryption to understand what this does">0</iv>
     <comment>
-        The Serial Number is unique to your application and is used when encrypting secrets and caching data.  Changing the Serial
-        Number will make your secrets useless and will fully invalidate your cache.  It is expected that the Serial Number will be
-        shared for all developers of the application.
+        The Serial Number is  unique to your application and  is used when  encrypting  secrets and caching data if you do not specify
+        an Initial Vector (iv).  Changing the Serial Number or IV will make your secrets useless and will fully invalidate your cache.
+        It is expected that the Serial Number or IV will be shared for all developers of the application.
     </comment>
     <version>
         <framework>{$version}</framework>

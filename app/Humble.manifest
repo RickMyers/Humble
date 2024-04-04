@@ -15,7 +15,7 @@
 ^Presentations/
 LICENSE
 index.php
-app/install/index.html index.html
+index.html
 app/install/.htaccess .htaccess
 app/install/allowed.json app/allowed.json
 api.php
