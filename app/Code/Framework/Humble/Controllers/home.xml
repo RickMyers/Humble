@@ -5,7 +5,7 @@ Basic Controller only used to route the person to the application home page
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
 -->
-<controller name="home" use="Smarty" author=" " email="">
+<controller name="home" use="Smarty" author="Rick Myers " email="rick@humbleprogramming.com">
     <actions>
         <action name="page">
             <description>The Home Page</description>
@@ -13,6 +13,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         </action>
 
         <!-- ############################################################### -->
-
+        
+        <action name="index">
+            <description>The default index.html page</description>
+        </action>
+        
+        <action name="404">
+            <description>The 'not found' page</description>
+        </action>
+        
     </actions>
 </controller>

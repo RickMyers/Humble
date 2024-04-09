@@ -5,6 +5,7 @@
         file_put_contents('../install_status.json','{ "stage": "'.$stage.'",  "step": "'.$step.'", "percent": '.$percent.' }');        
     }
 ?>
+<!DOCTYPE html>
 <html>
     <head>
         <link rel='stylesheet' type='text/css' href='/web/css/index.css' />
@@ -192,32 +193,32 @@ switch ($method) {
                                     Welcome to the Installation for <?=$xml->name?>
                                 </div>
 
-                                    <input type="hidden" name="method" id="method" value="INSTALL" />
-                                    <input type="hidden" name="serial_number" id="serial_number" value="<?=$project->serial_number?>" />
+                                <input type="hidden" name="method" id="method" value="INSTALL" />
+                                <input type="hidden" name="serial_number" id="serial_number" value="<?=$project->serial_number?>" />
 
-                                    <fieldset style="float: left; width: 250px; position: relative" id="div_1"><legend>Administrator Information</legend>
-                                        <div class='installer-field-description'>Serial Number: <b><?=$project->serial_number?></b></div>
-                                        <input type='text' class='installer-form-field' id='email' name='email' value="<?=$info['User']['Email']?>" />
-                                        <div class='installer-field-description'>E-Mail</div>
+                                <fieldset style="float: left; width: 250px; margin: 0px 4px 0px 0px" id="div_1"><legend>Administrator Information</legend>
+                                    <div class='installer-field-description'>Serial Number: <b><?=$project->serial_number?></b></div>
+                                    <input type='text' class='installer-form-field' id='email' name='email' value="<?=$info['User']['Email']?>" />
+                                    <div class='installer-field-description'>E-Mail</div>
 
-                                        <input type='text' class='installer-form-field' id='username' name='username' value="<?=$info['User']['ID']?>" />
-                                        <div class='installer-field-description'>User Login Id</div>
+                                    <input type='text' class='installer-form-field' id='username' name='username' value="<?=$info['User']['ID']?>" />
+                                    <div class='installer-field-description'>User Login Id</div>
 
-                                        <input type='password' class='installer-form-field' id='pwd' name='pwd' />
-                                        <div class='installer-field-description'>Password</div>
+                                    <input type='password' class='installer-form-field' id='pwd' name='pwd' />
+                                    <div class='installer-field-description'>Password</div>
 
-                                        <input type='password' class='installer-form-field' id='confirm' name='confirm' />
-                                        <div class='installer-field-description'>Confirm Password</div>
+                                    <input type='password' class='installer-form-field' id='confirm' name='confirm' />
+                                    <div class='installer-field-description'>Confirm Password</div>
 
-                                        <input type='text' class='installer-form-field' id='firstname' name='firstname'  value="<?=$info['User']['First']?>" />
-                                        <div class='installer-field-description'>First Name</div>
+                                    <input type='text' class='installer-form-field' id='firstname' name='firstname'  value="<?=$info['User']['First']?>" />
+                                    <div class='installer-field-description'>First Name</div>
 
-                                        <input type='text' class='installer-form-field' id='lastname' name='lastname'  value="<?=$info['User']['Last']?>" />
-                                        <div class='installer-field-description'>Last Name</div>
-                                        <input type="button" id="install-submit" name="install-submit" value=" Install " />
-                                    </fieldset>
+                                    <input type='text' class='installer-form-field' id='lastname' name='lastname'  value="<?=$info['User']['Last']?>" />
+                                    <div class='installer-field-description'>Last Name</div>
+                                    <input type="button" id="install-submit" name="install-submit" value=" Install " />
+                                </fieldset>
 
-                                    <fieldset style="display: inline-block; width: 350px; position: relative" id="div_2"><legend>Database Information</legend>
+                                <fieldset style="display: inline-block; width: 350px; position: relative; margin: 0px" id="div_2"><legend>Database Information</legend>
                                     <input type='text' placeholder="127.0.0.1:3306" class='installer-form-field' id='dbhost' name='dbhost'  value="<?=$info['MySQL']['Host']?>" /><input type='button' value=' Test ' id='install-test' name='install-test' />
                                     <div class='installer-field-description'>MySQL Host (localhost:port or leave out port for default)</div>
 
@@ -239,23 +240,30 @@ switch ($method) {
                                     <input type='text' class='installer-form-field' id='mongo_password' name='mongo_password' />
                                     <div class='installer-field-description'>MongoDB Password</div>
 
-                                    <input type='text' placeholder="127.0.0.1:11211" class='installer-form-field' id='cache' name='cache' value="<?php if ($docker) { print('127.0.0.1:11211'); }?>"/>
-                                    <div class='installer-field-description'>Memcached Server </div>
-                                    </fieldset>
-                                    <div style="clear: both"></div>
+                                    <div style="position: relative">
+                                        <select id="cache" name="cache" class='installer-form-field'>
+                                            <option value=""> </option>
+                                            <option value="127.0.0.1:11211" <?php if ($docker) { print('selected'); }?>> Memcache [127.0.0.1:11211]</option>
+                                            <option value="127.0.0.1:6379"> Redis [127.0.0.1:6379]</option>
+                                        </select>
+                                        <input type="text" id="cache_combo" name="cache_combo" />
+                                    </div>
+                                    <div class='installer-field-description'>Cache Server (Memcache/Redis) </div>
+                                </fieldset>
+                                <div style="clear: both"></div>
                             </div>
                             <div id="installer-options" class='installer-form-div' style="display: flex; flex-direction: column; justify-content: center; align-items: center">
                                 <fieldset><legend>Installation Options</legend>
                                     <label for="templater">Default Templater: </label>
                                     <select name="templater" id="templater">
                                         <option value="Twig"> Twig </option>
-                                        <option value="Smarty"> Smarty </option>
+                                        <option value="Smarty" selected="true"> Smarty </option>
                                         <option value="Latte"> Latte </option>
                                         <option value="Blade"> Blade </option>
                                         <option value="Savant"> Savant </option>
                                         <option value="TBS"> TBS </option>
                                     </select><br /><br />
-                                    <label for="landing">Landing Page: </label>
+                                    <label for="landing-default">Landing Page: </label>
                                     <input type="radio" name="landing" id="landing-default" checked="checked" value="default" /> Default
                                     <input type="radio" name="landing" id="landing-enhanced" value="enhanced" /> Enhanced (alpha)<br />
                                 </fieldset>
@@ -266,15 +274,15 @@ switch ($method) {
                                 <form name="new-db-form" id="new-db-form" onsubmit="return false">
                                     <fieldset style="padding: 10px 10px; font-family: sans-serif; font-size: .9em"><legend>New MySQL DB</legend>
                                         If you haven't already created a DB (required), you can do that here.<br /><br />
-                                        <input type='text' name='host' id='rdms-host' class='installer-form-field' value="" /><br />
+                                        <input type='text' name='host' id='rdms-host' class='installer-form-field' value="<?=$info['MySQL']['Host']?>" /><br />
                                         <div class='installer-field-description'>Host:Port</div>
-                                        <input type='text' name='userid' id='rdms-userid' class='installer-form-field' value="" /><br />
+                                        <input type='text' name='userid' id='rdms-userid' class='installer-form-field' value="<?=$info['MySQL']['User']?>" /><br />
                                         <div class='installer-field-description'>User ID</div>
-                                        <input type='text' name='password' id='rdms-password' class='installer-form-field' value="" /><br />
+                                        <input type='password' name='rdms-password' id='rdms-password' class='installer-form-field' value="<?=$info['MySQL']['Password']?>" /><br />
                                         <div class='installer-field-description'>Password</div>
-                                        <input type='text' name='db' id='rdms-db' class='installer-form-field' value="" /><br />
+                                        <input type='text' name='db' id='rdms-db' class='installer-form-field' value="<?=$info['MySQL']['Database']?>" /><br />
                                         <div class='installer-field-description'>New Database</div>
-                                        <input type='button' name='create-db-button' id='create-db-button' value=' Create DB ' /><br />
+                                        <input type='button' name='create-db-button' id='create-db-button' value=' Create Database ' /><br />
                                     </fieldset>
                                 </form></td></tr>
                             </table>
@@ -283,16 +291,16 @@ switch ($method) {
                             <table style="width: 100%; height: 100%"><tr><td>
                                 <form name="new-mongodb-form" id="new-mongodb-form" onsubmit="return false">
                                     <fieldset style="padding: 10px 10px; font-family: sans-serif; font-size: .9em"><legend>New NoSQL MongoDB Instance</legend>
-                                        You can create a new MongoDB instance here, assuming you already have it installed.  In this way, you can have a unique
-                                        instance of MongoDB (recommended) per application running on this machine<br /><br />
+                                        This only applies if you are on Windows and not using our Docker provided images. You can create a new MongoDB instance here, assuming you already have it installed. 
+                                        In this way, you can have a unique instance of MongoDB per application running on this machine (really, just use our Docker tools and Fuhgeddaboudit)<br /><br />
                                         <input type='text' name='datadir' id='mongo-datadir' class='installer-form-field' value="" /><br />
                                         <div class='installer-field-description'>Data Directory</div>
                                         <input type='text' name='processname' id='mongo-processname' class='installer-form-field' value="" /><br />
                                         <div class='installer-field-description'>Process Name</div>
-                                        <input type='text' name='port' id='mongo-port' class='installer-form-field' value="" placeholder="27017" /><br />
+                                        <input type='text' name='port' id='mongo-port' class='installer-form-field' value="27017" placeholder="27017" /><br />
                                         <div class='installer-field-description'>Mongo Port</div>
                                         <input type='text' name='location' id='mongo-location' class='installer-form-field' value="c:\Program Files\MongoDB\Server\3.2\bin\mongod.exe"  /><br />
-                                        <div class='installer-field-description'>Mongo Port</div><br />
+                                        <div class='installer-field-description'>Mongo Path (correct the above path)</div><br />
                                         <input type='text' name='cmd' id='mongo-cmd' class='installer-form-field' value="" placeholder="You will need to run this statment at an elevated command prompt"  /><br />
                                         <div class='installer-field-description'>Create Mongo Instance Command</div><br /><br />
                                         <input type='button' name='create-mongodb-button' id='create-mongodb-button' value=' Create Mongo Instance ' /><br />
@@ -344,7 +352,7 @@ switch ($method) {
         $cache  = isset($_POST['cache'])            ? $_POST['cache']           : false;
         $fname  = isset($_POST['firstname'])        ? $_POST['firstname']       : '';
         $lname  = isset($_POST['lastname'])         ? $_POST['lastname']        : '';
-        $use    = isset($_POST['templater'])        ? $_POST['templater']       : 'Smarty3';
+        $use    = isset($_POST['templater'])        ? $_POST['templater']       : 'Smarty';
         $srch   = array('&&USERID&&','&&PASSWORD&&','&&DATABASE&&','&&HOST&&','&&MONGO&&','&&CACHE&&','&&MONGOUSER&&','&&MONGOPWD&&');
         $repl   = array($uid,$pwd,$db,$host,$mongo,$cache,$mongou,$mongop);
         if (!file_exists('Humble.project')) {
