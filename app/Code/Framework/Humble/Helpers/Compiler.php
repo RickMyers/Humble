@@ -1176,6 +1176,7 @@ PHP;
             /*print($this->tabs(1).'$models["firePHP"] = \Log::getConsole();'."\n");*/
             print($this->tabs().'function processMethod($method) {'."\n");
             print($this->tabs(1).'global $models;'."\n");
+            print($this->tabs().'global $mappings;'."\n");
             print($this->tabs().'global $view;'."\n");
             print($this->tabs().'global $views;'."\n");
             print($this->tabs().'global $chainActions;'."\n");
@@ -1198,8 +1199,16 @@ PHP;
                 print($this->tabs(1).'case "'.$action['name'].'":'."\n");
                 if (isset($action['CSRF_PROTECTION'])) {
                     $this->processCSRFProtection((string)$action['CSRF_PROTECTION']);
-                }                
+                }
                 $this->resetParameters();
+                if (isset($action['map'])) {
+                    $map = explode(',',$action['map']);
+                    foreach ($map as $idx => $varname) {
+                        if ($varname) {
+                            print($this->tabs().'if (!isset($_REQUEST["'.$varname.'"])) { $_REQUEST["'.$varname.'"] = $mappings['.$idx.']; }'."\n");
+                        }
+                    }
+                }                  
                 $this->actionId = $this->helper->_uniqueId();
                 if (isset($action['request']) && (strtoupper($action['request']) == 'JSON')) {
                     $this->handleJSONRequest($action);

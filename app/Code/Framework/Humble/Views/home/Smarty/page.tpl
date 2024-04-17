@@ -9,6 +9,7 @@
 			}
 			.side-column {
 				width: 15%; background-color: #445348;
+                        }
 		</style>
 		<script type="text/javascript" src="/js/humble-jquery"></script>
 		<script type="text/javascript">
@@ -37,7 +38,7 @@
                     </ul>
                     <br /><br />
                     <div style="text-align: center">
-                    Best of luck with everything you are trying to accomplish!
+                     Best of luck with everything you are trying to accomplish!<br />
                     </div>
                 </div>
 		</div><div id='right-column' class='column side-column'>
