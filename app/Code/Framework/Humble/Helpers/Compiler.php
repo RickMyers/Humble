@@ -1202,7 +1202,7 @@ PHP;
                 }
                 $this->resetParameters();
                 if (isset($action['map'])) {
-                    $map = explode(',',$action['map']);
+                    $map = explode('/',$action['map']);
                     foreach ($map as $idx => $varname) {
                         if ($varname) {
                             print($this->tabs().'if (!isset($_REQUEST["'.$varname.'"])) { $_REQUEST["'.$varname.'"] = $mappings['.$idx.']; }'."\n");
@@ -1431,6 +1431,7 @@ PHP;
     }
 
     /**
+     * Does not use Unity because when doing initial install/compile, Unity isn't available
      * 
      * @param type $identifier
      * @param type $stamp
@@ -1449,6 +1450,7 @@ SQL;
     }
 
     /**
+     * It compiles... name says it all
      * 
      * @param string $identifier
      * @param type $force

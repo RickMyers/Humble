@@ -138,7 +138,7 @@ class File extends Helper
             $i = 1;
             while (ftell($this->_fh) < $final_len) {
                 fwrite($this->_fh, $message);
-                $message = $original;
+                $message  = $original;
                 $original = fread($this->_fh, $len);
                 fseek($this->_fh, $i * $len);
                 $i++;

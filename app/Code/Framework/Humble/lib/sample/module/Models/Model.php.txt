@@ -1,5 +1,5 @@
 <?php
-namespace Code\&&package&&\&&module&&\Models;
+namespace Code\&&PACKAGE&&\&&MODULE&&\Models;
 /**
  *
  * Model Base Transfer Class
@@ -11,10 +11,10 @@ namespace Code\&&package&&\&&module&&\Models;
  * LICENSE:
  *
  * @category   Model
- * @package    &&module&&
- * @author     Original Author <&&email&&>
+ * @package    &&MODULE&&
+ * @author     Original Author <&&EMAIL&&>
  */
-class Model extends \Code\&&base_package&&\&&base_module&&\Models\Model
+class Model extends \Code\&&BASE_PACKAGE&&\&&BASE_MODULE&&\Models\Model
 {
 
 }

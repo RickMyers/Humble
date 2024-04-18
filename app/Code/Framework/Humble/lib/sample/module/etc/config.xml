@@ -1,66 +1,66 @@
 <?xml version="1.0"?>
 <config>
-    <&&namespace&&>
+    <&&NAMESPACE&&>
         <version>0.0.1</version>
-        <title>&&module&&<!-- This will appear in the administration screens for this module --></title>
-        <description>The &&module&& module<!-- This will appear in the admin page --></description>
+        <title>&&MODULE&&<!-- This will appear in the administration screens for this module --></title>
+        <description>The &&MODULE&& module<!-- This will appear in the admin page --></description>
         <author>
-            <name>&&author&&</name>
-            <email>&&email&&</email>
+            <name>&&AUTHOR&&</name>
+            <email>&&EMAIL&&</email>
         </author>
         <module>
-            <name>&&module&&</name>
+            <name>&&MODULE&&</name>
             <weight>50</weight>
-            <required>&&required&&</required>
+            <required>&&REQUIRED&&</required>
             <workflow>Y</workflow>
-            <package>&&package&&</package>
+            <package>&&PACKAGE&&</package>
             <use>Smarty</use>
         </module>
         <structure>
             <models>
-                <source>&&module&&/Models</source>
+                <source>&&MODULE&&/Models</source>
             </models>
             <helpers>
-                <source>&&module&&/Helpers</source>
+                <source>&&MODULE&&/Helpers</source>
             </helpers>
             <controllers>
-                <source>&&module&&/Controllers</source>
-                <cache>&&module&&/Controllers/Cache</cache>
+                <source>&&MODULE&&/Controllers</source>
+                <cache>&&MODULE&&/Controllers/Cache</cache>
             </controllers>
             <mobile>
                 <controllers>
-                    <source>&&module&&/Mobile/Controllers</source>
-                    <cache>&&module&&/Mobile/Controllers/Cache</cache>
+                    <source>&&MODULE&&/Mobile/Controllers</source>
+                    <cache>&&MODULE&&/Mobile/Controllers/Cache</cache>
                 </controllers>
                 <views>
-                    <source>&&module&&/Mobile/Views</source>
-                    <cache>&&module&&/Mobile/Views/Cache</cache>
+                    <source>&&MODULE&&/Mobile/Views</source>
+                    <cache>&&MODULE&&/Mobile/Views/Cache</cache>
                 </views>
             </mobile>
             <schema>
-                <install>&&module&&/Schema/Install</install>
-                <update>&&module&&/Schema/Update</update>
-                <layout>&&module&&/Schema/DSL</layout>
+                <install>&&MODULE&&/Schema/Install</install>
+                <update>&&MODULE&&/Schema/Update</update>
+                <layout>&&MODULE&&/Schema/DSL</layout>
             </schema>
             <configuration>
-                <source>&&module&&/etc</source>
+                <source>&&MODULE&&/etc</source>
             </configuration>
             <views>
-                <source>&&module&&/Views</source>
-                <cache>&&module&&/Views/Cache</cache>
+                <source>&&MODULE&&/Views</source>
+                <cache>&&MODULE&&/Views/Cache</cache>
             </views>
             <images>
-                <source>&&module&&/Images</source>
-                <cache>&&module&&/Images/Cache</cache>
+                <source>&&MODULE&&/Images</source>
+                <cache>&&MODULE&&/Images/Cache</cache>
             </images>
             <entities>
-                <source>&&module&&/Entities</source>
+                <source>&&MODULE&&/Entities</source>
             </entities>
             <RPC>
-                <source>&&module&&/RPC</source>
+                <source>&&MODULE&&/RPC</source>
             </RPC>
             <frontend>
-                <source>&&module&&/web/app</source>
+                <source>&&MODULE&&/web/app</source>
             </frontend>
         </structure>
         <extend comment="Means whether to look up the Module hierarchy if a specific class is not found (if not found in current module, perhaps the class is in a parent module)">
@@ -69,8 +69,8 @@
             <entities>1</entities>
         </extend>     
         <orm>
-            <prefix>&&prefix&&</prefix>
-            <mongodb>&&namespace&&</mongodb>
+            <prefix>&&PREFIX&&</prefix>
+            <mongodb>&&NAMESPACE&&</mongodb>
             <!--
                 Register your tables to be managed under this namespace in the entities section below in the following format:
 
@@ -88,7 +88,7 @@
         <web>
             <!-- Edits are used for separating form validation from the form -->
             <edits>
-                <edit1>&&module&&/web/edits/edit.json</edit1>
+                <edit1>&&MODULE&&/web/edits/edit.json</edit1>
             </edits>
             <hook>
                 <!-- #################################################
@@ -98,12 +98,12 @@
                        many hooks as you'd like
                      #################################################    -->
                 <js>
-                    <source>&&module&&/web/js/&&module&&.js</source>
+                    <source>&&MODULE&&/web/js/&&MODULE&&.js</source>
                 </js>
                 <css>
-                    <source>&&module&&/web/css/&&module&&.css</source>
+                    <source>&&MODULE&&/web/css/&&MODULE&&.css</source>
                 </css>
             </hook>
         </web>
-    </&&namespace&&>
+    </&&NAMESPACE&&>
 </config>

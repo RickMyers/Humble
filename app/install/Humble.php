@@ -322,8 +322,9 @@ FACTORY;
     }    
     require('Environment.php');
     require('Humble.php');
+    $landing_page = \Environment::getProject('landing_page');
     $location   = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php`);
-    $cmd        = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'author='.$project->author;
+    $cmd        = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'email='.$project->author.' init='.$landing_page;
     print("\nExecuting: ".$cmd."\n\n");
     $output     = []; $rc = -99;
     exec($cmd,$output,$rc);

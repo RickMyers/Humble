@@ -242,8 +242,8 @@ class Utility extends Model
             '&&FACTORY&&',
             '&&PROJECT&&',
             '&&MODULE&&',
-            '&&base_package&&',
-            '&&base_module&&'
+            '&&BASE_PACKAGE&&',
+            '&&BASE_MODULE&&'
         );
         if (strpos($root,'_')!==false) {
             $root = DIRECTORY_SEPARATOR.$root;

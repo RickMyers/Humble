@@ -28,14 +28,14 @@
 //        if (count($parts)===3) {
  //           $name = $parts[0].':'.$parts[1];
   //      }
-        
+        $cont       = explode('/',$args['landing_page'])[2];
         $path       = $args['destination_folder']  ?? '';
         $parts      = explode(DIRECTORY_SEPARATOR,$path);
         $root       = array_pop($parts);
         $basedir    = implode(DIRECTORY_SEPARATOR,$parts);
         $ns         = $args['namespace'] ?? '';
         $error_log  = $args['error_log'] ?? '';
-        return str_replace(['&&NAME&&','&&SERVER&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&'],[$name,$server,$port,$path,$error_log,$basedir,$ns],file_get_contents($template));
+        return str_replace(['&&NAME&&','&&SERVER&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&','&&CONTROLLER&&'],[$name,$server,$port,$path,$error_log,$basedir,$ns,$cont],file_get_contents($template));
     }
     //-------------------------------------------------------------------------------------
     function recurseDirectory($path=null) {

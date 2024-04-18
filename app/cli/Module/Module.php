@@ -160,6 +160,7 @@ class Module extends CLI
         $au = $args['author'] ?? ($project->author ?? '');
         $md = $args['module'];
         $em = $args['email'] ?? ($project->author ?? '');
+        $mn = $args['init'] ?? false;
         if ($ns && $pk && $px && $md) {
             $base = 'Code'.DIRECTORY_SEPARATOR.$pk;
             $root = $base."/".$md;
@@ -204,19 +205,30 @@ class Module extends CLI
                 $required    = $is_base ? 'Y'           : 'N';
                 $main_module = strtoupper($project->namespace)===strtoupper($ns) ? ucfirst(strtolower($project->namespace))." = {}" : "";  //if this is the main module, of which there can be only one, we will need to add an extra bit of JS
                 $root        = is_dir('Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module.DIRECTORY_SEPARATOR.'lib/sample/module') ? 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module : "Code/Framework/Humble";
-                $srch        = ["&&main_module&&","&&project&&","&&namespace&&","&&prefix&&","&&author&&","&&module&&","&&package&&",'&&email&&','&&FACTORY&&','&&base_package&&','&&base_module&&','&&required&&'];
+                $srch        = ["&&MAIN_MODULE&&","&&PROJECT&&","&&NAMESPACE&&","&&PREFIX&&","&&AUTHOR&&","&&MODULE&&","&&PACKAGE&&",'&&EMAIL&&','&&FACTORY&&','&&BASE_PACKAGE&&','&&BASE_MODULE&&','&&REQUIRED&&'];
                 $repl        = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
                 $templates   = [$root."/lib/sample/module/Controllers/actions.xml"];
                 $out         = ["Code/".$pk."/".$md."/Controllers/actions.xml"];
                 $templates[] = $root."/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
                 $templates[] = $root."/lib/sample/module/RPC/mapping.yaml";                $out[] = "Code/".$pk."/".$md."/RPC/mapping.yaml";
-                $templates[] = $root."/lib/sample/module/Views/actions/Smarty/open.tpl";  $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty/open.tpl";
+                $templates[] = $root."/lib/sample/module/Views/actions/Smarty/open.tpl";   $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty/open.tpl";
                 $templates[] = $root."/lib/sample/module/web/js/actions.js";               $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
                 $templates[] = $root."/lib/sample/module/web/css/template.css";            $out[] = "Code/".$pk."/".$md."/web/css/".ucfirst($md).".css";
                 $templates[] = $root."/lib/sample/module/Models/Model.php.txt";            $out[] = "Code/".$pk."/".$md."/Models/Model.php";
                 $templates[] = $root."/lib/sample/module/Helpers/Helper.php.txt";          $out[] = "Code/".$pk."/".$md."/Helpers/Helper.php";
                 $templates[] = $root."/lib/sample/module/Entities/Entity.php.txt";         $out[] = "Code/".$pk."/".$md."/Entities/Entity.php";
                 $templates[] = $root."/lib/sample/module/web/edits/template.json";         $out[] = "Code/".$pk."/".$md."/web/edits/sample_edit.json";
+                if ($mn) {
+                    //This is the main module
+                    $parts       = explode('/',$mn);
+                    $controller  = $parts[2];
+                    $page        = $parts[3];
+                    $srch[]      = '&&CONTROLLER&&';
+                    $repl[]      = $controller;
+                    @mkdir($root.DIRECTORY_SEPARATOR.'Views/'.$controller.'/'.$templater,true);
+                    $templates[] = $root."/lib/sample/module/web/edits/template.json";     $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Entity.php";;
+                }
+                
                 foreach ($templates as $idx => $template) {
                     file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)));
                 }

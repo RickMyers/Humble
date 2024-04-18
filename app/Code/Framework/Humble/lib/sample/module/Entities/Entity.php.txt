@@ -1,5 +1,5 @@
 <?php
-namespace Code\&&package&&\&&module&&\Entities;
+namespace Code\&&PACKAGE&&\&&MODULE&&\Entities;
 /**
  * Entity Base Transfer Class
  *
@@ -10,10 +10,10 @@ namespace Code\&&package&&\&&module&&\Entities;
  * LICENSE:
  *
  * @category   Entity
- * @package    &&module&&
- * @author     Original Author <&&email&&>
+ * @package    &&MODULE&&
+ * @author     Original Author <&&EMAIL&&>
  */
-class Entity extends \Code\&&base_package&&\&&base_module&&\Entities\Unity
+class Entity extends \Code\&&BASE_PACKAGE&&\&&BASE_MODULE&&\Entities\Unity
 {
 
 }

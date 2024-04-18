@@ -1,5 +1,5 @@
 <?php
-namespace Code\&&package&&\&&module&&\Helpers;
+namespace Code\&&PACKAGE&&\&&MODULE&&\Helpers;
 /**
  *
  * Utility Base Transfer Class
@@ -11,10 +11,10 @@ namespace Code\&&package&&\&&module&&\Helpers;
  * LICENSE:
  *
  * @category   Utility
- * @package    &&module&&
- * @author     Original Author <&&email&&>
+ * @package    &&MODULE&&
+ * @author     Original Author <&&EMAIL&&>
  */
-class Helper extends \Code\&&base_package&&\&&base_module&&\Helpers\Helper
+class Helper extends \Code\&&BASE_PACKAGE&&\&&BASE_MODULE&&\Helpers\Helper
 {
 
 }

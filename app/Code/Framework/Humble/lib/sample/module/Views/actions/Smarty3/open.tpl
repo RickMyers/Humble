@@ -1,24 +1,24 @@
 <table width='100%' height='100%' cellspacing='0' cellpadding='0'>
 <tr><td align='center'>
 <div style='padding: 5px 20px 10px 20px; text-align: left; border: 1px solid #aaf; background-color: #eee; font-family: tahoma, sans-serif; width: 600px'>
-<h3>Package: &&package&&.<br />
-Module: &&module&&.<br />
+<h3>Package: &&PACKAGE&&.<br />
+Module: &&MODULE&&.<br />
 Namespace: &&namespace&&<br />
-Author: &lt;&&author&&&gt;</h3>
+Author: &lt;&&AUTHOR&&&gt;</h3>
 
 Welcome to the home page of your application. Some useful information is below:<br />
 <ul>
     <b>Configuration</b>:<br /><br />
     
-    &nbsp;&nbsp;&nbsp;app/Code/&&package&&/&&module&&/etc/config.xml<br /><br />
+    &nbsp;&nbsp;&nbsp;app/Code/&&PACKAGE&&/&&MODULE&&/etc/config.xml<br /><br />
     
     <b>Main View</b>:<br /><br />
     
-    &nbsp;&nbsp;&nbsp;app/Code/&&package&&/&&module&&/Views/actions/Smarty/open.tpl<br /><br />
+    &nbsp;&nbsp;&nbsp;app/Code/&&PACKAGE&&/&&MODULE&&/Views/actions/Smarty/open.tpl<br /><br />
 
     <b>JavaScript File</b>:<br /><br />
     
-    &nbsp;&nbsp;&nbsp;app/Code/&&package&&/&&module&&/web/js/actions.js<br /><br />
+    &nbsp;&nbsp;&nbsp;app/Code/&&PACKAGE&&/&&MODULE&&/web/js/actions.js<br /><br />
     <b>Tutorials</b>:
     <ul>
         <li><a href="#" onclick="return false">Getting Started</a></li>
