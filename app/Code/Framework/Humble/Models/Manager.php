@@ -130,6 +130,7 @@ class Manager extends Model
     }
     
     /**
+     * Maybe expand this for the other index/404 actions as well as home page?
      * 
      * @param object $project
      * @return $this

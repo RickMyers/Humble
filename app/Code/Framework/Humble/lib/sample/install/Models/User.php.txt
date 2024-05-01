@@ -1,9 +1,10 @@
+
 <?php
 namespace Code\&&PACKAGE&&\&&MODULE&&\Models;
 use Humble;
 use Environment; 
 /**
-  * Manages core user functions
+ * Manages core user functions
  *
  * Core user functions
  *
@@ -70,7 +71,7 @@ class User extends Model {
     }
 
     /**
-     * Will set the flag on ALL user accounts to force users to reset their password... call at your own risk!
+     * Will set the flag on ALL user accounts to force all users to reset their password... call at your own risk!
      * 
      * @return string
      */
@@ -81,6 +82,7 @@ class User extends Model {
         }
         return "Passwords were reset (sure)";
     }
+    
     /**
      * Allows you to set a message that will be displayed on the page after a login attempt
      *

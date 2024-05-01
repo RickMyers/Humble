@@ -1,15 +1,14 @@
 <?xml version="1.0"?>
 <!--
 
-Basic Controller only used to route the person to the application home page
+Basic Controller
 
-For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="home" use="Smarty" author="Rick Myers " email="rick@humbleprogramming.com">
+<controller name="&&CONTROLLER&&" use="Smarty" author="" email="&&EMAIL&&">
     <actions>
-        <action name="page">
+        <action name="&&PAGE&&">
             <description>The Home Page</description>
-            <helper namespace="humble" class="admin" id='appHomePage' />
         </action>
 
         <!-- ############################################################### -->

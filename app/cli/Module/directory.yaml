@@ -13,6 +13,7 @@ b :
         optional:
             author|au: The authors name
             email|em: The authors email address
+            main_module: Flag for marking this a the main module of an application
 i : 
     description: Install a module
     usage:

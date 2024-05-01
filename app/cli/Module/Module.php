@@ -160,7 +160,7 @@ class Module extends CLI
         $au = $args['author'] ?? ($project->author ?? '');
         $md = $args['module'];
         $em = $args['email'] ?? ($project->author ?? '');
-        $mn = $args['init'] ?? false;
+        $mn = $args['main_module'] ?? false;
         if ($ns && $pk && $px && $md) {
             $base = 'Code'.DIRECTORY_SEPARATOR.$pk;
             $root = $base."/".$md;
@@ -207,8 +207,7 @@ class Module extends CLI
                 $root        = is_dir('Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module.DIRECTORY_SEPARATOR.'lib/sample/module') ? 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module : "Code/Framework/Humble";
                 $srch        = ["&&MAIN_MODULE&&","&&PROJECT&&","&&NAMESPACE&&","&&PREFIX&&","&&AUTHOR&&","&&MODULE&&","&&PACKAGE&&",'&&EMAIL&&','&&FACTORY&&','&&BASE_PACKAGE&&','&&BASE_MODULE&&','&&REQUIRED&&'];
                 $repl        = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
-                $templates   = [$root."/lib/sample/module/Controllers/actions.xml"];
-                $out         = ["Code/".$pk."/".$md."/Controllers/actions.xml"];
+                $templates   = [$root."/lib/sample/module/Controllers/actions.xml"];       $out   = ["Code/".$pk."/".$md."/Controllers/actions.xml"];
                 $templates[] = $root."/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
                 $templates[] = $root."/lib/sample/module/RPC/mapping.yaml";                $out[] = "Code/".$pk."/".$md."/RPC/mapping.yaml";
                 $templates[] = $root."/lib/sample/module/Views/actions/Smarty/open.tpl";   $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty/open.tpl";
@@ -219,18 +218,24 @@ class Module extends CLI
                 $templates[] = $root."/lib/sample/module/Entities/Entity.php.txt";         $out[] = "Code/".$pk."/".$md."/Entities/Entity.php";
                 $templates[] = $root."/lib/sample/module/web/edits/template.json";         $out[] = "Code/".$pk."/".$md."/web/edits/sample_edit.json";
                 if ($mn) {
-                    //This is the main module
-                    $parts       = explode('/',$mn);
-                    $controller  = $parts[2];
-                    $page        = $parts[3];
-                    $srch[]      = '&&CONTROLLER&&';
-                    $repl[]      = $controller;
-                    @mkdir($root.DIRECTORY_SEPARATOR.'Views/'.$controller.'/'.$templater,true);
-                    $templates[] = $root."/lib/sample/module/web/edits/template.json";     $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Entity.php";;
-                }
+                    //This is the main module, so we have to copy some additional files
+                    $parts       = explode('/',$project->landing_page);
+                    $controller  = $parts[2];        $page        = $parts[3];         
+                    $srch[]      = '&&CONTROLLER&&'; $repl[]      = $controller;
+                    $srch[]      = '&&PAGE&&';       $repl[]      = $page;
+                    mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
+                    $templates[] = $root."/lib/sample/install/Views/index.html";     $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/index.tpl";
+                    $templates[] = $root."/lib/sample/install/Views/404.html";       $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/404.tpl";
+                    $templates[] = $root."/lib/sample/install/Controllers/base.xml"; $out[] = "Code/".$pk."/".$md."/Controllers/".$controller.".xml";
+                    $templates[] = $root."/lib/sample/install/Models/User.php.txt";  $out[] = "Code/".$pk."/".$md."/Models/User.php";
+                } 
                 
                 foreach ($templates as $idx => $template) {
-                    file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)));
+                    print('Copying '.$template.' to '.$out[$idx]."\n");
+                    if (!file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)))) {
+                        print('Problem: '.$out[$idx].' && '.$template."\n");
+                    }
+                            
                 }
                 print("\n\nIf no errors, then the module was likely built.  At this point, run 'Humble --i namespace=$ns' to install the module, or access it through the administration screens.\n\n");
                 return "Module likely created";

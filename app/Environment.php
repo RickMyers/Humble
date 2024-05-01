@@ -527,7 +527,7 @@ class Environment {
      */
     public static function runningTasks() {
         $tasks = array();
-        exec('tasklist',$output);
+    /*    exec('tasklist',$output);
         $tot = count($output);
         for ($i=3; $i<$tot; $i++) {
             $tasks[$pid = trim(substr($output[$i],26,8))] = array(
@@ -538,7 +538,7 @@ class Environment {
                 "memory" => trim(substr($output[$i],64))
              );
         }
-        ksort($tasks);
+        ksort($tasks);*/
         return $tasks;
     }
 
