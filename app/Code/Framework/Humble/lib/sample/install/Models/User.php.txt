@@ -1,4 +1,3 @@
-
 <?php
 namespace Code\&&PACKAGE&&\&&MODULE&&\Models;
 use Humble;
