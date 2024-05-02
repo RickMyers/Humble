@@ -5,7 +5,7 @@
         file_put_contents('../install_status.json','{ "stage": "'.$stage.'",  "step": "'.$step.'", "percent": '.$percent.' }');        
     }
 ?>
-<!DOCTYPE html>
+<!--!DOCTYPE html-->
 <html>
     <head>
         <link rel='stylesheet' type='text/css' href='/web/css/index.css' />
@@ -427,10 +427,9 @@ switch ($method) {
         $results      = ob_get_flush();
         if (!$user_id) {
             file_put_contents('install_failed.txt',$results);
-            print(file_get_contents('install_failed.txt')."\n");
+            print('<pre>'.$results."\n\n\n".'</pre>');
             die('Install did not complete, no user was created'."\n");
         } 
-        //$ins->setId($user_id)->setNamespace($project->namespace)->setEngine('Smarty3')->setName($landing[2])->setAction($landing[3])->setDescription('Homepage Controller')->setActionDescription('The Home Page')->createController(true);
         session_start();
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");

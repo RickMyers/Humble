@@ -186,10 +186,10 @@ function watchAPIPolicy() {
 //------------------------------------------------------------------------------
 function watchAllowedRules() {
     global $systemfiles;
-    $systemfiles['allowed.json'] = isset($systemfiles['allowed.json']) ? $systemfiles['allowed.json'] : filemtime('allowed.json');
-    if (filemtime('allowed.json') !== $systemfiles['allowed.json']) {
+    $systemfiles['public_routes.json'] = isset($systemfiles['public_routes.json']) ? $systemfiles['public_routes.json'] : filemtime('public_routes.json');
+    if (filemtime('public_routes.json') !== $systemfiles['public_routes.json']) {
         logMessage('Recaching Allowed Routes');
-        Humble::cache('humble_framework_allowed_routes',json_decode(file_get_contents('allowed.json')));
+        Humble::cache('humble_framework_allowed_routes',json_decode(file_get_contents('public_routes.json')));
     }        
 }
 //------------------------------------------------------------------------------

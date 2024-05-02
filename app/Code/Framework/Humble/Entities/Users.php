@@ -54,7 +54,7 @@ class Users extends Entity
         $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
         $fname  = $first_name ? $first_name     : ($this->getFirstName() ? $this->getFirstName() : '');
         $lname  = $last_name ? $last_name       : ($this->getLastName()  ? $this->getLastName()  : '');
-        $id    = $id ? $id                   : ($this->getId()        ? $this->getId()        : '');
+        $id     = $id ? $id                     : ($this->getId()        ? $this->getId()        : '');
         $email  = $email ? $email               : ($this->getEmail()     ? $this->getEmail()     : '');
         if ($uname && $pwd) {
             if ($id) {
@@ -62,6 +62,8 @@ class Users extends Entity
             }
             if ($id = $this->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setUserName($uname)->save()) {
                 Humble::entity('default/user/identification')->setId($id)->setEmail($email ?? '')->setFirstName($fname ?? '')->setLastName($lname ?? '')->save();
+            } else {
+                \Log::error('Failed attempting to create user '.$uname);
             }
         }
         return $id;

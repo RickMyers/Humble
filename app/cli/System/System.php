@@ -142,7 +142,7 @@ class System extends CLI
             }
         }
         //Now add manifest file in the form of a git ignore...
-        $ignore = array_merge(['Docs/*','/images/*','/app/allowed.json','/app/Constants.php','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
+        $ignore = array_merge(['Docs/*','/images/*','/app/public_routes.json','/app/Constants.php','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
         $ignore = array_merge(['app/cli/Component/*','app/cli/CLI.php','app/cli/Workflow/*','app/cli/Framework/*','app/cli/System/*','app/cli/Module/*'],$ignore);
         $zip->addFromString('.gitignore',implode("\n",$ignore));
         //$zip->addFromString('.manifest',implode("\n",$content['xref']));
