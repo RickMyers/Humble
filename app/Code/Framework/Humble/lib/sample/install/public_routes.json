@@ -1,0 +1,31 @@
+{
+    "namespaces": {
+        
+    },
+    "controllers": {
+
+    },
+    "routes": {
+        "/admin/login/form": {
+           "reason":   "User needs to attempt login as an administrator",
+           "description": "The administrator login page"
+        },
+        "/admin/user/login": {
+           "reason":   "Admin needs to attempt to authenticate",
+           "description": "The administrator authentication service"
+        },
+        "/&&NAMESPACE&&/&&CONTROLLER&&/index": {
+           "reason":   "Need to access login area",
+           "description": "This is the equivalent index.html page"
+        },
+        "/&&NAMESPACE&&/&&CONTROLLER&&/404": {
+           "reason":   "Need a 404 resource not found page",
+           "description": "This is the custom 404 page for your application"
+        },
+        "/paradigm/workflow/import": {
+           "reason":   "Remote update of critical workflows when not able to log in",
+           "description": "This will update and install workflows remotely"
+       }
+       
+    }
+}
