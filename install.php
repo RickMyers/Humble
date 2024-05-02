@@ -433,15 +433,12 @@ switch ($method) {
         session_start();
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");
-        print(getcwd()."\n");
-        @copy('../humble.bat',strtolower((string)$project->factory_name).'.bat');
-        @copy('../humble.sh',strtolower((string)$project->factory_name).'.sh');
-        $x = (file_exists('../humble.bat')) ? @unlink('../humble.bat') : '';
-        $x = (file_exists('../humble.sh'))  ? @unlink('../humble.sh') : '';
+        $x = (file_exists('../humble.bat')) ? rename('../humble.bat',strtolower((string)$project->factory_name).'.bat'): '';
+        $x = (file_exists('../humble.sh'))  ? rename('../humble.sh',strtolower((string)$project->factory_name).'.sh') : '';
         $x = (file_exists('../Humble.php')) ? @unlink('../Humble.php') : '';
         print("done with creating drivers\n\n");
         $log = ob_get_flush();
-        print($log);
+        print('<pre>'.$log.'</pre>');
         postUpdate('Complete','Finished',100);
         file_put_contents('../install.log',$log);
         break;

@@ -102,7 +102,8 @@ class Manager extends Model
      * @return $this
      */
     public function tailorSystem($project) {
-        $sources = [
+     //This needs reworked
+     /*   $sources = [
             'Controllers' => 'Code/Framework/Humble/lib/sample/install/Controllers',
             'Models'      => 'Code/Framework/Humble/lib/sample/install/Models',
             'Schema'      => 'Code/Framework/Humble/lib/sample/install/Schema/Update',
@@ -125,7 +126,7 @@ class Manager extends Model
                 }
                 file_put_contents($dest[$component].'/'.$entry,str_replace($srch,$repl,file_get_contents($sources[$component].'/'.$entry)));
             }
-        }
+        }*/
         return $this->updateConfig($project);
     }
     
@@ -139,7 +140,7 @@ class Manager extends Model
         if ($parts = explode('/',$project->landing_page)) {
             $util = Humble::model('admin/utility');
             //TODO: Pass engine in...
-            $util->setDescription($this->getDescription())->setActionDescription($this->getActionDescription())->setNamespace($parts[1])->setEngine('Twig')->setName($parts[2])->setAction($parts[3])->createController(true,true);
+            $util->setDescription($this->getDescription())->setActionDescription($this->getActionDescription())->setNamespace($parts[1])->setEngine('Smarty')->setName($parts[2])->setAction($parts[3])->createController(true,true);
         }
         return $this;
     }    
