@@ -125,8 +125,9 @@
                     'resource'  => str_replace('_','/',substr($resource,$sep+1))
                 ];
             } else {
+                //Should this be Environment::namespace() or self::_namespace()?
                 $resource = [
-                    'namespace' => self::_namespace(),
+                    'namespace' => Environment::namespace(),
                     'resource'  => str_replace('_','/',$resource)
                 ];
             }
