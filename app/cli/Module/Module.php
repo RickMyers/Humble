@@ -244,6 +244,21 @@ class Module extends CLI
             }
         }
     }
+    
+    public static function tailwind() {
+        $args       = self::arguments();
+        if ($module = Humble::module($args['namespace'])) {
+            $current_path = getcwd();
+            $install_path = 'Code/'.$module['package'].'/'.$module['module'].'/web/tailwind';
+            @mkdir($install_path,0775,true);
+            chdir($install_path);
+            exec('npm install -D tailwindcss',$output);            
+            chdir($current_path);
+            print_r($output);
+            //now go get the default config file
+        }
+        print("\nDone.\n");
+    }
 
 }
 

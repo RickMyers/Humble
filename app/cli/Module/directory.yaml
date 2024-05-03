@@ -70,11 +70,22 @@ activate :
     description: Build, Install and Enable (activate) a Module
     usage:
         linux:   sudo sh ./humble.sh --activate namespace=module_namespace package=directory_name module=module_name
-        windows: humble --d --activate namespace=module_namespace package=directory_name module=module_name
+        windows: humble --activate namespace=module_namespace package=directory_name module=module_name
     function : activate
     parameters:
         required:
             namespace|ns: The module namespace
             package|pk: Package (which is the directory) to install the module
             module|mod: The module name
+        optional:     
+tailwind : 
+    description: Enable tailwindcss support for a given module 
+    extended: Tailwind should be enabled on a per module basis, see the tutorial here https://humblepgramming.com/pages/Tailwind.htmls
+    usage:
+        linux:   sudo sh ./humble.sh --tailwind namespace=module_namespace 
+        windows: humble --tailwind namespace=module_namespace
+    function : tailwind
+    parameters:
+        required:
+            namespace|ns: The module namespace
         optional:              
