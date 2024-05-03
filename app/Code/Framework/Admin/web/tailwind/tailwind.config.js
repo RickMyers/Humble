@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['../../**/*.{twig,tpl,html}'],
+  content: ['../../**/*.{twig,tpl,html,blade,savant,tbs,latte}'],
   theme: {
     screens: {
         sm: '480px',
@@ -11,7 +11,6 @@ module.exports = {
     extend: {
         colors: {
             brightRed: 'hsl(12,88%,59%)'
-
         }
     },
   },
