@@ -244,18 +244,23 @@ class Module extends CLI
             }
         }
     }
-    
+
+    /**
+     * Retrieves a pre-setup version of tailwind and installs it in a module
+     */
     public static function tailwind() {
         $args       = self::arguments();
         if ($module = Humble::module($args['namespace'])) {
-            $current_path = getcwd();
-            $install_path = 'Code/'.$module['package'].'/'.$module['module'].'/web/tailwind';
+            $install_path = 'Code/'.$module['package'].'/'.$module['module'].'/web/';
             @mkdir($install_path,0775,true);
-            chdir($install_path);
-            exec('npm install -D tailwindcss',$output);            
-            chdir($current_path);
-            print_r($output);
-            //now go get the default config file
+            print("\nRetrieving Tailwindcss package from ".Environment::project('framework_url')."\n");
+            file_put_contents('tailwind.zip',file_get_contents(Environment::project('framework_url').'/dist/tailwind.zip'));
+            $zip = new ZipArchive;
+            if ($zip->open('tailwind.zip') === TRUE) {
+                $zip->extractTo($install_path);
+                $zip->close();                
+            }
+            @unlink('tailwind.zip');
         }
         print("\nDone.\n");
     }
