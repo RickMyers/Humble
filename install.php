@@ -265,7 +265,10 @@ switch ($method) {
                                     </select><br /><br />
                                     <label for="landing-default">Landing Page: </label>
                                     <input type="radio" name="landing" id="landing-default" checked="checked" value="default" /> Default
-                                    <input type="radio" name="landing" id="landing-enhanced" value="enhanced" /> Enhanced (alpha)<br />
+                                    <input type="radio" name="landing" id="landing-enhanced" value="enhanced" /> Enhanced (alpha)<br /><br />
+                                    <input type="checkbox" name="authorization_engine" id="authorization_engine" value="Y" /> Include Basic Authorization Engine<br /><br />
+                                    <input type="checkbox" name="roles_and_relationships" id="roles_and_relationships" value="Y" /> Include Roles And Relationships Features<br /><br />
+                                    <input type="checkbox" name="socket_server" id="socket_server" value="Y" /> Install Socket Server (Node.js/NPM Required)<br /><br />
                                 </fieldset>
                             </div>                        
                         </form>
@@ -441,6 +444,11 @@ switch ($method) {
         print('<pre>'.$log.'</pre>');
         postUpdate('Complete','Finished',100);
         file_put_contents('../install.log',$log);
+        ?>
+        <script>
+            window.location.href = '/index.html';
+        </script>
+        <?php
         break;
     default             :
         die("I'm not sure what you want, but I'm pretty sure I don't do that\n");
