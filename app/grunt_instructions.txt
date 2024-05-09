@@ -1,3 +1,7 @@
+#===============================================================================
+#       DEPRECATED:  Use the Cadence feature from the admin page
+#===============================================================================
+
 #first you *MUST* install Node.js, and make sure the bin directory is on the path
 
 #npm is the "node package manager"

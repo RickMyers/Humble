@@ -258,7 +258,7 @@ HELP;
      * @return object
      */
     public static function getApplicationXML() {
-        $data = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("Error, application file not found");
+        $data = (file_exists('../etc/application.xml')) ? file_get_contents('../etc/application.xml') : die("Error, application file not found");
         $xml  = simplexml_load_string($data);
         return $xml;
     }

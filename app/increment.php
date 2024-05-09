@@ -24,7 +24,7 @@
 */
 function incrementVersion($next=1) {
     print("CHANGING VERSION");
-    $data  = (file_exists('../application.xml')) ? file_get_contents('../application.xml') : die("Error, application file not found");
+    $data  = (file_exists('../etc/application.xml')) ? file_get_contents('../etc/application.xml') : die("Error, application file not found");
     $data  = simplexml_load_string($data);    
     $v     = explode('.',(string)$data->version->framework);
     for ($i=count($v)-1; $i>=0; $i-=1) {                                    //This is one of those ridiculously evil things in computer science
@@ -35,7 +35,7 @@ function incrementVersion($next=1) {
     }
     $data->version->framework = (string)implode('.',$v);
     print("\nSetting version to ".$data->version->framework."\n\n");
-    file_put_contents('../application.xml',$data->asXML());
+    file_put_contents('../etc/application.xml',$data->asXML());
 }
 incrementVersion();
 
