@@ -9,7 +9,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
     <actions blocking="off">
    
         <action name="info">
-            <description>Displays the information of the system from the etc/application.xml file, and allows the user to change the values if they have super-user role</description>
+            <description>Displays the information of the system from the etc/application.xml' file, and allows the user to change the values if they have super-user role</description>
             <model namespace="humble" class="system" id='system' >
                 <parameter name="admin_id" source="session" required="true" />
             </model>

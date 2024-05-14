@@ -168,8 +168,8 @@ function scanModelsForChanges() {
 //------------------------------------------------------------------------------
 function watchApplicationXML() {
     global $systemfiles;
-    $systemfiles['../application.xml'] = isset($systemfiles['../application.xml']) ? $systemfiles['../application.xml'] : filemtime('../application.xml');
-    if (filemtime('../application.xml') !== $systemfiles['../application.xml']) {
+    $systemfiles['etc/application.xml'] = isset($systemfiles['etc/application.xml']) ? $systemfiles['etc/application.xml'] : filemtime('etc/application.xml');
+    if (filemtime('etc/application.xml') !== $systemfiles['etc/application.xml']) {
         logMessage('Recaching Application.xml');
         \Environment::recacheApplication();
     }
@@ -177,19 +177,19 @@ function watchApplicationXML() {
 //------------------------------------------------------------------------------
 function watchAPIPolicy() {
     global $systemfiles;
-    $systemfiles['api_policy.json'] = isset($systemfiles['api_policy.json']) ? $systemfiles['api_policy.json'] : filemtime('api_policy.json');
+    $systemfiles['api_policy.json'] = isset($systemfiles['api_policy.json']) ? $systemfiles['api_policy.json'] : filemtime('etc/api_policy.json');
     if (filemtime('api_policy.json') !== $systemfiles['api_policy.json']) {
         logMessage('Recaching API Policy');
-        Humble::cache('humble_framework_api_policy',json_decode(file_get_contents('api_policy.json')));
+        Humble::cache('humble_framework_api_policy',json_decode(file_get_contents('Code/api_policy.json')));
     }    
 }
 //------------------------------------------------------------------------------
 function watchAllowedRules() {
     global $systemfiles;
-    $systemfiles['public_routes.json'] = isset($systemfiles['public_routes.json']) ? $systemfiles['public_routes.json'] : filemtime('public_routes.json');
+    $systemfiles['public_routes.json'] = isset($systemfiles['public_routes.json']) ? $systemfiles['public_routes.json'] : filemtime('etc/public_routes.json');
     if (filemtime('public_routes.json') !== $systemfiles['public_routes.json']) {
         logMessage('Recaching Allowed Routes');
-        Humble::cache('humble_framework_allowed_routes',json_decode(file_get_contents('public_routes.json')));
+        Humble::cache('humble_framework_allowed_routes',json_decode(file_get_contents('../etc/public_routes.json')));
     }        
 }
 //------------------------------------------------------------------------------
@@ -271,7 +271,7 @@ if (file_exists('cadence.pid') && ($running_pid = trim(file_get_contents('cadenc
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //Check for configuration file, which configures how period for the cadence, and when to do which checks...
 //
-if (file_exists('cadence.json') && ($cadence = json_decode(file_get_contents('cadence.json'),true))) {
+if (file_exists('etc/cadence.json') && ($cadence = json_decode(file_get_contents('etc/cadence.json'),true))) {
     logMessage("Starting Cadence...");
     while (file_exists('cadence.pid') && ((int)file_get_contents('cadence.pid')===$pid)) {
         sleep($cadence['period']);

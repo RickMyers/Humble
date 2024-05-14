@@ -233,7 +233,7 @@ class Environment {
      * Application XML has changed and we need to recache it
      */
     public static function recacheApplication() {
-        self::$application = json_decode(json_encode(simplexml_load_string((file_exists('../etc/application.xml')) ? file_get_contents('../etc/application.xml') : die("The application is inaccessible at this time."))),true);
+        self::$application = json_decode(json_encode(simplexml_load_string((file_exists('etc/application.xml')) ? file_get_contents('etc/application.xml') : die("The application is inaccessible at this time."))),true);
         Humble::cache('application',self::$application);        
     }
     /**
@@ -243,7 +243,7 @@ class Environment {
      */
     public static function loadApplicationMetaData($dontUseCache=false) {
         if ($dontUseCache) {
-            return self::$application = json_decode(json_encode(simplexml_load_string((file_exists('../etc/application.xml')) ? file_get_contents('../etc/application.xml') : die("The application is inaccessible at this time."))),true);
+            return self::$application = json_decode(json_encode(simplexml_load_string((file_exists('etc/application.xml')) ? file_get_contents('etc/application.xml') : die("The application is inaccessible at this time."))),true);
         } else {
             if (!self::$application = Humble::cache('application')) {
                 self::recacheApplication();
@@ -508,7 +508,7 @@ class Environment {
     }
     
     /**
-     * Returns (or tries to at least) the value of a node from the etc/application.xml configuration file
+     * Returns (or tries to at least) the value of a node from the etc/application.xml' configuration file
      * 
      * @param type $node
      * @param type $dontUseCache

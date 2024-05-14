@@ -17,13 +17,14 @@ LICENSE
 index.php
 index.html
 app/install/.htaccess .htaccess
-app/install/allowed.json app/allowed.json
+app/install/public_routes.json etc/public_routes.json
+app/install/api_policy.json etc/api_policy.json
+app/install/cadence.json etc/cadence.json
 api.php
 iapi.php
 mapi.php
 msa.php
 debug.php
-fallback.html
 install.php
 installtest.php
 mongotest.php
@@ -31,6 +32,9 @@ loader.php
 lib/*
 web/*
 dist/*
+includes/Constants.txt.php
+includes/Headers.txt.php
+includes/Custom.txt.php
 app/Humble.local.manifest
 app/cli/*
 app/Code/Framework/*
@@ -43,7 +47,6 @@ app/autoload.php
 app/AuthorizationEngine.php
 app/Cadence.php
 app/Compatibility.php
-app/Constants.php
 app/Environment.php
 app/Launcher.php
 app/launch.php
@@ -60,9 +63,6 @@ app/Log.php
 app/CLI.php
 app/humble.sh
 app/Singleton.php
-app/allowed.json
-app/api_policy.json
-app/cadence.json
 app/composer.json
 app/grunt_instructions.txt
 app/package.json

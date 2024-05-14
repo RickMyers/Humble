@@ -94,8 +94,8 @@ $logged_in  = $_SESSION['uid']      ?? false;                                   
 //###########################################################################
 //Allows for custom code execution at this point if so desired.
 //Can also override default flags
-if (file_exists('CUSTOM.php')) {
-    include 'CUSTOM.php';
+if (file_exists('../includes/Custom.php')) {
+    include '../includes/Custom.php';
 }
 
 //###########################################################################
@@ -125,9 +125,9 @@ if (!$bypass && !$logged_in) {
     //check to see if the service they are trying to access is publicly visible
     //We are going to try to get a cached copy, otherwise we read the physical file for routes
     //    if (!$allowed = Humble::cache('humble_framework_allowed_routes')) {
-    //        Humble::cache($allowed = json_decode(file_get_contents('public_routes.json')));
+    //        Humble::cache($allowed = json_decode(file_get_contents('etc/public_routes.json')));
     //    }
-    $allowed = json_decode(file_get_contents('public_routes.json'));
+    $allowed = json_decode(file_get_contents('etc/public_routes.json'));
     if (isset($allowed->routes->{'/'.$namespace.'/'.$controller.'/'.$action}) || isset($allowed->namespaces->$namespace) || isset($allowed->controllers->{'/'.$namespace.'/'.$controller})) {
         $bypass = true;
         //NOP, you are ok to hit that resource
@@ -140,8 +140,8 @@ if (!$bypass && !$logged_in) {
 //###########################################################################
 //Allows for custom headers to be created and passed to the client if the app
 // is using a custom headers file
-if (file_exists('HEADERS.php')) {
-    include 'HEADERS.php';
+if (file_exists('../includes/Headers.php')) {
+    include '../includes/Headers.php';
 } else {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE');
@@ -271,8 +271,8 @@ if (!$request_handled) {
     }
 
     //###########################################################################
-    if (file_exists('Constants.php')) {
-        require_once 'Constants.php';                                           //Enumeration type stuff
+    if (file_exists('../includes/Constants.php')) {
+        require_once '../includes/Constants.php';                                           //Enumeration type stuff
     }
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {       
         require_once "Compatibility.php";                                       //This is for handling function that windows PHP is missing

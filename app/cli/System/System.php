@@ -9,7 +9,7 @@ class System extends CLI
      * @return boolean
      */
     public static function status() {
-        $xml    = simplexml_load_string(file_get_contents('../etc/application.xml'));
+        $xml    = simplexml_load_string(file_get_contents('etc/application.xml'));
         if ($xml->status->enabled == 1) {
             print("\n\n".date('Y-m-d H:i:s').'   <Application is enabled>'."\n\n");
             return true;
@@ -40,10 +40,10 @@ class System extends CLI
      * Toggles whether we are going to use local authentication or some form of SSO token
      */
     public static function toggleAuthentication() {
-        $xml  = simplexml_load_string(file_get_contents('../etc/application.xml'));
+        $xml  = simplexml_load_string(file_get_contents('etc/application.xml'));
         $enabled = (int)$xml->status->SSO->enabled;
         $xml->status->SSO->enabled = $enabled ? 0 : 1;
-        file_put_contents('../etc/application.xml',$xml->asXML());
+        file_put_contents('etc/application.xml',$xml->asXML());
         $message = ($enabled) ? 'Authentication Engine: LOCAL' : 'Authentication Engine: SSO';
         print("\n\n".$message."\n\n");
     }
@@ -75,16 +75,16 @@ class System extends CLI
      * Toggles the application status
      */
     public static function toggle() {
-        $xml  = simplexml_load_string(file_get_contents('../etc/application.xml'));
+        $xml  = simplexml_load_string(file_get_contents('etc/application.xml'));
         $enabled = (int)$xml->status->enabled;
         $xml->status->enabled = $enabled ? 0 : 1;
-        file_put_contents('../etc/application.xml',$xml->asXML());
+        file_put_contents('etc/application.xml',$xml->asXML());
         $message = ($enabled) ? 'System Status: OFFLINE' : 'System Status: ONLINE';
         print("\n\n".$message."\n\n");
     }
     
     /**
-     * Increments the minor version of the application in the etc/application.xml filed
+     * Increments the minor version of the application in the etc/application.xml' filed
      * 
      * @param int $next
      * @return string
@@ -101,7 +101,7 @@ class System extends CLI
         }
         $data->version->framework = (string)implode('.',$v);
         print("\nSetting version to ".$data->version->framework."\n\n");
-        file_put_contents('../etc/application.xml',$data->asXML());
+        file_put_contents('etc/application.xml',$data->asXML());
         return $data->version->framework;
     }
         
@@ -117,7 +117,7 @@ class System extends CLI
             }
         }
         @mkdir('../packages/',0775);
-        $xml        = simplexml_load_file('etc/application.xml');
+        $xml        = simplexml_load_file('etc/application.xml'');
         $archive    = '../packages/Humble-Distro-'.(string)$xml->version->framework.'.zip';
         print("Creating archive ".$archive."\n");
         if (file_exists($archive)) {
@@ -187,7 +187,7 @@ class System extends CLI
         print("Do you wish to continue [yes/no]? ");
         if (strtolower(self::scrub(fgets(STDIN))) === 'yes') {
             $app->version->framework = $version;
-            file_put_contents('etc/application.xml',$app->asXML());
+            file_put_contents('etc/application.xml'',$app->asXML());
             foreach ($changed as $file) {
                 file_put_contents($file,$distro->getFromName($file));
             }
@@ -260,8 +260,8 @@ class System extends CLI
         } else {
             die("\nHumble project file not found.\n");
         }
-        if (file_exists('../etc/application.xml')) {
-            $app = simplexml_load_file('../etc/application.xml');
+        if (file_exists('etc/application.xml')) {
+            $app = simplexml_load_file('etc/application.xml');
         } else {
             die("\Application XML file not found\n");
         }

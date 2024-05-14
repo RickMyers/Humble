@@ -1,7 +1,7 @@
 <?php
 
 
-    $data = (file_exists('application.xml')) ? file_get_contents('application.xml') : die("Install is not possible at this time.");
+    $data = (file_exists('etc/application.xml'')) ? file_get_contents('etc/application.xml'') : die("Install is not possible at this time.");
     $xml  = simplexml_load_string($data);
     if (!empty($xml)) {
         if (isset($xml->status)) {

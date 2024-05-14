@@ -185,7 +185,7 @@ class Log {
     }
 
     /**
-     * Sends an email notification to the email address found in the etc/application.xml file identified as primary support email
+     * Sends an email notification to the email address found in the etc/application.xml' file identified as primary support email
      */
     public static function signal($subject,$messages) {
         if (is_array($messages)) {

@@ -6,6 +6,14 @@
 
     },
     "routes": {
+        "/humble/home/index": {
+           "reason":   "This is the default index.html page",
+           "description": "The user login page"
+        },        
+        "/humble/home/404": {
+           "reason":   "This is the default 404 page",
+           "description": "The user needs a not found page"
+        },        
         "/admin/login/form": {
            "reason":   "User needs to attempt login as an administrator",
            "description": "The administrator login page"

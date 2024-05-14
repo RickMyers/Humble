@@ -36,6 +36,13 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <!-- ############################################################### -->
         
+        <action name="wc">
+            <description>Web Component Test</description>
+            
+        </action>
+        
+        <!-- ############################################################### -->
+        
         <action name="authenticate">
             <description>Authenticates whether the user is a valid admin or not</description>
             <model namespace='humble' class='user' id='user'>

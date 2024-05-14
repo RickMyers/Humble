@@ -230,7 +230,7 @@ class Module extends CLI
                     $templates[] = $root."/lib/sample/install/Controllers/base.xml"; $out[] = "Code/".$pk."/".$md."/Controllers/".$controller.".xml";
                     $templates[] = $root."/lib/sample/install/Entities/Users.php.txt";  $out[] = "Code/".$pk."/".$md."/Entities/Users.php";
                     $templates[] = $root."/lib/sample/install/Models/User.php.txt";  $out[] = "Code/".$pk."/".$md."/Models/User.php";
-                    $templates[] = $root."/lib/sample/install/public_routes.json";   $out[] = "Code/public_routes.json";
+                    $templates[] = $root."/lib/sample/install/public_routes.json";   $out[] = "etc/public_routes.json";
                 } 
                 
                 foreach ($templates as $idx => $template) {

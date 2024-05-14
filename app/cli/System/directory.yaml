@@ -64,7 +64,7 @@ use :
         optional:    
 package : 
     description: Creates a new downloadable archive file of the framework
-    extended: This process reads the Humble.manifest file in the 'app/' folder and builds a distro of the Humble Framework as a downloadable .zip file.  The version on the file is obtained by the application version in the /etc/application.xml file
+    extended: This process reads the Humble.manifest file in the 'app/' folder and builds a distro of the Humble Framework as a downloadable .zip file.  The version on the file is obtained by the application version in the /etc/application.xml' file
     usage: 
         linux:   sudo sh ./humble.sh --package
         windows: humble --package

@@ -88,11 +88,11 @@
 //
 //IMPORTANT:
 //
-//   *** To Enable Install, edit the file application.xml and set the value to enable ***
+//   *** To Enable Install, edit the file etc/application.xml' and set the value to enable ***
 //
 //----------------------------------------------------------------------------------------------------------------
 $data = "";
-$data = (file_exists('application.xml')) ? file_get_contents('application.xml') : die("Install is not possible at this time.");
+$data = (file_exists('etc/application.xml'')) ? file_get_contents('etc/application.xml'') : die("Install is not possible at this time.");
 $xml  = simplexml_load_string($data);
 
 if (!empty($xml)) {
