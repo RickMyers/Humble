@@ -2,6 +2,9 @@
 module.exports = {
   content: ['../../**/*.{twig,tpl,html,blade,savant,tbs,latte}'],
   theme: {
+    container: {
+        center: true
+    },
     screens: {
         sm: '480px',
         md: '768px',

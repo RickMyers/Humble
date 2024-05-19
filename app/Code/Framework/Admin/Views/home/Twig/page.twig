@@ -7,11 +7,26 @@
         <link rel='stylesheet' href='/css/desktop'/>    
         <script type="module">
             import { administration } from '/mjs/admin/functions.js';
-            import { ddesktop as Desktop } from '/mjs/paradigm/DesktopModule.js';
+            import { Desktop } from '/mjs/paradigm/DesktopModule.js';
             window.Administration = administration;
             window.Desktop = Desktop;
             $(window).ready(Desktop.init);
-            $(document).ready(administration.init);
+            $(document).ready(Administration.init);
+            Desktop.minimized.windows.renderer((function () {
+                return function (win) {
+                    if (win) {
+                        Desktop.minimized.windows.list[win.id] = win;
+                    }
+                    var html = '';
+                    for (var win_id in Desktop.minimized.windows.list) {
+                        if (Desktop.minimized.windows.list[win_id].state === 1) {
+                            html += '<img onclick="Desktop.minimized.windows.restore([\''+win_id+'\'])" style="float: left; position: relative; top: -35px; height: 55px; margin: 0px 5px 0px 5px; cursor: pointer" src="/images/argus/window.png"  title="'+Desktop.minimized.windows.list[win_id]._title()+'" />';
+                        }
+                    };
+                    $('#minimized_windows_tray').html(html);
+                } 
+            })());
+            
         </script>        
         <script type="text/javascript" src='/js/humble-jquery'></script>
         <script type='text/javascript' src='/js/common'></script>
@@ -158,7 +173,14 @@
             <nav id="navigation-bar" class="relative flex-row bg-gray-100" style="z-index: 5">
                 <div id='admin-clock' class="float-right">Clock</div>
                 <ul class='relative cursor-pointer'>
-                   <li style='padding-top: 6px'><img src='/images/humble/djikstra_light.png' style='height: 30px; position: relative; top: 3px; left: 5px' /></li>
+                <li style='padding-top: 6px'><img src='/images/humble/djikstra_light.png' style='height: 30px; position: relative; top: 3px; left: 5px' /></li>
+                <li class='active'><a href='#'>Start...</a>
+                    <ul>
+                        <li><a href='#' onclick="Administration.menu.management.open(); return false">Menu Management</a></li>
+                        <li><a href='#' onclick="Administration.password.change.open(); return false">Change Password</a></li>
+                        <li style="border-top: 1px solid silver; "><a href='/admin/user/logout'>Logout</a>
+                    </ul>
+                </li>                   
                 {% for category,options in menus.sort() %}
                     <li class='active'><a href='#'>{{ category }}</a>
                         <ul>

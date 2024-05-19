@@ -328,14 +328,13 @@ DesktopWindow.corner = function () {
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
-var Desktop = {
+var Functions = {
     sync: {
         list: {},
         toggle: function (icon) {
             let window_id = icon.getAttribute('desktop_id');
             if (Desktop.sync.list[window_id]) {
                 delete Desktop.sync.list[window_id];
-                
                 $('#'+window_id+'-lockscroll').css('display','inline-block');
                 $('#'+window_id+'-unlockscroll').css('display','none');
             } else {
@@ -345,12 +344,11 @@ var Desktop = {
             }
         },
         windows: function (evt) {
-            console.log(evt.target);
-            for (var id in Desktop.sync.list) {
+/*            for (var id in Desktop.sync.list) {
                 if (Desktop.window.list[id]) {
                     
                 }
-            }
+            }*/
         }
     },
     /*  --------------------------------------------------------------------
@@ -1113,24 +1111,10 @@ var Desktop = {
         }
     }
 };
-Desktop.whoAmI = Desktop.whoami;                                                //because I always screw up the case
+Functions.whoAmI = Functions.whoami;                                                //because I always screw up the case
 //oh boy!
-window.onbeforeunload   = Desktop.promptBeforeLeaving;
-window.onunload         = Desktop.unload;
-Desktop.minimized.windows.renderer((function () {
-    return function (win) {
-        if (win) {
-            Desktop.minimized.windows.list[win.id] = win;
-        }
-        var html = '';
-        for (var win_id in Desktop.minimized.windows.list) {
-            if (Desktop.minimized.windows.list[win_id].state === 1) {
-                html += '<img onclick="Desktop.minimized.windows.restore([\''+win_id+'\'])" style="float: left; position: relative; top: -35px; height: 55px; margin: 0px 5px 0px 5px; cursor: pointer" src="/images/argus/window.png"  title="'+Desktop.minimized.windows.list[win_id]._title()+'" />';
-            }
-        };
-        $('#minimized_windows_tray').html(html);
-    } 
-})());
+window.onbeforeunload   = Functions.promptBeforeLeaving;
+window.onunload         = Functions.unload;
 
-export let ddesktop = Desktop;
+export let Desktop = Functions;
 
