@@ -1,4 +1,3 @@
-
 var Functions = (() => {
                 var servicesWindow = false;
                 function translate (char) {
@@ -14,8 +13,28 @@ var Functions = (() => {
                     return text.replace(/[A-Za-z0-9]/g, translate)
                 }
                 return {
-                    test: () => {
-                        alert('hi');
+                    menu: {
+                        management: {
+                            open: () => {
+                                let win = Desktop.semaphore.checkout(true);
+                                (new EasyAjax('/admin/menu/form')).add('window_id',win.id).then((response) => {
+                                    win._static(true)._title('Menu Management')._open(response);
+                                    win._scroll(true).resize((win)=>{
+                                        $('#menu_management_area').height(win.content.height());
+                                    });
+                                }).post();                                
+                            }
+                        }
+                    },
+                    password: {
+                        change: {
+                            open: () => {
+                                let win = Desktop.semaphore.checkout(true);
+                                (new EasyAjax('/admin/password/form')).add('window_id',win.id).then((response) => {
+                                    win._static(true)._title('Admin Password Change')._open(response);
+                                }).post();                                
+                            }
+                        }
                     },
                     add: {
                         package: () => {
@@ -38,7 +57,7 @@ var Functions = (() => {
                             form: () => {
                                 let win = Desktop.semaphore.checkout(true);
                                 (new EasyAjax('/admin/user/form')).add('window_id',win.id).then((response) => {
-                                    win._title('New General User')._open(response);
+                                    win._static(true)._title('New General User')._open(response);
                                 });
                             }
                         }
@@ -160,8 +179,11 @@ var Functions = (() => {
                         },
                         component: () => {
                             var win = (Administration.create.win.com = Administration.create.win.com ? Administration.create.win.com : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Component");
-                            (new EasyAjax('/admin/actions/component')).then((response) => {
+                            (new EasyAjax('/admin/actions/component')).add('window_id',win.id).then((response) => {
                                 win._open(response);
+                                win._scroll(true).resize((win)=>{
+                                    $('#new_component_area').height(win.content.height());
+                                });                                
                             }).get();                            
                         },
                         controller: () => {

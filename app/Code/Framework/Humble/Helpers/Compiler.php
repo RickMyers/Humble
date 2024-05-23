@@ -1190,7 +1190,7 @@ PHP;
             }            
             if (isset($attr['response'])) {
                 $this->global['response'] = $this->resolveFlag($attr['response']);
-            }                        
+            }
             foreach ($actions as $tag2 => $action ) {
                 if ($action['name'] == 'default') {
                     $defaultAction = $action;
@@ -1201,6 +1201,11 @@ PHP;
                     $this->processCSRFProtection((string)$action['CSRF_PROTECTION']);
                 }
                 $this->resetParameters();
+                if (isset($attr['authorize'])) {
+                    // Authorize will identify a model that must return 'true' to allow this action to execute, otherwise will get a JSON based exception (or not)
+                    // If the attribute 'method' isn't specified, the default method will be 'authorize()'
+                    // Primarily for when building REST APIs
+                }
                 if (isset($action['map'])) {
                     $map = explode('/',$action['map']);
                     foreach ($map as $idx => $varname) {

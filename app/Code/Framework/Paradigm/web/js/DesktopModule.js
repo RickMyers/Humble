@@ -321,8 +321,8 @@ function DesktopWindow(icon,refId) {
     return this;
 }
 DesktopWindow.corner = function () {
-    var positioner = '<div class="paradigm-window-layout-container"><div onclick="Desktop.window.align(this,\'L\')" class="paradigm-window-left-layout"></div><div class="paradigm-window-center-layout"><div onclick="Desktop.window.align(this,\'TL\')" class="paradigm-window-top-left-layout"></div><div onclick="Desktop.window.align(this,\'TR\')" class="paradigm-window-top-right-layout"></div><div onclick="Desktop.window.align(this,\'BL\')" class="paradigm-window-bottom-left-layout"></div><div onclick="Desktop.window.align(this,\'BR\')" class="paradigm-window-bottom-right-layout"></div></div><div onclick="Desktop.window.align(this,\'R\')" class="paradigm-window-right-layout"></div></div>'
-    var icon       = '<img src="'+ParadigmConfig.desktop.window.icon+'" style="margin-right: 8px; margin-left:4px;  position: relative; top: -3px" height="25" align="middle" /> '
+    var positioner = `<div class="paradigm-window-layout-container"><div onclick="Desktop.window.align(this,'L')" class="paradigm-window-left-layout"></div><div class="paradigm-window-center-layout"><div onclick="Desktop.window.align(this,'TL')" class="paradigm-window-top-left-layout"></div><div onclick="Desktop.window.align(this,'TR')" class="paradigm-window-top-right-layout"></div><div onclick="Desktop.window.align(this,'BL')" class="paradigm-window-bottom-left-layout"></div><div onclick="Desktop.window.align(this,'BR')" class="paradigm-window-bottom-right-layout"></div></div><div onclick="Desktop.window.align(this,'R')" class="paradigm-window-right-layout"></div></div>`;
+    var icon       = `<img src="${ParadigmConfig.desktop.window.icon}" style="margin-right: 8px; margin-left:4px;  position: relative; top: -3px" height="25" align="middle" /> `;
     return (ParadigmConfig.desktop.window.icon) ?  icon : positioner;
 }
 //------------------------------------------------------------------------------
