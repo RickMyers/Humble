@@ -188,7 +188,7 @@ var Functions = (() => {
                         },
                         controller: () => {
                             var win = (Administration.create.win.con = Administration.create.win.con ? Administration.create.win.con : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Controller");
-                            (new EasyAjax('/admin/actions/controller')).then((response) => {
+                            (new EasyAjax('/admin/actions/controller')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                            
                         }
