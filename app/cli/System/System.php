@@ -117,7 +117,7 @@ class System extends CLI
             }
         }
         @mkdir('../packages/',0775);
-        $xml        = simplexml_load_file('etc/application.xml'');
+        $xml        = simplexml_load_file('etc/application.xml');
         $archive    = '../packages/Humble-Distro-'.(string)$xml->version->framework.'.zip';
         print("Creating archive ".$archive."\n");
         if (file_exists($archive)) {
@@ -187,7 +187,7 @@ class System extends CLI
         print("Do you wish to continue [yes/no]? ");
         if (strtolower(self::scrub(fgets(STDIN))) === 'yes') {
             $app->version->framework = $version;
-            file_put_contents('etc/application.xml'',$app->asXML());
+            file_put_contents('etc/application.xml',$app->asXML());
             foreach ($changed as $file) {
                 file_put_contents($file,$distro->getFromName($file));
             }
