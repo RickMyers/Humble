@@ -89,12 +89,12 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <!-- ############################################################### -->
         
-        <action name='component'>
+        <action name='component' passalong="window_id">
             <description>The form that allows you to create an Entity, Model, or Helper</description>
             <model namespace="humble" class="permissions" id="permissions">
                 <parameter name="user_id" value="admin_id" source="session" required="true" />
             </model>
-            <entity namespace='humble' class='modules'      id='available_module' orderby='package=ASC,namespace=ASC' />
+            <entity namespace='humble' class='modules'      id='modules' orderby='package=ASC,namespace=ASC' />
         </action>
         
         <!-- ############################################################### -->

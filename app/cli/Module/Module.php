@@ -203,20 +203,26 @@ class Module extends CLI
                 $package     = $is_base ? 'Framework'   : (string)$project->package;
                 $module      = $is_base ? 'Humble'      : (string)$project->module;
                 $required    = $is_base ? 'Y'           : 'N';
+                $copy        = [];
+                $dest        = [];
                 $main_module = strtoupper($project->namespace)===strtoupper($ns) ? ucfirst(strtolower($project->namespace))." = {}" : "";  //if this is the main module, of which there can be only one, we will need to add an extra bit of JS
                 $root        = is_dir('Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module.DIRECTORY_SEPARATOR.'lib/sample/module') ? 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module : "Code/Framework/Humble";
                 $srch        = ["&&MAIN_MODULE&&","&&PROJECT&&","&&NAMESPACE&&","&&PREFIX&&","&&AUTHOR&&","&&MODULE&&","&&PACKAGE&&",'&&EMAIL&&','&&FACTORY&&','&&BASE_PACKAGE&&','&&BASE_MODULE&&','&&REQUIRED&&'];
                 $repl        = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
                 $templates   = [$root."/lib/sample/module/Controllers/actions.xml"];       $out   = ["Code/".$pk."/".$md."/Controllers/actions.xml"];
+                $templates   = [$root."/lib/sample/module/Controllers/admin.xml"];         $out   = ["Code/".$pk."/".$md."/Controllers/admin.xml"];                
                 $templates[] = $root."/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
                 $templates[] = $root."/lib/sample/module/RPC/mapping.yaml";                $out[] = "Code/".$pk."/".$md."/RPC/mapping.yaml";
                 $templates[] = $root."/lib/sample/module/Views/actions/Smarty/open.tpl";   $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty/open.tpl";
+                $templates[] = $root."/lib/sample/module/Views/aadmin/Smarty/app.tpl";     $out[] = "Code/".$pk."/".$md."/Views/admin/Smarty/app.tpl";                
                 $templates[] = $root."/lib/sample/module/web/js/actions.js";               $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
                 $templates[] = $root."/lib/sample/module/web/css/template.css";            $out[] = "Code/".$pk."/".$md."/web/css/".ucfirst($md).".css";
                 $templates[] = $root."/lib/sample/module/Models/Model.php.txt";            $out[] = "Code/".$pk."/".$md."/Models/Model.php";
                 $templates[] = $root."/lib/sample/module/Helpers/Helper.php.txt";          $out[] = "Code/".$pk."/".$md."/Helpers/Helper.php";
                 $templates[] = $root."/lib/sample/module/Entities/Entity.php.txt";         $out[] = "Code/".$pk."/".$md."/Entities/Entity.php";
                 $templates[] = $root."/lib/sample/module/web/edits/template.json";         $out[] = "Code/".$pk."/".$md."/web/edits/sample_edit.json";
+                $templates[] = $root."/lib/sample/module/AdminApps.xml";                   $out[] = "Code/".$pk."/".$md."/AdminApps.xml";
+                $copy[]      = $root."/images/icons/admin_app_icon.png";                   $dest[]= "Code/".$pk."/".$md."/Images/admin_app_icon.png";               
                 if ($mn) {
                     //This is the main module, so we have to copy some additional files
                     $parts       = explode('/',$project->landing_page);
@@ -232,7 +238,7 @@ class Module extends CLI
                     $templates[] = $root."/lib/sample/install/Models/User.php.txt";  $out[] = "Code/".$pk."/".$md."/Models/User.php";
                     $templates[] = $root."/lib/sample/install/public_routes.json";   $out[] = "etc/public_routes.json";
                 } 
-                
+ 
                 foreach ($templates as $idx => $template) {
                     print('Copying '.$template.' to '.$out[$idx]."\n");
                     if (!file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)))) {

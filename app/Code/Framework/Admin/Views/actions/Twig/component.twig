@@ -6,7 +6,7 @@
                 return {
                     namespaces: [
                         {
-                            "text": "",
+                            "text": "Please select the owning namespace",
                             "value": ""
                         },
                         {% for module in modules.fetch() %}{              
@@ -29,19 +29,19 @@
             methods: {
                 createComponent: async () => {
                     if (Edits['new-component'].validate()) {
-                        const form = document.querySelector('#new_component_form');
-                        const response = await fetch('/admin/component/', {
+                        const form     = document.querySelector('#new_component_form');
+                        const response = await fetch('/admin/component/create', {
                             method: 'POST',
                             body: new FormData(form)
                         });
-                        let text = await response.text();
+                        let text       = await response.text();
                         alert(text);
                     }   
                 }
             }
         });
         var win = Desktop.window.list['{{ window_id }}'];
-        const secret_app = new_component_app.mount('#'+win.content.id);
+        const component_app = new_component_app.mount('#'+win.content.id);
         win.close(((app) => {
             return function () {
                 app.unmount();
