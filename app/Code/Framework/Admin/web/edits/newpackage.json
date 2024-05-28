@@ -1,39 +1,30 @@
 {
-	"form":
-	{
-		"id":           "new_package_form",
-		"drawme":		false,
-		"action":		"",
-		"method":		"post",
-		"style":		"",
-		"onenterkey":	"send"
-	},
-	"fields":
-	[
-		{
-			"active":		true,
-			"id": 			"new_package",
-			"longname":		"Package Name",
-			"type":			"text",
-			"required":		true,
-			"force":		true,
-            "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
-		},
-		{
-			"active":		true,
-			"id":			"new_package_submit",
-			"longname":		"Submit Button",
-			"type":			"text",
-            "style":        "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
-            "classname":    "settingsButton",
-            "value":        "",
-            "onclick":        function () {
-                if (Edits['newpackage'].validate()) {
-                    (new EasyAjax('/admin/actions/newpackage')).add('package','Code/'+$('#new_package').val()).then(function () {
-                        window.location.href='/admin/home/page';
-                    }).post();
-                }
-            }
-		}
-	]
+    "form":
+    {
+        "id":           "new_package_form",
+        "drawme":	false,
+        "action":	"",
+        "method":	"post",
+        "style":	"",
+        "onenterkey":	"send"
+    },
+    "fields":
+    [
+        {
+            "active":		true,
+            "id":		"new_package",
+            "longname":		"Package Name",
+            "type":		"text",
+            "required":		true,
+            "force":		true,
+            "style":            ""
+        },
+        {
+            "active":		true,
+            "id":		"new_package_submit",
+            "longname":		"Submit Button",
+            "type":		"text",
+            "style":            ""
+        }
+    ]
 }

@@ -1,4 +1,4 @@
-<div id='new_module_area'class="flex h-full" >
+<div id='new_module_area' class="flex h-full" >
     <div class="m-auto bg-blue-500 p-2 w-[700] text-justify text-md">
         <span class="text-2xl">Module Creation</span><br /><br />
         You can create a new module using the form below.  Please specify which package your module will belong to, the unique namespace that will be used to identify the

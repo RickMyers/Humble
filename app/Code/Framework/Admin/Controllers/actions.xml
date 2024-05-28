@@ -70,7 +70,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <!-- ############################################################### -->
 
-        <action name='package'>
+        <action name='package' passalong="window_id">
             <description>The form that allows you to create a package/directory</description>
             <model namespace="humble" class="permissions" id="permissions">
                 <parameter name="user_id" value="admin_id" source="session" required="true" />
