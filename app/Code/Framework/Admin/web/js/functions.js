@@ -167,13 +167,13 @@ var Functions = (() => {
                         },
                         package: () => {
                             var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Package");
-                            (new EasyAjax('/admin/actions/package')).then((response) => {
+                            (new EasyAjax('/admin/actions/package')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();
                         },
                         module: () => {
                             var win = (Administration.create.win.mod = Administration.create.win.mod ? Administration.create.win.mod : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Module");
-                            (new EasyAjax('/admin/actions/module')).then((response) => {
+                            (new EasyAjax('/admin/actions/module')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                            
                         },

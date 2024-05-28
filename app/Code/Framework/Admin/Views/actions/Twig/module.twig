@@ -1,24 +1,52 @@
-<div id='new_module_area'>
-    <span style="font-size: 1.5em">Module Creation</span><br /><br />
-    You can create a new module using the form below.  Please specify which package your module will belong to, the unique namespace that will be used to identify the
-    components that namespace will be controlling, a name for your module, and a prefix that will be used to identify any tables you will be creating<br /><br /><br />
-    <form name="new_module_form" id="new_module_form" onsubmit="return false" >
-        <select name="package" id="package" class="new-module-field" style='color: #333'>
-            <option value=''></option>
-            {% for package in packages.listSubdirectories('Code/') %}
-                <option value='{{ package }}'>{{ package }}</option>
-            {% endfor %}
-        </select><br />
-        <div class='new-module-desc'>Package</div>
-        <input type="text" name="namespace" id="namespace" class="new-module-field" style='color: #333'/><br />
-        <div class='new-module-desc'>Namespace</div>
-        <input type="text" name="module" id="module" class="new-module-field" style='color: #333'/><br />
-        <div class='new-module-desc'>Module Name Prefix</div>
-        <input type="text" name="prefix" id="prefix" class="new-module-field" style='color: #333'/><br />
-        <div class='new-module-desc'>Database Prefix</div>
-        <input type="button" name="new_module_submit" id="new_module_submit"  value="Create" />
-    </form>
-</div>
-<script type="text/javascript">
-    new EasyEdits('edits/admin/newmodule','newmodule');
+<script type="text/javascript"> 
+    if (typeof new_module_app === 'undefined') {
+        let new_module_app = Vue.createApp({
+            template: Humble.template('admin','module/new'),
+            data: () => {
+                return {
+                    packages: [
+                        {
+                            "text": "Please select the containing package",
+                            "value": ""
+                        },
+                        {% for package in packages.listSubdirectories('Code/') %}{              
+                            text:   "{{ package }}",
+                            value:  "{{ package }}"
+                        },   
+                        {% endfor %}
+                    ]
+                }
+            },
+            mounted: () => {
+               new EasyEdits('edits/admin/newmodule','new-module');
+            },
+            created: () => {
+            },
+            updated: () => {
+            },
+            destroyed: () => {
+            },
+            methods: {
+                createController: async () => {
+                    if (Edits['new-module'].validate()) {
+                        const form     = document.querySelector('#new_module_form');
+                        const response = await fetch('/admin/controller/create', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        });
+                        let text       = await response.text();
+                        alert(text);
+                    }   
+                }
+            }
+        });
+        var win = Desktop.window.list['{{ window_id }}'];
+        const component_app = new_module_app.mount('#'+win.content.id);
+        win.close(((app) => {
+            return function () {
+                app.unmount();
+            };
+        })(new_module_app));
+    }    
+
 </script>

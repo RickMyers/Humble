@@ -79,7 +79,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <!-- ############################################################### -->
         
-        <action name='module'>
+        <action name='module' passalong="window_id">
             <description>The form that allows you to create a new module</description>
             <model namespace="humble" class="permissions" id="permissions">
                 <parameter name="user_id" value="admin_id" source="session" required="true" />

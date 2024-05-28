@@ -1,70 +1,63 @@
 {
-	"form":
-	{
-		"id":           "new_module_form",
-		"drawme":		false,
-		"action":		"",
-		"method":		"post",
-		"style":		"",
-		"onenterkey":	"send"
-	},
-	"fields":
-	[
-		{
-			"active":		true,
-			"id": 			"package",
-            "longname":     "Package name",
-			"title":		"The package this module will belong to",
-			"type":			"select",
-			"required":		true,
-			"force":		true,
-            "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
-		},
-		{
-			"active":		true,
-			"id": 			"namespace",
-            "longname":     "Namespace",
-			"title":		"The unique namespace that will identify the module",
-			"type":			"text",
-			"required":		true,
-			"force":		true,
-            "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 175px"
-		},
-		{
-			"active":		true,
-			"id": 			"module",
-            "longname":     "Module name",
-			"title":		"The name of the module",
-			"type":			"text",
-			"required":		true,
-			"force":		true,
-            "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 175px"
-		},
-		{
-			"active":		true,
-			"id": 			"prefix",
-            "longname":     "Database prefix",
-			"title":		"The prefix to append to any tables that you create that are managed by this namespace",
-			"type":			"text",
-			"required":		true,
-			"force":		true,
-            "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 175px"
-		},
-		{
-			"active":		true,
-			"id":			"new_module_submit",
-			"title":		"Submit Button",
-			"type":			"text",
-            "style":        "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
-            "classname":    "settingsButton",
-            "value":        "Create",
-            "onclick":        function () {
-                if (Edits['newmodule'].validate()) {
-                    (new EasyAjax('/admin/module/create')).packageForm('new_module_form').then((response) => {
-                        window.location.reload(true);
-                    }).post();
-                }
-            }
-		}
-	]
+    "form":
+    {
+        "id":           "new_module_form",
+        "drawme":	false,
+        "action":	"",
+        "method":	"post",
+        "style":	"",
+        "onenterkey":	"send"
+    },
+    "fields":
+    [
+        {
+            "active":		true,
+            "id": 		"package",
+            "longname":         "Package name",
+            "title":		"The package this module will belong to",
+            "type":		"select",
+            "required":		true,
+            "force":		true,
+            "style":            ""
+        },
+        {
+            "active":		true,
+            "id": 		"namespace",
+            "longname":         "Namespace",
+            "title":		"The unique namespace that will identify the module",
+            "type":		"text",
+            "required":		true,
+            "force":		true,
+            "style":            ""
+        },
+        {
+            "active":		true,
+            "id": 		"module",
+            "longname":         "Module name",
+            "title":		"The name of the module",
+            "type":		"text",
+            "required":		true,
+            "force":		true,
+            "style":            ""
+        },
+        {
+            "active":		true,
+            "id":        	"prefix",
+            "longname":         "Database prefix",
+            "title":		"The prefix to append to any tables that you create that are managed by this namespace",
+            "type":		"text",
+            "required":		true,
+            "force":		true,
+            "style":            ""
+        },
+        {
+            "active":		true,
+            "id":		"new_module_submit",
+            "title":		"Submit Button",
+            "type":		"text",
+            "style":            "",
+            "classname":        "",
+            "value":            ""
+        }
+    ]
 }
