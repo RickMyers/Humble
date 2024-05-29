@@ -192,31 +192,31 @@ class Utility extends Model
      * Create a new component, allowing for customization
      */
     public function createComponent() {
-        $data           = Humble::entity('admin/users')->setId($this->getUid())->load();
-        $user           = Humble::entity('admin/user/identification')->setId($this->getUid())->load();
-        $project        = Environment::getProject();
-        $module         = Humble::module($this->getNamespace());
-        $custom_root    = 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.$project->module.'/lib/sample/component';
-        $module_root      = 'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module['module'].'/lib/sample/component';
-        $templates      = [];
+        $data                   = Humble::entity('admin/users')->setId($this->getUid())->load();
+        $user                   = Humble::entity('admin/user/identification')->setId($this->getUid())->load();
+        $project                = Environment::getProject();
+        $module                 = Humble::module($this->getNamespace());
+        $custom_root            = 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.$project->module.'/lib/sample/component';
+        $module_root            = 'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module['module'].'/lib/sample/component';
+        $templates              = [];
         /* The craziness below basically lets you override the default component template with a custom template from the module if they have one */
-        $templates['models']   = file_exists($custom_root.DIRECTORY_SEPARATOR.'Model.php.txt')  ? $custom_root.DIRECTORY_SEPARATOR.'Model.php.txt' : 'Code/Framework/Humble/lib/sample/component/Model.php.txt';
-        $templates['models']   = file_exists($module_root.DIRECTORY_SEPARATOR.'Model.php.txt')  ? $module_root.DIRECTORY_SEPARATOR.'Model.php.txt' : $templates['models'];
-        $templates['entities'] = file_exists($custom_root.DIRECTORY_SEPARATOR.'Entity.php.txt') ? $custom_root.DIRECTORY_SEPARATOR.'Entity.php.txt' : 'Code/Framework/Humble/lib/sample/component/Entity.php.txt';
-        $templates['entities'] = file_exists($module_root.DIRECTORY_SEPARATOR.'Entity.php.txt') ? $module_root.DIRECTORY_SEPARATOR.'Entity.php.txt' : $templates['entities'];        
-        $templates['helpers']  = file_exists($custom_root.DIRECTORY_SEPARATOR.'Helper.php.txt') ? $custom_root.DIRECTORY_SEPARATOR.'Helper.php.txt' : 'Code/Framework/Humble/lib/sample/component/Helper.php.txt';
-        $templates['helpers']  = file_exists($module_root.DIRECTORY_SEPARATOR.'Helper.php.txt') ? $module_root.DIRECTORY_SEPARATOR.'Helper.php.txt' : $templates['helpers'];        
-        $roots          = ['models'=>'Model','helpers'=>'Helper','entities'=>'Entity'];
+        $templates['models']    = file_exists($custom_root.DIRECTORY_SEPARATOR.'Model.php.txt')  ? $custom_root.DIRECTORY_SEPARATOR.'Model.php.txt' : 'Code/Framework/Humble/lib/sample/component/Model.php.txt';
+        $templates['models']    = file_exists($module_root.DIRECTORY_SEPARATOR.'Model.php.txt')  ? $module_root.DIRECTORY_SEPARATOR.'Model.php.txt' : $templates['models'];
+        $templates['entities']  = file_exists($custom_root.DIRECTORY_SEPARATOR.'Entity.php.txt') ? $custom_root.DIRECTORY_SEPARATOR.'Entity.php.txt' : 'Code/Framework/Humble/lib/sample/component/Entity.php.txt';
+        $templates['entities']  = file_exists($module_root.DIRECTORY_SEPARATOR.'Entity.php.txt') ? $module_root.DIRECTORY_SEPARATOR.'Entity.php.txt' : $templates['entities'];        
+        $templates['helpers']   = file_exists($custom_root.DIRECTORY_SEPARATOR.'Helper.php.txt') ? $custom_root.DIRECTORY_SEPARATOR.'Helper.php.txt' : 'Code/Framework/Humble/lib/sample/component/Helper.php.txt';
+        $templates['helpers']   = file_exists($module_root.DIRECTORY_SEPARATOR.'Helper.php.txt') ? $module_root.DIRECTORY_SEPARATOR.'Helper.php.txt' : $templates['helpers'];        
+        $roots                  = ['models'=>'Model','helpers'=>'Helper','entities'=>'Entity'];
         
-        $ns             = str_replace(['_','/'],['\\','\\'],'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module[$this->getType()]);
-        $root           = $roots[$this->getType()];
-        $trait          = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Framework\\Humble\\Traits\\EventHandler;\n\t" : "" ;
-        $root           = str_replace(['_','/'],[DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR],$root);
-        $parts          = explode('_',str_replace('/','_',$this->getName()));
+        $ns                     = str_replace(['_','/'],['\\','\\'],'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module[$this->getType()]);
+        $root                   = $roots[$this->getType()];
+        $trait                  = ($this->getGeneratesEvents()=='Y') ? "use \\Code\\Framework\\Humble\\Traits\\EventHandler;\n\t" : "" ;
+        $root                   = str_replace(['_','/'],[DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR],$root);
+        $parts                  = explode('_',str_replace('/','_',$this->getName()));
         foreach ($parts as $idx => $part) {
             $parts[$idx] = ucfirst($part);
         }
-        $class = $parts[count($parts)-1];
+        $class          = $parts[count($parts)-1];
         if (count($parts)>1) {
             $root = '\\'.$ns.'\\'.$root;
             for ($i=0; $i<count($parts)-1; $i++) {
