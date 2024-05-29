@@ -8,7 +8,7 @@
             <textarea name='long_description' id='long_description' class="p-2 font-sans text-slate-900 w-[600] rounded-sm"></textarea><br />
             <div class='font-mono pb-2 text-slate-1000'>Long Description</div>
             <select name="component_namespace" id="component_namespace" class="p-2 font-sans text-slate-900 w-[600] rounded-sm">
-                <option v-for="namespace in namespaces" value="{{ namespace.value }}"> {{ namespace.text }} </option>
+                <option v-for="namespace in namespaces" v-bind:value="namespace.value">{{ namespace.text }} </option>
             </select>
             <div class='font-mono pb-2 text-slate-1000'>Namespace</div>
             <select name="component_type" id="component_type" class="p-2 font-sans text-slate-900 w-[600] rounded-sm">
@@ -25,10 +25,10 @@
 
             <select name="component_package" id="component_package" class="p-2 font-sans text-slate-900 w-[600] rounded-sm">
             </select>
-            <div class='font-mono pb-2 text-slate-1000'>Component Package</div>
+            <div class='font-mono pb-2 text-slate-1000'>Documentation Package (taxonomy)</div>
             <select name="component_category" id="component_category" class="p-2 font-sans text-slate-900 w-[600] rounded-sm">
             </select>
-            <div class='font-mono pb-2 text-slate-1000'>Component Category</div>
+            <div class='font-mono pb-2 text-slate-1000'>Documentation Category (taxonomy)</div>
             <input type="text" name="component_name" id="component_name" class="p-2 font-sans text-slate-900 w-[600] rounded-sm" /><br />
             <div class='font-mono pb-2 text-slate-1000'>Component Name</div>
             <input type="button" name="new_component_submit" id="new_component_submit" v-on:click="createComponent()" value="Build" class="text-slate-1000 border border-gray-300 w-[125] focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-lg px-15 py-2.5 me-2 mb-2 bg-white"/> 

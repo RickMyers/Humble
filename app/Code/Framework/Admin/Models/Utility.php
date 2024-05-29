@@ -267,9 +267,11 @@ class Utility extends Model
         );
         $dest = str_replace(['/','\\','_'],[DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR],$dest);
         if (!file_exists($dest)) {
+            header('RC: 0');
             file_put_contents($dest,str_replace($srch,$repl,file_get_contents($template)));
             return "Wrote new Class to ".$dest;
         } else {
+            header('RC: 8');
             return "ERROR: A Class of that name already exists!";
         }
     }

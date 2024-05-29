@@ -30,7 +30,7 @@
                 createController: async () => {
                     if (Edits['new-module'].validate()) {
                         const form     = document.querySelector('#new_module_form');
-                        const response = await fetch('/admin/controller/create', {
+                        const response = await fetch('/admin/module/create', {
                             method: 'POST',
                             body: new FormData(form)
                         });

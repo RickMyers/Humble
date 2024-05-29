@@ -6,14 +6,14 @@
             <description>Will create a new component, as in Helper, Model, Entity, or Event </description>
             <model namespace="admin" class="utility" method="createComponent" id='utility' response="TRUE">
                 <parameter name="uid"           source="session" default="" />
-                <parameter name="namespace"     source="post"    default="" />
-                <parameter name="type"          source="post"    default="" />
-                <parameter name="generates_events" source="post"    default="" />
-                <parameter name="name"          source="post"    default="" />
-                <parameter name="title"         source="post"    default="" />
-                <parameter name="package"       source="post"    default="" />
-                <parameter name="category"      source="post"    default="" />
-                <parameter name="description"   source="post"    default="" />
+                <parameter name="namespace"     source="post" value="component_namespace"   default="" />
+                <parameter name="type"          source="post" value="component_type"        default="" />
+                <parameter name="generates_events" source="post"                            default="" />
+                <parameter name="name"          source="post" value="component_name"        default="" />
+                <parameter name="title"         source="post" value="short_description"     default="" />
+                <parameter name="package"       source="post" value="component_package"     default="" />
+                <parameter name="category"      source="post" value="component_category"    default="" />
+                <parameter name="description"   source="post" value="long_description"      default="" />
             </model>
         </action>
 

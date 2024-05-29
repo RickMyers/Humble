@@ -36,6 +36,12 @@
                         });
                         let text       = await response.text();
                         alert(text);
+                        if (response.headers.get('RC') && (+response.headers.get('RC')===0)) {
+                            let win = Desktop.window.list['{{ window_id }}'];
+                            if (win) {
+                                win._close();
+                            } 
+                        }
                     }   
                 }
             }
