@@ -152,6 +152,7 @@ class Module extends CLI
      * @return string
      */
     public static function build() {
+        $result  = 'Module not built';
         $project = \Environment::getProject();
         $args = self::arguments();
         $ns = $args['namespace'];
@@ -240,16 +241,22 @@ class Module extends CLI
                 } 
  
                 foreach ($templates as $idx => $template) {
-                    print('Copying '.$template.' to '.$out[$idx]."\n");
                     if (!file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)))) {
                         print('Problem: '.$out[$idx].' && '.$template."\n");
                     }
-                            
                 }
-                print("\n\nIf no errors, then the module was likely built.  At this point, run 'Humble --i namespace=$ns' to install the module, or access it through the administration screens.\n\n");
-                return "Module likely created";
+                $result = "Module likely created, don't forget to install it";
+                header('RC: 0');
+            } else {
+                $result = "Module already exists, if necessary delete the current one and try again";
+                header('RC: 8');
             }
+            
+        } else {
+            $result = 'Insufficient parameters passed to create the module';
+            header('RC: 16');
         }
+        return $result;
     }
 
     /**
