@@ -16,7 +16,7 @@
             destroyed: () => {
             },
             methods: {
-                createComponent: async () => {
+                createPackage: async () => {
                     if (Edits['new-package'].validate()) {
                         const form     = document.querySelector('#new_package_form');
                         const response = await fetch('/admin/actions/newpackage', {
@@ -25,6 +25,12 @@
                         });
                         let text       = await response.text();
                         alert(text);
+                        if (response.headers.get('RC') && (+response.headers.get('RC')===0)) {
+                            let win = Desktop.window.list['{{ window_id }}'];
+                            if (win) {
+                                win._close();
+                            } 
+                        }                            
                     }   
                 }
             }

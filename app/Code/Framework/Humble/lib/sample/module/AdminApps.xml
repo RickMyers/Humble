@@ -19,7 +19,7 @@
             </image>
         </icon>
         <start>
-            <uri>/&&NAMESPACE/admin/app</uri>
+            <uri>/&&NAMESPACE&&/admin/app</uri>
         </start>
     </app>
 </apps>

@@ -23,12 +23,12 @@
             <description>Will create a new controller</description>
             <model response="TRUE" namespace="admin" class="utility" method="createController" id='utility'>
                 <parameter name="admin_id"      source="session" required="true" />
-                <parameter name="namespace"     source="post"    default="" />
-                <parameter name="engine"        source="post"    value="templater" default="Twig" />
-                <parameter name="name"          source="post"    default="" />
-                <parameter name="action"        source="post"    default="" />
-                <parameter name="description"   source="post"    default="" />
-                <parameter name="actionDescription"   source="post"    default="" />
+                <parameter name="namespace"     source="post"    value="controller_namespace" required="true" />
+                <parameter name="engine"        source="post"    value="controller_templater" default="Twig" />
+                <parameter name="name"          source="post"    value="controller_name"      required="true" />
+                <parameter name="action"        source="post"    value="action_name"          required="true" />
+                <parameter name="description"   source="post"    value="controller_description"   required="true" />
+                <parameter name="action_description" source="post" required="true" />
             </model>
         </action>
 

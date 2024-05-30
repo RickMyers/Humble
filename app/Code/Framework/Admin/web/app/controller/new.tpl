@@ -4,11 +4,11 @@
         You can create a new controller using the form below.  Please specify which namespace your controller will belong to, the templater the controller will be using, a name for the controller, and the name of the first action<br /><br />
         <form name="new_controller_form" id="new_controller_form" onsubmit="return false" >
             <select name="controller_namespace" id="controller_namespace" class="p-2 font-sans text-slate-900 w-[600] rounded-sm">
-                <option v-for="namespace in namespaces" value="{{ namespace.value }}"> {{ namespace.text }} </option>
+                <option v-for="namespace in namespaces"  v-bind:value="namespace.value">{{ namespace.text }} </option>
             </select>        
             <div class='font-mono pb-2 text-slate-1000'>Namespace</div>
             <select name="controller_templater" id="controller_templater" class="p-2 font-sans text-slate-900 w-[600] rounded-sm">
-                <option v-for="templater in templaters" value="{{ templater.value }}"> {{ templater.text }} </option>
+                <option v-for="templater in templaters" v-bind:value="templater.value"> {{ templater.text }} </option>
             </select>        
             <div class='font-mono pb-2 text-slate-1000'>Templater</div>
             <input type="text" name="controller_name" id="controller_name" class="p-2 font-sans text-slate-900 w-[600] rounded-sm" />

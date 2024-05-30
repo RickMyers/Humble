@@ -196,11 +196,11 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="newpackage">
+        <action name="newpackage" passalong="window_id">
             <description>Creates a new directory</description>
-            <helper namespace="humble" class='directory' method='create'>
-                <parameter name="directory" value="package" source="post" required="true" />
-            </helper>
+            <model namespace="admin" class='utility' method='createPackage' response="true">
+                <parameter name="directory" value="new_package" source="post" required="true" />
+            </model>
         </action>
 
         <!-- ############################################################### -->

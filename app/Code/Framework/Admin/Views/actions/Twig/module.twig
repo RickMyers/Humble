@@ -27,7 +27,7 @@
             destroyed: () => {
             },
             methods: {
-                createController: async () => {
+                createModule: async () => {
                     if (Edits['new-module'].validate()) {
                         const form     = document.querySelector('#new_module_form');
                         const response = await fetch('/admin/module/create', {
@@ -36,6 +36,12 @@
                         });
                         let text       = await response.text();
                         alert(text);
+                        if (response.headers.get('RC') && (+response.headers.get('RC')===0)) {
+                            let win = Desktop.window.list['{{ window_id }}'];
+                            if (win) {
+                                win._close();
+                            } 
+                        }                        
                     }   
                 }
             }

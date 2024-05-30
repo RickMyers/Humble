@@ -42,16 +42,6 @@
         },
         {
             "active":		true,
-            "id":        	"prefix",
-            "longname":         "Database prefix",
-            "title":		"The prefix to append to any tables that you create that are managed by this namespace",
-            "type":		"text",
-            "required":		true,
-            "force":		true,
-            "style":            ""
-        },
-        {
-            "active":		true,
             "id":		"new_module_submit",
             "title":		"Submit Button",
             "type":		"text",

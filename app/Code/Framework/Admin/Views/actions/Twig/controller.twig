@@ -41,12 +41,18 @@
                 createController: async () => {
                     if (Edits['new-controller'].validate()) {
                         const form     = document.querySelector('#new_controller_form');
-                        const response = await fetch('/admin/controller/create', {
+                        const response = await fetch('/admin/component/controller', {
                             method: 'POST',
                             body: new FormData(form)
                         });
                         let text       = await response.text();
                         alert(text);
+                        if (response.headers.get('RC') && (+response.headers.get('RC')===0)) {
+                            let win = Desktop.window.list['{{ window_id }}'];
+                            if (win) {
+                                win._close();
+                            } 
+                        }                        
                     }   
                 }
             }

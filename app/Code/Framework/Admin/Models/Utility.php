@@ -305,6 +305,7 @@ class Utility extends Model
         $dest           = 'Code'.DIRECTORY_SEPARATOR.$module['package']."/".$module['controller'];
         $dest           = $dest.''.DIRECTORY_SEPARATOR.$this->getName().'.xml';
         if (file_exists($dest)) {
+            header('RC: 8');
             return "A controller with that name already exists [".$dest."]";
         }
         $srch           = array(
@@ -335,12 +336,37 @@ class Utility extends Model
             }
         }
         if (file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)))) {
+            header('RC: 0');
             return "Ok";
         } else {
+            header('RC: 16');
             return "Unable to create the controller";
         }
     }
 
+    /**
+     * Will attempt to create a directory where additional modules can be hosted
+     * 
+     * @return string
+     */
+    public function createPackage() {
+        $result = 'Attempt to create package failed';
+        if ($directory = $this->getDirectory()) {
+            $directory = 'Code'.DIRECTORY_SEPARATOR.$directory;
+            if (is_dir($directory)) {
+                $result = 'Directory already exists!';
+                header('RC: 8');
+            } else {
+                if (mkdir($directory,0775,true)) {
+                     header('RC: 0');
+                     $result = 'Package Created';
+                } else {
+                    header('RC: 16');
+                }
+            }
+        }
+        return $result;
+    }
     /**
      * Runs the documentation engine
      *
