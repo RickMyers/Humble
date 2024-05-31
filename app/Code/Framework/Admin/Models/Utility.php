@@ -291,9 +291,12 @@ class Utility extends Model
         }
         //need to look for other custom controller template as well...
         $project        = \Environment::getProject();
+        $application    = \Environment::getApplication();
+        $engine         = $this->getEngine() ? $this->getEngine() : ($application['default']['templater'] ?? "Smarty"); //check for what the default templating engine is and if not found, default to Smarty
         $templates      = [];
         $main           = Humble::module($project->namespace);
         $current        = Humble::module($this->_namespace());
+        
         $templates[]    = 'Code'.$current['package'].''.DIRECTORY_SEPARATOR.$current['module'].'/lib/sample/component/controller.xml';
         $templates[]    = 'Code'.$main['package'].''.DIRECTORY_SEPARATOR.$main['module'].'/lib/sample/component/controller.xml';
         $templates[]    = 'Code/Framework/Humble/lib/sample/component/controller.xml';
@@ -319,20 +322,21 @@ class Utility extends Model
         );
         $repl           = array(
             $this->getName(),
-            $this->getEngine(),
+            $engine,
             $data['email']??'',
             ($user['first_name'] ?? '').' '.($user['last_name'] ?? ''),
             $this->getDescription(),
             $this->getActionDescription(),
             $this->getAction()
         );
-        $newDir = str_replace('_','/','Code'.DIRECTORY_SEPARATOR.$module['package'].''.DIRECTORY_SEPARATOR.$module['views'].''.DIRECTORY_SEPARATOR.$this->getName().''.DIRECTORY_SEPARATOR.$this->getEngine());
+        
+        $newDir = str_replace('_','/','Code'.DIRECTORY_SEPARATOR.$module['package'].''.DIRECTORY_SEPARATOR.$module['views'].''.DIRECTORY_SEPARATOR.$this->getName().''.DIRECTORY_SEPARATOR.$engine);
         @mkdir($newDir,0775,true);
-        if (isset($exts[$this->getEngine()])) {
-            file_put_contents($newDir.''.DIRECTORY_SEPARATOR.$this->getAction().'.'.$exts[$this->getEngine()],'');
+        if (isset($exts[$engine])) {
+            file_put_contents($newDir.''.DIRECTORY_SEPARATOR.$this->getAction().'.'.$exts[$engine],'');
             if ($useLanding) {
                 $loc = getcwd().$newDir;
-                file_put_contents($newDir.''.DIRECTORY_SEPARATOR.$this->getAction().'.'.$exts[$this->getEngine()],str_replace('&&HOME&&',$loc,file_get_contents('Code/Framework/Humble/lib/sample/module/Views/actions/Smarty/landing.tpl')));
+                file_put_contents($newDir.''.DIRECTORY_SEPARATOR.$this->getAction().'.'.$exts[$engine],str_replace('&&HOME&&',$loc,file_get_contents('Code/Framework/Humble/lib/sample/module/Views/actions/Smarty/landing.tpl')));
             }
         }
         if (file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)))) {
