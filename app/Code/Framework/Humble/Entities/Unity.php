@@ -51,6 +51,8 @@ class Unity
     protected $_between       = '';
     protected $_iv            = 'Humble Framework';                             //encryption initialization vector
     protected $_noLimitQuery  = '';                                             //Current query before pagination is added
+    protected $_xref          = [];                                             //Hash array for xrefing the names of result set columns to something else
+    protected $_exclude       = false;
     public    $_lastResult    = [];
 
     /**
@@ -228,6 +230,43 @@ SQL;
         return $this;
     }
 
+    /**
+     * What this will do is take a comma separated list of column names and will swap them out for new names in the return result set
+     * 
+     * Format:  new_column_name1=old_column_name1,new_column_name2=old_column_name2 etc...
+     * 
+     * @param mixed $list
+     * @return $this
+     */
+    public function _xref($list=[]) {
+        if ($list) {
+            if (is_string($list)) {
+                $pairs = explode(',',$list);
+                $list  = [];
+                foreach ($pairs as $pair) {
+                    $parts = explode('=',$pair);
+                    $list[$parts[0]] = $parts[1];
+                }
+            }
+            $this->_xref = $list;
+        }
+        return $this;
+    }
+    
+    /**
+     * For when XREF is present, do we exclude fields not on the XREF list?
+     * 
+     * @param string $exclude
+     * @return $this
+     */
+    public function _exclude($exclude=false) {
+        if ($exclude) {
+            $this->_exclude = $exclude;
+            return $this;
+        }
+        return $this->_exclude;
+    }
+    
     /**
      *
      */
@@ -544,7 +583,7 @@ SQL;
         }
         $this->_lastResult->snip();
         return $result;
-  //      return Humble::array($result);
+  //      return Humble::array($result); ///someday
     }
 
     /**
@@ -970,6 +1009,24 @@ SQL;
                 }
             }
         } 
+        if ($this->_xref) {
+            if ($this->_exclude) {
+                $flip = array_flip($this->_xref);
+            }            
+            foreach ($results as $idx => $row)
+                foreach ($row as $key => $value) {
+                    if (!isset($this->_xref[$flip[$key]])) {
+                        unset($results[$idx][$key]);
+                        continue;
+                    }
+                    foreach ($this->_xref as $new_col => $old_col) {
+                        if (isset($results[$idx][$old_col])) {
+                            $results[$idx][$new_col] = $results[$idx][$old_col];
+                            unset($results[$idx][$old_col]);
+                        }
+                    }
+                }
+        }        
         $results = Humble::model('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
         if (\Environment::isActiveDebug()) {
             \Log::user(array_merge(['Query'=>$query],$results->toArray()));

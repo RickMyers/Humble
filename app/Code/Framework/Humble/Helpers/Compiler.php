@@ -556,6 +556,12 @@ PHP;
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::entity("'.$namespace.'/'.$node['class'].'");'."\n");
+        if (isset($node['xref'])) {
+            print($this->tabs().'$'.$node['id'].'->_xref("'.$node['xref'].'");'."\n");
+        }
+        if (isset($node['exclude'])) {
+            print($this->tabs().'$'.$node['id'].'->_exclude("'.$node['exclude'].'");'."\n");
+        }        
         if (isset($node['page'])) {
             print($this->tabs().'$'.$node['id'].'->_page(null);'."\n");  //essentially, you first make sure that pagination is turned off by passing a null
             print($this->tabs().'if (isset($_REQUEST["'.$node['page'].'"])) {'."\n");  //then you look to see if it is turned on

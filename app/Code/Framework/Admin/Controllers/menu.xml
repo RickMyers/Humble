@@ -8,9 +8,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 <controller name="menu" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="ON" response="false">
         
-        <action name="form">
+        <action name="form" passalong="window_id">
             <description>Basic Form</description>
-            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+            <entity namespace="admin" class="menu/categories" orderby="seq=ASC" id="menu_categories" />
         </action>
 
         <!-- ############################################################### -->

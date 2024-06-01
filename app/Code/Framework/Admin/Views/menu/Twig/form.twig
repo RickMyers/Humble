@@ -1,0 +1,58 @@
+<script type="text/javascript"> 
+    if (typeof menu_management_app === 'undefined') {
+        let menu_management_app = Vue.createApp({
+            template: Humble.template('admin','admin/menu/management'),
+            data: () => {
+                return {
+                    menu_categories: [
+                        {
+                            "text": "",
+                            "value": ""
+                        },
+                        {% for menu in menu_categories.fetch() %}{              
+                            text:   "{{ menu.category }}",
+                            value:  "{{ menu.id }}"
+                        },   
+                        {% endfor %}
+                    ]
+                }
+            },
+            mounted: () => {
+               //new EasyEdits('/edits/admin/newcomponent','new-component');
+            },
+            created: () => {
+            },
+            updated: () => {
+            },
+            destroyed: () => {
+            },
+            methods: {
+                newCategory: async () => {
+                    if (Edits['new-component'].validate()) {
+                        const form     = document.querySelector('#menu_management_form');
+                        const response = await fetch('/admin/menu/category', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        });
+                        let text       = await response.text();
+                        alert(text);
+/*                        if (response.headers.get('RC') && (+response.headers.get('RC')===0)) {
+                            let win = Desktop.window.list['{{ window_id }}'];
+                            if (win) {
+                                win._close();
+                            } 
+                        }*/
+                    }   
+                }
+            }
+        });
+        var win = Desktop.window.list['{{ window_id }}'];
+        const component_app = menu_management_app.mount('#'+win.content.id);
+        win.close(((app) => {
+            return function () {
+                app.unmount();
+            };
+        })(menu_management_app));
+    }    
+
+</script>

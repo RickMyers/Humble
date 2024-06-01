@@ -94,8 +94,8 @@ $logged_in  = $_SESSION['uid']      ?? false;                                   
 //###########################################################################
 //Allows for custom code execution at this point if so desired.
 //Can also override default flags
-if (file_exists('../includes/Custom.php')) {
-    include '../includes/Custom.php';
+if (file_exists('includes/Custom.php')) {
+    include 'includes/Custom.php';
 }
 
 //###########################################################################
@@ -140,8 +140,8 @@ if (!$bypass && !$logged_in) {
 //###########################################################################
 //Allows for custom headers to be created and passed to the client if the app
 // is using a custom headers file
-if (file_exists('../includes/Headers.php')) {
-    include '../includes/Headers.php';
+if (file_exists('includes/Headers.php')) {
+    include 'includes/Headers.php';
 } else {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE');
@@ -271,11 +271,11 @@ if (!$request_handled) {
     }
 
     //###########################################################################
-    if (file_exists('../includes/Constants.php')) {
-        require_once '../includes/Constants.php';                                           //Enumeration type stuff
+    if (file_exists('includes/Constants.php')) {
+        require_once 'includes/Constants.php';                                           //Enumeration type stuff
     }
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {       
-        require_once "Compatibility.php";                                       //This is for handling function that windows PHP is missing
+        require_once "includes/Compatibility.php";                                       //This is for handling function that windows PHP is missing
     }
 
     if (!file_exists($include)) {

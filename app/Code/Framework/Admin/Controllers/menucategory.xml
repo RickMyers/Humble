@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+
+Menu Category Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="menucategory" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com"> 
+    
+    <actions blocking="ON" response="false">
+        <action name="list" output='JSON'>
+            <description>Just lists the menu categories</description>
+            <entity namespace="admin" class="menu/categories" response="true"  xref="value=id,text=category" exclude="true"  wrapper='json_encode'  method="fetch" >
+                <!--parameter name="id" source="request" default="1" /-->
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

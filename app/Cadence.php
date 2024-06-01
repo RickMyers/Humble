@@ -33,8 +33,8 @@ $is_production              = \Environment::isProduction();                     
 //------------------------------------------------------------------------------
 //Load custom callbacks if any
 //------------------------------------------------------------------------------
-if (file_exists('CALLBACKS.php')) {
-    require_once('CALLBACKS.php');
+if (file_exists('includes/Callbacks.php')) {
+    require_once('includes/Callbacks.php');
 }
 
 //------------------------------------------------------------------------------
