@@ -80,14 +80,12 @@
             <edits>
                 <article>Blog/web/edits/article.json</article>
             </edits>
-            <hook>
-                <js>
-                    <source>Blog/web/js/Blog.js</source>
-                </js>
+            <humble-bootstrap-theme>
                 <css>
                     <source>Blog/web/css/Blog.css</source>
                 </css>
-            </hook>
+            </humble-bootstrap-theme>
+            
         </web>
     </blog>
 </config>
