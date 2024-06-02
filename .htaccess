@@ -1,21 +1,29 @@
-DirectoryIndex pages/Main.htmls index.html
-AddHandler application/x-httpd-php .html .htm
-Options +FollowSymlinks +Includes
+Order allow,deny
+DirectoryIndex /pages/Main.htmls index.html
+Allow from all
+Options +FollowSymLinks +Includes -Indexes
+AllowOverride none
+Require all granted
 RewriteEngine on
+AddType text/html .htmls
+AddOutputFilter INCLUDES .htmls .html .php
 RewriteBase /
+RewriteRule ^index.html?(.*) /humble/home/index?message=$1 "[B= ?,L,NC,QSA]"
 RewriteRule ^app/ - [L,NC]
 RewriteRule ^lib/ - [L,NC]
 RewriteRule ^images/ - [L,NC]
 RewriteRule ^web/ - [L,NC]
-RewriteRule ^pages/ - [L,NC,QSA]
-RewriteRule ^home/? /humble/home/page [NC,QSA,L]
+RewriteRule ^docs/ - [L,NC]
+RewriteRule ^pages/ - [L,NC]
 RewriteRule ^admin$ /admin/home/page [NC,QSA,L]
+RewriteRule ^admin/$ /admin/home/page [NC,QSA,L]
 RewriteRule ^distro/(.*)? /distro.php?action=$1 [QSA,L]
 RewriteRule ^js/([^/\.]+)? /loader.php?type=js&package=$1 [QSA,L]
 RewriteRule ^mjs/([^/\.]+)/(.*)? /loader.php?type=mjs&namespace=$1&file=$2 [QSA,L]
+RewriteRule ^comp/([^/\.]+)/(.*)? /loader.php?type=component&namespace=$1&file=$2 [QSA,L]
 RewriteRule ^css/([^/\.]+)? /loader.php?type=css&package=$1 [QSA,L]
 RewriteRule ^edits/([^/\.]+)/([^/\.]+)? /loader.php?type=edits&n=$1&f=$2 [QSA,L]
-RewriteRule ^ckeditor/(.*)? /app/Code/Framework/Humble/web/js/ckeditor/$1 [QSA,L]
+RewriteRule ^ckeditor/(.*)? /app/Code/Framework/Paradigm/web/js/ckeditor/$1 [QSA,L]
 RewriteRule ^ace/(.*)? /app/Code/Framework/Paradigm/web/js/ace/$1 [QSA,L]
 RewriteRule ^api/([^/\.]+)/([^/\.]+)/(.*)?$ /api.php?n=$1&t=$2&m=$3 [QSA,L]
 RewriteRule ^api/([^/\.]+)/([^/\.]+)?$ /api.php?n=$1&t=$2 [QSA,L]
@@ -27,4 +35,5 @@ RewriteRule ^([^/\.]+)/([^/\.]+)/(.*)?$ /index.php?humble_framework_namespace=$1
 RedirectMatch 404 app/allowed.json
 RedirectMatch 404 msa.php$
 RedirectMatch 404 \.(xml|yaml|yml|project)$
-ErrorDocument 404 /fallback.html
+ErrorDocument 404 /humble/home/404
+

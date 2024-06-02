@@ -30,7 +30,7 @@
                 "slide": "#feature-slide-1",
                 "current": -1,
                 "timing": 15,
-                "video": "https://www.youtube.com/embed/uQ76MrdEDzA",
+                "video": "",
                 "slides": [
                     "/pages/images/MVC.png",
                     "/pages/images/mvc_architecture.png"
@@ -41,7 +41,7 @@
                 "slide": "#feature-slide-2",
                 "current": -1,
                 "timing": 15,
-                "video": "https://www.youtube.com/embed/Uxu6EYcF71U",
+                "video": "",
                 "slides": [
                     "/pages/images/workflow.png"
                 ]

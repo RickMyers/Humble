@@ -35,6 +35,11 @@
             </fieldset>
         </form>
     </div>
+    <script type="text/javascript">
+        (function () {
+            new EasyEdits('/edits/blog/article','blog-article');
+        })();
+    </script>                
 {/if}
 {foreach from=$articles->setActive('Y')->fetch() item=article}
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
@@ -46,9 +51,5 @@
 
 </div>
 {/foreach}
-<script type="text/javascript">
-    (function () {
-        new EasyEdits('/edits/blog/article','blog-article');
-    })();
-</script>
+
 <!--#include virtual="/pages/includes/footer.html" -->
