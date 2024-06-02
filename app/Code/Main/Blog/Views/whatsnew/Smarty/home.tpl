@@ -8,6 +8,7 @@
         <td style="text-align: right"><a href="/pages/Installation.htmls" title="" >Next</a></td>
     </tr>
 </table>
+
 {if ($first_name)}
     <style type="text/css">
         .whats-new-article-desc { 
@@ -41,6 +42,9 @@
         })();
     </script>                
 {/if}
+<div class="pt-8 pb-8 flex m-auto w-[500] border bg-slate-500">
+    Notice: As we get nearer the release of Version 1.0, we are suspending notifications of changes
+</div>
 {foreach from=$articles->setActive('Y')->fetch() item=article}
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
     <div class='humble-topic-header'>{$article.title}</div>
