@@ -117,7 +117,7 @@ class System extends CLI
             }
         }
         @mkdir('../packages/',0775);
-        $xml        = simplexml_load_file('etc/application.xml');
+        $xml        = simplexml_load_file('app/etc/application.xml');
         $archive    = '../packages/Humble-Distro-'.(string)$xml->version->framework.'.zip';
         print("Creating archive ".$archive."\n");
         if (file_exists($archive)) {
