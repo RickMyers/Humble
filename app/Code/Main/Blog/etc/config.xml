@@ -80,11 +80,11 @@
             <edits>
                 <article>Blog/web/edits/article.json</article>
             </edits>
-            <humble-bootstrap-theme>
+            <humble-bootstrap>
                 <css>
                     <source>Blog/web/css/Blog.css</source>
                 </css>
-            </humble-bootstrap-theme>
+            </humble-bootstrap>
             
         </web>
     </blog>
