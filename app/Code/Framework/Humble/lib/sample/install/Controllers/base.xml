@@ -4,6 +4,7 @@
 Basic Controller
 
 For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
+
 -->
 <controller name="&&CONTROLLER&&" use="Smarty" author="" email="&&EMAIL&&">
     <actions>
@@ -22,6 +23,30 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="404">
             <description>The 'not found' page</description>
         </action>
+
+        <!-- ############################################################### -->
         
+        <action name="login" passalong="user_name:required=true,user_password:format=password:required=true:value=password" event='userLogin' comment='Triggers the user login workflow'>
+            <description>Launches the process that a person goes through to login</description>
+            <comment>
+                ##############################################################################
+                # You should either handle authentication as a controller described workflow #
+                # like below, or as a Paradigm Engine workflow  (graphical)  by throwing the #
+                # EVENT (userLogin) above.  There's a video somewhere showning you how and Y #
+                ##############################################################################
+            </comment>
+            <model class="user" id="user">
+                <parameter name="user_name" source="post" default="" required='true' />
+                <parameter name="password"  source="post" value="user_password" format="password" required='true' />
+            </model>  
+            <switch id='user' method='login'>
+                <case value='TRUE'> 
+                    <model class="user" method="routeToHomePage" />   
+                </case>
+                <default>
+                    <redirect href='/index.html?message=Incorrect User ID or Password' />   
+                </default>
+            </switch>
+        </action>                
     </actions>
 </controller>

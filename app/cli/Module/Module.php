@@ -233,19 +233,21 @@ class Module extends CLI
                     $templates[] = $root."/lib/sample/install/Views/index.html";     $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/index.tpl";
                     $templates[] = $root."/lib/sample/install/Views/page.html";      $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/".$page.".tpl";
                     $templates[] = $root."/lib/sample/install/Views/404.html";       $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/404.tpl";
-                    $templates[] = $root."/lib/sample/module/web/js/mainactions.js";     $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
+                    $templates[] = $root."/lib/sample/module/web/js/mainactions.js"; $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
                     $templates[] = $root."/lib/sample/install/Controllers/base.xml"; $out[] = "Code/".$pk."/".$md."/Controllers/".$controller.".xml";
                     $templates[] = $root."/lib/sample/install/Entities/Users.php.txt";  $out[] = "Code/".$pk."/".$md."/Entities/Users.php";
                     $templates[] = $root."/lib/sample/install/Models/User.php.txt";  $out[] = "Code/".$pk."/".$md."/Models/User.php";
                     $templates[] = $root."/lib/sample/install/public_routes.json";   $out[] = "etc/public_routes.json";
                 } else {
-                    $templates[] = $root."/lib/sample/module/web/js/actions.js";               $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
+                    $templates[] = $root."/lib/sample/module/web/js/actions.js";     $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
                 }
                     
- 
-                foreach ($templates as $idx => $template) {
+                 foreach ($templates as $idx => $template) {
+                    if (!file_exists($template)) {
+                        print("Template: ".$template." Not Found\n");
+                    } 
                     if (!file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)))) {
-                        print('Problem: '.$out[$idx].' && '.$template."\n");
+                        print('Failed to write: '.$template.' => '.$out[$idx]."\n");
                     }
                 }
                 $result = "Module likely created, don't forget to install it";
