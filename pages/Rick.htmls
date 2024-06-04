@@ -17,12 +17,12 @@
 
 <p>
 Hello!  My name is Rick Myers and I am the principle developer of "The Humble Framework".   A bit about me... my history with programming goes back to my 11<sup>th</sup> birthday in June of 1980, when my parents bought me my first computer (a Vic-20) and on that day I taught myself to code in BASIC.
-I've now been coding for more than 40 years, and I don't think I ever really thought seriously about any other line of work, though I have had misgivings at times.  
+I've now been coding for more than 40 years, and I don't think I ever really thought seriously about any other line of work, though I have had misgivings at times.<br /><br />
 </p>
 <p>
 I've always been one to drive myself to learn, and moved from BASIC to Pascal while in middle school.  The first large system I programmed on was a Honeywell 6000 mainframe using Fortran and CP6, however during the bulk of my college years I developed mostly on PCs
 (even prior to there being something called "Windows") and on DEC-VAX minicomputers.   I graduated with two bachelor degrees, one in Computer Science and the second in Mathematics, and began my professional career with GTE Data Services in early 1994,
-after having been selected to go through their intense "New Recruit Development" program (affectionately called 'The NeRD Program').  It would be a great achievement and honor for me to return to that program years later as an instructor.
+after having been selected to go through their intense "New Recruit Development" program (affectionately called 'The NeRD Program').  It would be a great achievement and honor for me to return to that program years later as an instructor.<br /><br />
 </p>
 <div style='float: right; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-left: 8px; text-align: center'>
 <img src='/pages/images/misc/jeep_and_ian.jpg' class="screenshot" style='width: 240px' title="Jeep and Ian" text="Jeep and my Bestie"/><br />
@@ -33,13 +33,13 @@ after having been selected to go through their intense "New Recruit Development"
 In April 1995 I brought up my first web server, but there was a catch.  This web server was running on an IBM Mainframe under something at the time called OpenEdition MVS, but later was renamed UNIX System Services.  It was a POSIX compliant UNIX, however,
 it was based on EBCDIC and not ASCII.  From that time until 1999 I spent a lot of time webifying legacy mainframe "green screen" applications with great success.   In 1999 my work got the attention of a company out of Chicago who then presented
 me with the classic "offer that I couldn't refuse" and convinced me to leave GTEDS for "greener" pastures with them.  This would be my first experience with a start-up and was 100% remote work requiring regular travel.  This stint only lasted about
-six months, after it was clear they were not going to honor their original offer.
+six months, after it was clear they were not going to honor their original offer.<br /><br />
 </p>
 <p>
 After that disappointment (and realizing I'd have to hold off on that Acura NSX purchase) I went back to working with GTEDS for several months, but got another offer from a competitor company in Dallas Texas and moved West for the first time.  Oddly 
 enough this was the highest paid job I had at the time and it was not focused on coding, but rather SEI/CMM and Process Improvement.   I learned a great many things about how organizations and individuals work and get along which has really shaped
 the holistic and humanistic approach to application development that I practice today, after all, technology doesn't innovate -- people do.   How you manage your people is probably more important for success than platform choice or programming language, since those are 
-all fungible.  Read '<a href='/pages/TheHumbleWay.htmls' target='_BLANK'>The Humble Way</a>' for more about this.
+all fungible.  Read '<a href='/pages/TheHumbleWay.htmls' target='_BLANK'>The Humble Way</a>' for more about this.<br /><br />
 </p>
 <div style='float: left; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-right: 8px; text-align: center'>
 <img src='/pages/images/misc/rick_2005.jpg' style='width: 240px' class="screenshot" style='width: 240px' title="Key West" text="Rick in Key West, 2005" /><br />
@@ -48,16 +48,16 @@ all fungible.  Read '<a href='/pages/TheHumbleWay.htmls' target='_BLANK'>The Hum
 <p>
 After a year and a half in Dallas, and not really liking Dallas, I received an offer to come back to GTEDS and teach with the same instructors who had taught me 8 years prior.  GTE had become Verizon and the training department within GTE was recognized
 as the most successful so it was expanded to the new entity (GTE+Bell Atlantic+NYNEX).  Because of my unique experience with "webifying" legacy systems, I ended up teaching courses on Websphere MQ, modern (at the time) web development, heavy JavaScript,
-emerging web standards, and just about everything z/OS except COBOL.  This was my most enjoyable job, even though it was 50% travel.   After 5 years, and so many lay-offs, I grew pretty disillusioned with the direction Verizon was going and left.
+emerging web standards, and just about everything z/OS except COBOL.  This was my most enjoyable job, even though it was 50% travel.   After 5 years, and so many lay-offs, I grew pretty disillusioned with the direction Verizon was going and left.<br /><br />
 </p>
 <p>
 My next job was my first job in healthcare, an innovative healthcare start-up that was trying to create an alternative document format specifically for the healthcare industry based on SVG, Java, and JavaScript.  Long hours and 6-7 day work weeks
 were the norm for the next 16 months.  This experience also taught me that interplay of team dynamics is probably more important to overall success than technology platform.  This start-up would fail with the economic collapse in late 2008, but by
-then I had moved on yet again.
+then I had moved on yet again.<br /><br />
 </p>
 <p>
 The previous job had started hard, fast, and wonderful but ended under a toxic cloud of ego and recrimination.  At this time, along with a friend and co-worker who left the company before things got too bad, we began what is now "The Humble Framework" because we thought that the PHP world
-could use a semi-abstracted framework like Struts-II.  But the <a href='/pages/History.htmls' target='_BLANK'>history</a> of the framework is covered elsewhere...
+could use a semi-abstracted framework like Struts-II.  But the <a href='/pages/History.htmls' target='_BLANK'>history</a> of the framework is covered elsewhere...<br /><br />
 </p>
 <div style='float: right; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-left: 8px; text-align: center'>
 <img src='/pages/images/misc/rick_angel_ian.jpg' style='width: 240px' class="screenshot" title="Family" text="The family that hikes together..." /><br />
@@ -65,16 +65,16 @@ could use a semi-abstracted framework like Struts-II.  But the <a href='/pages/H
 </div>
 <p>
 With the support of my girlfriend at the time, I decided to change gears while we developed the initial framework.  I had loved teaching and lecturing, so I enrolled in the <a href="https://www.fldoe.org/teaching/certification/pathways-routes/index.stml" target='_BLANK'>Florida ACP (Alternative Certification Program)</a> 
-and became certified to teach Math &amp; Physics at the High School level, which I did for the remaining year.  This was an experience to say the least, and one I would encourage anyone who has an inkling of a desire to teach.
+and became certified to teach Math &amp; Physics at the High School level, which I did for the remaining year.  This was an experience to say the least, and one I would encourage anyone who has an inkling of a desire to teach.<br /><br />
 </p>
 <p>
 The economic collapse at the end of 2008 changed everything.  Schools were downsizing due to budget cuts so it was back to IT for me, but it was almost 7 months before the economy began moving again and I was able to land a job.  This was a
 hard time indeed.  This next job was quite far away and for very low pay but I had to get my foot back in the job market, and the job itself was a bit interesting as it was a VOIP (Voice Over IP) company with an interesting project.  The drive was terrible,
-the pay was bad, but there were some good people and we generally got along.  I did some really good work there and enjoyed the company of the other "Geeks".
+the pay was bad, but there were some good people and we generally got along.  I did some really good work there and enjoyed the company of the other "Geeks".<br /><br />
 </p>
 <p>
 After about 10 months I took a contract job back in healthcare at a place nearby for more money, and then spent the next 11 months wondering if that was a good idea after all.  It was another high pressure, toxic, ego-driven mess caused by frequent
-expansion and then contraction (layoffs).  It was not a good place to work, but there were again some great people working hard to help the company survive.
+expansion and then contraction (layoffs).  It was not a good place to work, but there were again some great people working hard to help the company survive.<br /><br />
 </p>
 <div style='float: left; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-right: 8px; text-align: center'>
 <img src='/pages/images/misc/family_at_gc.jpg' style='width: 240px' class="screenshot" title="Family @ Grand Canyon" text="Watch that last step..."   /><br />
@@ -83,31 +83,31 @@ expansion and then contraction (layoffs).  It was not a good place to work, but 
 <p>
 I'm not a fan of contract work (contractors often don't have enough say in what is going on) so I was looking for new opportunities.  I interviewed for a position at a world-wide travel and vacation company based out of Germany and their plans
 for overhauling their legacy systems sounded very interesting (particularly improving search and ESB type integrations between scores of systems).  This was a very interesting time, and very focused on "Enterprise" solutions.  After about two 
-years, there was a considerable restructuring on the US side and much of our work was absorbed by the team in the UK.  So, off to another position.
+years, there was a considerable restructuring on the US side and much of our work was absorbed by the team in the UK.  So, off to another position.<br /><br />
 </p>
 
 <p>
 I was able to quickly land a job with the largest financial clearinghouse in the US, and though this was a contract job, it was in network security and vulnerability management which was new to me.  This is itself a fascinating area of IT and I enjoyed the job but the
 daily commute was 104 miles.  After my 6 month contract was up I declined renewal because of the commute and parted on good terms.  We are all still friends on Facebook and would occasionally lunch together when I lived back in Florida.
-It was a good experience but a terrible drive.
+It was a good experience but a terrible drive.<br /><br />
 </p>
 <p>
 My next job was a 100% remote position back in healthcare but this time working on a 10 year old system that was the System Of Record for multiple states supporting the Medicaid Waiver program.  After getting a handle on what the system did,
 I was tasked (along with a team I could hire) to build their next iteration, which became their "Connect" product, as it combined elements of social networking with the core functionality to support the incredibly complex Medicare Waiver program,
-particularly the "Self-Directed" part.  However, constant chaos (turnover) at the C-Suite level undermined my confidence, not in the ability to develop an outstanding product, but for the management and executives to deliver and support it.
+particularly the "Self-Directed" part.  However, constant chaos (turnover) at the C-Suite level undermined my confidence, not in the ability to develop an outstanding product, but for the management and executives to deliver and support it.<br /><br />
 </p>
 <div style='float: right; border: 2px solid #333; padding: 5px; border-radius: 3px; margin-left: 8px; text-align: center'>
 <img src='/pages/images/misc/bordeaux.jpg' style='width: 240px' class="screenshot" title="Overlord Bordeaux" text="I am but his Humble servant" /><br />
 <div style="text-align: center; font-style: italic">Can't forget Bordeaux,<br /> he actually runs the place</div>
 </div>
 <p>
-    After three years of development, a former CIO reached out to me about an opportunity and said as a bonus it was "<a href='https://naturaily.com/blog/greenfield-vs-brownfield-projects-it-differences-pros-cons' target='_BLANK'>greenfield</a>".  I jumped at the chance to escape the chaos and start on something from scratch using everything I have learned over 
-the years.  I have been working at this company for the past 6 years developing a whole host of solutions, but one particular today, that makes millions per year for my company.  It has been an interesting experience and has allowed me to grow
+After three years of development, a former CIO reached out to me about an opportunity and said as a bonus it was "<a href='https://naturaily.com/blog/greenfield-vs-brownfield-projects-it-differences-pros-cons' target='_BLANK'>greenfield</a>".  I jumped at the chance to escape the chaos and start on something from scratch using everything I have learned over 
+the years.  I have been working at this company for the past 7 years developing a whole host of solutions, but one particular today, that makes millions per year for my company.  It has been an interesting experience and has allowed me to grow
 in many ways.  The system(s) that have been implemented have used "The Humble Framework" to build out an impressive array of features for our clients and ourselves, and has helped move Humble past a POC to an actual working, scalable, and flexible
-approach to application development.  As an added bonus, it has been extremely nice to work on application code AND framework code of my own design.
+approach to application development.  As an added bonus, it has been extremely nice to work on application code AND framework code of my own design.<br /><br />
 <p>
 <p>
-So, that pretty much catches you up on my history... technically I've worked for almost 14 years at one company in telecommunications, 6+ years in my present healthcare company, another 5+ years in other healthcare companies, and 3+ years in other "miscellaneous" 
+So, that pretty much catches you up on my history... technically I've worked for almost 14 years at one company in telecommunications, 7 years in my present healthcare company, another 5+ years in other healthcare companies, and 3+ years in other "miscellaneous" 
 areas when exploring other opportunities... oh, and I taught for 6 months in High School :-), something I am also proud of.<br /><br />
 Thanks for reading!<br /><br />
 --Rick<br /><br /><br /><br />

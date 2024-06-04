@@ -15,7 +15,7 @@
                 background: rgba(0, 0, 0, 1) url("/web/images/grad.png") no-repeat fixed center center / cover; width: 100%;
             }
             .nav-text {
-                float: right; margin-right: 25px; font-size: 1em; color: ghostwhite; cursor: pointer; opacity: .7; letter-spacing: 0.5px; font-weight: normal; position: relative; top: -6px;
+                float: right; margin-right: 25px; font-size: 1em; color: ghostwhite; cursor: pointer; opacity: .7; letter-spacing: 0.5px; font-weight: normal; position: relative; top: -6px; white-space: nowrap;
                 font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif
             }
             .nav-text:hover {
@@ -143,8 +143,8 @@
             <div style="background-color: rgba(50,50,50,.8); padding: 10px; display: flex; flex-wrap: nowrap">
 
                 <div class="header-layer-1"  style="margin-left: auto; margin-right: auto; width: 1248px; white-space: nowrap; ">
-                    <div style="display: inline-block; font-size: 1.7em; vertical-align: bottom; color: ghostwhite; opacity: .7">
-                        <img src="/web/images/djikstra_light.png" alt="djikstra" style=" height: 50px; cursor: pointer; margin-right: 0px" onclick="window.location.href = '/humble.html'"/>
+                    <div style="display: inline-block; font-size: 1.7em; vertical-align: bottom; color: ghostwhite; opacity: .7; white-space: nowrap">
+                        <img src="/web/images/djikstra_light.png" alt="djikstra" style=" height: 50px; cursor: pointer; margin-right: 15px; float: left" onclick="window.location.href = '/humble.html'"/>
                         <div style="display: inline-block; position: relative; top: 16px; left: -3px">be humble.</div>
                     </div>
                     <!--div class="nav-text" onclick="window.location.href = '/pages/PipsJourney.htmls'" style="border: 1px solid transparent; border-radius: 50%; background-color: white">
@@ -163,7 +163,7 @@
                         Labs
                     </div>                    
                     <div class="nav-text" onclick="window.location.href = 'https://www.github.com/RickMyers/Humble'">
-                        Repository <img src="/web/images/git_squid.png" style="height: 22px"/>
+                       <img src="/web/images/git_squid.png" style="height: 22px; float: left; margin-right: 5px"/> Repository 
                     </div>
                     <div class="nav-text" onclick="window.location.href = '/pages/Documentation.htmls'">
                         Documentation

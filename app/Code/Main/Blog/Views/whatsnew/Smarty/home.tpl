@@ -42,9 +42,25 @@
         })();
     </script>                
 {/if}
-<div class="pt-8 pb-8 flex m-auto w-[500] border bg-slate-500">
-    Notice: As we get nearer the release of Version 1.0, we are suspending notifications of changes
+<div class="pt-8 pb-8 w-full text-center font-bold text-lg border bg-red-300">
+    Notice: This section of the site is closed for the time being.  The previous entries into the "whatsnew" section are removed and no new entries will be made until after Version 1.0 is released.
 </div>
+
+<div class="pt-8">
+    The Humble Framework is currently going through a refactoring based on years of experience.<br /><br />
+    
+    The Humble framework was at the heart of a large application with thousands of users and servicing billions of requests over many years.  During that time
+    many parts of Humble proved exemplary, but also some issues were discovered, mostly around application structure.<br /><br />
+    Humble separates application code from the framework at the repository level, but in a developers application folder, that demarcation is not as clear as it could be, and
+    occasionally developers would in an attempt to solve an application problem, they would modify framework code (Rule #1: DON'T HACK ON CORE).<br /><br />
+    As I approach the "1.0" release of the framework, I am restructuring the framework so it is much more clear as to what code is in the developer domain, and what
+    code is the responsiblity of the framework maintainer (i.e. <a href="https://humbleprogramming.com/pages/Rick.htmls" target="_BLANK">ME</a>).<br /><br />
+    Overall, over the years that this framework was used in a Production environment, and just as an FYI the first alpha of this framework was out in 2008, Humble has 
+    outshined any application framework that I have ever had experience with, and I think it will make an excellent addition to the web application development community.<br /><br />
+  
+    --Rick<br /><br />
+      <hr />
+</div> 
 {foreach from=$articles->setActive('Y')->fetch() item=article}
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
     <div class='humble-topic-header'>{$article.title}</div>
