@@ -1,3 +1,11 @@
+<style scoped>
+    .humble-doc-section {
+        font-size: 1.5em; padding: 5px 0px 5px 0px
+    }
+    .humble-doc-section-topics {
+        padding-left: 20px
+    }
+</style>
 
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
