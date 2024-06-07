@@ -181,6 +181,7 @@ class Module extends CLI
                 @mkdir($root.DIRECTORY_SEPARATOR.'Views');
                 @mkdir($root.DIRECTORY_SEPARATOR.'Views/actions');
                 @mkdir($root.DIRECTORY_SEPARATOR.'Views/actions/Smarty');
+                @mkdir($root.DIRECTORY_SEPARATOR.'Views/admin/Smarty');                
                 @mkdir($root.DIRECTORY_SEPARATOR.'Views/Cache');
                 @mkdir($root.DIRECTORY_SEPARATOR.'Resources');
                 @mkdir($root.DIRECTORY_SEPARATOR.'Resources/js');
