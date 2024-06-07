@@ -1,6 +1,14 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
-<h1>Installation</h1>
+<style scoped>
+    .humble-section-header {
+        font-size: 1.5em; padding: 5px 0px 5px 0px
+    }
+    .humble-topics {
+        padding-left: 20px
+    }
+</style>
+<h1 class="humble-section-header">Installation</h1>
 <hr />
 <br />
 <p class="humble-emphasis">
@@ -10,10 +18,10 @@ to each team to decide, and you can even use a combination of the two.
 </p>
 <br />
 <hr />
-<h3>Prerequisites</h3>
+<h3 class="humble-section-header">Prerequisites</h3>
 <br />
-<h4>Required</h4>
-<ul>
+<h4 class="humble-section-header">Required</h4>
+<ul class="humble-topics">
     <li>Apache 2.4+</li>
     <li>PHP 7.1+</li>
     <li>MySQL 5.4+</li>
@@ -22,38 +30,38 @@ to each team to decide, and you can even use a combination of the two.
     <li>Memcached</li>    
 </ul>
 <br />
-<h4>Optional</h4>
-<ul>
+<h4 class="humble-section-header">Optional</h4>
+<ul class="humble-topics">
     <li><i>For support for code deployments</i>
-        <ul>
+        <ul class="humble-topics">
             <li>Java JDK 1.8</li>
             <li>Apache Ant 1.8+</li>
         </ul>
     </li>
     <li><i>For support for developers and WebSockets</i>
-        <ul>
+        <ul class="humble-topics">
             <li>Node.js</li>
         </ul>
     </li>
 </ul>
 <hr />
-<h3>Before beginning installation</h3>
+<h3 class="humble-section-header">Before beginning installation</h3>
 At a minimum, to get the Humble Framework to operate, you need to locally install the software from the Required section above.<br /><br />
 However, for your development environment, you can use our convenient Docker &amp; Docker-Compose option that will install and configure
 all components for you. Go here for a brief guide on <a href='https://humbleprogramming.com/pages/UsingDocker.htmls' target='_BLANK'>Using Docker</a>.<br /><br />
 If you do decide to do a local install, you will need to...
-<ol>
+<ol class="humble-topics">
     <li>Install the software listed above</li>
     <li>Additionally:
-        <ul>
+        <ul class="humble-topics">
             <li>Apache 2.4
-                <ul>
+                <ul class="humble-topics">
                     <li>Enable Rewrite Module</li>
                     <li>Enable SSL Module</li>
                 </ul>
             </li>
             <li>PHP 7.1+
-                <ul>
+                <ul class="humble-topics">
                     <li>Add <a href='#' onclick='return false'>MongoDB Extension</a></li>
                     <li>Add <a href='#' onclick='return false'>Memcache Extension</a></li>
                     <li>Add <a href='#' onclick='return false'>Memcached Extension</a></li>
@@ -74,7 +82,7 @@ If you do decide to do a local install, you will need to...
 <br />
 
 <hr />
-<h3>Package Installer</h3>
+<h3 class="humble-section-header">Package Installer</h3>
 
 <p class='humble-emphasis'>
     Humble uses its own program to manage installation and framework updates after installation.  We will need to download that program into the root of our application directory and instruct it to download the framework files.<br /><br />
@@ -83,15 +91,15 @@ If you do decide to do a local install, you will need to...
 </p>
 
 <br />
-<ul>
+<ul class="humble-topics">
     <li>Windows Installation
-        <ul>
+        <ul class="humble-topics">
             <li> <a href='/app/install/Humble.php'>Humble.php</a></li>
             <li> <a href='/app/install/humble.bat'>Humble.bat</a></li>
         </ul>
     </li>
     <li>Linux Installation
-        <ul>
+        <ul class="humble-topics">
             <li> <a href='/app/install/Humble.php'>Humble.php</a></li>
             <li> <a href='/app/install/humble.sh'>Humble.sh</a></li>
         </ul>
