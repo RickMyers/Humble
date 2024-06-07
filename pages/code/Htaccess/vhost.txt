@@ -1,5 +1,5 @@
 <VirtualHost *:80>
-    DocumentRoot /var/www/html
+  DocumentRoot /var/www/html
     ServerName humbleprogramming.dev
     ErrorLog /var/www/logs/apache_errors.log
     DirectoryIndex pages/Main.htmls index.html
@@ -9,8 +9,7 @@
         AllowOverride none
         Options +Includes
         AddType text/html .htmls
-        AddOutputFilter INCLUDES .htmls .html
-        Options +Includes
+        AddOutputFilter INCLUDES .htmls .html .php
         RewriteBase /
         RewriteRule ^index.html?(.*) /humble/home/index?message=$1 "[B= ?,L,NC,QSA]"
         RewriteRule ^app/ - [L,NC]
@@ -35,7 +34,8 @@
         RewriteRule ^mapi/([^/\.]+)/([^/\.]+)/(.*)?$ /mapi.php?n=$1&t=$2&m=$3 [QSA,L]
         RewriteRule ^mapi/([^/\.]+)/([^/\.]+)?$ /mapi.php?n=$1&t=$2 [QSA,L]
         RewriteRule ^esb/(.*)? /iapi.php?uri=$1 [QSA,L]
-        RewriteRule ^([^/\.]+)/([^/\.]+)/(.*)?$ /index.php?humble_framework_namespace=$1&humble_framework_controller=$2&humble_fram>        RedirectMatch 404 app/allowed.json
+        RewriteRule ^([^/\.]+)/([^/\.]+)/(.*)?$ /index.php?humble_framework_namespace=$1&humble_framework_controller=$2&humble_framework_action=$3 [QSA,L]
+        RedirectMatch 404 app/etc/public_routes.json
         RedirectMatch 404 msa.php$
         RedirectMatch 404 \.(xml|yaml|yml|project)$
         ErrorDocument 404 /humble/home/404
