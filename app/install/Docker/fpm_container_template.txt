@@ -27,6 +27,7 @@ RUN apt install -y redis-server
 RUN apt install -y mysql-client
 RUN apt install -y libapache2-mod-dnssd
 RUN apt install -y npm
+RUN apt install -y php8.2
 RUN apt install -y php8.2-fpm
 RUN apt install -y php8.2-mysql
 RUN apt install -y php8.2-mongodb
