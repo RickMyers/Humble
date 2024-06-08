@@ -14,7 +14,7 @@ services:
       - &&NAMESPACE&&_packages:/var/www/packages
       - &&NAMESPACE&&_web_cfg:/etc
     ports:
-      - &&PORT&&:&&PORT&&
+      - &&PORT&&:80
     expose:
       - 9003
       
