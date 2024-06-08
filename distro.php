@@ -59,8 +59,9 @@
     $action     = isset($_GET['action']) ? strtolower($_GET['action']) : false;
     switch ($action) {
         case    "fetch" :
-            $xml        = Environment::applicationXML();
-            $source     = "../packages/Humble-Distro-".(string)$xml->version->framework.".zip";
+            chdir('app');            
+            $xml        = \Environment::applicationXML();
+            $source     = "../../packages/Humble-Distro-".(string)$xml->version->framework.".zip";
             if (!file_exists($source)) {
                 header("Content-Type: application/json");
                 print('{ "error": "Missing Distro For Version '.(string)$xml->version->framework.'" }');
@@ -115,7 +116,8 @@
             break;
         case    "version" :
             header("Content-Type: application/json");
-            $xml        = Environment::applicationXML();
+            chdir('app');
+            $xml        = \Environment::applicationXML();
             print('{ "version": "'.(string)$xml->version->framework.'" }');
             break;
         case    "verify" :
