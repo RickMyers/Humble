@@ -1,5 +1,7 @@
 <?php
 require_once 'cli/CLI.php';
+require_once 'Humble.php';
+require_once 'Environment.php';
 class System extends CLI 
 {
     
@@ -9,7 +11,7 @@ class System extends CLI
      * @return boolean
      */
     public static function status() {
-        $xml    = Environment::applicationXML();
+        $xml    = \Environment::applicationXML();
         if ($xml->status->enabled == 1) {
             print("\n\n".date('Y-m-d H:i:s').'   <Application is enabled>'."\n\n");
             return true;
@@ -40,10 +42,10 @@ class System extends CLI
      * Toggles whether we are going to use local authentication or some form of SSO token
      */
     public static function toggleAuthentication() {
-        $xml  = Environment::applicationXML();
+        $xml  = \Environment::applicationXML();
         $enabled = (int)$xml->status->SSO->enabled;
         $xml->status->SSO->enabled = $enabled ? 0 : 1;
-        file_put_contents(Environment::applicationXMLLocation(),$xml->asXML());
+        file_put_contents(\Environment::applicationXMLLocation(),$xml->asXML());
         $message = ($enabled) ? 'Authentication Engine: LOCAL' : 'Authentication Engine: SSO';
         print("\n\n".$message."\n\n");
     }
@@ -75,10 +77,10 @@ class System extends CLI
      * Toggles the application status
      */
     public static function toggle() {
-        $xml  = Environment::applicationXML();
+        $xml  = \Environment::applicationXML();
         $enabled = (int)$xml->status->enabled;
         $xml->status->enabled = $enabled ? 0 : 1;
-        file_put_contents(Environment::applicationXMLLocation(),$xml->asXML());
+        file_put_contents(\Environment::applicationXMLLocation(),$xml->asXML());
         $message = ($enabled) ? 'System Status: OFFLINE' : 'System Status: ONLINE';
         print("\n\n".$message."\n\n");
     }
@@ -91,7 +93,7 @@ class System extends CLI
      */
     public static function increment($next=1) {
         print("CHANGING VERSION"."\n");
-        $data   = self::getApplicationXML();
+        $data   = \Environment::applicationXML();
         $v      = explode('.',(string)$data->version->framework);
         for ($i=count($v)-1; $i>=0; $i-=1) {                                    //This is one of those ridiculously evil things in computer science
             $v[$i] = (int)$v[$i]+$next;
@@ -101,7 +103,7 @@ class System extends CLI
         }
         $data->version->framework = (string)implode('.',$v);
         print("\nSetting version to ".$data->version->framework."\n\n");
-        file_put_contents(Environment::applicationXMLLocation(),$data->asXML());
+        file_put_contents(\Environment::applicationXMLLocation(),$data->asXML());
         return $data->version->framework;
     }
         
@@ -110,6 +112,7 @@ class System extends CLI
      */
     public static function package() {
         $content = self::getManifestContent();
+        $xml     = \Environment::applicationXML();        
         chdir('..');
         foreach ($content['files'] as $file) {
             if (!isset($content['xref'][$file])) {
@@ -117,7 +120,6 @@ class System extends CLI
             }
         }
         @mkdir('../packages/',0775);
-        $xml        = Environment::applicationXML();
         $archive    = '../packages/Humble-Distro-'.(string)$xml->version->framework.'.zip';
         print("Creating archive ".$archive."\n");
         if (file_exists($archive)) {
@@ -255,12 +257,8 @@ class System extends CLI
     }
     //--------------------------------------------------------------------------
     public static function patch() {
-        if (file_exists('../Humble.project')) {
-            $project = json_decode(file_get_contents('../Humble.project'),true);
-        } else {
-            die("\nHumble project file not found.\n");
-        }
-        $app = Environment::applicationXML();
+        $project = \Environment::getProject();
+        $app = \Environment::applicationXML();
         $canonical = json_decode(file_get_contents($project['framework_url']."/distro/version"),true);
         $canon_version = (int)str_replace(".","",(string)$canonical['version']);
         $local_version = (int)str_replace(".","",(string)$app->version->framework);
