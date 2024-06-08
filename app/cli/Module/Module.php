@@ -240,9 +240,9 @@ class Module extends CLI
                     $templates[] = $root."/lib/sample/install/Schema/Update/query.sql"; $out[] = "Code/".$pk."/".$md."/Schema/Update/Users.sql";
                     $templates[] = $root."/lib/sample/install/Entities/Users.php.txt";  $out[] = "Code/".$pk."/".$md."/Entities/Users.php";
                     $templates[] = $root."/lib/sample/install/Models/User.php.txt";     $out[] = "Code/".$pk."/".$md."/Models/User.php";
-                    $templates[] = $root."/lib/sample/install/etc/public_routes.json";  $out[] = "Code/".$pk."/".$md."etc/public_routes.json";
-                    $templates[] = $root."/lib/sample/install/etc/api_policy.json";     $out[] = "Code/".$pk."/".$md."etc/api_policy.json";
-                    $templates[] = $root."/lib/sample/install/etc/cadence.json";        $out[] = "Code/".$pk."/".$md."etc/cadence.json";
+                    $templates[] = $root."/lib/sample/install/etc/public_routes.json";  $out[] = "Code/".$pk."/".$md."/etc/public_routes.json";
+                    $templates[] = $root."/lib/sample/install/etc/api_policy.json";     $out[] = "Code/".$pk."/".$md."/etc/api_policy.json";
+                    $templates[] = $root."/lib/sample/install/etc/cadence.json";        $out[] = "Code/".$pk."/".$md."/etc/cadence.json";
                     
                 } else {
                     $templates[] = $root."/lib/sample/module/web/js/actions.js";        $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";

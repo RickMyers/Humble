@@ -332,8 +332,8 @@ FACTORY;
     }
     $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}'];
     $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1'];
-    @mkdir('app/Code/'.$project->package.'/'.$project->module.'/etc/',0775,true);
-    file_put_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('app/Code/Framework/Humble/lib/sample/install/etc/application.xml')));    
+    @mkdir('Code/'.$project->package.'/'.$project->module.'/etc/',0775,true);
+    file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('Code/Framework/Humble/lib/sample/install/etc/application.xml')));    
     chdir('..');
     $x = (file_exists('humble.bat')) ? @unlink('humble.bat') : '';
     $x = (file_exists('humble.sh'))  ? @unlink('humble.sh') : '';
