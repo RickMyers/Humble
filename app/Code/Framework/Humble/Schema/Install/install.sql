@@ -242,52 +242,6 @@ CREATE TABLE `humble_templaters` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `humble_templates` */
-
-CREATE TABLE `humble_templates` (
-  `namespace` char(32) NOT NULL DEFAULT '',
-  `template` char(48) NOT NULL DEFAULT '',
-  `source` char(128) DEFAULT NULL,
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`namespace`,`template`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Table structure for table `humble_user_identification` */
-
-CREATE TABLE `humble_user_identification` (
-  `id` int NOT NULL,
-  `first_name` char(96) DEFAULT NULL,
-  `last_name` char(96) DEFAULT NULL,
-  `middle_name` char(96) DEFAULT NULL,
-  `name_suffix` char(36) DEFAULT NULL,
-  `maiden_name` char(96) DEFAULT NULL,
-  `name` char(192) DEFAULT NULL,
-  `entity` int DEFAULT NULL,
-  `gender` char(3) DEFAULT NULL,
-  `date_of_birth` date DEFAULT NULL,
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Table structure for table `humble_users` */
-
-CREATE TABLE `humble_users` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_name` char(30) DEFAULT '',
-  `password` char(13) DEFAULT '',
-  `salt` char(32) DEFAULT NULL,
-  `email` char(128) DEFAULT '',
-  `authenticated` char(1) DEFAULT 'N',
-  `new_password_token` char(16) DEFAULT '',
-  `reset_password_token` char(16) DEFAULT '',
-  `authentication_token` char(16) DEFAULT '',
-  `logged_in` datetime default null,
-  `account_status` char(1) DEFAULT '',
-  `login_attempts` int DEFAULT '0',
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  unique index (`user_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -1,0 +1,46 @@
+{
+    "comment": "Read more about the API policy at https://humbleprogramming.com/pages/APIPolicy.htmls",
+    "default": {
+        "authenticated": {
+            "read": false,
+            "write": false
+        },
+        "public": {
+            "read": false,
+            "write": false
+        }
+    },
+    "entities": {
+        "namespace_1": {
+            "entity_1": {
+                "authenticated" : {
+                    "read": true,
+                    "write": false
+                },
+                "public": {
+                    "*": false
+                }
+            },
+            "entity_2": {
+                "authenticated" : {
+                    "read": true,
+                    "write": false
+                },
+                "public": {
+                    "*": false
+                }
+            }            
+        },
+        "namespace": {
+            "entity_3": {
+                "authenticated" : {
+                    "read": true,
+                    "write": false
+                },
+                "public": {
+                    "*": false
+                }
+            }
+        }
+    }
+}
