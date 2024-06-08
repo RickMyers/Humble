@@ -874,9 +874,9 @@ SQL;
      * Will turn installation off after a successful run...
      */
     public function disable() {
-        $xml = simplexml_load_file('etc/application.xml');
+        $xml = Environment::applicationXML();
         $xml->status->installer = 0;
-        file_put_contents('etc/application.xml',$xml->asXML());
+        file_put_contents(Environment::applicationXMLLocation(),$xml->asXML());
         return $this;
     }
 
