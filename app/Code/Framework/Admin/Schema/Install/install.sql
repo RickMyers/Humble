@@ -40,7 +40,8 @@ CREATE TABLE `admin_users` (
   `account_status` char(1) DEFAULT '',
   `login_attempts` int(11) DEFAULT '0',
   `modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
