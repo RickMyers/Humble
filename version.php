@@ -1,5 +1,8 @@
 <?php
+$project = json_decode(file_get_contents('Humble.project'));
+$data = (file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Missing application.xml file.");
+$xml  = simplexml_load_string($data);
 
-$xml = simplexml_load_file('app/etc/application.xml');
+
 print($xml->version->framework);
 

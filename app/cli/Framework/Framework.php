@@ -97,7 +97,7 @@ class Framework extends CLI
      * Just prints the version
      */
     public static function version() {
-        $xml    = simplexml_load_string(file_get_contents('etc/application.xml'));
+        $xml    = Environment::applicationXML();
         print("\n\n".$xml->version->framework."\n\n");
     }
 }

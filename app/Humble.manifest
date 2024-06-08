@@ -8,18 +8,19 @@
 ^/cache/
 ^/Cache/
 ^.project
+^.phpdoc
+^.vscode
 ^.tmp
 ^.bak
 ^.well-known/
 ^dist/
 ^Presentations/
+^Docs
 LICENSE
-index.php
 index.html
 app/install/.htaccess .htaccess
-app/install/public_routes.json etc/public_routes.json
-app/install/api_policy.json etc/api_policy.json
-app/install/cadence.json etc/cadence.json
+app/Cadence.php
+app/Environment.php
 api.php
 iapi.php
 mapi.php
@@ -32,9 +33,6 @@ loader.php
 lib/*
 web/*
 dist/*
-includes/Constants.txt.php
-includes/Headers.txt.php
-includes/Custom.txt.php
 app/Humble.local.manifest
 app/cli/*
 app/Code/Framework/*
@@ -45,9 +43,7 @@ app/lib/templaters/*
 app/tests/*
 app/autoload.php
 app/AuthorizationEngine.php
-app/Cadence.php
 app/Compatibility.php
-app/Environment.php
 app/Launcher.php
 app/launch.php
 app/Trigger.php

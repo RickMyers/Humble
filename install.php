@@ -88,12 +88,12 @@
 //
 //IMPORTANT:
 //
-//   *** To Enable Install, edit the file etc/application.xml' and set the value to enable ***
+//   *** To Enable Install, edit the file application.xml file in the main modules /etc/ folder and set the value to enable (1) ***
 //
 //----------------------------------------------------------------------------------------------------------------
-$data = "";
-$data = (file_exists('app/etc/application.xml')) ? file_get_contents('app/etc/application.xml') : die("Install is not possible at this time.");
-$xml  = simplexml_load_string($data);
+
+$project    = json_decode(file_get_contents('Humble.project'));
+$xml        = simplexml_load_string((file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Install is not possible at this time due to missing application.xml meta data file."));
 
 if (!empty($xml)) {
     if (isset($xml->status)) {
@@ -114,7 +114,6 @@ if (!empty($xml)) {
     die("There is an error in the application configuration file");
 }
 $method     = (isset($_POST['method'])) ? $_POST['method'] : "INIT";
-$project    = json_decode(file_get_contents('Humble.project'));
 $docker     = file_exists('Docker/'.$project->namespace.'/docker-compose.yaml');
 $info = [
     'User' => [
@@ -424,6 +423,7 @@ switch ($method) {
         include "CLI.php";        
         
         postUpdate('Finalizing','Registering Administrator',(++$step*$percent));
+        //need to create the user tables... should do that
         $user_id      = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);        
         $util->disable();                                                       //Disabling the installer to prevent accidental re-run
         

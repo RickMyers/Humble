@@ -59,7 +59,7 @@
     $action     = isset($_GET['action']) ? strtolower($_GET['action']) : false;
     switch ($action) {
         case    "fetch" :
-            $xml        = simplexml_load_file('app/etc/application.xml');
+            $xml        = Environment::applicationXML();
             $source     = "../packages/Humble-Distro-".(string)$xml->version->framework.".zip";
             if (!file_exists($source)) {
                 header("Content-Type: application/json");
@@ -115,7 +115,7 @@
             break;
         case    "version" :
             header("Content-Type: application/json");
-            $xml        = simplexml_load_file('app/etc/application.xml');
+            $xml        = Environment::applicationXML();
             print('{ "version": "'.(string)$xml->version->framework.'" }');
             break;
         case    "verify" :

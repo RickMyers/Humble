@@ -91,7 +91,7 @@ class System extends Model
         $rain->assign('engine',     (($this->_isLinux())         ? `which php.exe` : 'c:\\php\\'));
         $rain->assign('support_name',(($this->getSupportName())  ? $this->getSupportName() : ""));
         $rain->assign('support_email',(($this->getSupportEmail())? $this->getSupportEmail() : ""));
-        file_put_contents('etc/application.xml',$rain->render('application',true));
+        file_put_contents(Environment::applicationXMLLocation(),$rain->render('application',true));
         Humble::response('Saved...');
     }
 
@@ -182,9 +182,9 @@ class System extends Model
      * Changes the state, values are DEVELOPMENT, PRODUCTION, and DEBUG
      */
     public function changeState() {
-        $xml = simplexml_load_file('etc/application.xml');
+        $xml = Environment::applicationXML();
         $xml->state = $this->getState();
-        file_put_contents('etc/application.xml',$xml->asXML());
+        file_put_contents(Environment::applicationXMLLocation(),$xml->asXML());
         Environment::recacheApplication();
     }
     
@@ -194,9 +194,9 @@ class System extends Model
      *
      */
     public function quiesce() {
-        $xml = simplexml_load_file('etc/application.xml');
+        $xml = Environment::applicationXML();
         $xml->status->quiescing = $this->getValue();
-        file_put_contents('etc/application.xml',$xml->asXML());
+        file_put_contents(Environment::applicationXMLLocation(),$xml->asXML());
     }
 
     /**
@@ -205,9 +205,9 @@ class System extends Model
      *
      */
     public function online() {
-        $xml = simplexml_load_file('etc/application.xml');
+        $xml = Environment::applicationXML();
         $xml->status->enabled = 1;
-        file_put_contents('etc/application.xml',$xml->asXML());
+        file_put_contents(Environment::applicationXMLLocation(),$xml->asXML());
     }
 
     /**
@@ -216,9 +216,9 @@ class System extends Model
      *
      */
     public function offline() {
-        $xml = simplexml_load_file('etc/application.xml');
+        $xml = Environment::applicationXML();
         $xml->status->enabled = 0;
-        file_put_contents('etc/application.xml',$xml->asXML());
+        file_put_contents(Environment::applicationXMLLocation(),$xml->asXML());
     }
 
     /**
@@ -283,9 +283,9 @@ class System extends Model
      */
     public function setFlagState() {
         if ($flag    = $this->getFlag()) {
-            $application = simplexml_load_file('etc/application.xml');
+            $application = Environment::applicationXML();
             $application->flags->$flag = ($this->getState() == 'On') ? 1 : 0;
-            file_put_contents('etc/application.xml',$application->asXML());
+            file_put_contents(Environment::applicationXMLLocation(),$application->asXML());
             Environment::recacheApplication();
         }
     }

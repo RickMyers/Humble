@@ -1,8 +1,9 @@
 <?php
 
-
-    $data = (file_exists('app/etc/application.xml')) ? file_get_contents('app/etc/application.xml') : die("Install is not possible at this time.");
+    $project = json_decode(file_get_contents('Humble.project'));
+    $data = (file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Missing application.xml file, Install is not possible at this time.");
     $xml  = simplexml_load_string($data);
+
     if (!empty($xml)) {
         if (isset($xml->status)) {
             if (isset($xml->status->installer) && ((int)$xml->status->installer)) {
