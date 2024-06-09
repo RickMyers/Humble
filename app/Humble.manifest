@@ -16,11 +16,11 @@
 ^dist/
 ^Presentations/
 ^Docs
+^pages
 LICENSE
 index.html
+index.php
 app/install/.htaccess .htaccess
-app/Cadence.php
-app/Environment.php
 api.php
 iapi.php
 mapi.php
@@ -44,6 +44,8 @@ app/tests/*
 app/autoload.php
 app/AuthorizationEngine.php
 app/Compatibility.php
+app/Cadence.php
+app/Environment.php
 app/Launcher.php
 app/launch.php
 app/Trigger.php

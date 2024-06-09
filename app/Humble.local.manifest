@@ -1,9 +1,8 @@
 {
     "merge": {
+        "app/Humble.local.manifest": true
     },
-        "app/Humble.local.manifest": true,
-	"app/allowed.json": true,
-        "app/Constants.php": true
+    "ignore": {
     },
     "alwaysSkip": {
         ".git": true,
