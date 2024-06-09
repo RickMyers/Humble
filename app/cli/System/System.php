@@ -225,7 +225,7 @@ class System extends CLI
             die("\n\nERROR: Could not read Humble.local.manifest.  Check to see it exists or if there is a parsing issue with the file\n\n");
         }
 
-        file_put_contents('distro_'.$version.'/humble.zip',file_get_contents($project['framework_url'].'/distro/fetch'));                                               //Download the current source base
+        file_put_contents('distro_'.$version.'/humble.zip',file_get_contents($project->framework_url.'/distro/fetch'));                                               //Download the current source base
         $changed    = []; $insertions = []; $source = []; $contents = []; $ignore = []; $merge = []; $matched = 0;
         $distro     = new ZipArchive();
         $dist_file = 'distro_'.$version.'/humble.zip';
@@ -258,8 +258,8 @@ class System extends CLI
     //--------------------------------------------------------------------------
     public static function patch() {
         $project = \Environment::getProject();
-        $app = \Environment::applicationXML();
-        $canonical = json_decode(file_get_contents($project['framework_url']."/distro/version"),true);
+        $app     = \Environment::applicationXML();
+        $canonical = json_decode(file_get_contents($project->framework_url."/distro/version"),true);
         $canon_version = (int)str_replace(".","",(string)$canonical['version']);
         $local_version = (int)str_replace(".","",(string)$app->version->framework);
         $helper = Humble::helper('humble/directory');
