@@ -208,6 +208,7 @@
                 $parts  = explode(':',$_REQUEST['project_url']??'');                
                 $zip->addFromString('vhost.conf',processVhost($vopttpl[$engine],array_merge($_REQUEST,['SERVER_NAME'=>$name])));
                 $zip->addFromString('ports.conf',str_replace(['&&PORT&&'],[$port],file_get_contents('app/install/Docker/ports_template.conf')));
+                $zip->addFromString('.gitignore','*');
                 $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents($copttpl[$engine])));
                 $zip->addFromString('docker-compose.yaml',str_replace($srch,$repl,file_get_contents('app/install/Docker/dc_template.txt')));
                 $zip->addFromString('docker_instructions.txt',str_replace($srch,$repl,file_get_contents('app/install/Docker/docker_instructions.txt')));

@@ -9,7 +9,7 @@
 /___/_/ /_/____/\__/_/   \__,_/\___/\__/_/\____/_/ /_/____/  
 ================================================================================                                                             
 
-You will need to build your image.  To do so, move into the Docker/&&NAMESPACE&& 
+You will need to build your image.  To do so, move into the Docker 
 directory.  The command to build your image is below:
 
 docker build -t &&NAMESPACE&& .

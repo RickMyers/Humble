@@ -462,11 +462,12 @@ function dockerMe() {
             file_put_contents('docker_temp.zip',$package);
             $zip = new ZipArchive();
             if ($zip->open('docker_temp.zip')) {
-                @mkdir('Docker/'.$project['namespace'],0775,true);
-                chdir('Docker/'.$project['namespace']);
+                @mkdir('Docker',0775,true);
+                chdir('Docker');
                 file_put_contents('docker-compose.yaml',$zip->getFromName('docker-compose.yaml'));
                 file_put_contents('docker_instructions.txt',$zip->getFromName('docker_instructions.txt'));
                 file_put_contents('dockerfile',$zip->getFromName('DockerFile'));
+                file_put_contents('.gitignore',$zip->getFromName('.gitignore'));
                 file_put_contents('vhost.conf',$zip->getFromName('vhost.conf'));
                 file_put_contents('ports.conf',$zip->getFromName('ports.conf'));
                 file_put_contents('action.php',$zip->getFromName('action.php'));
@@ -482,7 +483,7 @@ function dockerMe() {
                 file_put_contents('delay_launch.php',$zip->getFromName('delay_launch.php'));
                 $zip->close();
                 print(file_get_contents('docker_instructions.txt'));
-                chdir('../../');
+                chdir('../');
             }
             @unlink('docker_temp.zip');
 
