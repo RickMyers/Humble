@@ -484,7 +484,7 @@ PHP;
                 if (isset($node['wrapper'])) {
                     print($this->tabs().'Humble::response('.$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
                 } else {
-                    print($this->tabs().'Humble::response($'.$assign_str.$node['id'].'->'.$node['method'].'());'."\n");
+                    print($this->tabs().'Humble::response('.$assign_str.'$'.$node['id'].'->'.$node['method'].'());'."\n");
                 }
             } else {
                 if (isset($node['wrapper'])) {

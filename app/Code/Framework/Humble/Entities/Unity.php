@@ -53,6 +53,7 @@ class Unity
     protected $_noLimitQuery  = '';                                             //Current query before pagination is added
     protected $_xref          = [];                                             //Hash array for xrefing the names of result set columns to something else
     protected $_exclude       = false;
+    protected $_bulk          = false;
     public    $_lastResult    = [];
 
     /**
@@ -230,6 +231,14 @@ SQL;
         return $this;
     }
 
+    public function bulk($number=false) {
+        if ($number===false) {
+            return $this->_bulk;
+        }
+        $this->_bulk = $number;
+        return $this;
+    }
+    
     /**
      * What this will do is take a comma separated list of column names and will swap them out for new names in the return result set
      * 

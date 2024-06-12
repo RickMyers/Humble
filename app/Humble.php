@@ -33,6 +33,7 @@
         private static $namespace   = false;
         private static $controller  = false;
         private static $action      = false;
+        private static $faker       = false;
         private static $cache       = false;
         private static $cacheConn   = false;
         private static $cacheFailed = false;
@@ -109,7 +110,16 @@
             }
             return false;
         }
-
+        
+        /**
+         * A singleton to return our faker fake data generator
+         * 
+         * @return object
+         */
+        public static function fake() {
+            return (self::$faker) ? self::faker : Humble::model('humble/faker');
+        }
+        
         /**
          * Returns the resource that is trying to be allocated broken into parts
          *
