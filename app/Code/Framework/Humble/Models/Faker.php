@@ -77,7 +77,7 @@ class Faker extends Model
         }
         $this->data['names']['last'] = json_decode(file_get_contents($surnames),true);
         $this->primed = true;
-        print("Primed\n");
+        return $this;
     }
     
     /**
@@ -91,7 +91,7 @@ class Faker extends Model
             $this->prime();
         }
         $gender = $gender ? $gender : $this->genders[rand(0,1)];
-        return $this->data['names']['first'][$gender][rand(0,count($this->data['names']['first'][$gender]))];
+        return $this->data['names']['first'][$gender][rand(0,count($this->data['names']['first'][$gender])-1)];
     }
     
     /**
@@ -104,7 +104,7 @@ class Faker extends Model
         if (!$this->primed) {
             $this->prime();
         }
-        return $this->data['names']['last'][rand(0,count($this->data['names']['last']))];
+        return $this->data['names']['last'][rand(0,count($this->data['names']['last'])-1)];
     }
     
     /**
@@ -121,22 +121,51 @@ class Faker extends Model
         return $this->firstName($gender).' '.$this->lastName();
     }
     
+    /**
+     * Returns an actual city name, and sets the global city object, optionally within a state that was passed as a parameter
+     * 
+     * @param string $state
+     * @return string
+     */
     public function city($state=false) {
         if (!$this->primed) {
             $this->prime();
         }
-        $state = ($state) ? $state : $this->data['states'][rand(0,count($this->data['states']))];
-        $this->city = $this->data['locations'][$state][rand(0,count($this->data['locations'][$state]))];
+        $state = ($state) ? $state : $this->data['states'][rand(0,count($this->data['states'])-1)];
+        $this->city = $this->data['locations'][$state][rand(0,count($this->data['locations'][$state])-1)];
         return $this->city['city'];
     }
     
+    /**
+     * Returns the state of the global city object or a random state if that isn't set
+     * 
+     * @return string
+     */
+    public function state() {
+        return (isset($this->city['state'])) ? $this->city['state'] : $this->data['states'][rand(0,count($this->data['states'])-1)];
+    }
+    
+    /**
+     * Returns a random street name
+     * 
+     * @return string
+     */
     public function streetAddress() {
         if (!$this->primed) {
             $this->prime();
         }
-        return $this->data['streets'][rand(0,count($this->data['streets']))]['street'];
+        return $this->data['streets'][rand(0,count($this->data['streets'])-1)]['street'];
     }
     
+    /**
+     * Returns a random number of a certain length, optionally between a min and max number, and padded a certain length
+     * 
+     * @param int $length
+     * @param int $min
+     * @param int $max
+     * @param char $pad
+     * @return number
+     */
     public function number($length=8,$min=false,$max=false,$pad=false) {
         $min    = ($min!==false) ? $min : false;
         $max    = ($max) ? $max : false;
@@ -160,29 +189,69 @@ class Faker extends Model
         return $number;
     }
     
+    /**
+     * Returns the zip code of the current city object or sets that object and then returns the zip code
+     * 
+     * @param string $state
+     * @return string
+     */
     public function zipCode($state=false) {
         if (!$this->primed) {
             $this->prime();
         }        
-        $state = ($state) ? $state : $this->data['states'][rand(0,count($this->data['states']))];
+        $state = ($state) ? $state : $this->data['states'][rand(0,count($this->data['states'])-1)];
         if (!$this->city) {
             $this->city($state);
         }
         return $this->city['zip_code'];
     }
     
+    /**
+     * Returns a random full address optionally one within a state and actual city
+     * 
+     * @param string $state
+     * @return type
+     */
     public function fullAddress($state=false) {
         if (!$this->primed) {
             $this->prime();
         }
-        $state = ($state) ? $state : $this->data['states'][rand(0,count($this->data['states']))];
+        $state = ($state) ? $state : $this->data['states'][rand(0,count($this->data['states'])-1)];
         return $this->number(4,100,4000).' '.$this->streetAddress().', '.$this->city($state).', '.$state.', '.$this->city['zip_code'];;
     }
     
-    public function phoneNumber($state=false,$formatted=false) {
+    /**
+     * Returns a phone number, optionally formatted, but the area code should actually be the area code of the city object
+     * 
+     * @param string $state
+     * @param boolean $formatted
+     * @return string
+     */
+    public function phoneNumber($formatted=false) {
         if (!$this->primed) {
             $this->prime();
         }
-        return ($formatted) ? ( isset($this->city['area-code']) ? $this->city['area-code'] : $this->number(3,100,999))."-".$this->number(3,100,999).'-'.$this->number(4,0,9999,'0') : $this->number(5,10000,99999).$this->number(5,10000,99999);
+        return ($formatted) ? (isset($this->city['area-code']) ? $this->city['area-code'] : $this->number(3,100,999))."-".$this->number(3,100,999).'-'.$this->number(4,0,9999,'0') : $this->number(5,10000,99999).$this->number(5,10000,99999);
+    }
+    
+    /**
+     * Returns a random date, optionally between one or two date limits
+     * 
+     * @param date $min_date
+     * @param date $max_date
+     * @return date
+     */
+    public function date($min_date=false,$max_date=false) {
+        $date = false;
+        if ($min_date && $max_date) {
+            $date = date('m/d/Y',rand(strtotime($min_date),strtotime($max_date)));
+        } else if ($min_date) {
+            $date = date('m/d/Y',rand(date('Ymd',strtotime($min_date)),20301231));
+        } else if ($max_date) {
+            $date = date('m/d/Y',rand(19010101,date('Ymd',strtotime($max_date))));
+        } else {
+            $date = date('m/d/y',strtotime(rand(strtotime('19010101'),strtotime('20301231'))));
+        }
+        return $date;
     }
 }

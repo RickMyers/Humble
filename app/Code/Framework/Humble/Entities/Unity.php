@@ -231,6 +231,7 @@ SQL;
         return $this;
     }
 
+    
     public function bulk($number=false) {
         if ($number===false) {
             return $this->_bulk;
