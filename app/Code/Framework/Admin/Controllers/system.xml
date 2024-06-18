@@ -103,5 +103,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             </model>
         </action>
         
+        <!-- ########################################################################################## -->
+        
+        <action name="stages" output="JSON">
+            <description>Returns the list of SDLC stages from the application.xml file</description>
+            <model namespace="admin" class="system" method="stages" response="true" wrapper="json_encode">
+                
+            </model>
+        </action>
+        
     </actions>
 </controller>

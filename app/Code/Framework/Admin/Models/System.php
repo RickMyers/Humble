@@ -162,9 +162,9 @@ class System extends Model
         $stages = [];
         $this->xml = $this->xml ? $this->xml : Environment::status(true);
         foreach (($this->xml['stages'] ?? []) as $stage => $attr) {
-            $stages[] = $stage;
+            $order = $attr['@attributes']['order'] ?? '1';
+            $stages[(int)$order] = $stage;
         }
-        \Log::general($stages);
         return $stages;
     }
     

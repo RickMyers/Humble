@@ -467,7 +467,7 @@ function dockerMe() {
                 file_put_contents('docker-compose.yaml',$zip->getFromName('docker-compose.yaml'));
                 file_put_contents('docker_instructions.txt',$zip->getFromName('docker_instructions.txt'));
                 file_put_contents('dockerfile',$zip->getFromName('DockerFile'));
-                file_put_contents('.gitignore',$zip->getFromName('.gitignore'));
+                file_put_contents('.gitignore','*');
                 file_put_contents('vhost.conf',$zip->getFromName('vhost.conf'));
                 file_put_contents('ports.conf',$zip->getFromName('ports.conf'));
                 file_put_contents('action.php',$zip->getFromName('action.php'));
@@ -497,14 +497,14 @@ function dockerMe() {
 }
 //------------------------------------------------------------------------------
 function reregisterProject() {
-	$attributes = json_decode(str_replace(["\n","\r","\m"],["","",""],file_get_contents('Humble.project')),true);
-	if (isset($attributes['serial_number'])) {
-            unset($attributes['serial_number']);
-	}
-	$result = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))),true);
-	$attributes['serial_number'] = $result['serial_number'] ?? 'Error-Try-Again';	
-	file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
-	return $attributes;
+    $attributes = json_decode(str_replace(["\n","\r","\m"],["","",""],file_get_contents('Humble.project')),true);
+    if (isset($attributes['serial_number'])) {
+        unset($attributes['serial_number']);
+    }
+    $result = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))),true);
+    $attributes['serial_number'] = $result['serial_number'] ?? 'Error-Try-Again';	
+    file_put_contents('Humble.project',json_encode($attributes,JSON_PRETTY_PRINT));
+    return $attributes;
 }
 //------------------------------------------------------------------------------
 function registerExistingProject() {
@@ -566,7 +566,7 @@ if (PHP_SAPI === 'cli') {
                     break;
             case "docker":
             case "dockerme":
-                installedExtensionCheck();
+               // installedExtensionCheck();
                 dockerMe();
                 $project = loadProjectFile();
                 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {

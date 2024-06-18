@@ -35,7 +35,9 @@
         $basedir    = implode(DIRECTORY_SEPARATOR,$parts);
         $ns         = $args['namespace'] ?? '';
         $error_log  = $args['error_log'] ?? '';
-        return str_replace(['&&NAME&&','&&SERVER&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&','&&CONTROLLER&&'],[$name,$server,$port,$path,$error_log,$basedir,$ns,$cont],file_get_contents($template));
+        $package    = $args['package']   ?? '';
+        $module     = $args['module']    ?? '';
+        return str_replace(['&&NAME&&','&&SERVER&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&','&&CONTROLLER&&','&&PACKAGE&&','&&MODULE&&'],[$name,$server,$port,$path,$error_log,$basedir,$ns,$cont,$package,$module],file_get_contents($template));
     }
     //-------------------------------------------------------------------------------------
     function recurseDirectory($path=null) {
