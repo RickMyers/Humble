@@ -114,7 +114,7 @@ if (!empty($xml)) {
     die("There is an error in the application configuration file");
 }
 $method     = (isset($_POST['method'])) ? $_POST['method'] : "INIT";
-$docker     = file_exists('Docker/'.$project->namespace.'/docker-compose.yaml');
+$docker     = file_exists('Docker/docker-compose.yaml');
 $info = [
     'User' => [
         'First' => '',
@@ -136,7 +136,7 @@ $info = [
 switch ($method) {
     case "INIT"         :
         if ($docker) {
-            $settings = yaml_parse_file('Docker/'.$project->namespace.'/docker-compose.yaml');
+            $settings = yaml_parse_file('Docker/docker-compose.yaml');
             $name     = explode(' ',(string)$project->name);
             $info = [
                 'User' => [
@@ -260,7 +260,8 @@ switch ($method) {
                                         <option value="Latte"> Latte </option>
                                         <option value="Blade"> Blade </option>
                                         <option value="Savant"> Savant </option>
-                                        <option value="TBS"> TBS </option>
+                                        <option value="TBS"> Tiny But Strong </option>
+                                        <option value="PHP Tal"> PHPTal </option>
                                     </select><br /><br />
                                     <label for="landing-default">Landing Page: </label>
                                     <input type="radio" name="landing" id="landing-default" checked="checked" value="default" /> Default

@@ -6,13 +6,13 @@
         <framework>0.8.0.0.1</framework>
         <app>0.0.0.1</app>
     </version>
-    <state>DEVELOPMENT</state>
+    <state>UAT</state>
     <stages>
-        <DEVELOPMENT order="1"/>
-        <TEST order="2"/>
         <QA order="3"/>
+        <DEVELOPMENT order="1"/>
         <UAT order="4"/>
-        <PRODUCTION order="5"/>
+        <PRODUCTION order="5"/>        
+        <TEST order="2"/>
     </stages>
     <msa>
         <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application -->

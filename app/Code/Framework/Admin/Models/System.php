@@ -165,6 +165,7 @@ class System extends Model
             $order = $attr['@attributes']['order'] ?? '1';
             $stages[(int)$order] = $stage;
         }
+        ksort($stages);
         return $stages;
     }
     

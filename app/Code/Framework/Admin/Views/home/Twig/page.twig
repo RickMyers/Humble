@@ -34,11 +34,9 @@
         <script type='text/javascript' src='/js/widgets'></script>        
         <script type="text/javascript" src='/js/admin'/></script>        
         <script>
-            
-
-/*      $(document).ready(function () {
-            $('#state').val('{{ system.state() }}')
-        });*/
+        $(document).ready(() => {
+            $('#state').val('{{ system.state() }}');
+        });
         {% set tab_id = system.browserTabId()%}
         EasyAjax.always.add('browser_tab_id','{{ tab_id }}')
         EasyAjax.always.add('csrf_buster','{{ system.csrfBuster(tab_id) }}');
@@ -302,6 +300,14 @@
                     </div>                                
                 </div>
                 <div id="right-col" class="w-full bg-gray-300 overflow-auto grow">
+                    <div style="float: right; margin-right: 10px; padding: 5px 20px; white-space: nowrap">
+                        <b>STATE </b>
+                        <select name="state" id="state" onchange="Administration.change.state(this)" style="background-color: #cc4444; color: ghostwhite; font-size: 1.1em; height: 28px; letter-spacing: 1px; font-family: monospace; font-weight: bold; border-radius: 4px; padding: 4px">
+                            {% for stage in system.stages() %}
+                                <option value="{{ stage }}" title="">{{ stage }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="py-2 px-1 w-[1000] flex flex-row justify-start gap-8">
                         <div onclick="Administration.create.package()"    class="drop-shadow-xl flex-initial basis-1/5 bg-blue-600 text-white p-2 rounded-3xl cursor-pointer hover:bg-blue-500 tracking-wider text-center" title="Create New Package (Module Directory)"><span class="text-xl font-bold">+</span> Package</div>
                         <div onclick="Administration.create.module()"     class="drop-shadow-xl flex-initial basis-1/5 bg-blue-600 text-white p-2 rounded-3xl cursor-pointer hover:bg-blue-500 tracking-wider text-center" title="Create New Module"><span class="text-xl font-bold">+</span> Module</div>

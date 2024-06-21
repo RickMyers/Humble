@@ -15,7 +15,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             </model>
             <switch id="admin" method="getAdminId">
                 <case value="TRUE">
-                    <model namespace="humble" class="system" id="system" />
+                    <model namespace="admin" class="system" id="system" />
                     <entity namespace='humble' class='modules'      id='available_modules' orderby='package=ASC,namespace=ASC' />
                     <model  namespace='admin'  class='menus'        id="menus" />
                     <entity namespace='admin'  class='users' assign='user' method='information'>
