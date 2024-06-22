@@ -227,11 +227,12 @@ class Module extends CLI
                 $copy[]      = $root."/images/icons/admin_app_icon.png";                   $dest[]= "Code/".$pk."/".$md."/Images/admin_app_icon.png";               
                 if ($mn) {
                     //This is the main module, so we have to copy some additional files
+                    @mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
+                    @mkdir('../cli/'.$md);
                     $parts       = explode('/',$project->landing_page);
                     $controller  = $parts[2];        $page        = $parts[3];         
                     $srch[]      = '&&CONTROLLER&&'; $repl[]      = $controller;
                     $srch[]      = '&&PAGE&&';       $repl[]      = $page;
-                    mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
                     $templates[] = $root."/lib/sample/install/Views/index.html";        $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/index.tpl";
                     $templates[] = $root."/lib/sample/install/Views/page.html";         $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/".$page.".tpl";
                     $templates[] = $root."/lib/sample/install/Views/404.html";          $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/404.tpl";
@@ -243,6 +244,8 @@ class Module extends CLI
                     $templates[] = $root."/lib/sample/install/etc/public_routes.json";  $out[] = "Code/".$pk."/".$md."/etc/public_routes.json";
                     $templates[] = $root."/lib/sample/install/etc/api_policy.json";     $out[] = "Code/".$pk."/".$md."/etc/api_policy.json";
                     $templates[] = $root."/lib/sample/install/etc/cadence.json";        $out[] = "Code/".$pk."/".$md."/etc/cadence.json";
+                    $templates[] = $root."/lib/sample/install/cli/CLIModule.php";       $out[] = "../cli/".$md."/".$md.'.php';
+                    $templates[] = $root."/lib/sample/install/cli/directory.yaml";      $out[] = "../cli/".$md."/directory.yaml";
                     
                 } else {
                     $templates[] = $root."/lib/sample/module/web/js/actions.js";        $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";

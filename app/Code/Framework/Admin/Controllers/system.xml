@@ -88,7 +88,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <action name="state" blocking="off">
             <description>Changes the state that the application is, from DEVELOPMENT, to PRODUCTION, or DEBUG</description>
-            <model namespace="humble" class="system" id='system' method='changeState'>
+            <model namespace="admin" class="system" id='system' method='changeState'>
                 <parameter name="admin_id" source="session" required="true" />
                 <parameter name='state' source='post' required='true' />
             </model>

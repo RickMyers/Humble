@@ -13,10 +13,10 @@
 Labs are demonstrators and test areas for technology I have developed over my 30 years of web development.  Most of these technologies were
 developed before 2010, and in many cases predated technologies like JQueryUI, JS Dojo, and others.  I have been converting these classic JavaScript
 "widgets" into modern vanilla Web Components for use with modern web frameworks like Vue, HTMX, and React.  In no particular order, here are some
-great tools that I have developed over the years:
+great tools that I have developed over the years:<br /><br />
 
 <div class="lab-item">
-    &bull; Sliders
+    &bull; EasySliders
 </div>
 
 <div class="lab-item">
@@ -24,7 +24,7 @@ great tools that I have developed over the years:
 </div>
 
 <div class="lab-item">
-    &bull; Desktop
+    &bull; EasyDesktop
 </div>
 
 <div class="lab-item">
@@ -32,13 +32,16 @@ great tools that I have developed over the years:
 </div>
 
 <div class="lab-item">
-    &bull; Colorizer
+    &bull; EasyColorizer
 </div>
 
 <div class="lab-item">
     &bull; EasyEdits
 </div>
 
+<div class="lab-item">
+    &bull; EasyTabs
+</div>
 
 
 
