@@ -46,6 +46,18 @@ function printHelp($available_commands=[]) {
     print("\nFor detailed help, type 'humble --command help'\n\n");
 }
 //--------------------------------------------------------------------------
+// Prints the full list of commands we can handle at the command line
+//--------------------------------------------------------------------------
+function printTopicHelp($topic,$commands=[]) {
+    print($topic.' help is available for the following commands:'."\n");
+  //  print_r($commands[$topic]);die();
+    foreach ($commands[$topic] as $command => $options) {
+        $command = str_replace('|',' or ',$command);
+        print("\t--".$command.' - '.($options['description'] ?? 'N/A')."\n");
+    }
+    print("\nFor detailed help, type 'humble --command help'\n\n");
+}
+//--------------------------------------------------------------------------
 // Iterates through directories accumulating the various commands
 //--------------------------------------------------------------------------
 function aggregateDirectories($dh) {
@@ -81,7 +93,11 @@ $args               = [];                                                       
 $available_commands = aggregateDirectories(dir('cli'));   
 if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         //pop program name and grab the command they entered
     if (isset($help_cmd[strtolower($entered_command)])) {
-        printHelp($available_commands);
+        if (isset($argv[1])) {
+            printTopicHelp(ucfirst(strtolower($argv[1])),$available_commands);
+        } else {
+            printHelp($available_commands);
+        }
     } else {
         foreach ($available_commands as $include => $commands) {                //go find which include we should bring in (functionality)
             foreach ($commands as $command => $options) {
