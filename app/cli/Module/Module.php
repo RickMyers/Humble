@@ -146,6 +146,16 @@ class Module extends CLI
         self::enable($args);
     }
     
+    protected static function copyFiles($root,$files,$search=[],$replace=[]) {
+        foreach ($files as $file) {
+            if (!file_exists($root.DIRECTORY_SEPARATOR.$file->source)) {
+                print("File: ".$root.DIRECTORY_SEPARATOR.$file->source." Not Found\n");
+            } 
+            if (!file_put_contents($dest = str_replace($search,$replace,$file->destination),str_replace($search,$replace,file_get_contents($root.DIRECTORY_SEPARATOR.$file->source)))) {
+                print('Failed to write: '.$dest."\n");
+            }
+        }           
+    }
     /**
      * Builds a new module, including its file structure
      * 
@@ -154,15 +164,17 @@ class Module extends CLI
     public static function build() {
         $result  = 'Module not built';
         $project = \Environment::getProject();
-        $args = self::arguments();
-        $ns = $args['namespace'];
-        $pk = $args['package'];
-        $px = $ns.'_';
-        $au = $args['author'] ?? ($project->author ?? '');
-        $md = $args['module'];
-        $em = $args['email'] ?? ($project->author ?? '');
-        $mn = $args['main_module'] ?? false;
-        if ($ns && $pk && $px && $md) {
+        $args    = self::arguments();
+        $ns      = $args['namespace'];
+        $pk      = $args['package'];
+        $px      = $ns.'_';
+        $au      = $args['author'] ?? ($project->author ?? '');
+        $md      = $args['module'];
+        $em      = $args['email'] ?? ($project->author ?? '');
+        $mn      = $args['main_module'] ?? false;
+        $mod     = json_decode(file_get_contents('Code/Framework/Humble/lib/sample/install/module.json'));
+    //    print_r($module);die();
+        if ($mod && $ns && $pk && $px && $md) {
             $base = 'Code'.DIRECTORY_SEPARATOR.$pk;
             $root = $base."/".$md;
             if (!is_dir($base)) {
@@ -170,94 +182,30 @@ class Module extends CLI
             }
             if (!is_dir($root)) {
                 @mkdir($root);
-                @mkdir($root.DIRECTORY_SEPARATOR.'etc');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Controllers');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Controllers/Cache');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile/Controllers');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile/Controllers/Cache');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile/Views');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Mobile/Views/Cache');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Views');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Views/actions');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Views/actions/Smarty');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Views/admin');                
-                @mkdir($root.DIRECTORY_SEPARATOR.'Views/admin/Smarty');                
-                @mkdir($root.DIRECTORY_SEPARATOR.'Views/Cache');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Resources');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Resources/js');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Resources/SQL');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Models');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Helpers');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Schema');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Schema/Install');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Schema/Update');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Schema/DSL');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Entities');
-                @mkdir($root.DIRECTORY_SEPARATOR.'RPC');
-                @mkdir($root.DIRECTORY_SEPARATOR.'web');
-                @mkdir($root.DIRECTORY_SEPARATOR.'web/js');
-                @mkdir($root.DIRECTORY_SEPARATOR.'web/app');
-                @mkdir($root.DIRECTORY_SEPARATOR.'web/css');
-                @mkdir($root.DIRECTORY_SEPARATOR.'web/edits');
-                @mkdir($root.DIRECTORY_SEPARATOR.'Images');
-                $project     = Environment::getProject();
-                $is_base     = (string)$project->namespace == $ns;
+                foreach ($mod->structure as $path) {
+                    mkdir($root.DIRECTORY_SEPARATOR.$path,0775,true);
+                }
+                $is_base     = (string)$project->namespace == $ns;              //is this a new framework, as opposed to appication, module
                 $package     = $is_base ? 'Framework'   : (string)$project->package;
                 $module      = $is_base ? 'Humble'      : (string)$project->module;
                 $required    = $is_base ? 'Y'           : 'N';
-                $copy        = [];
-                $dest        = [];
-                $main_module = strtoupper($project->namespace)===strtoupper($ns) ? ucfirst(strtolower($project->namespace))." = {}" : "";  //if this is the main module, of which there can be only one, we will need to add an extra bit of JS
+                $main_module = (strtoupper($project->namespace)===strtoupper($ns)) ? ucfirst(strtolower($project->namespace))." = {}" : "";  //if this is the main module, of which there can be only one, we will need to add an extra bit of JS
                 $root        = is_dir('Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module.DIRECTORY_SEPARATOR.'lib/sample/module') ? 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module : "Code/Framework/Humble";
-                $srch        = ["&&MAIN_MODULE&&","&&PROJECT&&","&&NAMESPACE&&","&&PREFIX&&","&&AUTHOR&&","&&MODULE&&","&&PACKAGE&&",'&&EMAIL&&','&&FACTORY&&','&&BASE_PACKAGE&&','&&BASE_MODULE&&','&&REQUIRED&&'];
-                $repl        = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
-                $templates   = [$root."/lib/sample/module/Controllers/actions.xml"];       $out   = ["Code/".$pk."/".$md."/Controllers/actions.xml"];
-                $templates   = [$root."/lib/sample/module/Controllers/admin.xml"];         $out   = ["Code/".$pk."/".$md."/Controllers/admin.xml"];                
-                $templates[] = $root."/lib/sample/module/etc/config.xml";                  $out[] = "Code/".$pk."/".$md."/etc/config.xml";
-                $templates[] = $root."/lib/sample/module/RPC/mapping.yaml";                $out[] = "Code/".$pk."/".$md."/RPC/mapping.yaml";
-                $templates[] = $root."/lib/sample/module/Views/actions/Smarty/open.tpl";   $out[] = "Code/".$pk."/".$md."/Views/actions/Smarty/open.tpl";
-                $templates[] = $root."/lib/sample/module/Views/admin/Smarty/app.tpl";      $out[] = "Code/".$pk."/".$md."/Views/admin/Smarty/app.tpl";                
-                $templates[] = $root."/lib/sample/module/web/css/template.css";            $out[] = "Code/".$pk."/".$md."/web/css/".ucfirst($md).".css";
-                $templates[] = $root."/lib/sample/module/Models/Model.php.txt";            $out[] = "Code/".$pk."/".$md."/Models/Model.php";
-                $templates[] = $root."/lib/sample/module/Helpers/Helper.php.txt";          $out[] = "Code/".$pk."/".$md."/Helpers/Helper.php";
-                $templates[] = $root."/lib/sample/module/Entities/Entity.php.txt";         $out[] = "Code/".$pk."/".$md."/Entities/Entity.php";
-                $templates[] = $root."/lib/sample/module/web/edits/template.json";         $out[] = "Code/".$pk."/".$md."/web/edits/sample_edit.json";
-                $templates[] = $root."/lib/sample/module/AdminApps.xml";                   $out[] = "Code/".$pk."/".$md."/AdminApps.xml";
-                $copy[]      = $root."/images/icons/admin_app_icon.png";                   $dest[]= "Code/".$pk."/".$md."/Images/admin_app_icon.png";               
+                $search      = ["&&MAIN_MODULE&&","&&PROJECT&&","&&NAMESPACE&&","&&PREFIX&&","&&AUTHOR&&","&&MODULE&&","&&PACKAGE&&",'&&EMAIL&&','&&FACTORY&&','&&BASE_PACKAGE&&','&&BASE_MODULE&&','&&REQUIRED&&'];
+                $replace     = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
+                self::copyFiles($root,$mod->templates,$search,$replace);
                 if ($mn) {
                     //This is the main module, so we have to copy some additional files
                     @mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
                     @mkdir('../cli/'.$md);
                     $parts       = explode('/',$project->landing_page);
                     $controller  = $parts[2];        $page        = $parts[3];         
-                    $srch[]      = '&&CONTROLLER&&'; $repl[]      = $controller;
-                    $srch[]      = '&&PAGE&&';       $repl[]      = $page;
-                    $templates[] = $root."/lib/sample/install/Views/index.html";        $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/index.tpl";
-                    $templates[] = $root."/lib/sample/install/Views/page.html";         $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/".$page.".tpl";
-                    $templates[] = $root."/lib/sample/install/Views/404.html";          $out[] = "Code/".$pk."/".$md."/Views/".$controller."/Smarty/404.tpl";
-                    $templates[] = $root."/lib/sample/module/web/js/mainactions.js";    $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
-                    $templates[] = $root."/lib/sample/install/Controllers/base.xml";    $out[] = "Code/".$pk."/".$md."/Controllers/".$controller.".xml";
-                    $templates[] = $root."/lib/sample/install/Schema/Update/query.sql"; $out[] = "Code/".$pk."/".$md."/Schema/Update/Users.sql";
-                    $templates[] = $root."/lib/sample/install/Entities/Users.php.txt";  $out[] = "Code/".$pk."/".$md."/Entities/Users.php";
-                    $templates[] = $root."/lib/sample/install/Models/User.php.txt";     $out[] = "Code/".$pk."/".$md."/Models/User.php";
-                    $templates[] = $root."/lib/sample/install/etc/public_routes.json";  $out[] = "Code/".$pk."/".$md."/etc/public_routes.json";
-                    $templates[] = $root."/lib/sample/install/etc/api_policy.json";     $out[] = "Code/".$pk."/".$md."/etc/api_policy.json";
-                    $templates[] = $root."/lib/sample/install/etc/cadence.json";        $out[] = "Code/".$pk."/".$md."/etc/cadence.json";
-                    $templates[] = $root."/lib/sample/install/cli/CLIModule.php";       $out[] = "../cli/".$md."/".$md.'.php';
-                    $templates[] = $root."/lib/sample/install/cli/directory.yaml";      $out[] = "../cli/".$md."/directory.yaml";
-                    
+                    $search[]    = '&&CONTROLLER&&'; $replace[]   = $controller;
+                    $search[]    = '&&PAGE&&';       $replace[]   = $page;
+                    self::copyFiles($root,$module->templates,$search,$replace);
+                    self::copyFiles($root,$module->copy,$search,$replace);
                 } else {
-                    $templates[] = $root."/lib/sample/module/web/js/actions.js";        $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
-                }
-                    
-                 foreach ($templates as $idx => $template) {
-                    if (!file_exists($template)) {
-                        print("Template: ".$template." Not Found\n");
-                    } 
-                    if (!file_put_contents($out[$idx],str_replace($srch,$repl,file_get_contents($template)))) {
-                        print('Failed to write: '.$template.' => '.$out[$idx]."\n");
-                    }
+                  //  $templates[] = $root."/lib/sample/module/web/js/actions.js";        $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
                 }
                 $result = "Module likely created, don't forget to install it";
                 header('RC: 0');

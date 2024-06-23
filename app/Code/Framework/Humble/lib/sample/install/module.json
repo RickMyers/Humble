@@ -1,0 +1,150 @@
+{
+    "structure": [
+        "etc",
+        "Controllers",
+        "Controllers/Cache",
+        "Mobile",
+        "Mobile/Controllers",
+        "Mobile/Controllers/Cache",
+        "Mobile/Views",
+        "Mobile/Views/Cache",
+        "Views",
+        "Views/actions",
+        "Views/actions/Smarty",
+        "Views/admin",                
+        "Views/admin/Smarty",                
+        "Views/Cache",
+        "Resources",
+        "Resources/js",
+        "Resources/SQL",
+        "Models",
+        "Helpers",
+        "Schema",
+        "Schema/Install",
+        "Schema/Update",
+        "Schema/DSL",
+        "Entities",
+        "RPC",
+        "web",
+        "web/js",
+        "web/app",
+        "web/css",
+        "web/edits",
+        "Images"        
+    ],
+    "templates": [
+        {
+            "source": "/lib/sample/module/Controllers/actions.xml",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Controllers/actions.xml"
+        },
+        {
+            "source": "/lib/sample/module/Controllers/admin.xml",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Controllers/admin.xml" 
+        },
+        {
+            "source": "/lib/sample/module/etc/config.xml",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/config.xml"
+        },
+        {
+            "source": "/lib/sample/module/RPC/mapping.yaml",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/RPC/mapping.yaml"
+        },
+        {
+            "source": "/lib/sample/module/Views/actions/Smarty/open.tpl",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/actions/Smarty/open.tpl"
+        },
+        {
+            "source": "/lib/sample/module/Views/admin/Smarty/app.tpl",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/admin/Smarty/app.tpl"
+        },
+        {
+            "source": "/lib/sample/module/web/css/template.css",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/web/css/&&MODULE&&.css"
+        },
+        {
+            "source": "/lib/sample/module/Models/Model.php.txt" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Models/Model.php"
+        },
+        {
+            "source": "/lib/sample/module/Helpers/Helper.php.txt",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Helpers/Helper.php"
+        },
+        {
+            "source": "/lib/sample/module/Entities/Entity.php.txt",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Entities/Entity.php"
+        },
+        {
+            "source": "/lib/sample/module/web/edits/template.json" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/web/edits/sample_edit.json"
+        },
+        {
+            "source": "/lib/sample/module/AdminApps.xml" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/AdminApps.xml" 
+        }
+
+    ],
+
+    "copy": [
+        {
+            "source": "/images/icons/admin_app_icon.png",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Images/admin_app_icon.png"
+        }        
+    ],
+    "main_module": [
+        {
+            "source": "/lib/sample/install/Views/index.html",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/index.tpl"
+        },        
+        {
+            "source": "/lib/sample/install/Views/page.html" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/&&PAGE&&.tpl"
+        },
+        {
+            "source": "/lib/sample/install/Views/404.html" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/404.tpl"
+        },
+        {
+            "source": "/lib/sample/module/web/js/mainactions.js",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/web/js/&&MODULE&&.js"
+        },
+        {
+            "source": "/lib/sample/install/Controllers/base.xml" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Controllers/&&CONTROLLER&&.xml"
+        },
+        {
+            "source": "/lib/sample/install/Schema/Update/query.sql",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Schema/Update/Users.sql"
+        },
+        {
+            "source": "/lib/sample/install/Entities/Users.php.txt",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Entities/Users.php"
+        },
+        {
+            "source": "/lib/sample/install/Models/User.php.txt",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Models/User.php"
+        },
+        {
+            "source": "/lib/sample/install/etc/public_routes.json",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/public_routes.json"
+        },
+        {
+            "source": "/lib/sample/install/etc/api_policy.json",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/api_policy.json"
+        },
+        {
+            "source": "/lib/sample/install/etc/cadence.json",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/cadence.json"
+        },
+        {
+            "source": "/lib/sample/install/cli/CLIModule.php",
+            "destination": "../cli/&&MODULE&&/&&MODULE&&.php"
+        },
+        {
+            "source": "/lib/sample/install/cli/directory.yaml",
+            "destination":  "../cli/&&MODULE&&/directory.yaml" 
+        }                                                                                    
+    ]
+}
+
+
+   
