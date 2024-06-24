@@ -86,7 +86,7 @@
 
     "copy": [
         {
-            "source": "/images/icons/admin_app_icon.png",
+            "source": "/lib/sample/module/Images/admin_app_icon.png",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Images/admin_app_icon.png"
         }        
     ],
