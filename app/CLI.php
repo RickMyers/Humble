@@ -35,7 +35,7 @@ function parseCommand($args=[]) {
 // Prints the full list of commands we can handle at the command line
 //--------------------------------------------------------------------------
 function printHelp($available_commands=[]) {
-    print('Help is available for the following commands:'."\n");
+    print("\n".'Help is available for the following commands:'."\n");
     foreach ($available_commands as $include => $commands) {
         print("\nTopic: ".$include."\n");
         foreach ($commands as $command => $options) {
@@ -49,7 +49,7 @@ function printHelp($available_commands=[]) {
 // Prints the full list of commands we can handle at the command line
 //--------------------------------------------------------------------------
 function printTopicHelp($topic,$commands=[]) {
-    print($topic.' help is available for the following commands:'."\n");
+    print("\n".$topic.' help is available for the following commands:'."\n\n");
   //  print_r($commands[$topic]);die();
     foreach ($commands[$topic] as $command => $options) {
         $command = str_replace('|',' or ',$command);
