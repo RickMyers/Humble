@@ -202,8 +202,8 @@ class Module extends CLI
                     $controller  = $parts[2];        $page        = $parts[3];         
                     $search[]    = '&&CONTROLLER&&'; $replace[]   = $controller;
                     $search[]    = '&&PAGE&&';       $replace[]   = $page;
-                    self::copyFiles($root,$module->templates,$search,$replace);
-                    self::copyFiles($root,$module->copy,$search,$replace);
+                    self::copyFiles($root,$mod->templates,$search,$replace);
+                    self::copyFiles($root,$mod->copy,$search,$replace);
                 } else {
                   //  $templates[] = $root."/lib/sample/module/web/js/actions.js";        $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
                 }
