@@ -402,6 +402,20 @@ class Model implements HumbleComponent
          }
         //if you are going to "eat your own dogfood", we need to precede the resource URL with the fully qualified host name
         $HTTP_HOST = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '127.0.0.1';
+        /*
+         * Below was a workaround for when a model tried to "eat their own dogfood" in the form of an RPC service
+         * It would do the call on the external docker port, when it needed to use the internal one
+         * I resolved this by changing the vhost to listen on both ports (external and internal), but I am leaving
+         *   this here in case the problem arises again. -RGM 
+         */
+        /*if (isset($_SERVER['DOCKER_PORT_XREF'])) {
+            $docker_ports = explode(':',$_SERVER['DOCKER_PORT_XREF']);
+            $host_parts = explode(':',$HTTP_HOST);
+            if ($docker_ports[1] && $host_parts[1]) {
+                $HTTP_HOST = $host_parts[0].':'.$docker_ports[1];
+            }
+        }*/
+        
         if (substr($URL,0,4)!=='http') {
             $isHttps = isset($_SERVER['HTTPS']) && strtoupper($_SERVER['HTTPS'])==='ON' ? true :
                        (isset($_SERVER['REQUEST_SCHEME']) && strtoupper($_SERVER['REQUEST_SCHEME']==='HTTPS') ? true : 
