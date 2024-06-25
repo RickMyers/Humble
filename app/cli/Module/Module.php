@@ -173,7 +173,6 @@ class Module extends CLI
         $em      = $args['email'] ?? ($project->author ?? '');
         $mn      = $args['main_module'] ?? false;
         $mod     = json_decode(file_get_contents('Code/Framework/Humble/lib/sample/install/module.json'));
-    //    print_r($module);die();
         if ($mod && $ns && $pk && $px && $md) {
             $base = 'Code'.DIRECTORY_SEPARATOR.$pk;
             $root = $base."/".$md;
@@ -196,16 +195,16 @@ class Module extends CLI
                 self::copyFiles($root,$mod->templates,$search,$replace);
                 if ($mn) {
                     //This is the main module, so we have to copy some additional files
-                    @mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
-                    @mkdir('../cli/'.$md);
                     $parts       = explode('/',$project->landing_page);
                     $controller  = $parts[2];        $page        = $parts[3];         
                     $search[]    = '&&CONTROLLER&&'; $replace[]   = $controller;
                     $search[]    = '&&PAGE&&';       $replace[]   = $page;
-                    self::copyFiles($root,$mod->templates,$search,$replace);
+                    @mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
+                    @mkdir('cli/'.$md,0775,true);
+                    self::copyFiles($root,$mod->main_module,$search,$replace);
                     self::copyFiles($root,$mod->copy,$search,$replace);
                 } else {
-                  //  $templates[] = $root."/lib/sample/module/web/js/actions.js";        $out[] = "Code/".$pk."/".$md."/web/js/".ucfirst($md).".js";
+                    self::copyFiles($root,$mod->regular_module,$search,$replace);
                 }
                 $result = "Module likely created, don't forget to install it";
                 header('RC: 0');

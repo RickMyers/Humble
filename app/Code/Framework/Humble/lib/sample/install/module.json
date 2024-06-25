@@ -83,11 +83,16 @@
         }
 
     ],
-
     "copy": [
         {
             "source": "/lib/sample/module/Images/admin_app_icon.png",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Images/admin_app_icon.png"
+        }        
+    ],
+    "regular_module": [
+        {
+            "source": "/lib/sample/module/web/js/actions.js",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/web/js/&&MODULE&&.js"
         }        
     ],
     "main_module": [
@@ -137,11 +142,11 @@
         },
         {
             "source": "/lib/sample/install/cli/CLIModule.php",
-            "destination": "../cli/&&MODULE&&/&&MODULE&&.php"
+            "destination": "cli/&&MODULE&&/&&MODULE&&.php"
         },
         {
             "source": "/lib/sample/install/cli/directory.yaml",
-            "destination":  "../cli/&&MODULE&&/directory.yaml" 
+            "destination":  "cli/&&MODULE&&/directory.yaml" 
         }                                                                                    
     ]
 }
