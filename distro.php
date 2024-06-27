@@ -20,7 +20,7 @@
  */
 
     //-------------------------------------------------------------------------------------
-    function processVhost($template='app/install/vhost_template.conf',$args=[]) {
+    function processVhost($template='app/install/Docker/vhost_template.conf',$args=[]) {
         $name       = $args['project_url'] ?? ($args['project_name'] ?? '' );
         $parts      = explode(':',$name);
         $port       = $parts[2] ?? '80';
@@ -180,7 +180,7 @@
                 $error_log = isset($_REQUEST['error_log'])&& $_REQUEST['error_log'] ? 'ErrorLog '.$_REQUEST['error_log']:'';
                 $port      = $_REQUEST['port'] ?? '80';
                 $dir       = $_REQUEST['destination_folder'] ?? ($_REQUEST['current_dir'] ?? '');
-                $vhost     = processVhost('app/install/vhost_template.conf',array_merge($_REQUEST,['project_name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
+                $vhost     = processVhost('app/install/Docker/vhost_template.conf',array_merge($_REQUEST,['project_name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
                 print($vhost);
             } else {
                 print('{ "error": "Project data not passed in request" }');
