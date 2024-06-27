@@ -1,15 +1,15 @@
 ---
-#cmd : 
-#    description: Basic description of what the command does
-#    extended: Optional more detailed description or instructions
-#    usage:
-#        linux:   sudo sh ./humble.sh --cmd parameter list
-#        windows: humble --cmd parameter list
-#    function : Function in class to execute
-#    parameters:
-#        required:
-#            parameter1|p1: description of parameter
-#            parameter2|p2: description of parameter
-#        optional:
-#            parameter3|p3: description of parameter
-#            parameter1|p1: description of parameter
+sample : 
+    description: Basic description of what the command does
+    extended: Optional more detailed description or instructions
+    usage:
+        linux:   sudo sh ./humble.sh --cmd parameter list
+        windows: humble --cmd parameter list
+    function : Function in class to execute
+    parameters:
+        required:
+            parameter1|p1: description of parameter
+            parameter2|p2: description of parameter
+        optional:
+            parameter3|p3: description of parameter
+            parameter1|p1: description of parameter
