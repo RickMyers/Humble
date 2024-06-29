@@ -98,7 +98,7 @@
     <script type='text/javascript' src='/js/common'></script>
     <script type='text/javascript'>
         window.onload = function () {
-            new EasyEdits('/web/edits/login.json','login');
+            new EasyEdits('/web/edits/recover.json','recover-password');
             var loginMessage = window.location.href.split('?message=');
             if (loginMessage[1]) {
                 $E('login-error').innerHTML = unescape(loginMessage[1]);
@@ -144,9 +144,9 @@
                         <div id='card' class="login-card">
                             <center>
                             <!--img src='/images/humble/djikstra.png'  height='100' /-->
-                            <img src='/images/humble/login.png'  height='100' /><br /><br />
+                            <img src='/images/humble/reset_password.png'   /><br /><br />
                             </center>
-                            <form name='humble-login-form' id='humble-login-form' onsubmit='return false'  action='/&&NAMESPACE&&/user/login' method='POST'>
+                            <form name='recover-form' id='recover-form' onsubmit='return false'  action='/&&NAMESPACE&&/user/reset' method='POST'>
                                 <input type="text" name="user_name" id='user_name' placeholder="Username">
                                 <input type="password" name="user_password" id='user_password' placeholder="Password">
                                 <input type="submit" name="login-submit" id='login-submit' class="login login-submit" value="login">

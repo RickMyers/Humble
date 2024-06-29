@@ -1,21 +1,21 @@
 {
-	"form":
-	{
-		"id":           "humble-recover-form",
-		"drawme":		false,
-		"action":		"",
-		"method":		"post",
-		"style":		"",
-		"onenterkey":	"send"
-	},
-	"fields":
-	[
-		{
-			"active":		true,
-			"id": 			"email",
-			"longname":		"Your E-mail",
-			"format":		"^(?:[a-zA-Z0-9_'^&amp;/+-])+(?:\\.(?:[a-zA-Z0-9_'^&amp;/+-])+)*@(?:(?:\\[?(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\]?)|(?:[a-zA-Z0-9-]+\\.)+(?:[a-zA-Z]){2,}\\.?)$",
-			"formaterr":	"The format of the email address is not acceptable",
+    "form":
+    {
+        "id":           "recover-form",
+        "drawme":	false,
+        "action":	"",
+        "method":	"post",
+        "style":	"",
+        "onenterkey":	"send"
+    },
+    "fields":
+    [
+        {
+            "active":       true,
+            "id":           "email",
+            "longname":     "Your E-mail",
+            "format":       "^(?:[a-zA-Z0-9_'^&amp;/+-])+(?:\\.(?:[a-zA-Z0-9_'^&amp;/+-])+)*@(?:(?:\\[?(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\]?)|(?:[a-zA-Z0-9-]+\\.)+(?:[a-zA-Z]){2,}\\.?)$",
+            "formaterr":    "The format of the email address is not acceptable",
             "validator":    function () {
                 (new EasyAjax('/humble/user/emailcheck')).add('email',$('#email').val()).then((response) => {
                     if (response.trim() !== 'TRUE') {
@@ -24,23 +24,23 @@
                     }
                 }).get();
             },
-			"type":			"text",
-			"required":		true,
-			"force":		true,
-            "style":        "padding: 2px; border-radius: 3px; border: 1px solid transparent"
-		},
-		{
-			"active":		true,
-			"id":			"recover-submit",
-			"longname":		"Submit Button",
-			"type":			"text",
+            "type":	"text",
+            "required":	true,
+            "force":	true,
+            "style":       "padding: 2px; border-radius: 3px; border: 1px solid transparent"
+        },
+        {
+            "active":       true,
+            "id":           "recover-submit",
+            "longname":     "Submit Button",
+            "type":         "text",
             "classname":    "login recover-submit",
             "style":        "background-color: #357AE8; cursor: pointer",
             "onclick":      function () {
-                if (Edits['recover'].validate()) {
-                    $E("humble-recover-form").submit();
+                if (Edits['recover-password'].validate()) {
+                    $E("recover-form").submit();
                 }
             }
-		}
-	]
+        }
+    ]
 }

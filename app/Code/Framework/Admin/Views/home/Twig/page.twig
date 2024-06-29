@@ -34,9 +34,6 @@
         <script type='text/javascript' src='/js/widgets'></script>        
         <script type="text/javascript" src='/js/admin'/></script>        
         <script>
-        $(document).ready(() => {
-            $('#state').val('{{ system.state() }}');
-        });
         {% set tab_id = system.browserTabId()%}
         EasyAjax.always.add('browser_tab_id','{{ tab_id }}')
         EasyAjax.always.add('csrf_buster','{{ system.csrfBuster(tab_id) }}');
@@ -199,52 +196,67 @@
             </nav>
             <div id="outer" class="flex flex-row">
                 <div id="left-col" class="h-100 w-60px bg-gray-100 text-center">
-
-                    <div class='administration-mini-icon mb-1' title='Documentation' style="margin-top: 20px" onclick="Administration.documentation.home()">
-                        <i class="glyphicons glyphicons-book" style="margin-left: 2px; font-size: 30px"> </i>
+                    <div class='text-sm mb-1' title='Toggle Desktop Mode' onclick="Administration.events.open()">
+                        <img src="/images/admin/desktop.png" style="margin-left: auto; margin-right: auto; height: 38px"/>
+                        Desktop
                     </div>
-                    <div class='administration-mini-icon mb-1' title='Unit Tests' onclick="Administration.tests.home()">
-                        <i class="glyphicons glyphicons-car-wheel" style="margin-left: 2px; font-size: 30px"></i>
+                    
+                    <hr style="margin-bottom: 10px; margin-top: 10px"/>
+                    <div class='text-sm mb-1' title='Documentation' style="margin-top: 20px" onclick="Administration.documentation.home()">
+                        <i class="glyphicons glyphicons-book" style="margin-left: 2px; font-size: 30px"> </i><br />
+                        Docs
                     </div>
                     <hr style="margin-bottom: 10px; margin-top: 10px"/>
+                    <div class='text-sm mb-1' title='Unit Tests' onclick="Administration.tests.home()">
+                        <i class="glyphicons glyphicons-car-wheel" style="margin-left: 2px; font-size: 30px; margin-top: 5px"></i><br />
+                        Unit Tests
+                    </div>
+                    <hr style="margin-bottom: 10px; margin-top: 10px"/>
+                    <div class='text-sm mb-1' title='Services Explorer' onclick="Administration.tests.home()">
+                        <img src="/images/admin/microservices.png" style="margin-left: auto; margin-right: auto; height: 38px"/>
+                        Services
+                    </div>                    
+                    <hr style="margin-bottom: 10px; margin-top: 10px"/>
+            
 
-                    <div class='administration-mini-icon mb-1' title='Event Monitor' onclick="Administration.events.open()">
+
+                    <div class='text-sm mb-1' title='Event Monitor' onclick="Administration.events.open()">
                         <i class="glyphicons glyphicons-warning-sign" style="margin-left: 2px; font-size: 30px"></i>
                     </div>
                     <hr style="margin-bottom: 10px; margin-top: 10px"/>
-                    <div class='administration-mini-icon mb-1' title='General Log Viewer' onclick="Administration.logs.open('General')">
+                    <div class='text-sm mb-1' title='General Log Viewer' onclick="Administration.logs.open('General')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         General
                     </div>
-                    <div class='administration-mini-icon mb-1' title='Warning Log Viewer' onclick="Administration.logs.open('Warning')">
+                    <div class='text-sm mb-1' title='Warning Log Viewer' onclick="Administration.logs.open('Warning')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Warning
                     </div>
-                    <div class='administration-mini-icon mb-1' title='Error Log Viewer' onclick="Administration.logs.open('Error')">
+                    <div class='text-sm mb-1' title='Error Log Viewer' onclick="Administration.logs.open('Error')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Error
                     </div>
-                    <div class='administration-mini-icon mb-1' title='Access Log Viewer' onclick="Administration.logs.open('Access')">
+                    <div class='text-sm mb-1' title='Access Log Viewer' onclick="Administration.logs.open('Access')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Access
                     </div>                      
-                    <div class='administration-mini-icon mb-1' title='Users Log Viewer' onclick="Administration.logs.open('User')">
+                    <div class='text-sm mb-1' title='Users Log Viewer' onclick="Administration.logs.open('User')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Users
                     </div>                    
-                    <div class='administration-mini-icon mb-1' title='SQL Log Viewer' onclick="Administration.logs.open('MySQL')">
+                    <div class='text-sm mb-1' title='SQL Log Viewer' onclick="Administration.logs.open('MySQL')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         SQL
                     </div>
-                    <div class='administration-mini-icon mb-1' title='MongoDB Log Viewer' onclick="Administration.logs.open('MongoDB')">
+                    <div class='text-sm mb-1' title='MongoDB Log Viewer' onclick="Administration.logs.open('MongoDB')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         MongoDB
                     </div>
-                    <div class='administration-mini-icon mb-1' title='System Log Viewer' onclick="Administration.logs.open('System')">
+                    <div class='text-sm mb-1' title='System Log Viewer' onclick="Administration.logs.open('System')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         System
                     </div>
-                    <div class='administration-mini-icon mb-1' title='Log Viewer' onclick="Administration.logs.open('Query')">
+                    <div class='text-sm mb-1' title='Log Viewer' onclick="Administration.logs.open('Query')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Query
                     </div>                    
@@ -300,11 +312,14 @@
                     </div>                                
                 </div>
                 <div id="right-col" class="w-full bg-gray-300 overflow-auto grow">
+                    <div id='desktop-container' style='display: none'></div>
+                    <div id='dashboard-container'>
                     <div style="float: right; margin-right: 10px; padding: 5px 20px; white-space: nowrap">
                         <b>STATE </b>
+                        {% set state = system.state() %}
                         <select name="state" id="state" onchange="Administration.change.state(this)" style="background-color: #cc4444; color: ghostwhite; font-size: 1.1em; height: 28px; letter-spacing: 1px; font-family: monospace; font-weight: bold; border-radius: 4px; padding: 4px">
                             {% for stage in system.stages() %}
-                                <option value="{{ stage }}" title="">{{ stage }}</option>
+                                <option value="{{ stage }}" {% if (stage==state) %}selected="selected"{% endif %} title="">{{ stage }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -445,6 +460,7 @@
                                 </div>
                             {% endfor %}
                         {% endfor %}
+                </div>
                 </div>
             </div>
             <div id="status-bar" class="bg-gray-900 h-30px relative">

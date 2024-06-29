@@ -75,13 +75,40 @@
 
         <!-- ############################################################### -->
 
+        <action name="resetform">
+            <description>The Password Reset Form</description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="reset" map="action">
+            <description>After they get a link to reset password in an email, they can do the reset here</description>
+            <if var="action" eq="form">
+                <then>
+                    <view name="reset_form" />
+                </then>
+                <else>
+                    <model class="user" id="user">
+                        <parameter name="email" value='userid' source="get" default="" />
+                    </model>
+                </else>
+            </if>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="registerform">
+            <description>The Password Reset Form</description>
+        </action>
+
+        <!-- ############################################################### -->
+
         <action name="reset">
-            <description>Password Reset</description>
+            <description>After they get a link to reset password in an email, they can do the reset here</description>
             <model class="user" id="user">
                 <parameter name="email" value='userid' source="get" default="" />
             </model>
         </action>
-
         <!-- ############################################################### -->
 
         <action name="logout" event="userLogout" comment="Triggers the user logout workflow (if any)">

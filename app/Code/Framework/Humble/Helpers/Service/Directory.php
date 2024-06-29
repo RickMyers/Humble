@@ -105,9 +105,8 @@ class Directory extends \Code\Framework\Humble\Helpers\Directory
                                 }
                                 $service->setUrl($service->getNamespace().'/'.$service->getRouter().'/'.$service->getService());
                                 $id = $service->add();
-
                                 foreach ($data as $node => $parts) {
-                                    if (($node === "entity") || ($node === "helper") || ($node === "model") || ($node === "mongo")) {
+                                    if (($node === "entity") || ($node === "helper") || ($node === "model") || ($node === "mongo") || ($node === "access") || ($node === "authorize")) {
                                         foreach ($parts as $parm => $parameter) {
                                             $attr       = $parameter->attributes();
                                             $name       = (string)$attr['name'];
@@ -136,7 +135,7 @@ class Directory extends \Code\Framework\Humble\Helpers\Directory
                                     $serviceParms->setType($parmData['type']);
                                     $serviceParms->setDefault($parmData['default']);
                                     $serviceParms->setRequired($parmData['required']);
-                                    $serviceParms->add();
+                                    $serviceParms->save();
                                 }
                             }
                         }

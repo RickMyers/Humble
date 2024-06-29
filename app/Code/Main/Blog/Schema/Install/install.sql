@@ -24,7 +24,7 @@ CREATE TABLE `blog_whatsnew` (
   `published` date DEFAULT NULL,
   `modified` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `blog_whatsnew_code` */
 
@@ -38,7 +38,7 @@ CREATE TABLE `blog_whatsnew_code` (
   `height` char(16) DEFAULT '200px',
   `modified` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `blog_whatsnew_languages` */
 
@@ -47,7 +47,7 @@ CREATE TABLE `blog_whatsnew_languages` (
   `language` char(32) DEFAULT NULL,
   `modified` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `blog_whatsnew_lexicons` */
 
@@ -57,7 +57,7 @@ CREATE TABLE `blog_whatsnew_lexicons` (
   `description` char(255) DEFAULT NULL,
   `modified` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

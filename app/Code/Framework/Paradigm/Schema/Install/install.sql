@@ -93,7 +93,7 @@ CREATE TABLE `paradigm_export_targets` (
   `token` char(36) DEFAULT NULL,
   `modified` datetime  NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `paradigm_import_sources` */
 
@@ -104,7 +104,7 @@ CREATE TABLE `paradigm_import_sources` (
   `token` char(32) DEFAULT NULL,
   `modified` datetime  NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `paradigm_import_tokens` */
 
@@ -143,7 +143,7 @@ CREATE TABLE `paradigm_method_listeners` (
   `modified` datetime  NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `namespace` (`namespace`,`event`,`class`,`method`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `paradigm_scheduler_log` */
 

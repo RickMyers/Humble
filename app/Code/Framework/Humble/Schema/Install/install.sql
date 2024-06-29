@@ -183,10 +183,12 @@ CREATE TABLE `humble_service_directory` (
   `namespace` char(32) DEFAULT NULL,
   `controller` char(64) DEFAULT NULL,
   `action` char(64) DEFAULT NULL,
+  `mapped_parameters` char(01) DEFAULT 'N',
   `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `namespace` (`namespace`,`controller`,`action`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 /*Table structure for table `humble_service_parameters` */
 
@@ -203,7 +205,7 @@ CREATE TABLE `humble_service_parameters` (
   `modified` datetime NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `service_id` (`service_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Table structure for table `humble_services` */
 
