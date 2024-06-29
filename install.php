@@ -442,12 +442,13 @@ switch ($method) {
         $x = (file_exists('../Humble.php')) ? @unlink('../Humble.php') : '';
         print("done with creating drivers\n\n");
         $log = ob_get_flush();
-        print('<pre>'.$log.'</pre>');
+        //if error, then print log
+        print('<textarea style="width: 100%; height: 100%">'.$log.'</textarea>');
         postUpdate('Complete','Finished',100);
         file_put_contents('../install.log',$log);
         ?>
         <script>
-            window.location.href = '/index.html';
+            window.location.href = '/index.html?message=Installation Completed, Please Login...';
         </script>
         <?php
         break;

@@ -36,7 +36,7 @@
             "style":        "",
             "onclick":      () => {
                 if (Edits['login'].validate()) {
-                    $E("humble-login-form").submit();
+                    $E("login-form").submit();
                 }
             }
         }

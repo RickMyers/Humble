@@ -101,6 +101,9 @@
           text-align: center;
           font-size: 12px;
         }
+        body {
+            background-image: url('/web/images/bg_graph.png');
+        }
     </style>
     <script type='text/javascript' src='/js/humble-jquery'></script>
     <script type='text/javascript' src='/js/common'></script>
@@ -112,23 +115,6 @@
                 $E('login-error').innerHTML = unescape(loginMessage[1]);
             }
         }
-        var slides = {
-            current: 1,
-            max: 3,
-            speed: 10000
-        };
-        function rollSlides() {
-            var cs = '#slide'+slides.current;
-            slides.current = +slides.current + 1;
-            if (slides.current > slides.max) {
-                slides.current = 1;
-            }
-            var ns = '#slide'+slides.current;
-            $(cs).fadeOut();
-            $(ns).fadeIn();
-            window.setTimeout(rollSlides,slides.speed);
-        }
-        //window.setTimeout(rollSlides,slides.speed);
     </script>
 
 </head>
@@ -154,7 +140,7 @@
                             <center>
                             <img src='/web/images/djikstra.png'  height='100' /><br /><br />
                             </center>
-                            <form name='humble-login-form' id='humble-login-form' onsubmit='return false'  action='/default/user/login' method='POST'>
+                            <form name='login-form' id='login-form' onsubmit='return false'  action='/default/user/login' method='POST'>
                               <input type="text" name="user_name" id='user_name' placeholder="Username">
                               <input type="password" name="user_password" id='user_password' placeholder="Password">
                               <input type="submit" name="login-submit" id='login-submit' class="login login-submit" value="login">

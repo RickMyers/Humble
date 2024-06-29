@@ -36,7 +36,7 @@ foreach ($_GET as $var => $val) {
     $_REQUEST[$var] = $_GET[$var] = htmlspecialchars($val,ENT_QUOTES);
 }
 $mappings               = [];
-$namespace              = ($_GET['humble_framework_namespace'] === 'default') ? \Environment::namespace : $_GET['humble_framework_namespace'];
+$namespace              = ($_GET['humble_framework_namespace'] === 'default') ? \Environment::namespace() : $_GET['humble_framework_namespace'];
 $controller             = $_GET['humble_framework_controller'];
 $action                 = $_GET['humble_framework_action'];
 if (strpos($action,'/')!==false) {
