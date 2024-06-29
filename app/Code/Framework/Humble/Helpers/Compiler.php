@@ -32,7 +32,7 @@ class Compiler extends Directory
     private $arguments      = [];
     protected $_db          = null;
     private $tabs           = 0;
-    private $tabstr         = '';
+    private $tabstr         = "";
     private $global         = [
         'blocking' => true,
         'response' => false
@@ -1052,7 +1052,7 @@ PHP;
         if ($flag) {
             print($this->tabs()."Environment::block();\n");
         } else {
-           print($this->tabs()."Environment::unblock();\n");
+            print($this->tabs()."Environment::unblock();\n");
         }
     }
 
@@ -1065,7 +1065,7 @@ PHP;
         $track = ['TRUE'=>true,'YES'=>true,'Y'=>true,'ON'=>true];               //will do an audit if any of these values are present
         if ($audit) {
             if (isset($track[strtoupper($audit)])) {
-                print($this->tabs().'$skip = ["m"=>true,"n"=>true,"c"=>true];'."\n");
+                print($this->tabs().'$skip = ["humble_framework_method"=>true,"humble_framework_namespace"=>true,"humble_framework_controller"=>true];'."\n");
                 print($this->tabs().'$audit = \Humble::entity("humble/audit/log");'."\n");
                 print($this->tabs().'$audit->setNamespace(\Humble::_namespace());'."\n");
                 print($this->tabs().'$audit->setController(\Humble::_controller());'."\n");
@@ -1203,6 +1203,7 @@ PHP;
                     continue;
                 }
                 print($this->tabs(1).'case "'.$action['name'].'":'."\n");
+                $this->tabs(1);
                 if (isset($action['CSRF_PROTECTION'])) {
                     $this->processCSRFProtection((string)$action['CSRF_PROTECTION']);
                 }
@@ -1406,6 +1407,7 @@ PHP;
                     print($this->tabs().'$TRIGGER_'.$id.'->emit("'.$action['event'].'");'."\n");
                 }
                 print($this->tabs(-1)."break;\n");
+                $this->tabs(-1);
             }
             if ($defaultAction !== false) {
                 //handle default action here
