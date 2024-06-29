@@ -6,8 +6,8 @@
     <style type='text/css'>
 
         .login-card {
-          padding: 40px;
-          width: 274px;
+          /*padding: 40px;*/
+          width: 400px;
           background-color: #F7F7F7;
           border-radius: 2px 0px 0px 2px;
           box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
@@ -62,13 +62,13 @@
           border: 0px;
           color: #fff;
           text-shadow: 0 1px rgba(0,0,0,0.1);
-          background-color: #4d90fe;
+          background-color: #425445; /*#4d90fe;*/
         }
 
         .login-submit:hover {
           border: 0px;
           text-shadow: 0 1px rgba(0,0,0,0.3);
-          background-color: #357ae8;
+          background-color:  #425445; /*#357ae8;*/
         }
 
         .login-card a {
@@ -104,22 +104,6 @@
                 $E('login-error').innerHTML = unescape(loginMessage[1]);
             }
         }
-        var slides = {
-            current: 1,
-            max: 3,
-            speed: 10000
-        };
-        function rollSlides() {
-            var cs = '#slide'+slides.current;
-            slides.current = +slides.current + 1;
-            if (slides.current > slides.max) {
-                slides.current = 1;
-            }
-            var ns = '#slide'+slides.current;
-            $(cs).fadeOut();
-            $(ns).fadeIn();
-            window.setTimeout(rollSlides,slides.speed);
-        }
     </script>
 
 </head>
@@ -135,35 +119,26 @@
 
                         </div>
                     </td>
-                    <td>
-                        &nbsp;
-                    </td>
                 </tr>
                 <tr>
                     <td>
                         <div id='card' class="login-card">
-                            <center>
-                            <!--img src='/images/humble/djikstra.png'  height='100' /-->
-                            <img src='/images/humble/login.png'  height='100' /><br /><br />
-                            </center>
-                            <form name='humble-login-form' id='humble-login-form' onsubmit='return false'  action='/&&NAMESPACE&&/user/login' method='POST'>
-                                <input type="text" name="user_name" id='user_name' placeholder="Username">
-                                <input type="password" name="user_password" id='user_password' placeholder="Password">
-                                <input type="submit" name="login-submit" id='login-submit' class="login login-submit" value="login">
-                            </form>
-                            <div class="login-help">
-                                <a href="/&&NAMESPACE&&/user/enrollForm">Register</a> • <a href="/&&NAMESPACE&&/user/recoverForm">Forgot Password</a>
+                            <div style="border-left: 4px solid #425445; border-right: 4px solid #425445; border-top: 4px solid #425445; height: 44px"></div>
+                            <div style="padding: 10px 40px 10px 40px">
+                                <center>
+                                    <!--img src='/images/humble/djikstra.png'  height='100' /-->
+                                    <img src='/images/humble/login.png'  height='100' /><br /><br />
+                                </center>
+                                <form name='login-form' id='login-form' onsubmit='return false'  action='/&&NAMESPACE&&/user/login' method='POST'>
+                                    <input type="text" name="user_name" id='user_name' placeholder="Username">
+                                    <input type="password" name="user_password" id='user_password' placeholder="Password">
+                                    <input type="submit" name="login-submit" id='login-submit' class="login login-submit" value="login">
+                                </form>
+                                <div class="login-help">
+                                    <a href="/&&NAMESPACE&&/user/enrollForm">Register</a> • <a href="/&&NAMESPACE&&/user/recoverForm">Forgot Password</a>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td id="slide" style="position: relative; width: 626px;">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan='2' align='center'>
-                        <br />
-                        <div style='font-family: sans-serif; font-size: .8em; color: ghostwhite; width:900px; text-align: justify;'>
-
+                            <div style="border-left: 4px solid #425445; border-right: 4px solid #425445; border-bottom: 4px solid #425445; height: 44px"></div>
                         </div>
                     </td>
                 </tr>

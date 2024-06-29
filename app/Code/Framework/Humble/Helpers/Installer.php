@@ -667,7 +667,6 @@ FIELD;
              where namespace = '{$namespace}'
                {$clause}
 SQL;
-        print($query."\n\n");
         $this->_db->query($query); //remove JS
         $query = <<<SQL
             delete from humble_css

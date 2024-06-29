@@ -243,7 +243,7 @@ EasyEdits.execute	= function (easy){
             } try {
                 easyField.ref		= formField;
                 easyField.inerror	= false;
-                if ((!formField.disabled) && (formField.type!="button")) {
+                if ((!formField.disabled) && (easyField.type!="button") ) {
                     formField.style.backgroundColor = defaultBackgroundColor;
                 }
                 if (easyField.required)	{
