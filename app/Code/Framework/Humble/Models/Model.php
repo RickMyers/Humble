@@ -92,7 +92,10 @@ class Model implements HumbleComponent
      * @return string
      */
     public function browserTabId() {
-        $_SESSION['BROWSER_TABS'][$tab_id = $this->_token(6)] = '';
+         if (!isset($_SESSION['BROWSER_TABS'])) {
+            $_SESSION['BROWSER_TABS'] = [];
+        }
+        $_SESSION['BROWSER_TABS'][$tab_id = $this->_uniqueId()] = '';
         return $tab_id;
     }
     
@@ -103,7 +106,10 @@ class Model implements HumbleComponent
      * @return string
      */
     public function csrfBuster($tab_id) {
-        return $_SESSION['BROWSER_TABS'][$tab_id] = $this->_token(6);
+        if (!isset($_SESSION['BROWSER_TABS'])) {
+            $_SESSION['BROWSER_TABS'] = [];
+        }        
+        return $_SESSION['BROWSER_TABS'][$tab_id] = $this->_uniqueId();
     }
     
     /**

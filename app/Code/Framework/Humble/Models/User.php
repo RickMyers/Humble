@@ -134,6 +134,8 @@ class User extends Model {
         if ($user && ($login = ($user['password'] === crypt($this->getPassword(),$user['salt'])))) {
             Environment::session('uid',$user['id']);
             Environment::session('login',$user['id']);
+            unset($user['password']);
+            unset($user['salt']);
             Environment::session('user',$user);
         }
         return $login;

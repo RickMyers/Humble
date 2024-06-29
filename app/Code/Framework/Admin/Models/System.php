@@ -45,32 +45,6 @@ class System extends Model
     }
     
     /**
-     * Returns a unique identifier to help identify request threads when you come from a client who might have the site open in multiple tabs
-     * 
-     * @return string
-     */
-    public function browserTabId() {
-        if (!isset($_SESSION['BROWSER_TABS'])) {
-            $_SESSION['BROWSER_TABS'] = [];
-        }
-        $_SESSION['BROWSER_TABS'][$tab_id = $this->_uniqueId()] = '';
-        return $tab_id;
-    }
-    
-    /**
-     * Used to foil cross-site request forgeries.   A combination of the tab_id token and the csrf token will be used to make sure the request is kosher
-     * 
-     * @param string $tab_id
-     * @return string
-     */
-    public function csrfBuster($tab_id) {
-        if (!isset($_SESSION['BROWSER_TABS'])) {
-            $_SESSION['BROWSER_TABS'] = [];
-        }        
-        return $_SESSION['BROWSER_TABS'][$tab_id] = $this->_uniqueId();
-    }
-    
-    /**
      * 
      */
     public function save() {
