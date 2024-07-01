@@ -3,7 +3,7 @@
 
 Sensor related actions
 
-For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.html
 -->
 <controller name="sensor" use="Smarty" author="Richard Myers" email="rick@humbleprogramming.com">
     <actions>
