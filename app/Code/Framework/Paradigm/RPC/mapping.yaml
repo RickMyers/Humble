@@ -124,14 +124,13 @@ geocodeLocation   :
       address     :  
 dictionaryDefinition :
   url             : https://www.dictionaryapi.com/api/v3/references/collegiate/json+    # alternate format, a + at the end means append the arguments as URI segments, except for API Key
-  api-key         : 1fb88106-0c12-4e40-9f54-b17e0422e095
+  api-key         : sm://dictionaryAPIKey                                               #1fb88106-0c12-4e40-9f54-b17e0422e095
   api-var         : key
-  cache           : 90D
   arguments       : term
   method          : GET
 thesaurusEntry :
   url             : https://www.dictionaryapi.com/api/v3/references/thesaurus/json+    # alternate format, a + at the end means append the arguments as URI segments, except for API Key
-  api-key         : 769d2912-c0cf-4c9c-8a83-bfd573e83ec4
+  api-key         : sm://thesaurusAPIKey                                               #769d2912-c0cf-4c9c-8a83-bfd573e83ec4
   api-var         : key
   arguments       : entry                                                            # instead of an array of arguments, a string representing the key variable
   method          : GET
@@ -155,8 +154,8 @@ languageTranslation:
   aguments        : [LanguageMode,Text]
 bingTranslation   :
   url             : https://api.datamarket.azure.com/Bing/MicrosoftTranslator/v1/Translate
-  userid          : 9694da9d-032e-4866-9781-40d00ae659ab
-  password        : wElcXaMg8sSxhqFJpR8zHK0d7P0bMe73VvDPstnXp8c
+  userid          : sm:://bingTranslationUserID                                     #9694da9d-032e-4866-9781-40d00ae659ab
+  password        : sm:://bingTranslationPassword                                   #wElcXaMg8sSxhqFJpR8zHK0d7P0bMe73VvDPstnXp8c
   secure          : true
   api-key         :
   api-var         :

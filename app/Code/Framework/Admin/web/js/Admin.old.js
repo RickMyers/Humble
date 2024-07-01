@@ -96,13 +96,14 @@ var Administration = (function () {
                     secrets: {
                         add: function () {
                             var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Secret");
-                            (new EasyAjax('/admin/secrets/form')).then((response) => {
+                            (new EasyAjax('/admin/secrets/form')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                              
                         },
                         review: function () {
-                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Secret");
-                            (new EasyAjax('/admin/secrets/review')).then((response) => {
+                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("Review Secret");
+                            alert(win.id);
+                            (new EasyAjax('/admin/secrets/review')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                              
                         }

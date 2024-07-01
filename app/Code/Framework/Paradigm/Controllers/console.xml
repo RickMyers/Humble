@@ -28,9 +28,9 @@
         <!-- ################################################################################################# -->
 
         <action name='search'>
-            <helper namespace='paradigm' class='data' id='data'>
+            <model namespace='paradigm' class='data' id='data'>
                 <parameter name='term' value='term' source='post' default='stupid' />
-            </helper>
+            </model>
         </action>
 
     </actions>

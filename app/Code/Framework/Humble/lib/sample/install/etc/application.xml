@@ -27,11 +27,12 @@
     </msa>
     <default>
         <inline_templater options="Rain,Latte">Rain</inline_templater>
-        <templater options="Smarty,Twig,Latte,Savant,TBS,Rain">Twig</templater>
+        <templater options="Smarty,Twig,Latte,Savant,TBS,Rain,Blade,PHPTal,PHP">Twig</templater>
     </default>
     <api>
         <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/APIPolicy.htmls for more information first -->
     </api>
+    <exceptions options="JSON,HTML" comment="Choose whether you want a JSON formatted exception or one that is a templated HTML response">HTML</exceptions>
     <engine options="c:\\php\\php.exe,/lib/usr/php/php.exe,etc" comment="This is mainly for Windows, please specify the correct location here">{$engine}</engine>
     <documentation_comment>
         The next section outlines the choices for creating automated documentation.   Choose either PHPDoc2 or APIGen(PHP 8.2+).  Select the option for each from the options
@@ -45,7 +46,6 @@
     <flags>
         <!-- You can insert custom flags here, and query them at runtime -->
         <display_mysql_errors comment="Mysql error are always logged but do you want them displayed on the page as well?">0</display_mysql_errors>
-        <redis comment="Use redis instead of memcache for the cache">0</redis>
     </flags>    
     <support>
         <name>{$support_name}</name>

@@ -126,6 +126,7 @@ Paradigm.console = (function () {
                     break;
                 case 13     :   
                     console_command = commands[commands.length] = $(console_input).val();
+                    console.log($(console_input).val());
                     Paradigm.console.process($(console_input).val());
                     console_input.value = '';
                     console_input.focus();                    
@@ -139,27 +140,42 @@ Paradigm.console = (function () {
             return true;
         },
         process: function (command) {
+            if (!command) {
+                console.log('I got junk');
+                return;
+            }
+            
             var text    = command.substr(command.indexOf(' ')+1);
             if (command.indexOf(' ') != -1) {
                 command = command.substr(0,command.indexOf(' '));
             }
             switch (command.toLowerCase()) {
-                case "new"  :
+                case "begin"  :
                     switch (text.toLowerCase()) {
                         case 'test' :
                             if (console_element) {
                                 (new EasyAjax('/paradigm/test/init')).add('component_id',console_element.id).then((response) => {
                                     console_test = JSON.parse(response);
                                     console.log(console_test);
+                                    console_test.argument_list = {
+                                        
+                                    };
+                                    Paradigm.console.add(updateResponse("Test "+console_test._id+" created"),'',1);
                                 }).post();
                             } else {
-                                Paradigm.console.add(updateResponse("No element selected"),'',1)
+                                Paradigm.console.add(updateResponse("No element selected"),'',1);
                             }
                             break;
                         default :
-                            Paradigm.console.add(updateResponse("I don't know how to do that"),'',1);
+                            Paradigm.console.add(updateResponse("Sure..."),'',1);
                             break;
                     } 
+                    break;
+                case "+"    :
+                case "add"  :
+                    break;
+                case "-"    :
+                case "remove" : 
                     break;
                 case "time" :
                     (new EasyAjax('/paradigm/console/time')).then((response) => {
@@ -189,6 +205,7 @@ Paradigm.console = (function () {
                         Paradigm.console.reply(response,'',1);
                     }).post();
                     break;
+                case "new"          :
                 case "init"         :
                     Paradigm.console.service.init();
                     Paradigm.console.add('Data cleared','',1);

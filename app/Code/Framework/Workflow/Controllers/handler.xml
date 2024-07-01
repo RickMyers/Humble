@@ -3,7 +3,7 @@
 
 Configurations from the parent handler class itself
 
-For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.html
 -->
 <controller name="handler" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>

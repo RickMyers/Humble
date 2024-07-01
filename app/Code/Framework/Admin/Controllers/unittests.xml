@@ -3,7 +3,7 @@
 
 Unit Test Harness
 
-For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.html
 -->
 <controller name="unittests" use="Smarty" author="Richard Myers" email="rick@humbleprogramming.com">
     <actions>

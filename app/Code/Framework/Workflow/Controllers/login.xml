@@ -3,7 +3,7 @@
 
 Login related workflow configuration action
 
-For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/internal/docs/controller.html
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.html
 -->
 <controller name="login" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>

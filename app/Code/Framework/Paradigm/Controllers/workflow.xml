@@ -107,7 +107,6 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <description>Draws the Load page</description>
             <entity namespace='paradigm' class='workflows' id='workflows' rows='rows' page='page' defaultRows='10'>
             </entity>
-
         </action>
 
         <!-- ############################################################### -->
