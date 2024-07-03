@@ -40,6 +40,38 @@
 
         <!-- ############################################################### -->   
         
+        <action name="recover" map='option'>
+            <description>Form to start the recover password process</description>
+            <if var='option' eq='form'>
+                <then>
+                    <view name="recover_form" />
+                </then>
+                <else>
+                    <if var='option' eq='email'>
+                        <then>
+                            <model class="model" id="smtp"/>
+                            <switch id="smtp" method="isSMTPEnabled">
+                                <case value="TRUE">
+                                    <model class="Model" method="sendRecoverEmail">
+                                        <parameter name="email" required="true" source="request" />
+                                    </model>
+                                </case>
+                                <default>
+                                    <view name="smtp_not_enabled" />
+                                </default>
+                            </switch>
+                        </then>
+                        <else>
+                            
+                        </else>
+                    </if>
+                    
+                </else>
+            </if>
+        </action>
+        
+        <!-- ############################################################### -->   
+        
         <action name='home'>
             <description>The project default home page</description>
         </action>

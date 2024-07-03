@@ -124,6 +124,17 @@ class Model implements HumbleComponent
     }
     
     /**
+     * Will check to see if it is possible to send an email
+     * 
+     * @return bool
+     */
+    public function isSMTPEnabled() {
+        $enabled = false;
+        
+        return $enabled;
+    }
+    
+    /**
      * Adds arbitrary information to the debug report
      * 
      * @param type $data
