@@ -25,14 +25,12 @@
         $parts      = explode(':',$name);
         $port       = $parts[2] ?? '80';
         $server     = $args['SERVER_NAME'] ?? ($parts[1] ?? 'localhost');
-//        if (count($parts)===3) {
- //           $name = $parts[0].':'.$parts[1];
-  //      }
         $cont       = explode('/',$args['landing_page'])[2];
         $path       = $args['destination_folder']  ?? '';
-        $parts      = explode(DIRECTORY_SEPARATOR,$path);
-        $root       = array_pop($parts);
-        $basedir    = implode(DIRECTORY_SEPARATOR,$parts);
+        if (strpos($path,':')!==false) { 
+            $parts  = explode(':',$path);
+            $path   = $parts[1];    
+        }
         $ns         = $args['namespace'] ?? '';
         $error_log  = $args['error_log'] ?? '';
         $package    = $args['package']   ?? '';
@@ -179,7 +177,7 @@
                 $name      = str_replace(['http://','https://'],['',''],($_REQUEST['project_name'] && $_REQUEST['project_name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));
                 $error_log = isset($_REQUEST['error_log'])&& $_REQUEST['error_log'] ? 'ErrorLog '.$_REQUEST['error_log']:'';
                 $port      = $_REQUEST['port'] ?? '80';
-                $dir       = $_REQUEST['destination_folder'] ?? ($_REQUEST['current_dir'] ?? '');
+                $dir       = $_REQUEST['destination_folder'] ?? ($_REQUEST['current_dir'] ?? '/var/www/html');
                 $vhost     = processVhost('app/install/Docker/vhost_template.conf',array_merge($_REQUEST,['project_name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
                 print($vhost);
             } else {
