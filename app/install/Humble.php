@@ -12,6 +12,7 @@ $help = <<<HELP
  *      --init        Same as --project
  *      --fetch       Initial install of repository
  *      --restore     Restores the Humble framework into an existing (Humble based) project
+        --contribute  Sets up your local environment (through docker) to be able to contribute to the Humble project
  *      --config      Writes apache config, needs servername= passed in
  *      --dockerme    Fetches a docker configuration, partially tailored
  *      --install     Retrieves a Humble.project file from the project hub by Serial Number

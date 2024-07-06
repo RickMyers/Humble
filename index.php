@@ -275,8 +275,10 @@ if (!$request_handled) {
     if (file_exists('Code/'.$project->package.'/'.$project->module.'/includes/Constants.php')) {
         require_once 'Code/'.$project->package.'/'.$project->module.'/includes/Constants.php';            //Enumeration type stuff
     }
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {       
-        require_once "Code/'.$project->package.'/'.$project->module.'/includes/Compatibility.php";        //This is for handling function that windows PHP is missing
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {   
+        if (file_exists("Code/'.$project->package.'/'.$project->module.'/includes/Compatibility.php")){
+            require_once "Code/'.$project->package.'/'.$project->module.'/includes/Compatibility.php";        //This is for handling function that windows PHP is missing
+        }
     }
 
     if (!file_exists($include)) {
