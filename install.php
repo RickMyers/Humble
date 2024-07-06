@@ -437,8 +437,8 @@ switch ($method) {
         session_start();
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");
-        $x = (file_exists('../humble.bat')) ? rename('../humble.bat',strtolower((string)$project->factory_name).'.bat'): '';
-        $x = (file_exists('../humble.sh'))  ? rename('../humble.sh',strtolower((string)$project->factory_name).'.sh') : '';
+        $x = (file_exists('humble.bat')) ? rename('humble.bat',strtolower((string)$project->factory_name).'.bat'): '';
+        $x = (file_exists('humble.sh'))  ? rename('humble.sh',strtolower((string)$project->factory_name).'.sh') : '';
         $x = (file_exists('../Humble.php')) ? @unlink('../Humble.php') : '';
         print("done with creating drivers\n\n");
         $log = ob_get_flush();

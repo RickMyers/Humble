@@ -12,7 +12,7 @@ $help = <<<HELP
  *      --init        Same as --project
  *      --fetch       Initial install of repository
  *      --restore     Restores the Humble framework into an existing (Humble based) project
-        --contribute  Sets up your local environment (through docker) to be able to contribute to the Humble project
+ *      --contribute  Sets up your local environment (through docker) to be able to contribute to the Humble project
  *      --config      Writes apache config, needs servername= passed in
  *      --dockerme    Fetches a docker configuration, partially tailored
  *      --install     Retrieves a Humble.project file from the project hub by Serial Number
@@ -338,13 +338,13 @@ FACTORY;
     chdir('..');
     $x = (file_exists('humble.bat')) ? @unlink('humble.bat') : '';
     $x = (file_exists('humble.sh'))  ? @unlink('humble.sh') : '';
-    $x = (file_exists('Humble.php')) ? @unlink('Humble.bat') : '';
+    $x = (file_exists('Humble.php')) ? @unlink('Humble.php') : '';
     print("\n\nThe framework download is complete, please go to ".$project->project_url."/install.php to install your project\n\n");
-    @exec('chown -R www-data:root /var/www');
-    @exec('chmod -R 0775 /var/www');
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('start '.$project->project_url.'/install.php');
     } else  {
+        @exec('chown -R www-data:root /var/www');
+        @exec('chmod -R 0775 /var/www');        
         exec('xdg-open '.$project->project_url.'/install.php');
     }
 }
