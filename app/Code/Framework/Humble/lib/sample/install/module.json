@@ -1,42 +1,42 @@
 {
-    "structure": [
-        "etc",
-        "Controllers",
-        "Controllers/Cache",
-        "Mobile",
-        "Mobile/Controllers",
-        "Mobile/Controllers/Cache",
-        "Mobile/Views",
-        "Mobile/Views/Cache",
-        "Views",
-        "Views/actions",
-        "Views/actions/Smarty",
-        "Views/admin",                
-        "Views/admin/Smarty",                
-        "Views/Cache",
-        "Resources",
-        "Resources/js",
-        "Resources/SQL",
-        "Models",
-        "Helpers",
-        "Schema",
-        "Schema/Install",
-        "Schema/Update",
-        "Schema/DSL",
-        "Entities",
-        "RPC",
-        "web",
-        "web/js",
-        "web/app",
-        "web/css",
-        "web/edits",
-        "Images"        
-    ],
+    "structure": {
+        "basic": [
+            "etc",
+            "Controllers",
+            "Controllers/Cache",
+            "Mobile",
+            "Mobile/Controllers",
+            "Mobile/Controllers/Cache",
+            "Mobile/Views",
+            "Mobile/Views/Cache",
+            "Views",
+            "Views/Cache",
+            "Resources",
+            "Resources/js",
+            "Resources/SQL",
+            "Models",
+            "Helpers",
+            "Schema",
+            "Schema/Install",
+            "Schema/Update",
+            "Schema/DSL",
+            "Entities",
+            "RPC",
+            "web",
+            "web/js",
+            "web/app",
+            "web/css",
+            "web/edits",
+            "Images"        
+        ],
+        "main_module": [
+            "Views/admin",                
+            "Views/admin/Smarty",               
+            "Views/user",                
+            "Views/user/Smarty"
+        ]
+    },
     "templates": [
-        {
-            "source": "/lib/sample/module/Controllers/actions.xml",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Controllers/actions.xml"
-        },
         {
             "source": "/lib/sample/module/Controllers/admin.xml",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Controllers/admin.xml" 
@@ -48,10 +48,6 @@
         {
             "source": "/lib/sample/module/RPC/mapping.yaml",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/RPC/mapping.yaml"
-        },
-        {
-            "source": "/lib/sample/module/Views/actions/Smarty/open.tpl",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/actions/Smarty/open.tpl"
         },
         {
             "source": "/lib/sample/module/Views/admin/Smarty/app.tpl",
@@ -72,10 +68,6 @@
         {
             "source": "/lib/sample/module/Entities/Entity.php.txt",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Entities/Entity.php"
-        },
-        {
-            "source": "/lib/sample/module/web/edits/template.json" ,
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/web/edits/sample_edit.json"
         },
         {
             "source": "/lib/sample/module/AdminApps.xml" ,
@@ -108,6 +100,18 @@
             "source": "/lib/sample/install/Views/404.html" ,
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/404.tpl"
         },
+        {
+            "source": "/lib/sample/install/Controllers/user.xml" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Controllers/user.xml"
+        },   
+        {
+            "source": "/lib/sample/install/Views/recover.html" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/user/Smarty/recover.tpl"
+        },
+        {
+            "source": "/lib/sample/install/Views/register.html" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/user/Smarty/recover.tpl"
+        },            
         {
             "source": "/lib/sample/module/web/js/mainactions.js",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/web/js/&&MODULE&&.js"

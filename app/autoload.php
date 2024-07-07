@@ -1,5 +1,5 @@
 <?php
-    spl_autoload_register(array('Humble_Autoloader_PSR_4_Compliant','handler')); //Our Autoloader
+    spl_autoload_register(['Humble_Autoloader_PSR_4_Compliant','handler']); //Our Autoloader
     require_once('vendor/autoload.php');                                        //Their Autoloader
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -10,6 +10,10 @@
         public static function handler($className) {
             if ($className === 'Settings') {
                 $project = \Environment::getProject();
+                if (!file_exists('../../Settings/'.$project->namespace.'/Settings.php')) {
+                    header('Location: /install.php');
+                    die();
+                }
                 require_once('../../Settings/'.$project->namespace.'/Settings.php');
             } else {
                 $classLocation = str_replace('\\',DIRECTORY_SEPARATOR,$className);
@@ -21,4 +25,3 @@
             }
         }
     }
-?>

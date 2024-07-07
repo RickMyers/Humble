@@ -181,7 +181,7 @@ class Module extends CLI
             }
             if (!is_dir($root)) {
                 @mkdir($root);
-                foreach ($mod->structure as $path) {
+                foreach ($mod->structure->basic as $path) {
                     mkdir($root.DIRECTORY_SEPARATOR.$path,0775,true);
                 }
                 $is_base     = (string)$project->namespace == $ns;              //is this a new framework, as opposed to appication, module
@@ -195,10 +195,15 @@ class Module extends CLI
                 self::copyFiles($root,$mod->templates,$search,$replace);
                 if ($mn) {
                     //This is the main module, so we have to copy some additional files
+                    foreach ($mod->structure->main_module as $path) {
+                        mkdir($root.DIRECTORY_SEPARATOR.$path,0775,true);
+                    }                    
                     $parts       = explode('/',$project->landing_page);
                     $controller  = $parts[2];        $page        = $parts[3];         
                     $search[]    = '&&CONTROLLER&&'; $replace[]   = $controller;
                     $search[]    = '&&PAGE&&';       $replace[]   = $page;
+                    $search[]    = '&&BASEDIR&&';    $replace[]   = '';
+                    $search[]    = '&&PROJECT_NAME&&'; $project->project_name;
                     @mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
                     @mkdir('cli/'.$md,0775,true);
                     self::copyFiles($root,$mod->main_module,$search,$replace);

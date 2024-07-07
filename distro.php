@@ -27,6 +27,7 @@
         $server     = $args['SERVER_NAME'] ?? ($parts[1] ?? 'localhost');
         $cont       = explode('/',$args['landing_page'])[2];
         $path       = $args['destination_folder']  ?? '';
+        $basedir    = $path;
         if (strpos($path,':')!==false) { 
             $parts  = explode(':',$path);
             $path   = $parts[1];    
