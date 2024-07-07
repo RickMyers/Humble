@@ -175,29 +175,28 @@ class Module extends CLI
         $mod     = json_decode(file_get_contents('Code/Framework/Humble/lib/sample/install/module.json'));
         if ($mod && $ns && $pk && $px && $md) {
             $base = 'Code'.DIRECTORY_SEPARATOR.$pk;
+            $src  = 'Code/Framework/Humble';
             $root = $base."/".$md;
             if (!is_dir($base)) {
                @mkdir($base,0775,true);
             }
             if (!is_dir($root)) {
-                @mkdir($root);
+                @mkdir($root,0775,true);
                 foreach ($mod->structure->basic as $path) {
                     mkdir($root.DIRECTORY_SEPARATOR.$path,0775,true);
                 }
-                $is_base     = (string)$project->namespace == $ns;              //is this a new framework, as opposed to appication, module
-                $package     = $is_base ? 'Framework'   : (string)$project->package;
-                $module      = $is_base ? 'Humble'      : (string)$project->module;
-                $required    = $is_base ? 'Y'           : 'N';
-                $main_module = (strtoupper($project->namespace)===strtoupper($ns)) ? ucfirst(strtolower($project->namespace))." = {}" : "";  //if this is the main module, of which there can be only one, we will need to add an extra bit of JS
-                $root        = is_dir('Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module.DIRECTORY_SEPARATOR.'lib/sample/module') ? 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.''.$project->module : "Code/Framework/Humble";
+                $package     = (string)$project->package;
+                $module      = (string)$project->module;
+                $required    = $mn      ? 'Y'           : 'N';
+                $main_module = $mn ? ucfirst(strtolower($project->namespace))." = {}" : "";  //if this is the main module, of which there can be only one, we will need to add an extra bit of JS
                 $search      = ["&&MAIN_MODULE&&","&&PROJECT&&","&&NAMESPACE&&","&&PREFIX&&","&&AUTHOR&&","&&MODULE&&","&&PACKAGE&&",'&&EMAIL&&','&&FACTORY&&','&&BASE_PACKAGE&&','&&BASE_MODULE&&','&&REQUIRED&&'];
                 $replace     = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
-                self::copyFiles($root,$mod->templates,$search,$replace);
+                self::copyFiles($src,$mod->templates,$search,$replace);
                 if ($mn) {
                     //This is the main module, so we have to copy some additional files
                     foreach ($mod->structure->main_module as $path) {
                         mkdir($root.DIRECTORY_SEPARATOR.$path,0775,true);
-                    }                    
+                    }                       
                     $parts       = explode('/',$project->landing_page);
                     $controller  = $parts[2];        $page        = $parts[3];         
                     $search[]    = '&&CONTROLLER&&'; $replace[]   = $controller;
@@ -206,10 +205,10 @@ class Module extends CLI
                     $search[]    = '&&PROJECT_NAME&&'; $project->project_name;
                     @mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
                     @mkdir('cli/'.$md,0775,true);
-                    self::copyFiles($root,$mod->main_module,$search,$replace);
-                    self::copyFiles($root,$mod->copy,$search,$replace);
+                    self::copyFiles($src,$mod->main_module,$search,$replace);
+                    self::copyFiles($src,$mod->copy,$search,$replace);
                 } else {
-                    self::copyFiles($root,$mod->regular_module,$search,$replace);
+                    self::copyFiles($src,$mod->regular_module,$search,$replace);
                 }
                 $result = "Module likely created, don't forget to install it";
                 header('RC: 0');

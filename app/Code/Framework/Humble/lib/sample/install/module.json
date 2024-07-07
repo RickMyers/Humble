@@ -10,7 +10,9 @@
             "Mobile/Views",
             "Mobile/Views/Cache",
             "Views",
-            "Views/Cache",
+            "Views/Cache",                
+            "Views/admin",                
+            "Views/admin/Smarty",                   
             "Resources",
             "Resources/js",
             "Resources/SQL",
@@ -30,8 +32,6 @@
             "Images"        
         ],
         "main_module": [
-            "Views/admin",                
-            "Views/admin/Smarty",               
             "Views/user",                
             "Views/user/Smarty"
         ]
@@ -110,7 +110,7 @@
         },
         {
             "source": "/lib/sample/install/Views/register.html" ,
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/user/Smarty/recover.tpl"
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/user/Smarty/register.tpl"
         },            
         {
             "source": "/lib/sample/module/web/js/mainactions.js",
