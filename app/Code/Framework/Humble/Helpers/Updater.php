@@ -188,6 +188,7 @@ class Updater extends Installer
         }
         $this->output('SCHEMA','Finished Processing schema updates');
     }
+    
     public function updateStructure($namespace,$structure,$module_data) {
         $module = Humble::entity('humble/modules')->setNamespace($namespace);
         $module->load();
@@ -223,6 +224,7 @@ class Updater extends Installer
         $module->setDescription(addslashes($this->description));
         $module->save();
     }
+    
     /**
      *
      * @param type $source

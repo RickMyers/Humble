@@ -17,7 +17,7 @@
                 </default>
             </switch>
         </action>
-
+ 
         <!-- ############################################################### -->
 
         <action name="authentication" output="JSON">

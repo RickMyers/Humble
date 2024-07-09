@@ -14,9 +14,7 @@ class Unity
     protected $_orderBy       = [];
     private   $_orderBuilt    = false;
     protected $_fieldList     = "*";
-    protected $_groupBy       = [];
     protected $_db            = null;
-    protected $_having        = [];
     protected $_search        = [];
     protected $_autoinc       = [];
     protected $_currentPage   = 0;
@@ -28,7 +26,6 @@ class Unity
     protected $_cursor        = false;
     protected $_cursorId      = 0;
     protected $_rowsReturned  = 0;
-    protected $_joins         = [];
     protected $_conditions    = [];
     protected $_distinct      = false;
     protected $_mongodb       = null;
@@ -45,6 +42,7 @@ class Unity
     protected $_alias         = false;
     protected $_batchsql      = [];
     protected $_batch         = false;
+    protected $_actual        = false;
     protected $_inField       = '';
     protected $_in            = [];
     protected $_betweenField  = '';
@@ -125,9 +123,7 @@ class Unity
         //$this->_columns     = [];
         $this->_fields       = [];
         $this->_orderBy      = [];
-        $this->_groupBy      = [];
         $this->_search       = [];
-        $this->_joins        = [];
         $this->_data         = [];
         $this->_noLimitQuery = '';
         return $this;
@@ -141,6 +137,20 @@ class Unity
         //$this->loadEntityKeys();
         //$this->loadEntityColumns();
         return $this;
+    }
+    
+    /**
+     * What is the actual table name?  Use this for when you want to use Unity on a table that doesn't follow the standard convention
+     * 
+     * @param mixed $actual
+     * @return mixed
+     */
+    public function _actual($actual=false) {
+        if ($actual!==false) {
+            $this->_actual = $actual;
+            return $this;
+        }
+        return $this->_actual;
     }
     
     /**
@@ -184,9 +194,10 @@ class Unity
      */
     public function distinct($field=false) {
         $retval = [];
+        $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         if ($field) {
             $query = <<<SQL
-                select distinct {$field} from {$this->_prefix()}{$this->_entity()}
+                select distinct {$field} from {$table}
 SQL;
             $query .= $this->buildWhereClause(true);
             $query .= $this->buildOrderByClause();
@@ -281,41 +292,11 @@ SQL;
      *
      */
     public function describe() {
+        $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query = <<<SQL
-          describe {$this->_prefix()}{$this->_entity()}
+          describe {$table}
 SQL;
         return $this->_db->query($query);
-    }
-
-    /**
-     *
-     */
-    public function leftJoin($table=false,$field_l=false,$field_r=false) {
-        $table = explode('/',$table);
-        $success = false;
-        if (count($table)===2) {
-            $module = Humble::module($table[0]);
-             if (isset($module['prefix']) && ($module['prefix']!="")) {
-                $table = $module['prefix'].$table[1];
-                if ($table && $field_l && $field_r) {
-                    $success = true;
-                    $this->_joins[] = array("table" => $table, "field_l" => $field_l, "field_r" => $field_r);
-                }
-            }
-        }
-        return $success;
-    }
-
-    /**
-     *
-     */
-    protected function addJoins() {
-        $joinQuery = '';
-        foreach ($this->_joins as $idx => $data) {
-            $joinQuery .= " as L_{$idx} left outer join {$data["table"]} as R_{$idx} on L_{$idx}.{$data["field_l"]} = R_{$idx}.{$data["field_r"]} ";
-        }
-        return $joinQuery;
-
     }
 
     /**
@@ -370,8 +351,9 @@ SQL;
      * @return type
      */
     public function truncate()  {
+        $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query = <<<SQL
-        truncate table {$this->_prefix}{$this->_entity}
+        truncate table {$table}
 SQL;
         return $this->_db->query($query);
     }
@@ -389,7 +371,8 @@ SQL;
             }
         }
         $group = implode(',',$group);
-        $query = "select {$group},coalesce(avg({$field}),'0') as `average` from ".$this->_prefix().$this->_entity();
+        $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+        $query = "select {$group},coalesce(avg({$field}),'0') as `average` from ".$table;
         $results = $this->_db->query($query);
         return $results[0]['average'];
     }
@@ -400,9 +383,10 @@ SQL;
      * This is likely going for deprecation
      */
     public function search($field=false,$text=false)   {
+        $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();        
         if (($field !== false) && ($text !== false)) {
             $query = <<<SQL
-            select SQL_CALC_FOUND_ROWS * from {$this->_prefix()}{$this->_entity()}
+            select SQL_CALC_FOUND_ROWS * from {$table}
              where {$field} like '%{$text}%'
 SQL;
         } else {
@@ -420,8 +404,7 @@ SQL;
                 $results[$idx] = $this->$method();
             }
             $countRowClause = ($this->_rows() && $this->_page()) ? " SQL_CALC_FOUND_ROWS " : "";
-            $query   = "select {$countRowClause} * from {$this->_prefix()}{$this->_entity()}";
-            $query  .= $this->addJoins();
+            $query   = "select {$countRowClause} * from {$table}";
             $orFlag = false;
             foreach ($results as $field => $value) {
                 if ($results[$field]!="") {
@@ -449,8 +432,9 @@ SQL;
      * @return int
      */
     public function totalRows()  {
+        $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query = <<<SQL
-            select count(*) as total from {$this->_prefix()}{$this->_entity()}
+            select count(*) as total from {$table}
 SQL;
         $results = $this->_db->query($query);
         return (count($results) == 1) ? $results[0]["total"] : 0;
@@ -463,8 +447,9 @@ SQL;
      * @return array
      */
     public function fetchRow($rowNum)  {
+        $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query = <<<SQL
-        select * from {$this->_prefix()}{$this->_entity()}
+        select * from {$table}
             limit $rowNum,1
 SQL;
         $results = $this->query($query);
@@ -531,7 +516,8 @@ SQL;
                 $results[$idx] = $this->$method();
             }
         }
-        $query      = "select * from ".$this->_prefix().$this->_entity();
+        $table      = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+        $query      = "select * from ".$table;
         $andFlag    = false;
         foreach ($results as $field => $value) {
             if (isset($this->_keys[$field]) || isset($this->_column[$field])) {
@@ -687,17 +673,11 @@ SQL;
                 $this->_currentPage($_SESSION['pagination'][$this->_namespace()][$this->_entity()] + 1);
             }
         }
-        $query   = "select ". $this->_distinct() ." ".$this->_fieldList()." from ".$this->_prefix().$this->_entity();
-        $query  .= $this->addJoins();
+        $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+        $query   = "select ". $this->_distinct() ." ".$this->_fieldList()." from ".$table;
         $query  .= $this->buildWhereClause($useKeys);
         $this->_noLimitQuery = $query;                                          //for pagination purposes        
         $query  .= $this->buildOrderByClause();
-        if (count($this->_groupBy) > 0) {
-            //update query with group by clause
-            if (count($this->_having) > 0) {
-                //and optionally a having clause, array with three elements
-            }
-        }
         $query  .= $this->addLimit($this->_currentPage);
         return $this->query($query);
     }
@@ -830,8 +810,9 @@ SQL;
             $duplicate .= (($duplicate === '`') ? '' : ",`").$key."` = ";
             $duplicate .= ($value || ($value===0) || ($value==='0')) ? "'".addslashes($value)."'" : "NULL";
         }
-        $query      = <<<SQL
-            insert into {$this->_prefix()}{$this->_entity()}
+        $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+        $query = <<<SQL
+            insert into {$table}
                 ({$fieldlist})
             values
                 ({$values})
@@ -898,8 +879,9 @@ SQL;
             $values[] = addslashes($this->$method());
         }
         $values = "'".implode("','",$values)."'";
-        $query = <<<SQL
-            insert into {$this->_prefix()}{$this->_entity()}
+        $table  = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+        $query  = <<<SQL
+            insert into {$table}
                 ({$fieldlist})
             values
                 ({$values})
@@ -1065,7 +1047,8 @@ SQL;
             }
         }
         $andFlag = false;
-        $query   = "delete from ".$this->_prefix().$this->_entity();
+        $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+        $query   = "delete from ".$table;
         $conditionFound = false;
         if ($useFields) {
             if ($whereClause = $this->buildWhereClause(true)) {
@@ -1108,11 +1091,12 @@ SQL;
     public function next() {
         $data   = null;
         $id     = $this->getId(); //If no id, not worth doing
+        $table  = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         if ($id) {
             $this->reset();
             $query  = <<<SQL
                 select id
-                  from {$this->_prefix()}{$this->_entity()}
+                  from {$table}
                  where id > {$id}
                  order by id asc
                limit 1
@@ -1135,9 +1119,10 @@ SQL;
         $id     = $this->getId(); //If no id, not worth doing
         if ($id) {
             $this->reset();
+            $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
             $query  = <<<SQL
                 select id
-                  from {$this->_prefix()}{$this->_entity()}
+                  from {$table}
                  where id < {$id}
                  order by id desc
                  limit 1
@@ -1192,7 +1177,8 @@ SQL;
             $method = 'get'.ucfirst($idx);
             $results[$idx] = $this->$method();
         }
-        $query    = "select count(*) as count from ".$this->_prefix().$this->_entity();
+        $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+        $query    = "select count(*) as count from ".$table;
         $andFlag = false;
         foreach ($results as $field => $value) {
             if ($results[$field]!="") {
@@ -1229,9 +1215,10 @@ SQL;
     public function greaterThan($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
+            $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
             $query  = <<<SQL
                 select *
-                  from {$this->_prefix()}{$this->_entity()}
+                  from {$table}
                  where id > {$id}
 SQL;
             $results = $this->query($query);            
@@ -1248,9 +1235,10 @@ SQL;
     public function greaterThanOrEqualTo($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
+            $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
             $query  = <<<SQL
                 select *
-                  from {$this->_prefix()}{$this->_entity()}
+                  from {$table}
                  where id >= {$id}
 SQL;
             $results = $this->query($query);            
@@ -1267,9 +1255,10 @@ SQL;
     public function lessThan($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
-            $query  = <<<SQL
+            $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+            $query = <<<SQL
                 select *
-                  from {$this->_prefix()}{$this->_entity()}
+                  from {$table}
                  where id < {$id}
 SQL;
             $results = $this->query($query);            
@@ -1286,9 +1275,10 @@ SQL;
     public function lessThanOrEqualTo($id=false) {
         $results = false;
         if ($id = ($id) ? $id : ($this->getId() ? $this->getId() : false)) {
-            $query  = <<<SQL
+            $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+            $query = <<<SQL
                 select *
-                  from {$this->_prefix()}{$this->_entity()}
+                  from {$table}
                  where id <= {$id}
 SQL;
             $results = $this->query($query);            
@@ -1305,9 +1295,8 @@ SQL;
         $this->_module(Humble::module($namespace));
         $primary   = ($useCache) ? Humble::cache('entity_keys-'.$namespace.'/'.$entity) : false;
         if (!$primary) {
-
             $query = <<<SQL
-                select a.key, a.auto_inc, b.polyglot from humble_entity_keys as a
+                select a.key, a.auto_inc, b.polyglot, b.actual from humble_entity_keys as a
                  inner join humble_entities as b
                     on a.namespace = b.namespace
                    and a.entity = b.entity
@@ -1337,7 +1326,10 @@ SQL;
             }
             Humble::cache('entity_keys-'.$namespace.'/'.$entity,$primary);
         }
-        $poly = true;
+        if (isset($primary[0]['actual']) && $primary[0]['actual']) {
+            $this->_actual($primary[0]['actual']);
+        }
+        $poly = true; //why am I making everything polyglot?
         foreach ($primary as $row => $entity) {
             if ($poly) {
                 $this->_polyglot($entity['polyglot']);
@@ -1736,11 +1728,6 @@ SQL;
         return $this;
     }
     
-    /**
-     *
-     */
-    public function _groupBy($field)     {   $this->_groupBy[]     = $field;     }
-
     /**
      * Should we run the translations against what is returned
      *

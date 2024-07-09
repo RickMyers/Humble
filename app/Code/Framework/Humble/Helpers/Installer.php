@@ -519,7 +519,7 @@ SQL;
     }
 
     /**
-     *
+     * @WTF:  What am I doing here?  What was my plan???
      * @param type $where
      */
     public function moveFrontEnd($where) {
@@ -545,26 +545,28 @@ SQL;
           foreach ($entities as $name => $entity) {
             $this->output('ENTITIES','Registering '.$name);
             //first save off key field data
-            $data = $entity->attributes();
+            $data     = $entity->attributes();
             $polyglot = isset($data['polyglot']) ? $data['polyglot'] : 'N';
-            $query = <<<SQL
+            $actual   = isset($data['actual'])   ? $data['actual']   : null;
+            $query    = <<<SQL
                     insert into humble_entities
-                        (namespace, entity, polyglot)
+                        (namespace, entity, actual, polyglot)
                     values
-                        ('{$this->namespace}','{$name}','{$polyglot}')
+                        ('{$this->namespace}','{$name}','{$actual}','{$polyglot}')
 SQL;
             $this->_db->query($query);
-            $query = <<<SQL
-              show keys in {$prefix}{$name} where key_name = 'PRIMARY'
+            $table     = ($actual) ? $actual : $prefix.$name;
+            $query     = <<<SQL
+              show keys in {$table} where key_name = 'PRIMARY'
 SQL;
-            $results = $this->_db->query($query);
+            $results   = $this->_db->query($query);
             foreach ($results as $rKey => $row) {
-                $col = $row['Column_name'];
+                $col   = $row['Column_name'];
                 $query = <<<SQL
-                        SELECT extra FROM  information_schema.COLUMNS WHERE table_schema = '{$environment->getDatabase()}' AND TABLE_NAME = '{$prefix}{$name}' AND column_name = '{$col}'
+                        SELECT extra FROM  information_schema.COLUMNS WHERE table_schema = '{$environment->getDatabase()}' AND TABLE_NAME = '{$table}' AND column_name = '{$col}'
 SQL;
-                $data = $this->_db->query($query);
-                $inc = 'N';
+                $data  = $this->_db->query($query);
+                $inc   = 'N';
                 if (isset($data[0]['extra'])) {
                     $inc = ($data[0]['extra']=="auto_increment") ? 'Y' : 'N';
                 }
@@ -578,7 +580,7 @@ SQL;
                 }
                 //now get a list of columns that are non-key.  If you try to save a field that isn't in this list, it will get redirected to a mongodb collection
                 $query = <<<SQL
-                    SHOW COLUMNS IN {$prefix}{$name} WHERE `Key` != 'PRI'
+                    SHOW COLUMNS IN {$table} WHERE `Key` != 'PRI'
 SQL;
                 $results = $this->_db->query($query);
                 if ($results) {
@@ -846,9 +848,9 @@ SQL;
                     if (isset($contents->web)) {
                         $this->registerWebComponents($contents->web,$contents->module);
                     }
-                    if (isset($contents->structure->frontend)) {
+                  /*  if (isset($contents->structure->frontend)) {
                         $this->moveFrontEnd($contents->structure->frontend->source,$contents->module);
-                    }
+                    }*/
                     $install_file  = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnInstall.php";
                     $install_class = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnInstall";
                     if (file_exists($install_file) && class_exists($install_class)) {
