@@ -93,7 +93,11 @@ class Unity
     public function getClassName()  {
         return __CLASS__;
     }
-
+    
+    protected function underscoreToCamelCase($string, $first_char_caps=false) {
+        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
+    }
+    
     /**
      * Sets the ORM back to pristine state ready to run another query
      * 
@@ -109,7 +113,7 @@ class Unity
         $this->_noLimitQuery = '';
         return $this;
     }
-
+    
     /**
      *
      */
@@ -545,7 +549,7 @@ SQL;
         if ($row_total>0) {
             foreach ($result as $field => $value) {
                 if ($field !== '_id') {
-                    $method = 'set'.underscoreToCamelCase($field,true);
+                    $method = 'set'.$this->underscoreToCamelCase($field,true);
                     $this->$method($value);
                 }
             }
