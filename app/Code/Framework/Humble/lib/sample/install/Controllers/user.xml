@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="user" use="Twig">
+<controller name="user" use="Smarty">
     <actions blocking="on">
 
         <action name="login" passalong="user_name:required=true,user_password:format=password:required=true:value=password" event='userLogin' comment='Triggers the user login workflow (if any)'>
@@ -42,58 +42,32 @@
         
         <action name="recover" map='option'>
             <description>Form to start the recover password process</description>
+            <model class="model" id="smtp"/>
+            <switch id="smtp" method="isSMTPEnabled">
+                <case value="TRUE">
+                    <assign var="message" value="" />
+                </case>
+                <default>
+                    <assign var="message" value="SMTP Is Not Configured" /> 
+                </default>
+            </switch>
             <if var='option' eq='form'>
                 <then>
-                    <view name="recover_form" />
+                    <view name="recover" />
                 </then>
                 <else>
                     <if var='option' eq='email'>
                         <then>
-                            <model class="model" id="smtp"/>
-                            <switch id="smtp" method="isSMTPEnabled">
-                                <case value="TRUE">
-                                    <model class="Model" method="sendRecoverEmail">
-                                        <parameter name="email" required="true" source="request" />
-                                    </model>
-                                </case>
-                                <default>
-                                    <view name="smtp_not_enabled" />
-                                </default>
-                            </switch>
+                            
                         </then>
                         <else>
                             
                         </else>
                     </if>
-                    
                 </else>
             </if>
         </action>
         
-        <!-- ############################################################### -->   
-        
-        <action name='home'>
-            <description>The project default home page</description>
-        </action>
-
-        <!-- ############################################################### -->
-
-        <action name="new">
-            <description>Prompts the user to enter their password for the first time</description>
-            <model class="user" id="user">
-                <parameter name="new_password_token" value='token' source="get" default="" />
-            </model>
-        </action>
-
-        <!-- ############################################################### -->
-
-        <action name="reset">
-            <description>Password Reset</description>
-            <model class="user" id="user">
-                <parameter name="email" value='userid' source="get" default="" />
-            </model>
-        </action>
-
         <!-- ############################################################### -->
 
         <action name="logout" event="userLogout" comment="Triggers the user logout workflow (if any)">
@@ -104,14 +78,6 @@
             <redirect href="/index.html?message=Logout Successful" />
         </action>
         
-        <!-- ############################################################### -->
-
-        <action name="default">
-            <description>Default Action</description>
-            <model class="user" id="user" method="invite">
-                <parameter name="email" source="request" default="" required="true" />
-            </model>
-        </action>
 
     </actions>
 </controller>

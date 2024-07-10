@@ -1030,7 +1030,7 @@ PHP;
      */
     private function processAssign($node) {
         if (isset($node['value'])) {
-            print($this->tabs().'$'.$node['var'].' = $models["'.$node['var'].'"] = '.$node['value'].';'."\n");
+            print($this->tabs().'$'.$node['var'].' = $models["'.$node['var'].'"] = "'.$node['value'].'";'."\n");
         } else {
             if (isset($node['id']) && isset($node['method'])) {
                 print($this->tabs().'$'.$node['var'].' = $models["'.$node['var'].'"] = $'.$node['id'].'->'.$node['method'].'();'."\n");

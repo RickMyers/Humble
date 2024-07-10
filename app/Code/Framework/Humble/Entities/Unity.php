@@ -84,24 +84,7 @@ class Unity
      *
      */
     public function __destruct()   {
-        //if pagination is set, store the page in the session
-        //@TODO: Evaluate whether this is a good idea anymore...
-        if ($this->_page()) {
-            if (!isset($_SESSION['pagination'])) {
-                $_SESSION['pagination'] = [];
-            }
-            if (!isset($_SESSION['pagination'][$this->_namespace()])) {
-                $_SESSION['pagination'][$this->_namespace()] = [];
-            }
-            $_SESSION['pagination'][$this->_namespace()][$this->_entity()] = $this->_currentPage;
-            $list = [];
-            if (!(php_sapi_name() === 'cli')) {
-                foreach ($this->_headers as $header => $val) {
-                    header($header.': '.$val);
-                    $list[] = $header;
-                }
-            }
-        }
+        
     }
 
     /**
@@ -119,8 +102,6 @@ class Unity
     public function clean()  {
         $this->_decrypt      = false;
         $this->_encrypt      = false;
-        //$this->_keys        = [];
-        //$this->_columns     = [];
         $this->_fields       = [];
         $this->_orderBy      = [];
         $this->_search       = [];
@@ -134,8 +115,6 @@ class Unity
      */
     public function reset()  {
         $this->clean();
-        //$this->loadEntityKeys();
-        //$this->loadEntityColumns();
         return $this;
     }
     
@@ -193,7 +172,7 @@ class Unity
      *
      */
     public function distinct($field=false) {
-        $retval = [];
+        $retval  = [];
         $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         if ($field) {
             $query = <<<SQL
@@ -293,7 +272,7 @@ SQL;
      */
     public function describe() {
         $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
-        $query = <<<SQL
+        $query   = <<<SQL
           describe {$table}
 SQL;
         return $this->_db->query($query);
@@ -535,7 +514,7 @@ SQL;
             }
         }
         if (!$andFlag) {
-            Log::console('Entity error:  No index field found, likely a configuration error, or you should be doing your lookup using non-key fields.  Check the config.xml and make sure the entity is listed in the ORM section ['.$this->_prefix().$this->_entity().']');
+            Log::console('Entity error:  No index [id] field found, likely a configuration error, or you should be doing your lookup using non-key fields.  Check the config.xml and make sure the entity is listed in the ORM section ['.$this->_prefix().$this->_entity().']');
             return false; //no field found to index on, so we load nothing
         } else {
             $query .= ' LIMIT 1'; //load returns the first instance to match only
@@ -566,7 +545,7 @@ SQL;
         if ($row_total>0) {
             foreach ($result as $field => $value) {
                 if ($field !== '_id') {
-                    $method = 'set'.ucfirst($field);
+                    $method = 'set'.underscoreToCamelCase($field,true);
                     $this->$method($value);
                 }
             }

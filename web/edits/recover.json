@@ -18,9 +18,13 @@
             "formaterr":    "The format of the email address is not acceptable",
             "validator":    function () {
                 (new EasyAjax('/humble/user/emailcheck')).add('email',$('#email').val()).then((response) => {
-                    if (response.trim() !== 'TRUE') {
+                    response = JSON.parse(response);
+                    if (!response.user) {
                         alert('The E-mail you entered is not in our system');
                         $E('email').value = '';
+                    } else {
+                        $('#recover-submit').prop('disabled',false).css('opacity','1.0');
+                            
                     }
                 }).get();
             },
@@ -34,8 +38,9 @@
             "id":           "recover-submit",
             "longname":     "Submit Button",
             "type":         "text",
-            "classname":    "login recover-submit",
-            "style":        "background-color: #357AE8; cursor: pointer",
+            "classname":    "recover recover-submit",
+            "style":        "background-color: #357AE8; cursor: pointer; opacity: .5",
+            "disabled":     true,
             "onclick":      function () {
                 if (Edits['recover-password'].validate()) {
                     $E("recover-form").submit();
