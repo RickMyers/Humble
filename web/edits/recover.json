@@ -21,10 +21,8 @@
                     response = JSON.parse(response);
                     if (!response.user) {
                         alert('The E-mail you entered is not in our system');
-                        $E('email').value = '';
                     } else {
                         $('#recover-submit').prop('disabled',false).css('opacity','1.0');
-                            
                     }
                 }).get();
             },

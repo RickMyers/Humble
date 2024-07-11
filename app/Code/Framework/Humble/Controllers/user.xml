@@ -17,7 +17,7 @@
                 </default>
             </switch>
         </action>
-
+ 
         <!-- ############################################################### -->
 
         <action name="authentication" output="JSON">
@@ -109,6 +109,7 @@
                 <parameter name="email" value='userid' source="get" default="" />
             </model>
         </action>
+        
         <!-- ############################################################### -->
 
         <action name="logout" event="userLogout" comment="Triggers the user logout workflow (if any)">
@@ -119,5 +120,13 @@
             <redirect href="/index.html?message=Logout Successful" />
         </action>
 
+        <!-- ############################################################### -->
+        
+        <action name="emailcheck" output="JSON" blocking="off">
+            <description>Checks to see if an email is in our system</description>
+            <entity class="users" id="user" method="nonkeysload">
+                <parameter name="email" source="request" required="true" />
+            </entity>
+        </action>
     </actions>
 </controller>
