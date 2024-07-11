@@ -98,7 +98,7 @@
     <script type='text/javascript' src='/js/common'></script>
     <script type='text/javascript'>
         window.onload = function () {
-            new EasyEdits('/web/edits/recover.json','recover');
+            new EasyEdits('/web/edits/recover.json','recover-password');
             var recoverMessage = window.location.href.split('?message=');
             if (recoverMessage[1]) {
                 $E('recover-error').innerHTML = unescape(recoverMessage[1]);

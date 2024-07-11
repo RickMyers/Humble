@@ -64,15 +64,6 @@
             </model>
         </action>
 
-    <!-- ############################################################### -->
-
-        <action name="default">
-            <description>Default Action</description>
-            <model class="user" id="user" method="invite">
-                <parameter name="email" source="request" default="" />
-            </model>
-        </action>
-
         <!-- ############################################################### -->
 
         <action name="resetform">
@@ -103,15 +94,6 @@
 
         <!-- ############################################################### -->
 
-        <action name="reset">
-            <description>After they get a link to reset password in an email, they can do the reset here</description>
-            <model class="user" id="user">
-                <parameter name="email" value='userid' source="get" default="" />
-            </model>
-        </action>
-        
-        <!-- ############################################################### -->
-
         <action name="logout" event="userLogout" comment="Triggers the user logout workflow (if any)">
             <description>Destroys the session and logs you out...</description>
             <model  class="user" id="user" method="logout">
@@ -124,9 +106,18 @@
         
         <action name="emailcheck" output="JSON" blocking="off">
             <description>Checks to see if an email is in our system</description>
-            <entity class="users" id="user" method="nonkeysload">
+            <entity class="users" id="user" method="nonkeysload" response="false">
                 <parameter name="email" source="request" required="true" />
             </entity>
         </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="default">
+            <description>Default Action</description>
+            <model class="user" id="user" method="invite">
+                <parameter name="email" source="request" default="" />
+            </model>
+        </action>        
     </actions>
 </controller>

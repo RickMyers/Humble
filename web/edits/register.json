@@ -1,0 +1,57 @@
+{
+    "form":
+    {
+        "id":           "register-form",
+        "drawme":	false,
+        "action":	"",
+        "method":	"post",
+        "style":	"",
+        "onenterkey":	"send"
+    },
+    "fields":
+    [
+       {
+            "active":       true,
+            "id":           "first_name",
+            "longname":     "First Name",
+            "type":         "text",
+            "required":     true,
+            "force":        true,
+            "style":       "padding: 2px; border-radius: 3px; border: 1px solid transparent"
+        },
+       {
+            "active":       true,
+            "id":           "last_name",
+            "longname":     "Last Name",
+            "type":         "text",
+            "required":     true,
+            "force":        true,
+            "style":       "padding: 2px; border-radius: 3px; border: 1px solid transparent"
+        },
+        {
+            "active":       true,
+            "id":           "email",
+            "longname":     "Your E-mail",
+            "format":       "^(?:[a-zA-Z0-9_'^&amp;/+-])+(?:\\.(?:[a-zA-Z0-9_'^&amp;/+-])+)*@(?:(?:\\[?(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))\\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\]?)|(?:[a-zA-Z0-9-]+\\.)+(?:[a-zA-Z]){2,}\\.?)$",
+            "formaterr":    "The format of the email address is not acceptable",
+             "type":        "text",
+            "required":     true,
+            "force":        true,
+            "style":       "padding: 2px; border-radius: 3px; border: 1px solid transparent"
+        },
+        {
+            "active":       true,
+            "id":           "register-submit",
+            "longname":     "Submit Button",
+            "type":         "text",
+            "classname":    "register register-submit",
+            "style":        "background-color: #357AE8; cursor: pointer",
+            "disabled":     true,
+            "onclick":      function () {
+                if (Edits['register-user'].validate()) {
+                    $E("register-form").submit();
+                }
+            }
+        }
+    ]
+}

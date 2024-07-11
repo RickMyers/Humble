@@ -341,8 +341,9 @@ switch ($method) {
         break;
     case "INSTALL"      :
         ob_start();
+        $project = json_decode(file_get_contents('Humble.project'));
         $step   = 0;
-        $email  = isset($_POST['email'])            ? $_POST['email']           : false;
+        $email  = isset($_POST['email'])            ? $_POST['email']           : $project->author;
         $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']          : false;
         $uid    = isset($_POST['userid'])           ? $_POST['userid']          : false;
         $pwd    = isset($_POST['password'])         ? $_POST['password']        : false;
