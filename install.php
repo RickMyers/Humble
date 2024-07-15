@@ -444,8 +444,8 @@ switch ($method) {
         if (file_exists('../.htaccess')) {
             $parts  = explode('/',$project->landing_page);
             $srch   = ['&&NAMESPACE&&','&&PACKAGE&&','&&MODULE&&','&&CONTROLLER&&','&&PAGE&&'];
-            $repl   = [$project->namespace,$project->package,$project->module,$parts[1],$parts[2]];
-            file_put_contents('../.htacess',str_replace($srch,$repl,file_get_contents('../.htaccess')));
+            $repl   = [$project->namespace,$project->package,$project->module,$parts[2],$parts[3]];
+            file_put_contents('../.htaccess',str_replace($srch,$repl,file_get_contents('../.htaccess')));
         }
         print("done with creating drivers\n\n");
         $log = ob_get_flush();
