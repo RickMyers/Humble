@@ -441,12 +441,19 @@ switch ($method) {
         $x = (file_exists('humble.bat')) ? rename('humble.bat',strtolower((string)$project->factory_name).'.bat'): '';
         $x = (file_exists('humble.sh'))  ? rename('humble.sh',strtolower((string)$project->factory_name).'.sh') : '';
         $x = (file_exists('../Humble.php')) ? @unlink('../Humble.php') : '';
+        if (file_exists('../.htaccess')) {
+            $parts  = explode('/',$project->landing_page);
+            $srch   = ['&&NAMESPACE&&','&&PACKAGE&&','&&MODULE&&','&&CONTROLLER&&','&&PAGE&&'];
+            $repl   = [$project->namespace,$project->package,$project->module,$parts[1],$parts[2]];
+            file_put_contents('../.htacess',str_replace($srch,$repl,file_get_contents('../.htaccess')));
+        }
         print("done with creating drivers\n\n");
         $log = ob_get_flush();
         //if error, then print log
         print('<textarea style="width: 100%; height: 100%">'.$log.'</textarea>');
         postUpdate('Complete','Finished',100);
         file_put_contents('../install.log',$log);
+        @unlink('../install_status.json');
         ?>
         <script>
             window.location.href = '/index.html?message=Installation Completed, Please Login...';
