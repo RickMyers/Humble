@@ -58,8 +58,24 @@ var Functions = (() => {
                                 let win = Desktop.semaphore.checkout(true);
                                 (new EasyAjax('/admin/user/form')).add('window_id',win.id).then((response) => {
                                     win._static(true)._title('New General User')._open(response);
-                                });
+                                }).post();
                             }
+                        },
+                        administrator: {
+                            form: () => {
+                                let win = Desktop.semaphore.checkout(true);
+                                (new EasyAjax('/admin/administrator/form')).add('window_id',win.id).then((response) => {
+                                    win._static(true)._title('New Administrator')._open(response);
+                                }).post();
+                            }
+                        }
+                    },
+                    manage: {
+                        users: (whichOne) => {
+                             let win = Desktop.semaphore.checkout(true);
+                            (new EasyAjax('/admin/manage/users/'+whichOne)).add('window_id',win.id).then((response) => {
+                                win._static(true)._title('Manage '+whichOne+' Users')._open(response);
+                            }).post();
                         }
                     },
                     cadence: {
