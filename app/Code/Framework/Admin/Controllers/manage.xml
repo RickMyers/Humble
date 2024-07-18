@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+
+Manages things, like users
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="manage" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="OFF" response="false" >
+        <action name="users" map="type" passalong="window_id,type">
+            <description>Manage types of users</description>
+            <if var="type" eq="General">
+                <then>
+                    <entity class="users" id="users" rows="rows" page="page">
+                        
+                    </entity>
+                </then>
+                <else>
+                    <if var="type" eq="Administrators">
+                        <then>
+                            <entity namespace="admin" class="users" rows="rows" page="page" id="users">
+                            </entity>
+                        </then>
+                        <else>
+                            <output text="Not able to manage that" />
+                            <abort />
+                        </else>
+                    </if>
+                </else>
+            </if>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

@@ -1,0 +1,75 @@
+<div class="{{ window_id }}-body">
+    <div class="{{ window_id }}-search-bar" style="background-color: aqua">
+        <div style="float: right; margin-right: 5px; border-radius: 8px; width: 270px; border: 1px solid #333; padding-left: 30px; background-color: ghostwhite; background-image: url(/images/admin/search.png); background-repeat: no-repeat">
+            <input type="text" class="text-lg" name="user-search-field" placeholder="Search..." style="border:0px; color: #333; background-color: ghostwhite; width: 230px">
+        </div>
+        <a href="#" onclick="return false" class="text-lg">A</a> |
+        <a href="#" onclick="return false" class="text-lg">B</a> |
+        <a href="#" onclick="return false" class="text-lg">C</a> |
+        <a href="#" onclick="return false" class="text-lg">D</a> |
+        <a href="#" onclick="return false" class="text-lg">E</a> |
+        <a href="#" onclick="return false" class="text-lg">F</a> |
+        <a href="#" onclick="return false" class="text-lg">G</a> |
+        <a href="#" onclick="return false" class="text-lg">H</a> |
+        <a href="#" onclick="return false" class="text-lg">I</a> |
+        <a href="#" onclick="return false" class="text-lg">J</a> |
+        <a href="#" onclick="return false" class="text-lg">K</a> |
+        <a href="#" onclick="return false" class="text-lg">L</a> |
+        <a href="#" onclick="return false" class="text-lg">M</a> |
+        <a href="#" onclick="return false" class="text-lg">N</a> |
+        <a href="#" onclick="return false" class="text-lg">O</a> |
+        <a href="#" onclick="return false" class="text-lg">P</a> |
+        <a href="#" onclick="return false" class="text-lg">Q</a> |
+        <a href="#" onclick="return false" class="text-lg">R</a> |
+        <a href="#" onclick="return false" class="text-lg">S</a> |
+        <a href="#" onclick="return false" class="text-lg">T</a> |
+        <a href="#" onclick="return false" class="text-lg">U</a> |
+        <a href="#" onclick="return false" class="text-lg">V</a> |
+        <a href="#" onclick="return false" class="text-lg">W</a> |
+        <a href="#" onclick="return false" class="text-lg">X</a> |
+        <a href="#" onclick="return false" class="text-lg">Y</a> |
+        <a href="#" onclick="return false" class="text-lg">Z</a>
+    </div>
+    <div class="{{ window_id }}-field-titles w-full text-lg" style="background-color: blueviolet">
+        <div class="inline w-1/5">
+            Name
+        </div>
+        <div class="inline w-1/5">
+            User Name
+        </div>
+        <div class="inline w-1/5">
+            E-Mail
+        </div>
+        <div class="inline w-1/8">
+            Status
+        </div>
+        <div class="inline w-1/8">
+            Login Attempts
+        </div>
+        <div class="inline w-1/6">
+            Last Login
+        </div>
+    </div>
+    <div class="{{ window_id }}-user-list w-full" style="background-color: aliceblue">
+    </div>
+    <div class="{{ window_id }}-controls text-center w-full text-lg" style="background-color: silver">
+        <input type="button" value="  <  " />
+        <input type="button" value="   <<  " />
+        <input type="button" value="   >>  " />
+        <input type="button" value="  >  " />
+    </div>
+</div>
+<script>
+    (() => {
+        let win = Desktop.window.list['{{ window_id }}'];
+        win.resize((evt) => {
+            $('.{{ window_id }}-user-list').css('height',win.content.height() - $('.{{ window_id }}-field-titles').height() - $('.{{ window_id }}-search-bar').height() - $('.{{ window_id }}-controls').height());
+        });
+        win.resize();
+        var ao = new EasyAjax('/admin/user/list/{{ type }}');
+        ao.add('window_id','{{ window_id }}').add('rows',5).add('page',1).then((response) => {
+            $('.{{ window_id }}-user-list').html(response);
+            console.log(ao.getPagination());
+        }).post();
+    })();
+</script>

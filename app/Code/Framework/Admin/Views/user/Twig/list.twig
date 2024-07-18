@@ -1,0 +1,22 @@
+    {% for user in users.list() %}
+        <div class="text-lg">
+            <div class="inline w-1/5">
+                {{ user.last_name }}, {{ user.first_name }}
+            </div>
+            <div class="inline w-1/5">
+                {{ user.user_name }}
+            </div>
+            <div class="inline w-1/5">
+                {{ user.email }}
+            </div>
+            <div class="inline w-1/8">
+                {{ user.account_status }}
+            </div>
+            <div class="inline w-1/8">
+                {{ user.attempts }}
+            </div>
+            <div class="inline w-1/6">
+                {{ user.logged_in }}
+            </div>        
+        </div>
+    {% endfor %}
