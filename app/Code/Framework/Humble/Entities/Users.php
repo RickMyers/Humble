@@ -141,5 +141,27 @@ SQL;
         }
         return isset($results[0]) ? $results[0] : $results;
     }    
-
+    
+    /**
+     * Returns a list of users, possibly with a last name starting with some letters
+     * 
+     * @return iterator
+     */
+    public function list() {
+        $search_clause = $this->getStartsWith() ? " where last_name like '".$this->getStartsWith()."%'" : '';
+        $query = <<<SQL
+            select
+                    a.id,
+                    a.user_name
+                    , a.email
+                    , a.logged_in
+                    , a.account_status
+                    , a.login_attempts
+                    , b.*                
+              from humble_users as a
+              left outer join humble_user_identification as b
+                on a.id = b.id
+        SQL;
+        return $this->query($query);
+    }
 }

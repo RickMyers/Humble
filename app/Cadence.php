@@ -111,7 +111,6 @@ function clearSystemStats() {
     global $monitor;
     logMessage('Clearing System Monitoring Data Over Two Weeks Old');
     $monitor->clear();
-    
 }
 //------------------------------------------------------------------------------
 function snapshotSystem() {

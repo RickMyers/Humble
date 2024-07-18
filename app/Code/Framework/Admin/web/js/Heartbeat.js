@@ -38,9 +38,6 @@ var Heartbeat = (function ($) {
         stop: function () {
             window.clearTimeout(pulseTimer);
         },
-        restart: function () {
-            
-        },
         register: function (namespace,element,resource,callback,interval,arguments) {
             /**
              * NAMESPACE: The namespace of the module that contains the virtual function to be invoked

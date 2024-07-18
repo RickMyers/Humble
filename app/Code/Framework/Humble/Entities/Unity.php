@@ -84,7 +84,13 @@ class Unity
      *
      */
     public function __destruct()   {
-        
+        if ($this->_page()) {
+            if (!(php_sapi_name() === 'cli')) {
+                foreach ($this->_headers as $header => $val) {
+                    header($header.': '.$val);
+                }
+            }
+        }        
     }
 
     /**

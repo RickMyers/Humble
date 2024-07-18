@@ -122,14 +122,36 @@
         
         <!-- ############################################################### -->
 
-        <action name="new">
+        <action name="new">  
             <description>Prompts the user to enter their password for the first time</description>
             <model class="user" id="user">
                 <parameter name="new_password_token" value='token' source="get" default="" />
             </model>
         </action>
 
-    <!-- ############################################################### -->
+        <!-- ############################################################### -->
+        
+        <action name="list" blocking="off" map="type" passalong="type">
+            <description>Will return a list of users</description>
+            <if var="type" eq="General">
+                <then>
+                    <entity class="users" id="users" rows="rows" page="page" defaultRows='15' defaultPage='1'>
+                        <parameter name="starts_with" source="post" optional="true" />
+                    </entity>
+                </then>
+                <else>
+                    <if var="type" eq="Administrators">
+                        <then>
+                            <entity namespace="admin" class="users" rows="rows" page="page" id="users" defaultRows='15' defaultPage='1'>
+                                <parameter name="starts_with" source="post" optional="true" />
+                            </entity>
+                        </then>
+                    </if>
+                </else>
+            </if>
+        </action>
+
+        <!-- ############################################################### -->
 
         <action name="default">
             <description>Default Action</description>
