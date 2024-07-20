@@ -273,6 +273,16 @@ var Functions = (() => {
                             }
                         }
                     },
+                    cache: {
+                        win: false,
+                        home: () => {
+                                let win = Administration.cache.win = Administration.cache.win ? Administration.cache.win : Desktop.semaphore.checkout(true);
+                                win._static(true)._scroll(true)._title('Cache Management');
+                                (new EasyAjax('/admin/actions/cachehome')).then((response) => {
+                                    win._open(response);
+                                }).get();
+                        }
+                    },
                     status: {
                         check: () => {
                             (new EasyAjax('/admin/system/info')).then((response) => {

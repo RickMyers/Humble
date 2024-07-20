@@ -88,7 +88,8 @@ HDR;
             'sensor'    => true,
             'system'    => true,
             'trigger'   => true,
-            'external'  => true
+            'external'  => true,
+            'file'      => true
         ];
         if (!isset($exclude[$node['element']])) {
             if ( !($node['configuration'] ?? false) || !($node['configuration']['namespace'] ?? false) || !($node['configuration']['method'] ?? false) || !($node['configuration']['component'] ?? false)) {
@@ -120,7 +121,12 @@ HDR;
                         $this->traverse($this->components[$direction['begin']['to']['id']]);
                     }
                 }
-                break;            
+                break;   
+            case "file" :
+                //do i really need to do anything?
+                //yes, log the filename
+                $this->workflow .= $tabs.'Humble::entity("paradigm/file/log")->setFilename()->setDirectory()->setWorkflowId()->save();'."\n";
+                break;
             case "decision"     :
                 $this->workflow .= $tabs.'if (Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";
                 $tabs .= "\t";

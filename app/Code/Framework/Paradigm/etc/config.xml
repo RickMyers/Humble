@@ -60,6 +60,8 @@
                 <event_listeners/>
                 <event_log/>
                 <export_targets/>
+                <file_triggers/>
+                <file_log />
                 <import_sources/>
                 <job_queue/>
                 <method_listeners/>

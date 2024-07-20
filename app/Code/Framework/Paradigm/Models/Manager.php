@@ -90,7 +90,7 @@ class Manager extends Model
         if ($results) {
             if (isset($results['configured']) && $results['configured']) {
                 $this->setResults($results);
-                $element = Humble::entity('paradigm/workflow_components');
+                $element = Humble::entity('paradigm/workflow/components');
                 //I might need to check if namespace, component, and method are set before doing a lookup.
                 //If they aren't *all* set, just go right down to the switch statement... lemme think about that...
                 $element->setNamespace(isset($results['namespace']) ? $results['namespace'] : null);
@@ -138,6 +138,8 @@ class Manager extends Model
                         case    "adapter":
                             $configURL = '/workflow/elements/adapter';
                             break;
+                        case    "file":
+                            $configURL = '/workflow/elements/file';
                         default                 :
                             break;
                     }
