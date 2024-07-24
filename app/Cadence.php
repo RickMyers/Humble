@@ -223,10 +223,30 @@ function scanForNewImages() {
 //------------------------------------------------------------------------------
 function scanFilesForChanges() {
     global $files,$modules;
+    foreach (Humble::entity('paradigm/file/triggers')->setActive('Y')->fetch() as $trigger) {
+        $dir = dir($trigger['directory']);
+        while ($entry = $dir->read()) {
+            if (($entry == '.') || ($entry == '..')) {
+                continue;
+            }
+            if ($trigger['extension']) {
+                $extension = '.' || str_replace(['*','.'],['',''],$trigger['extension']);
+                if (!strpos($entry,$extension)) {
+                    continue;
+                }
+            }
+            $file = $trigger['directory'].'/'.$entry;
+            if (!(isset($files[$file]) || (filemtime($file) !== $files[$file]))) {
+                $files[$file] = filemtime($file);
+                triggerFileWorkflow();
+            }
+        }
+    }
 }
 //Are these two the same?
 //------------------------------------------------------------------------------
-function triggerFileWorkflows() {
+function triggerFileWorkflow() {
+    
 }
 // To spin off a process in another thread... 'nohup php Program.php > /dev/null &'
 //------------------------------------------------------------------------------

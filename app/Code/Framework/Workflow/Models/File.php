@@ -39,9 +39,6 @@ class File extends Model
         return __CLASS__;
     }
 
-    public function registerFileTrigger($id,$data) {
-        
-    }
     /**
      * We use the normal component save here, and then register the integration point
      *
@@ -54,8 +51,7 @@ class File extends Model
         $component->saveComponent();
         $trigger     = Humble::entity('paradigm/file/triggers');
         $trigger->setFileTriggerId($data['id']);
-        $trigger->setActive($data['active']);
-        $id = $trigger->save();
-        $this->registerFileTrigger($id,$data);
+        $id = $trigger->setDirectory($data['directory'])->setExtension($data['file_mask'])->setField($data['field'])->setActive($data['active'])->save();
+        return $id;
     }
 }

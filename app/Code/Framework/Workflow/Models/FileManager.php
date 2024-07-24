@@ -34,6 +34,12 @@ class FileManager extends Model
         return __CLASS__;
     }
 
+    public function logFile($EVENT=false) {
+        if ($EVENT !== false) {
+            $data = $EVENT->load();
+        }
+    }
+    
     /**
      * Will allow a person to specify a file or web URL to add to the event
      *

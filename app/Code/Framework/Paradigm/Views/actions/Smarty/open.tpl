@@ -165,12 +165,17 @@ Copyright humbleprogramming.com, all rights reserved
         Form.set.defaultURL('/workflow/elements/save');
         var Workflows = (function () {
             var available = { };
+            var diagram   = false;
             return {
                 active: false,
                 baseWidth: 1500,
                 baseHeight: 890,
                 snap: false,
                 controls: false,
+                
+                activeDiagram: () => {
+                    return diagram.id;
+                },
                 snapToGrid: function (cb) {
                     Workflows.snap = cb.checked;
                 },
@@ -344,7 +349,7 @@ Copyright humbleprogramming.com, all rights reserved
                     Paradigm.actions.set.currentDiagramId(id);
                     Paradigm.actions.set.namespace(namespace);
                     (new EasyAjax('/paradigm/workflow/load')).add('id',id).then((response) => {
-                        var diagram = JSON.parse(response);
+                        diagram = JSON.parse(response);
                         diagram.workflow = (diagram.workflow) ? JSON.parse(diagram.workflow) : { };
                         for (var i in diagram.workflow) {
                                diagram.workflow[i].isClosed = Paradigm.closures(diagram.workflow[i]);

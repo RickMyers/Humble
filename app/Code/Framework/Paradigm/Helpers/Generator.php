@@ -125,7 +125,13 @@ HDR;
             case "file" :
                 //do i really need to do anything?
                 //yes, log the filename
-                $this->workflow .= $tabs.'Humble::entity("paradigm/file/log")->setFilename()->setDirectory()->setWorkflowId()->save();'."\n";
+                $this->workflow .= $tabs.'Humble::model("workflow/fileManager")->logFile(Event::set($EVENT,"'.$node['id'].'"));'."\n";
+                foreach ($node['connectors'] as $direction) {
+                    if (isset($direction['begin']) && (isset($direction['begin']['from'])) && (isset($direction['begin']['from']['id']))) {
+                        $this->workflow .= $tabs."goto label_".$direction['begin']['to']['id'].";\n";
+                        $this->traverse($this->components[$direction['begin']['to']['id']]);
+                    }
+                }                
                 break;
             case "decision"     :
                 $this->workflow .= $tabs.'if (Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";

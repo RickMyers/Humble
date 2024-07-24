@@ -497,7 +497,7 @@
          * @param array $data
          * @return boolean
          */
-        public static function emit($eventName,$data=[]) {
+        public static function push($eventName,$data=[]) {
             $success = false;
             $project = Environment::getProject();
             if ($server = file_get_contents('../../socketserver_'.$project->namespace.'.txt')) {

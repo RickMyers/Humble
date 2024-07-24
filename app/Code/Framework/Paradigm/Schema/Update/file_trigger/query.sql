@@ -6,5 +6,6 @@ CREATE TABLE paradigm_file_triggers (
     `field`     CHAR(64) DEFAULT NULL,
     `active`    CHAR(01) DEFAULT 'N',
     modified DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    unique key (`directory`,`extension`,`field`)
 );

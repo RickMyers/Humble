@@ -52,6 +52,7 @@
             <form name="config-file-trigger-form" id="config-file-trigger-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
                 <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />    <!-- Leave this As-Is -->
+                <input type="hidden" name="workflow_id" id="workflow_id_{$data.id}" value="" />
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
                     <!--
                         PUT YOUR CONFIGURATION INSTRUCTIONS HERE
@@ -84,5 +85,6 @@
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
     Form.intercept($('#config-file-trigger-form-{$data.id}').get(),'{$data.id}','/workflow/file/update',"{$windowId}");
+    $('#workflow_id_{$data.id}').val(Workflows.activeDiagram())
 </script>
 
