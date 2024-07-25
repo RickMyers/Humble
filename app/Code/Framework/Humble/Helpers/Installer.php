@@ -375,7 +375,7 @@ SQL;
         try {
             $comments = explode("\n",$md->getDocComment());
             foreach ($comments as $comment) {
-                if (strpos($comment,'@workflow')!==false) {
+            if ((strpos($comment,'@workflow')!==false) || (strpos($comment,'@listen')!==false))  {
                     $components[] = substr($comment,strpos($comment,'@')+1);
                 }
             }
@@ -411,6 +411,7 @@ SQL;
     public function registerMethodListeners($namespace,$class,$listener,$events) {
         $method_listener = Humble::entity('paradigm/method/listeners');
         foreach (explode(',',$events) as $event) {
+            $this->output("WORKFLOW","     Registering Method Trigger ".$event." on ".$listener);
             $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
         }
         return $this;
@@ -465,9 +466,12 @@ SQL;
                 }
                 $customAnnotations      = $this->processDocAnnotations($reflection->getMethod($method->name),$method);
                 $authorization          = false;
+                $listener               = false;
                 foreach ($customAnnotations as $annotation) {
                     $clauses   = explode(' ',$annotation);
+                    //print_r($clauses);die();
                     foreach ($clauses as $clause) {
+                        //print($clause."\n");
                         $value = '';
                         if (strpos($clause,'(') && (strpos($clause,')'))) {
                             $data  = explode('(',$clause);
@@ -477,6 +481,7 @@ SQL;
                         } else {
                             $token = $clause;
                         }
+                        //print($token."\n");
                         switch ($token) {
                             case "workflow"         :   //nop
                                                         break;
@@ -490,8 +495,10 @@ SQL;
                             case "tags"             :
                                                         break;
                             case "listen"           :
-                            case "listener"         :   $this->registerMethodListeners($namespace,$model,$method->name,$value);
-                                                        break 2;                //this is different from a component so just skip to the next one
+                            case "listener"         :   $listener = true;
+                                                        break;  
+                            case "event"            :   $this->registerMethodListeners($namespace,$model,$method->name,$value);
+                                                        break 2;              //this is different from a component so just skip to the next one
                             case "auth"             :
                             case "authorization"    :   if (strtolower($value) == 'true') {
                                                             $authorization = true;

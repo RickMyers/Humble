@@ -10,6 +10,9 @@
 
     ############################################################################ */
     require_once 'autoload.php';
+    function underscoreToCamelCase($string, $first_char_caps=false) {
+        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
+    }    
     /**
      * Static factory used for all object creation
      *
@@ -386,7 +389,7 @@
         }
 
         /**
-         * A place for non-Humble framework classes
+         * A place for non-Humble framework compliant classes
          *
          * @param type $identifier
          * @param type $args
@@ -519,6 +522,14 @@
             return $success;
         }
 
+        public static function emit($eventName=false,$data=[]) {
+            $result = false;
+            if ($eventName) {
+                $trigger = \Event::getTrigger();
+                $result = $trigger->emit($eventName,$data);
+            }
+            return $result;
+        }
         /**
          * To protect yourself from bad impulses, access to the DB is restricted to instances of Unity (ORM) or a short list of privileged classes.  This is to encourage DAO style development
          *
@@ -633,13 +644,6 @@ SQL;
                 }
             }
             return $modules;
-        }
-
-        public static function hash($number) {
-            require_once('../lib/Hashids/lib/Hashids/HashGenerator.php');
-            require_once('../lib/Hashids/lib/Hashids/Hashids.php');
-            $t = (new Hashids\Hashids(uniqid('F',true)))->encode($number);
-            return  $t;
         }
 
         /**

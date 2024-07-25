@@ -12,9 +12,6 @@ This software is licensed under GNU GPL.
 For more information, see the file LICENSE.txt
 
  ###############################################################################*/
-function underscoreToCamelCase($string, $first_char_caps=false) {
-    return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
-}
 //------------------------------------------------------------------------------
 function badRequestError() {
     $sapi_type = php_sapi_name();

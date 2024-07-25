@@ -14,7 +14,7 @@ _\ \ |_) | (_) | (_) | |  __/ |
  */
 
 require "Humble.php";
-require "Constants.php";
+require "Code/Framework/Humble/includes/Constants.php";
 ob_start();
 $spooler = Humble::model('paradigm/system');
 if ($spooler->runScheduler()) {

@@ -116,9 +116,12 @@ class Trigger  {
         }
     }
     /**
-     * Used when an event is identified on a controller... specifically calls those workflows just looking for a particular event name and not based on namespace/controller/method
+     * We are looking for listeners for our event.  A listener could be a workflow listener, a method listener, or a system listener.  Once we find one, we mark the event as handled
+     * 
+     * If you have a workflow event, and a method listener or system listener of the same name, only 1 of them will get executed.  
      *
-     * @param type $eventName
+     * @param string $eventName
+     * @param array $arguments
      */
     public function emit($eventName=false,$arguments=[]) {
         global $workflowRC;
@@ -126,7 +129,8 @@ class Trigger  {
         $ok         = true;
         $uid        = \Environment::whoAmI();
         $cleanEvent = Event::get($eventName);
-        $action     = 'set'.ucfirst($eventName);
+        $action     = 'set'.underscoreToCamelCase($eventName,true);
+        //print_r(array_merge($this->_arguments,$arguments)); die();
         $cleanEvent->$action(array_merge($this->_arguments,$arguments));
         if (!$uid) {
             //if no user id, see if this is the login event, and if so, find user based on username
@@ -157,7 +161,6 @@ class Trigger  {
                     }
                 }
             }
-            
             if (!$handled) {
                 //Still haven't handled the event, so lets try this as a method listener event
                 $method_listeners = Humble::entity('paradigm/method/listeners');
@@ -168,10 +171,11 @@ class Trigger  {
                     $ml = Humble::model($method_listener['namespace'].'/'.$method_listener['class']);
                     $method = $method_listener['method'];
                     $ml->$method($cleanEvent);
+                    $handled = true;
                 }
             }
         }
-        return $ok;
+        return $handled;
     }
 
     /**

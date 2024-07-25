@@ -32,7 +32,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <!-- ############################################################### -->
 
-        <action name="publish">
+        <action name="publish" event="newArticlePublished" comment="A new article was published to the whatsnew page">
             <description>Whats new home page</description>
             <entity namespace="blog" class="whatsnew" id="articles" method='save'>
                 <parameter name="id" source="post" required="true" />

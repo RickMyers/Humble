@@ -15,7 +15,7 @@
  */
 
 require "Humble.php";
-require 'Constants.php';
+require "Code/Framework/Humble/includes/Constants.php";
 ob_start();
 print("Launcher fired at ".date("H:i:s")."\n");
 $rc         = 0;
@@ -34,7 +34,7 @@ if (isset($args[1])) {
 }
 $pid        = getmypid();
 $job        = Humble::entity('paradigm/job/queue')->setId($job_id);
-$job->setId($job_id)->setStarted(date('Y-m-d H:i:s'))->setPid($pid)->save();                               //persist the PID of this run
+$job->setId($job_id)->setStarted(date('Y-m-d H:i:s'))->setPid($pid)->save();    //persist the PID of this run
 $job->reset()->setId($job_id)->load();                                          //reload the job
 $event      = Humble::entity('paradigm/system/events');
 $event_data = $event->setId($job->getSystemEventId())->load();
