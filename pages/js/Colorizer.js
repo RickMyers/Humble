@@ -52,10 +52,14 @@ var Colorizer = (function (languageFile) {
                 }).get();
             }
             if (!this.code) {
-                (new EasyAjax(this.source)).then((response) => {
-                    me.code = response;
-                }).get();
-            }
+                if (this.source) {
+                    (new EasyAjax(this.source)).then((response) => {
+                        me.code = response;
+                    }).get();
+                } else {
+                    this.code = this.codeBox.innerHTML;
+                }
+            } 
             return this.run();
         },
         escapeHTML: function(unsafe) {

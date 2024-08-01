@@ -10,6 +10,24 @@
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Code Colorizer</div>
 
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    Around 2009 I was creating some companion documentation for a code stack that I had written, the audience being my peers.  I had wanted to include code invocation examples and didn't want to just use plain uncolored text, so I was looking for something 
+    that could annotate arbitrary code.  Google Labs had a product that could work, but it required that all code was in-line and static, and what I wanted to do was to point the code snippet at a file in a repository and have it download and colorize that
+    file's content.  This way, since the document was now "live", when the code changed in the repository it would automatically be reflected in the companion documentation.  After a pretty exhaustive search, I didn't find anything, so I sat down on a Friday and
+    after about 6 hours had myself a code Colorizer.js, and it could colorize any language since you can select the specific lexicon (list of tokens to identify and colors to use).<br /><br />
+    Pretty much all annotated code samples here at humbleprogramming.com are presented using this very small JavaScript library
+</div><br /><br />
+<div>
+    <b>Invocation</b>:
+</div>
+<div class='humble-code-like' style='text-align: left'>
+&lt;div widget="codeBox" widgetScroll="35%" lang="xml" lexicon="/pages/js/lang/Controllers/xml.json" source="/pages/code/Controllers/sample.xmltxt" class="humble-code"&gt;&lt;/div&gt;
+</div>
+<br /><br />
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="16%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/pages/js/Colorizer.js" class="humble-code"></div>
+
 
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->

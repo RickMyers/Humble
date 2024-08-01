@@ -8,7 +8,41 @@
     </tr>
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-<div class='humble-topic-header'>Code Colorizer</div>
+<div class='humble-topic-header'>Easy Tabs</div>
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    Pages with various kinds of tabs present are quite ubiquitous.  I am not sure what year I wrote this library, but it was quite early (probably before 2005) and was during the period where 3D(ish) web components were all the craze. To this day,
+    this is one of my frequently used components on my projects.  The one thing that sets this library apart from other libraries that manage tabs is that mine has an automatic refresh tab content function.  If you specify a JavaScript callback when
+    creating the tab, the results of that callback will replace the contents of the tab, thus adding some functionality that I felt was missing from other options at the time.
+</div><br /><br />
+<div>
+    <b>Invocation</b>:
+</div>
+<div widget="codeBox" widgetScroll="100%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" class="humble-code">
+    let tabs = new EasyTab('tab-bar',130);
+    tabs.add('First Tab',false,'tab-1');
+    tabs.add('Second Tab',function () { alert('You clicked tab 2'); },'tab-2',160);
+    tabs.add('Third Tab',false,'tab-3',90);
+    tabs.tabClick(0);
+</div>
+<br /><br />
+<div style='background-color: #dfdfdf'>
+<div id='tab-bar'></div>
+<div id='tab-1'><h3>This is tab <span style="font-size: 3em; font-weight: bold">1</span></h3><br /><br /><br /></div>
+<div id='tab-2'><h2>This is tab <span style="font-size: 3em; font-weight: bold">2</span></h2><br /><br /><br /></div>
+<div id='tab-3'><h1>This is tab <span style="font-size: 3em; font-weight: bold">3</span></h1><br /><br /><br /></div>
+</div>
+<script>
+    let tabs = new EasyTab('tab-bar',130);
+    tabs.add('First Tab',false,'tab-1');
+    tabs.add('Second Tab',() => { alert('You clicked tab 2'); },'tab-2',160);
+    tabs.add('Third Tab',false,'tab-3',90);
+    tabs.tabClick(0);
+</script>
+<br /><br />
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="16%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/EasyTabs.js" class="humble-code"></div>
+
 
 
 </div>

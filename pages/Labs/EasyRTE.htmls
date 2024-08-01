@@ -9,7 +9,39 @@
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>A simple Rich Text Editor (RTE)</div>
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    Another oldie but goodie. Originally part of the <a href="https://cloud-it.com" target="_BLANK">Cloud-IT.com</a> project, but I've since spun it into its own library.  There are great Rich Text Editors (RTE) out there like CKE and ACE, but they have
+    a seriously large code footprint and sometimes you just want a quick and dirty RTE to use for your page.  I've achieved this here.  Extremely simple to convert any DIV to an RTE.
+</div><br /><br />
+<div>
+    <b>Invocation</b>:
+</div>
+<pre class='humble-code-like' style='text-align: left'>
+
+    let defaultHeight = 500;
+    let defaultWidth = '100%';
+    let showControls = true;
+    let RTE = new EasyRTE('id-of-div-to-convert',defaultHeight,defaultWidth,showControls);
+
+</pre>
+<br /><br />
+<div>
+    <b>Sample</b>:
+</div>
+<div id='rte-example' spellcheck='true' contentEditable="false" style='width: 100%; height: 500px; background-color: lightcyan; border: 1px solid #333'>
+</div>
+<script>
+    var RTEExample = new EasyRTE('rte-example','100%',400);
+  //  RTEExample.create();
+</script>
+<br /><br />
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="8%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/EasyRTE.js" class="humble-code"></div>
 
 
+
+</div>
+<br /><br /><br /><br /><br />
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->

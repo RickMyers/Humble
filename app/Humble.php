@@ -550,6 +550,23 @@
         }
 
         /**
+         * Will return the configuration file contents for a module by a given namespace
+         * 
+         * @param string $namespace
+         * @return \SimpleXMLElement
+         */
+        public static function config($namespace=false) {
+            $struct = false;
+            if ($namespace = $namespace ? $namespace : false) {
+                if ($module = Humble::module($namespace)) {
+                    if (file_exists($config = 'Code/'.$module['package'].'/'.$module['configuration'].'/config.xml')) {
+                        $struct = new SimpleXMLElement(file_get_contents($config));
+                    }
+                }
+            }
+            return $struct->$namespace;
+        }
+        /**
          * Override says, "I don't care if it is disabled, give me the info"
          *   The override option is only to be set by utilities that need to
          *     enable/disable/uninstall the module.  Not by application logic.

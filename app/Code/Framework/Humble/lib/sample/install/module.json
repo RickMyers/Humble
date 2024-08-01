@@ -71,7 +71,7 @@
         },
         {
             "source": "/lib/sample/module/AdminApps.xml" ,
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/AdminApps.xml" 
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/AdminApps.xml" 
         }
 
     ],

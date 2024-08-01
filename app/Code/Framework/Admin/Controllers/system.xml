@@ -112,5 +112,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             </model>
         </action>
         
+        <!-- ########################################################################################## -->
+        
+        <action name="cachehealth" blocking="off" output="JSON">
+            <description>Will check cache integrity</description>
+            <model namespace="admin" class="system" id="system" response="true">
+                
+            </model>
+        </action>
+        
     </actions>
 </controller>

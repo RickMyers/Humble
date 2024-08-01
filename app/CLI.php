@@ -16,12 +16,6 @@ if (!class_exists('Humble')) {
     require_once('Humble.php');
 }
 //--------------------------------------------------------------------------
-// Name says it all... acquired from PHPPro blog
-//--------------------------------------------------------------------------
-function underscoreToCamelCase($string,$first_char_caps=false) {
-    return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
-}
-//--------------------------------------------------------------------------
 // Tries to retrieve what command you are trying to get processed
 //--------------------------------------------------------------------------
 function parseCommand($args=[]) {

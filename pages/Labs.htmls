@@ -1,5 +1,16 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
+<style type="text/css">
+    .lab-item {
+        padding: 20px 10px 20px 10px; font-family: sans-serif
+    }
+    .lab-item a {
+        font-weight: bold; color: blue
+    }
+    .lab-item a:hover {
+        color: red
+    }
+</style>
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -8,42 +19,39 @@
     </tr>
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-<div class='humble-topic-header'>Welcome to my Humble Labs!</div>
+    <div class='humble-topic-header'>Welcome to my Humble Labs!</div>
 
-Labs are demonstrators and test areas for technology I have developed over my 30 years of web development.  Most of these technologies were
-developed before 2010, and in many cases predated technologies like JQueryUI, JS Dojo, and others.  I have been converting these classic JavaScript
-"widgets" into modern vanilla Web Components for use with modern web frameworks like Vue, HTMX, and React.  In no particular order, here are some
-great tools that I have developed over the years:<br /><br />
+    Labs are demonstrators and test areas for technology I have developed over my 30 years of web development.  Most of these technologies were
+    developed before 2010, and in many cases predated technologies like JQueryUI, JS Dojo, and others.  I have been converting these classic JavaScript
+    "widgets" into modern vanilla Web Components for use with modern web frameworks like Vue, HTMX, and React.  In no particular order, here are some
+    great tools that I have developed over the years:<br /><br />
 
-<div class="lab-item">
-    &bull; EasySliders
-</div>
+    <div class="lab-item">
+        &bull; <a href="Labs/EasySliders.htmls">EasySliders</a> - Flexible, highly configurable and interactable sliders
+    </div>
 
-<div class="lab-item">
-    &bull; EasyAjax
-</div>
+    <div class="lab-item">
+        &bull; <a href="Labs/EasyAjax.htmls">EasyAjax</a> - Foundational library for most of my projects.  Until the Fetch() API came along, it was the best XMLHTTPRequest implementation there was
+    </div>
 
-<div class="lab-item">
-    &bull; EasyDesktop
-</div>
+    <div class="lab-item">
+        &bull; <a href="Labs/Desktop.htmls">EasyDesktop</a> - Adds desktop like features and window management easily to any website
+    </div>
 
-<div class="lab-item">
-    &bull; EasyRTE
-</div>
+    <div class="lab-item">
+        &bull; <a href="Labs/EasyRTE.htmls">EasyRTE</a> - Just a simple Rich Text Editor to embed in any site, as an alternative to ACE or CKE.  Small JS footprint.
+    </div>
 
-<div class="lab-item">
-    &bull; EasyColorizer
-</div>
+    <div class="lab-item">
+        &bull; <a href="Labs/Colorizer.htmls">EasyColorizer</a> - Can highlite and colorize a variety of code, and that code can live in an actual repository rather than be dropped in the page
+    </div>
 
-<div class="lab-item">
-    &bull; EasyEdits
-</div>
+    <div class="lab-item">
+        &bull; <a href="Labs/EasyEdits.htmls">EasyEdits</a> - Before Angular, React, and Vue, there were these Edits... does a similar task but much smaller footprint and focused on supercharging HTML forms
+    </div>
 
-<div class="lab-item">
-    &bull; EasyTabs
-</div>
-
-
-
+    <div class="lab-item">
+        &bull; <a href="Labs/EasyTabs.htmls">EasyTabs</a> - Who doesn't like tabs?  A simple and powerful library to add tabs and dynamic features to any page
+    </div>
 
 </div>

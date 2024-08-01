@@ -23,6 +23,7 @@ class System extends Model
     use \Code\Framework\Humble\Traits\EventHandler;
 
     private $xml = false;
+    
 
     /**
      * Constructor
@@ -264,4 +265,60 @@ class System extends Model
             Environment::recacheApplication();
         }
     }
+    
+    /*
+        "keys": "entity_keys-<namespace/entity>",
+        "cols": "entity_columns-<namespace/entity>"
+     */
+    public function cacheCheck() {
+        $stats = [
+            "modules" => [
+                "score" => 0,
+                "count" => 0
+            ],
+            "controllers" => [
+                "score" => 0,
+                "count" => 0
+            ],
+            "entities" => [
+                "keys" => [
+                    "score" => 0,
+                    "count" => 0
+                ],
+                "cols" => [
+                    "score" => 0,
+                    "count" => 0
+                ]
+            ],
+            "metadata" => [
+                "score" => 0,
+                "count" => 0
+            ],
+        ];
+        foreach (Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+            $stats["modules"]['count']++;
+            $stats["modules"]['score'] += Humble::cache('module-'.$module['namespace']) ? 1 : 0;
+            if ($cdh = dir('Code/'.$module['package'].'/'.$module['controller'])) {
+                while ($entry = $cdh->read()) {
+                    if (($entry == '.') || ($entry == '..')) {
+                        continue;
+                    }
+                    $stats['controllers']['count']++;
+                    $key = 'controller-'.$module['namespace'].'/'.str_replace('.xml','',$entry);
+                    $stats["controllers"]['score'] += Humble::cache($key) ? 1 : 0;                    
+                }
+                $config = \Humble::config($module['namespace']);
+                foreach ($config->orm->entities as $entities) {
+                    foreach ($entities as $entity => $options) {
+                        $stats['entities']['keys']['count']++;
+                        $stats['entities']['cols']['count']++;
+                        $stats["entities"]['keys']['score'] += Humble::cache('entity_keys-'.$module['namespace'].'/'.$entity) ? 1 : 0;
+                        $stats["entities"]['cols']['score'] += Humble::cache('entity_columns-'.$module['namespace'].'/'.$entity) ? 1 : 0;
+                    }
+                }
+            }
+        }
+        return $stats;    
+    }
+    
 }

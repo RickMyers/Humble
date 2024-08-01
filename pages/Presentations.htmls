@@ -1,5 +1,16 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
+<style type='text/css'>
+    .presentation-item {
+        background-color: #f2f2f2; border: 1px solid #d2d2d2; padding: 20px 10px 20px 10px; margin-bottom: 40px
+    }
+    .presentation-item a {
+        color: blue; font-weight: bold 
+    }
+    .presentation-item a:hover {
+        color: red; 
+    }    
+</style>
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -9,18 +20,30 @@
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Available Presentations</div>
+<br />
+Over my extensive career I have created and delivered many presentations on a wide variety of topics.  A lot of it had to do with 5 year stint as a technology trainer, but other presentations were create for Meetup groups or other associations.
+I am including a few here that I particularly liked, though this is far from a complete list.  Also, some of my presentations were considered the Intellectual Property of the companies I was working for and I am not permitted to release them.  Still,
+I like these ones and I would like to share them here with you.<br /><br/>
+    <div class="presentation-item">
+        <a href="Presentations/PipsJourney.htmls">Pip's Journey</a> - The path to becoming a better developer, and this applies to being a better person as well, is a journey.  This is my latest presentation and one of my best as we watch Pip evolve
+        from an "Enthusiastic" Junior Developer, to a skeptical Senior Leader
+    </div>
 
-<div style="background-color: #f2f2f2; border: 1px solid #d2d2d2; padding: 20px 10px 20px 10px; margin-bottom: 40px">
-    Pip's Journey
-</div>
+    <div class="presentation-item">
+        <a href="Presentations/Innovation.htmls">Fostering Innovation</a> - This was one of my more in demand presentations circa 2008-2012.  Not everyone is going to be equally innovative, though it is sometimes hard to be innovative, it is certainly easy
+        to create an environment that crushes it.  This presentation helps you understand what innovation is, why it exists, and how you can create a "West-Coast" style environment to foster its growth
+    </div>
 
-<div style="background-color: #f2f2f2; border: 1px solid #d2d2d2; padding: 20px 10px 20px 10px; margin-bottom: 40px">
-    Fostering Innovation
-</div>
+    <div class="presentation-item">
+        <a href="Presentations/Agile.htmls">Over The Waterfall, The Road To Agile</a> - Agile gets a lot of flack these days (and deservedly so) because so many people turn a relatively simple process into an overly complicated production.  I created this
+        presentation for a client who had been a legacy mainframe shop and tried to jump into Agile and only got half way there... they were Agile(ish).  I've used this take on Agile now for more 13 years and it works well, here I share it with you
+    </div>
 
-<div style="background-color: #f2f2f2; border: 1px solid #d2d2d2; padding: 20px 10px 20px 10px; margin-bottom: 40px">
-    Over The Waterfall, The Road To Agile
-</div>
+    <div class="presentation-item">
+        <a href="Presentations/Atlantis.htmls">Project Atlantis</a> - This isn't my presentation.  In fact, it is a paper Microsoft put together on how they were going to shutter the Web (http/https) and replace it with their own thing.  This is a Microsoft (evil&trade;)
+        paper on how they were going to use IE 6 domination to steer networked application development to the Microsoft platform.  I put this presentation here so that we won't forget what Microsoft (evil&trade;) tried to do.  Google "Project Atlantis", and it is hard to
+        find info these days... I'm guessing Microsoft is trying to scour the web of their evil&trade; intent
+    </div>
 
 </div>
 
