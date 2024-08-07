@@ -1,5 +1,13 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
+<script type="text/javascript" src="/app/Code/Framework/Admin/web/js/Sliders.js"></script>
+<style type="text/css">
+    .slideClass             { display:inherit;  border: 1px solid #777; background-position: 0px -4px; background-image: url(/pages/images/hollow_star.gif); background-repeat: repeat-x;border-radius: 6px;  }
+    .labelClass             { font-family: arial; font-size: 10pt; }
+    .stopClass              { font-family: arial; padding-top: 16px; font-size: 22pt; font-weight: bold }
+    .rangeClass             { display: inherit; border: 1px solid #777; background-position: 0px -4px; background-image: url(/pages/images/gold_star.gif); background-repeat: repeat-x; border-radius: 6px;  }    
+</style>
+<div id="hiddenSizingLayer" style="position: absolute; top: -200px; left: -200px"></div>
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -8,8 +16,41 @@
     </tr>
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-<div class='humble-topic-header'>Flexible, Scalable, Sliders!</div>
+<div class='humble-topic-header'>Sliders!</div>
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    
+</div><br /><br />
+<div>
+    <b>Invocation</b>:
+</div>
+<pre class='humble-code-like' style='text-align: left'>
 
+
+</pre>
+<br /><br />
+<div>
+    <b>Sample</b>:
+</div>
+<div id="whiteboardReviewSlider"></div>
+<script>
+	var slider = new Slider("whiteboardReviewSlider",122,23,"reviewSlider");
+	slider.setSlideClass("slideClass").setLabelClass("labelClass").setStopClass("stopClass").setStopText("");
+	slider.setSlideRanges("true").setRangeDirection("left").setRangeClass("rangeClass").setMaxScale(5);
+	slider.setOnSlide(function () { });
+        slider.setInclusive(true).setSnap(true).setScale(0,5,10);
+	slider.addPointer("wr_pointer","/pages/images/sliders/pointer2.gif");
+	slider.render();    
+</script>
+
+<br /><br />
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="8%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Admin/web/js/Sliders.js" class="humble-code"></div>
+
+
+
+</div>
+<br /><br /><br /><br /><br />
 
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->

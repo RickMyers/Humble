@@ -34,6 +34,17 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             </model>
         </action>
         
+        <!-- ############################################################### -->        
+        
+        <action name="cachehome" blocking="off">
+            <description>The cache health home SPA</description>
+        </action>
+        <!-- ############################################################### -->
+        
+        <action name="sliders">
+            <description>A test for my sliders widgets</description>
+        </action>
+        
         <!-- ############################################################### -->
         
         <action name="wc">

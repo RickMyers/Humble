@@ -56,7 +56,7 @@ Actions and views related to directory services
 
         <action name="services" blocking="false">
             <description>This builds the paginated page that displays the list of currently available services, and how to call them</description>
-            <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="40" id="services">
+            <entity namespace="humble" class="service/directory" page="page" rows="rows" defaultRows="25" id="services">
                 <parameter name="id" source="request" optional="true" />
                 <parameter name="hide_framework_services" source="request" optional="true" />
                 <parameter name="namespace" source="request" optional="true" />

@@ -45,8 +45,8 @@
                             Rows: <select id='service-rows' name='service-rows' style="background-color: lightcyan; color: #333; padding: 2px; border: 1px solid #333; border-radius: 2px">
                                 <option value='10000'> All </option>
                                 <option value='10'> 10 </option>
-                                <option value='25'> 25 </option>
-                                <option value='40' selected> 40 </option>
+                                <option value='25' selected> 25 </option>
+                                <option value='40'> 40 </option>
                                 <option value='50'> 50 </option>
                                 <option value='100'> 100 </option>
                             </select>
@@ -106,6 +106,9 @@
             }
         }
     }
+    const goHome = () => { Services.page.goto(1); }
+    $('#hide_framework_services').on("click",goHome);
+    $('#module_namespace').on("change", goHome);
     $("#services-prev").on("click",function () {
         Services.currentPage = Services.currentPage -1;
 
@@ -114,9 +117,7 @@
         }
        Services.page.goto(Services.currentPage);
     });
-    $("#services-first").on("click",function () {
-        Services.page.goto(1);
-    });
+    $("#services-first").on("click",goHome);
     $("#services-last").on("click",function () {
         Services.page.goto(Services.pages);
     });
@@ -127,6 +128,6 @@
         }
         Services.page.goto(Services.currentPage);
     });
-    Services.page.goto(1);
+    goHome();
 </script>
 

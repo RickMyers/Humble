@@ -32,7 +32,7 @@ class Directory extends \Code\Framework\Humble\Entities\Entity
      * @return iterator
      */
     public function fetch($useKey=false) {
-        $hide_clause = ($this->getHideFrameworkServices()=='true') ? "and namespace not in ('humble','paradigm','workflow')" : "";
+        $hide_clause = ($this->getHideFrameworkServices()=='true') ? "and namespace not in ('humble','paradigm','workflow','admin','contrive')" : "";
         $ns_clause   = ($this->getNamespace()) ? "and namespace = '".$this->getNamespace()."' " : "";
         $query = <<<SQL
           select * from humble_service_directory

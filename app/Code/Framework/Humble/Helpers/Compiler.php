@@ -37,6 +37,14 @@ class Compiler extends Directory
         'blocking' => true,
         'response' => false
     ];
+    private $trueish        = [
+        'Y' => true,
+        'TRUE' => true,
+        'ON' => true,
+        'YES' => true,
+        '1' => true,
+        1 => true
+    ];
 
     /**
      *
@@ -65,6 +73,16 @@ class Compiler extends Directory
         $this->arguments              = [];
     }
 
+    /**
+     * A quick function to determine if a trueish [Y,YES,TRUE,ON,1] value was passed
+     * 
+     * @param type $value
+     * @return type
+     */
+    private function trueish($value=false) {
+        return isset($this->trueish[strtoupper($value)]);
+    }
+    
     /**
      * Provides the structured indentation.  Keeps track of the current number of tabs being used
      * 
@@ -556,6 +574,9 @@ PHP;
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::entity("'.$namespace.'/'.$node['class'].'");'."\n");
+        if (isset($node['json']) && $this->trueish($node['json'])) {
+            print($this->tabs().'$currentModel->_json(true);'."\n");
+        }
         if (isset($node['xref'])) {
             print($this->tabs().'$'.$node['id'].'->_xref("'.$node['xref'].'");'."\n");
         }

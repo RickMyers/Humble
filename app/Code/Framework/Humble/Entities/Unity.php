@@ -50,6 +50,7 @@ class Unity
     protected $_iv            = 'Humble Framework';                             //encryption initialization vector
     protected $_noLimitQuery  = '';                                             //Current query before pagination is added
     protected $_xref          = [];                                             //Hash array for xrefing the names of result set columns to something else
+    protected $_json          = false;
     protected $_exclude       = false;
     protected $_bulk          = false;
     public    $_lastResult    = [];
@@ -261,6 +262,20 @@ SQL;
             $this->_xref = $list;
         }
         return $this;
+    }
+    
+    /**
+     * Whether to format the array to json or not
+     * 
+     * @param type $json
+     * @return mixed
+     */
+    public function _json($json=null) {
+        if ($json !== null) {
+            $this->_json = $json;
+            return $this;
+        }
+        return $this->_json;
     }
     
     /**
@@ -567,7 +582,7 @@ SQL;
             }
         }
         $this->_lastResult->snip();
-        return $result;
+        return $this->_json() ? json_encode($result,JSON_PRETTY_PRINT) : $result;
   //      return Humble::array($result); ///someday
     }
 
@@ -656,11 +671,7 @@ SQL;
      */
     public function fetch($useKeys = false) {
         if ($this->_page()) {
-            if (!isset($_SESSION['pagination'][$this->_namespace()][$this->_entity()])) {
-                $this->_currentPage($this->_page());
-            } else if ($this->_currentPage() === null) {
-                $this->_currentPage($_SESSION['pagination'][$this->_namespace()][$this->_entity()] + 1);
-            }
+            $this->_currentPage($this->_page());
         }
         $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query   = "select ". $this->_distinct() ." ".$this->_fieldList()." from ".$table;
@@ -694,7 +705,8 @@ SQL;
      * @return $this
      */
     protected function calculateStats($query,&$results) {
-        $this->_rowCount(count($this->_db->query($query)));
+        $rows = $this->_db->query($query);
+        $this->_rowCount($rows[0]['FOUND_ROWS']);
         if ($this->_rowCount()) {
             if ($this->_page()) {
                 if ($this->_toRow() > $this->_rowCount()) {

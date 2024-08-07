@@ -22,7 +22,7 @@
         <div class="services-field">{$service.namespace} </div>
     </div>
     <div style='box-sizing: border-box; display: inline-block; overflow: hidden; width: 9%; border-right: 1px solid #ccc; text-align: center'>
-        <div class="services-field">{$service.output} </div>
+        <div class="services-field">{if (!isset($service.output))}text/html{else}{$service.output}{/if} </div>
     </div>
     <div style="clear: both;"></div>
     <div id="service-{$service.id}-parameters" style="display: none;">

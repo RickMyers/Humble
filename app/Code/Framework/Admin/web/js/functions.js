@@ -231,7 +231,7 @@ var Functions = (() => {
                         directory: {
                             index: () => {
                                 servicesWindow = (servicesWindow) ? servicesWindow : Desktop.semaphore.checkout(true);
-                                servicesWindow._title("Index of Services")._static(true)._open();
+                                servicesWindow._title("Index of Services")._static(true)._scroll(true)._open();
                                 (new EasyAjax('/admin/directory/index')).add('all','Y').then((response) => {
                                     servicesWindow.set(response);
                                     servicesWindow.resize = () => {
