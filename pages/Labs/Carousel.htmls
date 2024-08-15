@@ -1,0 +1,57 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<!--script type="text/javascript" src="/pages/js/Carousel.js"></script-->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Labs/EasyRTE" title="EasyRTE..." >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+    <div class='humble-topic-header'>Carousels</div>
+
+    <p>
+        Describe<br /><br />
+
+    </p>
+    <div id="active_carousel" style="height: 200px">
+        
+    </div>
+    <div style="text-align: center">
+        <div style="display: inline-block; padding: 4px; border: 1p solid #333; border-radius: 4px; cursor: pointer" onclick="carousel.spinLeft()"> &lt;&lt;&lt; </div>&nbsp;
+        <div style="display: inline-block; padding: 4px; border: 1p solid #333; border-radius: 4px; cursor: pointer" onclick="carousel.spinRight()"> &gt;&gt;&gt; </div>
+    </div>
+    <script>
+
+        var carousel = new Carousel('active_carousel',1);
+        
+        carousel.add('/pages/images/carousel/1.jpg',1).add('/pages/images/carousel/2.jpg',1);
+        carousel.add('/pages/images/carousel/3.jpg',1).add('/pages/images/carousel/4.jpg',1);
+        carousel.add('/pages/images/carousel/5.jpg',1).add('/pages/images/carousel/6.jpg',1);
+        carousel.add('/pages/images/carousel/7.jpg',1).add('/pages/images/carousel/8.jpg',1);
+        carousel.add('/pages/images/carousel/9.jpg',1).add('/pages/images/carousel/10.jpg',1);
+        carousel.add('/pages/images/carousel/11.jpg',1).add('/pages/images/carousel/12.jpg',1);
+        carousel.add('/pages/images/carousel/13.jpg',1).add('/pages/images/carousel/14.jpg',1);
+        carousel.build();
+        carousel.spin();
+
+    </script>
+        <b>Invocation</b>:
+    
+    <div widget="codeBox" widgetScroll="100%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" class="humble-code">
+        var carousel = new Carousel(div_id_of_carousel,1);
+        
+        carousel.add(image_1_uri,1)
+        carousel.add(image_2_uri,1);
+        o
+        o
+        o
+        carousel.build().spin();
+        
+    </div><br /><br />
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="25%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/Carousel.js" class="humble-code"></div>        
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->
+
