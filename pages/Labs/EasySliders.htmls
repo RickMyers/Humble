@@ -1,6 +1,5 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
-<script type="text/javascript" src="/app/Code/Framework/Admin/web/js/Sliders.js"></script>
 <style type="text/css">
     .slideClass             { display:inherit;  border: 1px solid #777; background-position: 0px -4px; background-image: url(/pages/images/hollow_star.gif); background-repeat: repeat-x;border-radius: 6px;  }
     .labelClass             { font-family: arial; font-size: 10pt; }

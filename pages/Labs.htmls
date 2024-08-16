@@ -45,6 +45,10 @@
     <div class="lab-item">
         &bull; <a href="Labs/Colorizer.htmls">EasyColorizer</a> - Can highlite and colorize a variety of code, and that code can live in an actual repository rather than be dropped in the page
     </div>
+    
+    <div class="lab-item">
+        &bull; <a href="Labs/EasyRTC.htmls">EasyRTC</a> - A streamlined implementation of the WebRTC (Voice, Video, Data communication) Specification, at the heart of a Tele-Dentistry application I wrote
+    </div>    
 
     <div class="lab-item">
         &bull; <a href="Labs/EasyEdits.htmls">EasyEdits</a> - Before Angular, React, and Vue, there were these Edits... does a similar task but much smaller footprint and focused on supercharging HTML forms
@@ -57,4 +61,9 @@
     <div class="lab-item">
         &bull; <a href="Labs/Carousel.htmls">Carousels</a> - A "different" take on carousel style photo/video management
     </div>
+
+    <div class="lab-item">
+        &bull; <a href="https://www.cloud-it.com/home/Rick%20Myers" target="_BLANK">Cloud-IT</a> - My site that combines many aspects of social networking and learning, abandoned 2015 but is still amazing
+    </div>
+    
 </div>

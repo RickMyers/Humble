@@ -149,14 +149,14 @@ class Compiler extends Directory
                     break;
                 case '"DATETIME"'  :
                 case '"TIMESTAMP"' :
-                    $default = '"'.date("Y-m-d H:i:s").'"';
+                    $default = '"'.date(\Environment::getTimestampFormat()).'"';
                     break;
                 case '"TIME"' :
-                    $default = '"'.date("H:i:s").'"';
+                    $default = '"'.date(\Environment::getTimeFormat()).'"';
                     break;
                 case '"DATESTAMP"':
                 case '"DATE"' :
-                    $default = '"'.date("Y-m-d").'"';
+                    $default = '"'.date(\Environment::getDateFormat()).'"';
                     break;
                 case '"CURRENTYEAR"':
                     $default = 'date("Y")';
@@ -208,17 +208,17 @@ class Compiler extends Directory
             case "datestamp":
             case "date" :
                 print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                print($this->tabs(1).$source.'["'.$field.'"] = date("Y-m-d",strtotime('.$source.'["'.$field.'"]'.'));'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = \Environment::formatDate('.$source.'["'.$field.'"]'.');'."\n");
                 print($this->tabs(-1)."}\n");
                 break;
             case "timestamp" :
                 print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                print($this->tabs(1).$source.'["'.$field.'"] = date("Y-m-d H:i:s",strtotime('.$source.'["'.$field.'"]'.'));'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = \Environment::formatTimestamp('.$source.'["'.$field.'"]'.');'."\n");
                 print($this->tabs(-1)."}\n");
                 break;
             case "time" :
                 print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                print($this->tabs(1).$source.'["'.$field.'"] = date("H:i:s",strtotime('.$source.'["'.$field.'"]'.'));'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = \Environment::formatTime('.$source.'["'.$field.'"]'.');'."\n");
                 print($this->tabs(-1)."}\n");
                 break;
             case "password" :

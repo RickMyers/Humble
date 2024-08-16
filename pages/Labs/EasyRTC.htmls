@@ -1,0 +1,46 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/SignalingServer.htmls" title="Signaling (Sockets)..." >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Streamline WebRTC Implementation</div>
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    I was tasked in 2017 to come up with a viable Tele-Dentistry pilot for our largest client. At the time the going WebRTC library was 'Adapter.js', however due to Polyfills, the library was more than 3 megabytes, and
+    my pilot was already super-heavy with JavaScript and I could not conscience adding that much more JavaScript to an already JS bloated product.  So I sat down and learned the specification and then implemented the 
+    specification trying to be as "lean" as possible.  
+</div><br /><br />
+<div>
+    <b>Invocation</b>:
+</div>
+<pre class='humble-code-like' style='text-align: left'>
+
+
+</pre>
+<br /><br />
+<div>
+    <b>Sample</b>:
+</div>
+<div id="whiteboardReviewSlider"></div>
+<script>
+    
+    
+    
+</script>
+
+<br /><br />
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="20%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/EasyRTC.js" class="humble-code"></div>
+
+
+
+</div>
+<br /><br /><br /><br /><br />
+
+</div>
+<!--#include virtual="/pages/includes/footer.html" -->
