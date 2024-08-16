@@ -67,6 +67,75 @@ class Environment {
     }
 
     /**
+     * Returns the default date format from the application.xml meta data file
+     * 
+     * @return string
+     */
+    public static function  getDateFormat() {
+        $defaults    = self::getApplication('default');
+        return (isset($defaults['date_format'])) ? $defaults['date_format'] : 'Y-m-d';
+    }
+
+    /**
+     * Returns the default date format from the application.xml meta data file
+     * 
+     * @return string
+     */
+    public static function  getTimeFormat() {
+        $defaults    = self::getApplication('default');
+        return (isset($defaults['time_format'])) ? $defaults['time_format'] : 'H:i:s';
+    }
+    
+    /**
+     * Returns the default date format from the application.xml meta data file
+     * 
+     * @return string
+     */
+    public static function  getTimestampFormat() {
+        $defaults    = self::getApplication('default');
+        return (isset($defaults['timestamp_format'])) ? $defaults['timestamp_format'] : 'Y-m-d H:i:s';
+    }
+    
+    /**
+     * Will format a date according to the default date format set in the application.xml file
+     * 
+     * @param string $date
+     * @return mixed
+     */
+    public static function formatDate($date=false) {
+        $date        = ($date) ? $date : date('Y-m-d');
+        $defaults    = self::getApplication('default');
+        $date_format = isset($defaults['date_format']) ? $defaults['date_format'] : false;
+        return $date_format ? date($date_format, strtotime($date)) : $date;
+    }
+    
+    /**
+     * Will format a date according to the default date format set in the application.xml file
+     * 
+     * @param string $date
+     * @return mixed
+     */
+    public static function formatTime($date=false) {
+        $date        = ($date) ? $date : date('H:i:s');
+        $defaults    = self::getApplication('default');
+        $time_format = isset($defaults['time_format']) ? $defaults['time_format'] : false;
+        return $time_format ? date($time_format, strtotime($date)) : $date;
+    }
+    
+    /**
+     * Will format a date according to the default date format set in the application.xml file
+     * 
+     * @param string $date
+     * @return mixed
+     */
+    public static function formatTimestamp($date=false) {
+        $date        = ($date) ? $date : date('Y-m-d H:i:s');
+        $defaults    = self::getApplication('default');
+        $time_format = isset($defaults['timestamp_format']) ? $defaults['timestamp_format'] : false;
+        return $time_format ? date($time_format, strtotime($date)) : $date;
+    }
+    
+    /**
      * Returns the namespace of the primary (first) module identified when the installation took place
      * 
      * @return string
@@ -330,7 +399,6 @@ class Environment {
            // return $value;
             print($value);
         }
-        print_r(self::$application);
         return self::truthyOrFalsey($value);
     }
     

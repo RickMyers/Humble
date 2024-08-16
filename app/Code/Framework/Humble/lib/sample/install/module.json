@@ -70,7 +70,7 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Entities/Entity.php"
         },
         {
-            "source": "/lib/sample/module/AdminApps.xml" ,
+            "source": "/lib/sample/module/etc/AdminApps.xml" ,
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/AdminApps.xml" 
         }
 
