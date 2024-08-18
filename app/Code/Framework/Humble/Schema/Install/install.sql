@@ -190,23 +190,6 @@ CREATE TABLE `humble_service_directory` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-/*Table structure for table `humble_service_parameters` */
-
-CREATE TABLE `humble_service_parameters` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `service_id` int DEFAULT NULL,
-  `parameter` char(64) DEFAULT NULL,
-  `value` char(64) DEFAULT NULL,
-  `source` char(24) DEFAULT NULL,
-  `type` char(24) DEFAULT NULL,
-  `format` char(24) DEFAULT NULL,
-  `required` char(1) DEFAULT NULL,
-  `default` varchar(244) DEFAULT NULL,
-  `modified` datetime NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `service_id` (`service_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 /*Table structure for table `humble_services` */
 
 CREATE TABLE `humble_services` (

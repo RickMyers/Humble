@@ -85,7 +85,7 @@
         toRow:      0,
         pages:      0,
         currentPage: 0,
-        loaded:     {},
+        loaded:     { },
         page: {
             goto: function (page) {
                 var hide = $('#hide_framework_services').prop('checked');
@@ -106,7 +106,9 @@
             }
         }
     }
-    const goHome = () => { Services.page.goto(1); }
+    
+    var goHome = () => { Services.page.goto(1); }
+    
     $('#hide_framework_services').on("click",goHome);
     $('#module_namespace').on("change", goHome);
     $("#services-prev").on("click",function () {
