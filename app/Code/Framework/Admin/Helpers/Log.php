@@ -27,7 +27,8 @@ class Log extends Helper
                     'mysql'     => '../../logs/&&NAMESPACE&&/mysql.log',
                     'mongodb'   => '../../logs/&&NAMESPACE&&/mongo.log',
                     'query'     => '../../logs/&&NAMESPACE&&/query.log',
-                    'user'      => '../../logs/&&NAMESPACE&&/users/&&USERID&&.log'
+                    'user'      => '../../logs/&&NAMESPACE&&/users/&&USERID&&.log',
+                    'cadence'   => ''
                   );
     /**
      * Constructor

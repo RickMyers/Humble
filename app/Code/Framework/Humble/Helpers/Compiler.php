@@ -30,6 +30,7 @@ class Compiler extends Directory
     private $namespace      = null;
     private $component      = null;
     private $arguments      = [];
+    private $response       = false;
     protected $_db          = null;
     private $tabs           = 0;
     private $tabstr         = "";
@@ -81,6 +82,19 @@ class Compiler extends Directory
      */
     private function trueish($value=false) {
         return isset($this->trueish[strtoupper($value)]);
+    }
+    
+    /**
+     *  A global flag manager for whether the action(s) have access to the response object 
+     */
+    private function response($value=null) {
+        $retval = $this;
+        if ($value===null) {
+            $retval = $this->response;
+        } else {
+            $this->response = $value;
+        }
+        return $retval;
     }
     
     /**
@@ -1219,6 +1233,7 @@ PHP;
                 $this->global['response'] = $this->resolveFlag($attr['response']);
             }
             foreach ($actions as $tag2 => $action ) {
+                $this->response(isset($action['response']) && $this->trueish($action['response']));
                 if ($action['name'] == 'default') {
                     $defaultAction = $action;
                     continue;
@@ -1425,7 +1440,8 @@ PHP;
                             }
                         }
                     }
-                    print($this->tabs().'$TRIGGER_'.$id.'->emit("'.$action['event'].'");'."\n");
+                    $line = '$TRIGGER_'.$id.'->emit("'.$action['event'].'")';
+                    print($this->tabs().($this->response() ? 'Humble::response('.$line.')' : $line).";\n"); 
                 }
                 print($this->tabs(-1)."break;\n");
                 $this->tabs(-1);

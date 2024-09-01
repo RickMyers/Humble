@@ -119,10 +119,12 @@ class Updater extends Installer
                                 $attrs['header']['blocking']   = (isset($attr->blocking)  ? (string)$attr->blocking  : "YES");
                                 $attrs['header']['response']   = (isset($attr->response)  ? (string)$attr->response  : "NO");
                                 $attrs['header']['output']     = (isset($attr->output)    ? (string)$attr->output : 'text/html');
+                                $attrs['header']['mapped']     = (isset($attr->map)       ? (string)$attr->map : '');                                
                                 $services->reset()->setNamespace($namespace)->setController(str_replace('.xml','',$controller))->setAction((string)$attr->name);
                                 if (count($action)) {
                                     $attrs       = $this->extractElements($action,$attrs);
                                 }
+                                //file_put_contents('attrs.txt',print_r($attrs,true),FILE_APPEND);
                                 foreach ($attrs as $type => $attr) {
                                     $method = 'set'.ucfirst($type);
                                     $services->$method($attr);

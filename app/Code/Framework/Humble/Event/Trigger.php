@@ -129,8 +129,8 @@ class Trigger  {
         $ok         = true;
         $uid        = \Environment::whoAmI();
         $cleanEvent = Event::get($eventName);
+        $results    = [];
         $action     = 'set'.underscoreToCamelCase($eventName,true);
-        //print_r(array_merge($this->_arguments,$arguments)); die();
         $cleanEvent->$action(array_merge($this->_arguments,$arguments));
         if (!$uid) {
             //if no user id, see if this is the login event, and if so, find user based on username
@@ -139,40 +139,32 @@ class Trigger  {
                 $uid    = isset($user['uid']) ? $user['uid'] : 0;  
             }
         }
-        Humble::entity('paradigm/event/log')->setEvent($eventName)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
+//        Humble::entity('paradigm/event/log')->setEvent($eventName)->setUserId($uid)->setMongoId($cleanEvent->_id())->save();
         if ($cleanEvent) {
-            $handled = false;
             foreach (Humble::entity('paradigm/workflow/listeners')->setNamespace($this->_namespace())->setMethod($eventName)->setActive('Y')->fetch() as $diagram) {
-                $handled = $this->runWorkflow($diagram,$cleanEvent);
+                $results[$diagram['id']] = $this->runWorkflow($diagram,$cleanEvent);
                 if ($cancelBubble) {
                     $this->_error('bubbling was canceled');
                     break;  //time to exit! No more workflow processing
                 }
             }
-            if (!$handled) {
-                //we didn't find a listener for our event, lets try it another way
-                foreach (Humble::entity('paradigm/event/listeners')->setNamespace($this->_namespace())->setEvent($eventName)->setActive('Y')->fetch() as $diagram) {
-                    if (count(Humble::entity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true))) {
-                        $handled = $this->runWorkflow($diagram,$cleanEvent);
-                        if ($cancelBubble) {
-                            $this->_error('bubbling was canceled');
-                            break;  //time to exit! No more workflow processing
-                        }
+            foreach (Humble::entity('paradigm/event/listeners')->setNamespace($this->_namespace())->setEvent($eventName)->setActive('Y')->fetch() as $diagram) {
+                if (count(Humble::entity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true))) {
+                    $results[$diagram['id']] = $this->runWorkflow($diagram,$cleanEvent);
+                    if ($cancelBubble) {
+                        $this->_error('bubbling was canceled');
+                        break;  //time to exit! No more workflow processing
                     }
                 }
             }
-            if (!$handled) {
-                //Still haven't handled the event, so lets try this as a method listener event
-                $method_listeners = Humble::entity('paradigm/method/listeners');
-                if ($namespace = ($this->_namespace()) ? $this->_namespace() : false) {
-                    $method_listeners->setNamespace($namespace);
-                }
-                foreach ($method_listeners->setEvent($eventName)->fetch() as $method_listener) {
-                    $ml = Humble::model($method_listener['namespace'].'/'.$method_listener['class']);
-                    $method = $method_listener['method'];
-                    $ml->$method($cleanEvent);
-                    $handled = true;
-                }
+            $method_listeners = Humble::entity('paradigm/method/listeners');
+            if ($namespace = ($this->_namespace()) ? $this->_namespace() : false) {
+                $method_listeners->setNamespace($namespace);
+            }
+            foreach ($method_listeners->setEvent($eventName)->fetch() as $method_listener) {
+                $ml     = Humble::model($method_listener['namespace'].'/'.$method_listener['class']);
+                $method = $method_listener['method'];
+                $ml->$method($cleanEvent);
             }
         }
         return $handled;
