@@ -317,12 +317,13 @@ if (file_exists($config) && ($cadence = json_decode(file_get_contents($config),t
     logMessage("Starting Cadence...");
     while (file_exists('cadence.pid') && ((int)file_get_contents('cadence.pid')===$pid)) {
         sleep($cadence['period']);
+        logMessage('Waking...');
+        $duration       = time();
+        $now            = time() - $offset_time - $started;        
         if (file_exists('cadence.cmd') && ($cmds = json_decode(file_get_contents('cadence.cmd')))) {
             unlink('cadence.cmd');            
             processCadenceCommand($cmds);
         }
-        $duration       = time();
-        $now            = time() - $offset_time - $started;
         foreach ($cadence['handlers'] as $component => $handler) {
             $t = $handler['multiple'] * $cadence['period'];
             if (($now % $t) == 0) {
@@ -344,6 +345,8 @@ if (file_exists($config) && ($cadence = json_decode(file_get_contents($config),t
             $cadence_ctr    = 0;
         }
         
+        logMessage('This run took '.date('s',time()-$duration).' seconds');
+        logMessage('Sleeping for '.$cadence['period'].' seconds');
     }
     @unlink('cadence.pid');
     die("\n\nAborting due to PID file being deleted or PID changed...\n\n");
