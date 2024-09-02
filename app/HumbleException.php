@@ -43,18 +43,30 @@ class HumbleException {
     public static function standard($e=false,$type="An Error Has Occurred",$template='standard') {
         if ($e && ($e instanceof Exception )) {
             header("HTTP/1.1 400 Bad Request");
-            $rain = \Environment::getInternalTemplater('Code/Framework/Humble/Views/Exceptions/');
-            $rain->assign('ex',$e);
-            $rain->assign('title',$type);
-            $rain->assign('dump',htmlentities($e->getTraceAsString()));
-            $rain->assign('filename',($filename  = (method_exists($e,'getFileName')) ? $e->getFileName() : "N/A"));
-            $rain->draw($template);
             $ts = date('Y-m-d H:i:s');
             $ns = Humble::_namespace();
             $cn = Humble::_controller();
             $ac = Humble::_action();
-            $gt = print_r($_GET,true);
-            $pt = print_r($_POST,true);
+            $rq = print_r($_REQUEST,true);
+            $filename = '';
+            if (\Environment::getApplication('exceptions')=='JSON') {
+                header('Content-Type: application/json');
+                $message = strip_tags($e->getMessage());
+                $JSON = <<<JSON
+                {
+                    "message": "{$message}",
+                    "rc":      "{$e->getCode()}"
+                }   
+JSON;
+                print($JSON);
+            } else {
+                $rain = \Environment::getInternalTemplater('Code/Framework/Humble/Views/Exceptions/');
+                $rain->assign('ex',$e);
+                $rain->assign('title',$type);
+                $rain->assign('dump',htmlentities($e->getTraceAsString()));
+                $rain->assign('filename',($filename  = (method_exists($e,'getFileName')) ? $e->getFileName() : "N/A"));
+                $rain->draw($template);
+            }
             $exception = <<<ERRORTEXT
 --------------------------------------------------------------------------------
 {$ts} - {$type}
@@ -67,10 +79,8 @@ STACK TRACE:
 
 {$e->getTraceAsString()}
 
-GET:
-{$gt}
-POST:
-{$pt}
+REQUEST:
+{$rq}
 ERRORTEXT;
             \Log::error($exception);
         }

@@ -28,20 +28,24 @@ class Log extends Helper
                     'mongodb'   => '../../logs/&&NAMESPACE&&/mongo.log',
                     'query'     => '../../logs/&&NAMESPACE&&/query.log',
                     'user'      => '../../logs/&&NAMESPACE&&/users/&&USERID&&.log',
-                    'cadence'   => ''
+                    'cadence'   => '../../logs/&&NAMESPACE&&/cadence.log'
                   );
+    private $project = null;
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct();
+        $this->project = Environment::getProject();
+        $config = json_decode(file_get_contents('Code/'.$this->project->package.'/'.$this->project->module.'/etc/cadence.json'));
+        $this->logs['cadence'] = $config->log->location;
+        $a=1;
     }
 
     public function processLogs() {
-        $project = Environment::getProject();
         $user_id = $this->getUserId();
         foreach ($this->logs as $log => $location) {
-            $this->logs[$log] = str_replace(['&&NAMESPACE&&','&&USERID&&'],[$project->namespace,$user_id],$location);
+            $this->logs[$log] = str_replace(['&&NAMESPACE&&','&&USERID&&'],[$this->project->namespace,$user_id],$location);
         }
     }
     /**
@@ -67,6 +71,19 @@ class Log extends Helper
         if (isset($this->logs[$log])) {
             if (!file_exists($this->logs[$log])) {
                 $data =  'Log '.'['.$log.']'.$this->logs[$log]. ' does not exist';
+            } else if ($log=='cadence') {
+                $fp         = fopen($this->logs[$log], "r");
+                $size       = filesize($this->logs[$log]);
+                $howmuch    = $size > 20000 ? 20000 : $size;
+                fseek($fp, -1*$howmuch, SEEK_END);
+                if ($rows = fread($fp,$howmuch)) {
+                    $rows = explode("\n",$rows);
+                    for ($i=count($rows)-1; $i>=0; $i--) {
+                        $data .= $rows[$i]."\n";
+                    }
+                }
+            } else if ($log == 'user') {
+                
             } else {
                 $filesize = filesize($this->logs[$log]);
                 $size     = (($size==='*') ? $filesize : ((((int)$size > (int) $filesize) ? $size : $filesize)));

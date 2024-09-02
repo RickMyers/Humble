@@ -81,7 +81,7 @@ function logMessage($message=false,$timestamp=true) {
         } else {
             file_put_contents($cadence['log']['location'],$message,FILE_APPEND);
         }
-        //print($message);
+        print($message);
     }
 }
 //------------------------------------------------------------------------------
@@ -95,10 +95,11 @@ function scanControllersForChanges($last_run=false) {
                 $file   = 'Code/'.$ns['package'].'/'.$ns['controller'].'/'.$metadata['controller'].'.xml';
                 if (file_exists($file) && ($ft = filemtime($file))) {
                     if ($ft !== ($st = strtotime($metadata['compiled']))) {
-                       logMessage('Going to compile '.$file." [".$ft."/".$st."]");
+                       logMessage('---------> Going to compile '.$file." [".$ft."/".$st."]");
                        $compiler   = ($compiler) ? $compiler : \Environment::getCompiler();
                        $compiler->compile($metadata['namespace'].'/'.$metadata['controller']);
                     }
+                    clearstatcache(true,$file);
                 }
             } else {
                 logMessage("Namespace ". $metadata['namespace']." Found But Not Valid");
@@ -162,6 +163,7 @@ function scanModelsForChanges() {
                 } else {
                     $models[$file] = filemtime($file);
                 }
+                clearstatcache(true,$file);
             }
         }
     }
@@ -170,31 +172,41 @@ function scanModelsForChanges() {
 function watchApplicationXML() {
     global $systemfiles;
     $applicationXML = Environment::applicationXMLLocation();
-    $systemfiles[$applicationXML] = isset($systemfiles[$applicationXML]) ? $systemfiles[$applicationXML] : filemtime($applicationXML);
-    if (filemtime($applicationXML) !== $systemfiles[$applicationXML]) {
-        logMessage('Recaching Application.xml');
+    $appTime        = filemtime($applicationXML);
+    $systemfiles[$applicationXML] = isset($systemfiles[$applicationXML]) ? $systemfiles[$applicationXML] : $appTime;
+    logMessage($systemfiles[$applicationXML].' <==> '.$appTime);
+    if ($appTime !== $systemfiles[$applicationXML]) {
+        logMessage('---------> Recaching Application.xml');
         \Environment::recacheApplication();
+        $systemfiles[$applicationXML] = $appTime;
     }
+    clearstatcache(true,$applicationXML);
 }
 //------------------------------------------------------------------------------
 function watchAPIPolicy() {
     global $systemfiles, $project;
     $api_policy = 'Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json';
-    $systemfiles['api_policy.json'] = isset($systemfiles['api_policy.json']) ? $systemfiles['api_policy.json'] : filemtime($api_policy);
-    if (filemtime($api_policy) !== $systemfiles['api_policy.json']) {
-        logMessage('Recaching API Policy');
+    $api_time   = filemtime($api_policy);
+    $systemfiles['api_policy.json'] = isset($systemfiles['api_policy.json']) ? $systemfiles['api_policy.json'] : $api_time;
+    if ($api_time !== $systemfiles['api_policy.json']) {
+        logMessage('---------> Recaching API Policy');
         Humble::cache('humble_framework_api_policy',json_decode(file_get_contents($api_policy)));
-    }    
+        $systemfiles['api_policy.json'] = $api_time;
+    } 
+    clearstatcache(true,$api_policy);
 }
 //------------------------------------------------------------------------------
 function watchAllowedRules() {
     global $systemfiles, $project;
     $public_routes = 'Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json';    
-    $systemfiles['public_routes.json'] = isset($systemfiles['public_routes.json']) ? $systemfiles['public_routes.json'] : filemtime($public_routes);
+    $routes_time   = filemtime($public_routes);
+    $systemfiles['public_routes.json'] = isset($systemfiles['public_routes.json']) ? $systemfiles['public_routes.json'] : $routes_time;
     if (filemtime($public_routes) !== $systemfiles['public_routes.json']) {
-        logMessage('Recaching Allowed Routes');
+        logMessage('---------> Recaching Public Routes');
         Humble::cache('humble_framework_allowed_routes',json_decode(file_get_contents($public_routes)));
+        $systemfiles['public_routes.json'] = $routes_time;
     }        
+    clearstatcache(true,$routes_time);
 }
 //------------------------------------------------------------------------------
 function scanConfigurationsForChanges() {
@@ -204,12 +216,12 @@ function scanConfigurationsForChanges() {
         $configs[$file] = $configs[$file] ?? filemtime($file);
         if ($configs[$file] !== filemtime($file)) {
             $configs[$file] = filemtime($file);
-            logMessage('Configuration file change detected, updating '.$file);
+            logMessage('---------> Configuration file change detected, updating '.$file);
             ob_start();
             try {
                 $updater->update($file);
             } catch (Exception $ex) {
-                logMessage('Error trying to update module '.$module['namespace']);
+                logMessage('---=====> Error trying to update module '.$module['namespace']);
                 logMessage($ex->getTraceAsString());
             }
             logMessage(ob_end_clean(),false);
@@ -224,28 +236,33 @@ function scanForNewImages() {
 function scanFilesForChanges() {
     global $files,$modules;
     foreach (Humble::entity('paradigm/file/triggers')->setActive('Y')->fetch() as $trigger) {
-        $dir = dir($trigger['directory']);
-        while ($entry = $dir->read()) {
-            if (($entry == '.') || ($entry == '..')) {
-                continue;
-            }
-            if ($trigger['extension']) {
-                $extension = '.' || str_replace(['*','.'],['',''],$trigger['extension']);
-                if (!strpos($entry,$extension)) {
+        if (is_dir($trigger['directory'])) {
+            $dir = dir($trigger['directory']);
+            while ($entry = $dir->read()) {
+                if (($entry == '.') || ($entry == '..')) {
                     continue;
                 }
+                if ($trigger['extension']) {
+                    $extension = '.' || str_replace(['*','.'],['',''],$trigger['extension']);
+                    if (!strpos($entry,$extension)) {
+                        continue;
+                    }
+                }
+                $file      = $trigger['directory'].'/'.$entry;
+                $file_time = filemtime($file);
+                if (!(isset($files[$file]) || ($file_time !== $files[$file]))) {
+                    $files[$file] = $file_time;
+                    triggerFileWorkflow();
+                }
             }
-            $file = $trigger['directory'].'/'.$entry;
-            if (!(isset($files[$file]) || (filemtime($file) !== $files[$file]))) {
-                $files[$file] = filemtime($file);
-                triggerFileWorkflow();
-            }
+        } else {
+            logMessage("Cant scan trigger directory ".$trigger['directory']." because it doesn't exist!");
         }
     }
 }
 //Are these two the same?
 //------------------------------------------------------------------------------
-function triggerFileWorkflow() {
+function triggerFileWorkflows() {
     
 }
 // To spin off a process in another thread... 'nohup php Program.php > /dev/null &'

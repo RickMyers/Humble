@@ -23,7 +23,7 @@
         <strategy>
             <forward>1</forward>
             <redirect>0</redirect>
-        </strategy>
+        </strategy>      
     </msa>
     <default>
         <inline_templater options="Rain,Latte">Rain</inline_templater>
@@ -36,7 +36,7 @@
         <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/APIPolicy.htmls for more information first -->
     </api>
     <exceptions options="JSON,HTML" comment="Choose whether you want a JSON formatted exception or one that is a templated HTML response">HTML</exceptions>
-    <documentation_comment>
+    <documentation_comment>    
         The next section outlines the choices for creating automated documentation.   Choose either PHPDoc2 or APIGen(PHP 8.2+).  Select the option for each from the options
         listed on the tag.  PHPDoc2 is the default since it supports more versions of PHP, but if you are using PHP 8.2 and later, APIGen is an excellent option as well.
     </documentation_comment>
@@ -51,7 +51,7 @@
     </flags>    
     <support>
         <name>{$support_name}</name>
-        <email>{$support_email}</email>
+        <email>{$support_email}</email>  
     </support>    
     <status>
         <enabled>{$enabled}</enabled>           <!-- Switch to 0 to take the application offline -->

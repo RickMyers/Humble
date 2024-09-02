@@ -71,7 +71,6 @@
                 <secrets_manager/>
                 <services/>
                 <service_directory polyglot="Y"/>
-                <service_parameters polyglot="Y"/>
                 <system_variables/>
                 <templaters/>
                 <users/>

@@ -756,6 +756,30 @@ PHP;
      * 
      * @param string $node
      */
+    private function processAccessControl($node) {
+        if (!isset($node['id'])) {
+            $node['id'] = 'E_'.$this->_uniqueId();
+        }
+        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
+        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::model("'.$namespace.'/'.$node['class'].'");'."\n");
+        array_push($this->elements,$node);
+        foreach ($node as $tag => $newNode) {
+            $this->processNode($tag,$newNode);
+        }
+        array_pop($this->elements);
+        if (isset($node['method'])) {
+            print($this->tabs().'if (!$'.$node['id'].'->'.$node['method'].'()) {'."\n");
+            print($this->tabs(1)."\HumbleException::standard(new Exception('Access Denied',16),'Not Authorized','authorization');\n");
+            print($this->tabs().'die();'."\n");
+            print($this->tabs(-1).'}'."\n");
+        }
+    }
+    
+    /**
+     * 
+     * @param string $node
+     */
     private function processView($node) {
         print($this->tabs().'$view'." = '".$node['name']."';\n");
     }
@@ -1125,7 +1149,7 @@ PHP;
      * @param array $node
      */
     private function processNode($tag,$node) {
-        switch ($tag) {
+        switch (strtolower($tag)) {
             case    "parameter"     :   $this->processParameter($node);
                                         break;
             case    "model"         :   $this->processModel($node);
@@ -1165,7 +1189,9 @@ PHP;
             case    "project"       :   $this->processProject($node);
                                         break;
             case    "application"   :   $this->processApplication($node);
-                                        break;                                    
+                                        break;         
+            case    "access"        :   $this->processAccessControl($node);
+                                        break;
             default                 :   break;
 
         }
@@ -1185,7 +1211,7 @@ PHP;
         
         if (($token = isset($opts['csrf_token']) ? $opts['csrf_token'] : false) && ($var = isset($opts['csrf_session_variable']) ? $opts['csrf_session_variable'] : false) && ($tab_id = isset($opts['csrf_tab_id']) ? $opts['csrf_tab_id'] : false)) {
             print($this->tabs().'if (!isset($_SESSION["'.$var.'"][$_REQUEST["'.$tab_id.'"]]) || ($_SESSION["'.$var.'"][$_REQUEST["'.$tab_id.'"]] !== $_REQUEST["'.$token.'"])) {'."\n");
-	    print($this->tabs(1)."\HumbleException::standard(new Exception('Bad Request, Possible Security Issue',16),'Form Failure','csrf');\n");
+            print($this->tabs(1)."\HumbleException::standard(new Exception('Bad Request, Possible Security Issue',16),'Form Failure','csrf');\n");
             print($this->tabs().'header("HTTP/1.1 400 Bad Request");'."\n");
 	    print($this->tabs()."die();\n");            
             print($this->tabs(-1)."}\n");
