@@ -24,6 +24,7 @@
         $name       = $args['project_url'] ?? ($args['project_name'] ?? '' );
         $parts      = explode(':',$name);
         $port       = $parts[2] ?? '80';
+        $bind       = ($port===80) ? '' : ' *:'.$port;
         $server     = $args['SERVER_NAME'] ?? ($parts[1] ?? 'localhost');
         $cont       = explode('/',$args['landing_page'])[2];
         $path       = $args['destination_folder']  ?? '';
@@ -36,7 +37,7 @@
         $error_log  = $args['error_log'] ?? '';
         $package    = $args['package']   ?? '';
         $module     = $args['module']    ?? '';
-        return str_replace(['&&NAME&&','&&SERVER&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&','&&CONTROLLER&&','&&PACKAGE&&','&&MODULE&&'],[$name,$server,$port,$path,$error_log,$basedir,$ns,$cont,$package,$module],file_get_contents($template));
+        return str_replace(['&&NAME&&','&&SERVER&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&','&&CONTROLLER&&','&&PACKAGE&&','&&MODULE&&','&&BIND&&'],[$name,$server,$port,$path,$error_log,$basedir,$ns,$cont,$package,$module,$bind],file_get_contents($template));
     }
     //-------------------------------------------------------------------------------------
     function recurseDirectory($path=null) {
