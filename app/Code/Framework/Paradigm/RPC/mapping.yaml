@@ -90,6 +90,13 @@ alertsConfiguration  :
   secure          : true
   method          : POST
   arguments       : [sessionId,namespace,id,windowId,data,component,method]
+adapterConfiguration  :
+  url             : /workflow/adapter/editor
+  api-key         :
+  api-var         :
+  secure          : true
+  method          : POST
+  arguments       : [sessionId,namespace,id,windowId,data,component,method]  
 beginConfiguration  :
   url             : /workflow/elements/begin
   api-key         :
@@ -104,14 +111,6 @@ terminusConfiguration  :
   secure          : true
   method          : POST
   arguments       : [sessionId,namespace,id,windowId,data,component,method]
-testServer  :
-  url             : https://test.humble-project.com/paradigm/workflow/import
-  api-key         :
-  api-var         :
-  secure          : true
-  method          : POST
-  arguments       :
-    workflow      :
 geocodeLocation   :
   url             : https://maps.googleapis.com/maps/api/geocode/json
   secure          : true

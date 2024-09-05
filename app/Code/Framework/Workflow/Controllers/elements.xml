@@ -61,7 +61,20 @@
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>
+        
+        <!-- ################################################################################################# -->
 
+        <action name="adapter">
+            <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
+            <entity namespace='humble' class='modules' id='modules'>
+                <parameter name='enabled' source='post' default='Y' />
+            </entity>
+            <model namespace="workflow" class='manager' id='manager'>
+                <parameter name='namespace' source='post' required='true' default='' />
+                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='id' source='post' required='true' default='' />
+            </model>
+        </action>
         <!-- ################################################################################################# -->
 
         <action name="file" passalong="windowId">
