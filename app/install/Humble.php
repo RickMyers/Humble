@@ -339,7 +339,10 @@ FACTORY;
     $x = (file_exists('humble.bat')) ? @unlink('humble.bat') : '';
     $x = (file_exists('humble.sh'))  ? @unlink('humble.sh') : '';
     $x = (file_exists('Humble.php')) ? @unlink('Humble.php') : '';
-    print("\n\nThe framework download is complete, please go to ".$project->project_url."/install.php to install your project\n\n");
+    print("\n\n");
+    print('#######################################################################################################################'."\n");
+    print("# The framework download is complete, please go to ".$project->project_url."/install.php to install your project\n");
+    print('#######################################################################################################################'."\n");
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('start '.$project->project_url.'/install.php');
     } else  {
@@ -577,7 +580,7 @@ if (PHP_SAPI === 'cli') {
                 }       				
                 break;
             case "restore":
-                installedExtensionCheck();
+                //installedExtensionCheck();
                 restoreProject();
                 break;
             case "cfg":
