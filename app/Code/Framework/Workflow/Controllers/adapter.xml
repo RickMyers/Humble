@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+
+JS Adapter Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="adapter" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="editor">
+            <description>Loads the ACE editor</description>
+            <model namespace="workflow" class='manager' id='manager'>
+                <parameter name='namespace' source='post' required='true' default='' />
+            </model>
+            <mongo namespace="paradigm" class="elements" id='element'>
+                <parameter name='id' source='post' default='' />
+            </mongo>               
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

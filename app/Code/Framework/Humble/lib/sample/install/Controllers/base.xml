@@ -25,6 +25,26 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         </action>
 
         <!-- ############################################################### -->
+
+        <action name="register">
+            <description>Register new user page</description>
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="recover" map="action">
+            <description>The start recover password option</description>
+            <if var="action" eq="action">
+                <then>
+                    <comment>Logic here should take email and send the email, then leave</comment>
+                </then>
+                <else>
+                    <comment>If no 4th part of URI, then proceed to the actual start recovery page</comment>
+                </else>
+            </if>
+        </action>
+                
+        <!-- ############################################################### -->
         
         <action name="login" passalong="user_name:required=true,user_password:format=password:required=true:value=password" event='userLogin' comment='Triggers the user login workflow'>
             <description>Launches the process that a person goes through to login</description>

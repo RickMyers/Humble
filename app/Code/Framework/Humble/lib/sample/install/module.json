@@ -91,7 +91,19 @@
         {
             "source": "/lib/sample/install/Views/index.html",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/index.tpl"
-        },        
+        },    
+        {
+            "source": "/lib/sample/install/Views/register.html",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/register.tpl"
+        },    
+        {
+            "source": "/lib/sample/install/Views/recover.html",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/recover.tpl"
+        },    
+        {
+            "source": "/lib/sample/install/Views/index.html",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/index.tpl"
+        },                                
         {
             "source": "/lib/sample/install/Views/page.html" ,
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/&&PAGE&&.tpl"
