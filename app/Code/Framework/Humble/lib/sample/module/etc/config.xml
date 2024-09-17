@@ -16,7 +16,7 @@
             <package>&&PACKAGE&&</package>
             <use>Smarty</use>
         </module>
-        <structure>
+        <structure comment="This section describes the layout of your module, technically you can rearrange it anyway you want, but I would recommend just stick with the default structure below or you may encounter upgrading problems in the future">
             <models>
                 <source>&&MODULE&&/Models</source>
             </models>
@@ -59,7 +59,11 @@
             <RPC>
                 <source>&&MODULE&&/RPC</source>
             </RPC>
-            <frontend>
+            <resources>
+                <sql>&&MODULE&&/sql</sql>
+                <js>&&MODULE&&/js</js>
+            </resources>
+            <frontend comment="will probably deprecate this...">
                 <source>&&MODULE&&/web/app</source>
             </frontend>
         </structure>

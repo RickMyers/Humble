@@ -49,6 +49,10 @@
             <entities>
                 <source>Humble/Entities</source>
             </entities>
+            <resources>
+                <sql>Humble/Resources/sql</sql>
+                <js>Humble/Resources/js</js>
+            </resources>
             <RPC>
                 <source>Humble/RPC</source>
             </RPC>

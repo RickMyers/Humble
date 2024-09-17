@@ -112,20 +112,6 @@ class Compiler extends Directory
     }
 
     /**
-     * Determines if the text value resolves to a true or not.  By default, everything that doesn't resolve to true must therefore be false
-     * 
-     * @param string $flag
-     * @return boolean
-     */
-    protected function resolveFlag($flag=false) {
-        if ($flag) {
-            $trueish = ['ON'=>true,'YES'=>true,'Y'=>true,1=>true,'TRUE'=>true];
-            $flag    = isset($trueish[strtoupper($flag)]);
-        }
-        return $flag;
-    }
-    
-    /**
      *
      * @param type $templater
      */
@@ -956,17 +942,6 @@ PHP;
     }
 
     /**
-     * Another attempt at resolving flags
-     * 
-     * @param type $val
-     * @return type
-     */
-    private function resolveBoolean($val) {
-        $val = strtolower($val);
-        return (($val===true) || ($val==='y') || ($val==='yes') || ($val==='true') || ($val==='on')) ? true : false;
-    }
-    
-    /**
      * Punches out the code that creates a switch statement...
      *
      * @param type $node
@@ -1071,7 +1046,92 @@ PHP;
         }
         print("\n");
     }
-
+/*
+ * <resource type="sql" namespace="humble" class="user/identification" file="search" source="post" page="foo" rows="bar" normalize="true" />
+ */
+    private function processSQLResource($node) {
+        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
+        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
+        if (!isset($node['id'])) {
+            $node['id'] = 'E_'.$this->_uniqueId();
+        }
+        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::entity("'.$namespace.'/'.$node['class'].'");'."\n");
+        if (isset($node['json']) && $this->trueish($node['json'])) {
+            print($this->tabs().'$currentModel->_json(true);'."\n");
+        }
+        $source = '$_REQUEST';
+        if (isset($node['source'])) {
+            switch (strtolower($node['source'])) {
+                case 'get'  :
+                    $source = '$_GET';
+                    break;
+                case 'post' : 
+                    $source = '$_POST';
+                    break;
+                case 'put'  :
+                    $source = '$_PUT';
+                    break;
+                default     :
+                    break;
+            }
+        }
+        print($this->tabs().'$source = '.$source.';'."\n");
+        if (isset($node['page'])) {
+            print($this->tabs().'$'.$node['id'].'->_page(null);'."\n");  //essentially, you first make sure that pagination is turned off by passing a null
+            print($this->tabs().'if (isset($_REQUEST["'.$node['page'].'"])) {'."\n");  //then you look to see if it is turned on
+            print($this->tabs(1).'$'.$node['id'].'->_page($_REQUEST["'.$node['page'].'"]);'."\n");  //and then you set the corresponding variable from the request
+            print($this->tabs(-1)."}\n");
+            if (isset($node['defaultPage'])) {
+                print($this->tabs().'if (!isset($_REQUEST["'.$node['page'].'"])) {'."\n");
+                print($this->tabs(1).'$'.$node['id'].'->_page('.$node['defaultPage'].')'.";\n");
+                print($this->tabs(-1)."}\n");
+            }
+        }
+        if (isset($node['cursor'])) {
+            print($this->tabs().'if (isset($_REQUEST["'.$node['cursor'].'"])) {'."\n");  //then you look to see if it is turned on
+            print($this->tabs(1).'$'.$node['id'].'->_cursor($_REQUEST["'.$node['cursor'].'"])'.";\n");            
+            print($this->tabs(-1)."}\n");
+        }
+        if (isset($node['rows'])) {
+            print($this->tabs().'if (!$'.$node['id'].'->_rows()) {'."\n");
+            print($this->tabs(1).'$'.$node['id'].'->_rows(null);'."\n");        //essentially, you first make sure that pagination is turned off by passing a null
+            print($this->tabs(-1)."}\n");
+            if (isset($node['defaultRows'])) {
+                print($this->tabs().'$'.$node['id'].'->_rows('.$node['defaultRows'].');'."\n");  //then set the default rows
+            }
+            print($this->tabs().'if (isset($_REQUEST["'.$node['rows'].'"])) {'."\n");  //then you look to see if the rows value has been passed, and if so, then use that value by assigning the rows
+            print($this->tabs(1).'if (intval($_REQUEST["'.$node['rows'].'"])) {'."\n");
+            print($this->tabs(1).'$'.$node['id'].'->_rows($_REQUEST["'.$node['rows'].'"]);'."\n");  //and then you set the corresponding variable from the request
+            print($this->tabs(-1)."}\n");
+            print($this->tabs(-1)."}\n");
+        }
+        if (isset($node['orderby'])) {
+            print($this->tabs().'$'.$node['id'].'->_orderBy(\''.$node['orderby'].'\');'."\n");
+        }
+        //Now what do I do?
+    }
+    
+    private function processJSResource($node) {
+        
+    }
+    
+    private function processResource($node) {
+        if (isset($node['type'])) {
+            switch (strtolower($node['type'])) {
+                case 'sql'  :
+                    $this->processSQLResource($node);
+                    break;
+                case 'js'   :
+                    $this->processJSResource($node);
+                    break;
+                default     :
+                    break;
+            }
+        } else {
+            //throw exception that no 'type' has been found for the resource
+        }
+    }
+    
     /**
      * Punches out the code that signals to abort processing...
      *
@@ -1157,6 +1217,8 @@ PHP;
             case    "mongo"         :   $this->processMongo($node);
                                         break;
             case    "entity"        :   $this->processEntity($node);
+                                        break;
+            case    "resource"      :   $this->processResource($node);
                                         break;
             case    "output"        :   $this->processOutput($node);
                                         break;
@@ -1253,10 +1315,10 @@ PHP;
             print($this->tabs().'switch ($method) {'."\n");
             $attr = $actions->attributes();
             if (isset($attr['blocking'])) {
-                $this->global['blocking'] = $this->resolveFlag($attr['blocking']);
+                $this->global['blocking'] = $this->trueish($attr['blocking']);
             }            
             if (isset($attr['response'])) {
-                $this->global['response'] = $this->resolveFlag($attr['response']);
+                $this->global['response'] = $this->trueish($attr['response']);
             }
             foreach ($actions as $tag2 => $action ) {
                 $this->response(isset($action['response']) && $this->trueish($action['response']));

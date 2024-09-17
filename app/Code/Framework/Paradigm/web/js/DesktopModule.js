@@ -874,8 +874,8 @@ var Functions = {
         },
         position: function () {
             var win;
-            var availHeight = $(window).height();
-            var availWidth  = $(window).width();
+            var availHeight     = window.screen.height;
+            var availWidth      = window.screen.width;
             var optWinW		= Math.round(availWidth/2);
             var optWinH		= Math.round(availHeight/2);
             var optWinX		= Math.round(availWidth/5);
