@@ -235,35 +235,40 @@ function scanForNewImages() {
 //------------------------------------------------------------------------------
 function scanFilesForChanges() {
     global $files,$modules;
+    $triggers = [];
     foreach (Humble::entity('paradigm/file/triggers')->setActive('Y')->fetch() as $trigger) {
         if (is_dir($trigger['directory'])) {
-            $dir = dir($trigger['directory']);
+            $dir        = dir($trigger['directory']);
+            $extension  = $trigger['extension'] ? str_replace(['*','.'],['',''],$trigger['extension']): false;
             while ($entry = $dir->read()) {
                 if (($entry == '.') || ($entry == '..')) {
                     continue;
                 }
-                if ($trigger['extension']) {
-                    $extension = '.' || str_replace(['*','.'],['',''],$trigger['extension']);
-                    if (!strpos($entry,$extension)) {
+                if ($extension) {
+                    if (!substr($entry,-1*strlen($extension))==$extension) {  //change this to look at last characters
                         continue;
                     }
                 }
                 $file      = $trigger['directory'].'/'.$entry;
                 $file_time = filemtime($file);
                 if (!(isset($files[$file]) || ($file_time !== $files[$file]))) {
-                    $files[$file] = $file_time;
-                    triggerFileWorkflow();
+                    $files[$file]    = $file_time;
+                    $triggers[$file] = $trigger;
                 }
             }
         } else {
-            logMessage("Cant scan trigger directory ".$trigger['directory']." because it doesn't exist!");
+            logMessage("Can't scan trigger directory ".$trigger['directory']." because it doesn't exist!");
         }
     }
+    if (count($triggers)) {
+        triggerFileWorkflows($triggers);
+    }
 }
-//Are these two the same?
 //------------------------------------------------------------------------------
-function triggerFileWorkflows() {
-    
+function triggerFileWorkflows($triggers=[]) {
+    foreach ($triggers as $file => $trigger) {
+        
+    }
 }
 // To spin off a process in another thread... 'nohup php Program.php > /dev/null &'
 //------------------------------------------------------------------------------

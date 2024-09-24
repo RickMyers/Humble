@@ -67,6 +67,9 @@
                 <email>Workflow/web/edits/mail.json</email>
                 <trigger>Workflow/web/edits/trigger.json</trigger>
             </edits>
+            <common>
+                <css>Workflow/web/css/compiled.css</css>
+            </common>
         </web>
     </workflow>
 </config>

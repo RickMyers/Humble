@@ -220,6 +220,8 @@ class Updater extends Installer
         $module->setSchemaInstall(isset($structure->schema->install) ? $structure->schema->install : '');
         $module->setSchemaUpdate(isset($structure->schema->update) ? $structure->schema->update : '');
         $module->setSchemaLayout(isset($structure->schema->layout) ? $structure->schema->layout : '');
+        $module->setResourcesJs(isset($structure->resources->js) ? $structure->resources->js : '');
+        $module->setResourcesSql(isset($structure->resources->sql) ? $structure->resources->sql : '');
         $module->setEnabled((isset($module_data->required) && ($module_data->required == "Y")) ? "Y" : "N");
         $module->setEnabled("Y");  //override to always enabled
         $module->setTitle(addslashes($this->title));

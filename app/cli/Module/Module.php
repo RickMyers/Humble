@@ -229,7 +229,7 @@ class Module extends CLI
      */
     public static function tailwind() {
         $args       = self::arguments();
-        if ($module = Humble::module($args['namespace'])) {
+        if ($module = \Humble::module($args['namespace'])) {
             $install_path = 'Code/'.$module['package'].'/'.$module['module'].'/web/';
             @mkdir($install_path,0775,true);
             print("\nRetrieving Tailwindcss package from ".Environment::project('framework_url')."\n");
@@ -238,11 +238,14 @@ class Module extends CLI
             if ($zip->open('tailwind.zip') === TRUE) {
                 $zip->extractTo($install_path);
                 $zip->close();                
-            }
+            } 
             @unlink('tailwind.zip');
+            print("\nDone.\n");
+        } else {
+            print('That module is not enabled or does not exist'."\n");
         }
-        print("\nDone.\n");
-    }
+        
+    } 
 
 }
 

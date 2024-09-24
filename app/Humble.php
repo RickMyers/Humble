@@ -566,6 +566,7 @@
             }
             return $struct->$namespace;
         }
+        
         /**
          * Override says, "I don't care if it is disabled, give me the info"
          *   The override option is only to be set by utilities that need to

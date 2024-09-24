@@ -182,6 +182,8 @@ SQL;
         $views          = (string)$structure->views->source;
         $viewsCache     = (string)$structure->views->cache;
         $entities       = (string)$structure->entities->source;
+        $resourcesSql   = (string)$structure->resources->sql;
+        $resourcesJs    = (string)$structure->resources->js;
         $RPC            = isset($structure->RPC) ? (string)$structure->RPC->source : "";
         $images         = $structure->images->source;
         if (is_dir('Code/'.$package.'/'.str_replace('_','/',$images))) {
@@ -201,9 +203,9 @@ SQL;
         $installed      = date('Y-m-d H:i:s');
         $query = <<<SQL
             insert into humble_modules
-                (`title`,namespace, module, package, installed, configuration, controller, `version`, description, templater, schema_install, schema_update, schema_layout, models, prefix, mongodb, entities, controller_cache, views, views_cache, helpers, rpc_mapping, images, images_cache, enabled,required,weight)
+                (`title`,namespace, module, package, installed, configuration, controller, `version`, description, templater, schema_install, schema_update, schema_layout, resources_js, resources_sql, models, prefix, mongodb, entities, controller_cache, views, views_cache, helpers, rpc_mapping, images, images_cache, enabled,required,weight)
             values
-                ('{$title}','{$this->namespace}','{$moduleName}','{$package}','{$installed}','{$configuration}','{$controller}','{$this->version}','{$description}','{$use}','{$s_install}','{$s_update}','{$s_layout}','{$models}','{$prefix}','{$this->mongodb}','{$entities}','{$controllerCache}','{$views}','{$viewsCache}','{$helpers}','{$RPC}','{$images}','{$imagesCache}','{$enabled}','{$required}','{$weight}')
+                ('{$title}','{$this->namespace}','{$moduleName}','{$package}','{$installed}','{$configuration}','{$controller}','{$this->version}','{$description}','{$use}','{$s_install}','{$s_update}','{$s_layout}','{$resourcesJs}','{$resourcesSql}',{$models}','{$prefix}','{$this->mongodb}','{$entities}','{$controllerCache}','{$views}','{$viewsCache}','{$helpers}','{$RPC}','{$images}','{$imagesCache}','{$enabled}','{$required}','{$weight}')
 SQL;
         $this->_db->query($query);
         return $this;

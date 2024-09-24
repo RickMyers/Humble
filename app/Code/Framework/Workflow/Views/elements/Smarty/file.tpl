@@ -53,11 +53,12 @@
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
                 <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />    <!-- Leave this As-Is -->
                 <input type="hidden" name="workflow_id" id="workflow_id_{$data.id}" value="" />
-                <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
-                    <!--
-                        PUT YOUR CONFIGURATION INSTRUCTIONS HERE
-                    -->
-                    <table>
+                <fieldset style="padding: 10px 0px 10px 0px; width: 600px; text-align: left"><legend>Instructions</legend>
+                    <div style="padding: 10px 0px 30px 0px; font-family: sans-serif">
+                        Here you set the directory to watch, and optionally the file type.  If you set the eventName, then that event will be thrown when a file is added to this directory, or a matching file is changed.
+                        You can also throw an event when a file is removed from this directory.  If this stage is part of a workflow, you do not need to throw any event as the workflow will execute when a file is changed or added.
+                    </div>
+                    <table class="w-full" style="width: 100%">
                         <tr>
                             <td>Directory: </td>
                             <td><input class='paradigm-config-form-field' type="text" name="directory" id="directory_{$data.id}" value="{if (isset($data.directory))}{$data.directory}{/if}" /></td>
@@ -70,6 +71,21 @@
                             <td>Event Field: </td>
                             <td><input class='paradigm-config-form-field' type="text" name="field" id="field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" /></td>
                         </tr>
+                        <tr>
+                            <td>Event Field: </td>
+                            <td><input class='paradigm-config-form-field' type="text" name="field" id="field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" /></td>
+                        </tr>
+                        <tr><td colspan="2"><br /><hr /></td></tr>
+                        <tr><td colspan="2"><br />Select the events to trigger on below:</td></tr>
+                        <tr>
+                            <td colspan="2"><input type="checkbox" name="new_file_event" id="new_file_event_{$data.id}" {if (isset($data.new_file_event) && ($data.new_file_event=="Y" ))}checked{/if} value="Y" /> On New File </td>
+                        </tr>
+                        <tr> 
+                            <td colspan="2"><input type="checkbox" name="change_event" id="change_event_{$data.id}" {if (isset($data.change_event) && ($data.change_event=="Y" ))}checked{/if} value="Y" /> On Change </td>
+                        </tr>                        
+                        <tr>
+                            <td colspan="2"><input type="checkbox" name="delete_event" id="delete_event_{$data.id}" {if (isset($data.delete_event) && ($data.delete_event=="Y" ))}checked{/if} value="Y" /> On Delete </td>
+                        </tr>                        
                     </table><br /><br />
                     <fieldset style="padding: 10px"><legend>File Trigger Status</legend>
                         <input type="checkbox" name="active" id="active_{$data.id}" {if (isset($data.active) && ($data.active=="Y" ))}checked{/if} value="Y" />  - When this box is checked, the trigger is active
@@ -85,6 +101,7 @@
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
     Form.intercept($('#config-file-trigger-form-{$data.id}').get(),'{$data.id}','/workflow/file/update',"{$windowId}");
-    $('#workflow_id_{$data.id}').val(Workflows.activeDiagram())
+    alert(Workflows.activeDiagram());
+    $('#workflow_id_{$data.id}').val(Workflows.activeDiagram());
 </script>
 
