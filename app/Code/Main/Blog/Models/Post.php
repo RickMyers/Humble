@@ -76,6 +76,11 @@ class Post extends Model
         print_r($EVENT->load());
     }
     
+    /**
+     * Just a test process
+     * 
+     * @workflow use(PROCESS)
+     */
     public function doTest() {
         print('running test'."\n\n");
         $this->emit('listenerTest',['whoami'=>'a donut']);

@@ -40,5 +40,13 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             </entity>
         </action>
         
+        <!-- ############################################################### -->        
+        
+        <action name="orders" map="order_id/item/item_id">
+            <description>A test action</description>
+            <entity class="orders" namespace="blog" id="something">
+                <parameter name="id" optional="true" source="request" />
+            </entity> 
+        </action>
     </actions>
 </controller>

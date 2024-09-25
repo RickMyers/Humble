@@ -387,7 +387,7 @@ function restoreProject() {
     //if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('composer install');
     //} else  {
-        exec('php /usr/bin/composer.phar install');
+      //  exec('php /usr/bin/composer.phar install');
     //} 
     chdir('..');
     if (file_exists('humble.bat')) {

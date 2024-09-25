@@ -1,31 +1,3 @@
-/*
-SQLyog Community
-MySQL - 5.7.44 : Database - humble
-*********************************************************************
-*/
-
-/*!40101 SET NAMES utf8 */;
-
-/*!40101 SET SQL_MODE=''*/;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-/*Table structure for table `admin_menu_categories` */
-
-DROP TABLE IF EXISTS `admin_menu_categories`;
-
-CREATE TABLE `admin_menu_categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `category` char(32) DEFAULT NULL,
-  `seq` int(11) DEFAULT NULL,
-  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
-/*Data for the table `admin_menu_categories` */
-
 insert  into `admin_menu_categories`(`id`,`category`,`seq`,`modified`) values 
 (1,'Places',1,'2023-12-22 16:45:31'),
 (2,'Documentation',2,'2023-12-22 16:45:38'),
@@ -33,23 +5,6 @@ insert  into `admin_menu_categories`(`id`,`category`,`seq`,`modified`) values
 (4,'Tools',4,'2023-12-22 16:45:47'),
 (5,'Environment',6,'2023-12-22 16:57:21'),
 (6,'Users',5,'2023-12-22 17:36:05');
-
-/*Table structure for table `admin_menus` */
-
-DROP TABLE IF EXISTS `admin_menus`;
-
-CREATE TABLE `admin_menus` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `menu` char(48) DEFAULT NULL,
-  `parent_id` int(11) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
-  `function` char(255) DEFAULT NULL,
-  `href` char(96) DEFAULT NULL,
-  `target` char(32) DEFAULT NULL,
-  `seq` int(11) DEFAULT NULL,
-  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 
 /*Data for the table `admin_menus` */
 
@@ -103,9 +58,8 @@ insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`hre
 (47,'Tester',26,NULL,'Administration.smtp.settings.test()',NULL,NULL,NULL,'2024-02-15 20:55:53'),
 (48,'Manage...',NULL,6,'',NULL,NULL,3,'2024-07-14 17:44:14'),
 (49,'Users',48,NULL,'Administration.manage.users(\'General\')',NULL,NULL,1,'2024-07-14 17:45:15'),
-(50,'Administrators',48,NULL,'Administration.manage.users(\'Administrator\')',NULL,NULL,2,'2024-07-14 17:50:59');
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+(50,'Administrators',48,NULL,'Administration.manage.users(\'Administrators\')',NULL,NULL,2,'2024-07-14 17:50:59'),
+(51,'System Poll',NULL,5,NULL,NULL,NULL,4,'2024-07-18 17:21:00'),
+(52,'Off',51,NULL,'Heartbeat.stop()',NULL,NULL,1,'2024-07-18 17:21:19'),
+(53,'On',51,NULL,'Heartbeat.reset()',NULL,NULL,2,'2024-07-18 17:21:34'),
+(54,'Cache Health',NULL,5,'Administration.cache.home()',NULL,NULL,5,'2024-07-19 15:48:04');
