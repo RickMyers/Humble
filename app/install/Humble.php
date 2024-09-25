@@ -384,11 +384,11 @@ function restoreProject() {
     print("Files skipped: ".$collision_ctr."\n\n\n");
     print('Now running composer...'."\n");
     chdir('app');
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    //if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('composer install');
-    } else  {
+    //} else  {
         exec('php /usr/bin/composer.phar install');
-    } 
+    //} 
     chdir('..');
     if (file_exists('humble.bat')) {
         @unlink('humble.bat');
