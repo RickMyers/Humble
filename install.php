@@ -386,6 +386,7 @@ switch ($method) {
         $project         = \Environment::getProject();
         $percent         = 100/((count($modules)+1)*2);                         //2 steps per module, plus we will be creating a new module in this process
         postUpdate('Starting','Building Application Module',(++$step*$percent));
+        print('<pre>');
         foreach ($modules as $idx => $etc) {
             postUpdate('Installing','Installing '.$etc,(++$step*$percent));
             print('###########################################'."\n");
@@ -435,6 +436,7 @@ switch ($method) {
             print('<pre>'.$results."\n\n\n".'</pre>');
             die('Install did not complete, no user was created'."\n");
         } 
+        print('</pre>');
         session_start();
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");

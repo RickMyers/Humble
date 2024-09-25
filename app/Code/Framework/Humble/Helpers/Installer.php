@@ -205,9 +205,11 @@ SQL;
             insert into humble_modules
                 (`title`,namespace, module, package, installed, configuration, controller, `version`, description, templater, schema_install, schema_update, schema_layout, resources_js, resources_sql, models, prefix, mongodb, entities, controller_cache, views, views_cache, helpers, rpc_mapping, images, images_cache, enabled,required,weight)
             values
-                ('{$title}','{$this->namespace}','{$moduleName}','{$package}','{$installed}','{$configuration}','{$controller}','{$this->version}','{$description}','{$use}','{$s_install}','{$s_update}','{$s_layout}','{$resourcesJs}','{$resourcesSql}',{$models}','{$prefix}','{$this->mongodb}','{$entities}','{$controllerCache}','{$views}','{$viewsCache}','{$helpers}','{$RPC}','{$images}','{$imagesCache}','{$enabled}','{$required}','{$weight}')
+                ('{$title}','{$this->namespace}','{$moduleName}','{$package}','{$installed}','{$configuration}','{$controller}','{$this->version}','{$description}','{$use}','{$s_install}','{$s_update}','{$s_layout}','{$resourcesJs}','{$resourcesSql}','{$models}','{$prefix}','{$this->mongodb}','{$entities}','{$controllerCache}','{$views}','{$viewsCache}','{$helpers}','{$RPC}','{$images}','{$imagesCache}','{$enabled}','{$required}','{$weight}')
 SQL;
-        $this->_db->query($query);
+        if (!$this->_db->query($query)) {
+            print('Errored on'."\n\n".$query."\n\n");
+        };
         return $this;
     }
 
