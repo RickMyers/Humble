@@ -24,7 +24,7 @@
         $name       = $args['project_url'] ?? ($args['project_name'] ?? '' );
         $parts      = explode(':',$name);
         $port       = $parts[2] ?? '80';
-        $bind       = ($port===80) ? '' : ' *:'.$port;
+        $bind       = ((int)$port===80) ? '' : ' *:'.$port;
         $server     = $args['SERVER_NAME'] ?? ($parts[1] ?? 'localhost');
         $cont       = explode('/',$args['landing_page'])[2];
         $path       = $args['destination_folder']  ?? '';
