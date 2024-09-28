@@ -91,6 +91,7 @@
                 <installmodule>Admin/web/edits/installmodule.json</installmodule>
                 <login>Admin/web/edits/adminlogin.json</login>
                 <details>Admin/web/edits/userdetails.json</details>
+                <password>Admin/web/edits/adminpassword.json</password>
             </edits>
             <admin>
                 <css>

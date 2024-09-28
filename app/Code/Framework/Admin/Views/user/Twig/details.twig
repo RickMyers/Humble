@@ -1,3 +1,5 @@
+<div id="user_details">
+</div>
 <script>
     if (typeof details_app === 'undefined') {
         let details_app = Vue.createApp({
@@ -21,10 +23,34 @@
                         let text = await response.text();
                         alert(text);
                     }   
+                },
+                updateAvatar: async () => {
+                    if (Edits['user-details'].validate()) {
+                        const form = document.querySelector('#user_details_form');
+                        const response = await fetch('/admin/avatar/save', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        });
+                        let text = await response.text();
+                        alert(text);
+                    }                      
+                },
+                updatePassword: async () => {
+                    if (Edits['admin-password'].validate()) {
+                        const form = document.querySelector('#user_password_form');
+                        const response = await fetch('/admin/password/save', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        });
+                        let text = await response.text();
+                        console.log(text);
+                        alert((text=='') ? 'Error, Password Change Failed' : 'Password Changed');
+                    }                      
                 }
             }
         });
         details_app.mount('#user_details');
         new EasyEdits('/edits/admin/details','user-details');
+        new EasyEdits('/edits/admin/password','admin-password');
     }
 </script>

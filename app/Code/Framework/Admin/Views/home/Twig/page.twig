@@ -31,7 +31,6 @@
                     $('#minimized_windows_tray').html(html);
                 } 
             })());
-            
         </script>        
         <script type="text/javascript" src='/js/humble-jquery'></script>
         <script type='text/javascript' src='/js/common'></script>
@@ -286,12 +285,8 @@
                     </div>
                         <div id='user-identification'>
                             <div id='user-name' class="text-center text-xl">
-                                {{ user.first_name }} {{ user.last_name }}
+                                <a href="#" onclick="Administration.user.details();return false" title="click to review user details">{{ user.first_name }} {{ user.last_name }}</a>
                             </div>
-                                <div id='user-email'><i id='user_details_toggle' onclick="tools.toggle(this,document.getElementById('user_details'),'/admin/user/details');" class="glyphicons glyphicons-collapse" style="transform: rotate(90deg); font-size: 30px" ></i>{% if (user.email) %}{{ user.email }}{% else %}User Information{% endif %}</div>
-                                <div id="user_details" class="hidden">
-                                    User Details Here
-                                </div>
                         </div>       
                     <div class="text-left text-nowrap mt-4">
                         <img src="/images/humble/green_status.png" title="Cadence is Running" class="float-left hidden h-4 align-top mr-1"  id="cadence_running"

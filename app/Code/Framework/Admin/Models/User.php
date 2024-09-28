@@ -40,8 +40,8 @@ class User extends Model
      * 
      * @return boolean
      */
-    public function validatePassword() {
-        $password   = $this->getPassword();
+    public function validatePassword($password=false) {
+        $password   = ($password) ? $password : $this->getPassword();
         $user_id    = $this->getUserId();
         $user       = Humble::entity('admin/users')->setId($user_id)->load();
         return ($user['password'] === crypt($password,$user['salt']));        
@@ -58,10 +58,12 @@ class User extends Model
         if (($confirm) && ($confirm !== $password)) {
             return false;
         }
-        if ($user_id = $this->getUserId() ? $this->getUserId() : \Environment::session('admin_id')) {
-            $user    = Humble::entity('admin/users')->setId($user_id);          //getting specific ORM reference
-            $data    = $user->load();                                           //Gets user data, 1 use of ORM
-            return $user->setPassword(crypt($password,$data['salt']))->save();  //Changes the data, 2nd use of ORM
+        if ($this->validatePassword($this->getCurrentPassword())) {
+            if ($user_id = $this->getUserId() ? $this->getUserId() : \Environment::session('admin_id')) {
+                $user    = Humble::entity('admin/users')->setId($user_id);          //getting specific ORM reference
+                $data    = $user->load();                                           //Gets user data, 1 use of ORM
+                return $user->setPassword(crypt($password,$data['salt']))->save();  //Changes the data, 2nd use of ORM
+            }
         }
         return false;
     }

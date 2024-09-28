@@ -437,6 +437,15 @@ var Functions = (() => {
                             }).post();
                         }
                     },
+                    user: {
+                        win:    false,
+                        details: () => {
+                            let win = Administration.user.win = (Administration.user.win) ? Administration.user.win : Desktop.semaphore.checkout(true);
+                            (new EasyAjax('/admin/user/details')).then((response) => {
+                                win._static(true)._scroll(true)._open(response);
+                            }).get();
+                        }
+                    },
                     users:      {
                         list:   () => {
                             (new EasyAjax('/admin/users/list')).then((response) => {
