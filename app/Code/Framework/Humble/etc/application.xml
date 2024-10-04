@@ -3,16 +3,16 @@
     <name>The Humble Project</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">JSFQ-VSYF-QRKQ-CJQQ</serial_number>
     <version>
-        <framework>0.8.0.1.2</framework>
+        <framework>0.8.0.1.3</framework>
         <app>0.0.0.1</app>
     </version>
     <state comment="switch to current">DEVELOPMENT</state>
     <stages>
-        <QA          order="3"/>
+        <QA order="3"/>
         <DEVELOPMENT order="1"/>
-        <UAT         order="4"/>
-        <PRODUCTION  order="5"/>        
-        <TEST        order="2"/>
+        <UAT order="4"/>
+        <PRODUCTION order="5"/>        
+        <TEST order="2"/>
     </stages>
     <msa>
         <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application -->
@@ -64,4 +64,3 @@
         </authorization>
     </status>
 </application>
-  

@@ -394,11 +394,11 @@ PHP;
             $this->parameters[$source][] = $field;
         }
 
-        if ((string)$parameter['name'] == '*') {
+        if ((string)$parameter['name'] === '*') {
             print('
                                 $exc = [];
                                 if (\''.$source.'\' === \'$_REQUEST\') {
-                                    $exc = ["n"=>true,"m"=>true,"c"=>true];
+                                    $exc = ["humble_framework_namespace"=>true,"humble_framework_action"=>true,"humble_framework_controller"=>true];
                                 }
                                 foreach ('.$source.' as $name => $value) {
                                     if (isset($exc[$name])) {

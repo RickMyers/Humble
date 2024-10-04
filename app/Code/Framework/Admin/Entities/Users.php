@@ -117,6 +117,21 @@ class Users extends Entity
             $this->save();
         }
     }
+
+    /**
+     * 
+     * @return string
+     */
+    public function avatar() {
+        if ($file = $this->getUserPhoto()) {
+            @mkdir('../images/admin/avatars',0775,true);
+            $this->_polyglot(true)->setAvatarImage($avatar_image = '/images/admin/avatars/'.$file['name'])->save();
+            if (copy($file['path'],'..'.$avatar_image)) {
+                unlink($file['path']);
+            }
+        }
+        return $avatar_image;
+    }
     
     /**
      * Returns user/admin information from multiple tables
@@ -142,7 +157,7 @@ class Users extends Entity
                     on a.id = b.id
                  where a.id = '{$id}'
 SQL;
-                 $results = $this->query($query)->toArray();
+                 $results = $this->_polyglot(true)->query($query)->toArray();
         }
         return isset($results[0]) ? $results[0] : $results;
     }

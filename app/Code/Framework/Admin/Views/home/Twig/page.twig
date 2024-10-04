@@ -280,7 +280,7 @@
                     </div>
                     <div class='relative'>
                         <div class='rounded-full relative overflow-hidden h-64 border-2' id='user-portrait'>
-                            <img onload="tools.image.align(this)" src='/images/admin/placeholder-.png' class="m-auto w-full z-1" />
+                            <img id="avatar_image" onload="tools.image.align(this)" src='{% if (user.avatar_image)  %}{{ user.avatar_image }}{% else %}/images/admin/placeholder-.png{% endif %}' class="m-auto w-full z-1" />
                         </div>
                     </div>
                         <div id='user-identification'>

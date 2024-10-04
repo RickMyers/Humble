@@ -7,9 +7,14 @@
             data: () => {
                 return {
                     first_name: "{{ user.first_name }}",
+                    middle_name: "{{ user.middle_name }}",
                     last_name:  "{{ user.last_name }}",
                     email:      "{{ user.email }}",
-                    user_name:  "{{ user.user_name}}"
+                    user_name:  "{{ user.user_name }}",
+                    gender:     "{{ user.gender }}",
+                    date_of_birth: "{{ user.dob }}",
+                    suffix:     "{{ user.name_suffix }}",
+                    avatar_image: "{{ user.avatar_image }}"
                 }
             },
             methods: {
@@ -21,18 +26,21 @@
                             body: new FormData(form)
                         });
                         let text = await response.text();
-                        alert(text);
+                        console.log(text);
+                        alert((text=='') ? 'Error, User Detail Update Failed' : 'Details Changed');
                     }   
                 },
                 updateAvatar: async () => {
                     if (Edits['user-details'].validate()) {
-                        const form = document.querySelector('#user_details_form');
-                        const response = await fetch('/admin/avatar/save', {
+                        const form = document.querySelector('#user_avatar_form');
+                        const response = await fetch('/admin/user/avatar', {
                             method: 'POST',
                             body: new FormData(form)
                         });
                         let text = await response.text();
-                        alert(text);
+                        console.log(text);
+                        $E('admin_avatar').src=text;
+                        $E('avatar_image').src=text;
                     }                      
                 },
                 updatePassword: async () => {

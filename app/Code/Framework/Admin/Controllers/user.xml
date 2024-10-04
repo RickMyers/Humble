@@ -70,54 +70,37 @@
          
         <action name="details">
             <description>A form showing current user information and allowing for change of password</description>
-            <entity assign="user" namespace="admin" class="users" id="users" method="information">
+            <entity assign="user" namespace="admin" class="users" id="users" polyglot="true" method="information">
                 <parameter name="id" value="admin_id" source="session" required="true" />
             </entity>
         </action>
-        
+
+        <!-- ############################################################### -->
+         
+        <action name="avatar">
+            <description>Changes the users avatar</description>
+            <entity assign="user" namespace="admin" class="users" id="users" method="avatar" response='true'>
+                <parameter name="id" value="admin_id" source="session" required="true" />
+                <parameter name="user_photo" source="file" required="true" />
+            </entity>
+        </action>                
         <!-- ############################################################### -->
         
         <action name="save">
             <description>Will update an admin users information</description>
-            <model assign="password_valid" namespace="admin" class="user" id="admin_user" method="validatePassword">
-                <parameter name="password" value="current_password" source="post" format="password" required="true" />
-                <parameter name="user_id"  value="admin_id" source="session" required="true" />
-            </model>
-            <if assign="password_valid" eq="true"><comment>If you passed your valid password, you can continue on to change your data</comment>
-                <then>
-                    <if var="new_password" eq="TRUE">
-                        <then>
-                            <model assign="password_changed" use="admin_user" method="changePassword">
-                                <parameter name="user_id" value="admin_id" source="session" required="true" />
-                                <parameter name="password" value="new_password" source="post" format="password" required="true" />
-                                <parameter name="confirm_password" source="post" format="password" required="true" />
-                            </model>
-                            <if assign="password_changed" eq="FALSE">
-                                <then>
-                                    <output text="Password change attempt failed" />
-                                    <abort />
-                                </then>
-                                <else>
-                                    <output text="Password changed" />
-                                </else>
-                            </if>
-                        </then>
-                    </if>
-                    <entity namespace="admin" class="users" method="save">
-                        <parameter name="id"  value="admin_id" source="session" required="true" />
-                        <parameter name="email"     source="post" default="" />
-                        <parameter name="user_name" source="post" default="" />
-                    </entity> 
-                    <entity namespace="admin" class="user/identification" method="save">
-                        <parameter name="id"  value="admin_id" source="session" required="true" />
-                        <parameter name="first_name" source="post" default="" />
-                        <parameter name="last_name"  source="post" default="" />
-                    </entity>                                          
-                </then>
-                <else>
-                    <output text="Current Password Is Incorrect" />
-                </else>
-            </if>
+            <entity namespace="admin" class="user/identification" method="save" response="true">
+                <parameter name="id" value="admin_id" source="session" required="true"/>
+                <parameter name="date_of_birth" source="post" format="date" default="" />
+                <parameter name="name_suffix" source="post" default="" />
+                <parameter name="gender" source="post" default="" />
+                <parameter name="first_name" source="post" default="" />
+                <parameter name="last_name" source="post" default="" />
+                <parameter name="middle_name" source="post" default="" />
+            </entity>
+            <entity namespace="admin" class="users" method="save">
+                <parameter name="id" value="uid" source="session" default="" />
+                <parameter name="email" source="post" default="" />
+            </entity>
         </action>
         
         <!-- ############################################################### -->

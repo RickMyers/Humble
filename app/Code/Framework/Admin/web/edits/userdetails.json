@@ -16,8 +16,8 @@
 			"id": 			"details_last_name",
 			"longname":		"Last Name",
 			"type":			"text",
-			"required":		false,
-			"force":		false,
+			"required":		true,
+			"force":		true,
                         "style":                ""
 		},
 		{
@@ -25,10 +25,47 @@
 			"id": 			"details_first_name",
 			"longname":		"First Name",
 			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                ""
+		},
+		{
+			"active":		true,
+			"id": 			"details_middle_name",
+			"longname":		"Middle Name",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},                    
+		{
+			"active":		true,
+			"id": 			"details_name_suffix",
+			"longname":		"Name Suffix",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},                                        
+		{
+			"active":		true,
+			"id": 			"details_gender",
+			"longname":		"Gender",
+			"type":			"select",
 			"required":		false,
 			"force":		false,
                         "style":                ""
 		},
+		{
+			"active":		true,
+			"id": 			"details_date_of_birth",
+			"longname":		"Date Of Birth",
+			"type":			"text",
+                        "mask":                 "#^/#^/####",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},                       
 		{
 			"active":		true,
 			"id": 			"details_email",
