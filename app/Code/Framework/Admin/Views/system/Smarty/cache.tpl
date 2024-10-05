@@ -1,4 +1,6 @@
 {$system->cacheCheck()|json_encode}
+{assign var=status value=$system->cacheCheck()}
+
 {*
     "controllers":  "controller-<namspace/name>",
     "modules":      "module-<namespace>",

@@ -1633,8 +1633,8 @@ SQL;
                     $module     = $this->getInfo();
                     $identifier = $module['namespace'].'/'.$controller;
                 }
-                $this->stampIt($identifier,date("Y-m-d, H:i:s", filemtime($source)));
-                \Humble::cache('controller-'.$identifier,null);                  //force cache to reload
+                $this->stampIt($identifier,$compiled = date("Y-m-d, H:i:s", filemtime($source)));
+                \Humble::cache('controller-'.$identifier,['compiled' => $compiled]);
             } else {
                 $message='';
                 foreach ($this->errors as $idx => $error) {

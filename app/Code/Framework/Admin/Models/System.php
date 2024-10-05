@@ -266,58 +266,87 @@ class System extends Model
         }
     }
     
-    /*
-        "keys": "entity_keys-<namespace/entity>",
-        "cols": "entity_columns-<namespace/entity>"
+    /**
+     * Goes through the cache and checks to see if everything that should be cached is cached, and generates a report of actions
+     * 
+     * @return array
      */
     public function cacheCheck() {
         $stats = [
             "modules" => [
                 "score" => 0,
-                "count" => 0
+                "count" => 0,
+                "grade" => 0,
+                "errors" => []
             ],
             "controllers" => [
                 "score" => 0,
-                "count" => 0
+                "count" => 0,
+                "grade" => 0,
+                "errors" => []
             ],
             "entities" => [
                 "keys" => [
                     "score" => 0,
-                    "count" => 0
+                    "count" => 0,
+                    "grade" => 0,
+                    "errors" => []
                 ],
                 "cols" => [
                     "score" => 0,
-                    "count" => 0
+                    "count" => 0,
+                    "grade" => 0,
+                    "errors" => []
                 ]
             ],
             "metadata" => [
                 "score" => 0,
-                "count" => 0
+                "count" => 0,
+                "grade" => 0,
+                "errors" => []
             ],
         ];
         foreach (Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             $stats["modules"]['count']++;
-            $stats["modules"]['score'] += Humble::cache('module-'.$module['namespace']) ? 1 : 0;
+            $stats["modules"]['score'] += ($result = Humble::cache('module-'.$module['namespace'])) ? 1 : 0;
+            if (!$result) {
+                $stats['modules']['errors'][] = $key;
+            }            
             if ($cdh = dir('Code/'.$module['package'].'/'.$module['controller'])) {
                 while ($entry = $cdh->read()) {
-                    if (($entry == '.') || ($entry == '..')) {
+                    if (($entry == '.') || ($entry == '..') || ($entry === 'Cache')) {
                         continue;
                     }
                     $stats['controllers']['count']++;
                     $key = 'controller-'.$module['namespace'].'/'.str_replace('.xml','',$entry);
-                    $stats["controllers"]['score'] += Humble::cache($key) ? 1 : 0;                    
+                    $stats["controllers"]['score'] += ($result = Humble::cache($key)) ? 1 : 0;
+                    if (!$result) {
+                        $stats['controllers']['errors'][] = $key;
+                    }
                 }
                 $config = \Humble::config($module['namespace']);
                 foreach ($config->orm->entities as $entities) {
                     foreach ($entities as $entity => $options) {
                         $stats['entities']['keys']['count']++;
                         $stats['entities']['cols']['count']++;
-                        $stats["entities"]['keys']['score'] += Humble::cache('entity_keys-'.$module['namespace'].'/'.$entity) ? 1 : 0;
-                        $stats["entities"]['cols']['score'] += Humble::cache('entity_columns-'.$module['namespace'].'/'.$entity) ? 1 : 0;
+                        $key = 'entity_keys-'.$module['namespace'].'/'.$entity;
+                        $stats["entities"]['keys']['score'] += ($result = Humble::cache($key)) ? 1 : 0;
+                        if (!$result) {
+                            $stats['entities']['keys']['errors'][] = $key;
+                        }
+                        $key = 'entity_columns-'.$module['namespace'].'/'.$entity;
+                        $stats["entities"]['cols']['score'] += ($result = Humble::cache($key)) ? 1 : 0;
+                        if (!$result) {
+                            $stats['entities']['cols']['errors'][] = $key;
+                        }
                     }
                 }
             }
         }
+        $stats['modules']['grade'] = round(($stats['modules']['score']/$stats['modules']['count'])*100);
+        $stats['controllers']['grade'] = round(($stats['controllers']['score']/$stats['controllers']['count'])*100);
+        $stats['entities']['keys']['grade'] = round(($stats['entities']['keys']['score']/$stats['entities']['keys']['count'])*100);
+        $stats['entities']['cols']['grade'] = round(($stats['entities']['cols']['score']/$stats['entities']['cols']['count'])*100);
         return $stats;    
     }
     

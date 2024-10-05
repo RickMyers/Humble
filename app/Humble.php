@@ -607,14 +607,14 @@ SQL;
         public static function controller($identifier=false) {
             $data = [];
             if ($identifier) {
-                if (isset(self::$controllers[$identifier])) {
+                if (isset(self::$controllers[$identifier]) && (self::$controllers[$identifier])) {
                     return self::$controllers[$identifier];
                 }
                 if (!$data  = self::cache('controller-'.$identifier)) {
                     $parts      = explode('/',$identifier);
                     $data       = self::entity('humble/controllers')->setNamespace($parts[0])->setController($parts[1])->fetch(true)->toArray();
                     if (count($data) === 1) {
-                        self::cache('controller-'.$identifier,$data = self::$controllers[$identifier] = $data[0]);
+                        self::cache('controller-'.$identifier,['compiled'=>$data[0]['compiled']]);
                     }
                 }
             }

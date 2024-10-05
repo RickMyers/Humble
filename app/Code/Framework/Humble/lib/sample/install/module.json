@@ -133,6 +133,10 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Controllers/&&CONTROLLER&&.xml"
         },
         {
+            "source": "/lib/sample/install/Schema/Install/query.sql",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Schema/Install/Roles.sql"
+        },
+        {
             "source": "/lib/sample/install/Schema/Update/query.sql",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Schema/Update/Users.sql"
         },

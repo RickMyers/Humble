@@ -79,6 +79,8 @@
                 <users/>
                 <user_identification polyglot="Y"/>
                 <entity_keys/>
+                <roles/>
+                <user_roles/>
             </entities>
         </orm>
         <events>
