@@ -278,7 +278,7 @@ var Functions = (() => {
                         home: () => {
                                 let win = Administration.cache.win = Administration.cache.win ? Administration.cache.win : Desktop.semaphore.checkout(true);
                                 win._static(true)._scroll(true)._title('Cache Management');
-                                (new EasyAjax('/admin/actions/cachehome')).then((response) => {
+                                (new EasyAjax('/admin/system/cache')).then((response) => {
                                     win._open(response);
                                 }).get();
                         }

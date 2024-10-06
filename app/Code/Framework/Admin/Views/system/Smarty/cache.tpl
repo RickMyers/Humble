@@ -1,12 +1,31 @@
-{$system->cacheCheck()|json_encode}
 {assign var=status value=$system->cacheCheck()}
 
-{*
-    "controllers":  "controller-<namspace/name>",
-    "modules":      "module-<namespace>",
-    "entities": {
-        "keys": "entity_keys-<namespace/entity>",
-        "cols": "entity_columns-<namespace/entity>"
-    },
-    "metadata":     ""
-*}
+<div class="w-full h-full border-2 flex align-center bg-gray-300">
+    <canvas id="cache_score_results" class="w-full h-full"></canvas>
+</div>
+<script>
+    (function () {
+
+        const ctx = document.getElementById('cache_score_results');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Modules', 'Controllers', 'Keys', 'Constants', 'Metadata'],
+            datasets: [{
+              label: 'Cache Scores [100% is only passing grade]',
+              data: [{$status.modules.grade}, {$status.controllers.grade}, {$status.entities.keys.grade}, {$status.entities.cols.grade}, 60],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });            
+
+    })();
+</script>
+
