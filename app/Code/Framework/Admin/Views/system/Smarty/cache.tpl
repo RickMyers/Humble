@@ -10,7 +10,7 @@
         new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ['Modules', 'Controllers', 'Keys', 'Constants', 'Metadata'],
+            labels: ['Modules', 'Controllers', 'Keys', 'Columns', 'Metadata'],
             datasets: [{
               label: 'Cache Scores [100% is only passing grade]',
               data: [{$status.modules.grade}, {$status.controllers.grade}, {$status.entities.keys.grade}, {$status.entities.cols.grade}, 60],

@@ -8,8 +8,16 @@
     </tr>
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
-<div class='humble-topic-header'>Section Header</div>
+<div class='humble-topic-header'>Common-Sense Agile, With A Twist</div>
 
+<object data="https://humbleprogramming.com/Presentations/scrum.pdf" type="application/pdf" width="100%" height="500px">
+    <embed src="https://humbleprogramming.com/Presentations/scrum.pdf" type="application/pdf" width="100%" height="100%">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://humbleprogramming.com/Presentations/scrum.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
+
+
+<br /><br /><a href='/Presentations/scrum.pdf' target='_BLANK' style='border: 0px; margin-left: auto; margin-right: auto; position: relative'>Right-Click to download the PDF...</a>
 
 
 </div>

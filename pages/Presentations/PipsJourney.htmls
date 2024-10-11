@@ -13,10 +13,14 @@
 Becoming a better programmer, just like becoming a better person, is a journey.  No two journeys are the same, but there's always the chance to add to our journey and learn something from an other person's journey.<br /><br />
 Click on the image below to read about Pip's Journey, and maybe there's a nugget of wisdom that you can take away from his journey...<br /><br /><br />
 
-<center>
-<a href='/Presentations/PipsTale.pdf' target='_BLANK' style='border: 0px; margin-left: auto; margin-right: auto; position: relative'>
-<img src="/web/images/Pip.png" style=" position: relative" title='Howdy!'/>
-</a>
-</center>
+<object data="https://humbleprogramming.com/Presentations/PipsTale.pdf" type="application/pdf" width="100%" height="500px">
+    <embed src="https://humbleprogramming.com/Presentations/PipsTale.pdf" type="application/pdf" width="100%" height="100%">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://humbleprogramming.com/Presentations/PipsTale.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
+
+
+<a href='/Presentations/PipsTale.pdf' target='_BLANK' style='border: 0px; margin-left: auto; margin-right: auto; position: relative'>Right-Click to download the PDF</a>
+
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->
