@@ -341,10 +341,16 @@ class System extends Model
                         }
                     }
                 }
+                
+                $stats['metadata']['score'] += (Humble::cache('public_routes')) ? 1 : 0; $stats['metadata']['count']++;
+                $stats['metadata']['score'] += (Humble::cache('application'))   ? 1 : 0; $stats['metadata']['count']++;
+                $stats['metadata']['score'] += (Humble::cache('project'))       ? 1 : 0; $stats['metadata']['count']++;
+                $stats['metadata']['score'] += (Humble::cache('api_policy'))    ? 1 : 0; $stats['metadata']['count']++;
             }
         }
         $stats['modules']['grade'] = round(($stats['modules']['score']/$stats['modules']['count'])*100);
         $stats['controllers']['grade'] = round(($stats['controllers']['score']/$stats['controllers']['count'])*100);
+        $stats['metadata']['grade'] = round(($stats['metadata']['score']/$stats['metadata']['count'])*100);
         $stats['entities']['keys']['grade'] = round(($stats['entities']['keys']['score']/$stats['entities']['keys']['count'])*100);
         $stats['entities']['cols']['grade'] = round(($stats['entities']['cols']['score']/$stats['entities']['cols']['count'])*100);
         return $stats;    

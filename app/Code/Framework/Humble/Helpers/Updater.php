@@ -229,6 +229,14 @@ class Updater extends Installer
         $module->save();
     }
     
+    protected function cacheMetaData($project=false) {
+        $project = ($project) ? $project : \Environment::getProject();
+        Humble::cache('public_routes',json_encode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json')));
+        Humble::cache('application',\Environment::getApplication());
+        Humble::cache('api_policy',json_encode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json')));
+        Humble::cache('project',json_encode(file_get_contents('../Humble.project')));
+    }
+    
     /**
      *
      * @param type $source
@@ -318,7 +326,7 @@ class Updater extends Installer
                     }
                     $this->output("SUMMARY","============================================================================");
                     //must log updated date
-                    $this->updateServiceDirectory($namespace);                    
+                    $this->updateServiceDirectory($namespace);  
                 }
             } else {
                 foreach ($helper->getErrors() as $error) {
@@ -330,7 +338,7 @@ class Updater extends Installer
             $this->output('','');
          //   \Log::console('Could not find source file for refresh: '.$source);
         }
-        \Environment::recacheApplication();
+        $this->cacheMetaData();
         return $xml;
     }
 }

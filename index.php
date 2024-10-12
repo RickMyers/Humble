@@ -125,7 +125,7 @@ if (!$bypass && !$logged_in) {
     //    if (!$allowed = Humble::cache('humble_framework_allowed_routes')) {
     //        Humble::cache($allowed = json_decode(file_get_contents('etc/public_routes.json')));
     //    }
-    $allowed = json_decode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json'));
+    $allowed = \Environment::routes($project);
     if (isset($allowed->routes->{'/'.$namespace.'/'.$controller.'/'.$action}) || isset($allowed->namespaces->$namespace) || isset($allowed->controllers->{'/'.$namespace.'/'.$controller})) {
         $bypass = true;
         //NOP, you are ok to hit that resource
@@ -192,7 +192,7 @@ if (!$request_handled) {
     if (!$is_production) {
         if (file_exists($include)) {
             $info        = \Humble::controller($namespace.'/'.$controller);
-            $recompile   = ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
+            $recompile   = (!$info) || ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
         } else if (file_exists($source)) {
             $recompile   = true;                                                //The controller source code exists but it is not currently compiled so flag it for compiling
         } else {

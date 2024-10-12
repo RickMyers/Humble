@@ -49,6 +49,18 @@ class Environment {
     }
 
     /**
+     * Try to get the public facing route list from cache, but fall back to reading from file if not found in cache
+     * 
+     * @param type $project
+     * @return object
+     */
+    public static function routes($project=false) {
+        $project = ($project) ? $project : self::getProject();                  //did you pass project information or do I have to load it myself
+        $routes  = \Humble::cache('public_routes');                              //are the routes cached?
+        return ($routes) ? $routes : json_decode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json'));
+    }
+    
+    /**
      * Returns the location of the modules root, use this instead of hardcoding module paths
      *
      * @param string $namespace
@@ -570,7 +582,7 @@ class Environment {
      * @return object
      */
     public static function getProject($node=false) {
-        $project = (self::$project) ? self::$project : (self::$project =  (file_exists('../Humble.project') ? json_decode(file_get_contents('../Humble.project')) : false));
+        $project = (self::$project) ? self::$project : (self::$project = (file_exists('../Humble.project') ? json_decode(file_get_contents('../Humble.project')) : false));
         if ($node) {
             $project = (isset(self::$project->$node) ? self::$project->$node : null);
         }
