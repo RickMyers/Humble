@@ -22,7 +22,10 @@ namespace Exceptions;
  */
 class UnknownWebServiceException extends \Exception {
 
+    private $simple = 'Webservice does not exist';
+    
     public function __construct($message, $code=0, Exception $previous = null) {
+        $message = \Environment::isProduction() ? $this->simple : $message;
         parent::__construct($message, $code, $previous);
     }
 

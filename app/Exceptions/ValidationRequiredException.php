@@ -22,7 +22,10 @@ namespace Exceptions;
  */
 class ValidationRequiredException extends \Exception {
 
+    private $simple = 'A required field is missing';
+    
     public function __construct($message, $code=0, Exception $previous = null) {
+        $message = \Environment::isProduction() ? $this->simple : $message;
         parent::__construct($message, $code, $previous);
     }
 

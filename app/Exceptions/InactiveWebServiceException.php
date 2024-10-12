@@ -22,7 +22,10 @@ namespace Exceptions;
  */
 class InactiveWebServiceException extends \Exception {
 
+    private $simple = 'Requested webservice is inactive';
+    
     public function __construct($message, $code=0, Exception $previous = null) {
+        $message = \Environment::isProduction() ? $this->simple : $message;
         parent::__construct($message, $code, $previous);
     }
 

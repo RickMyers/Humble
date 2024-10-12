@@ -22,7 +22,10 @@ namespace Exceptions;
  */
 class MissingControllerXMLException extends \Exception {
 
+    private $simple = 'Source file for a controller is missing';
+    
     public function __construct($message, $code=0, Exception $previous = null) {
+        $message = \Environment::isProduction() ? $this->simple : $message;
         parent::__construct($message, $code, $previous);
     }
 

@@ -22,9 +22,13 @@ namespace Exceptions;
  */
 class NoTriggerEventException extends \Exception {
 
+    private $simple = 'Workflow trigger error';
+    
     public function __construct($message, $code=0, Exception $previous = null) {
+        $message = \Environment::isProduction() ? $this->simple : $message;
         parent::__construct($message, $code, $previous);
     }
+
 
     public function getClassName() {
         return __CLASS__;

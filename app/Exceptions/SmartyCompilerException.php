@@ -22,7 +22,10 @@ namespace Exceptions;
  */
 class SmartyCompilerException extends \Exception {
 
+    private $simple = 'Template syntax error encountered';
+    
     public function __construct($message, $code=0, Exception $previous = null) {
+        $message = \Environment::isProduction() ? $this->simple : $message;
         parent::__construct($message, $code, $previous);
     }
 

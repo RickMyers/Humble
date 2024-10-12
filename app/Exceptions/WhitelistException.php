@@ -22,7 +22,10 @@ namespace Exceptions;
  */
 class WhitelistException extends \Exception {
 
+    private $simple = 'A white list violation has occurred';
+    
     public function __construct($message, $code=0, Exception $previous = null) {
+        $message = \Environment::isProduction() ? $this->simple : $message;
         parent::__construct($message, $code, $previous);
     }
 
