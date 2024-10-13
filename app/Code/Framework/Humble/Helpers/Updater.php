@@ -9,7 +9,7 @@ use Humble;
  *  o Clears setup and reinstalls structure
  *  o Checks for any SQL Updates, runs those
  *  o Copies any images that aren't already deployed
- *
+ *  o Caches stuff
  */
 class Updater extends Installer
 {
@@ -140,7 +140,8 @@ class Updater extends Installer
     }
     
     /**
-     *
+     * Copies the modules images over to the directory from where they get served
+     * 
      * @param type $prefix
      * @param type $structure
      */
@@ -191,6 +192,13 @@ class Updater extends Installer
         $this->output('SCHEMA','Finished Processing schema updates');
     }
     
+    /**
+     * Updates the modules directory structure in the database using the configuration file
+     * 
+     * @param type $namespace
+     * @param type $structure
+     * @param type $module_data
+     */
     public function updateStructure($namespace,$structure,$module_data) {
         $module = Humble::entity('humble/modules')->setNamespace($namespace);
         $module->load();
@@ -229,6 +237,11 @@ class Updater extends Installer
         $module->save();
     }
     
+    /**
+     * Will deliberately cache/recache the applications meta-data files
+     * 
+     * @param array $project (optional)
+     */
     protected function cacheMetaData($project=false) {
         $project = ($project) ? $project : \Environment::getProject();
         Humble::cache('public_routes',json_encode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json')));
@@ -238,7 +251,8 @@ class Updater extends Installer
     }
     
     /**
-     *
+     * Executes a modules update strategy
+     * 
      * @param type $source
      * @return \SimpleXMLElement
      */

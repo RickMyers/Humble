@@ -6,7 +6,7 @@
  / /___/ /_/ / / / /_/ / /_/ / /__/ ,< (__  ) 
  \____/\__,_/_/_/_.___/\__,_/\___/_/|_/____/  
                                              
- Place your custom callback functions here.
+ Place your custom Cadence callback functions here.
   
  see https://humbleprogramming.com/pages/Callbacks.htmls for more.
  */

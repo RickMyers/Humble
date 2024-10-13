@@ -264,9 +264,9 @@ if (!$request_handled) {
     }
 
     //###########################################################################
-    if ($authorizationEngineEnabled && !$bypass) {          
-       require_once "AuthorizationEngine.php";                                  //Call out to the authorization engine
-    }
+    if (file_exists('Code/'.$project->package.'/'.$project->module.'/includes/includes/AuthorizationEngine.php')) {
+        include 'Code/'.$project->package.'/'.$project->module.'/includes/AuthorizationEngine.php';
+    } 
 
     //###########################################################################
     if (file_exists('Code/'.$project->package.'/'.$project->module.'/includes/Constants.php')) {

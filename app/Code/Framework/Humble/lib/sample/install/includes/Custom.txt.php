@@ -12,8 +12,4 @@ if (!isset($_SESSION['BROWSER_TABS'])) {
 }
 
 //Overrides---------------------------------------------------------------------
-$bypass                     = false;                                            //If you set to true will skip the log in check and public_routes.json lookup.  BE VERY CAREFUL ABOUT SETTING TO TRUE!
-$authorizationEngineEnabled = false;                                            //Are we using service level authorizations?  You will need to provide the logic for how that is done
 $use_connection_pool        = true;                                             //Set to true to speed up database interaction 
-$use_redis                  = false;                                            //Do you want to use REDIS instead of Memcached?   (presently not implemented)
-$use_pgsql                  = false;                                            //Do you want to user PostgreSQL instead of MySQL? (presently not implemented)
