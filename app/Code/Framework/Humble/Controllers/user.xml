@@ -28,7 +28,7 @@
             </model>
             <switch id='user' method='login'>
                 <case value='TRUE'>
-                    <model response="true" namespace='humble' class='user' method='outputSessionData'>
+                    <model response="true" class='user' method='outputSessionData'>
 
                     </model>
                 </case>

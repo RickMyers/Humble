@@ -26,6 +26,16 @@ var Functions = (() => {
                             }
                         }
                     },
+                    code: {
+                        explore: (namespace, type, resource) => {
+                            let win = Desktop.semaphore.checkout(true);
+                            win._title('Code Explorer')._scroll(true)._open();
+                            (new EasyAjax('/admin/code/explorer')).add('namespace',namespace).add('type',type).add('resource',resource).then((response) => {
+                                win.set(response);
+                                Colorizer.scan(win.content);
+                            }).post();
+                        }
+                    },
                     password: {
                         change: {
                             open: () => {

@@ -26,28 +26,35 @@
         <div class="services-field">{if (!isset($service.output))}text/html{else}{$service.output}{/if} </div>
     </div>
     <div style='box-sizing: border-box; display: inline-block; overflow: hidden; width: 9%; border-right: 1px solid #ccc; text-align: center'>
-        <div class="services-field">{if (!isset($service.mapped))}Nooo{else}{$service.mapped}{/if} </div>
+        <div class="services-field">{if (!isset($service.mapped))}No{else}{$service.mapped}{/if} </div>
     </div>    
     <div style="clear: both;"></div>
     <div id="service-{$service.id}-parameters" style="display: none;">
+        <div class="bg-black-300 text-white">
+            Resources Used
+        </div>
+        <div class="pl-10">
         {if (count($service.models))}
-            <div style="background-color: #333; color: ghostwhite; padding: 2px 8px; font-family: sans-serif; font-size: .95em">Models</div>
             {foreach from=$service.models key=model item=stuff}
-                <div style="">{$model}</div>
+                <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="Administration.code.explore('{$service.namespace}','Model','{$model}')" title="Model"><img src="/images/admin/logical_model.png" class="w-[60] m-auto"><div>{$model}</div></div>
             {/foreach}            
         {/if}
         {if (count($service.entities))}
-            <div style="background-color: #333; color: ghostwhite; padding: 2px 8px; font-family: sans-serif; font-size: .95em">Entities</div>
             {foreach from=$service.entities key=entity item=stuff}
-                <div style="">{$entity}</div>
+            <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="Administration.code.explore('{$service.namespace}','Entity','{$model}')" title="Entity"><img src="/images/admin/entity.png" class="w-[60] m-auto"><div>{$entity}</div></div>
             {/foreach}
         {/if}
         {if (count($service.helpers))}
-            <div style="background-color: #333; color: ghostwhite; padding: 2px 8px; font-family: sans-serif; font-size: .95em">Helpers</div>
             {foreach from=$service.helpers key=helper item=stuff}
-                <div style="">{$helper}</div>
+        <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="Administration.code.explore('{$service.namespace}','Helper','{$model}')" title="Helper"><img src="/images/admin/helper.png" class="w-[60] m-auto"><div>{$helper}</div></div>                
             {/foreach}            
         {/if}        
+        {*if (count($service.access))}
+            {foreach from=$service.access key=access item=stuff}
+                <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="alert('{$service.namespace}')"><img src="/images/admin/access_control.png" class="w-[60] m-auto"><br />{$access}</div>                
+            {/foreach}            
+        {/if*}          
+        </div>
         <div style="background-color: #333; color: ghostwhite; padding: 2px 8px; font-family: sans-serif; font-size: .95em">Parameters</div>
         <table style="width: 100%" cellborder="0" cellspacing="0">
             <tr>

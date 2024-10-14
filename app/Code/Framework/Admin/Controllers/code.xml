@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+
+Actions around viewing or working with code
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="code" use="Twig" author="Rick Myers" email="rickmyers1969@gmail.com">
+    <actions blocking="off" response="true">
+        <action name="explorer" passalong="namespace,type,resource">
+            <description>Sets up the code explorer</description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="fetch">
+            <description>Retrieves the code for the code explorer</description>
+            <model namespace="admin" class="code" id="code" method="fetchSourceCode">
+                <parameter name="namespace" source="request" required="true" />
+                <parameter name="type"      source="request" required="true" />
+                <parameter name="resource"  source="request" required="true" />
+            </model>
+        </action>
+    </actions>
+</controller>

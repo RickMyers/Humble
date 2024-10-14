@@ -66,20 +66,39 @@ class Updater extends Installer
                     break;
                 case 'model'        :
                     $attr = $subelements->attributes();
-                    $elements['models'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
+                    if (!isset($attr->namespace)) {
+                        $attr->namespace = \Environment::namespace();
+                    }
+                    $elements['models'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
                     break;
                 case 'helper'       :
                     $attr = $subelements->attributes();
-                    $elements['helpers'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
+                    if (!isset($attr->namespace)) {
+                        $attr->namespace = \Environment::namespace();
+                    }
+                    $elements['helpers'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
                     break;
                 case 'entity'       :
                     $attr = $subelements->attributes();
-                    $elements['entities'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
+                    if (!isset($attr->namespace)) {
+                        $attr->namespace = \Environment::namespace();
+                    }
+                    $elements['entities'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
                     break;
                 case 'mongo'        : 
                     $attr = $subelements->attributes();
-                    $elements['collections'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
+                    if (!isset($attr->namespace)) {
+                        $attr->namespace = \Environment::namespace();
+                    }
+                    $elements['collections'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
                     break;
+                case 'access'        : 
+                    $attr = $subelements->attributes();
+                    if (!isset($attr->namespace)) {
+                        $attr->namespace = \Environment::namespace();
+                    }
+                    $elements['access'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
+                    break;                
                 case 'parameter'    :
                     $options = $this->extractParameterOptions($attr = $subelements->attributes());
                     $elements['parameters'][(string)$attr->name] = $options;
@@ -113,7 +132,7 @@ class Updater extends Installer
                         }
                         foreach (simplexml_load_file($location.'/'.$controller) as $actions) {
                             foreach ($actions as $action) {
-                                $attrs      = ['description'=>[],'parameters'=>[],'helpers'=>[],'models'=>[],'entities'=>[],'collections'=>[],'header'=>[]];
+                                $attrs      = ['description'=>[],'parameters'=>[],'helpers'=>[],'models'=>[],'entities'=>[],'collections'=>[],'header'=>[],'access'=>[]];
                                 $attr       = $action->attributes();
                                 $attrs['header']['passalong']  = (isset($attr->passalong) ? (string)$attr->passalong : "");
                                 $attrs['header']['blocking']   = (isset($attr->blocking)  ? (string)$attr->blocking  : "YES");
