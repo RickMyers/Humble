@@ -1,0 +1,12 @@
+<div id='ace_editor_{{ window_id }}' class='w-full h-full border-2 border-black'>
+{{ code.fetchSourceCode() }}
+</div>
+{% set id = code._uniqueId() %}
+<script>
+    (() => {
+        var editor_{{ id }} = ace.edit("ace_editor_{{ window_id }}");
+        editor_{{ id }}.setTheme("ace/theme/monokai");
+        editor_{{ id }}.session.setMode("ace/mode/php");        
+    })();
+</script>
+

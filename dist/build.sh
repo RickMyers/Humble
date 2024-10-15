@@ -10,20 +10,23 @@
 case $1 in
   'open')
         if [ -d "/var/www/$2" ]; then
-                chown -R codeship:www-data /var/www/$2
                 chmod -R 0775 /var/www/$2
+		chown -R codeship:www-data /var/www/$2
+
         fi
         if [ -d "/var/www/$2_old" ]; then
-                chown -R codeship:www-data /var/www/$2_old
                 chmod -R 0775 /var/www/$2_old
+		chown -R codeship:www-data /var/www/$2_old
         fi
-        if [ -d "/var/www/Docs/$2" ]; then
-                chown -R codeship:www-data /var/www/Docs/$2
-                chmod -R 0775 /var/www/Docs/$2
-        fi
+#        if [ -d "/var/www/Docs/$2" ]; then
+#                chown -R codeship:www-data /var/www/Docs/$2
+#                chmod -R 0775 /var/www/Docs/$2
+#        fi
         echo 'open';;
   'create')
         mkdir /var/www/$2_$3
+	chown -R codeship:www-data /var/www/
+	chmod -R 0775 /var/www/
         echo 'create';;
   'backup')
         echo $PWD
@@ -57,7 +60,8 @@ case $1 in
   'remove')
         rm -R /var/www/$2_old
         echo 'remove';;
- 'retain')
+  'retain')
+#	rm -R /var/www/$2_old
         mv /var/www/$2 /var/www/$2_old
         echo 'retain';;
   'rename')
@@ -67,8 +71,6 @@ case $1 in
         echo 'rename';;
   'composer')
         cd /var/www/$2/app
-        echo 'composer update'
-        composer update
         echo 'composer install'
         composer install
         echo 'composer';;
@@ -101,11 +103,18 @@ case $1 in
         do
                 npm install $w --save-dev
         done
+        systemctl restart argushub
         echo 'npm';;
   'increment')
         cd /var/www/$2/app
         php CLI.php --increment
         echo 'package';;
+  'integrate')
+	ls -l /var/www
+        cd /var/www/$2
+	wget --no-check-certificate --no-cache --no-cookies  https://humbleprogramming.com/app/install/Humble.php
+        php Humble.php --restore
+	echo 'integrate';;
   'revert')
         cd /var/www
         mv $2 $2_revert
@@ -114,11 +123,10 @@ case $1 in
   'rollback')
         cd /var/www
         echo 'rollback';;
-  'integrate')
-        cd /var/www/$2
-        wget https://humbleprogramming.com/app/install/Humble.php
-        php Humble.php --restore;;
-
+  'scrub')
+       cd /var/www/Humble/app/install
+       dos2unix humble.sh
+       echo 'scrub';;
   *)
         echo "i dunno how to do that $1";;
 esac
