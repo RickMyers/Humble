@@ -154,6 +154,19 @@
 
     <!--#########################################################################################
         #                                                                                       #
+        #         DELETES THE _old PROJECT DIRECTORY IF IT EXISTS                               #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="scrub" description="Scrubs the linux driver of windows EOL characters">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="./build.sh scrub ${alias} ${timestamp}" />
+        </target>
+        
+    <!--#########################################################################################
+        #                                                                                       #
         #         RENAMES THE EXISTING PROJECT DIRECTORY TO _old                                #
         #                                                                                       #
         #########################################################################################-->
@@ -357,7 +370,7 @@
 
         <target name="distprod" depends="constants,prod,open,create,backup,cleanup,remove,compress,ship,retain,expand,composer,update,package"   description="Distributes to the Prod Server" />
         <target name="distrmte" depends="constants,remote,open,create,backup,cleanup,remove,deploy,retain,composer,update,package,document"   description="Distributes to the Prod Server" />
-        <target name="distaws"  depends="constants,aws,open,create,backup,cleanup,remove,compress,ship,retain,expand,purge,composer,update,package"   description="Distributes to the AWS Lightsail Server" />
+        <target name="distaws"  depends="constants,aws,open,create,backup,cleanup,remove,compress,ship,retain,expand,purge,composer,update,package,scrub"   description="Distributes to the AWS Lightsail Server" />
         <!--target name="disttest" depends="constants,test,open,create,backup,cleanup,remove,deploy,retain,composer,update,document,package"   description="Distributes to the Test Server" /-->
 
     <!--#########################################################################################
