@@ -25,7 +25,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <!-- ############################################################### -->
 
-        <action name="edit" passalong="window_id">
+        <action name="edit" passalong="window_id,namespace,type,resource">
             <description>Loads the source code into an instance of the Ace editor</description>
             <model namespace="admin" class="code" id="code">
                 <parameter name="namespace" source="request" required="true" />

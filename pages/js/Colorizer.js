@@ -79,8 +79,8 @@ var Colorizer = (function (languageFile) {
                 var rt = false;
                 for (var i=0; i<lines.length; i++) {
                     rt   = !rt;
-                    rows += '<div style="height: 1.2em; margin: 0px; padding: 0px 3px 0px 0px; width: 45px; white-space: nowrap; text-align: right; color: '+Colors['num']+'; background-color: '+Colors["ln"]+'; padding-right: 3px">'+(i+1)+'</div>';
-                    nl   += '<div class="'+this.id+'" style="height: 1.2em; background: '+Colors[rt]+'; white-space: pre; clear:both;">'+this.colorSource(lines[i].replace(/\n/g,""))+'</div>';
+                    rows += '<div style="height: 1.2em; font-family: monospace; margin: 0px; padding: 0px 3px 0px 0px; width: 45px; white-space: nowrap; text-align: right; color: '+Colors['num']+'; background-color: '+Colors["ln"]+'; padding-right: 3px">'+(i+1)+'</div>';
+                    nl   += '<div class="'+this.id+'" style="height: 1.2em; font-family: monospace; background: '+Colors[rt]+'; white-space: pre; clear:both;">'+this.colorSource(lines[i].replace(/\n/g,""))+'</div>';
                 }
                 this.codeBox.innerHTML = rows+'</div>'+nl+'</div>';
                 this.box    = $E("colorizer_code_source_"+this.id);
