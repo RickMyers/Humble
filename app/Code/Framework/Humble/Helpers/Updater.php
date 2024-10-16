@@ -69,35 +69,35 @@ class Updater extends Installer
                     if (!isset($attr->namespace)) {
                         $attr->namespace = \Environment::namespace();
                     }
-                    $elements['models'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
+                    $elements['models'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
                     break;
                 case 'helper'       :
                     $attr = $subelements->attributes();
                     if (!isset($attr->namespace)) {
                         $attr->namespace = \Environment::namespace();
                     }
-                    $elements['helpers'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
+                    $elements['helpers'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
                     break;
                 case 'entity'       :
                     $attr = $subelements->attributes();
                     if (!isset($attr->namespace)) {
                         $attr->namespace = \Environment::namespace();
                     }
-                    $elements['entities'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
+                    $elements['entities'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
                     break;
                 case 'mongo'        : 
                     $attr = $subelements->attributes();
                     if (!isset($attr->namespace)) {
                         $attr->namespace = \Environment::namespace();
                     }
-                    $elements['collections'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
+                    $elements['collections'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
                     break;
                 case 'access'        : 
                     $attr = $subelements->attributes();
                     if (!isset($attr->namespace)) {
                         $attr->namespace = \Environment::namespace();
                     }
-                    $elements['access'][str_replace('_','/',(string)$attr->namespace.'<br />'.(string)$attr->class)] = true;
+                    $elements['access'][str_replace('_','/',(string)$attr->namespace.'/'.(string)$attr->class)] = true;
                     break;                
                 case 'parameter'    :
                     $options = $this->extractParameterOptions($attr = $subelements->attributes());

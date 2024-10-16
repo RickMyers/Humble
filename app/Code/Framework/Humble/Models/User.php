@@ -1,12 +1,14 @@
+
+
 <?php
 namespace Code\Framework\Humble\Models;
 use Humble;
 use Environment; 
 /**
-  * Manages core user functions
+ * Manages core user functions
  *
  * Core user functions
- *
+ * 
  * PHP version 7.2+
  *
  * @category   Logical Model

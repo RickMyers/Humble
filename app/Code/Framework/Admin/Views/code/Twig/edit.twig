@@ -13,7 +13,8 @@
             $('#ace_editor_{{ window_id }}').height(win.content.height() - $('#code_nav_{{ window_id }}').height()-4);
         });
         $('#save_button_{{ window_id }}').on('click',() => {
-            (new EasyAjax('/admin/code/save')).add('namespace','{{ namespace }}').add('type','{{ type }}').add('resource','{{ resource }}').add('source_code',editor_{{ id }}.getValue()).then( (response) => {
+            (new EasyAjax('/admin/code/save')).add('type','{{ type }}').add('resource','{{ resource }}').add('source_code',editor_{{ id }}.getValue()).then( (response) => {
+                alert(response);
             }).post();
         });        
     })();
