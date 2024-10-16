@@ -157,7 +157,7 @@
         #         DELETES THE _old PROJECT DIRECTORY IF IT EXISTS                               #
         #                                                                                       #
         #########################################################################################-->
-        <target name="scrub" description="Scrubs the linux driver of windows EOL characters">
+        <target name="scrub" depends="package" description="Scrubs the linux driver of windows EOL characters">
             <sshexec host="${server}"
                   trust="true"
                   username="${uid}"

@@ -71,6 +71,15 @@
 "php":	{
             "longname": "PHP",
             "casesensitive":	true,
+            "classes": {
+                "region":   "",
+                "row":      "",
+                "font":     "text-mono",
+                "zebra": {
+                    "odd":  "",
+                    "even": ""
+                }
+            },                
             "chars":	" &|*^!+=-(){}/\\'\",.?:<>[];",
             "comment":	{
                 "color":	"fuchsia",
