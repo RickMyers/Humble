@@ -48,7 +48,6 @@ function DesktopIcon(icon,refId) {
     this.window         = null;
     this.referenceId    = (refId) ? refId : false;  //legacy backwards compatibility
     this.data           = icon;
-
     this.ref            = $E(id);
     this.text           = $E(id+"-text");
     this._text          = function (text) {
@@ -698,9 +697,7 @@ var Functions = {
         }
         
         Desktop.ref = $E("paradigm-virtual-desktop"); //hardcoded
-        Desktop.icon = {
-            "HTML": ""
-        }
+
         Desktop.elements = {
             "apps": [],
             "windows": []
@@ -717,6 +714,7 @@ var Functions = {
         async function f1() {
           let apps = await fetchApps();
           Desktop.elements.apps = JSON.parse(apps);
+          Desktop.render().activate().position();
         }
         f1();
         
@@ -744,16 +742,14 @@ var Functions = {
         if (doAfter) {
             doAfter();
         }
-        Desktop.render().activate().position();
-        Desktop.semaphore.init(Desktop.window.list); 
         Desktop.initialized = true;
     },
     enable: function () {
 //        Desktop.render().activate().position();
     },
     render: function () {
-        var win,i;  //refId is for the special case of processing numeric ids... so javascript doesn't go crazy
-        for (var i=0; i<Desktop.elements.apps.length; i++) {
+        var win,i,icon;  //refId is for the special case of processing numeric ids... so javascript doesn't go crazy
+        for (i=0; i<Desktop.elements.apps.length; i++) {
             icon = Desktop.elements.apps[i];
             icon.refId = icon.id;
             icon.id = Desktop.id(icon.id); //adjust for numeric ids
@@ -778,6 +774,7 @@ var Functions = {
             win = Desktop.elements.windows[i];
             Desktop.window.list[win.id]   = new DesktopWindow(win,win.id);
         }
+        Desktop.semaphore.init(Desktop.window.list)        
         return Desktop;
     },
     activate: function () {
@@ -789,8 +786,8 @@ var Functions = {
                 var win  = Desktop.semaphore.checkout(true);
                 if (icon.data.url) {
                     (new EasyAjax(icon.data.url)).add('window_id',win.id).then((response) => {
-                        win._open(response)._title(icon.data.app);
-                    }).get();
+                        win._open(response)._title(icon.name);
+                    }).post();
                 }
             };
             Desktop.on(icon.icon_id,"dblclick", tt);
@@ -840,7 +837,7 @@ var Functions = {
         return Desktop;
     },
     position: function () {
-        //Desktop.icon.position();
+        Desktop.icon.position();
         Desktop.window.position();
         return true;
     },
@@ -849,7 +846,7 @@ var Functions = {
         ids:        [],
         HTML:       "",
         add: function (icon) {
-            Desktop.icon.HTML += Desktop.templates.icon.replace(/&&w_id&&/g,icon.id).replace(/&&app&&/g,icon.app).replace(/&&image&&/g,icon.image).replace(/&&description&&/g,icon.description);
+            Desktop.icon.HTML += Desktop.templates.icon.replace(/&&w_id&&/g,icon.id).replace(/&&app&&/g,icon.name).replace(/&&image&&/g,icon.image).replace(/&&description&&/g,icon.description);
         },
         reset: function () {
             for (var i in Desktop.icon.list) {

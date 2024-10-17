@@ -45,14 +45,16 @@ class Apps extends Model
         $admin_apps = [];
         foreach (Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             if (file_exists($apps_file = 'Code/'.$module['package'].'/'.$module['module'].'/etc/AdminApps.xml')) {
+                $ctr = 0;
                 foreach ($apps = simplexml_load_file($apps_file) as $app) {
                     $admin_apps[] = [
+                        'id'   => $module['namespace'].'_'.++$ctr,
                         'name' => (string)$app->name,
                         'description' => (string)$app->description,
                         'title' => (string)$app->icon->text,
                         'image' => (string)$app->icon->image->desktop,
                         'minimized_icon' => (string)$app->icon->image->minimized,
-                        'uri' => (string)$app->start->uri
+                        'url' => (string)$app->start->uri
                     ];
                 }
             }
