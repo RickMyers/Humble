@@ -5,7 +5,7 @@ Actions around viewing or working with code
 
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="code" use="Twig" author="Rick Myers" email="rickmyers1969@gmail.com">
+<controller name="code" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="off" response="true">
         
         <action name="explorer" passalong="namespace,type,resource,window_id">

@@ -192,7 +192,7 @@ if (!$request_handled) {
     if (!$is_production) {
         if (file_exists($include)) {
             $info        = \Humble::controller($namespace.'/'.$controller);
-            $recompile   = (!$info) || ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
+            $recompile   = (!$info) || (!isset($info['compiled'])) || ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
         } else if (file_exists($source)) {
             $recompile   = true;                                                //The controller source code exists but it is not currently compiled so flag it for compiling
         } else {

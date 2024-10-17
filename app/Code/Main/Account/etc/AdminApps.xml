@@ -9,17 +9,17 @@
 -->
 <apps>
     <app>
-        <name></name>
-        <description></description>
+        <name>Account Admin App</name>
+        <description>Default Administration App</description>
         <icon>
-            <text></text>
+            <text>Account Tool</text>
             <image>
-                <desktop></desktop>
-                <minimized></minimized>
+                <desktop>/images/account/admin_app_icon.png</desktop>
+                <minimized>/images/account/admin_app_icon.png</minimized>
             </image>
         </icon>
         <start>
-            <uri></uri>
+            <uri>/account/admin/app</uri>
         </start>
     </app>
 </apps>

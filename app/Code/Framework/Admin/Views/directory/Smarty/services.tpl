@@ -36,17 +36,17 @@
         <div class="pl-10">
         {if (count($service.models))}
             {foreach from=$service.models key=model item=stuff}
-                <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="Administration.code.explore('{$service.namespace}','Model','{$model}')" title="Model"><img src="/images/admin/logical_model.png" class="w-[60] m-auto"><div>{$model}</div></div>
+                <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="Administration.code.explore('{$service.namespace}','Model','{$model}')" title="Model"><img src="/images/admin/logical_model.png" class="w-[60] m-auto"><div>{$model|replace:'/':'<br />'}</div></div>
             {/foreach}            
         {/if}
         {if (count($service.entities))}
             {foreach from=$service.entities key=entity item=stuff}
-            <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="Administration.code.explore('{$service.namespace}','Entity','{$model}')" title="Entity"><img src="/images/admin/entity.png" class="w-[60] m-auto"><div>{$entity}</div></div>
+            <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="Administration.code.explore('{$service.namespace}','Entity','{$model}')" title="Entity"><img src="/images/admin/entity.png" class="w-[60] m-auto"><div>{$entity|replace:'/':'<br />'}</div></div>
             {/foreach}
         {/if}
         {if (count($service.helpers))}
             {foreach from=$service.helpers key=helper item=stuff}
-        <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="Administration.code.explore('{$service.namespace}','Helper','{$model}')" title="Helper"><img src="/images/admin/helper.png" class="w-[60] m-auto"><div>{$helper}</div></div>                
+        <div class="inline-block border-2 rounded-md text-center cursor-pointer border-teal-900 w-[100]" onclick="Administration.code.explore('{$service.namespace}','Helper','{$model}')" title="Helper"><img src="/images/admin/helper.png" class="w-[60] m-auto"><div>{$helper|replace:'/':'<br />'}</div></div>                
             {/foreach}            
         {/if}        
         {*if (count($service.access))}

@@ -1,5 +1,3 @@
-
-
 <?php
 namespace Code\Framework\Humble\Models;
 use Humble;

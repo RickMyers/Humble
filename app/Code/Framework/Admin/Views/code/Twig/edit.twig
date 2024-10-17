@@ -1,6 +1,4 @@
-<div id='ace_editor_{{ window_id }}' class='w-full border-2 border-black'>
-{{ code.fetchSourceCode() }}
-</div>
+<div id='ace_editor_{{ window_id }}' class='w-full border-2 border-black'>{{ code.fetchSourceCode() }}</div>
 {% set id = code._uniqueId() %}
 <script>
     (() => {

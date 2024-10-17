@@ -9,17 +9,17 @@
 -->
 <apps>
     <app>
-        <name></name>
-        <description></description>
+        <name>File Explorer</name>
+        <description>Lets you view/edit the file structure</description>
         <icon>
-            <text></text>
+            <text>Explore</text>
             <image>
-                <desktop></desktop>
-                <minimized></minimized>
+                <desktop>/images/admin/admin_app_icon.png</desktop>
+                <minimized>/images/admin/admin_app_icon.png</minimized>
             </image>
         </icon>
         <start>
-            <uri></uri>
+            <uri>/admin/explore/app</uri>
         </start>
     </app>
 </apps>

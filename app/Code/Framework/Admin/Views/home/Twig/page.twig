@@ -202,7 +202,7 @@
             </nav>
             <div id="outer" class="flex flex-row">
                 <div id="left-col" class="h-100 w-60px bg-gray-100 text-center">
-                    <div class='text-sm mb-1 cursor-pointer' title='Toggle Desktop Mode' onclick="Administration.events.open()">
+                    <div class='text-sm mb-1 cursor-pointer' title='Toggle Desktop Mode' onclick="Administration.desktop.toggle()">
                         <img src="/images/admin/desktop.png" style="margin-left: auto; margin-right: auto; height: 38px"/>
                         Desktop
                     </div>
@@ -318,7 +318,7 @@
                     </div>                                
                 </div>
                 <div id="right-col" class="w-full bg-gray-300 overflow-auto grow">
-                    <div id='desktop-container' style='display: none'></div>
+                    <div id='desktop-container' class='w-full h-full' style='display: none'></div>
                     <div id='dashboard-container'>
                     <div style="float: right; margin-right: 10px; padding: 5px 20px; white-space: nowrap">
                         <b>STATE </b>

@@ -36,6 +36,21 @@ var Functions = (() => {
                             }).post();
                         }
                     },
+                    desktop: {
+                        toggle: (() => {
+                            let state = false;
+                            return () => {
+                                if (state) {
+                                    $('#desktop-container').css('display','none');
+                                    $('#dashboard-container').css('display','block');
+                                } else {
+                                    $('#dashboard-container').css('display','none');
+                                    $('#desktop-container').css('display','block');
+                                }
+                                state = !state;
+                            }
+                        })()
+                    },
                     password: {
                         change: {
                             open: () => {

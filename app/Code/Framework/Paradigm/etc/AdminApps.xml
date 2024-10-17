@@ -9,17 +9,17 @@
 -->
 <apps>
     <app>
-        <name></name>
-        <description></description>
+        <name>Paradigm Admin App</name>
+        <description>Default Administration App</description>
         <icon>
-            <text></text>
+            <text>Paradigm Tool</text>
             <image>
-                <desktop></desktop>
-                <minimized></minimized>
+                <desktop>/images/paradigm/admin_app_icon.png</desktop>
+                <minimized>/images/paradigm/admin_app_icon.png</minimized>
             </image>
         </icon>
         <start>
-            <uri></uri>
+            <uri>/paradigm/admin/app</uri>
         </start>
     </app>
 </apps>

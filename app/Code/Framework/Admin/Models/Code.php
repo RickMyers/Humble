@@ -13,7 +13,7 @@ use Environment;
  *
  * @category   Logical Model
  * @package    Framework
- * @author     Rick <rickmyers1969@gmail.com>
+ * @author     Rick <rick@humbleprogramming.com>
  */
 class Code extends Model
 {

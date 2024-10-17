@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+File Explorer Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="explorer" use="Twig" author="Rick Myers" email="rickmyers1969@gmail.com">
+    <actions blocking="ON" response="false">
+        <action name="app">
+            <description>Initial setup</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

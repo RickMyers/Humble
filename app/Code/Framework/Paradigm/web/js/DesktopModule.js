@@ -9,6 +9,76 @@
 //All other rights are reserved.
 //Copyright 2014, Cloud-IT.com
 //------------------------------------------------------------------------------
+function WindowAttributeClass(id,x,y,w,h) {
+    return this;  //Short circuit it for now
+    this.id     = id;
+    this.left   = x+"px";
+    this.top    = y+"px";
+    this.width  = w+"px";
+    this.height = h+"px";
+    this.save   = function () {
+         if (!Desktop.virtualWindows.application.user)
+            return false;   //no userid
+        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).then(function () {}).post();
+    };
+    return  this;
+}
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+function IconAttributeClass(id,x,y) {
+    return this;  //Short circuit it for now
+    this.id     = id;
+    this.left   = x+"px";
+    this.top    = y+"px";
+    this.save   = function () {
+         if (!Desktop.virtualWindows.application.user)
+            return false;   //no userid
+        (new EasyAjax("/desktop/attributes/save")).add("dimensions",JSON.stringify(this)).then(function () {}).post();
+    };
+    return  this;
+}
+
+//------------------------------------------------------------------------------
+//Each icon gets one
+//------------------------------------------------------------------------------
+function DesktopIcon(icon,refId) {
+    var id              = icon.id+'-icon';
+    this.icon_id        = id;
+    this.window         = null;
+    this.referenceId    = (refId) ? refId : false;  //legacy backwards compatibility
+    this.data           = icon;
+
+    this.ref            = $E(id);
+    this.text           = $E(id+"-text");
+    this._text          = function (text) {
+        this.text.innerHTML = text;
+        return this;
+    };
+    this._open      = function (evt) {
+        evt = (evt) ? evt : ((window.event) ? event : null);
+        this.window = Desktop.window.list[id];
+        // 0=closed, 1=minimized, 2=open, 3=maximized
+        switch (this.window.state) {
+            case    0   :   if (this.window._open) {
+                                this.window._open(evt);
+                                this.window._tofront(evt);
+                            }
+                            break;
+            case    1   :   this.window._reopen(evt);
+                            this.window.frame.fadeIn();
+                            break;
+            case    2   :   this.window._tofront(evt);
+                            break;
+            case    3   :   this.window._tofront(evt);
+                            break;
+            default     :   console.log('unknown state '+win.state);
+                            break;
+        }
+        return this;
+    };
+    return this;
+}
 
 //------------------------------------------------------------------------------
 //Each window gets one
@@ -635,6 +705,21 @@ var Functions = {
             "apps": [],
             "windows": []
         };
+        
+        function fetchApps() {
+          return new Promise((resolve) => {
+              (new EasyAjax('/admin/apps/list')).then(function (response) {
+                  resolve(response);
+              }).get();
+          });
+        }
+
+        async function f1() {
+          let apps = await fetchApps();
+          Desktop.elements.apps = JSON.parse(apps);
+        }
+        f1();
+        
         let windows = [];
         for (var i=0; i<100; i++) {
             windows[windows.length] = {
@@ -668,7 +753,7 @@ var Functions = {
     },
     render: function () {
         var win,i;  //refId is for the special case of processing numeric ids... so javascript doesn't go crazy
-        /*for (var i=0; i<Desktop.elements.apps.length; i++) {
+        for (var i=0; i<Desktop.elements.apps.length; i++) {
             icon = Desktop.elements.apps[i];
             icon.refId = icon.id;
             icon.id = Desktop.id(icon.id); //adjust for numeric ids
@@ -676,13 +761,13 @@ var Functions = {
                 Desktop.icon.add(icon);
             }
         }
-        $E('paradigm-virtual-desktop').innerHTML += Desktop.icon.HTML;
+        $E('desktop-container').innerHTML += Desktop.icon.HTML;
         Desktop.icon.list = [];
         for (i=0; i<Desktop.elements.apps.length; i++) {
             icon = Desktop.elements.apps[i];
             var x = new DesktopIcon(icon,icon.refId);
             Desktop.icon.list[icon.id]     = x;
-        }*/
+        }
         Desktop.window.list = {};
         for (i=0; i<Desktop.elements.windows.length; i++) {
             Desktop.window.add(Desktop.elements.windows[i]);

@@ -9,17 +9,17 @@
 -->
 <apps>
     <app>
-        <name></name>
-        <description></description>
+        <name>Contrive Admin App</name>
+        <description>Default Administration App</description>
         <icon>
-            <text></text>
+            <text>Contrive Tool</text>
             <image>
-                <desktop></desktop>
-                <minimized></minimized>
+                <desktop>/images/contrive/admin_app_icon.png</desktop>
+                <minimized>/images/contrive/admin_app_icon.png</minimized>
             </image>
         </icon>
         <start>
-            <uri></uri>
+            <uri>/contrive/admin/app</uri>
         </start>
     </app>
 </apps>
