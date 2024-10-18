@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 RUN apt update && apt upgrade -y 
 
@@ -21,6 +21,7 @@ RUN apt install -y gnupg2
 RUN apt install -y cron
 RUN apt install -y nano
 RUN apt install -y htop
+RUN apt install -y sysstat
 RUN apt install -y memcached
 RUN apt install -y libmemcached-tools
 RUN apt install -y redis-server

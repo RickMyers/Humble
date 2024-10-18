@@ -24,7 +24,7 @@
             },
             "multiple": 6
         },
-        "applicationxml": {
+        "application.xml": {
             "callbacks": {
                 "watchApplicationXML": true
             },
@@ -63,6 +63,12 @@
         "files": {
             "callbacks": {
                 "scanFilesForChanges": true
+            },
+            "multiple": 5
+        },
+        "images": {
+            "callbacks": {
+                "scanImagesForChanges": true
             },
             "multiple": 5
         }

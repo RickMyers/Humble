@@ -31,12 +31,13 @@ $installer                  = \Environment::getInstaller();                     
 $is_production              = \Environment::isProduction();                     //Am I in production? Somethings will be skipped if so
 $project                    = \Environment::getProject();
 $config                     = 'Code/'.$project->package.'/'.$project->module.'/etc/cadence.json';
+$callbacks                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Callbacks.php';
 
 //------------------------------------------------------------------------------
 //Load custom callbacks if any
 //------------------------------------------------------------------------------
-if (file_exists('includes/Callbacks.php')) {
-    require_once('includes/Callbacks.php');
+if (file_exists($callbacks)) {
+    require_once($callbacks);
 }
 
 //------------------------------------------------------------------------------
@@ -231,6 +232,23 @@ function scanConfigurationsForChanges() {
 //------------------------------------------------------------------------------
 function scanForNewImages() {
     global $images,$modules;
+    $files = [];
+    foreach ($modules as $module) {
+        $files[$module['namespace']] = recurseDirectory('Code/'.$module['package'].'/'.$module['images']);  
+        foreach ($files[$module['namespace']] as $file) {
+            if (!isset($images[$file]) || ($images[$file] !== filemtime($file))) {
+                //this is a new or updated file, must copy over
+                $parts = explode('/',$file);
+                $dest = '../images/'.$module[$namespace];
+                for ($i=3; $i<count($parts); $i++) {
+                    $dest .= '/'.$parts[$i];
+                }
+                logMessage('--------> Copying image '.$file.' to '.$dest);
+                copy($file,$dest);
+                $images[$file] == filemtime($file);
+            }
+        }
+    }
 }
 //------------------------------------------------------------------------------
 function scanFilesForChanges() {
