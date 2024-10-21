@@ -308,7 +308,8 @@ class System extends Model
         ];
         foreach (Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             $stats["modules"]['count']++;
-            $stats["modules"]['score'] += ($result = Humble::cache('module-'.$module['namespace'])) ? 1 : 0;
+            $key = 'module-'.$module['namespace'];
+            $stats["modules"]['score'] += ($result = Humble::cache($key)) ? 1 : 0;
             if (!$result) {
                 $stats['modules']['errors'][] = $key;
             }            

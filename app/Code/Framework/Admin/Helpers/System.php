@@ -58,6 +58,10 @@ class System extends Helper
         return null;
     }
 
+    public function serverCpuUsage() {
+        return file_exists('/proc/loadavg') ? explode(' ',file_get_contents('/proc/loadavg'))[0] : 0;
+    }
+    
     /**
      * Just returns how many total running tasks there are, minus the task list command
      * 

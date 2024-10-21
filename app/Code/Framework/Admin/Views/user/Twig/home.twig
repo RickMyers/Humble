@@ -1,0 +1,35 @@
+<div id="users_and_roles_nav">
+</div>
+<div id="users_and_roles_tab">
+</div>
+<div id="user_roles_tab"></div>
+<div id="new_user_tab"></div>
+<script>
+    (() => {
+        let tabs = new EasyTab('users_and_roles_nav',120);
+        let f = (() => {
+            return () => {
+                (new EasyAjax('/admin/user/roles')).then((response) => {
+                    $('#users_and_roles_tab').html(response);
+                }).get();
+            };
+        })();
+        tabs.add('Users &amp; Roles',f,'users_and_roles_tab');
+        let g = (() => {
+            return () => {
+                (new EasyAjax('/admin/roles/list')).then((response) => {
+                    $('#user_roles_tab').html(response);
+                }).get();
+            };
+        })();
+        tabs.add('Roles',g,'user_roles_tab');
+        let h = (() => {
+            return () => {
+                (new EasyAjax('/admin/user/form')).then((response) => {
+                    $('#new_user_tab').html(response);
+                }).get();
+            };
+        })();
+        tabs.add('New User',g,'new_user_tab');
+    })();
+</script>

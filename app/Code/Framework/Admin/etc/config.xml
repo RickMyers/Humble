@@ -92,6 +92,7 @@
                 <login>Admin/web/edits/adminlogin.json</login>
                 <details>Admin/web/edits/userdetails.json</details>
                 <password>Admin/web/edits/adminpassword.json</password>
+                <roles>Admin/web/edits/newuserrole.json</roles>
             </edits>
             <admin>
                 <css>

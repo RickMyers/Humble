@@ -52,7 +52,7 @@ class Monitor extends Model
         $this->setApacheThreads($this->system->threadCount('apache2'));
         $this->setFPMThreads($this->system->threadCount('php-fpm'));
         $this->setTotalThreads($this->system->taskCount());
-        $this->setServerLoad($this->system->serverLoad());
+        $this->setServerLoad($this->system->serverCpuUsage());
         return [
             'free_memory'       => $this->getFreeMemory(),
             'total_memory'      => $this->getTotalMemory(),
@@ -61,7 +61,8 @@ class Monitor extends Model
             'apache_threads'    => $this->getApacheThreads(),
             'fpm_threads'       => $this->getFPMThreads(),
             'server_load'       => $this->getServerLoad(),
-            'total_threads'     => $this->getTotalThreads()
+            'total_threads'     => $this->getTotalThreads(),
+            'cpu_usage'         => $this->getCpuUsage()
         ];
     }
     
@@ -78,6 +79,7 @@ class Monitor extends Model
             $monitor->setTotalThreads($stats['total_threads']   ?? 0);
             $monitor->setFpmThreads($stats['fpm_threads']       ?? 0);
             $monitor->setApacheThreads($stats['apache_threads'] ?? 0);
+            $monitor->setCpu($stats['cpu_usage']);
             $monitor->save();
         }
         return $this;

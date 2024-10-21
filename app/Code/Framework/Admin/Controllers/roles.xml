@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+User Roles Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="roles" use="Twig" author="Myers Rick" email="">
+    <actions blocking="ON" response="false">
+        <action name="list">
+            <description>List out current user roles</description>
+            <entity class="roles" id="roles" orderby="role=ASC">
+                
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

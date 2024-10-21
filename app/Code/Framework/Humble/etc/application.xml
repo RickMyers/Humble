@@ -3,7 +3,7 @@
     <name>The Humble Project</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">JSFQ-VSYF-QRKQ-CJQQ</serial_number>
     <version>
-        <framework>0.8.0.1.5</framework>
+        <framework>0.8.0.1.6</framework>
         <app>0.0.0.1</app>
     </version>
     <state comment="switch to current">DEVELOPMENT</state>
@@ -31,7 +31,7 @@
     <api comment="Know the risks before enabling.  There is a section in the documentation on this">
         <enabled>0</enabled>
     </api>
-    <exceptions options="JSON,HTML" comment="Choose whether you want a JSON formatted exception or one that is a templated HTML response">JSON</exceptions>
+    <exceptions options="JSON,HTML" comment="Choose whether you want a JSON formatted exception or one that is a templated HTML response">HTML</exceptions>
     <documentation_comment>
         The next section outlines the choices for creating automated documentation.   Choose either PHPDoc2 or APIGen(PHP 8.2+).  Select the option for each from the options
         listed on the tag.  PHPDoc2 is the default since it supports more versions of PHP, but if you are using PHP 8.2 and later, APIGen is an excellent option as well.
@@ -53,7 +53,7 @@
         <quiescing>0</quiescing>       <!-- switch to 1 to begin the process of taking the system offline -->
         <polling>1</polling>           <!-- Switch to 0 to disable the single poll operation -->
         <interval>15</interval>        <!-- Number of seconds between polls -->
-        <installer>1</installer>       <!-- switch to 0 after installation to prevent accidental execution of the install script -->
+        <installer>0</installer>       <!-- switch to 0 after installation to prevent accidental execution of the install script -->
         <caching>1</caching>           <!-- Indicates whether memcached is available to store or retrieve data -->
         <SSO>
             <enabled>0</enabled>       <!-- Switch to 0 to use local authentication -->

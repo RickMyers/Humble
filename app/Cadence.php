@@ -15,6 +15,9 @@ require_once "Humble.php";
 $started                    = time();                                           //The time used in all offset calculations
 $pid                        = getmypid();                                       //My process ID
 $offset_time                = 0;                                                //The cumulative time spent doing stuff
+$first_time                 = [
+    'images'                => true
+];
 $cadence_ctr                = 0;                                                //Lets count the beat
 $cadence                    = [];                                               //The JSON stored instructions for what to run and when
 $compiler                   = false;                                            //Singleton reference to the controller compiler
@@ -42,13 +45,17 @@ if (file_exists($callbacks)) {
 
 //------------------------------------------------------------------------------
 function resetCadence() {
-    global $started, $pid, $offset_time, $cadence, $cadence_ctr,$files, $models, $configs, $systemfiles, $config;
+    global $started, $pid, $offset_time, $cadence, $cadence_ctr,$files, $models, $configs, $systemfiles, $config, $images, $first_time;
     $started                = time();                                           //The time used in all offset calculations
     $pid                    = getmypid();                                       //My process ID
     $offset_time            = 0;                                                //The cumulative time spent doing stuff
     $cadence_ctr            = 0;                                                //Lets count the beat
     $files                  = [];
     $models                 = [];
+    $images                 = [];
+    $first_time             = [
+        'images'            => true
+    ];
     $configs                = [];
     $systemfiles            = [];    
     $cadence                = json_decode(file_get_contents($config),true);
@@ -227,28 +234,45 @@ function scanConfigurationsForChanges() {
             }
             logMessage(ob_end_clean(),false);
         }
+        clearstatcache(true,$file);
     }
 }
 //------------------------------------------------------------------------------
-function scanForNewImages() {
-    global $images,$modules;
+function primeImagesArray() {
+    global $modules, $images;
+    foreach ($modules as $module) {
+        foreach ($files = recurseDirectory('Code/'.$module['package'].'/'.$module['images']) as $file) {
+            $images[$file] = filemtime($file);
+            clearstatcache(true,$file);
+        }
+    }
+}
+//------------------------------------------------------------------------------
+function scanImagesForChanges() {
+    global $images,$modules,$first_time;
+    if ($first_time['images']) {
+        primeImagesArray();
+    }
     $files = [];
     foreach ($modules as $module) {
         $files[$module['namespace']] = recurseDirectory('Code/'.$module['package'].'/'.$module['images']);  
         foreach ($files[$module['namespace']] as $file) {
+            //$images[$file] = $images[$file] ?? filemtime($file);
             if (!isset($images[$file]) || ($images[$file] !== filemtime($file))) {
                 //this is a new or updated file, must copy over
                 $parts = explode('/',$file);
-                $dest = '../images/'.$module[$namespace];
-                for ($i=3; $i<count($parts); $i++) {
+                $dest = '../images/'.$module['namespace'];
+                for ($i=4; $i<count($parts); $i++) {
                     $dest .= '/'.$parts[$i];
                 }
                 logMessage('--------> Copying image '.$file.' to '.$dest);
                 copy($file,$dest);
-                $images[$file] == filemtime($file);
+                $images[$file] = filemtime($file);
             }
+            clearstatcache(true,$file);
         }
     }
+    $first_time['images'] = false;
 }
 //------------------------------------------------------------------------------
 function scanFilesForChanges() {

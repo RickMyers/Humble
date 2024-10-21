@@ -1,0 +1,27 @@
+{
+	"form":
+	{
+		"id":                   "new_user_role_form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+		"onenterkey":           "send"
+	},
+	"fields":
+	[
+		{
+			"active":		true,
+			"id": 			"new_user_role",
+			"longname":		"New User Role",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+		}
+
+
+	]
+}
+
+

@@ -758,6 +758,10 @@ video {
   width: 100%;
 }
 
+.w-\[200\] {
+  width: 200;
+}
+
 .flex-initial {
   flex: 0 1 auto;
 }
@@ -840,6 +844,10 @@ video {
 
 .rounded-sm {
   border-radius: 0.125rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
 }
 
 .border {

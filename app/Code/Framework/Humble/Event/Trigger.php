@@ -132,6 +132,7 @@ class Trigger  {
         $results    = [];
         $action     = 'set'.underscoreToCamelCase($eventName,true);
         $cleanEvent->$action(array_merge($this->_arguments,$arguments));
+        $output     = '';
         if (!$uid) {
             //if no user id, see if this is the login event, and if so, find user based on username
             if ($user_name = $cleanEvent->data('user_name')) {
@@ -164,10 +165,13 @@ class Trigger  {
             foreach ($method_listeners->setEvent($eventName)->fetch() as $method_listener) {
                 $ml     = Humble::model($method_listener['namespace'].'/'.$method_listener['class']);
                 $method = $method_listener['method'];
+                ob_start();
                 $ml->$method($cleanEvent);
+                $output .= ob_get_clean();
             }
         }
-        return $handled;
+        //what am I going to do with the results array?
+        return $output;
     }
 
     /**

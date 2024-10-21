@@ -96,10 +96,10 @@ var Functions = (() => {
                         }
                     },
                     manage: {
-                        users: (whichOne) => {
+                        users: () => {
                              let win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/admin/manage/users/'+whichOne)).add('window_id',win.id).then((response) => {
-                                win._static(true)._title('Manage '+whichOne+' Users')._open(response);
+                            (new EasyAjax('/admin/user/home')).add('window_id',win.id).then((response) => {
+                                win._static(true)._title('Manage Users')._open(response);
                             }).post();
                         }
                     },

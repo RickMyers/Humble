@@ -20,7 +20,8 @@
           options: {
             scales: {
               y: {
-                beginAtZero: true
+                beginAtZero: true,
+                max: 100
               }
             }
           }

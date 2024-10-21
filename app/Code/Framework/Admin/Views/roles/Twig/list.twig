@@ -1,0 +1,48 @@
+
+<script>
+    if (typeof user_roles_app === 'undefined') {
+        let user_roles_app = Vue.createApp({
+            template: Humble.template('admin','roles/list'),
+            data: () => {
+                return  {
+                    roles: [
+                        {
+                            "text": "",
+                            "value": ""
+                        },
+                        {% for role in roles.fetch() %}{              
+                            text:   "{{ role.role }}",
+                            value:  "{{ role.id }}"
+                        },   
+                        {% endfor %}
+                    ]
+                }
+            },
+            mounted: () => {
+                new EasyEdits('/edits/admin/roles','new-role');
+            },
+            created: () => {
+
+            },
+            updated: () => {
+            },
+            destroyed: () => {
+            },
+            methods: {
+                addRole: async () => {
+                    if (Edits['new-role'].validate()) {
+                        const form = document.querySelector('#new_role_form');
+                        const response = await fetch('/admin/roles/new', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        });
+                        let text = await response.text();
+                        console.log(text);
+                        this.roles = JSON.parse(text);
+                    }   
+                }
+            }
+        });
+        const roles_app = user_roles_app.mount('#user_roles_tab');
+    }    
+    </script>

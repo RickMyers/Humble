@@ -134,6 +134,29 @@ class Users extends Entity
     }
     
     /**
+     * Gets information about users including whether they are an administrator or not
+     * 
+     * @return iterator
+     */
+    public function userInformation() {
+        $name_clause                = $this->getStartsWith() ? "where b.last_name like '".$this->getStartsWith()."%'" : "";
+        $user_table                 = Environment::namespace().'_users';
+        $user_identification_table  = Environment::namespace().'_user_identification';
+        $query = <<<SQL
+        select a.id, a.user_name, a.logged_in, a.account_status, a.login_attempts, a.email,
+               b.first_name, b.last_name, b.gender, b.middle_name,
+               c.id as admin_id
+         from {$user_table} as a
+         left outer join {$user_identification_table} as b
+           on a.id = b.id
+         left outer join admin_users as c
+           on a.id = c.id
+         {$name_clause}
+SQL;
+         return $this->query($query);
+    }
+    
+    /**
      * Returns user/admin information from multiple tables
      * 
      * @param int $id

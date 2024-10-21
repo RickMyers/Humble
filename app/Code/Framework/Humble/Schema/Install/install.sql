@@ -299,3 +299,25 @@ CREATE TABLE `humble_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+drop table if exists humble_roles;
+CREATE TABLE humble_roles
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	role CHAR(32) DEFAULT NULL,
+	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE KEY (role)
+);
+
+drop table if exists humble_user_roles;
+
+CREATE TABLE humble_user_roles
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	user_id INT DEFAULT NULL,
+	role_id INT DEFAULT NULL,
+	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE KEY (user_id,role_id)
+);
