@@ -312,6 +312,14 @@ SQL;
         return $this;
     }
 
+    protected function deRegisterListeners($namespace) {
+        $namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
+        $listeners = Humble::entity('paradigm/method/listeners');
+        $listeners->setNamespace($namespace);
+        $listeners->delete(true);
+        return $this;
+    }
+    
    /**
      *
      *  Will delete the current crop of workflow components associated to a module
@@ -430,6 +438,7 @@ SQL;
         $namespace  = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
         if ($namespace) {
             $this->deRegisterWorkflowComponents($namespace);            
+            $this->deRegisterListeners($namespace);
         }
         $models             = Humble::getModels($namespace);
         $workflowComponent  = Humble::entity('paradigm/workflow/components');
@@ -501,7 +510,9 @@ SQL;
                             case "listen"           :
                             case "listener"         :   $listener = true;
                                                         break;  
-                            case "event"            :   $this->registerMethodListeners($namespace,$model,$method->name,$value);
+                            case "event"            :   if ($listener) {
+                                                            $this->registerMethodListeners($namespace,$model,$method->name,$value);
+                                                        }
                                                         break 2;              //this is different from a component so just skip to the next one
                             case "auth"             :
                             case "authorization"    :   if (strtolower($value) == 'true') {

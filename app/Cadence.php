@@ -144,6 +144,17 @@ function recurseDirectory($dir=[]) {
     return $list;
 }
 //------------------------------------------------------------------------------
+function scanModel($file=false) {
+    if ($file) {
+        logMessage("Scanning ".$models[$file]."\n");
+        try {
+            $installer->registerWorkflowComponents($module['namespace']);
+        } catch (Exception $ex) {
+            logMessage($ex->getCode().': '.$ex->getMessage());
+        }        
+    }
+}
+//------------------------------------------------------------------------------
 function scanModelsForChanges() {
     global $is_production,$models,$installer,$modules;
     if (!$is_production) {
@@ -160,15 +171,11 @@ function scanModelsForChanges() {
                 }
                 if (isset($models[$file])) {
                     if ($models[$file] !== filemtime($file)) {
-                        logMessage("Scanning ".$models[$file]."\n");
-                        try {
-                            $installer->registerWorkflowComponents($module['namespace']);
-                        } catch (Exception $ex) {
-                            logMessage($ex->getCode().': '.$ex->getMessage());
-                        }
+                        scanModel($file);
                         $models[$file] = filemtime($file);
                     }
                 } else {
+                    scanModel($file);
                     $models[$file] = filemtime($file);
                 }
                 clearstatcache(true,$file);

@@ -248,6 +248,7 @@ class Manager extends Model
             }
         }
     }
+    
     /**
      * Will take a JSON construct representing a workflow and copy it's contents into the local MongoDB and MySQL instances
      *
