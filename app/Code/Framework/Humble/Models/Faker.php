@@ -32,6 +32,9 @@ class Faker extends Model
         "states"    => [],
         "streets"   => []
     ];
+    private $first_name = '';
+    private $last_name  = '';
+    private $gender     = '';
     
     /**
      * Constructor
@@ -90,8 +93,8 @@ class Faker extends Model
         if (!$this->primed) {
             $this->prime();
         }
-        $gender = $gender ? $gender : $this->genders[rand(0,1)];
-        return $this->data['names']['first'][$gender][rand(0,count($this->data['names']['first'][$gender])-1)];
+        $this->gender = $gender ? $gender : $this->genders[rand(0,1)];
+        return $this->first_name = $this->data['names']['first'][$this->gender][rand(0,count($this->data['names']['first'][$this->gender])-1)];
     }
     
     /**
@@ -104,7 +107,34 @@ class Faker extends Model
         if (!$this->primed) {
             $this->prime();
         }
-        return $this->data['names']['last'][rand(0,count($this->data['names']['last'])-1)];
+        return $this->last_name = $this->data['names']['last'][rand(0,(int)count($this->data['names']['last'])-1)];
+    }
+    
+    /**
+     * Creates a simple user name, but firstName() and lastName() must be called first
+     * 
+     * @return string
+     */
+    public function userName() {
+        return strtolower(substr($this->first_name,0,1).$this->last_name);
+    }
+    
+    /**
+     * Returns the gender from the last name call
+     * 
+     * @return string
+     */
+    public function gender() {
+        return $this->gender;
+    }
+    /**
+     * Creates a sample email, but firstName() and lastName() must be called first
+     * 
+     * @param boolean $full
+     * @return string
+     */
+    public function email($full=false) {
+        return strtolower((($full) ? $this->first_name.'.'.$this->last_name : substr($this->first_name,0,1).$this->last_name).'@example.com');
     }
     
     /**

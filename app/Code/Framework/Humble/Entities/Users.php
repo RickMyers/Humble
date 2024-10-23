@@ -49,19 +49,22 @@ class Users extends Entity
      * @param type $first_name
      * @return type
      */
-    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='',$email='',$id='') {
+    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='',$email='',$gender='',$dob='',$id='') {
         $uname  = $user_name ? $user_name       : ($this->getUserName()  ? $this->getUserName()  : false);
         $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
         $fname  = $first_name ? $first_name     : ($this->getFirstName() ? $this->getFirstName() : '');
         $lname  = $last_name ? $last_name       : ($this->getLastName()  ? $this->getLastName()  : '');
         $id     = $id ? $id                     : ($this->getId()        ? $this->getId()        : '');
         $email  = $email ? $email               : ($this->getEmail()     ? $this->getEmail()     : '');
+        $gender = $gender ? $gender             : ($this->getGender()    ? $this->getGender()    : '');
+        $dob    = $dob ? $dob                   : ($this->getDateOfBirth() ? $this->getDateOfBirth() : '');
+        $dob    = date('Y-m-d',strtotime($dob));
         if ($uname && $pwd) {
             if ($id) {
                 $this->setId($id);
             }
             if ($id = $this->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setUserName($uname)->save()) {
-                Humble::entity('default/user/identification')->setId($id)->setEmail($email ?? '')->setFirstName($fname ?? '')->setLastName($lname ?? '')->save();
+                Humble::entity('default/user/identification')->setId($id)->setEmail($email ?? '')->setFirstName($fname ?? '')->setLastName($lname ?? '')->setDateOfBirth($dob??'')->setGender($gender??'')->save();
             } else {
                 \Log::error('Failed attempting to create user '.$uname);
             }

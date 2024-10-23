@@ -36,6 +36,30 @@ var Functions = (() => {
                             }).post();
                         }
                     },
+                    users: {
+                        starts_with: '',
+                        display: (starts_with) => {
+                            Administration.users.starts_with = (starts_with) ? starts_with : '';
+                            var win = Desktop.semaphore.checkout(true);
+                            (new EasyAjax('/admin/user/display')).add('role_id',$('#user_role').val()).add('page',1).add('rows',15).add('starts_with',Administration.users.starts_with).then((response) => {
+                                $('#admin-users-display-area').html(response);
+                                Pagination.set('argus-users',this.getPagination());
+                            }).post()
+                        },
+                        home: function () {
+                            Argus.status('Loading User Display...');
+                            (new EasyAjax('/admin/user/home')).then(function (response) {
+                                $('#sub-container').html(response);
+                                Argus.status('');
+                            }).post();
+                        },
+                        view: function (user_id) {
+                            var win = Desktop.semaphore.checkout(true);
+                            (new EasyAjax('/admin/user/view')).add('user_id',user_id).add('window_id',win.id).then(function (response) {
+                                win._open(response);
+                            }).post();                
+                        }                        
+                    },
                     desktop: {
                         toggle: (() => {
                             let state = false;

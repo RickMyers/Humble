@@ -116,24 +116,17 @@
         
         <action name="list" blocking="off" map="type" passalong="type">
             <description>Will return a list of users</description>
-            <if var="type" eq="General">
-                <then>
-                    <entity class="users" id="users" rows="rows" page="page" defaultRows='15' defaultPage='1'>
-                        <parameter name="starts_with" source="post" optional="true" />
-                    </entity>
-                </then>
-                <else>
-                    <if var="type" eq="Administrators">
-                        <then>
-                            <entity namespace="admin" class="users" rows="rows" page="page" id="users" defaultRows='15' defaultPage='1'>
-                                <parameter name="starts_with" source="post" optional="true" />
-                            </entity>
-                        </then>
-                    </if>
-                </else>
-            </if>
+            <entity class="users" id="users" rows="rows" page="page" defaultRows='15' defaultPage='1'>
+                <parameter name="starts_with" source="post" optional="true" />
+            </entity>
+            <entity class="user_roles" id="user_roles">
+                
+            </entity>
+            <entity class="roles" id="roles" >
+                
+            </entity>
+            
         </action>
-
         <!-- ############################################################### -->
 
         <action name="default">
