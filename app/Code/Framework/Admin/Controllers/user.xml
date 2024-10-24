@@ -127,16 +127,22 @@
             </entity>
             
         </action>
-        <!-- ############################################################### -->
-
-        <action name="default">
-            <description>Default Action</description>
-            <model class="user" id="user" method="invite">
-                <parameter name="email" source="request" default="" />
-            </model>
-        </action>
 
         <!-- ############################################################### -->
+
+        <action name="roles" blocking="off">
+            <description>Generates a list of users and roles</description>
+            <entity class="roles" id="roles">
+                
+            </entity>
+            <entity class="users" id="users" rows="rows" page="page" defaultRows="25" defaultPage="1" orderBy="last_name=ASC">
+                <parameter name="starts_with" source="request" optional="true" />
+            </entity>
+            <entity class="user/roles" id="user_roles" />
+        </action>        
+        
+        <!-- ############################################################### -->
+        
 
         <action name="reset">
             <description>Password Reset</description>
@@ -155,5 +161,13 @@
             <redirect href="/admin/login/form?message=Logout Successful" />
         </action>
 
+        <!-- ############################################################### -->
+
+        <action name="default">
+            <description>Default Action</description>
+            <model class="user" id="user" method="invite">
+                <parameter name="email" source="request" default="" />
+            </model>
+        </action>
     </actions>
 </controller>

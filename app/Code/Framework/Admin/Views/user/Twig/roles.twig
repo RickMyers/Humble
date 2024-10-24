@@ -1,0 +1,110 @@
+{% set roles = roles.fetch() %}
+<div>
+    <div style="float: right">
+    <style type="text/css">
+        .user-search-box {
+            border-radius: 8px; height: 25px; width: 270px; border: 1px solid #333; padding-left: 30px; background-color: ghostwhite; background-image: url(/images/admin/search.png); background-repeat: no-repeat
+        }
+        .user-search-field {
+            border: 0px; color: #333; background-color: ghostwhite; width: 230px; height: 20px; position: relative; top: 2px
+        }
+        .user-search-field:focus {
+            outline: none;
+        }
+    </style>
+    <div class="user-search-box" style="display: inline-block">
+        <input class="user-search-field" type="text" style="" name="user-search-field" id="user-search-field" placeholder="Search..." value="{{ users.getStartsWith() }}">
+    </div>
+    <script type="text/javascript">
+        $('#user-search-field').on("keydown",function (evt) {
+            if (evt.keyCode == 13) {
+                Administration.users.display(evt.target.value);
+            }        
+        });
+    </script>
+</div>
+<a href='#' onclick="Administration.users.display('A')">A</a>&nbsp;
+<a href='#' onclick="Administration.users.display('B')">B</a>&nbsp;
+<a href='#' onclick="Administration.users.display('C')">C</a>&nbsp;
+<a href='#' onclick="Administration.users.display('D')">D</a>&nbsp;
+<a href='#' onclick="Administration.users.display('E')">E</a>&nbsp;
+<a href='#' onclick="Administration.users.display('F')">F</a>&nbsp;
+<a href='#' onclick="Administration.users.display('G')">G</a>&nbsp;
+<a href='#' onclick="Administration.users.display('H')">H</a>&nbsp;
+<a href='#' onclick="Administration.users.display('I')">I</a>&nbsp;
+<a href='#' onclick="Administration.users.display('J')">J</a>&nbsp;
+<a href='#' onclick="Administration.users.display('K')">K</a>&nbsp;
+<a href='#' onclick="Administration.users.display('L')">L</a>&nbsp;
+<a href='#' onclick="Administration.users.display('M')">M</a>&nbsp;
+<a href='#' onclick="Administration.users.display('N')">N</a>&nbsp;
+<a href='#' onclick="Administration.users.display('O')">O</a>&nbsp;
+<a href='#' onclick="Administration.users.display('P')">P</a>&nbsp;
+<a href='#' onclick="Administration.users.display('Q')">Q</a>&nbsp;
+<a href='#' onclick="Administration.users.display('R')">R</a>&nbsp;
+<a href='#' onclick="Administration.users.display('S')">S</a>&nbsp;
+<a href='#' onclick="Administration.users.display('T')">T</a>&nbsp;
+<a href='#' onclick="Administration.users.display('U')">U</a>&nbsp;
+<a href='#' onclick="Administration.users.display('V')">V</a>&nbsp;
+<a href='#' onclick="Administration.users.display('W')">W</a>&nbsp;
+<a href='#' onclick="Administration.users.display('X')">X</a>&nbsp;
+<a href='#' onclick="Administration.users.display('Y')">Y</a>&nbsp;
+<a href='#' onclick="Administration.users.display('Z')">Z</a>&nbsp;
+<select name="user_role" id="user_role" style="color: #333; display: inling-block; padding: 2px; background-color: lightcyan; border: 1px solid #aaf; border-radius: 4px; margin-left: 5px">
+    <option value=""  selected='true'>Role (optional)</option>
+    {% for role in roles %}
+        <option value="{{ role.id }}">{{ role.role }}</option>
+    {% endfor %}
+</select>
+</div>
+
+<table style='width: 100%;' cellspacing='1' cellpadding='2'>
+    <tr style='background-color: #333; color: ghostwhite; font-size: .8em'>
+        <th>User Name</th>
+        <th>Last Name, First Name</th>
+        {% for role in roles %}
+         <th style="text-align: center">{{ role.role }}</th><!-- Add a BR where there is a space  -->
+        {% endfor %}
+        <th style="text-align: center; color: red">Administrator</th>
+    </tr>    
+    {% for key,user in users.list() %}
+
+        <tr style='background-color: rgba(202,202,202,{{ cycle(['.2','.4'],key) }}); font-size: .9em'>
+            <td style="padding: 4px 2px 4px 2px; color: #333">
+                {{ user.user_name }}
+            </td>
+            <td style="padding: 4px 2px 4px 2px; color: #333">
+                <a href="#" title="ID: [{{ user.id }}] {{ user.user_name }}" onclick="Administration.users.view('{{ user.id }}'); return false" style="color: {% if (user.account_status == 'L') %} red; {% else %} #333; {% endif %} ">
+                    {{ user.last_name }}, {{ user.first_name }}
+                </a>
+            </td>
+            {% for role in roles %}
+                <td align='center'>
+                    <input type='checkbox' name='role_{{ user.id }}_{{ role.id }}' id='role_{{ user.id }}_{{ role.id }}' value='Y'
+                           onclick='Administration.user.role(this,"{{ user.id }}","{{ role.id }}");'
+                           title="Checking this box will make {{ user.first_name }} {{ user.last_name }} a {{ role.role }}." 
+                    />
+                </td>
+            {% endfor %}
+            <td align='center'>
+                <input type='checkbox' name='role_{{ user.id }}_adminstrator' id='role_{{ user.id }}_administrator' value='Y' {% if (user.admin_id) %}checked="checked"{% endif %}
+                       onclick='Administration.user.promote("{{ user.id }});'
+                       title="Checking this box will make {{ user.first_name }} {{ user.last_name }} a APPLICATION ADMINISTRATOR." 
+                />
+            </td>
+            
+        </tr>
+    {% endfor %}
+</table>
+<script type="text/javascript">    
+{% for role in user_roles.fetch() %}
+    if ($E('role_{{ role.user_id }}_{{ role.role_id }}')) {
+        $E('role_{{ role.user_id }}_{{ role.role_id }}').checked = true;
+    }
+{% endfor %}
+$('#user_role').on('change',function () {
+    Administration.users.display(Administration.users.starts_with);
+});
+{% if (users.getRoleId())%}
+    $('#user_role').val('{{ users.getRoleId() }}');
+{% endif %}
+</script>

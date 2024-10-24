@@ -160,10 +160,14 @@ SQL;
                     , a.logged_in
                     , a.account_status
                     , a.login_attempts
-                    , b.*                
+                    , b.*
+                    , c.id as admin_id
               from humble_users as a
               left outer join humble_user_identification as b
                 on a.id = b.id
+              left outer join admin_users as c
+                on a.id = c.id
+                {$search_clause}
         SQL;
         return $this->query($query);
     }

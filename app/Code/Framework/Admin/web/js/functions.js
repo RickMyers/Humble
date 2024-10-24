@@ -123,7 +123,7 @@ var Functions = (() => {
                         users: () => {
                              let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/user/home')).add('window_id',win.id).then((response) => {
-                                win._static(true)._title('Manage Users')._open(response);
+                                win._static(true)._scroll(true)._title('Manage Users')._open(response);
                             }).post();
                         }
                     },
