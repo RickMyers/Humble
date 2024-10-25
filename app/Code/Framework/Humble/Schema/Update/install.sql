@@ -13,7 +13,7 @@ MySQL - 5.5.15 : Database - humble
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 /*Data for the table `humble_categories` */
-drop table if exists humble_categories;
+
 insert  into `humble_categories`(`id`,`text`) values
 (1,'Logical Model'),
 (2,'Entity'),
@@ -22,7 +22,7 @@ insert  into `humble_categories`(`id`,`text`) values
 (5,'Other');
 
 /*Data for the table `humble_packages` */
-drop table if exists humble_packages;
+
 insert  into `humble_packages`(`id`,`text`) values
 (1,'humble'),
 (2,'Workflow Editor'),
