@@ -27,13 +27,13 @@ The next thing you should consider is moving your HTACCESS file to inline rather
 Below is the default .htaccess file for the Humble main website (this site).  This file is set up to run as you see below after you do the normal install, but there's a much better (and faster)
 way to configure your .htaccess file... First though, here's a normal .htaccess file sitting in the root of your application
 <br /><br />
-    <div widget="codeBox" widgetScroll="100%" lang="json" lexicon="/pages/js/lang/Htaccess/config.json" source="/pages/code/Htaccess/sample.txt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="json" lexicon="/web/js/lang/Htaccess/config.json" source="/pages/code/Htaccess/sample.txt" class="humble-code">
 
     </div>
 <br /><br />
 A better way of doing this is to comment out each line from the default .htaccess file (or just delete it, but the system may put it back on patching), and then move the .htaccess file
 values into your Apache VHOST configuration as shown below...<br /><br />
-    <div widget="codeBox" widgetScroll="100%" lang="vhost" lexicon="/pages/js/lang/Htaccess/vhost.json" source="/pages/code/Htaccess/vhost.txt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="vhost" lexicon="/web/js/lang/Htaccess/vhost.json" source="/pages/code/Htaccess/vhost.txt" class="humble-code">
 
     </div>
 <br /><br />

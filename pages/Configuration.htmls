@@ -14,7 +14,7 @@ different purpose.  Here we will go through the various sections one at a time, 
 you can run with the values provided by the wizard, but there are sections that do require more frequent changes than others.
 <div class="humble-section-header">Complete Configuration File</div>
 First, let's take a look at a complete configuration file:
-    <div widget="codeBox" widgetScroll="50%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/complete.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="50%" lang="xml" lexicon="/web/js/lang/Configuration/complete.json" source="/pages/code/Configuration/complete.xmltxt" class="humble-code">
 
     </div>
 <br />
@@ -23,20 +23,20 @@ the namespace along with the component name.  The namespace <b><i>*is*</i></b> u
 <div class="humble-section-header">Header Section</div>
 The header section of the configuration file has information that is displayed on the <a href="Administration.htmls">Administration</a> page.  This information identifies the author, the name and purpose of the module, and
 any pertinent contact information.
-    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/header.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/web/js/lang/Configuration/complete.json" source="/pages/code/Configuration/header.xmltxt" class="humble-code">
 
     </div>
 <div class="humble-section-header">Meta-Data Section</div>
 The Meta-Data, or module section, contains information about the module, such as what package (directory) the module belongs to, the name of the module, which should be the name of the directory the module components are stored in.
 Which default templating engine to use, whether the module will rely on workflows (default "Yes"), whether it is a required module (meaning enabled by default), and the order of installation/updating in the weight.  The greater the weight,
 the lower in order (or later) the module will be installed or updated.
-    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/meta.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/web/js/lang/Configuration/complete.json" source="/pages/code/Configuration/meta.xmltxt" class="humble-code">
 
     </div>
 
 <div class="humble-section-header">Structure Section</div>
 The structure section defines the layout of the module.  It is best to just run with the default structure (meaning no updating of this section is required), since not a whole lot of testing has been done with modules using different structures.
-    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/structure.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/web/js/lang/Configuration/complete.json" source="/pages/code/Configuration/structure.xmltxt" class="humble-code">
 
     </div>
 
@@ -46,14 +46,14 @@ prefix the same as the namespace, but with an underscore (_) appended to the end
 If polyglot behavior is desired, you will need to specify the MongoDB database, and the convention here is to use the namespace value.  Finally, for every table/collection you wish to manage under this module's namespace, an
 entry will have to be made in the entities section as shown below.  Just the name of the table/collection is required (without the prefix).  You can also set the flag for whether polyglot behavior is turned on by default (a value of 'Y' for the polyglot attribute).
 It should be noted that polyglot behavior can be turned on or off at any time, and this will be explained more in the <a href="Polyglot.htmls">Polyglot Persistence</a> documentation.
-    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/orm.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/web/js/lang/Configuration/complete.json" source="/pages/code/Configuration/orm.xmltxt" class="humble-code">
 
     </div>
 
 <div class="humble-section-header">Event Section</div>
 This section is one of the three ways to register events that later you can set listeners for.  The other two ways are from a Model (PHP) and from a Controller (XML).  Here you can set the name of the event to listen for and a
 descriptive comment as to what the event is about.  Later, when defining a workflow, you will be able to set the events named here as a trigger for the workflow.
-    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/complete.json" source="/pages/code/Configuration/events.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/web/js/lang/Configuration/complete.json" source="/pages/code/Configuration/events.xmltxt" class="humble-code">
 
     </div>
 
@@ -66,7 +66,7 @@ a set of components and can be defined in any module.   For example, this hook:<
 </p><br />
 Will load the five JavaScript files as shown below, and any other JavaScript libraries defined in other modules, and the order in which they will be sent to the client is defined by their <i>weight</i> attribute.  The fuchsia
 colored XML tags below are the hooks:
-    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Configuration/web.json" source="/pages/code/Configuration/web.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/web/js/lang/Configuration/web.json" source="/pages/code/Configuration/web.xmltxt" class="humble-code">
 
     </div><br />
 <p>

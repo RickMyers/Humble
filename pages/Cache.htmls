@@ -14,7 +14,7 @@ Though optional, it is highly recommended that you utilize a memcache instance w
 will be retrieved from the MySQL DB, which has unnecessary overhead for static resources.<br />
 <br />
 Additionally, if Memcache is utilized, the developer will be able to use caching in their own modules and apps.  The API for utilizing Memcache is done through a single static method and is shown below:<br /><br />
-    <div widget="codeBox" widgetScroll="100%" lang="php" lexicon="/pages/js/ColorizerLanguages.json" source="/pages/code/Memcache/example.phptxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="php" lexicon="/web/js/ColorizerLanguages.json" source="/pages/code/Memcache/example.phptxt" class="humble-code">
 
     </div>
 <br /><br />

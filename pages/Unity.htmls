@@ -26,13 +26,13 @@ the pagination features for Unity are absolutely the easiest there are.  But wha
         <br /><b><i>namespace</i>_table_name</b><br /><br />
     </ul>
     2) Every entity will be defined with the following fields:
-    <ul><br /><div widget="codeBox" widgetScroll="100%" lang="sql" lexicon="/pages/js/lang/Unity/schema.json" source="/pages/code/Unity/schema.txt" class="humble-code">
+    <ul><br /><div widget="codeBox" widgetScroll="100%" lang="sql" lexicon="/web/js/lang/Unity/schema.json" source="/pages/code/Unity/schema.txt" class="humble-code">
 
     </div>
     </ul><br />
     3) Each entity has to be registered in the /etc/config.xml file (per module and namespace) to be managed by Unity:
     <ul><br />
-    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Unity/configuration.json" source="/pages/code/Unity/configuration.txt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/web/js/lang/Unity/configuration.json" source="/pages/code/Unity/configuration.txt" class="humble-code">
 
     </div>
     </ul><br />
@@ -48,7 +48,7 @@ After you have defined your entity and registered the entity, you are ready to b
     1) From within the XML Controllers.<br /><br />
     <ul>
         We use the &lt;entity /&gt; tag to reference a registered entity, as shown below:<br /><br />
-        <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/pages/js/lang/Unity/entity.json" source="/pages/code/Unity/entity.txt" class="humble-code">
+        <div widget="codeBox" widgetScroll="100%" lang="xml" lexicon="/web/js/lang/Unity/entity.json" source="/pages/code/Unity/entity.txt" class="humble-code">
 
         </div><br /><br />
         From the above example, we are accessing the entity 'humble_user_identification' by specifying the namespace ("humble") and class ("user/identification").  We are creating

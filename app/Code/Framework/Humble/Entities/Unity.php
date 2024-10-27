@@ -911,7 +911,7 @@ SQL;
         }
         $noLimit      = [];
         $words        = explode(' ',trim($query));
-        $words[0]     = strtoupper($words[0]);
+        $words[0]     = strtoupper(trim($words[0]));
         $noLimitQuery = ($this->_noLimitQuery) ? $this->_noLimitQuery : $query; //used for pagination
         if ($words[0]==='SELECT') {
             if ($this->_page()) {

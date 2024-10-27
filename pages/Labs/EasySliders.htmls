@@ -44,7 +44,7 @@
 
 <br /><br />
 <b>Source Code</b>:
-<div widget="codeBox" widgetScroll="8%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Admin/web/js/Sliders.js" class="humble-code"></div>
+<div widget="codeBox" widgetScroll="8%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Admin/web/js/Sliders.js" class="humble-code"></div>
 
 
 

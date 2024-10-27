@@ -35,7 +35,7 @@
 
 <br /><br />
 <b>Source Code</b>:
-<div widget="codeBox" widgetScroll="20%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/EasyRTC.js" class="humble-code"></div>
+<div widget="codeBox" widgetScroll="20%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/EasyRTC.js" class="humble-code"></div>
 
 
 

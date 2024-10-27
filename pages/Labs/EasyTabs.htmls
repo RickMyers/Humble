@@ -18,7 +18,7 @@
 <div>
     <b>Invocation</b>:
 </div>
-<div widget="codeBox" widgetScroll="100%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" class="humble-code">
+<div widget="codeBox" widgetScroll="100%" lang="js" lexicon="/web/js/ColorizerLanguages.json" class="humble-code">
     let tabs = new EasyTab('tab-bar',130);
     tabs.add('First Tab',false,'tab-1');
     tabs.add('Second Tab',function () { alert('You clicked tab 2'); },'tab-2',160);
@@ -41,7 +41,7 @@
 </script>
 <br /><br />
 <b>Source Code</b>:
-<div widget="codeBox" widgetScroll="16%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/EasyTabs.js" class="humble-code"></div>
+<div widget="codeBox" widgetScroll="16%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/EasyTabs.js" class="humble-code"></div>
 
 
 

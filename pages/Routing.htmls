@@ -38,7 +38,7 @@ the specific individual actions/views that are public.<br /><br />
 
 The example below demonstrates setting a specific URI, controller, and namespace to be public:
 
-    <div widget="codeBox" widgetScroll="100%" lang="json" lexicon="/pages/js/lang/Routing/allowed.json" source="/pages/code/Routing/allowed.jsontxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="100%" lang="json" lexicon="/web/js/lang/Routing/allowed.json" source="/pages/code/Routing/allowed.jsontxt" class="humble-code">
 
     </div>
 <br /><br /><br />

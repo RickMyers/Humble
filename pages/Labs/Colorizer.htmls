@@ -22,11 +22,11 @@
     <b>Invocation</b>:
 </div>
 <div class='humble-code-like' style='text-align: left'>
-&lt;div widget="codeBox" widgetScroll="35%" lang="xml" lexicon="/pages/js/lang/Controllers/xml.json" source="/pages/code/Controllers/sample.xmltxt" class="humble-code"&gt;&lt;/div&gt;
+&lt;div widget="codeBox" widgetScroll="35%" lang="xml" lexicon="/web/js/lang/Controllers/xml.json" source="/pages/code/Controllers/sample.xmltxt" class="humble-code"&gt;&lt;/div&gt;
 </div>
 <br /><br />
 <b>Source Code</b>:
-<div widget="codeBox" widgetScroll="16%" lang="js" lexicon="/pages/js/ColorizerLanguages.json" style='height: 400px' source="/pages/js/Colorizer.js" class="humble-code"></div>
+<div widget="codeBox" widgetScroll="16%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/web/js/Colorizer.js" class="humble-code"></div>
 
 
 </div>

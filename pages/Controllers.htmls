@@ -39,7 +39,7 @@ After you have created your controller, there will be a new folder with the same
 In the new folder you will find a folder with the name of the templating engine selected, and an empty file with the name of the action you created, using the appropriate file extension.
 <div class='humble-section-header'>A Sample Controller</div>
 For reference, we are going to use this simple controller below:
-    <div widget="codeBox" widgetScroll="35%" lang="xml" lexicon="/pages/js/lang/Controllers/xml.json" source="/pages/code/Controllers/sample.xmltxt" class="humble-code">
+    <div widget="codeBox" widgetScroll="35%" lang="xml" lexicon="/web/js/lang/Controllers/xml.json" source="/pages/code/Controllers/sample.xmltxt" class="humble-code">
 
     </div>
 A controller contains one to many actions.  Each action has at a minimum a name which constitutes the third segment in our routing URI scheme (see <a target='_BLANK' href='/pages/Routing.htmls'>Routing Basics</a>).
