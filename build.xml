@@ -318,6 +318,32 @@
 
     <!--#########################################################################################
         #                                                                                       #
+        #  SAVES OFF THINGS THAT NEED TO BE PRESERVED BEFORE AND AFTER BUILDS                   #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="save" depends="create" description="Assigns ">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="/home/codeship/build.sh save" />
+        </target>
+        
+    <!--#########################################################################################
+        #                                                                                       #
+        #  RESTORES THE THINGS THAT NEEDED TO BE PRESERVED BEFORE AND AFTER BUILDS              #
+        #                                                                                       #
+        #########################################################################################-->
+        <target name="restore" depends="save" description="Copies important files out of modules to restore them after the deployment is complete">
+            <sshexec host="${server}"
+                  trust="true"
+                  username="${uid}"
+                  password="${pwd}"
+                  command="/home/codeship/build.sh restore" />
+        </target>
+
+    <!--#########################################################################################
+        #                                                                                       #
         #  CREATES A DOWNLOADABLE PACKAGE DISTRO BASED ON CURRENT VERSION OF FRAMEWORK          #
         #                                                                                       #
         #########################################################################################-->
