@@ -8,7 +8,7 @@
  */
 export let Sliders        = []
 
-function Slider(divId,len,hgt,optId) {
+export function Slider(divId,len,hgt,optId) {
     sliderControl.init();   //go set the sizer
     var me                  = this;
     var intervalLength      = 0;  //we have to calc this...

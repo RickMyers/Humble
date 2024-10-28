@@ -37,6 +37,8 @@ var Heartbeat = (function ($) {
         },
         stop: function () {
             window.clearTimeout(pulseTimer);
+            $('#system_poll_stopped').css('display','block');
+            $('#system_poll_running').css('display','none');
         },
         register: function (namespace,element,resource,callback,interval,arguments) {
             /**
@@ -90,6 +92,8 @@ var Heartbeat = (function ($) {
             if (indicator) {
                 $('#'+indicator.id).fadeOut();
             }
+            $('#system_poll_stopped').css('display','none');
+            $('#system_poll_running').css('display','block');            
         },
         pulse: function () {
             /*

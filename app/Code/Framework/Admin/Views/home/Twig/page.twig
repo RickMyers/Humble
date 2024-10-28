@@ -1,5 +1,4 @@
 <html>
-
     <head>
         <link rel='stylesheet' href='/css/admin'/>
         <link rel='stylesheet' href='/css/humble-bootstrap'/>
@@ -19,9 +18,10 @@
         }            
         </style>
         <script type="module">
-            import { administration } from '/mjs/admin/functions.js';
+            import { DigitalClock,administration } from '/mjs/admin/functions.js';
             import { Desktop } from '/mjs/paradigm/DesktopModule.js';
             window.Administration = administration;
+            window.DigitalClock = DigitalClock;
             window.Desktop = Desktop;
             $(window).ready(Desktop.init);
             $(document).ready(Administration.init);
@@ -69,8 +69,8 @@
                     }
                     for (i in fp) {
                         fp[i].reader.readAsBinaryString(files[i]);
-                        fp[i].reader.onload = (function (num) {
-                            return function (event) {
+                        fp[i].reader.onload = ((num) => {
+                            return (event) => {
                                 fp[num].converted = btoa(event.target.result);
                                 let isDone = true;
                                 for (let j in fp) {
@@ -80,7 +80,7 @@
                                     callback(fp);
                                 }
                             };
-                           })(i);
+                        })(i);
                     }
                 }
             },
@@ -172,6 +172,9 @@
         }
         window.onload = () => {
             resize();
+            let now = new Date();
+            new DigitalClock('admin-clock',now.getHours(),now.getMinutes());
+            $('#admin-indicators').css('left',(window.innerWidth - $E('admin-indicators').offsetWidth)/2);
         }
         window.onresize = resize;
     </script>
@@ -179,8 +182,20 @@
     <body>
     <div id="paradigm-virtual-desktop" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;">                        
         <div id="page" class="box-border flex flex-col bg-white">
+            <div style="z-index: 9" id='admin-indicators' class='text-white inline-block rounded-md content-center pt-1 pb-1 pr-2 pl-2 whitespace-nowrap absolute grid rid-rows-1 grid-flow-col gap 4' >
+
+                <div class="pr-3"><img src="/images/humble/green_status.png" title="Cadence is Running" class="hidden h-4 float-left mt-1.5 mr-2" id="cadence_running" />
+                    <img src="/images/humble/red_status.png" title="Cadence is Stopped" class="block h-4 float-left mt-1.5 mr-2" id="cadence_stopped" /> Cadence</div>
+                <div class="pr-3"><img src="/images/humble/green_status.png" title="Message Hub Running" class="hidden h-4 float-left mt-1.5 mr-2" id="message_hub_running" />
+                    <img src="/images/humble/red_status.png" title="Message Hub Stopped" class="block h-4 float-left mt-1.5 mr-2" id="message_hub_stopped" /> Message Hub</div>
+                <div class="pr-3"><img src="/images/humble/green_status.png" title="Cache Server Running" class="hidden h-4 float-left mt-1.5 mr-2" id="cache_server_running" />
+                    <img src="/images/humble/red_status.png" title="Cache Server Stopped" class="block h-4 float-left mt-1.5 mr-2" id="cache_server_stopped" />Cache Server</div>
+                <div class="pr-3"><img src="/images/humble/green_status.png" title="System Poll Running" class="hidden h-4 float-left mt-1.5 mr-2" id="system_poll_running" />
+                    <img src="/images/humble/red_status.png" title="System Poll Stopped" class="block h-4 float-left mt-1.5 mr-2" id="system_poll_stopped" />System Poll</div>
+            </div>              
             <nav id="navigation-bar" class="relative flex-row bg-gray-100" style="z-index: 5">
-                <div id='admin-clock' class="float-right">Clock</div>
+                <div id='admin-clock' class="float-right text-3xl text-white"></div>
+              
                 <ul class='relative cursor-pointer'>
                 <li style='padding-top: 6px'><img src='/images/humble/djikstra_light.png' style='height: 30px; position: relative; top: 3px; left: 5px' /></li>
                 <li class='active'><a href='#'>Start...</a>
@@ -295,18 +310,6 @@
                                 <a href="#" onclick="Administration.user.details();return false" title="click to review user details">{{ user.first_name }} {{ user.last_name }}</a>
                             </div>
                         </div>       
-                    <div class="text-left text-nowrap mt-4">
-                        <img src="/images/humble/green_status.png" title="Cadence is Running" class="float-left hidden h-4 align-top mr-1"  id="cadence_running"
-                        /><img src="/images/humble/red_status.png" title="Cadence is Stopped" class="float-left block h-4 align-top mr-1"  id="cadence_stopped" /> Cadence
-                    </div>
-                    <div class="text-left text-nowrap">
-                        <img src="/images/humble/green_status.png" title="Message Hub Running" class="float-left hidden h-4 align-top mr-1" id="message_hub_running"
-                        /><img src="/images/humble/red_status.png" title="Message Hub Stopped" class="float-left block h-4 align-top mr-1" id="message_hub_stopped" /> Message Hub
-                    </div>
-                    <div class="text-left text-nowrap">
-                        <img src="/images/humble/green_status.png" title="Cache Server Running" class="float-left hidden h-4 align-top mr-1" id="cache_server_running"
-                        /><img src="/images/humble/red_status.png" title="Cache Server Stopped" class="float-left block h-4 align-top mr-1" id="cache_server_stopped" /> Cache Server
-                    </div>
                     <div id='server_status' class="flex flex-row justify-center h-70px whitespace-nowrap mt-4" >
                         <div class="inline text-center">
                             <div class="text-sm font-serif pr-4" id="server-cpu-load">---</div>

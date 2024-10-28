@@ -144,11 +144,11 @@ function recurseDirectory($dir=[]) {
     return $list;
 }
 //------------------------------------------------------------------------------
-function scanModel($file=false) {
-    if ($file) {
-        logMessage("Scanning ".$models[$file]."\n");
+function scanModel($file=false,$namespace=false) {
+    if ($file && $namespace) {
+        logMessage("Scanning ".$file."\n");
         try {
-            $installer->registerWorkflowComponents($module['namespace']);
+            $installer->registerWorkflowComponents($namespace);
         } catch (Exception $ex) {
             logMessage($ex->getCode().': '.$ex->getMessage());
         }        
@@ -171,11 +171,11 @@ function scanModelsForChanges() {
                 }
                 if (isset($models[$file])) {
                     if ($models[$file] !== filemtime($file)) {
-                        scanModel($file);
+                        scanModel($file,$module['namespace']);
                         $models[$file] = filemtime($file);
                     }
                 } else {
-                    scanModel($file);
+                    scanModel($file,$module['namespace']);
                     $models[$file] = filemtime($file);
                 }
                 clearstatcache(true,$file);
