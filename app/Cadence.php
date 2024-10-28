@@ -145,6 +145,7 @@ function recurseDirectory($dir=[]) {
 }
 //------------------------------------------------------------------------------
 function scanModel($file=false,$namespace=false) {
+    global $installer;
     if ($file && $namespace) {
         logMessage("Scanning ".$file."\n");
         try {
