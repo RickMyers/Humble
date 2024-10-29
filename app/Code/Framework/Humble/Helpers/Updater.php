@@ -263,10 +263,10 @@ class Updater extends Installer
      */
     protected function cacheMetaData($project=false) {
         $project = ($project) ? $project : \Environment::getProject();
-        Humble::cache('public_routes',json_encode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json')));
+        Humble::cache('public_routes',json_decode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json')));
         Humble::cache('application',\Environment::getApplication());
-        Humble::cache('api_policy',json_encode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json')));
-        Humble::cache('project',json_encode(file_get_contents('../Humble.project')));
+        Humble::cache('api_policy',json_decode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json')));
+        Humble::cache('project',json_decode(file_get_contents('../Humble.project')));
     }
     
     /**
