@@ -134,6 +134,8 @@ class Users extends Entity
                     , a.logged_in
                     , a.account_status
                     , a.login_attempts
+                    , a.authenticated
+                    , a.reset_password_token
                     , b.*
                   from humble_users as a
                   left outer join humble_user_identification as b

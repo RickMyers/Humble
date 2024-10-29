@@ -143,6 +143,14 @@
         
         <!-- ############################################################### -->
         
+        <action name="info" passalong="window_id">
+            <description>Gets relavent information about a particular user</description>
+            <entity class="users" id="user">
+                <parameter name="id" value="user_id" source="request" required="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->                
 
         <action name="reset">
             <description>Password Reset</description>

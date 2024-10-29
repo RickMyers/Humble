@@ -46,19 +46,24 @@ var Functions = (() => {
                                 Pagination.set('argus-users',this.getPagination());
                             }).post()
                         },
-                        home: function () {
+                        home: () => {
                             Argus.status('Loading User Display...');
-                            (new EasyAjax('/admin/user/home')).then(function (response) {
+                            (new EasyAjax('/admin/user/home')).then((response) => {
                                 $('#sub-container').html(response);
                                 Argus.status('');
                             }).post();
                         },
-                        view: function (user_id) {
+                        view: (user_id) => {
                             var win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/admin/user/view')).add('user_id',user_id).add('window_id',win.id).then(function (response) {
-                                win._open(response);
+                            (new EasyAjax('/admin/user/info')).add('user_id',user_id).add('window_id',win.id).then((response) => {
+                                win._title('User Profile')._open(response);
                             }).post();                
-                        }                        
+                        },    
+                        list:   () => {
+                            (new EasyAjax('/admin/users/list')).then((response) => {
+                                $E('user_list').innerHTML = response;
+                            }).post();
+                        }                      
                     },
                     desktop: {
                         toggle: (() => {
@@ -128,7 +133,7 @@ var Functions = (() => {
                         }
                     },
                     cadence: {
-                        action: function (action) {
+                        action: (action) => {
                             if (action) {
                                 (new EasyAjax('/admin/cadence/'+action)).then((response) => {
                                     response = JSON.parse(response);
@@ -154,7 +159,7 @@ var Functions = (() => {
                         }
                     },
                     change: {
-                        state: function (cs) {
+                        state: (cs) => {
                             if (confirm('Would you like to put the site in '+$(cs).val()+' mode?')) {
                                 (new EasyAjax('/admin/system/state')).add('state',$(cs).val()).then((response) => {
                                     console.log(response);
@@ -171,18 +176,18 @@ var Functions = (() => {
                         }
                     },
                     module: {
-                        import: function (namespace) {
+                        import: (namespace) => {
                             let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/actions/importpage')).add('namespace',namespace).then((response) => {
                                 win._open(response)._scroll(true)._title('Import Data');
                             }).post();
                         },
-                        export: function (namespace) {
+                        export:(namespace) => {
                             if (confirm('Would you like to export (download) data for the module '+namespace+"?")) {
                                 window.open('/admin/actions/export?namespace='+namespace);
                             }
                         },
-                        install: function (namespace) {
+                        install: (namespace) => {
                             let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/module/install')).add('namespace',namespace).then((response) => {
                                 win._open(response)._scroll(true)._title('Install Module');
@@ -493,19 +498,6 @@ var Functions = (() => {
                             (new EasyAjax('/admin/user/details')).then((response) => {
                                 win._static(true)._scroll(true)._open(response);
                             }).get();
-                        }
-                    },
-                    users:      {
-                        list:   () => {
-                            (new EasyAjax('/admin/users/list')).then((response) => {
-                                $E('user_list').innerHTML = response;
-                            }).post();
-                        },
-                        remove: function (uid) {
-                            var ss = prompt('Please enter the super secret pass phrase');
-                            (new EasyAjax('/admin/users/remove')).add('secret',ss).add('uid',uid).then((response) => {
-                                $E('user_list').innerHTML = response;
-                            }).post();
                         }
                     },
                     globalAction: () => {

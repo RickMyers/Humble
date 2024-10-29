@@ -302,7 +302,7 @@
                     </div>
                     <div class='relative'>
                         <div class='rounded-full relative overflow-hidden h-64 border-2' id='user-portrait'>
-                            <img id="avatar_image" onload="tools.image.align(this)" src='{% if (user.avatar_image)  %}{{ user.avatar_image }}{% else %}/images/admin/placeholder-.png{% endif %}' class="m-auto w-full z-1" />
+                            <img id="avatar_image" onload="tools.image.align(this)" src='{% if (user.avatar_image)  %}{{ user.avatar_image }}{% else %}/images/admin/placeholder-{{ user.gender }}.png{% endif %}' class="m-auto w-full z-1" />
                         </div>
                     </div>
                         <div id='user-identification'>
@@ -347,7 +347,7 @@
                             <div class='w-full bold pt-2 pb-2 text-lg clear-both font-black border-2 border-solid border-black bg-white'>Package: <b> {{ package }} </b></div><div class='h-1'></div>
                             {% for module in modules %}
                                 {% set data = directory.moduleInformation(module.namespace) %}
-                                <div class='w-auto inline-block mr-2border-black border-2'>
+                                <div class='w-auto text-md inline-block mr-2 border-black border-2'>
                                     <div class='from-gray-50 pt-2 pb-2'>
                                         <div class="float-right mr-1">
                                             <table>
@@ -388,7 +388,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="w-64 border-solid border-black border-2"><div class='text-sm font-mono'>Namespace</div><div class="text-base font-sans pl-4"><b>{{ module.namespace  }}</b></div></td>
-                                                <td class="w-64 border-solid border-black border-2"><div class='text-sm font-mono'>Author</div><div class="text-base font-sans pl-4">{{ module.author }}</div></td>
+                                                <td class="w-64 border-solid border-black border-2"><div class='text-sm font-mono bl-2 border-slate-600'>Author</div><div class="text-base font-sans pl-4">{{ module.author }}</div></td>
                                                 <td class="w-64 border-solid border-black border-2"><div class='text-sm font-mono'>Version</div><div class="text-base font-sans pl-4">{{ module.version }}</div></td>
                                             </tr>
                                             <tr>
