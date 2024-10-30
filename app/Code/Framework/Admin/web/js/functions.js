@@ -41,9 +41,11 @@ var Functions = (() => {
                         display: (starts_with) => {
                             Administration.users.starts_with = (starts_with) ? starts_with : '';
                             var win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/admin/user/display')).add('role_id',$('#user_role').val()).add('page',1).add('rows',15).add('starts_with',Administration.users.starts_with).then((response) => {
-                                $('#admin-users-display-area').html(response);
-                                Pagination.set('argus-users',this.getPagination());
+                            var ao = new EasyAjax('/admin/user/roles');
+                            ao.add('window_id',win.id).add('role_id',$('#user_role').val()).add('page',1).add('rows',25).add('starts_with',Administration.users.starts_with).then((response) => {
+                                $('#users_and_roles_tab').html(response);
+                                console.log(ao.getPagination());
+                                Pagination.set('admin-users',ao.getPagination());
                             }).post()
                         },
                         home: () => {

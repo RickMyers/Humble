@@ -7,14 +7,13 @@
 <script>
     (() => {
         let tabs = new EasyTab('users_and_roles_nav',120);
-        let f = (() => {
+        tabs.add('Users &amp; Roles',false,'users_and_roles_tab');
+        let f =((page,rows,win) => {
             return () => {
-                (new EasyAjax('/admin/user/roles')).then((response) => {
-                    $('#users_and_roles_tab').html(response);
-                }).get();
-            };
-        })();
-        tabs.add('Users &amp; Roles',f,'users_and_roles_tab');
+                Administration.users.display();
+            }
+        })(1,25,'{{ window_id }}');
+        Pagination.init('admin-users',f,true);
         let g = (() => {
             return () => {
                 (new EasyAjax('/admin/roles/list')).then((response) => {
@@ -31,5 +30,6 @@
             };
         })();
         tabs.add('New User',g,'new_user_tab');
+        tabs.tabClick(0);
     })();
 </script>

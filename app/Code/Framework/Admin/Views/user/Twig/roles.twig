@@ -95,16 +95,17 @@
         </tr>
     {% endfor %}
 </table>
-    <div style='background-color: #333; color: ghostwhite; font-size: 1.1em; text-align: center; padding: 2px'>
-        <div style="float: left">Rows {{ users._fromRow() }} - {{ users._toRow() }} of {{ users._rowCount() }}</div>
-        <div style="float: right">Page {{ users._page() }} of {{ users._pages() }}</div>
-        <div style="background-color: ghostwhite; color: #333; padding: 5px; border-radius: 10px; font-weight: bold; display: inline-block"> < </div>
-        <div style="background-color: ghostwhite; color: #333; padding: 5px; border-radius: 10px; font-weight: bold; display: inline-block"> << </div>
-        <div style="background-color: ghostwhite; color: #333; padding: 5px; border-radius: 10px; font-weight: bold; display: inline-block"> >></div>
-        <div style="background-color: ghostwhite; color: #333; padding: 5px; border-radius: 10px; font-weight: bold; display: inline-block"> > </div>
-    </div>    
+<div style='background-color: #333; color: ghostwhite; font-size: 1.1em; text-align: center; padding: 2px'>
+    <div style="float: left">Rows <span id="admin-users-from-row"></span> - <span id="admin-users-to-row"></span> of <span id="admin-users-rows"></span></div>
+    <div style="float: right">Page <span id="admin-users-page"></span> of <span id="admin-users-pages"></span></div>
+    <div style="background-color: ghostwhite; color: #333; padding: 5px; border-radius: 10px; font-weight: bold; display: inline-block; cursor: pointer" id="admin-users-previous"> < </div>
+    <div style="background-color: ghostwhite; color: #333; padding: 5px; border-radius: 10px; font-weight: bold; display: inline-block; cursor: pointer" id="admin-users-first"> << </div>
+    <div style="background-color: ghostwhite; color: #333; padding: 5px; border-radius: 10px; font-weight: bold; display: inline-block; cursor: pointer" id="admin-users-last"> >></div>
+    <div style="background-color: ghostwhite; color: #333; padding: 5px; border-radius: 10px; font-weight: bold; display: inline-block; cursor: pointer" id="admin-users-next"> > </div>
+</div>    
 
 <script type="text/javascript">    
+    //alert('{{ window_id }}');
 {% for role in user_roles.fetch() %}
     if ($E('role_{{ role.user_id }}_{{ role.role_id }}')) {
         $E('role_{{ role.user_id }}_{{ role.role_id }}').checked = true;

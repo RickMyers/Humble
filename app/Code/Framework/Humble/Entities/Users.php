@@ -134,6 +134,7 @@ class Users extends Entity
                     , a.logged_in
                     , a.account_status
                     , a.login_attempts
+                    , a.logged_in
                     , a.authenticated
                     , a.reset_password_token
                     , b.*
@@ -162,6 +163,7 @@ SQL;
                     , a.logged_in
                     , a.account_status
                     , a.login_attempts
+                    , a.logged_in
                     , b.*
                     , c.id as admin_id
               from humble_users as a
