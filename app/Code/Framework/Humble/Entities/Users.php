@@ -173,6 +173,6 @@ SQL;
                 on a.id = c.id
                 {$search_clause}
         SQL;
-        return $this->query($query);
+        return $this->_polyglot(true)->query($query);
     }
 }

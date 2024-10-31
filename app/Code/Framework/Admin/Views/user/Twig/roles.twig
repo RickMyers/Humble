@@ -18,37 +18,37 @@
     <script type="text/javascript">
         $('#user-search-field').on("keydown",function (evt) {
             if (evt.keyCode == 13) {
-                Administration.users.display(evt.target.value);
+                Administration.users.search(evt.target.value);
             }        
         });
     </script>
 </div>
-<a href='#' onclick="Administration.users.display('A')">A</a>&nbsp;
-<a href='#' onclick="Administration.users.display('B')">B</a>&nbsp;
-<a href='#' onclick="Administration.users.display('C')">C</a>&nbsp;
-<a href='#' onclick="Administration.users.display('D')">D</a>&nbsp;
-<a href='#' onclick="Administration.users.display('E')">E</a>&nbsp;
-<a href='#' onclick="Administration.users.display('F')">F</a>&nbsp;
-<a href='#' onclick="Administration.users.display('G')">G</a>&nbsp;
-<a href='#' onclick="Administration.users.display('H')">H</a>&nbsp;
-<a href='#' onclick="Administration.users.display('I')">I</a>&nbsp;
-<a href='#' onclick="Administration.users.display('J')">J</a>&nbsp;
-<a href='#' onclick="Administration.users.display('K')">K</a>&nbsp;
-<a href='#' onclick="Administration.users.display('L')">L</a>&nbsp;
-<a href='#' onclick="Administration.users.display('M')">M</a>&nbsp;
-<a href='#' onclick="Administration.users.display('N')">N</a>&nbsp;
-<a href='#' onclick="Administration.users.display('O')">O</a>&nbsp;
-<a href='#' onclick="Administration.users.display('P')">P</a>&nbsp;
-<a href='#' onclick="Administration.users.display('Q')">Q</a>&nbsp;
-<a href='#' onclick="Administration.users.display('R')">R</a>&nbsp;
-<a href='#' onclick="Administration.users.display('S')">S</a>&nbsp;
-<a href='#' onclick="Administration.users.display('T')">T</a>&nbsp;
-<a href='#' onclick="Administration.users.display('U')">U</a>&nbsp;
-<a href='#' onclick="Administration.users.display('V')">V</a>&nbsp;
-<a href='#' onclick="Administration.users.display('W')">W</a>&nbsp;
-<a href='#' onclick="Administration.users.display('X')">X</a>&nbsp;
-<a href='#' onclick="Administration.users.display('Y')">Y</a>&nbsp;
-<a href='#' onclick="Administration.users.display('Z')">Z</a>&nbsp;
+<a href='#' onclick="Administration.users.search('A')">A</a>&nbsp;
+<a href='#' onclick="Administration.users.search('B')">B</a>&nbsp;
+<a href='#' onclick="Administration.users.search('C')">C</a>&nbsp;
+<a href='#' onclick="Administration.users.search('D')">D</a>&nbsp;
+<a href='#' onclick="Administration.users.search('E')">E</a>&nbsp;
+<a href='#' onclick="Administration.users.search('F')">F</a>&nbsp;
+<a href='#' onclick="Administration.users.search('G')">G</a>&nbsp;
+<a href='#' onclick="Administration.users.search('H')">H</a>&nbsp;
+<a href='#' onclick="Administration.users.search('I')">I</a>&nbsp;
+<a href='#' onclick="Administration.users.search('J')">J</a>&nbsp;
+<a href='#' onclick="Administration.users.search('K')">K</a>&nbsp;
+<a href='#' onclick="Administration.users.search('L')">L</a>&nbsp;
+<a href='#' onclick="Administration.users.search('M')">M</a>&nbsp;
+<a href='#' onclick="Administration.users.search('N')">N</a>&nbsp;
+<a href='#' onclick="Administration.users.search('O')">O</a>&nbsp;
+<a href='#' onclick="Administration.users.search('P')">P</a>&nbsp;
+<a href='#' onclick="Administration.users.search('Q')">Q</a>&nbsp;
+<a href='#' onclick="Administration.users.search('R')">R</a>&nbsp;
+<a href='#' onclick="Administration.users.search('S')">S</a>&nbsp;
+<a href='#' onclick="Administration.users.search('T')">T</a>&nbsp;
+<a href='#' onclick="Administration.users.search('U')">U</a>&nbsp;
+<a href='#' onclick="Administration.users.search('V')">V</a>&nbsp;
+<a href='#' onclick="Administration.users.search('W')">W</a>&nbsp;
+<a href='#' onclick="Administration.users.search('X')">X</a>&nbsp;
+<a href='#' onclick="Administration.users.search('Y')">Y</a>&nbsp;
+<a href='#' onclick="Administration.users.search('Z')">Z</a>&nbsp;
 <select name="user_role" id="user_role" style="color: #333; display: inling-block; padding: 2px; background-color: lightcyan; border: 1px solid #aaf; border-radius: 4px; margin-left: 5px">
     <option value=""  selected='true'>Role (optional)</option>
     {% for role in roles %}
@@ -105,14 +105,15 @@
 </div>    
 
 <script type="text/javascript">    
-    //alert('{{ window_id }}');
+    Pagination.init('admin-users',Administration.users.display,1,25,'{{ window_id }}',false);
+    
 {% for role in user_roles.fetch() %}
     if ($E('role_{{ role.user_id }}_{{ role.role_id }}')) {
         $E('role_{{ role.user_id }}_{{ role.role_id }}').checked = true;
     }
 {% endfor %}
-$('#user_role').on('change',function () {
-    Administration.users.display(Administration.users.starts_with);
+$('#user_role').on('change',() => {
+    Administration.users.search(Administration.users.starts_with);
 });
 {% if (users.getRoleId())%}
     $('#user_role').val('{{ users.getRoleId() }}');

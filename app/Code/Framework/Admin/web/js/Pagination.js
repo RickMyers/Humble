@@ -48,6 +48,7 @@ var Pagination = (function ($) {
                     if (Pagination.data[base_id]) {
                         Pagination.data[base_id].pages.current = (Pagination.data[base_id].pages.current < Pagination.data[base_id].pages.total) ? ++Pagination.data[base_id].pages.current : 1;
                         handler(Pagination.data[base_id].pages.current,rows,win);
+                        console.log(Pagination.data);
                     }
                 });
                 if (execute) {

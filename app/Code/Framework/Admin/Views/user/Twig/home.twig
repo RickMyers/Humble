@@ -1,19 +1,16 @@
-<div id="users_and_roles_nav">
-</div>
-<div id="users_and_roles_tab">
-</div>
+<div id="users_and_roles_nav"></div>
+<div id="users_and_roles_tab"></div>
 <div id="user_roles_tab"></div>
 <div id="new_user_tab"></div>
 <script>
     (() => {
         let tabs = new EasyTab('users_and_roles_nav',120);
-        tabs.add('Users &amp; Roles',false,'users_and_roles_tab');
-        let f =((page,rows,win) => {
+        let f = ((evt) => {
             return () => {
-                Administration.users.display();
+                Administration.users.search('');
             }
-        })(1,25,'{{ window_id }}');
-        Pagination.init('admin-users',f,true);
+        })();
+        tabs.add('Users &amp; Roles',f,'users_and_roles_tab');
         let g = (() => {
             return () => {
                 (new EasyAjax('/admin/roles/list')).then((response) => {
@@ -29,7 +26,7 @@
                 }).get();
             };
         })();
-        tabs.add('New User',g,'new_user_tab');
+        tabs.add('New User',h,'new_user_tab');
         tabs.tabClick(0);
     })();
 </script>

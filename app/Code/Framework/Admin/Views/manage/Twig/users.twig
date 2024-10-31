@@ -53,23 +53,34 @@
     <div class="{{ window_id }}-user-list w-full" style="background-color: aliceblue">
     </div>
     <div class="{{ window_id }}-controls text-center w-full text-lg" style="background-color: silver">
-        <input type="button" value="  <  " />
-        <input type="button" value="   <<  " />
-        <input type="button" value="   >>  " />
-        <input type="button" value="  >  " />
+        <input type="button" value="  <  " id="prev_button-{{ window_id }}" />
+        <input type="button" value="   <<  " id="first_button-{{ window_id }}" />
+        <input type="button" value="   >>  " id="last_button-{{ window_id }}" />
+        <input type="button" value="  >  " id="next_button-{{ window_id }}" />
     </div>
 </div>
+   
 <script>
+    alert('wtf?');
     (() => {
         let win = Desktop.window.list['{{ window_id }}'];
         win.resize((evt) => {
             $('.{{ window_id }}-user-list').css('height',win.content.height() - $('.{{ window_id }}-field-titles').height() - $('.{{ window_id }}-search-bar').height() - $('.{{ window_id }}-controls').height());
         });
         win.resize();
-        var ao = new EasyAjax('/admin/user/list/{{ type }}');
-        ao.add('window_id','{{ window_id }}').add('rows',5).add('page',1).then((response) => {
-            $('.{{ window_id }}-user-list').html(response);
-            console.log(ao.getPagination());
-        }).post();
+        let page = 1;
+        let rows = 25;
+        const goto(page) => {
+            var ao = new EasyAjax('/admin/user/list/{{ type }}');
+            ao.add('window_id','{{ window_id }}').add('rows',25).add('page',1).then((response) => {
+                $('.{{ window_id }}-user-list').html(response);
+                console.log(ao.getPagination());
+            }).post();
+            
+        }
+        goto(1);
+        let page = {{ }};
+        $('#prev_button-{{ window_id}} ').on('click',() => {
+        });
     })();
 </script>

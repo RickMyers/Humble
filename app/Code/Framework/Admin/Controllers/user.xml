@@ -40,7 +40,7 @@
 
         <!-- ############################################################### -->   
         
-        <action name='home'>
+        <action name='home' passalong="window_id">
             <description>The Humble administration home page</description>
             <entity namespace='humble' class='permissions' id='permissions' comment="fake class">
                 <parameter name='admin_id' value="admin_id"  source='session' default='N' />
@@ -130,7 +130,7 @@
 
         <!-- ############################################################### -->
 
-        <action name="roles" blocking="off">
+        <action name="roles" blocking="off" passalong="window_id">
             <description>Generates a list of users and roles</description>
             <entity class="roles" id="roles">
                 

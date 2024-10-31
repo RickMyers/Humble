@@ -207,6 +207,7 @@ SQL;
             $this->_polyglot = true;
             if (strpos($mongo_source,'/') !== false) {
                 $parts = explode('/',$mongo_source);
+                $parts[0] = ($parts[0]==='default') ? Environment::namespace() : $parts[0];
                 $data  = Humble::module($parts[0]);
                 $this->_mongodb = $data['mongodb'];
                 $this->_mongocollection = str_replace(["/"],["_"],substr($mongo_source,strpos($mongo_source,'/')+1));

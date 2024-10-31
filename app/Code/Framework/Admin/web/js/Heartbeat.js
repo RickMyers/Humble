@@ -16,18 +16,19 @@
  * @type Heartbeat_L4.HeartbeatAnonym$0|Function
  *
  */
-var Heartbeat = (function ($) {
+var Heartbeat = (($) => {
     var period      = 5000;    //default to a heartbeat every 5 seconds...but it won't fire unless something requires it
     var pulseTimer  = null;     //timer reference
     var beats       = {};       //keeps a record
     var refs        = {};       //hash array of what is currently being polled back to the server
     var count       = 0;
     var indicator   = false;
+    var running     = false;
     return  {
         responses: {
 
         },
-        init: function (default_period,heartbeat_indicator) {
+        init: (default_period,heartbeat_indicator) => {
             default_period = (default_period) ? default_period : period;
             pulseTimer     = window.setTimeout(Heartbeat.pulse,default_period);
             indicator      = heartbeat_indicator ? document.getElementById(heartbeat_indicator) : false;
@@ -35,12 +36,16 @@ var Heartbeat = (function ($) {
                 $(indicator).fadeOut();
             }
         },
-        stop: function () {
+        stop: () => {
             window.clearTimeout(pulseTimer);
             $('#system_poll_stopped').css('display','block');
             $('#system_poll_running').css('display','none');
+            return running = false;
         },
-        register: function (namespace,element,resource,callback,interval,arguments) {
+        toggle: () => {
+            running = (running) ? Heartbeat.stop() : Heartbeat.reset();
+        },
+        register: (namespace,element,resource,callback,interval,arguments) => {
             /**
              * NAMESPACE: The namespace of the module that contains the virtual function to be invoked
              * ELEMENT:  A reference to an ID on an element that will signal whether to keep performing
@@ -93,9 +98,10 @@ var Heartbeat = (function ($) {
                 $('#'+indicator.id).fadeOut();
             }
             $('#system_poll_stopped').css('display','none');
-            $('#system_poll_running').css('display','block');            
+            $('#system_poll_running').css('display','block'); 
+            return running = true;
         },
-        pulse: function () {
+        pulse: () => {
             /*
              * if "element" is present, add the resource to the heartbeat pulse, else
              * drop the resource from the heart beat list, since it was likely removed
@@ -164,7 +170,7 @@ var Heartbeat = (function ($) {
                 Heartbeat.reset();
             }
         },
-        period: function (val) {
+        period: (val) => {
             if (val) {
                 period = val;
             } else {

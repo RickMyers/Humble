@@ -38,13 +38,16 @@ var Functions = (() => {
                     },
                     users: {
                         starts_with: '',
-                        display: (starts_with) => {
-                            Administration.users.starts_with = (starts_with) ? starts_with : '';
-                            var win = Desktop.semaphore.checkout(true);
+                        search: (starts_with) => {
+                            if (typeof(starts_with) == 'string') {
+                                Administration.users.starts_with = (starts_with) ? starts_with : '';
+                            }
+                            Administration.users.display(1,25,false);
+                        },
+                        display: (page,rows,win) => {
                             var ao = new EasyAjax('/admin/user/roles');
-                            ao.add('window_id',win.id).add('role_id',$('#user_role').val()).add('page',1).add('rows',25).add('starts_with',Administration.users.starts_with).then((response) => {
+                            ao.add('window_id',win.id).add('role_id',$('#user_role').val()).add('page',page).add('rows',rows).add('starts_with',Administration.users.starts_with).then((response) => {
                                 $('#users_and_roles_tab').html(response);
-                                console.log(ao.getPagination());
                                 Pagination.set('admin-users',ao.getPagination());
                             }).post()
                         },
