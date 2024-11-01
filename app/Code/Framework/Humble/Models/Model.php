@@ -459,6 +459,13 @@ class Model implements HumbleComponent
          *
          * If Put, we still need to handle HTTPS and HTTP
          */
+        if (isset($call['suppress'])) {
+            foreach ($call['suppress'] as $arg) {
+                if (isset($args[$arg])) {
+                    unset($args[$arg]);
+                }
+            }
+        }
         $content      = ((isset($call['format']) && (strtoupper($call['format'])) == 'JSON') || (strtoupper($method) === 'PUT')) ? json_encode($args) : http_build_query($args,'','&') ;
         $content_type = "Content-Type: application/x-www-form-urlencoded";
         if (isset($call['format'])) {
@@ -646,6 +653,23 @@ SOAP;
     }
 
     /**
+     * This is me just being a d*ck...
+     * 
+     * @param type $template
+     * @param type $args
+     * @return type
+     */
+    private function templateSubstitution($template='',$args=[]) {
+        if (($len = count($parts = explode('%%',$template)))>1) {
+            $template = '';
+            for ($i=0; $i<$len; $i++){
+                $template .= ($i%2 == 0) ? $parts[$i] : (isset($args[$parts[$i]]) ? $args[$parts[$i]] : '');
+            }
+        }
+        return $template;
+    }
+    
+    /**
      * Processes the arguments array to remove non name/value pairs.
      *
      * @param array $call Composite array
@@ -669,6 +693,13 @@ SOAP;
                 } else {
                     $method = 'get'.(($cc) ? $this->underscoreToCamelCase($val,true) : ucfirst($val));
                     $args[$val] = $this->$method();
+                }
+            }
+        }
+        if (isset($call['templates'])) {
+            foreach ($args as $var => $val) {
+                if (isset($call['templates'][$var])) {
+                    $args[$var] = $this->templateSubstitution($call['templates'][$var],$args);
                 }
             }
         }

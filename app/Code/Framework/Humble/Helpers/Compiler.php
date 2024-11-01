@@ -65,7 +65,7 @@ class Compiler extends Directory
     }
 
     /**
-     *
+     * This just initializes some registers when going from one action to another in a controller
      */
     private function resetParameters() {
         $this->parameters['$_GET']    = [];
@@ -85,7 +85,10 @@ class Compiler extends Directory
     }
     
     /**
-     *  A global flag manager for whether the action(s) have access to the response object 
+     * A global flag manager for whether the action(s) have access to the response object 
+     * 
+     * @param type $value
+     * @return type
      */
     private function response($value=null) {
         $retval = $this;
@@ -112,7 +115,8 @@ class Compiler extends Directory
     }
 
     /**
-     *
+     * Checks to see that the required sections for the requested templater exist
+     * 
      * @param type $templater
      */
     private function verifyIncludesExist($templater)   {
@@ -140,6 +144,9 @@ class Compiler extends Directory
 
     /**
      * If certain tokens were passed in, this will swap the token to the value of the token
+     * 
+     * @param type $default
+     * @return string
      */
     private function processDefault($default='') {
         if (($default)) {
@@ -178,6 +185,7 @@ class Compiler extends Directory
     }
     
     /**
+     * For parameter handling, punch out the code for required exception handling
      * 
      * @param type $required
      * @param type $source
@@ -191,6 +199,7 @@ class Compiler extends Directory
     }
     
     /**
+     * So you what something formatted? 
      * 
      * @param type $format
      * @param type $source
@@ -243,7 +252,8 @@ class Compiler extends Directory
         }
     }
     /**
-     *
+     * Who knew you could do all this to simple parameter passing/handling?
+     * 
      * @param type $parameter
      * @throws \Exceptions\ControllerParameterException
      */
@@ -474,6 +484,7 @@ PHP;
     }
 
     /**
+     * Process Logical Model options
      * 
      * @param string $node
      */
@@ -515,6 +526,7 @@ PHP;
     }
 
     /**
+     * Process the rarely accessed collection/mongodb options
      * 
      * @param string $node
      */
@@ -564,6 +576,7 @@ PHP;
     }
     
     /**
+     * My God, what have I done here?
      * 
      * @param string $node
      */
@@ -683,6 +696,7 @@ PHP;
     }
 
     /**
+     * Process the various output (direct response) options
      * 
      * @param string $node
      */
@@ -706,6 +720,7 @@ PHP;
     }
     
     /**
+     * Process options for helper classes
      * 
      * @param string $node
      */
@@ -739,6 +754,7 @@ PHP;
     }
 
     /**
+     * Mainly used for APIs... process the access control options
      * 
      * @param string $node
      */
@@ -852,7 +868,8 @@ PHP;
     }    
     
     /**
-     *
+     * Process daisy chain actions
+     * 
      * @param type $action
      */
     private function processChainedAction($action) {
@@ -875,7 +892,8 @@ PHP;
     }
 
     /**
-     *
+     * Process the various redirect options
+     * 
      * @param type $node
      */
     private function processRedirect($node) {
@@ -933,6 +951,7 @@ PHP;
 
     /**
      * Punches out the code that will throw a user defined exception
+     * 
      * @param type $node
      */
     private function processException($node) {
@@ -1124,6 +1143,9 @@ PHP;
                 case 'js'   :
                     $this->processJSResource($node);
                     break;
+                case 'py'   :
+                    //Really? Are we really going to go there?
+                    break;
                 default     :
                     break;
             }
@@ -1144,7 +1166,8 @@ PHP;
     }
 
     /**
-     *
+     * Punch out the assignment option code
+     * 
      * @param type $node
      */
     private function processAssign($node) {
@@ -1283,6 +1306,7 @@ PHP;
     }
     
     /**
+     * This controls the translation of the controller XML into PHP
      * 
      * @param string $xml
      */
@@ -1388,7 +1412,7 @@ PHP;
                             print($this->tabs().'$_JSON = json_decode((string)file_get_contents("php://input"),true);'."\n");
                             break;
                         case "xml"  : 
-                            //@TODO: do something here7
+                            //@TODO: do something here?
                             break;
                     }
                 }

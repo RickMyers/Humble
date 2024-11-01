@@ -135,7 +135,7 @@
             <entity class="roles" id="roles">
                 
             </entity>
-            <entity class="users" id="users" rows="rows" page="page" defaultRows="25" defaultPage="1" orderBy="last_name=ASC">
+            <entity class="users" id="users" rows="rows" page="page" defaultRows="25" defaultPage="1" orderby="last_name=ASC">
                 <parameter name="starts_with" source="request" optional="true" />
             </entity>
             <entity class="user/roles" id="user_roles" />
