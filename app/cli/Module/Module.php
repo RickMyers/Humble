@@ -192,6 +192,7 @@ class Module extends CLI
                 $search      = ["&&MAIN_MODULE&&","&&PROJECT&&","&&NAMESPACE&&","&&PREFIX&&","&&AUTHOR&&","&&MODULE&&","&&PACKAGE&&",'&&EMAIL&&','&&FACTORY&&','&&BASE_PACKAGE&&','&&BASE_MODULE&&','&&REQUIRED&&'];
                 $replace     = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
                 self::copyFiles($src,$mod->templates,$search,$replace);
+                self::copyFiles($src,$mod->copy,$search,$replace);
                 if ($mn) {
                     //This is the main module, so we have to copy some additional files
                     foreach ($mod->structure->main_module as $path) {
@@ -206,7 +207,6 @@ class Module extends CLI
                     @mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
                     @mkdir('cli/'.$md,0775,true);
                     self::copyFiles($src,$mod->main_module,$search,$replace);
-                    self::copyFiles($src,$mod->copy,$search,$replace);
                 } else {
                     self::copyFiles($src,$mod->regular_module,$search,$replace);
                 }
