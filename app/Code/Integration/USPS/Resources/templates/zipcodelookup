@@ -1,0 +1,10 @@
+<ZipCodeLookupRequest USERID="%%userid%%">
+    <Address ID="%%ID%%">
+        <Address1>%%address1%%</Address1>
+        <Address2>%%address2%%</Address2>
+        <City>%%city%%</City>
+        <State>%%state%%</State>
+        <Zip5>%%zipcode%%</Zip5>
+        <Zip4>%%zip4%%</Zip4>
+    </Address>
+</ZipCodeLookupRequest>       
