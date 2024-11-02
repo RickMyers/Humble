@@ -32,6 +32,11 @@
                 <update>Account/Schema/Update</update>
                 <layout>Account/Schema/DSL</layout>
             </schema>
+            <resources>
+                <sql>Account/Resources/sql</sql>
+                <js>Account/Resources/js</js>
+                <templates>Account/Resources/templates</templates>
+            </resources>            
             <configuration>
                 <source>Account/etc</source>
             </configuration>

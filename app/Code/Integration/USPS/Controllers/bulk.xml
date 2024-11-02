@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+
+Address related API calls, however, this one caches requests for later calls and can do more than one lookup at a time
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="bulk" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking='off' response='true'>
+
+        <!-- ############################################################### -->
+        
+        <action name='verify' output='JSON'>
+            <description>Verify an address against the USPS database</description>
+            <model namespace='usps' class='bulk' method='bulkAddressVerify'>
+                <parameter name='addresses' source='STREAM' format='JSON' />
+            </model>            
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="zipcode" output='JSON'>
+            <description>Pass in as much as you can of an address and will return the zipcode</description> 
+            <model namespace='usps' class='bulk' method='bulkLookupZipCode'>
+                <parameter name='addresses' source='STREAM' format='JSON' />
+            </model>
+            
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="citystate" output='JSON'>
+            <description>Returns the city and state associated to a zipcode</description>
+            <model namespace='usps' class='bulk' method='bulkLookupCityState'>
+                <parameter name='addresses' source='STREAM' format='JSON' />
+            </model>            
+        </action>
+        
+    </actions>
+</controller>

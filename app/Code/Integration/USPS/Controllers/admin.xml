@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+
+Administration App Controller
+
+Defines the initial actions for the tools/apps you want to use from the administrator section.
+
+Every module gets one default app, but you can define as many as you want for your toolset
+
+
+For Controller reference, please see "Anatomy of a Controller" at https://humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="admin" use="Smarty">
+    <actions>
+
+        <action name="app">
+            <description>The initial app page</description>
+            <!--
+                This just checks to see that you are an admin and you are logged in...
+                
+                If you are an admin, there is a token called 'admin_id' in the session...
+                
+                If not there, you will get tossed.
+            -->
+            <model namespace="usps" class="permissions">
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
+        </action>
+
+        <!-- ################################################################################################# -->
+
+    </actions>
+</controller>

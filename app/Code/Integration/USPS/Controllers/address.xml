@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+
+Address related API calls
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="address" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking='off' response='true'>
+        
+        <action name="home">
+            <description>The main page</description>
+            <entity namespace="humble" class="users" id='user'>
+                <parameter name='uid' source='session' value='uid' default='' /> 
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name='verify' output="JSON">
+            <description>Verify an address against the USPS database</description>
+            <model namespace='usps' class='manager' method='addressVerify'>
+                <parameter name='*' source='request' />
+            </model>            
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="zipcode" output="JSON">
+            <description>Pass in as much as you can of an address and will return the zipcode</description>
+            <model namespace='usps' class='manager' method='lookupZipCode'>
+                <parameter name='address1' value='address' optional='true' source='request' />
+                <parameter name='*' source='request' />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="citystate" output="JSON">
+            <description>Returns the city and state associated to a zipcode</description>
+            <model namespace='usps' class='manager' method='lookupCityState'>
+                <parameter name='*' source='request' />
+            </model>            
+        </action>
+        
+    
+    </actions>
+</controller>

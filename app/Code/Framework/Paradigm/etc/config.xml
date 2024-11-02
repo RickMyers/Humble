@@ -32,6 +32,11 @@
                 <update>Paradigm/Schema/Update</update>
                 <layout>Paradigm/Schema/DSL</layout>
             </schema>
+            <resources>
+                <sql>Paradigm/Resources/sql</sql>
+                <js>Paradigm/Resources/js</js>
+                <templates>Paradigm/Resources/templates</templates>
+            </resources>            
             <configuration>
                 <source>Paradigm/etc</source>
             </configuration>
@@ -46,10 +51,6 @@
             <entities>
                 <source>Paradigm/Entities</source>
             </entities>
-            <resources>
-                <sql>Paradigm/Resources/sql</sql>
-                <js>Paradigm/Resources/js</js>
-            </resources>
             <RPC>
                 <source>Paradigm/RPC</source>
             </RPC>

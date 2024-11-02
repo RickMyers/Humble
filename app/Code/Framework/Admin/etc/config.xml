@@ -53,6 +53,11 @@
                 <source>Admin/Images</source>
                 <cache>Admin/Images/Cache</cache>
             </images>
+            <resources>
+                <sql>Admin/Resources/sql</sql>
+                <js>Admin/Resources/js</js>
+                <templates>Admin/Resources/templates</templates>
+            </resources>            
             <entities>
                 <source>Admin/Entities</source>
             </entities>

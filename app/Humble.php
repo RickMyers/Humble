@@ -114,6 +114,29 @@
             return false;
         }
         
+        public static function toXML($iterator=false) {
+            $xml = '';
+            if ($iterator) {
+                
+            }
+            return $xml;
+        } 
+        
+        public static function toCSV($iterator=false) {
+            $csv = '';
+            if ($iterator) {
+                
+            }
+            return $csv;
+        }
+        
+        public static function toHTML($iterator=false) {
+            $HTML = '';
+            if ($iterator) {
+                
+            }
+            return $HTML;
+        }
         /**
          * A singleton to return our faker fake data generator
          * 

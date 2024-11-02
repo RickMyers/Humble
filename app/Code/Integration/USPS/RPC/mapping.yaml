@@ -1,0 +1,40 @@
+---
+verifyAddress  :
+  url             : https://secure.shippingapis.com/ShippingAPI.dll
+  api-key         : 
+  api-var         : 
+  transform       : XML2JSON      
+  arguments       :
+      API         : Verify
+      XML         :
+  method          : GET
+zipCodeLookup  :
+  url             : https://secure.shippingapis.com/ShippingAPI.dll
+  api-key         : 
+  api-var         : 
+  transform       : XML2JSON
+  templates       :
+      XML         :
+  arguments       :
+      API         : ZipCodeLookup
+      XML         : 
+  method          : GET
+cityStateLookup  :
+  url             : https://secure.shippingapis.com/ShippingAPI.dll
+  api-key         : 
+  api-var         : 
+  transform       : XML2JSON
+  suppress        : [zipcode,userid,ID]
+  templates       :
+      XML         : <CityStateLookupRequest USERID="%%userid%%"><ZipCode ID="%%ID%%"><Zip5>%%zipcode%%</Zip5></ZipCode></CityStateLookupRequest>
+  arguments       :
+      API         : CityStateLookup
+      XML         :
+      ID          : 1
+      zipcode     :
+      userid      : sm://uspsUserId
+  method          : GET  
+  
+  #For Company:  Humbleprogramming
+#Your Username is 979HUMBL4157
+#Your Password is 200RN56ZU904

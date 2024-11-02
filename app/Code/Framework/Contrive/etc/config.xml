@@ -42,6 +42,11 @@
                 <update>Contrive/Schema/Update</update>
                 <layout>Contrive/Schema/DSL</layout>
             </schema>
+            <resources>
+                <sql>Contrive/Resources/sql</sql>
+                <js>Contrive/Resources/js</js>
+                <templates>Contrive/Resources/templates</templates>
+            </resources>            
             <configuration>
                 <source>Contrive/etc</source>
             </configuration>

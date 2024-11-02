@@ -42,6 +42,11 @@
                 <update>&&MODULE&&/Schema/Update</update>
                 <layout>&&MODULE&&/Schema/DSL</layout>
             </schema>
+            <resources>
+                <sql>&&MODULE&&/Resources/sql</sql>
+                <js>&&MODULE&&/Resources/js</js>
+                <templates>&&MODULE&&/Resources/templates</templates>
+            </resources>            
             <configuration>
                 <source>&&MODULE&&/etc</source>
             </configuration>
@@ -59,10 +64,6 @@
             <RPC>
                 <source>&&MODULE&&/RPC</source>
             </RPC>
-            <resources>
-                <sql>&&MODULE&&/sql</sql>
-                <js>&&MODULE&&/js</js>
-            </resources>
             <frontend comment="will probably deprecate this...">
                 <source>&&MODULE&&/web/app</source>
             </frontend>

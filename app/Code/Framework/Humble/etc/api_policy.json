@@ -12,7 +12,7 @@
     },
     "entities": {
         "namespace_1": {
-            "entity)11": {
+            "entity_1": {
                 "authenticated" : {
                     "read": true,
                     "write": false

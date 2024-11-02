@@ -33,6 +33,11 @@
                 <update>Workflow/Schema/Update</update>
                 <layout>Workflow/Schema/DSL</layout>
             </schema>
+            <resources>
+                <sql>Workflow/Resources/sql</sql>
+                <js>Workflow/Resources/js</js>
+                <templates>Workflow/Resources/templates</templates>
+            </resources>            
             <configuration>
                 <source>Workflow/etc</source>
             </configuration>

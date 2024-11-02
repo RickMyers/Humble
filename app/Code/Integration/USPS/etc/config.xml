@@ -1,71 +1,75 @@
 <?xml version="1.0"?>
 <config>
-    <chatgpt>
+    <usps>
         <version>0.0.1</version>
-        <title>ChatGPT<!-- This will appear in the administration screens for this module --></title>
-        <description>The ChatGPT module<!-- This will appear in the admin page --></description>
+        <title>USPS<!-- This will appear in the administration screens for this module --></title>
+        <description>The USPS module<!-- This will appear in the admin page --></description>
         <author>
-            <name>Rick Myers</name>
+            <name>rmyers Rick</name>
             <email>rick@humbleprogramming.com</email>
         </author>
         <module>
-            <name>ChatGPT</name>
+            <name>USPS</name>
             <weight>50</weight>
             <required>N</required>
             <workflow>Y</workflow>
-            <package>Main</package>
+            <package>Integration</package>
             <use>Smarty</use>
         </module>
-        <structure>
+        <structure comment="This section describes the layout of your module, technically you can rearrange it anyway you want, but I would recommend just stick with the default structure below or you may encounter upgrading problems in the future">
             <models>
-                <source>ChatGPT/Models</source>
+                <source>USPS/Models</source>
             </models>
             <helpers>
-                <source>ChatGPT/Helpers</source>
+                <source>USPS/Helpers</source>
             </helpers>
             <controllers>
-                <source>ChatGPT/Controllers</source>
-                <cache>ChatGPT/Controllers/Cache</cache>
+                <source>USPS/Controllers</source>
+                <cache>USPS/Controllers/Cache</cache>
             </controllers>
             <mobile>
                 <controllers>
-                    <source>ChatGPT/Mobile/Controllers</source>
-                    <cache>ChatGPT/Mobile/Controllers/Cache</cache>
+                    <source>USPS/Mobile/Controllers</source>
+                    <cache>USPS/Mobile/Controllers/Cache</cache>
                 </controllers>
                 <views>
-                    <source>ChatGPT/Mobile/Views</source>
-                    <cache>ChatGPT/Mobile/Views/Cache</cache>
+                    <source>USPS/Mobile/Views</source>
+                    <cache>USPS/Mobile/Views/Cache</cache>
                 </views>
             </mobile>
             <schema>
-                <install>ChatGPT/Schema/Install</install>
-                <update>ChatGPT/Schema/Update</update>
-                <layout>ChatGPT/Schema/DSL</layout>
+                <install>USPS/Schema/Install</install>
+                <update>USPS/Schema/Update</update>
+                <layout>USPS/Schema/DSL</layout>
             </schema>
             <resources>
-                <sql>ChatGPT/Resources/sql</sql>
-                <js>ChatGPT/Resources/js</js>
-                <templates>ChatGPT/Resources/templates</templates>
+                <sql>USPS/Resources/sql</sql>
+                <js>USPS/Resources/js</js>
+                <templates>USPS/Resources/templates</templates>
             </resources>            
             <configuration>
-                <source>ChatGPT/etc</source>
+                <source>USPS/etc</source>
             </configuration>
             <views>
-                <source>ChatGPT/Views</source>
-                <cache>ChatGPT/Views/Cache</cache>
+                <source>USPS/Views</source>
+                <cache>USPS/Views/Cache</cache>
             </views>
             <images>
-                <source>ChatGPT/Images</source>
-                <cache>ChatGPT/Images/Cache</cache>
+                <source>USPS/Images</source>
+                <cache>USPS/Images/Cache</cache>
             </images>
             <entities>
-                <source>ChatGPT/Entities</source>
+                <source>USPS/Entities</source>
             </entities>
             <RPC>
-                <source>ChatGPT/RPC</source>
+                <source>USPS/RPC</source>
             </RPC>
-            <frontend>
-                <source>ChatGPT/web/app</source>
+            <resources>
+                <sql>USPS/sql</sql>
+                <js>USPS/js</js>
+            </resources>
+            <frontend comment="will probably deprecate this...">
+                <source>USPS/web/app</source>
             </frontend>
         </structure>
         <extend comment="Means whether to look up the Module hierarchy if a specific class is not found (if not found in current module, perhaps the class is in a parent module)">
@@ -74,8 +78,8 @@
             <entities>1</entities>
         </extend>     
         <orm>
-            <prefix>chatgpt_</prefix>
-            <mongodb>chatgpt</mongodb>
+            <prefix>usps_</prefix>
+            <mongodb>usps</mongodb>
             <!--
                 Register your tables to be managed under this namespace in the entities section below in the following format:
 
@@ -93,7 +97,7 @@
         <web>
             <!-- Edits are used for separating form validation from the form -->
             <edits>
-                <edit1>ChatGPT/web/edits/edit.json</edit1>
+                <edit1>USPS/web/edits/edit.json</edit1>
             </edits>
             <hook>
                 <!-- #################################################
@@ -103,12 +107,12 @@
                        many hooks as you'd like
                      #################################################    -->
                 <js>
-                    <source>ChatGPT/web/js/ChatGPT.js</source>
+                    <source>USPS/web/js/USPS.js</source>
                 </js>
                 <css>
-                    <source>ChatGPT/web/css/ChatGPT.css</source>
+                    <source>USPS/web/css/USPS.css</source>
                 </css>
             </hook>
         </web>
-    </chatgpt>
+    </usps>
 </config>

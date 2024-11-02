@@ -576,6 +576,32 @@ PHP;
     }
     
     /**
+     * A transformer is something that is going to convert the iterator into another format, like CSV, XML, etc
+     * 
+     * @param type $node
+     * @param type $method_str
+     * @return string
+     */
+    private function processTransformer($node,$method_str='') {
+        switch (strtoupper($node['transformer'])) {
+            case "CSV" :
+                $method_str = 'Humble::toCSV('.$method_str.')';
+                break;
+            case "PDF" :
+                //someday
+                break;
+            case "XML" :
+                $method_str = 'Humble::toXML('.$method_str.')';
+                break;
+            case "HTML" :
+                $method_str = 'Humble::toHTML('.$method_str.')';
+                break;
+            default :
+                break;
+        }
+        return $method_str;
+    }
+    /**
      * My God, what have I done here?
      * 
      * @param string $node
@@ -684,6 +710,9 @@ PHP;
             }            
             if (isset($node['wrapper'])) {
                 $method_str = $node['wrapper'].'('.$method_str.')';
+            }
+            if (isset($node['transformer'])) {
+                $method_str = $this->processTransformer($node,$method_str);
             }
             if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 $method_str = 'Humble::response('.$method_str.')';

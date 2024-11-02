@@ -52,6 +52,7 @@
             <resources>
                 <sql>Humble/Resources/sql</sql>
                 <js>Humble/Resources/js</js>
+                <templates>Humble/Resources/templates</templates>
             </resources>
             <RPC>
                 <source>Humble/RPC</source>

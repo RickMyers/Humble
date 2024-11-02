@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+
+    For instructions on how to create your own apps on the administrators page
+    please go to...
+    
+        https://humbleprogramming.com/pages/AdminApps.htmls
+    
+-->
+<apps>
+    <app>
+        <name>USPS Admin App</name>
+        <description>Default Administration App for Humble</description>
+        <icon>
+            <text>usps Tool</text>
+            <image>
+                <desktop>/images/usps/admin_app_icon.png</desktop>
+                <minimized>/images/usps/admin_app_icon.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/usps/admin/app</uri>
+        </start>
+    </app>
+</apps>
+

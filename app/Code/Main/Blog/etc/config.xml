@@ -42,6 +42,11 @@
                 <update>Blog/Schema/Update</update>
                 <layout>Blog/Schema/DSL</layout>
             </schema>
+            <resources>
+                <sql>Blog/Resources/sql</sql>
+                <js>Blog/Resources/js</js>
+                <templates>Blog/Resources/templates</templates>
+            </resources>            
             <configuration>
                 <source>Blog/etc</source>
             </configuration>
