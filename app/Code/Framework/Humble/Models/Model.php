@@ -788,6 +788,14 @@ SOAP;
         return Humble::cache($namespace.'-'.$call_name.'-'.md5(http_build_query($arguments)),$results,$expire);
     }
     
+    /**
+     * Attempts to get a value from the cache
+     * 
+     * @param type $namespace
+     * @param type $call_name
+     * @param type $arguments
+     * @return type
+     */
     protected function pullFromCache($namespace=false,$call_name=false,$arguments=[]) {
         ksort($arguments);
         array_map('mb_strtoupper',$arguments);
@@ -803,15 +811,18 @@ SOAP;
      * @return array
      */
     protected function processSecrets($call=[]) {
-        $sm = false;
+        $manager = false;
         foreach ($call as $key => $val) {
             if (is_array($val)) {
                 $call[$key] = $this->processSecrets($val);
             } else {
                 if ($val && strtolower(substr($val,0,5))==='sm://') {
-                    $sm = ($sm) ? $sm : Humble::entity('humble/secrets/manager');  //speed up call by only instantiating the orm if a secret is found
-                    if ($x = $sm->reset()->setSecretName(substr($val,5))->setNamespace($this->_namespace())->load(true)) {
-                        $call[$key] = $sm->decrypt(true)->getSecretValue();
+                    $manager    = ($manager) ? $manager : Humble::entity('humble/secrets/manager');  //speed up call by only instantiating the orm if a secret is found
+                    $len        = count($parts = explode('/',$secret = substr($val,5)));
+                    $namespace  = ($len==2) ? $parts[0] : $this->_namespace();
+                    $secret     = ($len==2) ? $parts[1] : $secret;
+                    if ($x = $manager->reset()->setSecretName($secret)->setNamespace($namespace)->load(true)) {
+                        $call[$key] = $manager->decrypt(true)->getSecretValue();
                     }
                 }
             }
@@ -838,7 +849,6 @@ SOAP;
         }
         if (count($options)) {
             $environment    = Environment::state();
-            print($environment."\n");
             foreach ($options as $opt => $variant) {
                 if (isset($variant[$environment])) {
                     $call[$opt] = $options[$opt][$environment];
@@ -904,7 +914,7 @@ SOAP;
                     }
                 } else {
                     if (isset($call['method']) && (strtoupper($call['method'])!=='SOAP')) {
-                        if (is_string($call['arguments']) && (substr($call['url'],strlen($call['url'])-1,1)=='+')) {
+                        if (is_string($call['arguments']) && (substr($call['url'],strlen($call['url'])-1,1)=='+')) {  //this is special handling for those APIs that tack the arguments onto the end of the URI, like dictionary.com does
                             $method      = 'get'.ucfirst($call['arguments']);
                             $call['url'] = substr($call['url'],0,strlen($call['url'])-1).'/'.$this->$method();
                         } else {
@@ -995,6 +1005,7 @@ SOAP;
     /**
      * Checks to see if if a particular module is enabled
      *
+     * @TODO: Change this from hitting DB to hitting the cache since module data is cached there already
      * @param array $module
      * @return boolean If module is enabled
      */

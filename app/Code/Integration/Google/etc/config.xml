@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<config>
+    <google>
+        <version>0.0.1</version>
+        <title>Google<!-- This will appear in the administration screens for this module --></title>
+        <description>The Google module<!-- This will appear in the admin page --></description>
+        <author>
+            <name>rmyers Rick</name>
+            <email>rick@humbleprogramming.com</email>
+        </author>
+        <module>
+            <name>Google</name>
+            <weight>50</weight>
+            <required>N</required>
+            <workflow>Y</workflow>
+            <package>Integration</package>
+            <use>Smarty</use>
+        </module>
+        <structure comment="This section describes the layout of your module, technically you can rearrange it anyway you want, but I would recommend just stick with the default structure below or you may encounter upgrading problems in the future">
+            <models>
+                <source>Google/Models</source>
+            </models>
+            <helpers>
+                <source>Google/Helpers</source>
+            </helpers>
+            <controllers>
+                <source>Google/Controllers</source>
+                <cache>Google/Controllers/Cache</cache>
+            </controllers>
+            <mobile>
+                <controllers>
+                    <source>Google/Mobile/Controllers</source>
+                    <cache>Google/Mobile/Controllers/Cache</cache>
+                </controllers>
+                <views>
+                    <source>Google/Mobile/Views</source>
+                    <cache>Google/Mobile/Views/Cache</cache>
+                </views>
+            </mobile>
+            <schema>
+                <install>Google/Schema/Install</install>
+                <update>Google/Schema/Update</update>
+                <layout>Google/Schema/DSL</layout>
+            </schema>
+            <resources>
+                <sql>Google/Resources/sql</sql>
+                <js>Google/Resources/js</js>
+                <templates>Google/Resources/templates</templates>
+            </resources>            
+            <configuration>
+                <source>Google/etc</source>
+            </configuration>
+            <views>
+                <source>Google/Views</source>
+                <cache>Google/Views/Cache</cache>
+            </views>
+            <images>
+                <source>Google/Images</source>
+                <cache>Google/Images/Cache</cache>
+            </images>
+            <entities>
+                <source>Google/Entities</source>
+            </entities>
+            <RPC>
+                <source>Google/RPC</source>
+            </RPC>
+            <frontend comment="will probably deprecate this...">
+                <source>Google/web/app</source>
+            </frontend>
+        </structure>
+        <extend comment="Means whether to look up the Module hierarchy if a specific class is not found (if not found in current module, perhaps the class is in a parent module)">
+            <helpers>1</helpers>
+            <models>1</models>
+            <entities>1</entities>
+        </extend>     
+        <orm>
+            <prefix>google_</prefix>
+            <mongodb>google</mongodb>
+            <!--
+                Register your tables to be managed under this namespace in the entities section below in the following format:
+
+                <table_name polyglot="Y' />
+
+                The 'polyglot' attribute is optional.  Only specify when you are actually enabling the polyglot behavior
+            -->
+            <entities>
+
+            </entities>
+        </orm>
+        <events>
+
+        </events>
+        <web>
+            <!-- Edits are used for separating form validation from the form -->
+            <edits>
+                <edit1>Google/web/edits/edit.json</edit1>
+            </edits>
+            <hook>
+                <!-- #################################################
+                     This is where the JS lives for your module
+
+                     Set the 'hook' name appropriately, and use as
+                       many hooks as you'd like
+                     #################################################    -->
+                <js>
+                    <source>Google/web/js/Google.js</source>
+                </js>
+                <css>
+                    <source>Google/web/css/Google.css</source>
+                </css>
+            </hook>
+        </web>
+    </google>
+</config>

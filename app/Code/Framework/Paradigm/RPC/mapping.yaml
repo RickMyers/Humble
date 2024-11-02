@@ -111,16 +111,6 @@ terminusConfiguration  :
   secure          : true
   method          : POST
   arguments       : [sessionId,namespace,id,windowId,data,component,method]
-geocodeLocation   :
-  url             : https://maps.googleapis.com/maps/api/geocode/json
-  secure          : true
-  cache           : 0
-  api-key         : SM://googleGeocodeApiKey
-  api-var         : key
-  blocking        : false
-  method          : GET 
-  arguments       : 
-      address     :  
 dictionaryDefinition :
   url             : https://www.dictionaryapi.com/api/v3/references/collegiate/json+    # alternate format, a + at the end means append the arguments as URI segments, except for API Key
   api-key         : sm://dictionaryAPIKey                                               #1fb88106-0c12-4e40-9f54-b17e0422e095
@@ -132,12 +122,6 @@ thesaurusEntry :
   api-key         : sm://thesaurusAPIKey                                               #769d2912-c0cf-4c9c-8a83-bfd573e83ec4
   api-var         : key
   arguments       : entry                                                            # instead of an array of arguments, a string representing the key variable
-  method          : GET
-currencyValue :
-  url             : http://rate-exchange.appspot.com/currency    #http://www.google.com/ig/calculator
-  api-key         :
-  api-var         :
-  arguments       : [from,to]
   method          : GET
 yQLQueryResult :
   url             : http://query.yahooapis.com/v1/public/yql
