@@ -652,6 +652,42 @@ SOAP;
         return $args;
     }
 
+    /* //just saving this madness for posterity sake
+        $file       = $module['resources_templates'].'/'.$template;
+        $count      = 0; $max = count($exts); $found = false;
+        while ((!$found) && ($count<$max)) {
+            $check_file = $file.(($exts[$count]) ? $exts[$count] : '.'.$exts[$count]);
+            if ($found = $found || file_exists($check_file)) {
+                $found = $check_file;
+            }
+            $count++;
+        }
+     */
+    
+    /**
+     * You've been passed as a resource, this tries to see if the resource exists and then return it
+     * 
+     * @param type $template
+     * @return type
+     */
+    private function fetchTemplateResource($template) {
+        $len        = count($parts = explode('/',$template));
+        $namespace  = ($len==2) ? $parts[0] : $this->_namespace();
+        $template   = ($len==2) ? $parts[1] : $template;
+        $module     = Humble::module($namespace);
+        $found      = false;
+        $file       = false;
+        $dh         = dir($dir = 'Code/'.$module['package'].'/'.$module['resources_templates']);        
+        while ((($entry = $dh->read()) !== false) && (!$found)) {
+            if (($entry == '.') || ($entry == '..')) {
+                continue;
+            }
+            
+            $found  = file_exists($file = $dir.'/'.$entry);
+        }
+        return ($found) ? file_get_contents($file) : '';
+    }
+    
     /**
      * This is me just being a d*ck...
      * 
@@ -660,6 +696,10 @@ SOAP;
      * @return type
      */
     private function templateSubstitution($template='',$args=[]) {
+        
+        if (strtolower(substr($template,0,5))==='rs://') {
+            $template = $this->fetchTemplateResource(substr($template,5));
+        }
         if (($len = count($parts = explode('%%',$template)))>1) {
             $template = '';
             for ($i=0; $i<$len; $i++){

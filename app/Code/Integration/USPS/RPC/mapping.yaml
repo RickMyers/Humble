@@ -14,10 +14,17 @@ zipCodeLookup  :
   api-var         : 
   transform       : XML2JSON
   templates       :
-      XML         :
+      XML         : rs://zipcodelookup
+  suppress        : [city,address1,address2,state,ID,userid]
   arguments       :
       API         : ZipCodeLookup
       XML         : 
+      ID          : 1
+      city        :
+      state       :
+      address1    :
+      address2    :
+      userid      : sm://uspsUserId          
   method          : GET
 cityStateLookup  :
   url             : https://secure.shippingapis.com/ShippingAPI.dll
