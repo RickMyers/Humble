@@ -571,11 +571,12 @@ SQL;
             $data     = $entity->attributes();
             $polyglot = isset($data['polyglot']) ? $data['polyglot'] : 'N';
             $actual   = isset($data['actual'])   ? $data['actual']   : null;
+            $alias    = isset($data['alias'])    ? $data['alias']    : '';
             $query    = <<<SQL
                     insert into humble_entities
-                        (namespace, entity, actual, polyglot)
+                        (namespace, entity, actual, polyglot, `alias`)
                     values
-                        ('{$this->namespace}','{$name}','{$actual}','{$polyglot}')
+                        ('{$this->namespace}','{$name}','{$actual}','{$polyglot}','{$alias}')
 SQL;
             $this->_db->query($query);
             $table     = ($actual) ? $actual : $prefix.$name;
