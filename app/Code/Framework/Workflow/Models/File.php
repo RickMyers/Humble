@@ -17,8 +17,7 @@ use Environment;
  * @copyright  2005-present Humble
  * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humbleprogramming.com/docs/class-File.html
- * @since      File available since Release 1.0.0
+  * @since      File available since Release 1.0.0
  */
 class File extends Model
 {
@@ -46,12 +45,7 @@ class File extends Model
     public function save() {
         $data         = json_decode($this->getData(),true);
         $this->setWindowId($data['windowId']);  //now I need a shower...
-        $component    = Humble::model('workflow/manager');
-        $component->setData($this->getData());
-        $component->saveComponent();
-        $trigger     = Humble::entity('paradigm/file/triggers');
-        $trigger->setFileTriggerId($data['id']);
-        $id = $trigger->setDirectory($data['directory'])->setExtension($data['file_mask'])->setField($data['field'])->setActive($data['active'])->save();
-        return $id;
+        $component    = Humble::model('workflow/manager')->setData($this->getData())->saveComponent();
+        return Humble::entity('paradigm/file/triggers')->setFileTriggerId($data['id'])->setWorkflowId($data['workflow_id'])->setDirectory($data['directory'])->setExtension($data['file_mask'])->setField($data['field'])->setActive($data['active'])->save();
     }
 }
