@@ -70,7 +70,7 @@ class Cadence extends Model
      * @return bool
      */
     public function check() {
-        if ($running = file_exists('cadence.pid')) {
+        if ($running = file_exists('PIDS/cadence.pid')) {
             exec('ps -aux | grep Cadence.php',$results);
             $running = false;
             foreach ($results as $row) {
@@ -89,7 +89,7 @@ class Cadence extends Model
     public function start() {
         $this->_RC(8);
         $message = 'Cadence Is Already Running...';
-        if (file_exists('cadence.pid') && !($running = $this->check())) {
+        if (file_exists('PIDS/cadence.pid') && !($running = $this->check())) {
             //Removes PID file so can start cleanly
             $this->clear();
         }
@@ -132,8 +132,8 @@ class Cadence extends Model
     public function clear() {
         $this->_RC(8);
         $message = "PID Not Found";
-        if (file_exists('cadence.pid')) {
-            @unlink('cadence.pid');
+        if (file_exists('PIDS/cadence.pid')) {
+            @unlink('PIDS/cadence.pid');
             $message = "PID Removed";
             $this->_RC(0);
         }

@@ -173,9 +173,10 @@ var Functions = (() => {
                         }
                     },
                     api: {
-                        tester: () => {
-                            var win = (Administration.create.win.api = Administration.create.win.api ? Administration.create.win.api : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("API Test");
-                            (new EasyAjax('/admin/test/apitester')).then((response) => {
+                        win: false,
+                        home: () => {
+                            var win = (Administration.api.win = Administration.api.win ? Administration.api.win : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("API Test");
+                            (new EasyAjax('/admin/test/home')).then((response) => {
                                 win._open(response);
                             }).get();                              
                         }

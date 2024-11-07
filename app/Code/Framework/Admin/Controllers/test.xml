@@ -1,6 +1,14 @@
 <?xml version="1.0"?>
 <controller name="test" use="Twig" blocking="off">
     <actions>
+        
+        <action name="home">
+            <description>The simple table api testing home</description>
+            <entity namespace='humble' class='modules' id='modules' orderby='namespace=ASC' />
+        </action>
+        
+        <!-- ########################################################################################## -->
+        
         <action name="promote">
             <description>Does a promotion from the test server to the production server</description>
             <model namespace="humble" class="Utility" id='Utility'>

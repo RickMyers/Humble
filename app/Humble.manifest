@@ -35,6 +35,7 @@ web/*
 dist/*
 app/Humble.local.manifest
 app/cli/*
+app/PIDS/*
 app/Code/Framework/*
 app/Exceptions/*
 app/lib/Common/*

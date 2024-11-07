@@ -287,6 +287,7 @@ function scanFilesForChanges() {
     global $files,$modules;
     $triggers = [];
     foreach (Humble::entity('paradigm/file/triggers')->setActive('Y')->fetch() as $trigger) {
+        print_r($trigger); die();
         if (is_dir($trigger['directory'])) {
             $dir        = dir($trigger['directory']);
             $extension  = $trigger['extension'] ? str_replace(['*','.'],['',''],$trigger['extension']): false;
@@ -317,7 +318,7 @@ function scanFilesForChanges() {
 //------------------------------------------------------------------------------
 function triggerFileWorkflows($triggers=[]) {
     foreach ($triggers as $file => $trigger) {
-        
+        file_put_contents('file_trigger.txt',print_r($trigger,true));
     }
 }
 // To spin off a process in another thread... 'nohup php Program.php > /dev/null &'
@@ -329,7 +330,7 @@ function processCadenceCommand($cmds) {
                 //There are problems with restart... the original thread doesn't term, so you get 2 instances of Cadence
                 //Maybe look into ending this thread by writing instructions to a file and have a cron job restart
                 //Cadence if it sees that file.  Maybe run every 10 seconds or so
-                @unlink('cadence.pid');
+                @unlink('PIDS/cadence.pid');
                 logMessage('Restarting Cadence...');
                 exec('nohup php Cadence.php > /dev/null &');
                 die();
@@ -342,7 +343,7 @@ function processCadenceCommand($cmds) {
                 break;
             case 'END'      :
             case 'STOP'     :
-                @unlink('cadence.pid');
+                @unlink('PIDS/cadence.pid');
                 logMessage('Ending Cadence...');
                 die('Aborting Cadence'."\n\n");
                 break;
@@ -356,13 +357,13 @@ function processCadenceCommand($cmds) {
 //We are not going to want more than one instance of cadence running per application, so we are going to record the current running PID
 //  of cadence, and make sure that it stays that value during running, if it changes or is deleted, we are going to abort processing
 //
-if (file_exists('cadence.pid') && ($running_pid = trim(file_get_contents('cadence.pid')))) {
+if (file_exists('PIDS/cadence.pid') && ($running_pid = trim(file_get_contents('PIDS/cadence.pid')))) {
     if ($pid !== $running_pid) {
         die("\nCadence appears to be running already.  If not, you may need to manually delete the cadence.pid file before trying again\n\n");
     }
-} else {
-    file_put_contents('cadence.pid',$pid);                                      //alright, let's record your process number
-}
+} 
+file_put_contents('PIDS/cadence.pid',$pid);                                          //alright, let's record your process number
+
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //Check for configuration file, which configures how period for the cadence, and when to do which checks...
@@ -370,7 +371,7 @@ if (file_exists('cadence.pid') && ($running_pid = trim(file_get_contents('cadenc
 
 if (file_exists($config) && ($cadence = json_decode(file_get_contents($config),true))) {
     logMessage("Starting Cadence...");
-    while (file_exists('cadence.pid') && ((int)file_get_contents('cadence.pid')===$pid)) {
+    while (file_exists('PIDS/cadence.pid') && ((int)file_get_contents('PIDS/cadence.pid')===$pid)) {
         sleep($cadence['period']);
         logMessage('Waking...');
         $duration       = time();
@@ -379,7 +380,8 @@ if (file_exists($config) && ($cadence = json_decode(file_get_contents($config),t
             unlink('cadence.cmd');            
             processCadenceCommand($cmds);
         }
-        foreach ($cadence['handlers'] as $component => $handler) {
+        $handlers = array_merge($cadence['handlers']['framework'],$cadence['handlers']['application']);
+        foreach ($handlers as $component => $handler) {
             $t = $handler['multiple'] * $cadence['period'];
             if (($now % $t) == 0) {
                 $start  = time();
@@ -403,7 +405,7 @@ if (file_exists($config) && ($cadence = json_decode(file_get_contents($config),t
         logMessage('This run took '.date('s',time()-$duration).' seconds');
         logMessage('Sleeping for '.$cadence['period'].' seconds');
     }
-    @unlink('cadence.pid');
+    @unlink('PIDS/cadence.pid');
     die("\n\nAborting due to PID file being deleted or PID changed...\n\n");
 }
 print("\nCadence is not configured, please see https://humbleprogramming.com/pages/Cadence.htmls for instructions on how to configure the service.\n\n");

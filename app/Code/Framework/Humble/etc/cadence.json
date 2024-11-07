@@ -1,76 +1,81 @@
 {
     "note":     "a period of 20 and multiple of 2 would have this section run at a maximum of every 40 seconds.",
-    "period":   5,
+    "period":   2,
     "log": {
         "location": "../../logs/cadence.log",
         "max_size": "100K"
     },
     "handlers": {
-        "system": {
-            "callbacks": {
-                "snapshotSystem": true
+        "framework": {
+            "system": {
+                "callbacks": {
+                    "snapshotSystem": true
+                },
+                "multiple": 6
             },
-            "multiple": 6
+            "housekeeping": {
+                "callbacks": {
+                    "clearSystemStats": true
+                },
+                "multiple": 20 
+            },
+            "apipolicy": {
+                "callbacks": {
+                    "watchAPIPolicy": true
+                },
+                "multiple": 6
+            },
+            "application.xml": {
+                "callbacks": {
+                    "watchApplicationXML": true
+                },
+                "multiple": 2
+            },
+            "allowedrules": {
+                "callbacks": {
+                    "watchAllowedRules": true
+                },
+                "multiple": 6
+            },    
+            "configurations": {
+                "callbacks": {
+                    "scanConfigurationsForChanges": true
+                },
+                "multiple": 4
+            },        
+            "controllers": {
+                "callbacks": {
+                    "scanControllersForChanges": true
+                },
+                "multiple": 2
+            },
+            "models": {
+                "callbacks": {
+                    "scanModelsForChanges": true
+                },
+                "multiple": 3
+            },
+            "workflows": {
+                "callbacks": {
+                    "triggerFileWorkflows": true
+                },
+                "multiple": 4            
+            },
+            "files": {
+                "callbacks": {
+                    "scanFilesForChanges": true
+                },
+                "multiple": 2
+            },
+            "images": {
+                "callbacks": {
+                    "scanImagesForChanges": true
+                },
+                "multiple": 5
+            }
         },
-        "housekeeping": {
-            "callbacks": {
-                "clearSystemStats": true
-            },
-            "multiple": 20 
-        },
-        "apipolicy": {
-            "callbacks": {
-                "watchAPIPolicy": true
-            },
-            "multiple": 6
-        },
-        "application.xml": {
-            "callbacks": {
-                "watchApplicationXML": true
-            },
-            "multiple": 2
-        },
-        "allowedrules": {
-            "callbacks": {
-                "watchAllowedRules": true
-            },
-            "multiple": 6
-        },    
-        "configurations": {
-            "callbacks": {
-                "scanConfigurationsForChanges": true
-            },
-            "multiple": 4
-        },        
-        "controllers": {
-            "callbacks": {
-                "scanControllersForChanges": true
-            },
-            "multiple": 2
-        },
-        "models": {
-            "callbacks": {
-                "scanModelsForChanges": true
-            },
-            "multiple": 3
-        },
-        "workflows": {
-            "callbacks": {
-                "triggerFileWorkflows": true
-            },
-            "multiple": 4            
-        },
-        "files": {
-            "callbacks": {
-                "scanFilesForChanges": true
-            },
-            "multiple": 5
-        },
-        "images": {
-            "callbacks": {
-                "scanImagesForChanges": true
-            },
-            "multiple": 5
-        }
+        "application": {
+
+        }            
     }
 }

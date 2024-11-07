@@ -83,6 +83,10 @@ class System extends Model
      */
     public function runScheduler() {
         //@TODO: Think about setting a sticky bit that flags the scheduler as running, so we don't launch this thing more than once
+        if (file_exists('PIDS/scheduler.pid')) {
+            die('Scheduler may already be running so skipping'."\n");
+        }
+        file_put_contents('scheduler.pid',getmypid()); 
         $now             = strtotime(date('Y-m-d H:i:s'));
         $job_queue       = Humble::entity('paradigm/job/queue');
         $schedule_log    = Humble::entity('paradigm/scheduler/log');   
@@ -104,6 +108,7 @@ class System extends Model
                 }
             }
         }
+        @unlink('PIDS/scheduler.pid');
         return $schedule_log->reset()->setId($schedule_id)->setFinished(date('Y-m-d H:i:s'))->save();    //Save when the scheduler finished, this is also an audit trail since if there are no values for finished... it didn't for some reason work
     }
 

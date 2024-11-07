@@ -1,0 +1,70 @@
+{% set id = user._uniqueId() %}
+{% set user = user.information() %}
+<div id="user_profile_{{ id }}">
+</div>
+<script>
+
+        let details_app_{{ id }} = Vue.createApp({
+            template: Humble.template('admin','user'),
+            data: () => {
+                return {
+                    user_id:    "{{ user.id }}",
+                    first_name: "{{ user.first_name }}",
+                    middle_name: "{{ user.middle_name }}",
+                    last_name:  "{{ user.last_name }}",
+                    email:      "{{ user.email }}",
+                    user_name:  "{{ user.user_name }}",
+                    gender:     "{{ user.gender }}",
+                    date_of_birth: "{{ user.dob }}",
+                    suffix:     "{{ user.name_suffix }}",
+                    avatar_image: "{{ user.avatar_image }}",
+                    account_status: "{{ user.account_status }}",
+                    login_attempts: "{{ user.login_attempts }}",
+                    reset_password_token: "{{ user.reset_password_token }}",
+                    authenticated: "{{ user.authenticated }}"
+                }
+            },
+            methods: {
+                saveDetails: async () => {
+                    if (Edits['user-details-{{ id }}'].validate()) {
+                        const form = document.querySelector('#user_details_form');
+                        const response = await fetch('/admin/user/save', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        });
+                        let text = await response.text();
+                        console.log(text);
+                        alert((text=='') ? 'Error, User Detail Update Failed' : 'Details Changed');
+                    }   
+                },
+                updateAvatar: async () => {
+                    if (Edits['user-details'].validate()) {
+                        const form = document.querySelector('#user_avatar_form');
+                        const response = await fetch('/admin/user/avatar', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        });
+                        let text = await response.text();
+                        console.log(text);
+                        $E('admin_avatar').src=text;
+                        $E('avatar_image').src=text;
+                    }                      
+                },
+                updatePassword: async () => {
+                    if (Edits['admin-password'].validate()) {
+                        const form = document.querySelector('#user_password_form');
+                        const response = await fetch('/admin/password/save', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        });
+                        let text = await response.text();
+                        console.log(text);
+                        alert((text=='') ? 'Error, Password Change Failed' : 'Password Changed');
+                    }                      
+                }
+            }
+        });
+        details_app_{{ id }}.mount('#user_profile_{{ id }}');
+       // new EasyEdits('/edits/admin/user','user-details-{{ id }}');
+
+</script>

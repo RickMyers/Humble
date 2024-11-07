@@ -77,8 +77,8 @@
                 <service_directory polyglot="Y"/>
                 <system_variables/>
                 <templaters/>
-                <users/>
-                <user_identification polyglot="Y"/>
+                <users alias="usr"/>
+                <user_identification polyglot="Y" alias="usrinfo"/>
                 <entity_keys/>
                 <roles/>
                 <user_roles/>

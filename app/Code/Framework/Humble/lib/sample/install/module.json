@@ -94,6 +94,11 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/index.tpl"
         },    
         {
+            "source": "/lib/sample/install/Views/template.tpl",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/template.tpl"
+        },    
+            
+        {
             "source": "/lib/sample/install/Views/register.html",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/register.tpl"
         },    
