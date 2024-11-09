@@ -68,11 +68,8 @@
                 <file_triggers polyglot="Y"/>
                 <file_log polyglot="Y"/>
                 <import_sources/>
-                <job_queue/>
+                <job_queue polyglot="Y"/>
                 <method_listeners/>
-                <scheduler_log/>
-                <sensors/>
-                <sensor_workflows/>
                 <system_events/>
                 <webhooks/>
                 <webhook_workflows/>

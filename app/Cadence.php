@@ -12,9 +12,9 @@ Let's just do something every so often...
 
 require_once "Humble.php";
 
+
 $started                    = time();                                           //The time used in all offset calculations
 $pid                        = getmypid();                                       //My process ID
-$offset_time                = 0;                                                //The cumulative time spent doing stuff
 $first_time                 = [
     'images'                => true
 ];
@@ -33,8 +33,14 @@ $updater                    = \Environment::getUpdater();                       
 $installer                  = \Environment::getInstaller();                     //Singleton reference to the module installer
 $is_production              = \Environment::isProduction();                     //Am I in production? Somethings will be skipped if so
 $project                    = \Environment::getProject();
-$config                     = 'Code/'.$project->package.'/'.$project->module.'/etc/cadence.json';
+$config                     = (\Environment::namespace() !== 'humble') ? 'Code/'.$project->package.'/'.$project->module.'/etc/cadence.json' : 'Code/Framework/Humble/etc/application.json';
 $callbacks                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Callbacks.php';
+$constants                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Constants.php';
+$framework                  = 'Code/Framework/Humble/etc/cadence.json';
+
+if (file_exists($constants)) {
+    require_once($constants);
+}
 
 //------------------------------------------------------------------------------
 //Load custom callbacks if any
@@ -45,10 +51,9 @@ if (file_exists($callbacks)) {
 
 //------------------------------------------------------------------------------
 function resetCadence() {
-    global $started, $pid, $offset_time, $cadence, $cadence_ctr,$files, $models, $configs, $systemfiles, $config, $images, $first_time;
+    global $started, $pid, $cadence, $cadence_ctr,$files, $models, $configs, $systemfiles, $config, $images, $first_time;
     $started                = time();                                           //The time used in all offset calculations
     $pid                    = getmypid();                                       //My process ID
-    $offset_time            = 0;                                                //The cumulative time spent doing stuff
     $cadence_ctr            = 0;                                                //Lets count the beat
     $files                  = [];
     $models                 = [];
@@ -190,7 +195,6 @@ function watchApplicationXML() {
     $applicationXML = Environment::applicationXMLLocation();
     $appTime        = filemtime($applicationXML);
     $systemfiles[$applicationXML] = isset($systemfiles[$applicationXML]) ? $systemfiles[$applicationXML] : $appTime;
-    logMessage($systemfiles[$applicationXML].' <==> '.$appTime);
     if ($appTime !== $systemfiles[$applicationXML]) {
         logMessage('---------> Recaching Application.xml');
         \Environment::recacheApplication();
@@ -285,41 +289,52 @@ function scanImagesForChanges() {
 //------------------------------------------------------------------------------
 function scanFilesForChanges() {
     global $files,$modules;
-    $triggers = [];
+    $triggers = ['changed'=>[],'new'=>[]];
     foreach (Humble::entity('paradigm/file/triggers')->setActive('Y')->fetch() as $trigger) {
-        print_r($trigger); die();
         if (is_dir($trigger['directory'])) {
             $dir        = dir($trigger['directory']);
             $extension  = $trigger['extension'] ? str_replace(['*','.'],['',''],$trigger['extension']): false;
+            // print_r($extension."\n"); unlink('PIDS/cadence.pid'); die();
             while ($entry = $dir->read()) {
                 if (($entry == '.') || ($entry == '..')) {
                     continue;
                 }
                 if ($extension) {
-                    if (!substr($entry,-1*strlen($extension))==$extension) {  //change this to look at last characters
+                    if (substr($entry,-1*strlen($extension))!==$extension) {
                         continue;
                     }
                 }
                 $file      = $trigger['directory'].'/'.$entry;
                 $file_time = filemtime($file);
-                if (!(isset($files[$file]) || ($file_time !== $files[$file]))) {
-                    $files[$file]    = $file_time;
-                    $triggers[$file] = $trigger;
+                if (!isset($files[$file])) {
+                    $triggers['new'][$file] = $trigger;
+                    logMessage('Found a new file '.$file);
+                } else if ($file_time !== $files[$file]) {
+                    $triggers['changed'][$file] = $trigger;
+                    logMessage('Detected a changed file '.$file);
                 }
+                $files[$file]    = $file_time;
             }
         } else {
             logMessage("Can't scan trigger directory ".$trigger['directory']." because it doesn't exist!");
         }
     }
-    if (count($triggers)) {
+    if (count($triggers['new']) || count($triggers['changed'])) {
         triggerFileWorkflows($triggers);
     }
 }
 //------------------------------------------------------------------------------
 function triggerFileWorkflows($triggers=[]) {
-    foreach ($triggers as $file => $trigger) {
-        file_put_contents('file_trigger.txt',print_r($trigger,true));
+   
+    $job = Humble::entity('paradigm/job/queue');
+    foreach ($triggers['new'] as $file => $trigger) {
+        $job->setWorkflowId($trigger['workflow_id'])->setQueued(date('Y-m-d H:i:s'))->setFilename($file)->setFileAction('new')->setStatus(NEW_FILE_JOB)->save();
     }
+    foreach ($triggers['changed'] as $file => $trigger) {
+        $job->setWorkflowId($trigger['workflow_id'])->setQueued(date('Y-m-d H:i:s'))->setFilename($file)->setFileAction('change')->setStatus(NEW_FILE_JOB)->save();
+    }
+    Humble::model('paradigm/system')->runFileLauncher();
+     print_r($triggers);unlink('PIDS/cadence.pid');die();
 }
 // To spin off a process in another thread... 'nohup php Program.php > /dev/null &'
 //------------------------------------------------------------------------------
@@ -362,20 +377,24 @@ if (file_exists('PIDS/cadence.pid') && ($running_pid = trim(file_get_contents('P
         die("\nCadence appears to be running already.  If not, you may need to manually delete the cadence.pid file before trying again\n\n");
     }
 } 
-file_put_contents('PIDS/cadence.pid',$pid);                                          //alright, let's record your process number
+file_put_contents('PIDS/cadence.pid',$pid);                                     //alright, let's record your process number
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //Check for configuration file, which configures how period for the cadence, and when to do which checks...
 //
-
-if (file_exists($config) && ($cadence = json_decode(file_get_contents($config),true))) {
+if (file_exists($config) || file_exists($framework)) {
+    $cadence        = file_exists($config) ? json_decode(file_get_contents($config),true) : die('no config');
+    $application    = file_exists($framework) ? json_decode(file_get_contents($framework),true): [];
+    $cadence        = array_merge_recursive($application,$cadence);
+}
+if ($cadence) {
+//    print_r($cadence); unlink('PIDS/cadence.pid'); die();
     logMessage("Starting Cadence...");
     while (file_exists('PIDS/cadence.pid') && ((int)file_get_contents('PIDS/cadence.pid')===$pid)) {
         sleep($cadence['period']);
         logMessage('Waking...');
         $duration       = time();
-        $now            = time() - $offset_time - $started;        
         if (file_exists('cadence.cmd') && ($cmds = json_decode(file_get_contents('cadence.cmd')))) {
             unlink('cadence.cmd');            
             processCadenceCommand($cmds);
@@ -383,7 +402,7 @@ if (file_exists($config) && ($cadence = json_decode(file_get_contents($config),t
         $handlers = array_merge($cadence['handlers']['framework'],$cadence['handlers']['application']);
         foreach ($handlers as $component => $handler) {
             $t = $handler['multiple'] * $cadence['period'];
-            if (($now % $t) == 0) {
+            if (($cadence_ctr % $t) == 0) {
                 $start  = time();
                 logMessage("Processing ".ucfirst($component)." Now...");
                 foreach ($handler['callbacks'] as $callback => $status) {
@@ -394,11 +413,9 @@ if (file_exists($config) && ($cadence = json_decode(file_get_contents($config),t
                 logMessage(ucfirst($component)." Processing took ".($start - time())." seconds");                
             }
         }
-        $offset_time += (time() - $duration);                                   
-        if ($cadence_ctr++ > 50) {
+        if (($cadence_ctr++ > 500)) {
             logMessage("Reseting Cadence...");                                     //Due to "fuzziness" caused by sleep/awake timer, we need to periodically reset counters
             $started        = time();
-            $offset_time    = 0;
             $cadence_ctr    = 0;
         }
         

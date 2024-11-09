@@ -86,7 +86,7 @@ class System extends Model
         if (file_exists('PIDS/scheduler.pid')) {
             die('Scheduler may already be running so skipping'."\n");
         }
-        file_put_contents('scheduler.pid',getmypid()); 
+        file_put_contents('PIDS/scheduler.pid',getmypid()); 
         $now             = strtotime(date('Y-m-d H:i:s'));
         $job_queue       = Humble::entity('paradigm/job/queue');
         $schedule_log    = Humble::entity('paradigm/scheduler/log');   
@@ -110,6 +110,30 @@ class System extends Model
         }
         @unlink('PIDS/scheduler.pid');
         return $schedule_log->reset()->setId($schedule_id)->setFinished(date('Y-m-d H:i:s'))->save();    //Save when the scheduler finished, this is also an audit trail since if there are no values for finished... it didn't for some reason work
+    }
+    /**
+     * This method will go through the job queue table and launch any jobs in there that have
+     *
+     * @return boolean
+     */
+    public function runFileLauncher() {
+        $queue  = Humble::entity('paradigm/job/queue');
+        $jobs   = $queue->setStatus(NEW_FILE_JOB)->fetch();
+        foreach ($jobs as $job) {
+            if (isset($job['filename'])) {
+                //$cmd = 'php launch.php '.$job['id']." > ../SDSF/job_".$job['id'].".txt 2>&1";
+                $cmd = Environment::PHPLocation().' filelaunch.php '.$job['id'].' &2>&1';
+                print("Running launcher at ".date("H:i:s")."\n");
+                print($cmd."\n");
+                if ($this->_isWindows) {
+                    pclose(popen("start ".$cmd,"r"));
+                } else {
+                    exec('/usr/bin/nohup '.$cmd.' 2>&1 &');
+                }
+                print("Done at ".date("H:i:s")."\n");
+            }
+        }
+        return true;
     }
 
     /**

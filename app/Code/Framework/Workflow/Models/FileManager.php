@@ -34,9 +34,20 @@ class FileManager extends Model
         return __CLASS__;
     }
 
+    /**
+     * Logs the processing of a file and also updates the configurable EVENT field with the file name
+     * 
+     * @param type $EVENT
+     */
     public function logFile($EVENT=false) {
         if ($EVENT !== false) {
             $data = $EVENT->load();
+            $cnf  = $EVENT->fetch();
+            if ((isset($cnf['field']) && $cnf['field'])) {
+                $EVENT->update([$cnf['field']=>$data['name']]);
+            }
+            $log = Humble::entity('paradigm/file/log')->setJobId($data['workflow_id']??'99')->setDirectory($data['dir']??'N/A')->setFile($data['name']??'Unknown')->save();
+            
         }
     }
     
@@ -52,7 +63,6 @@ class FileManager extends Model
             $data = $EVENT->load();
             $cnf  = $EVENT->fetch();
             if (isset($cnf['field'])) {
-                
                 $data = @file_get_contents($cnf['resource']);
                 if ($data) {
                     $EVENT->update([$cnf['field'] => $data]);

@@ -6,65 +6,12 @@
         "max_size": "100K"
     },
     "handlers": {
-        "system": {
+        "application": {
             "callbacks": {
-                "snapshotSystem": true
-            },
-            "multiple": 6
-        },
-        "housekeeping": {
-            "callbacks": {
-                "clearSystemStats": true
-            },
-            "multiple": 20 
-        },
-        "apipolicy": {
-            "callbacks": {
-                "watchAPIPolicy": true
-            },
-            "multiple": 6
-        },
-        "applicationxml": {
-            "callbacks": {
-                "watchApplicationXML": true
+                "comment": "Put the name of a function callback, which should reside in '/includes/Callbacks.php', and set to true to get it to be executed",
+                "yourHandlerHere": false
             },
             "multiple": 4
-        },
-        "allowedrules": {
-            "callbacks": {
-                "watchAllowedRules": true
-            },
-            "multiple": 6
-        },    
-        "configurations": {
-            "callbacks": {
-                "scanConfigurationsForChanges": true
-            },
-            "multiple": 4
-        },        
-        "controllers": {
-            "callbacks": {
-                "scanControllersForChanges": true
-            },
-            "multiple": 2
-        },
-        "models": {
-            "callbacks": {
-                "scanModelsForChanges": true
-            },
-            "multiple": 3
-        },
-        "workflows": {
-            "callbacks": {
-                "triggerFileWorkflows": true
-            },
-            "multiple": 4            
-        },
-        "files": {
-            "callbacks": {
-                "scanFilesForChanges": true
-            },
-            "multiple": 5
         }
     }
 }

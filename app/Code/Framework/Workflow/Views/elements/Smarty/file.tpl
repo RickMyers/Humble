@@ -71,10 +71,6 @@
                             <td>Event Field: </td>
                             <td><input class='paradigm-config-form-field' type="text" name="field" id="field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" /></td>
                         </tr>
-                        <tr>
-                            <td>Event Field: </td>
-                            <td><input class='paradigm-config-form-field' type="text" name="field" id="field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" /></td>
-                        </tr>
                         <tr><td colspan="2"><br /><hr /></td></tr>
                         <tr><td colspan="2"><br />Select the events to trigger on below:</td></tr>
                         <tr>
@@ -101,7 +97,7 @@
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
     Form.intercept($('#config-file-trigger-form-{$data.id}').get(),'{$data.id}','/workflow/file/update',"{$windowId}");
-    alert(Workflows.activeDiagram());
+    console.log(Workflows);
     $('#workflow_id_{$data.id}').val(Workflows.activeDiagram());
 </script>
 

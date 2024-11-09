@@ -478,7 +478,7 @@ Copyright humbleprogramming.com, all rights reserved
             }
         })();
         topctr = 0;
-        $(document).ready(function () {
+        $(document).ready( () => {
             //Desktop.on($E('canvas-container'),'keydown',Paradigm.remove);
             Paradigm.container = $E('canvas-container');
             Desktop.on(document,'keydown',Paradigm.remove);

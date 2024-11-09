@@ -16,7 +16,6 @@ use Humble;
  * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
  * @license    https://humbleprogramming.com/license.txt
  * @version    1.0
- * @link       https://humbleprogramming.com/docs/class-Core_Model_Event.html
  * @since      File available since Version 1.0.1
  */
 class Event  {
@@ -41,7 +40,7 @@ class Event  {
     private     $_files          = [];
     private     $_reports        = [];
 
-    //These two variables are YUGE! (Trump Joke)
+
     private     $instance        = '';      //Every time you clone this object, the instance counter will get incremented
     static private $instances    = 0;       //For the original object, the empty string leaves the MongoID intact
 
@@ -198,10 +197,12 @@ class Event  {
     public function close() {
         $flow = [];
         foreach ($this->_stages as $idx => $stage) {
-            $stage['component'] = $this->_configurations[$idx];
-            if (isset($this->_configurations[$stage['id']])) {
-                foreach ($this->_configurations[$stage['id']] as $name => $value) {
-                    $stage[$name] = $value;
+            if (isset($stage['component'])) {
+                $stage['component'] = $this->_configurations[$idx];
+                if (isset($this->_configurations[$stage['id']])) {
+                    foreach ($this->_configurations[$stage['id']] as $name => $value) {
+                        $stage[$name] = $value;
+                    }
                 }
             }
             $flow[$idx] = $stage;
@@ -212,6 +213,7 @@ class Event  {
             $this->_stages[$x-1]['finished'] = time();
         }
         $this->_completed(true);
+        print_r($this->_stages);
         return $this;
     }
 
@@ -558,7 +560,7 @@ class Event  {
     }
 
     /**
-     * When we "clone" (or copy) an event, this method is called, and it lets us update the mongo_id so we dont get a duplicate while also mainting a way to identify this events "parent"
+     * When we "clone" (or copy) an event, this method is called, and it lets us update the mongo_id so we dont get a duplicate while also maintaining a way to identify this events "parent"
      */
     public function __clone() {
         //$this->_id($this->_id().$this->instance);            //assign generated id to Event ID

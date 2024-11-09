@@ -179,50 +179,6 @@ CREATE TABLE `paradigm_method_listeners` (
   UNIQUE KEY `namespace` (`namespace`,`event`,`class`,`method`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Table structure for table `paradigm_scheduler_log` */
-
-DROP TABLE IF EXISTS `paradigm_scheduler_log`;
-
-CREATE TABLE `paradigm_scheduler_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `started` datetime DEFAULT NULL,
-  `finished` datetime DEFAULT NULL,
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `paradigm_scheduler_log_uidx` (`started`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Table structure for table `paradigm_sensor_workflows` */
-
-DROP TABLE IF EXISTS `paradigm_sensor_workflows`;
-
-CREATE TABLE `paradigm_sensor_workflows` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sensor_id` int(11) NOT NULL,
-  `workflow_id` char(32) DEFAULT NULL,
-  `value` char(128) DEFAULT NULL,
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `paradigm_webservice_workflows_uidx` (`workflow_id`,`value`),
-  UNIQUE KEY `paradigm_sensor_workflows_uidx` (`workflow_id`,`value`),
-  KEY `paradigm_webservice_workflows_uri_idx` (`value`),
-  KEY `paradigm_webservice_workflows_wid_idx` (`workflow_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Table structure for table `paradigm_sensors` */
-
-DROP TABLE IF EXISTS `paradigm_sensors`;
-
-CREATE TABLE `paradigm_sensors` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sensor` char(64) DEFAULT '',
-  `sensor_id` char(32) DEFAULT '' COMMENT 'The MongoDB Id for the object containing the service information',
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `active` char(1) DEFAULT 'N',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `paradigm_sensors_uidx` (`sensor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 /*Table structure for table `paradigm_system_events` */
 
 DROP TABLE IF EXISTS `paradigm_system_events`;
