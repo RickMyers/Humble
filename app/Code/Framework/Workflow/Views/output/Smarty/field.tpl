@@ -29,7 +29,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="config-output-form" id="config-output-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
                 Field: <input class='paradigm-config-form-field' type="text" name="field" id="config_field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" /><br /><br >
                 Format: <input type="radio" id="format_{$data.id}_text" name="format" value="TEXT" selected="selected" />
@@ -43,5 +43,5 @@
 </table>
 <script type="text/javascript">
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    Form.intercept($('#config-output-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
+    Form.intercept($('#config-output-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>

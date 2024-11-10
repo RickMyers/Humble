@@ -465,15 +465,15 @@ var Desktop = {
     minimized: {
         windows: {
             list: {},
-            set: function (windowId) {
-                Desktop.minimized.windows.list[windowId] = Desktop.window.list[windowId];
+            set: function (window_id) {
+                Desktop.minimized.windows.list[window_id] = Desktop.window.list[window_id];
                 if (Desktop.minimized.windows.render) {
                    Desktop.minimized.windows.render(Desktop.minimized.windows.list);
                 }
             },
-            restore: function (windowId) {
+            restore: function (window_id) {
                 Desktop.window.reset();
-                Desktop.minimized.windows.list[windowId]._restore();
+                Desktop.minimized.windows.list[window_id]._restore();
                 if (Desktop.minimized.windows.render) {
                    Desktop.minimized.windows.render();
                 }

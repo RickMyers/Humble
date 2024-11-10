@@ -29,7 +29,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="config-sftp-get-form" id="config-sftp-get-form-{$data.id}" method="post" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />
                 <fieldset style="padding: 10px; width: 600px; text-align: left">
                     <legend>Instructions</legend>
                     <div>
@@ -120,5 +120,5 @@
 </table>
 <script type="text/javascript">
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    Form.intercept($('#config-sftp-get-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
+    Form.intercept($('#config-sftp-get-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>

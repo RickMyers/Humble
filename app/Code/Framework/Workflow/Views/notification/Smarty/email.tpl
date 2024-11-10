@@ -44,7 +44,7 @@
                             You can generate an e-mail by specifying the data below, or by specifying the field in the event that has the data you wish to use to populate the fields below.
                             If you will be pulling data from the event to populate the fields below, then choose "Field" from below, and the value you enter should be the name of the field on the event.
                             Otherwise if you are directly setting the values for the fields below, choose "Value" from below:<br /><br />
-                            <input type='hidden' name='windowId' id='windowId-{$window_id}' value='{$window_id}' />
+                            <input type='hidden' name='window_id' id='window_id-{$window_id}' value='{$window_id}' />
                             <input type='hidden' name='id' id='id-{$window_id}' value='{$data.id}' />
                             <input type='hidden' name='email_message' id='email_message-{$data.id}' value='' />
                             <div>

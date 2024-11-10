@@ -25,7 +25,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="config-tries-form" id="config-tries-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />
                 <table>
                     <tr>
                         <td>
@@ -43,5 +43,5 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#config-tries-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
+    Form.intercept($('#config-tries-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>

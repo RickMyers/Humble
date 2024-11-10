@@ -25,7 +25,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="login-error-form" id="login-error-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$helper->getWindowId()}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$helper->getWindowId()}" />
                 <table>
                     <tr><td>
                         Login Message: <input type="text" name="message" id="login-error-{$data.id}" value="{if (isset($data.message))}{$data.message}{/if}" style="width: 250px" />

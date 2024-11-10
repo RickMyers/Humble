@@ -157,6 +157,28 @@ class FileManager extends Model
     }
 
     /**
+     * Uses a filename in an event field to move to another directory
+     *
+     * @workflow use(process) configuration(/workflow/file/move)
+     * @param type $EVENT
+     * @return boolean
+     */
+    public function copyFile($EVENT=false) {
+        $copied = false;
+        if ($EVENT!==false) {
+            $data = $EVENT->load();
+            $cnf  = $EVENT->fetch();
+            print_r($data);
+            print_r($cnf);
+            die();
+            if (isset($data[$cnf['source']])) {
+                $stored = file_put_contents($cnf['destination'],$data[$cnf['source']]);
+            }
+        }
+        return $copied;
+    }    
+    
+    /**
      * Uses a filename in an event field to copy to another file
      *
      * @workflow use(process) configuration(/workflow/file/copy)
@@ -168,6 +190,9 @@ class FileManager extends Model
         if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnf  = $EVENT->fetch();
+            print_r($data);
+            print_r($cnf);
+            die();
             if (isset($data[$cnf['source']])) {
                 $stored = file_put_contents($cnf['destination'],$data[$cnf['source']]);
             }

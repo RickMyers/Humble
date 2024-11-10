@@ -7,7 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 -->
 <controller name="output" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
-        <action name="field" passalong="windowId">
+        <action name="field" passalong="window_id">
             <description>Outputs a value from an event</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />

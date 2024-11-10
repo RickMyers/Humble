@@ -46,7 +46,7 @@
             <!-- ########################## FORM SECTION ########################################-->
             <form name="config-webhook-form" id="config-webhook-form-{$data.id}" onsubmit="return false">
                     <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
-                    <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />    <!-- Leave this As-Is -->
+                    <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />    <!-- Leave this As-Is -->
                     <input type="hidden" name="workflow_id" id="workflow_id_{$data.id}" value="" />    <!-- Leave this As-Is -->
                     <input type="hidden" name="namespace" id="namespace_{$data.id}" value="{$data.namespace}" />    <!-- Leave this As-Is -->
                     <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
@@ -115,7 +115,7 @@
         $('#format_{$data.id}').val('{$data.format}')
     {/if}
     $('#workflow_id_{$data.id}').val(Paradigm.actions.get.mongoWorkflowId());
-    Form.intercept($('#config-webhook-form-{$data.id}').get(),'{$data.id}','/workflow/webhook/save',"{$windowId}");
+    Form.intercept($('#config-webhook-form-{$data.id}').get(),'{$data.id}','/workflow/webhook/save',"{$window_id}");
     $('#existing_webhook_{$data.id}').on("change",function (evt) {
         alert('Ok');
     });

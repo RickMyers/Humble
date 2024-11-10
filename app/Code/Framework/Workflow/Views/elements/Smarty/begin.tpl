@@ -21,7 +21,7 @@
             
             <form name="config-begin-form" id="config-begin-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
                     This is the beginning of a workflow, identified by label (which is a MongoDB ID) below:<br />
                     <h3 style="text-align: center; font-family: monospace; letter-spacing: 2px"><a href="#" id="test_link_for_{$data.id}" onclick="return false">{$data.id}</a></h3>
@@ -35,7 +35,7 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#config-begin-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
+    Form.intercept($('#config-begin-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
     $('#test_link_for_{$data.id}').on("click",function (evt) {
         if (confirm('Would you like to run this workflow?')) {
             (new EasyAjax('/paradigm/workflow/run')).add('workflow_id','{$data.id}').then((response) => {

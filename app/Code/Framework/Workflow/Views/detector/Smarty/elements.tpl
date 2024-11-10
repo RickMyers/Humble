@@ -25,7 +25,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="trigger-detector-form" id="trigger-detector-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />
                 <input type="hidden" name="namespace" id="namespace_{$data.id}" value="paradigm" />
                 <input type="hidden" name="component" id="component_{$data.id}" value="detector" />
                 <input type="hidden" name="method" id="method_{$data.id}" value="trigger" />
@@ -52,5 +52,5 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#trigger-detector-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
+    Form.intercept($('#trigger-detector-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>

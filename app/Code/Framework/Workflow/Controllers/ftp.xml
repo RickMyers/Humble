@@ -7,7 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 -->
 <controller name="ftp" use="Smarty" author="Richard Myers" email="rick@humbleprogramming.com.com">
     <actions>
-        <action name="get" passalong="windowId">
+        <action name="get" passalong="window_id">
             <description>Retrieves files at sFTP site</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -16,7 +16,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
         
-        <action name="put" passalong="windowId">
+        <action name="put" passalong="window_id">
             <description>Places files at sFTP site</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -25,7 +25,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
         
-        <action name="list" passalong="windowId">
+        <action name="list" passalong="window_id">
             <description>Lists files at sFTP site</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />

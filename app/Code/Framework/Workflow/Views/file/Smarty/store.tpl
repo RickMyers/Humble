@@ -25,7 +25,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="config-file-store-form" id="config-file-store-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />
                 <table>
                     <tr><td>
                             Event Field: <input style="background-color: lightcyan; border: 1px solid #aaf; padding: 2px; border-radius: 2px; width: 140px" type="text" name="source" id="config_source_{$data.id}" value="{if (isset($data.source))}{$data.source}{/if}" /><br /><br >
@@ -49,5 +49,5 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#config-file-store-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
+    Form.intercept($('#config-file-store-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>

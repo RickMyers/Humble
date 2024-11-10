@@ -12,7 +12,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
             <entity namespace="humble" class="modules" id="modules" orderby="namespace=ASC">
@@ -35,7 +35,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <entity namespace='humble' class='email_categories' id='categories' />
 
             <helper namespace="workflow" class='data' id='helper'> 
-                <parameter name="windowId" source="post" default="" required="true" />
+                <parameter name="window_id" source="post" default="" required="true" />
                 <parameter name='component' source='post' required='true' default='' />
                 <parameter name='method' source='post' required='true' default='' />
             </helper>
@@ -49,7 +49,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
             <helper namespace="workflow" class='data' id='helper'>
-                <parameter name="windowId" source="post" default="" required="true" />
+                <parameter name="window_id" source="post" default="" required="true" />
                 <parameter name='component' source='post' required='true' default='' />
                 <parameter name='method' source='post' required='true' default='' />
             </helper>
@@ -66,7 +66,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
             <helper namespace="paradigm" class='data' id='helper'>
-                <parameter name="windowId" source="post" default="" required="true" />
+                <parameter name="window_id" source="post" default="" required="true" />
                 <parameter name='component' source='post' required='true' default='' />
                 <parameter name='method' source='post' required='true' default='' />
             </helper>
@@ -81,7 +81,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
             <helper namespace="workflow" class='data' id='helper'>
-                <parameter name="windowId" source="post" default="" required="true" />
+                <parameter name="window_id" source="post" default="" required="true" />
                 <parameter name='component' source='post' required='true' default='' />
                 <parameter name='method' source='post' required='true' default='' />
             </helper>
@@ -89,7 +89,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <!-- ############################################################### -->
 
-        <action name="rainemail" passalong="window_id,windowId,component,method">
+        <action name="rainemail" passalong="window_id,window_id,component,method">
             <description>Manages the email creation form</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -100,7 +100,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <!-- ############################################################### -->
         
-        <action name="eventemail" passalong="window_id,windowId,component,method">
+        <action name="eventemail" passalong="window_id,window_id,component,method">
             <description>Manages the creation of an email from event fields</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />

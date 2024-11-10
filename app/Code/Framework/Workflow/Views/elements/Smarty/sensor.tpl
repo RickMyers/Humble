@@ -8,7 +8,7 @@
     <tr>
         <td valign='middle'>
             <form name="trigger-detector-form" id="trigger-detector-{$data.id}" onsubmit="return false">
-                <input type="hidden" name="windowId" id="window-id-{$data.id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window-id-{$data.id}" value="{$window_id}" />
                 <input type="hidden" id="humble-paradigm-sensor-form-id-{$data.id}" name="id" value="{$data.id}" />
                 <input type="hidden" id="humble-paradigm-sensor-form-workflow-id-{$data.id}" name="workflow_id" value="" />
                 <input type="hidden" id="humble-paradigm-sensor-form-namespace-{$data.id}" name="namespace" value="paradigm" />
@@ -41,7 +41,7 @@
     </tr>
 </table>
 <script type='text/javascript'>
-    Form.intercept($('#trigger-detector-{$data.id}').get(),'{$data.id}','/workflow/sensor/save',"{$windowId}");
+    Form.intercept($('#trigger-detector-{$data.id}').get(),'{$data.id}','/workflow/sensor/save',"{$window_id}");
     $('#humble-paradigm-sensor-form-workflow-id-{$data.id}').val(Paradigm.actions.get.mongoWorkflowId());
     $('#humble-paradigm-sensor-form-namespace-{$data.id}').val(Paradigm.actions.get.namespace());
 </script>

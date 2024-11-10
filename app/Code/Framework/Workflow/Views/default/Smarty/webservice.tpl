@@ -1,6 +1,6 @@
 {assign var=id value=$element->getId()}
 {assign var=data value=$element->load()}
-{assign var=windowId value=$helper->getWindowId()}
+{assign var=window_id value=$helper->getWindowId()}
 <style type="text/css">
     .paradigm-config-descriptor {
         font-size: .8em; font-family: serif; letter-spacing: 2px;
@@ -29,7 +29,7 @@
         <td colspan="3" valign="middle" align="center">
             <form name="terminus-form" id="config-terminus-form-{$id}">
                 <input type="hidden" name="id" id="element-id-{$id}" value="{$id}" />
-                <input type="hidden" name="windowId" id="window-id-{$id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window-id-{$id}" value="{$window_id}" />
                 <table>
                     <tr>
                         <td>
@@ -40,7 +40,7 @@
                                 </div>
                                 <div>
                                     <fieldset style="padding: 10px"><legend>Webservice Status</legend>
-                                    <input type="checkbox" name="enabled" id="webservice-enabled-{$windowId}" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
+                                    <input type="checkbox" name="enabled" id="webservice-enabled-{$window_id}" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
                                 </div>
                             <br />
                             {assign var=h1 value='Variable Name'}
@@ -129,7 +129,7 @@
     </tr>
 </table>
 <script type="text/javascript">
-    $('#webservice-enabled-{$windowId}').on("click",function () {
+    $('#webservice-enabled-{$window_id}').on("click",function () {
         var active = this.checked ? 'Y' : 'N';
         (new EasyAjax('/paradigm/webservice/activate')).add('id','{$webservice->getId()}').add('active',(this.checked ? 'Y' : 'N')).then((response) => {
             console.log(response);

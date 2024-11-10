@@ -1,5 +1,5 @@
 {assign var=id value=$manager->getId()}
-{assign var=windowId value=$manager->getWindowId()}
+{assign var=window_id value=$manager->getWindowId()}
 {assign var=data value=$component->load()}
 {assign var=returns value=$component->getReturns()}
 <style type="text/css">
@@ -30,7 +30,7 @@
         <td colspan="3" valign="middle" align="center">
             <form name="terminus-form" id="config-terminus-form-{$id}">
                 <input type="hidden" name="id" id="element-id-{$id}" value="{$id}" />
-                <input type="hidden" name="windowId" id="window-id-{$id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window-id-{$id}" value="{$window_id}" />
                 <table>
                     <tr>
                         <td>Return:&nbsp;&nbsp;&nbsp;<input type="radio" name="returns" checked="checked" id="terminus-value-true-{$id}" value='1' /> True &nbsp;&nbsp; <input type="radio" name="returns" id="terminus-value-false-{$id}" id="" value="0" /> False<br />
@@ -46,5 +46,5 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#config-terminus-form-{$id}').get(),'{$id}','/paradigm/element/update','{$windowId}');
+    Form.intercept($('#config-terminus-form-{$id}').get(),'{$id}','/paradigm/element/update','{$window_id}');
 </script>

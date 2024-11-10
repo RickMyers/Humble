@@ -9,7 +9,7 @@
     <tr>
         <td valign='middle'>
             <form name='process-form' id='humble-paradigm-config-trigger-form-{$manager->getId()}' onsubmit='return false'>
-            <input type="hidden" name="windowId" id="window-id-{$manager->getId()}" value="{$manager->getWindowId()}" />
+            <input type="hidden" name="window_id" id="window-id-{$manager->getId()}" value="{$manager->getWindowId()}" />
             <input type="hidden" name="id" id="element-id-{$manager->getId()}" value="{$manager->getId()}" />
             <input type="hidden" name="component" id="component-id-{$manager->getId()}" value="Event" />
             <div style='margin-left: auto; margin-right: auto; width: 545px; font-size: 2em; font-family: sans-serif; color: #333; border-bottom: 1px solid #777; margin-bottom: 6px'>

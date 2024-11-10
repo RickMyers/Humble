@@ -71,7 +71,7 @@
     <input type="hidden" name="recipients" id="recipients_{$data.id}" value="" />
     <input type="hidden" name="recipients_source" id="recipients_source_{$data.id}" value="" />
     <input type="hidden" name="attachment_event_field" id="attachment_event_field_{$data.id}" value="" />
-    <input type='hidden' name='windowId' id='windowId_{$data.id}' value='{$window_id}' />
+    <input type='hidden' name='window_id' id='window_id_{$data.id}' value='{$window_id}' />
 </form>
 <script type="text/javascript">
     //--------------------------------------------------------------------------

@@ -14,7 +14,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
             <helper namespace='paradigm' class='data' id='helper'>
-                <parameter name="windowId" source="request" default=""  />
+                <parameter name="window_id" source="request" default=""  />
             </helper>
         </action>
 

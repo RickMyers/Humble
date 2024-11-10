@@ -25,7 +25,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="trigger-sensor-form" id="trigger-sensor-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$helper->getWindowId()}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$helper->getWindowId()}" />
                 <table>
                     <tr><td>
                         What trigger are we looking for:

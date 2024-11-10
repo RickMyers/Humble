@@ -25,7 +25,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="config-alert-form" id="config-alert-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$helper->getWindowId()}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$helper->getWindowId()}" />
                 <table>
                     <tr><td>
                         <textarea style="background-color: lightcyan; padding: 2px; border: 1px solid #aaf; border-radius: 2px; width: 400px; height: 100px" name="message" id="config-alert-{$data.id}" >{if (isset($data.message))}{$data.message}{/if}</textarea><br />

@@ -41,7 +41,7 @@
     <tr>
         <td valign='middle'>
             <form name='webservice-form' id='humble-paradigm-config-webservice-form-{$manager->getId()}' onsubmit='return false'>
-            <input type="hidden" name="windowId"        id="window-id-{$manager->getId()}" value="{$windowId}" />
+            <input type="hidden" name="window_id"        id="window-id-{$manager->getId()}" value="{$window_id}" />
             <input type="hidden" name="id"              id="element-id-{$manager->getId()}" value="{$manager->getId()}" />
             <input type="hidden" name="workflow_id"     id="workflow-id-{$manager->getId()}" value="" />
             <input type='hidden' name='parameters'      id='webservice-parameters-{$manager->getId()}' value='' />
@@ -103,7 +103,7 @@
                 <div class='form-field-description'>Inbound Parameters</div><br /><br />
                 <div>
                     <fieldset style="padding: 10px"><legend>Webservice Status</legend>
-                    <input type="checkbox" name="enabled" id="webservice-enabled-{$windowId}" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
+                    <input type="checkbox" name="enabled" id="webservice-enabled-{$window_id}" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
                     </fieldset>
                 </div><br /><br />
                 <div id='humble-paradigm-config-webservice-security-nav-{$manager->getId()}'></div>

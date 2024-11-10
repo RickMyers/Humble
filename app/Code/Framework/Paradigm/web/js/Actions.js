@@ -210,7 +210,7 @@ Paradigm.actions = (function () {
             }
             Desktop.window.list[generateWindow]._open('Generating...');
             Paradigm.console.reply('Generating...','',1);
-            (new EasyAjax('/paradigm/workflow/generate')).add('namespace',Paradigm.actions.get.namespace()).add('windowId',generateWindow).add('workflow',JSON.stringify(Paradigm.elements.list)).add('id',currentDiagramId).add('image',Paradigm.canvas.toDataURL()).then((response) => {
+            (new EasyAjax('/paradigm/workflow/generate')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',generateWindow).add('workflow',JSON.stringify(Paradigm.elements.list)).add('id',currentDiagramId).add('image',Paradigm.canvas.toDataURL()).then((response) => {
                 Desktop.window.list[generateWindow]._title('Workflow Generation | Paradigm');
                 Desktop.window.list[generateWindow].set(response);
             }).post();
@@ -224,7 +224,7 @@ Paradigm.actions = (function () {
         },
         import: function () {
             var win = Desktop.semaphore.checkout(true);
-            (new EasyAjax('/paradigm/workflow/import')).add('namespace',Paradigm.actions.get.namespace()).add('windowId',win.id).add('workflow',JSON.stringify(Paradigm.elements.list)).add('id',currentDiagramId).add('image',Paradigm.canvas.toDataURL()).then((response) => {
+            (new EasyAjax('/paradigm/workflow/import')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',win.id).add('workflow',JSON.stringify(Paradigm.elements.list)).add('id',currentDiagramId).add('image',Paradigm.canvas.toDataURL()).then((response) => {
                 win._title('Workflow Import | Paradigm');
                 win._open(response);
             }).post();
@@ -235,7 +235,7 @@ Paradigm.actions = (function () {
                 if (response) {
                     currentDiagramId = response.trim();
                     Paradigm.console.reply("Saved prior to export.",'',1);
-                    (new EasyAjax('/paradigm/workflow/exportlist')).add('windowId',win.id).add('id',currentDiagramId).then((response) => {
+                    (new EasyAjax('/paradigm/workflow/exportlist')).add('window_id',win.id).add('id',currentDiagramId).then((response) => {
                         win._title('Workflow Export | Paradigm');
                         win._open(response);
                     }).post();
@@ -244,7 +244,7 @@ Paradigm.actions = (function () {
         },
         sync: function () {
             var win = Desktop.semaphore.checkout(true);
-            (new EasyAjax('/paradigm/workflow/synclist')).add('windowId',win.id).then((response) => {
+            (new EasyAjax('/paradigm/workflow/synclist')).add('window_id',win.id).then((response) => {
                 win._title('Workflow Sync | Paradigm');
                 win._open(response);
             }).post();

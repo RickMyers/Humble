@@ -137,13 +137,13 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name='workflow'  source='post' required='true' default="" />
                 <parameter name='namespace' source='post' required='true' default="" />
                 <parameter name='image'     source='post' required='true' default="" />
-                <parameter name='windowId'  source='post' required='true' default="" />
+                <parameter name='window_id'  source='post' required='true' default="" />
             </helper>
         </action>
 
         <!-- ############################################################### -->
 
-        <action name="import" event="workflowImport" comment="A workflow has been imported" passalong="windowId">
+        <action name="import" event="workflowImport" comment="A workflow has been imported" passalong="window_id">
             <description>Imports a serialized workflow</description>
             <model namespace="paradigm" class="workflow" method='import'>
                 <parameter name='workflow' source='request' default='' required='true' />
@@ -284,7 +284,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="synclist" passalong='windowId' >
+        <action name="synclist" passalong='window_id' >
             <description>Presents a list of destination to sync with</description>
             <entity namespace="paradigm" class="import_sources" id="sources" />
         </action>
@@ -302,7 +302,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="exportlist" passalong='id,windowId'>
+        <action name="exportlist" passalong='id,window_id'>
             <description>Presents a list of destination to export to</description>
             <entity namespace="paradigm" class="export/targets" id="targets" orderby="alias=ASC" />
         </action>

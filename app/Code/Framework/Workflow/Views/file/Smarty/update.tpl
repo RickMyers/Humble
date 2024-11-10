@@ -1,4 +1,4 @@
-{assign var=windowId value=$file->getWindowId()}
+{assign var=window_id value=$file->getWindowId()}
 <table style="width: 100%; height: 100%">
     <tr>
         <td valign="middle" align="center">
@@ -8,8 +8,8 @@
 </table>
 <script type="text/javascript">
     var tt = function () {
-        if (Desktop.window.list['{$windowId}']) {
-            Desktop.window.list['{$windowId}']._close();
+        if (Desktop.window.list['{$window_id}']) {
+            Desktop.window.list['{$window_id}']._close();
         }
     }
     window.setTimeout(tt,3000)

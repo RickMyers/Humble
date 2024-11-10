@@ -30,7 +30,7 @@
             <!-- ########################## FORM SECTION ########################################-->
             <form name="config-general-input-form" id="config-general-input-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />    <!-- Leave this As-Is -->
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />    <!-- Leave this As-Is -->
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
                     This allows you to put a static value on an Event.  To do so, identify the name of the Event field and what value you want to assign it<br /><br />
                     <table>
@@ -53,5 +53,5 @@
 <script type="text/javascript">
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    Form.intercept($('#config-general-input-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
+    Form.intercept($('#config-general-input-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>

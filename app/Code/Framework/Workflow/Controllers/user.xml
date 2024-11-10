@@ -8,7 +8,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 <controller name="user" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
 
-        <action name="tries" passalong="windowId">
+        <action name="tries" passalong="window_id">
             <description>Set number of tries before locking account</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -17,7 +17,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="is" passalong="windowId">
+        <action name="is" passalong="window_id">
             <description>Sets who a user ought to be</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -27,7 +27,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="list" passalong="windowId">
+        <action name="list" passalong="window_id">
             <description>Sets a group of uses who can do something</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -37,7 +37,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="role" passalong="windowId">
+        <action name="role" passalong="window_id">
             <description>Allows a user to do something if they have a role that matches the role identified here </description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -47,7 +47,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="roles" passalong="windowId">
+        <action name="roles" passalong="window_id">
             <description>Allows a user to do something if they have one of the roles as identified here</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -57,7 +57,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="redirect" passalong="windowId">
+        <action name="redirect" passalong="window_id">
             <description>Allows you to set the URL/URI the user will be directed to</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -66,7 +66,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ############################################################### -->
 
-        <action name="information" passalong="windowId">
+        <action name="information" passalong="window_id">
             <description>Identifies which event field contains the userid you wish to load data from, and which event node to attach the information to</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />

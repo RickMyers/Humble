@@ -25,7 +25,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="config-file-add-form" id="config-file-add-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId()}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id()}" />
                 <table>
                     <tr><td>
                             File Location: <input type="text" name="file_input_location" id="config_file_input_location_{$data.id}" value="{if (isset($data.file_input_location))}{$data.file_input_location}{/if}" /><br /><br >
@@ -48,5 +48,5 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#config-file-add-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId()}");
+    Form.intercept($('#config-file-add-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id()}");
 </script>

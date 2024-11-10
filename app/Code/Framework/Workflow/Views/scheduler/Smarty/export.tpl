@@ -25,7 +25,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="config-export-form" id="config-export-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />
                 <fieldset style="width: 500px; padding: 20px"><legend>Date Range</legend>
                     <table>
                         <tr>
@@ -84,7 +84,7 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#config-export-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$windowId}");
+    Form.intercept($('#config-export-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
     $('#config-startdate-{$data.id}').datepicker();
     $('#config-enddate-{$data.id}').datepicker();
     $('#config-enddate-{$data.id}').datepicker();

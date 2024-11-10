@@ -28,7 +28,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="begin" passalong="windowId">
+        <action name="begin" passalong="window_id">
             <description>Basic Configuration For the Start/Begin step</description>
             <mongo namespace="paradigm" class="elements" id='element'>
                 <parameter name='id' source='post' default='' />
@@ -43,7 +43,7 @@
             </entity>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>
@@ -57,7 +57,7 @@
             </entity>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>
@@ -71,13 +71,13 @@
             </entity>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>
         <!-- ################################################################################################# -->
 
-        <action name="file" passalong="windowId">
+        <action name="file" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />
@@ -87,14 +87,14 @@
             </mongo>            
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>        
 
         <!-- ################################################################################################# -->
 
-        <action name="operation" passalong="windowId">
+        <action name="operation" passalong="window_id">
             <description>Configures a program to be run</description>
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />
@@ -103,14 +103,14 @@
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
             <model namespace="workflow" class='manager' id='manager'>
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>
 
         <!-- ################################################################################################# -->
 
-        <action name="sensor" passalong="windowId,namespace">
+        <action name="sensor" passalong="window_id,namespace">
             <description>The biometric sensor configuration page</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
@@ -126,7 +126,7 @@
             </entity>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
             <entity namespace="humble" class="workflow/components" id="components">
@@ -144,7 +144,7 @@
             </entity>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
             <entity namespace='humble' class='modules' id='client' method='load'>
@@ -165,21 +165,21 @@
             </mongo>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' optional='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>
 
         <!-- ################################################################################################# -->
 
-        <action name="webservice" passalong="windowId">
+        <action name="webservice" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />
             </entity>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
             <mongo namespace="paradigm" class="elements" id="element">
@@ -196,14 +196,14 @@
         
         <!-- ################################################################################################# -->
 
-        <action name="webhook" passalong="windowId">
+        <action name="webhook" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <mongo namespace="paradigm" class="elements" id="element">
                 <parameter name='id' source='post' required='true' default='' />
             </mongo>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>            
             <entity namespace="paradigm" class="webhooks" id="webhooks" >
@@ -213,11 +213,11 @@
         
         <!-- ################################################################################################# -->
 
-        <action name="exception" passalong="windowId">
+        <action name="exception" passalong="window_id">
             <description>Allows you to pick an exception type and customize its parts</description>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
             <mongo namespace="paradigm" class="elements" id="component">
@@ -227,11 +227,11 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="external" passalong="windowId">
+        <action name="external" passalong="window_id">
             <description>This will generate a list of available partial workflows</description>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
             <mongo namespace="paradigm" class="elements" id="component">
@@ -248,7 +248,7 @@
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='windowId' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
             <mongo namespace="paradigm" class="elements" id="component">

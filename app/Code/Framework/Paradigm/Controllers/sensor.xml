@@ -7,7 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 -->
 <controller name="sensor" use="Smarty" author="Richard Myers" email="rick@humbleprogramming.com">
     <actions>
-        <action name="listen" passalong="windowId" >
+        <action name="listen" passalong="window_id" >
             <description>Listens for ping from the detector</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />

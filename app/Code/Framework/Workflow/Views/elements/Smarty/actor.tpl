@@ -9,7 +9,7 @@
     <tr>
         <td valign='middle'>
             <form name='id' id='humble-paradigm-config-actor-form-{$actor_id}' onsubmit='return false'>
-            <input type="hidden" name="windowId" id="window-id-{$manager->getId()}" value="{$manager->getWindowId()}" />
+            <input type="hidden" name="window_id" id="window-id-{$manager->getId()}" value="{$manager->getWindowId()}" />
             <input type="hidden" id="humble-paradigm-config-actor-form-id-{$actor_id}" name="id" value="{$actor_id}" />
             <input type="hidden" name="workflow_id" id="workflow_id_{$manager->getId()}" value="" />
             <div style='margin-left: auto; margin-right: auto; width: 545px; font-size: 2em; font-family: sans-serif; color: #333; border-bottom: 1px solid #777; margin-bottom: 6px'>

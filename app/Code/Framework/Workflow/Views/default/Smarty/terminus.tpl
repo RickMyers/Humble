@@ -1,6 +1,6 @@
 {assign var=id value=$element->getId()}
 {assign var=data value=$element->load()}
-{assign var=windowId value=$helper->getWindowId()}
+{assign var=window_id value=$helper->getWindowId()}
 <style type="text/css">
     .paradigm-config-descriptor {
         font-size: .8em; font-family: serif; letter-spacing: 2px;
@@ -29,7 +29,7 @@
         <td colspan="3" valign="middle" align="center">
             <form name="terminus-form" id="config-terminus-form-{$id}">
                 <input type="hidden" name="id" id="element-id-{$id}" value="{$id}" />
-                <input type="hidden" name="windowId" id="window-id-{$id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window-id-{$id}" value="{$window_id}" />
                 <table>
                     <tr>
                         <td>Return:&nbsp;&nbsp;&nbsp;<input type="radio" name="returns" {if (isset($data.returns)&& ($data.returns== 1))}checked="checked"{/if} id="terminus-value-true-{$id}" value='1' /> True &nbsp;&nbsp;
@@ -46,5 +46,5 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#config-terminus-form-{$id}').get(),'{$id}','/paradigm/element/update','{$windowId}');
+    Form.intercept($('#config-terminus-form-{$id}').get(),'{$id}','/paradigm/element/update','{$window_id}');
 </script>

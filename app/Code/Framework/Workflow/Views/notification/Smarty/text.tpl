@@ -31,7 +31,7 @@
         <td colspan="3" align="center" valign="middle">
             <form name="config-text-message-form" id="config-text-message-form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
-                <input type="hidden" name="windowId" id="windowId_{$data.id}" value="{$helper->getWindowId()}" />
+                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$helper->getWindowId()}" />
                 <fieldset style='padding: 10px; margin-left: auto; margin-right: auto; width: 550px'><legend style='font-weight: bolder'>Instructions</legend>
                     <p style='text-align: left'>
                         Please specify the phone number to text below.  At present, only one (1) number is allowed.  If you know the phone carrier, please specify it below or if you do not know the carrier,

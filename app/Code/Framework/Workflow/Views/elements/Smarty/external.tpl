@@ -1,5 +1,5 @@
 {assign var=id value=$manager->getId()}
-{assign var=windowId value=$manager->getWindowId()}
+{assign var=window_id value=$manager->getWindowId()}
 {assign var=data value=$component->load()}
 {assign var=returns value=$component->getReturns()}
 <style type="text/css">
@@ -30,7 +30,7 @@
         <td colspan="3" valign="middle">
             <form name="external-form" id="config-external-form-{$id}">
                 <input type="hidden" name="id" id="element-id-{$id}" value="{$id}" />
-                <input type="hidden" name="windowId" id="window-id-{$id}" value="{$windowId}" />
+                <input type="hidden" name="window_id" id="window-id-{$id}" value="{$window_id}" />
                 <input type='hidden' name='namespace'       id='webservice-namespace-{$manager->getId()}' value='Paradigm' />
                 <input type='hidden' name='component'       id='webservice-component-{$manager->getId()}' value='External' />
                 <input type='hidden' name='method'          id='webservice-method-{$manager->getId()}' value='Connector' />
@@ -54,5 +54,5 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#config-external-form-{$id}').get(),'{$id}','/paradigm/element/update','{$windowId}');
+    Form.intercept($('#config-external-form-{$id}').get(),'{$id}','/paradigm/element/update','{$window_id}');
 </script>

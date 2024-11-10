@@ -7,7 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 -->
 <controller name="flowchart" use="Smarty" author="Richard Myers" email="rick@humbleprogramming.com">
     <actions>
-        <action name="if" passalong="windowId">
+        <action name="if" passalong="window_id">
             <description>Configures a generic decision</description>
             <mongo namespace="paradigm" class="elements" id='element'>
                 <parameter name='id' source='post' default='' />

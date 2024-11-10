@@ -7,7 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 -->
 <controller name="trigger" use="Smarty" author="Rick Myers" email="">
     <actions>
-        <action name="options" passalong="windowId">
+        <action name="options" passalong="window_id">
             <description>The options available to a triggered event</description>
             <mongo namespace="paradigm" class="elements" id='element'>
                 <parameter name='id' source='post' default='' />
