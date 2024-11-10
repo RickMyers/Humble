@@ -223,11 +223,11 @@ class Manager extends Model
     public function updateElement() {
         $settings = json_decode($this->getData(),true);
         $element  = Humble::collection('paradigm/elements');
-        $this->setWindowId($settings['windowId']);
+        $this->setWindowId($settings['window_id']);
         $element->setId($settings['id']);
         if ($data = $element->load()) {
             foreach ($settings as $key => $val) {
-                if ($key == 'windowId') {
+                if ($key == 'window_id') {
                     continue;
                 }
                 $method = 'set'.ucfirst($key);

@@ -56,7 +56,7 @@ class Webhook extends Model
      */
     public function save() {
         $data         = json_decode($this->getData(),true);
-        $this->setWindowId($data['windowId']);  //now I need a shower...
+        $this->setWindowId($data['window_id']);  //now I need a shower...
         $component    = Humble::model('workflow/manager');
         $component->setData($this->getData());
         $component->saveComponent();

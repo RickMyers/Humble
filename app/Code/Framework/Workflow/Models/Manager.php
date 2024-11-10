@@ -49,7 +49,7 @@ class Manager extends Model {
         $b       = $element->load();
         $this->setType($b['type']);
         foreach ($data as $var => $val) {
-            if ($var == 'windowId') {
+            if ($var == 'window_id') {
                 //we don't need to record this, since it changes each time you edit this component
                 $this->setWindowId($val);
                 continue;
@@ -69,7 +69,7 @@ class Manager extends Model {
     public function setListener() {
         $id       = $this->saveComponent();
         $data     = json_decode($this->getData(),true);
-        $this->setWindowId($data['windowId']);
+        $this->setWindowId($data['window_id']);
         $listener = Humble::entity('paradigm/workflow_listeners');
         $listener->setNamespace($data['namespace']);
         $listener->setComponent($data['component']);

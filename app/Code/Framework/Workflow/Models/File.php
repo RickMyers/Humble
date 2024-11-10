@@ -44,7 +44,7 @@ class File extends Model
      */
     public function save() {
         $data         = json_decode($this->getData(),true);
-        $this->setWindowId($data['windowId']);  //now I need a shower...
+        $this->setWindowId($data['window_id']);  //now I need a shower...
         $component    = Humble::model('workflow/manager')->setData($this->getData())->saveComponent();
         return Humble::entity('paradigm/file/triggers')->setFileTriggerId($data['id'])->setWorkflowId($data['workflow_id'])->setDirectory($data['directory'])->setExtension($data['file_mask'])->setField($data['field'])->setActive($data['active'])->save();
     }
