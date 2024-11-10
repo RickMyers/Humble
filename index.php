@@ -81,8 +81,8 @@ $cancelBubble = false;       //These indicate whether the workflow completed
 //###########################################################################
 //In the case where we consume our own services, we need to pass the session
 //id in the request so that we aren't re-routed to the login screen
-if (isset($_REQUEST['sessionId'])) {
-    session_id($_REQUEST['sessionId']);
+if (isset($_REQUEST['humble_session_id'])) {
+    session_id($_REQUEST['humble_session_id']);
 }
 session_start();
 

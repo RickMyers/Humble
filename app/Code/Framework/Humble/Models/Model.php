@@ -315,7 +315,14 @@ class Model implements HumbleComponent
         $auth           = ($userid && $password) ? array("Authorization"=> ["Basic" => base64_encode($userid.":".$password)]) : [];
         $protocol       = ($secure) ? 'ssl' : 'http';
         $sessionControl = isset($this->_data['sessionId']) || ((isset($call['blocking']) && (!$call['blocking'])));  //do I need to suspend the current session to give access to the session during the remote call
-            
+
+        if ($sessionControl) {
+            $SID = session_id();
+            $args['humble_session_id'] = $SID;
+            $this->setSessionId($SID);
+            session_write_close();
+        }
+        
         //--> USE HURL INSTEAD... 
         if (substr($URL,0,4)!=='http') {
             $URL = $_SERVER['HTTP_HOST'].$URL;
@@ -327,12 +334,7 @@ class Model implements HumbleComponent
         } else {
             $hurl = $URL;
         }
-        $sessionControl = isset($this->_data['sessionId']) || ((isset($call['blocking']) && (!$call['blocking'])));
-        if ($sessionControl) {
-            $SID = session_id();
-            $this->setSessionId($SID);
-            session_write_close();
-        }
+
         $ch = curl_init($hurl);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -412,9 +414,10 @@ class Model implements HumbleComponent
         $auth           = ($userid && $password) ? array("Authorization"=> ["Basic" => base64_encode($userid.":".$password)]) : [];
         $protocol       = ($secure) ? 'ssl' : 'http';
         $sessionControl = isset($this->_data['sessionId']) || ((isset($call['blocking']) && (!$call['blocking'])));  //do I need to suspend the current session to give access to the session during the remote call
-
+        $SID            = false;
         if ($sessionControl) {
-            $args['sessionId'] = session_id();
+            $SID = session_id();
+            $args['humble_session_id'] = session_id();
             session_write_close();
          }
         //if you are going to "eat your own dogfood", we need to precede the resource URL with the fully qualified host name
@@ -523,8 +526,8 @@ class Model implements HumbleComponent
             \Log::error("Unable to connect: ".$URL."\nArguments:\n".print_r($args,true));
         }
 
-        if ($sessionControl) {
-            session_id($args['sessionId']);
+        if ($sessionControl && $SID) {
+            session_id($SID);
             session_start();
         }
         if ($this->_DEBUG) {
@@ -727,11 +730,11 @@ SOAP;
                     if ($val && (trim($val) != '')) {
                         $args[$var] = $val;
                     } else {
-                        $method = 'get'.(($cc) ? $this->underscoreToCamelCase($var,true) : ucfirst($var));
+                        $method = 'get'.(($cc) ? ucfirst($var) : $this->underscoreToCamelCase($var,true));
                         $args[$var] = $this->$method();
                     }
                 } else {
-                    $method = 'get'.(($cc) ? $this->underscoreToCamelCase($val,true) : ucfirst($val));
+                    $method = 'get'.(($cc) ? ucfirst($var) : $this->underscoreToCamelCase($var,true));
                     $args[$val] = $this->$method();
                 }
             }
