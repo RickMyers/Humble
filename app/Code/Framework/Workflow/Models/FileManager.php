@@ -163,7 +163,7 @@ class FileManager extends Model
      * @param type $EVENT
      * @return boolean
      */
-    public function copyFile($EVENT=false) {
+    public function moveFile($EVENT=false) {
         $copied = false;
         if ($EVENT!==false) {
             $data = $EVENT->load();

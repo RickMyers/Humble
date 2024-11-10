@@ -71,7 +71,7 @@
             </entity>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='window_id' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>
