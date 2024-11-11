@@ -32,20 +32,21 @@
                                 <tr>
                                     <td align="right">From Directory:</td>
                                     <td><input style="background-color: lightcyan; border: 1px solid #aaf; padding: 2px; border-radius: 2px; width: 140px" type="text" name="source" id="config_source_{$data.id}" value="{if (isset($data.source))}{$data.source}{/if}" />
-                                        <input type="radio" name="source_is" id="source_is_field_{$data.id}" value="Field" {if ($data.source_is == "Field")}checked="checked"{else}{/if} /> Field&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" name="source_is" id="source_is_value_{$data.id}" value="Value" {if ($data.source_is == "Value")}checked="checked"{else}{/if} /> Value
+                                        <input type="radio" name="source_is" id="source_is_field_{$data.id}" value="Field" {if (isset($data.source_is) && ($data.source_is == "Field"))}checked="checked"{else}{/if} /> Field&nbsp;&nbsp;&nbsp;
+                                        <input type="radio" name="source_is" id="source_is_value_{$data.id}" value="Value" {if (isset($data.source_is) && ($data.source_is == "Value"))}checked="checked"{else}{/if} /> Value
+                                        
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="right">To Directory:</td>
                                     <td><input style="background-color: lightcyan; border: 1px solid #aaf; padding: 2px; border-radius: 2px; width: 140px" type="text" name="destination" id="config_destination_{$data.id}" value="{if (isset($data.destination))}{$data.destination}{/if}" />
-                                        <input type="radio" name="destination_is" id="destination_is_field_{$data.id}" value="Field" {if ($data.destination_is == "Field")}checked="checked"{else}{/if} /> Field&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" name="destination_is" id="destination_is_value_{$data.id}" value="Value" {if ($data.destination_is == "Value")}checked="checked"{else}{/if} /> Value
+                                        <input type="radio" name="destination_is" id="destination_is_field_{$data.id}" value="Field" {if (isset($data.destination_is) && ($data.destination_is == "Field"))}checked="checked"{else}{/if} /> Field&nbsp;&nbsp;&nbsp;
+                                        <input type="radio" name="destination_is" id="destination_is_value_{$data.id}" value="Value" {if (isset($data.destination_is) && ($data.destination_is == "Value"))}checked="checked"{else}{/if} /> Value
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="right">Field:</td>
-                                    <td><input style="background-color: lightcyan; border: 1px solid #aaf; padding: 2px; border-radius: 2px; width: 140px" type="text" name="field" id="config_destination_{$data.id}" value="{if (isset($data.destination))}{$data.destination}{/if}" /></td>
+                                    <td><input style="background-color: lightcyan; border: 1px solid #aaf; padding: 2px; border-radius: 2px; width: 140px" type="text" name="field" id="config_destination_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" /></td>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -53,8 +54,6 @@
                                 </tr>
                                 
                             </table>
-                            Source D: <br /><br >
-                            Destination File: <br /><br >
                             <input type="checkbox" name="timestamp_file" id="timestamp_file_{$data.id}" value="Y"
                                    {if (isset($data.timestamp_file))}
                                        {if ($data.timestamp_file == "Y") }

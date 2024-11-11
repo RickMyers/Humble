@@ -617,12 +617,31 @@ SQL;
                 if (count($data) === 1) {
                     self::cache('module-'.$namespace,$data = self::$modules[$namespace] = $data[0]);
                 }
+            } else {
+                self::$modules[$namespace] = $data;
             }
             return (isset($data['enabled']) && ($data['enabled']==='Y') ? $data : ($override ? $data : false));
         }
 
         /**
+         * Tries to return the name of the call paired to a certain URI
          * 
+         * @param type $namespace
+         * @param type $URI
+         * @return array
+         */
+        public static function findCallByURI($namespace=false,$URI=false) {
+            $call = [];
+            if ($namespace && $URI) {
+                if ($module = self::module($namespace)) {
+                    print_r($module); die();
+                    yaml_parse(file_get_contents());
+                }
+            }
+            return $call;
+        }
+        /**
+         * Will attempt to get the cached last-compiled date for a particular controller... going to the DB if necessary
          * 
          * @param  string $identifier
          * @return array
@@ -639,6 +658,8 @@ SQL;
                     if (count($data) === 1) {
                         self::cache('controller-'.$identifier,['compiled'=>$data[0]['compiled']]);
                     }
+                } else {
+                    self::$controllers[$identifier] = ['compiled'=>$data['compiled']];
                 }
             }
             return $data;

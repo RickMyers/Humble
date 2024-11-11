@@ -324,9 +324,12 @@ class Model implements HumbleComponent
         }
         
         //--> USE HURL INSTEAD... 
+        $isHttps = isset($_SERVER['HTTPS']) && strtoupper($_SERVER['HTTPS'])==='ON' ? true :
+                   (isset($_SERVER['REQUEST_SCHEME']) && strtoupper($_SERVER['REQUEST_SCHEME']==='HTTPS') ? true : 
+                   (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])? true : false));        
         if (substr($URL,0,4)!=='http') {
             $URL = $_SERVER['HTTP_HOST'].$URL;
-            $URL = ($this->_isWindows) ? 'http://'.$URL : 'https://'.$URL;
+            $URL = ($isHttps) ? 'https://'.$URL : 'http://'.$URL;
         }
 
         if ($method == "GET") {
@@ -413,8 +416,9 @@ class Model implements HumbleComponent
         $res            = null; $opts = []; $parms = '';
         $auth           = ($userid && $password) ? array("Authorization"=> ["Basic" => base64_encode($userid.":".$password)]) : [];
         $protocol       = ($secure) ? 'ssl' : 'http';
-        $sessionControl = isset($this->_data['sessionId']) || ((isset($call['blocking']) && (!$call['blocking'])));  //do I need to suspend the current session to give access to the session during the remote call
+        $sessionControl = isset($call['blocking']) && ($call['blocking']===false);  //do I need to suspend the current session to give access to the session during the remote call
         $SID            = false;
+
         if ($sessionControl) {
             $SID = session_id();
             $args['humble_session_id'] = session_id();
@@ -537,7 +541,7 @@ class Model implements HumbleComponent
     }
 
     /**
-     * Bakes in a WS-Addressing SOAP Header in a less than desireable way
+     * Bakes in a WS-Addressing SOAP Header in a less than desirable way
      *
      * @param type $action
      * @param type $to

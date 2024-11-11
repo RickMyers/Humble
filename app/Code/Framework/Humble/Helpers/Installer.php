@@ -431,6 +431,26 @@ SQL;
     }
     
     /**
+     * Checks to see if the configuration page exists, and if not, creates the page using a template
+     * 
+     * @param string $uri
+     */
+    public function configurationInitializationCheck($uri=false) {
+        if ($uri) {
+            if (count($parts  = explode('/',$uri))==3) {
+                if ($module   = Humble::module($parts[0])) {
+                    $mod_path = 'Code/'.$module['package'].'/'.$module['views'].'/'.$parts[1].'/Smarty/'.$parts[2].'.tpl';
+                    if (!file_exists($mod_path)) {
+                        $base       = Humble::module(\Environment::namespace());
+                        $tpl_path   = file_exists('Code/'.$base['package'].'/'.$base['module'].'/etc/template.tpl') ? 'Code/'.$base['package'].'/'.$base['module'].'/etc/template.tpl' : 'Code/Framework/Humble/etc/template.tpl';
+                        copy($tpl_path,$mod_path);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
      * Will search through a modules PHP components and record any that are
      * listed as being workflow components
      *
@@ -529,6 +549,7 @@ SQL;
                             case "config"           :
                             case "cfg"              :
                             case "configuration"    :   $workflowComponent->setConfiguration($value);
+                                                        $this->configurationInitializationCheck($value);
                                                         break;
                             default                 :   break;
                         }

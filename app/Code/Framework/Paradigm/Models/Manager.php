@@ -81,7 +81,7 @@ class Manager extends Model
         $element    = Humble::collection('paradigm/elements');
         $element->setId($id);
         $results    = $element->load();
-        $windowId   = $this->getWindowId();
+        $window_id   = $this->getWindowId();
         $config     = null;
         $configURL  = false;
         //First, check to see if the element has some configuration data
@@ -99,90 +99,33 @@ class Manager extends Model
                 $data    = $element->load(true);
                 $this->setData($data);
                 $this->setElement($element);
-                if (!$data || (count($data)==0)) {
-                    //see if this is a type of element that has a defacto configuration URL...
-                    switch ($results['type']) {
-                        case    "terminus"      :
-                            $configURL  = "/workflow/default/terminus";
-                            break;
-                        case    "begin"         :
-                            $configURL  = "/workflow/elements/begin";
-                            break;
-                        case    "system"        :
-                            $configURL  = "/workflow/elements/system";
-                            break;
-                        case    "webservice"    :
-                            $configURL  = "/workflow/elements/webservice";
-                            break;
-                        case    "webhook"       :
-                            $configURL  = "/workflow/elements/webhook";
-                            break;                        
-                        case    "sensor"        :
-                            $configURL  = "/workflow/elements/sensor";
-                            break;
-                        case    "detector"      :
-                            $configURL  = "/workflow/detector/elements";
-                            break;
-                        case    "operation"     :
-                            $configURL  = "/workflow/elements/operation";
-                            break;
-                        case    "external"      :
-                            $configURL  = "/workflow/elements/external";
-                            break;
-                        case    "exception"     :
-                            $configURL  = "/workflow/elements/exception";
-                            break;
-                        case    "trigger"       :
-                            $configURL  = "/workflow/trigger/options";
-                            break;
-                        case    "adapter":
-                            $configURL = '/workflow/elements/adapter';
-                            break;
-                        case    "file":
-                            $configURL = '/workflow/elements/file';
-                        default                 :
-                            break;
-                    }
-                } else {
-                    $configURL = isset($data['configuration']) ? $data['configuration'] : false;
-                }
-                if ($configURL) {
+                
+                if (isset($data['configuration']) && $data['configuration']) {
+                    $configURL = $data['configuration'];
                     $configURL = (substr($configURL,0,1)=='/') ? $configURL : '/'.$configURL;
                     //now do the manual configuration screen fetch passing all relative parameters and the settings
                     $args = array(
                         'id' => $id,
-                        'windowId' => $windowId,
-                        'window_id' => $windowId,
-                        'sessionId' => session_id()
+                        'window_id' => $window_id,
+                        'humble_session_id' => session_id()
                     );
                     foreach ($results as $var => $val) {
                         if ($var !== '_id') { //do we still need to do this? I still think so...
                             $args[$var] = $val;
                         }
                     }
-                    /*
-                     * PHP has a safety feature so that only one process can be reading from a session at a time.  Since we are
-                     * going to be "eating our own dogfood", we have to suspend this session so the service we are calling can
-                     * have access to the shared session variable.
-                     */
-                    $this->setSessionId(true);  //enable session passing
-                    $call = ['method'=>'POST','url'=>$configURL];
+                    $call = ['method'=>'POST','url'=>$configURL,'blocking'=>false,'CURL'=>true, 'arguments' =>['namespace','id','window_id','data','component','method']];
                     $config = $this->_hurl($configURL,$args,$call,true,false,false);
+                } else {
+                    $config  = $results['type'].'Configuration';
+                    if (!isset($results['namespace']) || !$results['namespace']) {
+                        $element->setNamespace($this->getNamespace())->save();      //if you don't have a namespace yet (webhook, webservice, etc, this will assign you the current namespace of the workflow you are in
+                        $results['namespace'] = $this->getNamespace();              //Everything has got to belong to something
+                    }
+                    $this->setData(json_encode($results));
+                    $this->setHumbleSessionId(session_id);
+                    $config = $this->$config();                    
                 }
-            } else {
-                /*
-                 * PHP has a safety feature so that only one process can be reading from a session at a time.  Since we are
-                 * going to be "eating our own dogfood", we have to suspend this session so the service we are calling can
-                 * have access to the shared session variable.
-                 */
-                $config  = $results['type'].'Configuration';
-                if (!isset($results['namespace']) || !$results['namespace']) {
-                    $element->setNamespace($this->getNamespace())->save();      //if you don't have a namespace yet (webhook, webservice, etc, this will assign you the current namespace of the workflow you are in
-                    $results['namespace'] = $this->getNamespace();              //Everything has got to belong to something
-                }
-                $this->setData(json_encode($results));
-                $this->setSessionId(true);  //enable session passing
-                $config = $this->$config();
             }
         }
         return $config;
