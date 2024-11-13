@@ -444,6 +444,7 @@ SQL;
                         $base       = Humble::module(\Environment::namespace());
                         $tpl_path   = file_exists('Code/'.$base['package'].'/'.$base['module'].'/etc/template.tpl') ? 'Code/'.$base['package'].'/'.$base['module'].'/etc/template.tpl' : 'Code/Framework/Humble/etc/template.tpl';
                         copy($tpl_path,$mod_path);
+                        $this->output("WORKFLOW","Creating configuration template ".$mod_path);
                     }
                 }
             }

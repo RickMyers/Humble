@@ -126,7 +126,8 @@ terminusConfiguration  :
   secure          : true
   method          : POST
   blocking        : false
-  arguments       : [namespace,id,window_id,data,component,method]
+  CURL            : false
+  arguments       : [sessionId,namespace,id,window_id,data,component,method]
 dictionaryDefinition :
   url             : https://www.dictionaryapi.com/api/v3/references/collegiate/json+    # alternate format, a + at the end means append the arguments as URI segments, except for API Key
   api-key         : sm://dictionaryAPIKey                                               #1fb88106-0c12-4e40-9f54-b17e0422e095

@@ -23,6 +23,9 @@ use Humble;
 class Manager extends Model
 {
 
+    private $configs     = [
+        'webservice' => true
+    ];
     public function __construct()    {
         parent::__construct();
     }
@@ -65,6 +68,9 @@ class Manager extends Model
         return $id;
     }
 
+    private function specialRoutes($element=[]) {
+        
+    }
     /**
      * Gets the configuration screen and also any pre-configured data
      *
@@ -88,6 +94,16 @@ class Manager extends Model
         // if not, then load base configuration screen
         // else fetch detailed configuration data
         if ($results) {
+            $args = array(
+                'id' => $id,
+                'window_id' => $window_id,
+                'humble_session_id' => session_id()
+            );            
+            foreach ($results as $var => $val) {
+                if ($var !== '_id') { //do we still need to do this? I still think so...
+                    $args[$var] = $val;
+                }
+            }                
             if (isset($results['configured']) && $results['configured']) {
                 $this->setResults($results);
                 $element = Humble::entity('paradigm/workflow/components');
@@ -99,34 +115,30 @@ class Manager extends Model
                 $data    = $element->load(true);
                 $this->setData($data);
                 $this->setElement($element);
-                
-                if (isset($data['configuration']) && $data['configuration']) {
+            }
+            //$data = $this->specialRoutes($data);
+            if (isset($data['configuration']) && $data['configuration']) {
                     $configURL = $data['configuration'];
                     $configURL = (substr($configURL,0,1)=='/') ? $configURL : '/'.$configURL;
                     //now do the manual configuration screen fetch passing all relative parameters and the settings
-                    $args = array(
-                        'id' => $id,
-                        'window_id' => $window_id,
-                        'humble_session_id' => session_id()
-                    );
-                    foreach ($results as $var => $val) {
-                        if ($var !== '_id') { //do we still need to do this? I still think so...
-                            $args[$var] = $val;
-                        }
-                    }
+
                     $call = ['method'=>'POST','url'=>$configURL,'blocking'=>false,'CURL'=>true, 'arguments' =>['namespace','id','window_id','data','component','method']];
                     $config = $this->_hurl($configURL,$args,$call,true,false,false);
                 } else {
-                    $config  = $results['type'].'Configuration';
-                    if (!isset($results['namespace']) || !$results['namespace']) {
-                        $element->setNamespace($this->getNamespace())->save();      //if you don't have a namespace yet (webhook, webservice, etc, this will assign you the current namespace of the workflow you are in
-                        $results['namespace'] = $this->getNamespace();              //Everything has got to belong to something
+                    if ((isset($results['configured']) && (!$results['configured'])) || (isset($this->configs[$results['type']]))) {
+                        foreach ($args as $arg => $val) {
+                            $setter = 'set'.$this->underscoreToCamelCase($arg,true);
+                            $this->$setter($val);
+                        }
+                        $config  = $results['type'].'Configuration';
+                        if (!isset($results['namespace']) || !$results['namespace']) {
+                            $element->setNamespace($this->getNamespace())->save();      //if you don't have a namespace yet (webhook, webservice, etc, this will assign you the current namespace of the workflow you are in
+                            $results['namespace'] = $this->getNamespace();              //Everything has got to belong to something
+                        }
+                        $this->setData(json_encode($results));
+                        $config = $this->$config();                    
                     }
-                    $this->setData(json_encode($results));
-                    $this->setHumbleSessionId(session_id);
-                    $config = $this->$config();                    
-                }
-            }
+                }            
         }
         return $config;
     }

@@ -47,6 +47,8 @@
                                 <input type="radio" name="language" id="language-{$data.id}-php" value="php" /> PHP <br />
                                 <input type="radio" name="language" id="language-{$data.id}-shell" value="./" /> Bash Shell <br />
                                 <input type="radio" name="language" id="language-{$data.id}-java" value="java" /> Java<br />
+                                <input type="radio" name="language" id="language-{$data.id}-js" value="js" /> JavaScript<br />
+                                <input type="radio" name="language" id="language-{$data.id}-java" value="py" /> Python<br />
                                 <input type="radio" name="language" id="language-{$data.id}-other" value="other" /> 
                                 Other: <input type="text" class='paradigm-config-form-field' name="language_other" id="config_language_other_{$data.id}" style="width: 70px" value="{if (isset($data.language_other))}{$data.language_other}{/if}"/><br />
                                 <br />

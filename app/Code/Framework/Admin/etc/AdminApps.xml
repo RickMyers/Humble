@@ -14,12 +14,27 @@
         <icon>
             <text>Explore</text>
             <image>
-                <desktop>/images/admin/admin_app_icon.png</desktop>
-                <minimized>/images/admin/admin_app_icon.png</minimized>
+                <desktop>/images/admin/file_explorer_icon.png</desktop>
+                <minimized>/images/admin/file_explorer_icon.png</minimized>
             </image>
         </icon>
         <start>
-            <uri>/admin/explore/app</uri>
+            <uri>/admin/explorer/app</uri>
         </start>
     </app>
+    <app>
+        <name>Users</name>
+        <description>Manage Users</description>
+        <icon>
+            <text>Users</text>
+            <image>
+                <desktop>/images/admin/users_icon.png</desktop>
+                <minimized>/images/admin/users_icon.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/admin/users/app</uri>
+        </start>
+    </app>
+    
 </apps>

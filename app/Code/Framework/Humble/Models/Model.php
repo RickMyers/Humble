@@ -394,7 +394,7 @@ class Model implements HumbleComponent
             session_start();
         }
 
-	return isset($call['transform']) ? $this->transformResult($call['transform'],substr($res, $info['header_size'])) : substr($res, $info['header_size']);
+        return isset($call['transform']) ? $this->transformResult($call['transform'],substr($res, $info['header_size'])) : substr($res, $info['header_size']);
     }
 
     /**
@@ -727,18 +727,17 @@ SOAP;
         $args = [];
         $rpc  = $this->_RPC();  //capture current RPC state
         $this->_RPC(false);     //turn off RPC or might fall into an infinite loop
-        $cc   = isset($call['camel-case']) && $call['camel-case'];
         if (isset($call['arguments']) && $call['arguments']) {
             foreach ($call['arguments'] as $var => $val) {
                 if (!is_numeric($var)) {
                     if ($val && (trim($val) != '')) {
                         $args[$var] = $val;
                     } else {
-                        $method = 'get'.(($cc) ? ucfirst($var) : $this->underscoreToCamelCase($var,true));
+                        $method = 'get'.$this->underscoreToCamelCase($var,true);
                         $args[$var] = $this->$method();
                     }
                 } else {
-                    $method = 'get'.(($cc) ? ucfirst($var) : $this->underscoreToCamelCase($var,true));
+                    $method = 'get'.$this->underscoreToCamelCase($val,true);
                     $args[$val] = $this->$method();
                 }
             }

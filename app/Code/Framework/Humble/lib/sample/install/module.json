@@ -95,7 +95,7 @@
         },    
         {
             "source": "/lib/sample/install/Views/template.tpl",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/template.tpl"
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/template.tpl"
         },    
             
         {
