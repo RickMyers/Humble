@@ -12,7 +12,7 @@
         <name>File Explorer</name>
         <description>Lets you view/edit the file structure</description>
         <icon>
-            <text>Explore</text>
+            <text>File Explorer</text>
             <image>
                 <desktop>/images/admin/file_explorer_icon.png</desktop>
                 <minimized>/images/admin/file_explorer_icon.png</minimized>
@@ -36,5 +36,47 @@
             <uri>/admin/users/app</uri>
         </start>
     </app>
+     <app>
+        <name>Monitor</name>
+        <description>Process Monitor similar to TOP</description>
+        <icon>
+            <text>Process Users</text>
+            <image>
+                <desktop>/images/admin/monitor_icon.png</desktop>
+                <minimized>/images/admin/monitor_icon.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/admin/monitor/app</uri>
+        </start>
+    </app> 
+     <app>
+        <name>Job Monitor</name>
+        <description>Monitor Running Jobs</description>
+        <icon>
+            <text>Job Monitor</text>
+            <image>
+                <desktop>/images/admin/job_monitor_icon.png</desktop>
+                <minimized>/images/admin/job_monitor_icon.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/admin/job/app</uri>
+        </start>
+    </app>         
+     <app>
+        <name>File Monitor</name>
+        <description>Monitor Running Files</description>
+        <icon>
+            <text>File Monitor</text>
+            <image>
+                <desktop>/images/admin/file_monitor_icon.png</desktop>
+                <minimized>/images/admin/file_monitor_icon.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/admin/file/app</uri>
+        </start>
+    </app>         
     
 </apps>
