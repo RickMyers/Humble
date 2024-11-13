@@ -536,7 +536,7 @@ var Functions = {
     },
     templates: {
         icon:   '<div id="&&w_id&&-icon" class="paradigm-desktop-icon" desktop_id="&&w_id&&" style="width: 64px">'+
-                '<img src="&&image&&" alt="&&description&&" class="paradigm-desktop-icon-image" style="width: 100%" /><br />'+
+                '<img src="&&image&&" alt="&&description&&" class="paradigm-desktop-icon-image" style="width: 100%; clear: both" />'+
                 '<span class="paradigm-desktop-icon-text" id="&&w_id&&-icon-text">&&app&&</span>'+
                 '</div>',
         window: '<div class="paradigm-desktop-window-frame" id="&&w_id&&-frame" desktop_id="&&w_id&&" >'+
