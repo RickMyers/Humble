@@ -3,10 +3,12 @@
  */
 var ParadigmConfig = {
     desktop: {
+        layer: "paradigm-virtual-desktop",
+        apps: false,
         default: {
             window: {
                 icon: "/images/paradigm/icons/humble_icon.png",
-                name: "Humble Project"
+                name: "Humble Editor"
             }
         },
         window: {

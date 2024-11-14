@@ -149,8 +149,13 @@ Copyright humbleprogramming.com, all rights reserved
                 height: 28px; visibility: hidden; cursor: pointer
             }
         </style>
+        <script type="module" sync>
+            import { Desktop } from '/mjs/paradigm/DesktopModule.js';
+            window.Desktop = Desktop;
+        </script>            
         <script type="text/javascript" src="/js/humble-jquery"></script>
         <script type="text/javascript" src="/js/common"></script>
+    
         <script type="text/javascript">
             var UseTranparentWindows = 'N';
         </script>
@@ -159,6 +164,7 @@ Copyright humbleprogramming.com, all rights reserved
         <script type="text/javascript" src="/web/js/ace/ace.js"></script>
         <script type="text/javascript" src="/web/js/ckeditor4/ckeditor.js"></script>
         <script type="text/javascript">
+
         {assign var=tab_id value=$system->browserTabId()}
         EasyAjax.always.add('browser_tab_id','{$tab_id}')
         EasyAjax.always.add('csrf_buster','{$system->csrfBuster($tab_id)}');
@@ -480,6 +486,7 @@ Copyright humbleprogramming.com, all rights reserved
         topctr = 0;
         $(document).ready( () => {
             //Desktop.on($E('canvas-container'),'keydown',Paradigm.remove);
+            Desktop.init();
             Paradigm.container = $E('canvas-container');
             Desktop.on(document,'keydown',Paradigm.remove);
             $('.insert_glyph').prop('disabled',true).css('color','rgba(90,90,90,.3)');

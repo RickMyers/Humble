@@ -696,27 +696,30 @@ var Functions = {
             return;
         }
         
-        Desktop.ref = $E("paradigm-virtual-desktop"); //hardcoded
+        //Desktop.ref = $E("paradigm-virtual-desktop"); //hardcoded
+        Desktop.ref = $E(ParadigmConfig.desktop.layer); //hardcoded
 
         Desktop.elements = {
             "apps": [],
             "windows": []
         };
-        
-        function fetchApps() {
-          return new Promise((resolve) => {
-              (new EasyAjax('/admin/apps/list')).then(function (response) {
-                  resolve(response);
-              }).get();
-          });
-        }
+        if (ParadigmConfig.desktop.apps) {
+            function fetchApps() {
+              return new Promise((resolve) => {
+                  (new EasyAjax('/admin/apps/list')).then(function (response) {
+                      resolve(response);
+                  }).get();
+              });
+            }
 
-        async function f1() {
-          let apps = await fetchApps();
-          Desktop.elements.apps = JSON.parse(apps);
-          Desktop.render().activate().position();
-        }
-        f1();
+            async function f1() {
+              let apps = await fetchApps();
+              Desktop.elements.apps = JSON.parse(apps);
+              Desktop.render().activate().position();
+            }
+            f1();
+        } 
+
         
         let windows = [];
         for (var i=0; i<100; i++) {
@@ -742,6 +745,7 @@ var Functions = {
         if (doAfter) {
             doAfter();
         }
+        Desktop.render().activate().position();        
         Desktop.initialized = true;
     },
     enable: function () {
@@ -757,7 +761,7 @@ var Functions = {
                 Desktop.icon.add(icon);
             }
         }
-        $E('desktop-container').innerHTML += Desktop.icon.HTML;
+        $E(ParadigmConfig.desktop.layer).innerHTML += Desktop.icon.HTML;
         Desktop.icon.list = [];
         for (i=0; i<Desktop.elements.apps.length; i++) {
             icon = Desktop.elements.apps[i];

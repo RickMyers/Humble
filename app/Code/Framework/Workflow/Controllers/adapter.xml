@@ -7,11 +7,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 -->
 <controller name="adapter" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="ON" response="false">
-        <action name="editor">
+        <action name="editor" passalong='window_id'>
             <description>Loads the ACE editor</description>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
             </model>
+            <entity assign='modules' namespace="humble" class="modules" orderby="namespace=ASC" method='fetch'>
+                <parameter name='enabled' source='request' default='Y' />
+            </entity>
             <mongo namespace="paradigm" class="elements" id='element'>
                 <parameter name='id' source='post' default='' />
             </mongo>               
