@@ -766,19 +766,23 @@ PHP;
         }
         array_pop($this->elements);
         if (isset($node['method'])) {
+            $assign_str = '';
+            if (isset($node['assign'])) {
+                $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
+            }            
             if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 if (isset($node['wrapper'])) {
-                    print($this->tabs().'Humble::response('.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
+                    print($this->tabs().'Humble::response('.$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
                 } else {
-                    print($this->tabs().'Humble::response($'.$node['id'].'->'.$node['method'].'());'."\n");
+                    print($this->tabs().'Humble::response('.$assign_str.'$'.$node['id'].'->'.$node['method'].'());'."\n");
                 }
             } else {
                 if (isset($node['wrapper'])) {
-                    print($this->tabs().$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'());'."\n");
+                    print($this->tabs().$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'());'."\n");
                 } else {
-                    print($this->tabs().'$'.$node['id'].'->'.$node['method'].'();'."\n");
+                    print($this->tabs().$assign_str.'$'.$node['id'].'->'.$node['method'].'();'."\n");
                 }
-            }
+            }            
         }
     }
 

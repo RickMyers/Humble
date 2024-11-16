@@ -95,6 +95,7 @@
                 <target>Paradigm/web/edits/target.json</target>
                 <targets>Paradigm/web/edits/targets.json</targets>
                 <sources>Paradigm/web/edits/sources.json</sources>
+                <jseditor>Admin/web/edits/jseditor.json</jseditor>
             </edits>
             <apptest>
                 <js>

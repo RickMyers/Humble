@@ -63,7 +63,14 @@
         case    "fetch" :
             chdir('app');  
             require_once('Humble.php');
-            require_once('Environment.php');            
+            require_once('Environment.php');  
+            if (file_exists('downloads.txt')) {
+                $downloads = file_get_contents('downloads.txt');
+                $downloads = (int)$downloads;
+                file_put_contents('downloads.txt',++$downloads);
+            } else {
+                file_put_contents('downloads.txt','1');
+            }
             $xml        = \Environment::applicationXML();
             $source     = "../../packages/Humble-Distro-".(string)$xml->version->framework.".zip";
             if (!file_exists($source)) {

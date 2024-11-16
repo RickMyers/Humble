@@ -1,0 +1,96 @@
+{
+	"form":
+	{
+		"id":           "config-js-adapter-form-&&win_id&&",
+		"drawme":	false,
+		"action":	"",
+		"method":	"post",
+		"style":	"",
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+		{
+			"active":		true,
+			"id": 			"resource_namespace_&&win_id&&",
+			"longname":		"Resource Namespace",
+			"type":			"select",
+			"required":		false,
+			"force":		false,
+                        "style":                "border: 1px solid #333; padding: 2px; border-radius: 2px",
+                        "onchange": function (evt) {
+                            if ($(evt.target).val()) {
+                                (new EasyAjax('/paradigm/jseditor/resources')).add('namespace',$(evt.target).val()).then((response) => {
+                                    EasyEdits.populateSelectBox($E('resource_&&win_id&&'),JSON.parse(response));
+                                }).get();
+                            }
+                            console.log($(evt.target).val());
+                        }
+		},            
+		{
+			"active":		true,
+			"id": 			"resource_&&win_id&&",
+			"longname":		"Resource Namespace",
+			"type":			"combo",
+			"required":		false,
+			"force":		false,
+                        "style":                "border: 1px solid #333; padding: 2px; border-radius: 2px"
+		},                                
+		{
+			"active":		true,
+			"id": 			"resource_&&win_id&&_combo",
+			"longname":		"Resource",
+			"type":			"text",
+			"required":		false,
+			"force":		false,
+                        "style":                "border: 1px solid #333; padding: 2px; border-radius: 2px"
+		},                                
+		{
+			"active":		true,
+			"id": 			"editor_edit_&&win_id&&",
+			"longname":		"Edit Button",
+			"type":			"button",
+			"required":		false,
+			"force":		false,
+                        "style":                "",
+                        "onclick": (evt) => {
+                            if ($('#resource_&&win_id&&_combo').val() && $('#resource_namespace_&&win_id&&').val()) {
+                                (new EasyAjax('/paradigm/jseditor/edit')).add('namespace',$('#resource_namespace_&&win_id&&').val()).add('resource',$('#resource_&&win_id&&').val()).then((response)=>{
+                                    ACEEditors['&&win_id&&'].setValue(response);
+                                }).post();
+                            }
+                            console.log($(evt.target).val());
+
+                            
+                        }
+		},
+		{
+			"active":		true,
+			"id": 			"editor_save_&&win_id&&",
+			"longname":		"Save Button",
+			"type":			"button",
+			"required":		false,
+			"force":		false,
+                        "style":                "",
+                        "onclick": (evt) => {
+                            alert('Save');
+                        }
+
+		},
+		{
+			"active":		true,
+			"id": 			"editor_close_&&win_id&&",
+			"longname":		"Close Button",
+			"type":			"button",
+			"required":		false,
+			"force":		false,
+                        "style":                "",
+                        "onclick": (evt) => {
+                            alert('close');
+                            Desktop.window.list['&&win_id&&']._close();
+                        }
+		}
+	]
+}
+
+

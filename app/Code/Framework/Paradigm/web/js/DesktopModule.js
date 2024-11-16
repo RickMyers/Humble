@@ -696,7 +696,6 @@ var Functions = {
             return;
         }
         
-        //Desktop.ref = $E("paradigm-virtual-desktop"); //hardcoded
         Desktop.ref = $E(ParadigmConfig.desktop.layer); //hardcoded
 
         Desktop.elements = {
@@ -745,7 +744,9 @@ var Functions = {
         if (doAfter) {
             doAfter();
         }
-        Desktop.render().activate().position();        
+        if (!ParadigmConfig.desktop.apps) {
+            Desktop.render().activate().position();        
+        }
         Desktop.initialized = true;
     },
     enable: function () {

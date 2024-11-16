@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+JavaScript Adapter Methods
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="jseditor" use="Smarty" author="rmyers Rick" email="rick@humbleprogramming.com">
+    <actions blocking="Off">
+        <action name="resources" output="JSON" >
+            <description>Lists available resources per namespace</description>
+            <helper namespace="paradigm" class="editor" method="listResources" assign="resources">
+                <parameter name="namespace" source="request" required="true" />
+            </helper>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
