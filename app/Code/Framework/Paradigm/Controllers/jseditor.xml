@@ -16,5 +16,25 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
+        <action name="edit">
+            <description>Returns the source code of a JavaScript resource</description>
+            <helper namespace="paradigm" class="editor" method="editResource" response="true">
+                <parameter name="namespace" source="request" required="true" />
+                <parameter name="resource" source="request" required="true" />
+            </helper>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="save">
+            <description>Saves off the source code and any other pertinent information</description>
+            <helper namespace="paradigm" class="editor" method="saveResource">
+                <parameter name="namespace" source="request" required="true" />
+                <parameter name="resource" source="request" required="true" />
+                <parameter name="code" source="request" default='' />
+            </helper>
+            
+        </action>
     </actions>
+    
 </controller>

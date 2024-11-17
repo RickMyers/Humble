@@ -35,8 +35,8 @@
     }
 </style>
 <form name="config-js-adapter-form" id="config-js-adapter-form-{$window_id}" onsubmit="return false">
-    <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
-    <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />    <!-- Leave this As-Is -->
+    <input type="hidden" name="id" id="element_id_{$window_id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
+    <input type="hidden" name="window_id" id="element_window_id_{$window_id}" value="{$window_id}" />    <!-- Leave this As-Is -->
     <div id="editor_control_{$window_id}">
         <fieldset id="editor_controls_{$window_id}"><legend>Resource Identifier</legend>
             <div style="float: right">
@@ -44,7 +44,7 @@
                 <button id="editor_save_{$window_id}" style="width: 50px; padding: 5px; border-radius: 10px; background-color: silver; color: #333; font-size: .8em; font-family: sans-serif"> Save </button>
                 <button id="editor_close_{$window_id}" style="width: 50px; padding: 5px; border-radius: 10px; background-color: silver; color: #333; font-size: .8em; font-weight: bolder; font-family: sans-serif"> Close </button>
             </div>
-            <select name="resource_namespace" id="resource_namespace_{$window_id}" placeholder="Namespace" style="width: 140px">
+            <select name="namespace" id="resource_namespace_{$window_id}" placeholder="Namespace" style="width: 140px">
                 <option value=""></option>
                 {foreach from=$modules item=module}
                     <option value="{$module.namespace}" {if (isset($data.resource_namespace) && ($data.resource_namespace == $module.namespace))}selected='selected'{/if}>{$module.namespace|ucfirst}</option>
@@ -86,5 +86,5 @@
     })(win_{$data.id});
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    Form.intercept($('#config-js-adapter-form-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+    //Form.intercept($('#config-js-adapter-form-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>

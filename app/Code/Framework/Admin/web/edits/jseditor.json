@@ -55,7 +55,7 @@
                         "style":                "",
                         "onclick": (evt) => {
                             if ($('#resource_&&win_id&&_combo').val() && $('#resource_namespace_&&win_id&&').val()) {
-                                (new EasyAjax('/paradigm/jseditor/edit')).add('namespace',$('#resource_namespace_&&win_id&&').val()).add('resource',$('#resource_&&win_id&&').val()).then((response)=>{
+                                (new EasyAjax('/paradigm/jseditor/edit')).add('namespace',$('#resource_namespace_&&win_id&&').val()).add('resource',$('#resource_&&win_id&&_combo').val()).then((response)=>{
                                     ACEEditors['&&win_id&&'].setValue(response);
                                 }).post();
                             }
@@ -73,7 +73,9 @@
 			"force":		false,
                         "style":                "",
                         "onclick": (evt) => {
-                            alert('Save');
+                            (new EasyAjax('/paradigm/jseditor/save')).packageForm('config-js-adapter-form-&&win_id&&').add('code',ACEEditors['&&win_id&&'].getValue()).then((response)=>{
+                                console.log(response);
+                            }).post();
                         }
 
 		},
@@ -86,7 +88,6 @@
 			"force":		false,
                         "style":                "",
                         "onclick": (evt) => {
-                            alert('close');
                             Desktop.window.list['&&win_id&&']._close();
                         }
 		}
