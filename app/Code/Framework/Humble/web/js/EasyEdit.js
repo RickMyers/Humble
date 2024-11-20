@@ -303,17 +303,14 @@ EasyEdits.execute	= function (easy){
                     combo.style.padding = EasyEdits.getCSSValue(easyField.id, "padding");
                     combo.style.display = "none";
                     combo.setAttribute("comboPair",easyField.id);
-                    console.log(combo);
                     combo.onchange = function (evt,calledFromComboPair) {	
                         evt = (evt) ? evt : ((window.event) ? event : null);
                         if (!calledFromComboPair) {
-                            console.log(evt.target);
                             let cp = evt.target.getAttribute("comboPair");
                             if (!cp) {
                                 console.log(evt.target.id+'_combo');
                                 cp = $E(evt.target.id+'_combo');
                             }
-                            console.log(cp);
                             //$E(cp).onchange(evt,true);
                             $E(cp).setAttribute('comboValue',$(evt.target).val());
                         }

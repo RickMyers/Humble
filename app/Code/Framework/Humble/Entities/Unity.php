@@ -43,6 +43,7 @@ class Unity
     protected $_batchsql      = [];
     protected $_batch         = false;
     protected $_actual        = false;
+    protected $_resource      = false;
     protected $_inField       = '';
     protected $_in            = [];
     protected $_betweenField  = '';
@@ -144,6 +145,20 @@ class Unity
     }
     
     /**
+     * Identifies the "resource", or external query, that we are going to read, process, and execute
+     * 
+     * @param string $resource
+     * @return mixed
+     */
+    public function _resource($resource=false) {
+        if ($resource!==false) {
+            $this->_resource = $resource;
+            return $this;
+        }
+        return $this->_resource;
+    }
+    
+    /**
      * Because of the variable columns per row, we need to get a list of all columns across our dataset
      * 
      * @param array $rows
@@ -242,6 +257,38 @@ SQL;
         return $this;
     }
     
+    protected function parseResource($lines) {
+        $query = '';
+        foreach ($lines as $line) {
+            if (count($segments = explode('%%',$line))>1) {
+                $line = ''; $keep = false;
+                foreach ($segments as $idx => $segment) {
+                    if ($idx % 2 === 1) {
+                        if (isset($_REQUEST[$segment])) {
+                            $keep = $segments[$idx] = $_REQUEST[$segment];
+                        }
+                        $line = ($keep) ? implode("",$segments) : '';
+                    }
+                }
+            } 
+            $query .= $line;
+            
+        }
+        return $query;
+    }
+    
+    public function _manageSQLResource() {
+        if ($resource = $this->_resource()) {
+            if ($namespace = $this->getNamespace()) {
+                if ($module = \Humble::module($namespace)) {
+                    if (file_exists($resource = 'Code/'.$module['package'].'/'.$module['resources_sql'].'/'.(str_replace('.sql','',$resource).'.sql'))) {
+                        $query = $this->parseResource(explode("\n",file_get_contents($resource)));
+                        return $this->query($query);
+                    }
+                }
+            }
+        }
+    }
     /**
      * What this will do is take a comma separated list of column names and will swap them out for new names in the return result set
      * 

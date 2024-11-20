@@ -42,7 +42,8 @@
             <div style="float: right">
                 <button id="editor_edit_{$window_id}" style="width: 50px; padding: 5px; border-radius: 10px; background-color: silver; color: #333; font-size: .8em; font-family: sans-serif"> Edit </button>
                 <button id="editor_save_{$window_id}" style="width: 50px; padding: 5px; border-radius: 10px; background-color: silver; color: #333; font-size: .8em; font-family: sans-serif"> Save </button>
-                <button id="editor_close_{$window_id}" style="width: 50px; padding: 5px; border-radius: 10px; background-color: silver; color: #333; font-size: .8em; font-weight: bolder; font-family: sans-serif"> Close </button>
+                
+                <input type="submit" id="editor_close_{$window_id}" style="width: 50px; padding: 5px; border-radius: 10px; background-color: silver; color: #333; font-size: .8em; font-weight: bolder; font-family: sans-serif" value="Close"/>
             </div>
             <select name="namespace" id="resource_namespace_{$window_id}" placeholder="Namespace" style="width: 140px">
                 <option value=""></option>
@@ -86,5 +87,5 @@
     })(win_{$data.id});
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    //Form.intercept($('#config-js-adapter-form-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+    Form.intercept($('#config-js-adapter-form-form-{$window_id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>

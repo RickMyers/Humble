@@ -76,6 +76,7 @@
                 <services/>
                 <service_directory polyglot="Y"/>
                 <system_variables/>
+                <medical_forms actual="forms" alias="medforms" polyglot="Y" />
                 <templaters/>
                 <users alias="usr"/>
                 <user_identification polyglot="Y" alias="usrinfo"/>

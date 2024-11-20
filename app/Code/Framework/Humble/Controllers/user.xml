@@ -20,6 +20,20 @@
  
         <!-- ############################################################### -->
 
+        <action name="resource" output="JSON">
+            <description>Resource execution test</description> 
+            <resource type="sql" namespace="humble" class="medical/forms" resource="mform" response="true">
+                <parameter name="last_name"     source="request" optional="true" />
+                <parameter name="form_id"       source="request" optional="true" />
+                <parameter name="start_date"    format="date" source="request" optional="true" />
+                <parameter name="end_date"      format="date" source="request" optional="true" />
+                <parameter name="status"        source="request" optional="true" />
+            </resource>
+        </action>
+                       
+        <!-- ############################################################### -->
+
+
         <action name="authentication" output="JSON">
             <description>For remote APIs, lets them attempt to authenticate</description>
             <model  class="user" id="user">

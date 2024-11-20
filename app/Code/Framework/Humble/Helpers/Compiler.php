@@ -1102,12 +1102,18 @@ PHP;
  * <resource type="sql" namespace="humble" class="user/identification" file="search" source="post" page="foo" rows="bar" normalize="true" />
  */
     private function processSQLResource($node) {
-        $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
-        $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
+        if (isset($node['method'])) {
+            throw new \Exceptions\EntityResourceContradiction("Misconfigured Entity, Can not have both a 'method' attribute and a 'resource' attribute",20);
+            die();
+        }
+        $node['namespace']  = $node['namespace'] ?? \Environment::namespace();
+        $namespace          = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::entity("'.$namespace.'/'.$node['class'].'");'."\n");
+        print($this->tabs().'$currentModel->setNamespace("'.$namespace.'");'."\n");
+        print($this->tabs().'$'.$node['id'].'->_resource("'.$node['resource'].'");'."\n");
         if (isset($node['json']) && $this->trueish($node['json'])) {
             print($this->tabs().'$currentModel->_json(true);'."\n");
         }
@@ -1160,10 +1166,34 @@ PHP;
         if (isset($node['orderby'])) {
             print($this->tabs().'$'.$node['id'].'->_orderBy(\''.$node['orderby'].'\');'."\n");
         }
-        //Now what do I do?
+        $assign_str = ''; $norm_str = ''; $method_str         = '$'.$node['id'].'->_manageSQLResource()';
+        if (isset($node['assign'])) {
+            $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
+        }
+        if (isset($node['normalize']) && ($this->trueish($node['normalize']))) {
+            $norm_str = '$'.$node['id'].'->_normalize(true)';
+        }            
+        if (isset($node['wrapper'])) {
+            $method_str = $node['wrapper'].'('.$method_str.')';
+        }
+        if (isset($node['transformer'])) {
+            $method_str = $this->processTransformer($node,$method_str);
+        }
+        if ((isset($node['response']) && ($this->trueish($node['response']))) || (($this->global['response']===true) && !(isset($node['response']) && !($this->trueish($node['response']))))) {
+            $method_str = 'Humble::response('.$method_str.')';
+        }
+        if ($norm_str) {
+            print($this->tabs().$norm_str.";\n");
+        }
+        print($this->tabs().$assign_str.$method_str.";\n");        
+        
     }
     
     private function processJSResource($node) {
+        
+    }
+    
+    private function processPythonResource($node) {
         
     }
     
@@ -1177,6 +1207,7 @@ PHP;
                     $this->processJSResource($node);
                     break;
                 case 'py'   :
+                    $this->processPythonResource($node);
                     //Really? Are we really going to go there?
                     break;
                 default     :
