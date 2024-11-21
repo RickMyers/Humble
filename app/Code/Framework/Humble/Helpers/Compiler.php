@@ -601,18 +601,27 @@ PHP;
         }
         return $method_str;
     }
+    
     /**
      * My God, what have I done here?
      * 
      * @param string $node
      */
     private function processEntity($node) {
+        if (isset($node['method']) && isset($node['resource'])) {
+            throw new \Exceptions\EntityResourceContradiction("Misconfigured Entity, Can not have both a 'method' attribute and a 'resource' attribute",20);
+            die();
+        }        
         $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
+
         if (!isset($node['id'])) {
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::entity("'.$namespace.'/'.$node['class'].'");'."\n");
+        if ($resource = $node['resource']??false) {
+            print($this->tabs().'$'.$node['id'].'->_resource("'.$node['resource'].'");'."\n");
+        }        
         if (isset($node['json']) && $this->trueish($node['json'])) {
             print($this->tabs().'$currentModel->_json(true);'."\n");
         }
@@ -686,7 +695,7 @@ PHP;
         if (isset($node['retain']) && strtolower($node['retain'])=='true') {
             print($this->tabs().'$'.$node['id'].'->_retain();'."\n");
         }
-        if (isset($node['method'])) {
+        if (isset($node['method']) || $resource) {
             $arglist = '';
             if (isset($node['argument']) || isset($node['arguments'])) {
                 $list = (isset($node['arguments'])) ? $node['arguments'] : $node['argument'];
@@ -701,12 +710,14 @@ PHP;
                     }
                 }
             }
-            $norm_str = ''; $assign_str = ''; $method_str = '$'.$node['id'].'->'.$node['method'].'('.$arglist.')';
+            $norm_str   = ''; 
+            $assign_str = ''; 
+            $method_str = ($resource) ? '$'.$node['id'].'->_manageSQLResource("'.$node['namespace'].'")' : '$'.$node['id'].'->'.$node['method'].'('.$arglist.')';
             if (isset($node['assign'])) {
                 $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
             }
-            if (isset($node['normalize']) && (strtoupper($node['normalize'])=='Y')) {
-                $norm_str = '$'.$node['id'].'->_normalize(true)';
+            if (isset($node['normalize']) && ($this->truish($node['normalize']))) {
+                print($this->tabs().'$'.$node['id'].'->_normalize(true)'.";\n");
             }            
             if (isset($node['wrapper'])) {
                 $method_str = $node['wrapper'].'('.$method_str.')';
@@ -716,9 +727,6 @@ PHP;
             }
             if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
                 $method_str = 'Humble::response('.$method_str.')';
-            }
-            if ($norm_str) {
-                print($this->tabs().$norm_str.";\n");
             }
             print($this->tabs().$assign_str.$method_str.";\n");
         }
@@ -1101,93 +1109,7 @@ PHP;
 /*
  * <resource type="sql" namespace="humble" class="user/identification" file="search" source="post" page="foo" rows="bar" normalize="true" />
  */
-    private function processSQLResource($node) {
-        if (isset($node['method'])) {
-            throw new \Exceptions\EntityResourceContradiction("Misconfigured Entity, Can not have both a 'method' attribute and a 'resource' attribute",20);
-            die();
-        }
-        $node['namespace']  = $node['namespace'] ?? \Environment::namespace();
-        $namespace          = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
-        if (!isset($node['id'])) {
-            $node['id'] = 'E_'.$this->_uniqueId();
-        }
-        print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::entity("'.$namespace.'/'.$node['class'].'");'."\n");
-        print($this->tabs().'$currentModel->setNamespace("'.$namespace.'");'."\n");
-        print($this->tabs().'$'.$node['id'].'->_resource("'.$node['resource'].'");'."\n");
-        if (isset($node['json']) && $this->trueish($node['json'])) {
-            print($this->tabs().'$currentModel->_json(true);'."\n");
-        }
-        $source = '$_REQUEST';
-        if (isset($node['source'])) {
-            switch (strtolower($node['source'])) {
-                case 'get'  :
-                    $source = '$_GET';
-                    break;
-                case 'post' : 
-                    $source = '$_POST';
-                    break;
-                case 'put'  :
-                    $source = '$_PUT';
-                    break;
-                default     :
-                    break;
-            }
-        }
-        print($this->tabs().'$source = '.$source.';'."\n");
-        if (isset($node['page'])) {
-            print($this->tabs().'$'.$node['id'].'->_page(null);'."\n");  //essentially, you first make sure that pagination is turned off by passing a null
-            print($this->tabs().'if (isset($_REQUEST["'.$node['page'].'"])) {'."\n");  //then you look to see if it is turned on
-            print($this->tabs(1).'$'.$node['id'].'->_page($_REQUEST["'.$node['page'].'"]);'."\n");  //and then you set the corresponding variable from the request
-            print($this->tabs(-1)."}\n");
-            if (isset($node['defaultPage'])) {
-                print($this->tabs().'if (!isset($_REQUEST["'.$node['page'].'"])) {'."\n");
-                print($this->tabs(1).'$'.$node['id'].'->_page('.$node['defaultPage'].')'.";\n");
-                print($this->tabs(-1)."}\n");
-            }
-        }
-        if (isset($node['cursor'])) {
-            print($this->tabs().'if (isset($_REQUEST["'.$node['cursor'].'"])) {'."\n");  //then you look to see if it is turned on
-            print($this->tabs(1).'$'.$node['id'].'->_cursor($_REQUEST["'.$node['cursor'].'"])'.";\n");            
-            print($this->tabs(-1)."}\n");
-        }
-        if (isset($node['rows'])) {
-            print($this->tabs().'if (!$'.$node['id'].'->_rows()) {'."\n");
-            print($this->tabs(1).'$'.$node['id'].'->_rows(null);'."\n");        //essentially, you first make sure that pagination is turned off by passing a null
-            print($this->tabs(-1)."}\n");
-            if (isset($node['defaultRows'])) {
-                print($this->tabs().'$'.$node['id'].'->_rows('.$node['defaultRows'].');'."\n");  //then set the default rows
-            }
-            print($this->tabs().'if (isset($_REQUEST["'.$node['rows'].'"])) {'."\n");  //then you look to see if the rows value has been passed, and if so, then use that value by assigning the rows
-            print($this->tabs(1).'if (intval($_REQUEST["'.$node['rows'].'"])) {'."\n");
-            print($this->tabs(1).'$'.$node['id'].'->_rows($_REQUEST["'.$node['rows'].'"]);'."\n");  //and then you set the corresponding variable from the request
-            print($this->tabs(-1)."}\n");
-            print($this->tabs(-1)."}\n");
-        }
-        if (isset($node['orderby'])) {
-            print($this->tabs().'$'.$node['id'].'->_orderBy(\''.$node['orderby'].'\');'."\n");
-        }
-        $assign_str = ''; $norm_str = ''; $method_str         = '$'.$node['id'].'->_manageSQLResource()';
-        if (isset($node['assign'])) {
-            $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
-        }
-        if (isset($node['normalize']) && ($this->trueish($node['normalize']))) {
-            $norm_str = '$'.$node['id'].'->_normalize(true)';
-        }            
-        if (isset($node['wrapper'])) {
-            $method_str = $node['wrapper'].'('.$method_str.')';
-        }
-        if (isset($node['transformer'])) {
-            $method_str = $this->processTransformer($node,$method_str);
-        }
-        if ((isset($node['response']) && ($this->trueish($node['response']))) || (($this->global['response']===true) && !(isset($node['response']) && !($this->trueish($node['response']))))) {
-            $method_str = 'Humble::response('.$method_str.')';
-        }
-        if ($norm_str) {
-            print($this->tabs().$norm_str.";\n");
-        }
-        print($this->tabs().$assign_str.$method_str.";\n");        
-        
-    }
+
     
     private function processJSResource($node) {
         
@@ -1197,12 +1119,14 @@ PHP;
         
     }
     
+    /**
+     * We are going to hold off on this (for now)
+     * 
+     * @param type $node
+     */
     private function processResource($node) {
         if (isset($node['type'])) {
             switch (strtolower($node['type'])) {
-                case 'sql'  :
-                    $this->processSQLResource($node);
-                    break;
                 case 'js'   :
                     $this->processJSResource($node);
                     break;

@@ -248,7 +248,12 @@ SQL;
         return $this;
     }
 
-    
+    /**
+     * For bulk SQL processing, either set the number of statements to execute or return the current set number
+     * 
+     * @param type $number
+     * @return $this
+     */
     public function bulk($number=false) {
         if ($number===false) {
             return $this->_bulk;
@@ -257,6 +262,12 @@ SQL;
         return $this;
     }
     
+    /**
+     * Keeps all rows without substitution, excludes those rows that have no substitution value, and keep rows that have substitutions and values
+     * 
+     * @param array $lines
+     * @return string
+     */
     protected function parseResource($lines) {
         $query = '';
         foreach ($lines as $line) {
@@ -277,12 +288,19 @@ SQL;
         return $query;
     }
     
-    public function _manageSQLResource() {
+    /**
+     * We are going to preprocess a SQL resource before submitting it to run
+     * 
+     * @param string $namespace
+     * @return iterator
+     */
+    public function _manageSQLResource($namespace=false) {
         if ($resource = $this->_resource()) {
-            if ($namespace = $this->getNamespace()) {
+            if ($namespace) {
                 if ($module = \Humble::module($namespace)) {
                     if (file_exists($resource = 'Code/'.$module['package'].'/'.$module['resources_sql'].'/'.(str_replace('.sql','',$resource).'.sql'))) {
                         $query = $this->parseResource(explode("\n",file_get_contents($resource)));
+                        print('<pre>'.$query.'</pre>');
                         return $this->query($query);
                     }
                 }
