@@ -37,7 +37,7 @@
         $error_log  = $args['error_log'] ?? '';
         $package    = $args['package']   ?? '';
         $module     = $args['module']    ?? '';
-        return str_replace(['&&NAME&&','&&SERVER&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&','&&CONTROLLER&&','&&PACKAGE&&','&&MODULE&&','&&BIND&&'],[$name,$server,$port,$path,$error_log,$basedir,$ns,$cont,$package,$module,$bind],file_get_contents($template));
+        return str_replace(['&&NAME&&','&&SERVER&&','&&PORT&&','&&PATH&&','&&LOG&&','&&BASEDIR&&','&&NAMESPACE&&','&&CONTROLLER&&','&&PACKAGE&&','&&MODULE&&','&&BIND&&','&&LANDING&&'],[$name,$server,$port,$path,$error_log,$basedir,$ns,$cont,$package,$module,$bind,$args['landing_page']],file_get_contents($template));
     }
     //-------------------------------------------------------------------------------------
     function recurseDirectory($path=null) {
