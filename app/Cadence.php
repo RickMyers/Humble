@@ -59,7 +59,10 @@ function resetCadence() {
     $models                 = [];
     $images                 = [];
     $first_time             = [
-        'images'            => true
+        'images'            => true,
+        'models'            => true,
+        'configs'           => true,
+        'system'            => true
     ];
     $configs                = [];
     $systemfiles            = [];    
@@ -161,8 +164,21 @@ function scanModel($file=false,$namespace=false) {
     }
 }
 //------------------------------------------------------------------------------
+function primeModelsArray() {
+    global $modules, $models;
+    foreach ($modules as $module) {
+        foreach ($files = recurseDirectory('Code/'.$module['package'].'/'.$module['models']) as $file) {
+            $models[$file] = filemtime($file);
+            clearstatcache(true,$file);
+        }
+    }
+}
+//------------------------------------------------------------------------------
 function scanModelsForChanges() {
-    global $is_production,$models,$installer,$modules;
+    global $is_production,$models,$installer,$modules,$first_time;
+    if ($first_time['models']) {
+        primeModelsArray();
+    }
     if (!$is_production) {
         foreach ($modules as $module) {
             if ($module['namespace']=='humble') {
@@ -187,6 +203,7 @@ function scanModelsForChanges() {
                 clearstatcache(true,$file);
             }
         }
+        $first_time['models'] = false;
     }
 }
 //------------------------------------------------------------------------------

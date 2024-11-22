@@ -161,6 +161,7 @@ Copyright humbleprogramming.com, all rights reserved
         </script>
         <script type="text/javascript" src="/js/engine"></script>
         <script type="text/javascript" src="/js/widgets"></script>
+        <script type="text/javascript" src="/web/js/Colorizer.js"></script>
         <script type="text/javascript" src="/web/js/ace/ace.js"></script>
         <script type="text/javascript" src="/web/js/ckeditor4/ckeditor.js"></script>
         <script type="text/javascript">

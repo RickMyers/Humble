@@ -51,7 +51,7 @@
             },
             "models": {
                 "callbacks": {
-                    "scanModelsForChanges": false
+                    "scanModelsForChanges": true
                 },
                 "multiple": 3
             },
@@ -63,9 +63,9 @@
             },
             "images": {
                 "callbacks": {
-                    "scanImagesForChanges": false
+                    "scanImagesForChanges": true
                 },
-                "multiple": 5
+                "multiple": 3
             }
         }           
     }

@@ -61,15 +61,18 @@
                 force:			true,
                 onchange:       function (evt) {
                     if (evt.target.value) {
+                        $('#view_code-&id&').css('visibility','visible');
                         var ao = new EasyAjax('/workflow/component/comment');
                         ao.add('namespace',$('#humble-paradigm-config-process-form-namespace-&id&').val());
                         ao.add('class',$('#humble-paradigm-config-process-form-component-&id&').val());
                         ao.add('method',evt.target.value);
                         ao.then((response) => {
                             if (response) {
-                                $('#config-component-comment-&id&').css('display','block').html(response);
+                                $('#config-component-comment-&id&').css('display','inline-block').html(response);
                             }
                         }).post();
+                    } else {
+                        $('#view_code-&id&').css('visibility','hidden');
                     }
                 },
                 classname:		"",

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <controller name="elements" use="Smarty">
-    <actions>
+    <actions blocking="off">
 
         <action name="objects">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
@@ -27,6 +27,17 @@
         </action>
 
         <!-- ################################################################################################# -->
+        
+        <action name="explore" passalong="window_id">
+            <description>Will explore a piece of code</description>
+            <helper namespace="workflow" class="utility" id="util">
+                <parameter name="namespace" source="request" required="true" />
+                <parameter name="component" source="request" required="true" />
+                <parameter name="method"    source="request" required="true" />
+            </helper>
+        </action>
+        
+        <!-- ################################################################################################# -->        
 
         <action name="begin" passalong="window_id">
             <description>Basic Configuration For the Start/Begin step</description>
