@@ -103,7 +103,7 @@ case $1 in
         do
                 npm install $w --save-dev
         done
-        systemctl restart argushub
+        systemctl restart msghub
         echo 'npm';;
   'increment')
         cd /var/www/$2/app
