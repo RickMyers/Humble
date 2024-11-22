@@ -155,6 +155,7 @@ CREATE TABLE `humble_modules` (
   `schema_layout` varchar(128) DEFAULT '',
   `resources_js` char(64) DEFAULT NULL,
   `resources_sql` char(64) DEFAULT NULL,
+  `resources_templates` char(64) DEFAULT NULL,
   `models` varchar(128) NOT NULL DEFAULT '',
   `events` char(64) DEFAULT '',
   `prefix` char(32) DEFAULT '',
