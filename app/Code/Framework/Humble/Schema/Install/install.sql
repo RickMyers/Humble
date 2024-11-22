@@ -79,6 +79,7 @@ CREATE TABLE `humble_entities` (
   `namespace` char(36) NOT NULL,
   `entity` char(128) NOT NULL,
   `actual` char(128) DEFAULT NULL,
+  `alias` char(36) default null,
   `polyglot` char(1) DEFAULT 'N',
   `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
