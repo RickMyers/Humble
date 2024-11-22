@@ -1213,7 +1213,7 @@ Desktop.minimized.windows.renderer((function () {
         var html = '';
         for (var win_id in Desktop.minimized.windows.list) {
             if (Desktop.minimized.windows.list[win_id].state === 1) {
-                html += '<img onclick="Desktop.minimized.windows.restore([\''+win_id+'\'])" style="float: left; position: relative; top: -35px; height: 55px; margin: 0px 5px 0px 5px; cursor: pointer" src="/images/argus/window.png"  title="'+Desktop.minimized.windows.list[win_id]._title()+'" />';
+                html += '<img onclick="Desktop.minimized.windows.restore([\''+win_id+'\'])" style="float: left; position: relative; top: -35px; height: 55px; margin: 0px 5px 0px 5px; cursor: pointer" src="/images/paradigm/window.png"  title="'+Desktop.minimized.windows.list[win_id]._title()+'" />';
             }
         };
         $('#minimized_windows_tray').html(html);

@@ -52,10 +52,8 @@ var Functions = (() => {
                             }).post()
                         },
                         home: () => {
-                            Argus.status('Loading User Display...');
                             (new EasyAjax('/admin/user/home')).then((response) => {
                                 $('#sub-container').html(response);
-                                Argus.status('');
                             }).post();
                         },
                         view: (user_id) => {

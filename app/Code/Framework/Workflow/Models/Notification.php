@@ -155,7 +155,7 @@ class Notification extends Model {
                 unlink($template_file);   
                 $recipient = ($cfg['recipients_source']=='field') ? $data[trim($cfg['recipients'])] : $data['recipients'];
                 $subject   = ($cfg['subject_source']=='field')    ? $data[trim($cfg['subject'])] : $data['subject'];
-                $emailed   = Argus::getModel('argus/email')->sendEmail($recipient,$subject,$template,'noreply@aflacbenefitssolutions.com');
+                $emailed   = paradigm::getModel('paradigm/email')->sendEmail($recipient,$subject,$template,'noreply@aflacbenefitssolutions.com');
             }
         }
         return ($emailed !== false);

@@ -94,7 +94,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
-            <entity namespace='argus'    class='email/categories' id='categories' />
+            <entity namespace='paradigm'    class='email/categories' id='categories' />
             <helper namespace="workflow" class='data' id='helper' />
         </action>
         

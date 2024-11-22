@@ -1,12 +1,12 @@
 {assign var=data value=$element->load()}
 <style type="text/css">
-    .argus-config-descriptor {
+    .paradigm-config-descriptor {
         font-size: .8em; font-family: serif; letter-spacing: 2px; box-sizing: border-box
     }
-    .argus-config-field {
+    .paradigm-config-field {
         font-size: 1em; font-family: sans-serif; text-align: right; padding-right: 4px; margin: 0px; box-sizing: border-box
     }
-    .argus-config-cell {
+    .paradigm-config-cell {
         width: 33%; background-color: #e8e8e8;  border: 1px solid #d0d0d0; padding-left: 2px; display: inline-block; border-collapse: collapsed; margin: 0px; box-sizing: border-box
     }
     .email-add-button {
@@ -24,14 +24,14 @@
 </style>
 <div id="header-{$data.id}" style="position: relative">
     <div style="height: 30px; white-space: nowrap; overflow: hidden">
-        <div class="argus-config-cell"><div class="argus-config-descriptor">Type</div><div class="argus-config-field">{$data.type }</div></div>
-        <div class="argus-config-cell"><div class="argus-config-descriptor">Shape</div><div class="argus-config-field">{$data.shape }</div></div>
-        <div class="argus-config-cell"><div class="argus-config-descriptor">Mongo ID</div><div class="argus-config-field">{$data.id }</div></div>
+        <div class="paradigm-config-cell"><div class="paradigm-config-descriptor">Type</div><div class="paradigm-config-field">{$data.type }</div></div>
+        <div class="paradigm-config-cell"><div class="paradigm-config-descriptor">Shape</div><div class="paradigm-config-field">{$data.shape }</div></div>
+        <div class="paradigm-config-cell"><div class="paradigm-config-descriptor">Mongo ID</div><div class="paradigm-config-field">{$data.id }</div></div>
     </div>
     <div style="height: 30px; white-space: nowrap; overflow: hidden">
-        <div class="argus-config-cell"><div class="argus-config-descriptor">Namespace</div><div class="argus-config-field">{if ($data.namespace)}{$data.namespace}{else}N/A{/if}</div></div>
-        <div class="argus-config-cell"><div class="argus-config-descriptor">Component</div><div class="argus-config-field">{if ($data.component)}{$data.component}{else}N/A{/if}</div></div>
-        <div class="argus-config-cell"><div class="argus-config-descriptor">Method</div><div class="argus-config-field">{if ($data.method)}{$data.method}{else}N/A{/if}</div></div>
+        <div class="paradigm-config-cell"><div class="paradigm-config-descriptor">Namespace</div><div class="paradigm-config-field">{if ($data.namespace)}{$data.namespace}{else}N/A{/if}</div></div>
+        <div class="paradigm-config-cell"><div class="paradigm-config-descriptor">Component</div><div class="paradigm-config-field">{if ($data.component)}{$data.component}{else}N/A{/if}</div></div>
+        <div class="paradigm-config-cell"><div class="paradigm-config-descriptor">Method</div><div class="paradigm-config-field">{if ($data.method)}{$data.method}{else}N/A{/if}</div></div>
     </div>
 </div>
 <div>
