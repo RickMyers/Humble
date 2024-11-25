@@ -34,7 +34,8 @@
         ],
         "main_module": [
             "Views/user",                
-            "Views/user/Smarty"
+            "Views/user/Smarty",
+            "includes"
         ]
     },
     "templates": [
@@ -173,7 +174,24 @@
         {
             "source": "/lib/sample/install/cli/directory.yaml",
             "destination":  "cli/&&MODULE&&/directory.yaml" 
-        }                                                                                    
+        },
+        {
+            "source": "/lib/sample/install/includes/Constants.txt.php",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/includes/Constants.txt.php"
+        },
+        {
+            "source": "/lib/sample/install/includes/Custom.txt.php",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/includes/Custom.txt.php"
+        },
+        {
+            "source": "/lib/sample/install/includes/Headers.txt.php",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/includes/Headers.txt.php"
+        },
+        {
+            "source": "/lib/sample/install/includes/AuthorizationEngine.txt.php",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/includes/AuthorizationEngine.txt.php"
+        }            
+                                                                                                
     ]
 }
 

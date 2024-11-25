@@ -440,8 +440,8 @@ switch ($method) {
         session_start();
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");
-        $x = (file_exists('humble.bat')) ? rename('humble.bat',strtolower((string)$project->factory_name).'.bat'): '';
-        $x = (file_exists('humble.sh'))  ? rename('humble.sh',strtolower((string)$project->factory_name).'.sh') : '';
+        $x = (file_exists('../humble.bat')) ? copy('../humble.bat',strtolower((string)$project->factory_name).'.bat'): '';
+        $x = (file_exists('../humble.sh'))  ? copy('../humble.sh',strtolower((string)$project->factory_name).'.sh') : '';
         $x = (file_exists('../Humble.php')) ? @unlink('../Humble.php') : '';
         if (file_exists('../.htaccess')) {
             $parts  = explode('/',$project->landing_page);
