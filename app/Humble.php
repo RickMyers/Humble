@@ -482,7 +482,7 @@
                 return isset($val) ? $val : false;                
             }
         }
-
+        
         /**
          * Caching is implemented here in the factory so that it can be easily switched out to another product (Redis, APC, etc) should it be necessary
          *
@@ -495,13 +495,14 @@
          * @return mixed
          */
         public static function cache($key,$value=null,$expire=0) {
+            global $USE_REDIS;
             $retval = null; $args   = func_num_args(); $key = trim($key);
             if (\Environment::cachingEnabled()) {
                 if (!self::$cache && !self::$cacheFailed) {
                     if ($cache_server = Environment::settings()->getCacheHost()) {
                         $cache_server = explode(':',$cache_server);
-                        if (self::$cache = new \Memcache()) {
-                            if (!@self::$cacheConn = self::$cache->connect($cache_server[0],(isset($cache_server[1]) ? $cache_server[1] : 11211))) {
+                        if (self::$cache = (($USE_REDIS) ? new \Redis() : new \Memcache())) {
+                            if (!@self::$cacheConn = self::$cache->connect($cache_server[0],(isset($cache_server[1]) ? $cache_server[1] : (($USE_REDIS) ? 6379 :11211)))) {
                                 self::$cacheFailed = true;
                             }
                         }
@@ -509,7 +510,7 @@
                 }
                 $serialNumber = Environment::serialNumber();
                 if (!self::$cacheFailed) {
-                    $retval = ($value !== null) ? self::$cache->set($serialNumber.'-'.$key,$value,false,$expire) : (($value === null) && ($args > 1) ? self::$cache->delete($serialNumber.'-'.$key) : self::$cache->get($serialNumber.'-'.$key) );
+                    $retval = ($value !== null) ? (($USE_REDIS) ? self::$cache->set($serialNumber.'-'.$key,$value) : self::$cache->set($serialNumber.'-'.$key,$value,false,$expire)) : (($value === null) && ($args > 1) ? self::$cache->delete($serialNumber.'-'.$key) : self::$cache->get($serialNumber.'-'.$key) );
                 }
             }
             return $retval;

@@ -12,4 +12,6 @@ if (!isset($_SESSION['BROWSER_TABS'])) {
 }
 
 //Overrides---------------------------------------------------------------------
-$use_connection_pool        = true;                                             //Set to true to speed up database interaction 
+$USE_CONNECTION_POOL        = true;                                             //Set to true to speed up database interaction 
+$USE_REDIS                  = false;
+$USE_PGSQL                  = false;

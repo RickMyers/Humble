@@ -35,8 +35,8 @@ class MySQL extends ORM implements ORMEngine  {
      * Connects to a DB source
      */
     public function connect() {
-        global $use_connection_pool;                                            //use persistent connections?
-        if (!$this->_dbref	=  @new \mysqli((($use_connection_pool) ? 'p:' : '').$this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword())) {
+        global $USE_CONNECTION_POOL;                                            //use persistent connections?
+        if (!$this->_dbref	=  @new \mysqli((($USE_CONNECTION_POOL) ? 'p:' : '').$this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword())) {
             die('Error attempting to connect to the database.  Is the server running?  If so, check you DB settings'."\n");
         }
         if ($this->_dbref->connect_error ?? false) {

@@ -38,6 +38,7 @@ RUN apt install -y php8.2-yaml
 RUN apt install -y php8.2-zip
 RUN apt install -y php8.2-memcached 
 RUN apt install -y php8.2-memcache
+RUN apt install -y php8.2-redis
 RUN apt install -y php8.2-xdebug
 RUN apt install -y php8.2-curl
 RUN apt install -y php8.2-gd
