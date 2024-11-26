@@ -488,7 +488,7 @@ function dockerMe() {
                 $zip->close();
                 print(file_get_contents('docker_instructions.txt'));
             }
-            @unlink('docker_temp.zip');
+            @unlink('../docker_temp.zip');
 
             print("\n\n".'A docker folder has been created with a sample docker-compose and docker container definition file'."\n\n"."You should now be redirected to ".$project['framework_url']."/pages/UsingDocker.htmls for information on using Docker\n\n");
         } else {

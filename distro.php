@@ -208,6 +208,7 @@
             $port     = explode(':',$name);
             $name     = $port[0];
             $port     = $port[1] ?? ($_REQUEST['project_port'] ?? '80');
+            $listen   = ((int)$port===80) ? '' : 'Listen '.$port;
             $srch     = ['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&PORT&&','&&SERVER&&'];
             $repl     = [$ns,$dir,$base.'/',$port,$name];            
             $vopttpl  = ['PHP_FPM' => 'app/install/Docker/fpm_vhost_template.conf','MOD_PHP'=>'app/install/Docker/vhost_template.conf'];
@@ -216,7 +217,7 @@
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
                 $parts  = explode(':',$_REQUEST['project_url']??'');                
                 $zip->addFromString('vhost.conf',processVhost($vopttpl[$engine],array_merge($_REQUEST,['SERVER_NAME'=>$name])));
-                $zip->addFromString('ports.conf',str_replace(['&&PORT&&'],[$port],file_get_contents('app/install/Docker/ports_template.conf')));
+                $zip->addFromString('ports.conf',str_replace(['&&LISTENPORT&&'],[$listen],file_get_contents('app/install/Docker/ports_template.conf')));
                 $zip->addFromString('.gitignore','*');
                 $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents($copttpl[$engine])));
                 $zip->addFromString('docker-compose.yaml',str_replace($srch,$repl,file_get_contents('app/install/Docker/dc_template.txt')));
