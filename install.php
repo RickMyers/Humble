@@ -354,6 +354,7 @@ switch ($method) {
         $serial = isset($_POST['serial_number'])    ? $_POST['serial_number']   : false;
         $db     = isset($_POST['db'])               ? $_POST['db']              : false;
         $cache  = isset($_POST['cache'])            ? $_POST['cache']           : false;
+        $redis  = strpos($cache,'6379');
         $fname  = isset($_POST['firstname'])        ? $_POST['firstname']       : '';
         $lname  = isset($_POST['lastname'])         ? $_POST['lastname']        : '';
         $use    = isset($_POST['templater'])        ? $_POST['templater']       : 'Smarty';
@@ -393,6 +394,16 @@ switch ($method) {
             print('Installing '.$etc."\n");
             print('###########################################'."\n\n");
             $util->install($etc);
+        }
+        
+        $custom = 'Code/'.$project->package.'/'.$project->module.'/etc/Constants.php'; 
+        if (($redis) && (file_exists($custom))) {                               //You chose REDIS for cache, so going to uncomment out the line in the Custom.php file
+            foreach ($lines = explode("\n",$custom) as $idx => $line) {
+                if (strpos($line,'$USE_REDIS') && (substr($line,0,2)=='//')) {
+                    $lines[$idx] = substr($line,2);
+                }
+            }
+            file_put_contents($custom,implode("\n",$lines));
         }
         
         $admin_id  = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
