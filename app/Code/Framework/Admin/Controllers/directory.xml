@@ -9,7 +9,7 @@ Actions and views related to directory services
         
         <action name="generate">
             <description>Generates a list of services available as an HTML page</description>
-            <entity namespace='admin' class=permissions'>
+            <entity namespace='admin' class='permissions'>
                 <parameter name='admin_id' source='session' required="true" />
             </entity>
         </action>
