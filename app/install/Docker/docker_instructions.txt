@@ -12,7 +12,9 @@
 You will need to build your image.  To do so, move into the Docker 
 directory.  The command to build your image is below:
 
-docker build -t &&NAMESPACE&& .
+#####################################################
+> docker build -t &&NAMESPACE&& .
+#####################################################
 
 Next you will need to edit the docker-compose.yaml file.  If you are only running
 one container on this machine, you can run with the default ports.  Otherwise you
@@ -23,11 +25,15 @@ change the web port from 80 to 8080, the change would look like this - 8080:80
 
 Once your ports are set, run the following command in the foreground:
 
-docker-compose up
+#####################################################
+> docker-compose up
+#####################################################
 
 If none of the containers crash out, then you are ready to run in the background.
 Stop the containers with a <ctrl-C> and then run the following command:
 
-docker-compose up -d
+#####################################################
+> docker-compose up -d
+#####################################################
 
 You should be all set!   Good Luck!

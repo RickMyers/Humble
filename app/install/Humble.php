@@ -487,7 +487,6 @@ function dockerMe() {
                 file_put_contents('delay_launch.php',$zip->getFromName('delay_launch.php'));
                 $zip->close();
                 print(file_get_contents('docker_instructions.txt'));
-                chdir('../');
             }
             @unlink('docker_temp.zip');
 

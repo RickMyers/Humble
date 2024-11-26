@@ -7,12 +7,12 @@ ENV TZ=America/Los_Angeles
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt -y install software-properties-common
 RUN update-ca-certificates
+RUN apt install -y wget
+RUN apt install -y curl
 RUN add-apt-repository ppa:ondrej/php 
 RUN curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 RUN chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
 RUN apt update
-RUN apt install -y wget
-RUN apt install -y curl
 RUN apt install -y apache2
 RUN apt update
 RUN echo "ServerName &&SERVER&&" >> /etc/apache2/apache2.conf
@@ -51,7 +51,6 @@ RUN apt install -y nala
 RUN apt install -y mkcert
 RUN apt install -y xdg-utils
 RUN pecl install xdebug
-
 #RUN mkcert -install
 RUN apt install -y w3m
 RUN apt install -y dos2unix
