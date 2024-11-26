@@ -177,11 +177,11 @@
         },
         {
             "source": "/lib/sample/install/includes/Constants.txt.php",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/includes/Constants.txt.php"
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/includes/Constants.php"
         },
         {
             "source": "/lib/sample/install/includes/Custom.txt.php",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/includes/Custom.txt.php"
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/includes/Custom.php"
         },
         {
             "source": "/lib/sample/install/includes/Headers.txt.php",

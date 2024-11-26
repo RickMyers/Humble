@@ -203,7 +203,8 @@ class Module extends CLI
                     $search[]    = '&&CONTROLLER&&'; $replace[]   = $controller;
                     $search[]    = '&&PAGE&&';       $replace[]   = $page;
                     $search[]    = '&&BASEDIR&&';    $replace[]   = '';
-                    $search[]    = '&&PROJECT_NAME&&'; $project->project_name;
+                    $search[]    = '&&PROJECT_NAME&&'; $replace[] = $project->project_name;
+                    $search[]    = '&&USEREDIS&&';   $replace[] = strpos(\Environment::settings()->getCacheHost(),'6379') ? 'true' : 'false';
                     @mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
                     @mkdir('cli/'.$md,0775,true);
                     self::copyFiles($src,$mod->main_module,$search,$replace);
