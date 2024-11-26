@@ -495,6 +495,7 @@
          * @return mixed
          */
         public static function cache($key,$value=null,$expire=0) {
+            global $USE_REDIS;
             $retval = null; $args   = func_num_args(); $key = trim($key);
             if (\Environment::cachingEnabled()) {
                 if (!self::$cache && !self::$cacheFailed) {
