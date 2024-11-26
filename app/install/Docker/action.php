@@ -43,16 +43,19 @@ if ($cmd = array_shift($argv)) {
         case "listi" :
             print(shell_exec('docker image ls')."\n");
             break;
+        case "rmi":
         case "deli" :
             if ($img = (array_shift($argv) ?? $ns)) {
                 print(shell_exec('docker image rm '.$img)."\n");
             }
-            break;   
+            break; 
+        case "rmv":
         case "delv" :
             if ($vol = (array_shift($argv) ?? $ns)) {
                 print(shell_exec('docker volume rm '.$vol)."\n");
             }
-            break;  
+            break; 
+        case "rmc":
         case "delc" :
             if ($con = (array_shift($argv) ?? $ns)) {
                 print(shell_exec('docker container rm '.$con)."\n");
