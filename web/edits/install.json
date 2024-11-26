@@ -170,7 +170,7 @@
             "type":		"combo",
             "style":            "",
             "required":		true,
-            "force":		false,
+            "force":		true,
             "classname":        "",
             "value":            ""
         },

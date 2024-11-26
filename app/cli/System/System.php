@@ -93,18 +93,18 @@ class System extends CLI
      */
     public static function increment($next=1) {
         print("CHANGING VERSION"."\n");
-        $data   = \Environment::applicationXML();
-        $v      = explode('.',(string)$data->version->framework);
+        $framework  = (Environment::namespace()==='humble');
+        $data       = \Environment::applicationXML();
+        $v          = ($framework) ? explode('.',(string)$data->version->framework) : explode('.',(string)$data->version->application);
         for ($i=count($v)-1; $i>=0; $i-=1) {                                    //This is one of those ridiculously evil things in computer science
             $v[$i] = (int)$v[$i]+$next;
             if ($next  = ($v[$i]===10)) {
                 $v[$i] = 0;
             }
         }
-        $data->version->framework = (string)implode('.',$v);
-        print("\nSetting version to ".$data->version->framework."\n\n");
+        $version = ($framework) ? $data->version->framework = (string)implode('.',$v) : $data->version->application = (string)implode('.',$v);
         file_put_contents(\Environment::applicationXMLLocation(),$data->asXML());
-        return $data->version->framework;
+        return $version;
     }
         
     /**
