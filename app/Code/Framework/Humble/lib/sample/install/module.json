@@ -190,7 +190,11 @@
         {
             "source": "/lib/sample/install/includes/AuthorizationEngine.txt.php",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/includes/AuthorizationEngine.txt.php"
-        }            
+        },
+        {
+            "source": "/lib/sample/install/includes/test.php",
+            "destination": "test.php"
+        }                          
                                                                                                 
     ]
 }
