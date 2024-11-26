@@ -267,19 +267,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="sync" event="workflowsSynced" comment="An inventory of workflows have been synced">
             <description>Will sync the remote workflows to the local repository</description>
-            <entity namespace="humble" class="user_permissions" method="load" id="permissions">
+            <entity namespace="admin" class="someclass" id="permissions">
                 <parameter name='id' value="admin_id" source="session" required="true" />
             </entity>
-            <switch id="permissions" method="getAdmin">
-                <case value="Y">
-                    <model namespace="paradigm" class="workflow" method="sync" >
-                        <parameter name="destination_id" source="post" required="true" />
-                    </model>
-                </case>
-                <default>
-                    <output text="You lack the required authority to perform a sync" />
-                </default>
-            </switch>
         </action>
 
         <!-- ############################################################### -->

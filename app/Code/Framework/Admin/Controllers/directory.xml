@@ -9,18 +9,9 @@ Actions and views related to directory services
         
         <action name="generate">
             <description>Generates a list of services available as an HTML page</description>
-            <entity namespace='humble' class='user/permissions' id='permissions' method='load'>
-                <parameter name='id' value='uid' source='session' default='' />
+            <entity namespace='admin' class=permissions'>
+                <parameter name='admin_id' source='session' required="true" />
             </entity>
-            <switch id='permissions' method='getAdmin'>
-                <case value="Y">
-                    <helper namespace='humble' class='service/directory' id='services'></helper>
-                </case>
-                <default>
-                    <redirect href="/index.html?message=You do not have permission to run that service" />
-                </default>
-            </switch>
-
         </action>
 
         <!-- ############################################################### -->

@@ -20,9 +20,6 @@
             <entity namespace='humble' class='permissions' id='permissions'>
                 <parameter name='admin_id' source='session' required="true" />
             </entity>            
-            <entity namespace="humble" class="user_permissions" id="permissions" method='load'>
-                <parameter name='id' value="uid"    source="session" default="" />
-            </entity>
         </action>
 
         <!-- ############################################################### -->

@@ -169,7 +169,7 @@
             "title":		"The location of the Cache Server",
             "type":		"combo",
             "style":            "",
-            "required":		false,
+            "required":		true,
             "force":		false,
             "classname":        "",
             "value":            ""
