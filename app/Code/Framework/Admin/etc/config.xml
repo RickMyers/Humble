@@ -105,6 +105,7 @@
                     <source>Admin/web/css/cssmenu.css</source>
                 </css>
                 <js>
+                    <source weight="10">Admin/web/js/Paradigm.config.js</source>
                     <source weight="10">Admin/web/js/Heartbeat.js</source>
                     <source weight="10">Admin/web/js/Pagination.js</source>
                     <source weight="15">Admin/web/js/Chart.js</source>
