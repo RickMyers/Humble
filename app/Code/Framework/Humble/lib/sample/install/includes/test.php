@@ -15,5 +15,6 @@ Just a program for you to use for some dirty command line testing
  */
 require "&&FACTORY&&.php"; 
 require "Environment.php";
+require "Log.php";
 require "Code/Framework/Humble/includes/Constants.php";
 require "Code/&&PACKAGEG&&/&&MODULE&&/includes/Custom.php";
