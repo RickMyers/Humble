@@ -78,6 +78,26 @@
         }
 
         /**
+         * Will attempt to run a program in a separate process
+         *    
+         * @param string $program
+         * @param array $arguments
+         * @param string $cwd
+         */
+        public static function spawn($program=false,$arguments=[],$cwd=null) {
+            $argstr = '';
+            foreach ($arguments as $arg => $value) {
+                $argstr .=((is_numeric($arg)) ? $value : $arg.'="'.addslashes($value).'" ').' ';
+            }
+            $cmd = (trim(Environment::PHPLocation()) ?? 'php').' '.$program.' '.$argstr;
+            if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+                pclose(popen("start ".$cmd,"r"));
+            } else {
+                exec('/usr/bin/nohup '.$cmd.' 2>&1 &');
+            }            
+        }
+        
+        /**
          * Puts a message onto a queue... Not used at this time but maybe re-enabled (LAZY) in the future
          *
          * @param type $queue

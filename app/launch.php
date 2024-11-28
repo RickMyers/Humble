@@ -14,8 +14,12 @@
  *
  */
 
+$project = \Environment::getProject();
 require "Humble.php";
 require "Code/Framework/Humble/includes/Constants.php";
+if (file_exists($custom = 'Code/'.$project->package.'/'.$project->module.'/includes/Custom.php')) {
+    require $custom;
+}
 ob_start();
 print("Launcher fired at ".date("H:i:s")."\n");
 $rc         = 0;
