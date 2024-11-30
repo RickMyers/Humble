@@ -160,9 +160,12 @@ function DesktopWindow(icon,refId) {
     this._resize     = function (evt) {
         this.content.style.height = (this.frame.offsetHeight - this.bar.offsetHeight - 4)+"px";
         if (this.handlers.resize.length) {
+            console.log('i am resizing');
             for (var func in this.handlers.resize) {
                 this.handlers.resize[func](this);
             }
+        } else {
+            console.log('no resize handlers')
         }
         //$(window).resize();  //this can fire off a lot of other things
         return this;

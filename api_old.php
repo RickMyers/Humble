@@ -15,6 +15,10 @@
     * Really cool stuff happens here
     *
     * ########################################################################## */
+    //this function obtained from PHPPro blog.
+    function underscoreToCamelCase( $string, $first_char_caps = false) {
+        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
+    }
     function errorOff($message='Encountered Error') {
         $sapi_type = php_sapi_name();
         if (substr($sapi_type, 0, 3) == 'cgi') {
@@ -26,10 +30,9 @@
         die('{ "error": "'.$message.'" }');
      }
     ob_start();
-print_r($_REQUEST);
+
     chdir('app');
     require_once('Humble.php');
-    require_once('Environment.php');
     $status = Environment::getApplication('api',true);
     if (!isset($status['enabled']) || !(int)$status['enabled']) {
         errorOff('API is disabled');
@@ -62,18 +65,14 @@ print_r($_REQUEST);
         }
     }
 
-    $illegal         = ['paradigm'=>true,"humble"=>true,"workflow"=>true,'admin'=>true,'contrive'=>true];
-    $entity_alias    = $_GET['humble_api_entity']       ?? false;
-    $action          = $_GET['humble_api_method']       ?? false;//  : ((isset($content['id']) && $content['id']) ? $content['id'] : false);
-    $namespace       = $_GET['humble_api_namespace']    ?? false;
+    $illegal         = ['paradigm'=>true,"humble"=>true,"workflow"=>true];
+    $table           = isset($_GET['t'])   ? $_GET['t'] : false;
+    $action          = (isset($_GET['m'])) ? $_GET['m'] : ((isset($content['id']) && $content['id']) ? $content['id'] : false);
+    $namespace       = isset($_GET['n'])   ? $_GET['n'] : false;
     $module          = \Humble::module($namespace);
     if (isset($illegal[$namespace])) {
         errorOff("Core modules are not accessible via the API");
     }
-    if (!$entity         = Humble::entity('humble/entities')->setNamespace($namespace)->setAlias($entity_alias)->load(true)) {
-        errorOff("Entity not found");
-    }
-    //OK, pick up from here
     /*
      * If table api action is an INT or undefined, use the implied CRUD to REST mappings
      *

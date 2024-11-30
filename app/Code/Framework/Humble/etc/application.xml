@@ -29,7 +29,7 @@
         <timestamp_format>Y-m-d H:i:s</timestamp_format>
     </default>
     <api comment="Know the risks before enabling.  There is a section in the documentation on this">
-        <enabled>0</enabled>
+        <enabled>1</enabled>
     </api>
     <exceptions options="JSON,HTML" comment="Choose whether you want a JSON formatted exception or one that is a templated HTML response">HTML</exceptions>
     <documentation_comment>

@@ -254,7 +254,7 @@ SQL;
      * @param type $number
      * @return $this
      */
-    public function bulk($number=false) {
+    public function _bulk($number=false) {
         if ($number===false) {
             return $this->_bulk;
         }
