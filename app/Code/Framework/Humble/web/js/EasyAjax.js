@@ -10,6 +10,7 @@ function EasyAjax(targetUrl) {
     this.suppressAlerts = false;
     this.keepAlive      = false;
     this.targetUrl	= targetUrl;
+    this._contentType   = "application/x-www-form-urlencoded";
     this.queryString	= "";
     this.xmlHttp	= null;
     this.showResponse	= false;
@@ -47,6 +48,13 @@ function EasyAjax(targetUrl) {
     var vars = EasyAjax.always.get()
     for (var name in vars) {
         this.add(name,vars[name]);
+    }
+    this.contentType =  (contentType) => {
+        if (contentType) {
+            this._contentType = contentType;
+            return this;
+        }
+        return this._contentType;
     }
     return this;
 }
@@ -187,8 +195,8 @@ EasyAjax.prototype.post = function(async) {
     if (this.targetUrl) {
         async = (async === false) ? false : true;
         this.xmlHttp.open("POST", this.targetUrl, async);
-        this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest')
-        this.xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
+        this.xmlHttp.setRequestHeader("Content-type", this.contentType());
         if (this.formData) {
             for (var i in this.vars) {
                 this.formData.append(i,this.vars[i]);
@@ -204,8 +212,8 @@ EasyAjax.prototype.post = function(async) {
 EasyAjax.prototype.put = function(async) {
     async = (async === false) ? false : true;
     this.xmlHttp.open("PUT", this.targetUrl, async);
-    this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest')
-    this.xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
+    this.xmlHttp.setRequestHeader("Content-type", this.contentType());
     if (this.formData) {
         for (var i in this.vars) {
             this.formData.append(i,this.vars[i]);
@@ -220,8 +228,8 @@ EasyAjax.prototype.put = function(async) {
 EasyAjax.prototype.delete = function(async) {
     async = (async === false) ? false : true;
     this.xmlHttp.open("DELETE", this.targetUrl, async);
-    this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest')
-    this.xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
+    this.xmlHttp.setRequestHeader("Content-type", this.contentType());
     if (this.formData) {
         for (var i in this.vars ) {
             this.formData.append(i,this.vars[i]);

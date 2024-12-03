@@ -4,7 +4,7 @@
         <form name="simple_api_test_form" id="simple_api_test_form" onsubmit="return false">
             <div>
                 <div>
-                    <input type="text" name="api_uri" id="api_uri" class="rounded-sm text-lg bg-amber-50 w-full border-2" />
+                    <span class="text-bold text-lg">/api/</span><input type="text" name="api_uri" id="api_uri" class="rounded-sm text-lg bg-amber-50 w-80 border-2" />
                 </div>
                 <div class="text-base text-indigo-950 font-mono">
                     API URI [/api/<i>namespace</i>/<i>alias</i> [/<i>method</i> (optional)]
@@ -16,16 +16,27 @@
                     </textarea>
                 </div>
                 <div class="text-base text-indigo-950 font-mono">
-                    JSON Payload
+                    JSON/Encoded Payload
                 </div>
             </div>
             <div class="mt-2">
                 <div>
+                    <select name="encoding" id="encoding" class="w-1/2 p-1 rounded-sm text-lg bg-amber-50 w-full border-2">
+                        <option value="json"> Application/JSON </option>
+                        <option value="form"> Multipart/Form-Data </option>
+                    </select>
+                </div>
+                <div class="text-base text-indigo-950 font-mono">
+                    MIME Type
+                </div>
+            </div>            
+            <div class="mt-2">
+                <div>
                     <select name="api_method" id="api_method" class="w-1/2 p-1 rounded-sm text-lg bg-amber-50 w-full border-2">
-                        <option value="get"> GET </option>
-                        <option value="post"> POST </option>
-                        <option value="put"> PUT </option>
-                        <option value="delete"> DELETE </option>
+                        <option value="get"> GET [ get one row /id ]</option>
+                        <option value="post"> POST [ return many rows ] </option>
+                        <option value="put"> PUT [ create with no id/update with id] </option>
+                        <option value="delete"> DELETE [ delete by id ] </option>
                     </select>
                 </div>
                 <div class="text-base text-indigo-950 font-mono">
@@ -37,5 +48,9 @@
             </div>
         </form>
     </div>
-    
 </div>
+<script>
+    (()=>{
+        (new EasyEdits('/edits/admin/testapi','test-api'))
+    })();
+</script>

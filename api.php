@@ -16,64 +16,77 @@
     *
     * ########################################################################## */
     function errorOff($message='Encountered Error') {
-        $sapi_type = php_sapi_name();
-        if (substr($sapi_type, 0, 3) == 'cgi') {
-            header("Status: 400 Bad Request");
-        } else {
-            header("HTTP/1.1 400 Bad Request");
-        }        
-        header('Content-type: application/json');
-        die('{ "error": "'.$message.'" }');
+        \HumbleException::standard(new Exception($message,12),'API Error','api');
+        die();
      }
     ob_start();
-print_r($_REQUEST);
+
     chdir('app');
     require_once('Humble.php');
     require_once('Environment.php');
-    $status = Environment::getApplication('api',true);
+    $status          = Environment::getApplication('api',true);
     if (!isset($status['enabled']) || !(int)$status['enabled']) {
         errorOff('API is disabled');
     }
-    session_start();
-    if (!isset($_SESSION['uid'])) {
-        errorOff('Not Logged In, Authenticate First');
+    $project         = Environment::getProject();
+    $policy_file     = 'Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json';
+    if (!file_exists($policy_file)) {
+        errorOff('No API Policy File Found');
     }
+    $policy          = json_decode(file_get_contents($policy_file,true));
+    $drop            = ['humble_api_namespace'=>true,'humble_api_entity'=>true,'humble_api_method'=>true];   //Don't accidentally set these 
+ /*   $illegal         = ['paradigm'=>true,"humble"=>true,"workflow"=>true,'admin'=>true,'contrive'=>true];    //These modules are not allowed access to the API
+    if (isset($illegal[$namespace])) {
+        errorOff("Framework modules are not accessible via the API");
+    }*/
     $headers         = getallheaders();
     $request_method  = strtolower($_SERVER['REQUEST_METHOD']);
+    $content_type    = strtolower($_SERVER['CONTENT_TYPE']);
     $error           = false;
     $results         = false;
     $content         = [];
-    if (($request_method === "put") || ($request_method === "post")) {
-        $data        = (string)file_get_contents("php://input");
-        $content     = json_decode($data,true);
-    } else if ( $request_method === 'delete') {
-        foreach (explode('&',(string)file_get_contents("php://input")) as $value_pair) {
-            $eqpos   = strpos($value_pair,'=');
-            if ($var = substr($value_pair,0,$eqpos)) {
-                $content[$var] = substr($value_pair,$eqpos+1);
-            }
-        }
-    } else if (($request_method === 'get')) {
-        $reserved = ['t'=>true,'m'=>true,'n'=>true];
-        foreach ($_GET as $var => $val) {
-            if (!isset($reserved[$var])) {
-                $content[$var] = $val;
-            }
-        }
+    $id              = false;
+    \Humble::_namespace($namespace     = $_GET['humble_api_namespace'] ?? false);
+    \Humble::_controller($entity_alias = $_GET['humble_api_entity']    ?? false);
+    if (is_numeric($action = $_GET['humble_api_method'] ?? false)) {
+        $id     = $action;      //probably doing a GET on an id value... action can't be a number
+        $action = null;
+    } else {
+        \Humble::_action($action);
     }
+    $data       = '';
+    switch ($content_type) {
+        case "application/json" : 
+            $content = json_decode((string)file_get_contents("php://input"),true);
+            break;
+        case "application/x-www-form-urlencode" :
+            foreach (explode('&',(string)file_get_contents("php://input")) as $value_pair) {
+                $eqpos   = strpos($value_pair,'=');
+                if ($var = substr($value_pair,0,$eqpos)) {
+                    $content[$var] = substr($value_pair,$eqpos+1);
+                }
+            }
+            break;
+    }
+    
+    if (!$content) {
+        errorOff("Request contained no content");
+    }
+    //  : ((isset($content['id']) && $content['id']) ? $content['id'] : false);    
+    session_start();
+    $user_state      = isset($_SESSION['user_id']) ? 'authenticated' : 'public';
+    if ($module          = \Humble::module($namespace)) {
+        if (!$entity     = Humble::entity('humble/entities')->setNamespace($namespace)->setAlias($entity_alias)->load(true)) {
+            errorOff("Entity not found");
+        }
+        foreach ($content as $var => $value) {
+            $method = 'set'.underscoreToCamelCase($value,true);
+            $entity->$method($value);
+        }
+        print_r($entity);die();    //OK, pick up from here
+    };
 
-    $illegal         = ['paradigm'=>true,"humble"=>true,"workflow"=>true,'admin'=>true,'contrive'=>true];
-    $entity_alias    = $_GET['humble_api_entity']       ?? false;
-    $action          = $_GET['humble_api_method']       ?? false;//  : ((isset($content['id']) && $content['id']) ? $content['id'] : false);
-    $namespace       = $_GET['humble_api_namespace']    ?? false;
-    $module          = \Humble::module($namespace);
-    if (isset($illegal[$namespace])) {
-        errorOff("Core modules are not accessible via the API");
-    }
-    if (!$entity         = Humble::entity('humble/entities')->setNamespace($namespace)->setAlias($entity_alias)->load(true)) {
-        errorOff("Entity not found");
-    }
-    //OK, pick up from here
+    
     /*
      * If table api action is an INT or undefined, use the implied CRUD to REST mappings
      *
@@ -112,35 +125,9 @@ print_r($_REQUEST);
         }
 
     } else if (substr($action,0,5)=='edit/') {
-        /*
-         * If the person wants to edit a row in this table, we are going to dynamically build them an edit form
-         * @TODO: REVIEW THIS!
-         */
-        $data   = explode('/',$action);
-        $id     = isset($data[1]) ? $data[1] : null;
-        if ($id) {
-            \Log::general('id: '.session_id());
-            $module = \Humble::module($namespace);
-            if (isset($module['schema_layout']) && ($module['schema_layout'])) {
-                try {
-                    $editForm = \Humble::model('humble/renderer');
-                    $editForm->setNamespace($namespace);
-                    $editForm->setPackage($module['package']);
-                    $editForm->setId($id);
-                    $editForm->setEntity($table);
-                    $editForm->setSessionId(true);
-                    print($editForm->render());
-                    die();
-                } catch (Exception $e) {
-                    Environment::standard($e,'Table API Error','api');
-                }
-            }
-        }
-    }
 
-    if (!$content) {
-        $content = array();  //need to pass in some kind of criteria...
     }
+    
     if ($namespace && $table && $action) {
         //if (!empty($content)) {
             if ($module) {

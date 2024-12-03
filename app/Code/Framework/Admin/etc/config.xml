@@ -92,6 +92,7 @@
                 <smtpsettings>Admin/web/edits/smtpsettings.json</smtpsettings>
                 <fetchsecret>Admin/web/edits/fetchsecret.json</fetchsecret>
                 <apitester>Admin/web/edits/apitester.json</apitester>
+                <testapi>Admin/web/edits/testapi.json</testapi>
                 <importdata>Admin/web/edits/importdata.json</importdata>
                 <installmodule>Admin/web/edits/installmodule.json</installmodule>
                 <login>Admin/web/edits/adminlogin.json</login>

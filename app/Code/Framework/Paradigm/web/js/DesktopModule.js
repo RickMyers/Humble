@@ -694,13 +694,16 @@ var Functions = {
         return objectId;
     },
     initialized: false,
-    init: function (doAfter) {
+    init: (doAfter) => {
         if (Desktop.initialized) {
             return;
         }
         
         Desktop.ref = $E(ParadigmConfig.desktop.layer); //hardcoded
-
+        Desktop.win = {
+            "ref": ((ParadigmConfig.desktop.windows) ? $E(ParadigmConfig.desktop.windows) : Desktop.ref)
+        }
+        console.log(Desktop.win);
         Desktop.elements = {
             "apps": [],
             "windows": []
@@ -776,7 +779,7 @@ var Functions = {
         for (i=0; i<Desktop.elements.windows.length; i++) {
             Desktop.window.add(Desktop.elements.windows[i]);
         };
-        Desktop.ref.innerHTML += Desktop.window.HTML;        
+        Desktop.win.ref.innerHTML += Desktop.window.HTML;        
         
         for (i=0; i<Desktop.elements.windows.length; i++) {
             win = Desktop.elements.windows[i];
@@ -915,11 +918,11 @@ var Functions = {
                     var scrollLeft=0;
                     var scrollTop = 0;
                     if (Desktop.isModern) {
-                        scrollLeft  = window.pageXOffset;
+                        scrollLeft      = window.pageXOffset;
                         scrollTop	= window.pageYOffset;
                     } else	{
-                        scrollLeft  = Desktop.ref.iebody.scrollLeft;
-                        scrollTop	= Desktop.ref.iebody.scrollTop;
+                        scrollLeft      = Desktop.win.ref.iebody.scrollLeft;
+                        scrollTop	= Desktop.win.ref.iebody.scrollTop;
                     }
                     var newPosX		= (+scrollLeft + evt.clientX - Desktop.drag.icon.delta.X);
                     var newPosY		= (+scrollTop  + evt.clientY - Desktop.drag.icon.delta.Y);
@@ -1028,8 +1031,8 @@ var Functions = {
                     sY = window.pageYOffset;
                 } else {
                     evt.cancelBubble = true;
-                    sX = Desktop.ref.iebody.scrollLeft;
-                    sY = Desktop.ref.iebody.scrollTop;
+                    sX = Desktop.win.ref.iebody.scrollLeft;
+                    sY = Desktop.win.ref.iebody.scrollTop;
                 }
                 var clickX = +sX + evt.clientX;
                 var clickY = +sY + evt.clientY;
@@ -1118,8 +1121,8 @@ var Functions = {
                     else
                         newCursor = "move";
 
-                    Desktop.ref.onmouseup   =  Desktop.window.drag.stop;
-                    Desktop.ref.onmousemove = Desktop.window.drag.active;
+                    Desktop.win.ref.onmouseup   =  Desktop.window.drag.stop;
+                    Desktop.win.ref.onmousemove = Desktop.window.drag.active;
                     Desktop.off(Desktop.drag.window.ref.frame,"mousedown", Desktop.window.drag.start);
                     document.body.style.cursor = newCursor;
                     if (Desktop.window.list[winId]) {
@@ -1190,8 +1193,8 @@ var Functions = {
                 Desktop.window.set(Desktop.drag.window.ref);
                 Desktop.drag.window.ref.frame.style.opacity = 1.0;
                 Desktop.on(Desktop.drag.window.ref.frame,"mousedown", Desktop.window.drag.start);
-                Desktop.ref.onmousemove = null;
-                Desktop.ref.onmouseup = null;
+                Desktop.win.ref.onmousemove = null;
+                Desktop.win.ref.onmouseup = null;
                 var win = Desktop.drag.window.ref.frame; //shorthand
                 if ((Desktop.drag.window.start.X !== win.offsetLeft) || (Desktop.drag.window.start.Y !== win.offsetTop) || (Desktop.drag.window.start.W !== win.offsetWidth) || (Desktop.drag.window.start.H !== win.offsetHeight))  {
                     //(new WindowAttributeClass(Desktop.drag.window.ref.frame.id,win.offsetLeft,win.offsetTop,win.offsetWidth,win.offsetHeight)).save();
