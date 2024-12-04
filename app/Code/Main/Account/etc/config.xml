@@ -63,6 +63,8 @@
             <mongodb>account</mongodb>
             <entities>
                 <registrations polyglot="Y"/>
+                <users/>
+                <user_identification polyglot="Y" alias="userinfo"/>
             </entities>
         </orm>
         <events>

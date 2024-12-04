@@ -18,6 +18,7 @@ function EasyAjax(targetUrl) {
     this.async		= true;
     this.isIE		= false;
     this.isMoz		= false;
+    this._cacheBuster   = false;
     this.vars           = { };
     this.queryString    = '';
     if (navigator.appName.indexOf("Microsoft") >= 0) {
@@ -55,6 +56,13 @@ function EasyAjax(targetUrl) {
             return this;
         }
         return this._contentType;
+    }
+    this.cacheBuster= (bustCache) => {
+        if (bustCache) {
+            this._cacheBuster = bustCache;
+            return this;
+        }
+        return this._cacheBuster;
     }
     return this;
 }
@@ -174,10 +182,11 @@ EasyAjax.prototype.setAsync = function(async) {
 EasyAjax.prototype.get = function(async) {
     if (this.targetUrl) {
         async = (async === false) ? false : true;
-        var fullGetUrl = this.targetUrl + (this.targetUrl.indexOf("?") >= 0 ? "&" : "?") + this.queryString + "&cachebust=" + new Date().getTime();
+        var fullGetUrl = this.targetUrl + (this.targetUrl.indexOf("?") >= 0 ? "&" : "?") + this.queryString + ((this.cacheBuster()) ? "&cachebust=" + new Date().getTime() : '');
         this.xmlHttp.open("GET", fullGetUrl, async);
-        this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest')
-        this.xmlHttp.send(null);
+        this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
+        this.xmlHttp.setRequestHeader("Content-type", this.contentType());
+        this.xmlHttp.send(this.queryString);
         if (!this.async && (this.callbackFunction.length)) {
             if ((!this.isIE) && (!this.completed))	{
                 for (var i=0; i<this.callbackFunction.length; i++)
@@ -220,7 +229,7 @@ EasyAjax.prototype.put = function(async) {
         }
         this.xmlHttp.send(this.formData);
     } else {
-        this.xmlHttp.send(JSON.stringify(this.vars));
+        this.xmlHttp.send(JSON.stringify(this.queryString));
     }
     return this;
 };

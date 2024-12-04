@@ -702,7 +702,6 @@ var Functions = {
         Desktop.win = {
             "ref": ((ParadigmConfig.desktop.windows) ? $E(ParadigmConfig.desktop.windows) : Desktop.ref)
         }
-        console.log(Desktop.win);
         Desktop.elements = {
             "apps": [],
             "windows": []

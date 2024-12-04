@@ -11,23 +11,25 @@
         }
     },
     "entities": {
-        "namespace_1": {
-            "entity_1": {
+        "account": {
+            "users": {
                 "authenticated" : {
                     "read": true,
                     "write": false
                 },
                 "public": {
-                    "*": false
+                    "read": false,
+                    "write": false
                 }
             },
-            "entity_2": {
+            "user_identification": {
                 "authenticated" : {
                     "read": true,
                     "write": false
                 },
                 "public": {
-                    "*": false
+                    "read": false,
+                    "write": false
                 }
             }            
         },
@@ -38,7 +40,8 @@
                     "write": false
                 },
                 "public": {
-                    "*": false
+                    "read": false,
+                    "write": false
                 }
             }
         }

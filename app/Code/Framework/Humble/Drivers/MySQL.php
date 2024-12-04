@@ -18,10 +18,11 @@ namespace Code\Framework\Humble\Drivers;
 class MySQL extends ORM implements ORMEngine  {
 
     private $_dbref         = NULL;
-    private $_state	    = NULL;
-    private $_prep	    = NULL;
+    private $_state         = NULL;
+    private $_prep          = NULL;
     private $_connected     = true;
     private $_environment   = null;
+    private $_rowsAffected  = 0;
 
     /**
      * Loads the environment information, such as userid and password
@@ -81,6 +82,14 @@ class MySQL extends ORM implements ORMEngine  {
         return $this;
     }
 
+    public function _rowsAffected($rows=null) {
+        if ($rows===null) {
+            return $this->_rowsAffected;
+        }
+        $this->_rowsAffected = $rows;
+        return $this;
+    }
+    
     /**
      * Executes a raw SQL query that is passed in
      *
@@ -144,6 +153,10 @@ class MySQL extends ORM implements ORMEngine  {
                         print("\n");
                     }                    
                 }
+            } else {
+                $rs = $this->_dbref->query('SELECT ROW_COUNT() as ROWS_AFFECTED');
+                $row = $rs->fetch_assoc();
+                $this->_rowsAffected($row['ROWS_AFFECTED']);
             }
         } else {
             $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";

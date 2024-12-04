@@ -54,6 +54,7 @@ class Unity
     protected $_json          = false;
     protected $_exclude       = false;
     protected $_bulk          = false;
+    protected $_rowsAffected  = 0;
     public    $_lastResult    = [];
 
     /**
@@ -236,6 +237,20 @@ SQL;
     }
 
     /**
+     * Stores the rows affected from delete and update actions
+     * 
+     * @param int $rows
+     * @return $this
+     */
+    public function rowsAffected($rows=null) {
+        if ($rows===null) {
+            return $this->_rowsAffected;
+        }
+        $this->_rowsAffected = $rows;
+        return $this;
+    }
+    
+    /**
      * Allows you to specify the name of a field to join on when the field we are going to use to join a MySQL result with MongoDB is not the default "id"
      *
      * @param string $field
@@ -300,7 +315,6 @@ SQL;
                 if ($module = \Humble::module($namespace)) {
                     if (file_exists($resource = 'Code/'.$module['package'].'/'.$module['resources_sql'].'/'.(str_replace('.sql','',$resource).'.sql'))) {
                         $query = $this->parseResource(explode("\n",file_get_contents($resource)));
-                        print('<pre>'.$query.'</pre>');
                         return $this->query($query);
                     }
                 }
@@ -891,6 +905,7 @@ SQL;
 SQL;
         $this->_db->query($query);
         $insertId = $this->_db->getInsertId();
+        $this->rowsAffected($this->_db->_rowsAffected());
         if (!$insertId && !$this->getId()) {
             $d = $this->load(true);
             if (isset($d['id'])) {
@@ -922,41 +937,6 @@ SQL;
             $mdb->save();
         }
         return (($insertId) ? $insertId : $this->getId());
-    }
-
-    /**
-     * Don't use add anymore, just use "save()"... they basically do the same thing
-     * 
-     * @return int
-     */
-    public function add()  {
-        $fields     = $this->_fields;
-        foreach ($this->_autoinc as $var => $autoinc) {
-            $method = 'get'.ucfirst($var);
-            if ($this->$method()) {
-                $fields[$var] = true;
-            } else if ($autoinc != 'Y') {
-                $fields[$var] = true;
-            }
-        }
-        $fieldlist  = '`'.$this->implode_keys('`,`',$fields).'`';
-        $values     = [];
-        foreach ($fields as $key => $value) {
-            $method = 'get'.ucfirst($key);
-            $values[] = addslashes($this->$method());
-        }
-        $values = "'".implode("','",$values)."'";
-        $table  = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
-        $query  = <<<SQL
-            insert into {$table}
-                ({$fieldlist})
-            values
-                ({$values})
-SQL;
-        $this->_db->query($query);
-        //polyglot action done here
-        //@TODO: Got to refactor this like "Save" so that it takes into account polyglot tables
-        return $this->_db->getInsertId();
     }
 
     /**
@@ -1137,11 +1117,13 @@ SQL;
         }
         if ($conditionFound) {
             $this->_db->query($query);
+            $this->rowsAffected($this->_db->_rowsAffected());
             //POLYGLOT check here
             //@TODO: Implement a check to see if this is a polyglot table, and remove corresponding row in MongoDB
         } else {
             Log::console('Ignoring delete ['.$query.'] since no condition for the delete was found');
         }
+        return $this->rowsAffected();
     }
 
     /**
