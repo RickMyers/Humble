@@ -95,14 +95,14 @@ class System extends CLI
         print("CHANGING VERSION"."\n");
         $framework  = (Environment::namespace()==='humble');
         $data       = \Environment::applicationXML();
-        $v          = ($framework) ? explode('.',(string)$data->version->framework) : explode('.',(string)$data->version->application);
+        $v          = ($framework) ? explode('.',(string)$data->version->framework) : explode('.',(string)$data->version->app);
         for ($i=count($v)-1; $i>=0; $i-=1) {                                    //This is one of those ridiculously evil things in computer science
             $v[$i] = (int)$v[$i]+$next;
             if ($next  = ($v[$i]===10)) {
                 $v[$i] = 0;
             }
         }
-        $version = ($framework) ? $data->version->framework = (string)implode('.',$v) : $data->version->application = (string)implode('.',$v);
+        $version = ($framework) ? $data->version->framework = (string)implode('.',$v) : $data->version->app = (string)implode('.',$v);
         file_put_contents(\Environment::applicationXMLLocation(),$data->asXML());
         return $version;
     }

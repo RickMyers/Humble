@@ -18,7 +18,8 @@
                     "write": false
                 },
                 "public": {
-                    "*": false
+                    "read": false,
+                    "write": false
                 }
             },
             "entity_2": {
@@ -27,8 +28,8 @@
                     "write": false
                 },
                 "public": {
-                    "*": false
-                }
+                    "read": false,
+                    "write": false                }
             }            
         },
         "namespace": {
@@ -38,8 +39,8 @@
                     "write": false
                 },
                 "public": {
-                    "*": false
-                }
+                    "read": false,
+                    "write": false                }
             }
         }
     }

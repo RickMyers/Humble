@@ -373,8 +373,8 @@ switch ($method) {
             'factory_name'  => $project->factory_name
         ];
 
-//        $context = stream_context_create(['http'=>['method'=>'POST','header'=>'Content-type: application/json' ,'content'=>json_encode($registration_data)]]);
-//        $response = file_get_contents($project->framework_url.'/account/registration/activation',false,$context);    
+        $context = stream_context_create(['http'=>['method'=>'POST','header'=>'Content-type: application/json' ,'content'=>json_encode($registration_data)]]);
+        $response = file_get_contents($project->framework_url.'/account/registration/activation',false,$context);    
         
         @mkdir('../Settings/'.$project->namespace,0775,true);
         @mkdir('images',0775,true);
@@ -384,7 +384,6 @@ switch ($method) {
         require_once('Humble.php');
         $util            = \Environment::getInstaller();
         $modules         = \Environment::getRequiredModuleConfigurations();
-        $project         = \Environment::getProject();
         $percent         = 100/((count($modules)+1)*2);                         //2 steps per module, plus we will be creating a new module in this process
         postUpdate('Starting','Building Application Module',(++$step*$percent));
         print('<pre>');
