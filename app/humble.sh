@@ -1,2 +1,3 @@
 #!/bin/bash
-php CLI.php "$@" 
+
+php CLI.php "$@"

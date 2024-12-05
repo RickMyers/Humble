@@ -453,6 +453,7 @@ switch ($method) {
         shell_exec('dos2unix humble.sh');
         @copy('Humble.bat',strtolower((string)$project->factory_name).'.bat');
         @copy('humble.sh',strtolower((string)$project->factory_name).'.sh');
+        chmod('humble.sh',0775);
         $x = (file_exists('../Humble.php')) ? @unlink('../Humble.php') : '';
         $x = (file_exists('../humble.bat')) ? @unlink('../humble.bat') : '';
         $x = (file_exists('../humble.sh'))  ? @unlink('../humble.sh') : '';
