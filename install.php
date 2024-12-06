@@ -450,17 +450,15 @@ switch ($method) {
         session_start();
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");
-        `dos2unix humble.sh`;
-        
         $linux_sh = strtolower((string)$project->factory_name).'.sh';
         @copy('Humble.bat',strtolower((string)$project->factory_name).'.bat');
-        @copy('humble.sh',$linux_sh);
+        file_put_contents($linux_sh,str_replace("\r","",file_get_contents('humble.sh')));
         chmod($linux_sh,0775);
         $x = (file_exists('../Humble.php')) ? @unlink('../Humble.php') : '';
         $x = (file_exists('../humble.bat')) ? @unlink('../humble.bat') : '';
         $x = (file_exists('../humble.sh'))  ? @unlink('../humble.sh') : '';
         $x = (file_exists('humble.sh'))     ? @unlink('humble.sh') : '';
-        print(shell_exec('sed -e s/"^M"//g *.sh'));
+        
         if (file_exists('../.htaccess')) {
             $parts  = explode('/',$project->landing_page);
             $srch   = ['&&NAMESPACE&&','&&PACKAGE&&','&&MODULE&&','&&CONTROLLER&&','&&PAGE&&'];
