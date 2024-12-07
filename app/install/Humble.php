@@ -341,14 +341,14 @@ FACTORY;
     //$x = (file_exists('Humble.php')) ? @unlink('Humble.php') : '';
     print("\n\n");
     print('#######################################################################################################################'."\n");
-    print("# The framework download is complete, please go to ".$project->project_url."/install.php to install your project\n");
+    print("# The framework download is complete, please go to ".$project->project_url."/install to install your project\n");
     print('#######################################################################################################################'."\n");
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        exec('start '.$project->project_url.'/install.php');
+        exec('start '.$project->project_url.'/install');
     } else  {
         @exec('chown -R www-data:root /var/www');
         @exec('chmod -R 0775 /var/www');        
-        exec('xdg-open '.$project->project_url.'/install.php');
+        exec('xdg-open '.$project->project_url.'/install');
     }
 }
 /* ---------------------------------------------------------------------------------- */
@@ -373,7 +373,7 @@ function restoreProject() {
     	if (!file_exists($name)) {
             $parts = explode('/',$name);
             if (count($parts)>1) {
-		@mkdir(implode('/',array_slice($parts,0,count($parts)-1)),0775,true);
+                @mkdir(implode('/',array_slice($parts,0,count($parts)-1)),0775,true);
             }
             file_put_contents($name,$entry);
 	} else {
@@ -398,10 +398,14 @@ function restoreProject() {
     }
     @unlink('Humble.php');
     @unlink('tmp/'.$distro);
+    print("\n\n");
+    print('#######################################################################################################################'."\n");
+    print("# The framework restore is complete, please go to ".$project->project_url."/install to install your project\n");
+    print('#######################################################################################################################'."\n");
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        exec('start '.$project->project_url.'/install.php');
+        exec('start '.$project->project_url.'/install');
     } else  {
-        exec('xdg-open '.$project->project_url.'/install.php');
+        exec('xdg-open '.$project->project_url.'/install');
     }
 }
 //------------------------------------------------------------------------------
