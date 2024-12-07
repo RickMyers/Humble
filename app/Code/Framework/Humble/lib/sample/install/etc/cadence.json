@@ -1,5 +1,6 @@
 {
     "note":     "a period of 20 and multiple of 2 would have this section run at a maximum of every 40 seconds.",
+    "help":     "Go to https://humbleprogramming.com/pages/Cadence.htmls for information on how to use the poll/watch system",
     "period":   5,
     "log": {
         "location": "../../logs/cadence.log",
@@ -7,11 +8,13 @@
     },
     "handlers": {
         "application": {
-            "callbacks": {
-                "comment": "Put the name of a function callback, which should reside in '/includes/Callbacks.php', and set to true to get it to be executed",
-                "yourHandlerHere": false
-            },
-            "multiple": 4
+            "custom" : {
+                "callbacks": {
+                    "yourHandlerHere": false
+
+                    },
+                    "multiple": 4
+            }
         }
     }
 }

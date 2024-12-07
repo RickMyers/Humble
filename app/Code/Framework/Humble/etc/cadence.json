@@ -1,10 +1,4 @@
 {
-    "note":     "a period of 20 and multiple of 2 would have this section run at a maximum of every 40 seconds.",
-    "period":   5,
-    "log": {
-        "location": "../../logs/cadence.log",
-        "max_size": "100K"
-    },
     "handlers": {
         "framework": {
             "system": {
