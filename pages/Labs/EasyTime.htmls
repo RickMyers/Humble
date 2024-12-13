@@ -1,0 +1,86 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<style type="text/css">
+    .demo-calendar {
+        font-family: sans-serif; text-align: center; font-size: 1.5em; background-color: ghostwhite; color: #333; border: 1px solid #333; font-weight: normal
+    }
+    .demo-calendar-monthname {
+        font-family: monospace; font-size: 1.6em; font-weight: bolder;
+    }
+    .demo-calendar-weekday {
+        background-color: #f0f0f0; border-radius: 4px;  padding: 8px 16px; cursor: pointer
+    }
+    .demo-calendar-weekend {
+        background-color: #dfdfdf; border-radius: 4px;  padding: 8px 24px; cursor: pointer
+    }
+    .demo-calendar-daynames {
+        font-family: monospace; font-weight: bolder; font-size: 1.55em
+    }
+    .demo-calendar-arrows {
+        height: 28px; cursor: pointer; margin-top: 2px; display: inline-block
+    }
+    .landing-clock {
+        font-family: sans-serif; font-size: 1.6em; font-weight: normal; float: right; color: white; padding: 10px 30px; width: 200px; border: 1px solid #888; border-radius: 10px; letter-spacing: 2px; background-color: #333; margin-right: 150px
+    }    
+</style>
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Labs/EasyAjax.htmls" title="EasyAjax..." >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Calendar &amp; Clock</div>
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    I worked for 5 years as a technology trainer, and to be honest it was probably the best job I ever had, even with 50% travel worked in.  I taught most IBM technologies, as well as 
+    "Advanced Web Design", and these are two of the labs from the JavaScript course I taught.  The students would have to create their own calendar and digital clock, with the calendar
+    getting the students used to the wierdness of JavaScript date handling, and the digital clock exposing the students to using and clearing system timeouts.  I manage to include these two libraries
+    in most of my projects in one form or another, as they really are quite useful
+</div><br /><br />
+<div id="easy_calendar" style='float: left'>
+</div>
+<div id='easy_clock' class='landing-clock'>
+</div>
+<div style='clear: both'><br /></div>
+<div>
+    <b>Calendar Invocation</b>:
+    <div class='humble-code-like' style='text-align: left; white-space: pre'>var now = new Date();  
+var y = new EasyCalendar('id_to_put_calendar');
+y.setWeekday('weekdayClass').setWeekend('weekendClass').setDayNames('daynamesClass').setMonthName('monthnameClass');
+y.setArrows('previousMonthImage','nextMonthImage','arrowsClass');
+y.build().set(now.getMonth(),now.getFullYear());
+</div>
+    <br />
+</div>
+    <b>Clock Invocation</b>:
+    <div class='humble-code-like' style='text-align: left; white-space: pre'>
+var now = new Date();  
+new EasyClock('easy_clock',now.getHours(),now.getMinutes());
+    </div>
+
+    <br />
+    <b>Calendar Source Code</b>
+<div widget="codeBox" widgetScroll="12%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Paradigm/web/js/EasyCalendar.js" class="humble-code"></div>
+
+
+  
+<br />
+<b>Clock Source Code</b>
+<div widget="codeBox" widgetScroll="50%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Paradigm/web/js/EasyClock.js" class="humble-code"></div>
+
+</div>
+<script>
+    (()=> {
+        var now = new Date();
+        var y = new EasyCalendar('easy_calendar');
+        y.setWeekday('demo-calendar demo-calendar-weekday').setWeekend('demo-calendar demo-calendar-weekend').setDayNames('demo-calendar demo-calendar-daynames').setMonthName('demo-calendar demo-calendar-monthname');
+        y.setArrows('/images/paradigm/previous.png','/images/paradigm/next.png','demo-calendar-arrows');
+        y.build().set(now.getMonth(),now.getFullYear());
+        new EasyClock('easy_clock',now.getHours(),now.getMinutes());
+    })();
+    
+</script>
+<!--#include virtual="/pages/includes/footer.html" -->
+

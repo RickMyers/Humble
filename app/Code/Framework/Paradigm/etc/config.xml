@@ -128,7 +128,13 @@
                 <css>
                     <source weight="10">Paradigm/web/css/Desktop.css</source>
                 </css>
-            </desktop>            
+            </desktop>
+            <widgets>
+                <js>
+                    <source weight="12">Paradigm/web/js/EasyCalendar.js</source>
+                    <source weight="12">Paradigm/web/js/EasyClock.js</source>
+                </js>
+            </widgets>          
             <engine>
                 <js>
                     <source weight="5">Paradigm/web/js/Paradigm.config.js</source>

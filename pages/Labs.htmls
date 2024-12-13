@@ -57,7 +57,11 @@
     <div class="lab-item">
         &bull; <a href="Labs/EasyTabs.htmls">EasyTabs</a> - Who doesn't like tabs?  A simple and powerful library to add tabs and dynamic features to any page
     </div>
-
+    
+    <div class="lab-item">
+        &bull; <a href="Labs/EasyTime.htmls">Calendar &amp; Clock</a> - Time related functionality, they were separate labs in a course I used to teach
+    </div>
+    
     <div class="lab-item">
         &bull; <a href="Labs/Carousel.htmls">Carousels</a> - A "different" take on carousel style photo/video management
     </div>
