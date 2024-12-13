@@ -4,7 +4,16 @@
     .slideClass             { display:inherit;  border: 1px solid #777; background-position: 0px -4px; background-image: url(/pages/images/hollow_star.gif); background-repeat: repeat-x;border-radius: 6px;  }
     .labelClass             { font-family: arial; font-size: 10pt; }
     .stopClass              { font-family: arial; padding-top: 16px; font-size: 22pt; font-weight: bold }
-    .rangeClass             { display: inherit; border: 1px solid #777; background-position: 0px -4px; background-image: url(/pages/images/gold_star.gif); background-repeat: repeat-x; border-radius: 6px;  }    
+    .rangeClass             { display: inherit; border: 1px solid #777; background-position: 0px -4px; background-image: url(/pages/images/gold_star.gif); background-repeat: repeat-x; border-radius: 6px;  } 
+    .slide2Class            { display:inherit;  border: 1px solid #777;  border-radius: 6px; background-color: red }
+    .label2Class            { font-family: arial; font-size: 10pt; }
+    .stop2Class             { font-family: arial; padding-top: 16px; font-size: 22pt; font-weight: bold }
+    .range2Class            { display: inherit; border: 1px solid #777; border-radius: 6px;  }     
+    .slide3Class            { display:inherit;  border: 1px solid #777;  border-radius: 6px }
+    .label3Class            { font-family: arial; font-size: 10pt; }
+    .stop3Class             { font-family: arial; padding-top: 16px; background-color: red; font-size: 22pt; font-weight: bold }
+    .range3Class            { display: inherit; border: 1px solid #777; border-radius: 6px;  }      
+    .arrowClass             { height: 32px }
 </style>
 <div id="hiddenSizingLayer" style="position: absolute; top: -200px; left: -200px"></div>
 <table style="width: 80%; margin-left: auto; margin-right: auto">
@@ -18,34 +27,94 @@
 <div class='humble-topic-header'>Sliders!</div>
 <div class=''>
     <b>Reason for Creation</b>:<br /><br />
-    
+    Who doesn't like a good slider? Especially one that can handle multiple ranges on one slider.  This one goes all the way back to 2004, and at the time, if you wanted this type of component, you had to use libraries like 
+    "The JS Dojo", which was more than 500,000 lines of JavaScript. I wrote this flexible control because I've always tried to avoid large, non-modular, libraries.  Eventually the Dojo did embrace modularity, but that's a
+    different story.  For most of my slider style controls, I continue to use this library today, and occasionally update this library
 </div><br /><br />
 <div>
     <b>Invocation</b>:
 </div>
 <pre class='humble-code-like' style='text-align: left'>
-	var slider = new Slider("whiteboardReviewSlider",122,23,"reviewSlider");
-	slider.setSlideClass("slideClass").setLabelClass("labelClass").setStopClass("stopClass").setStopText("");
-	slider.setSlideRanges("true").setRangeDirection("left").setRangeClass("rangeClass").setMaxScale(5);
-	slider.setOnSlide(function () { });
-        slider.setInclusive(true).setSnap(true).setScale(0,5,10);
-	slider.addPointer("wr_pointer","/pages/images/sliders/pointer2.gif");
-	slider.render(); 
-
+    var slider = new Slider("whiteboardReviewSlider",122,23,"reviewSlider");
+    slider.setSlideClass("slideClass").setLabelClass("labelClass").setStopClass("stopClass").setStopText("");
+    slider.setSlideRanges("true").setRangeDirection("left").setRangeClass("rangeClass").setMaxScale(5);
+    slider.setOnSlide(function (slider, range, fromLeft) {   });
+    slider.setInclusive(true).setSnap(true).setScale(0,5,10);
+    slider.addPointer("wr_pointer","/pages/images/sliders/pointer2.gif");
+    slider.render(); 
+    
 </pre>
 <br /><br />
 <div>
     <b>Sample</b>:
 </div>
-<div id="whiteboardReviewSlider"></div>
+<div id="whiteboardReviewSlider" style="display: inline-block; margin-right: 8px"></div><div id="reviewScore" style="display: inline-block; vertical-align: top; font-weight: bold">0.0</div>
+<div style='margin-bottom: 20px; font-family: monospace; font-weight: bold'>Rating Slider</div>
+
+<div id="multipleRanges" style='border-radius: 6px'></div>
+<div>
+    <div style='display: inline-block; width: 16%'>
+        <span style='color: green'>Good</span>:  0 to <span id='greenThreshold'></span>
+    </div>
+    <div style='display: inline-block; width: 16%'>
+        <span style='color: yellow'>Warning</span>: <span id='green2Threshold'></span> to <span id='yellowThreshold'></span>
+    </div>
+    <div style='display: inline-block; width: 16%'>
+        <span style='color: red'>Danger</span>: <span id='yellow2Threshold'></span> to 100
+    </div>    
+</div>
+<div style='margin-bottom: 20px; font-family: monospace; font-weight: bold'>Multiple Ranges</div>
+
+<div id='zoomSlider' style='height: 28px; border: 1px solid rgba(187,187,187,.9); width: 300px'></div>
+<br /><br />
 <script>
-	var slider = new Slider("whiteboardReviewSlider",122,23,"reviewSlider");
-	slider.setSlideClass("slideClass").setLabelClass("labelClass").setStopClass("stopClass").setStopText("");
-	slider.setSlideRanges("true").setRangeDirection("left").setRangeClass("rangeClass").setMaxScale(5);
-	slider.setOnSlide(function () { });
-        slider.setInclusive(true).setSnap(true).setScale(0,5,10);
-	slider.addPointer("wr_pointer","/pages/images/sliders/pointer2.gif");
-	slider.render();    
+    (()=>{
+        sliderControl.init();
+	var slider1 = new Slider("whiteboardReviewSlider",122,23,"reviewSlider");
+	slider1.setSlideClass("slideClass").setLabelClass("labelClass").setStopClass("stopClass").setStopText("");
+	slider1.setSlideRanges("true").setRangeDirection("left").setRangeClass("rangeClass").setMaxScale(5);
+	slider1.setOnSlide(function (slider,slide,fromleft) { $E("reviewScore").innerHTML =  (Math.floor((5 * (Sliders[slide.id].getPercent()/100))* 10)/10) + "";  });
+        slider1.setInclusive(true).setSnap(false).setScale(0,5,10);
+	slider1.addPointer("wr_pointer","/pages/images/sliders/pointer2.gif");
+	slider1.render();            
+	var slider2 = new Slider("multipleRanges",400,23,"rangesSlider");
+	slider2.setSlideClass("slide2Class").setLabelClass("label2Class").setStopClass("stop2Class").setStopText("");
+	slider2.setSlideRanges("true").setRangeDirection("left").setRangeClass("range2Class").setMaxScale(100);
+        var f = (slider,range,fromLeft) => {
+            var val = Sliders[range.id].getValue();
+            switch (slider.id) {
+                case 'green_pointer' :
+                    $('#greenThreshold').html(val);
+                    $('#green2Threshold').html(val);
+                    break;
+                case 'yellow_pointer' :
+                    $('#green2Threshold').html($('#greenThreshold').html());
+                    $('#yellowThreshold').html(val);
+                    $('#yellow2Threshold').html(val);
+                    break;
+                case 'red_pointer' :
+                    $('#yellow2Threshold').html($('#yellowThreshold').html());
+                    break;                
+                default:
+                    break;
+            }
+        }
+	slider2.setOnSlide(f);
+        slider2.setInclusive(true).setSnap(false).setScale(0,100,10);
+//	slider2.addPointer("red_pointer","/pages/images/sliders/red_pointer.png",'red','arrowClass');
+        slider2.addPointer("yellow_pointer","/pages/images/sliders/yellow_pointer.png",'yellow','arrowClass');
+        slider2.addPointer("green_pointer","/pages/images/sliders/green_pointer.png",'green','arrowClass');
+	slider2.render();    
+      //  slider2.setPointer('red_pointer',100);
+        slider2.setPointer('yellow_pointer',85);
+        slider2.setPointer('green_pointer',75);
+        
+	var slider3 = new Slider("zoomSlider",300,23,"zoomSlider");
+	slider3.setSlideClass("slide3lass").setLabelClass("label3lass").setStopClass("stop3lass").setAxis(0,100,100,25);
+        slider3.setInclusive(true).setSnap(true);
+	slider3.addPointer("zoom_pointer","/pages/images/sliders/slider.png",'arrowClass');
+	slider3.render();             
+    })();
 </script>
 
 <br /><br />

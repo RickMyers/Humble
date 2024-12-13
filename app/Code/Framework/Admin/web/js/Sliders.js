@@ -42,14 +42,16 @@ function Slider(divId,len,hgt,optId) {
     this.slideClass         = "";
     this.stopText           = "*";
     this.stopImage          = "";
-	this.hash				= false;
-	this.slider 			= null;
-	this.slide				= null;
+    this.hash               = false;
+    this.slider             = null;
+    this.slide              = null;
     this.saveLocation       = null;
     this.restoreFlag        = false;
     this.calcIntervalLength = function () {
         var inclusiveOffset = (this.getInclusive()) ? -1 : 1;
         intervalLength = Math.round(this.getSliderWidth()/(this.stops.length+inclusiveOffset));
+        console.log(this.getSliderWidth());
+        console.log(intervalLength);
         return intervalLength;
     }
     this.setAmount            = function (amt) {
@@ -84,28 +86,27 @@ function Slider(divId,len,hgt,optId) {
         }
         return me;
     }
-    this.getInterval        = function ()  { return intervalLength;   }
-    this.getAmount			= function ()  { return amount;			}
-    this.getMaxScale		= function ()  { return maxScale;			}
-    this.getPercent			= function ()  {
+    this.getInterval    = function ()  { return intervalLength;   }
+    this.getAmount	= function ()  { return amount;			}
+    this.getMaxScale	= function ()  { return maxScale;			}
+    this.getPercent	= function ()  {
         return Math.round((amount/this.sliderWidth)*100);
     }
     this.getSliderWidth     = function () {
+        console.log(this.sliderWidth);
         return (parseInt(this.sliderWidth) == this.sliderWidth) ? this.sliderWidth : this.ref.offsetWidth;
     }
     this.getValue            = function () {
-		var ret = '';
-		if (this.hash) {
-			for (var i = 0; i < this.stops.length; i++) {
-				ret = (this.getAmount() == this.stops[i].location) ? this.stops[i].returns : ret;
+        var ret = '';
+        if (this.hash) {
+            for (var i = 0; i < this.stops.length; i++) {
+                ret = (this.getAmount() == this.stops[i].location) ? this.stops[i].returns : ret;
             }
-        } else{
-			ret = Math.round((amount / this.getSliderWidth()) * maxScale);
+        } else {
+            ret = Math.round((amount / this.getSliderWidth()) * maxScale);
         }
         return ret;
     }
-
-
     this.setInclusive       = function (bool) { inclusive = bool; return me;    }
     this.getInclusive       = function ()     { return inclusive;             }
     this.onSlideStart       = null;
@@ -166,8 +167,8 @@ Slider.prototype.setOnSlideStop    = function (handler) {
     return this;
 }
 Slider.prototype.addStop = Slider.prototype.add    = function (stopId,txt,retVal) {
-	if (retVal) {
-		this.hash = true;
+    if (retVal) {
+	this.hash = true;
     }
     this.stops[this.stops.length] = {
                                         id:         stopId,
@@ -183,15 +184,18 @@ Slider.prototype.setPointerTitle = function (pointerId,title) {
             $E(this.pointers[i].id).title = title;
         }
     }
+    return this;
 }
 /* Will restore the slider to the previous state before sliding began */
 Slider.prototype.restore = function () {
     this.restoreFlag = true;
     this.setSliderTo(this.saveLocation,false);
+    return this;
 }
 /* Saves the state of a slider before the sliding begins */
 Slider.prototype.save = function () {
     this.saveLocation = this.getAmount();
+    return this;
 }
 Slider.prototype.setPointer = function (whichOne,amount,triggerEvent) {
     var where = amount/100;  //if percent
@@ -217,22 +221,22 @@ Slider.prototype.setPointer = function (whichOne,amount,triggerEvent) {
             this.onSlideStop($E(whichOne), $E(this.slideId), where);
         }
     }
-
+    return this;
 }
 Slider.prototype.setSliderTo    = function (offset,triggerEvent) {
-	var maxScale = (this.getMaxScale()) ? this.getMaxScale() : 100;
+    var maxScale = (this.getMaxScale()) ? this.getMaxScale() : 100;
     var perc = Math.round( ((offset/this.getSliderWidth()) * maxScale));
-
     this.setPointer(this.pointers[0].id,perc,triggerEvent);
-
+    return this;
 }
 Slider.prototype.setSliderToValue	= function (val,triggerEvent) {
-	var setTo = 0;
-	if (typeof(val)=="string")
-		for (var i=0; i<this.stops.length; i++) {
-			setTo = (this.stops[i].returns == val) ? this.stops[i].location : setTo;
-        }
-	this.setSliderTo(setTo,triggerEvent);
+    var setTo = 0;
+    if (typeof(val)=="string")
+            for (var i=0; i<this.stops.length; i++) {
+                    setTo = (this.stops[i].returns == val) ? this.stops[i].location : setTo;
+    }
+    this.setSliderTo(setTo,triggerEvent);
+    return this;
 }
 Slider.prototype.addPointer    = function (pointerId,image,rangeColor,style) {
     this.pointers[this.pointers.length] =     {
@@ -304,16 +308,16 @@ Slider.prototype.render    = function () {
 }
 //-------------------------------------------------------------------------------------------------
 var sliderControl = {
-    sizer:        null,
-    pageX:        0,
-    pageY:        0,
-    clickX:        0,
-    clickY:        0,
-    active:        null,
-    slide:        null,
-    splitDif:    null,
+    sizer:      null,
+    pageX:      0,
+    pageY:      0,
+    clickX:     0,
+    clickY:     0,
+    active:     null,
+    slide:      null,
+    splitDif:   null,
     zIndex:     0,
-    range:        null,
+    range:      null,
     activeRange: null,
     direction:  null,
     init:        function () {
@@ -335,7 +339,7 @@ var sliderControl = {
         if (!range) {
             return;
         }
-        var slide  = sliderControl.slide;
+        var slide    = sliderControl.slide;
         var splitDif = sliderControl.splitDif;
         var dir      = sliderControl.direction;
         var fromLeft = +slider.offsetLeft + splitDif;
@@ -422,9 +426,7 @@ var sliderControl = {
             var fromLeft = +sliderControl.active.offsetLeft + sliderControl.splitDif;
             var delta = false;
             if (sliderControl.widget.getSnap()) {
-                console.log('snapping');
                 delta = sliderControl.active.style.left = (Math.round((sliderControl.active.offsetLeft+sliderControl.splitDif)/sliderControl.widget.getInterval()) * sliderControl.widget.getInterval() - sliderControl.splitDif)+"px";
-                console.log(delta);
                 fromLeft = +sliderControl.active.offsetLeft + sliderControl.splitDif;
             }
             sliderControl.widget.setAmount(fromLeft);
@@ -463,5 +465,6 @@ var sliderControl = {
         var slideId = (evt.target) ? evt.target.id : evt.srcElement.id;
         var offset = evt.clientX  - EasyEdits.getAbsoluteX($E(slideId),"BODY");
         Sliders[slideId].setSliderTo(offset);
+        return this;
     }
 }

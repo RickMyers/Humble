@@ -114,6 +114,11 @@
                     <source weight="20">Admin/web/js/tailwindcss.js</source>
                 </js>
             </admin>
+            <widgets>
+                <js>
+                    <source>Admin/web/js/Sliders.js</source>
+                </js>
+            </widgets>
         </web>
     </admin>
 </config>

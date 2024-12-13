@@ -107,7 +107,6 @@
                     <source weight="17">Humble/web/js/Vue3.js</source>
                     <source weight="18">Humble/web/js/htmx.2.0.1.js</source>
                     <source weight="18">Humble/web/js/EasyRTE.js</source>
-                    <source weight="18">Humble/web/js/Carousel.js</source>
                     <!--source weight="18">Humble/web/js/vuerouter.js</source-->
                 </js>
                 <css>
@@ -117,7 +116,7 @@
             <widgets>
                 <js>
                     <source weight="28">Humble/web/js/jquery-ui.1.12.min.js</source>
-                    <source weight="29">Humble/web/js/Sliders.js</source>
+                    <source weight="18">Humble/web/js/Carousel.js</source>                    
                 </js>
                 <css>
                     <source weight="28">Humble/web/css/jquery-ui.1.12.min.css</source>
