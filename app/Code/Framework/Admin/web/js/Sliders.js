@@ -50,8 +50,6 @@ function Slider(divId,len,hgt,optId) {
     this.calcIntervalLength = function () {
         var inclusiveOffset = (this.getInclusive()) ? -1 : 1;
         intervalLength = Math.round(this.getSliderWidth()/(this.stops.length+inclusiveOffset));
-        console.log(this.getSliderWidth());
-        console.log(intervalLength);
         return intervalLength;
     }
     this.setAmount            = function (amt) {
@@ -93,7 +91,6 @@ function Slider(divId,len,hgt,optId) {
         return Math.round((amount/this.sliderWidth)*100);
     }
     this.getSliderWidth     = function () {
-        console.log(this.sliderWidth);
         return (parseInt(this.sliderWidth) == this.sliderWidth) ? this.sliderWidth : this.ref.offsetWidth;
     }
     this.getValue            = function () {
