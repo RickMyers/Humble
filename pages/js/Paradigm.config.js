@@ -6,7 +6,6 @@ var ParadigmConfig = {
         layer: "desktop-container",
         windows: "desktop-window-container",
         apps: true,
-        appurl: '/admin/apps/list',
         default: {
             window: {
                 icon: "/images/paradigm/icons/humble_icon.png",

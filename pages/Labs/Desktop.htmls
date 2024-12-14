@@ -1,5 +1,27 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
+<script type='text/javascript' src="/pages/js/Paradigm.config.js"/>
+        <script type="module">
+            import { Desktop } from '/mjs/paradigm/DesktopModule.js';
+            window.Administration = administration;
+            window.Desktop = Desktop;
+            $(window).ready(Desktop.init);
+            Desktop.minimized.windows.renderer((function () {
+                return function (win) {
+                    if (win) {
+                        Desktop.minimized.windows.list[win.id] = win;
+                    }
+                    var html = '';
+                    for (var win_id in Desktop.minimized.windows.list) {
+                        if (Desktop.minimized.windows.list[win_id].state === 1) {
+                            html += '<img onclick="Desktop.minimized.windows.restore([\''+win_id+'\'])" style="float: left; position: relative; top: -35px; height: 55px; margin: 0px 5px 0px 5px; cursor: pointer" src="/images/paradigm/window.png"  title="'+Desktop.minimized.windows.list[win_id]._title()+'" />';
+                        }
+                    };
+                    $('#minimized_windows_tray').html(html);
+                } 
+            })());
+        </script>   
+        <div id="desktop-container" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px">
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
@@ -9,7 +31,16 @@
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>A Dynamic Desktop</div>
-
-
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    Back in 2005, while I was a technology instructor for one of the biggest companies in the world, I was teaching their Advance Web Topics courses and this is about the time Ajax really began its widespread adoption.
+    The promise of Ajax was that you could move away from the "POST" model and create more "Desktop-Like" applications.  At this time I thought (as did many others), instead of creating a "Desktop-Like" application, why not
+    create a Desktop?  And so the <a href="https://cloud-it.com/home/Rick%20Myers">Cloud-IT.com</a> project was born.  This is an extremely useful library that is relatively easy to integrate into any project.  What it gives
+    you are an icon to window relationship, and the windows have lifecycle hooks, so there are "onOpen", "onClose", "onMinimize", "onMaximize", "onResize", etc... lifecycle hooks to attach handlers (functions) to.  I've found
+    that this makes for a very intuitive user experience, since we are all used to this approach
+</div><br /><br />
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="3%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Paradigm/web/js/Desktop.js" class="humble-code"></div>
 </div>
+        </div>
 <!--#include virtual="/pages/includes/footer.html" -->

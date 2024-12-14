@@ -25,7 +25,7 @@
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Sliders!</div>
-<div class=''>
+<div>
     <b>Reason for Creation</b>:<br /><br />
     Who doesn't like a good slider? Especially one that can handle multiple ranges on one slider.  This one goes all the way back to 2004, and at the time, if you wanted this type of component, you had to use libraries like 
     "The JS Dojo", which was more than 500,000 lines of JavaScript. I wrote this flexible control because I've always tried to avoid large, non-modular, libraries.  Eventually the Dojo did embrace modularity, but that's a

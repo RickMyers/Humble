@@ -709,7 +709,7 @@ var Functions = {
         if (ParadigmConfig.desktop.apps) {
             function fetchApps() {
               return new Promise((resolve) => {
-                  (new EasyAjax('/admin/apps/list')).then(function (response) {
+                  (new EasyAjax(ParadigmConfig.desktop.appurl)).then(function (response) {
                       resolve(response);
                   }).get();
               });
