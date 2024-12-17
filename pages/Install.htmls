@@ -92,18 +92,18 @@ If you do decide to do a local install, you will need to...
 
 <br />
 <ul class="humble-topics">
-    <li>Shared Driver (required)
+    <li>Shared Driver (<u>required</u>)
         <ul class="humble-topics">
             <li> <a href='/app/install/Humble.php'>Humble.php</a></li>
         </ul>
     <li>Windows Installation Helper
         <ul class="humble-topics">
-            <li> <a href='/app/install/humble.bat'>Humble.bat</a></li>
+            <li> <a href='/app/install/humble.bat'>Humble.bat</a> (<i>optional</i>)</li>
         </ul>
     </li>
     <li>Linux Installation Helper
         <ul class="humble-topics">
-            <li> <a href='/app/install/humble.sh'>Humble.sh</a></li>
+            <li> <a href='/app/install/humble.sh'>Humble.sh</a> (<i>optional</i>)</li>
         </ul>
     </li>
 

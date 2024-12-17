@@ -8,7 +8,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 <controller name="apps" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="ON" response="true">
         
-        <action name="list" ouput="JSON">
+        <action name="list" output="JSON">
             <description>Returns a list of available administration apps</description>
             <model namespace="admin" class="apps" id="apps" method="list" wrapper='json_encode' />
         </action>

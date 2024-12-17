@@ -58,6 +58,7 @@
         <quiescing>{$quiescing}</quiescing>     <!-- switch to 1 to being the process of taking the system offline -->
         <installer>{$installer}</installer>     <!-- switch to 0 after installation to prevent accidental execution of the install script -->
         <caching>{$caching}</caching>           <!-- Indicates whether memcached is available to store or retrieve data -->
+        <cli>0</cli>
         <SSO>
             <enabled>{$SSO}</enabled>           <!-- Switch to 0 to use local authentication -->
             <IDP>{$idp}</IDP>

@@ -9,7 +9,11 @@
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Easy Edits - Externalizing your form edits</div>
-
+<div>
+    <b>Reason for Creation</b>:<br /><br />
+    Once upon a time I worked at a startup that was trying to create a document format for the Medical Industry, and it was based on SVG, JavaScript, and JSON.  A "Medical Document Format" (MDF) instead of PDF, and 
+    this was because, at the time, advanced features like signing, hadn't made it to PDF yet.
+</div><br /><br />
 
 </div>
 

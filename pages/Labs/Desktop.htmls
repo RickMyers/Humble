@@ -1,27 +1,27 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
-<script type='text/javascript' src="/pages/js/Paradigm.config.js"/>
-        <script type="module">
-            import { Desktop } from '/mjs/paradigm/DesktopModule.js';
-            window.Administration = administration;
-            window.Desktop = Desktop;
-            $(window).ready(Desktop.init);
-            Desktop.minimized.windows.renderer((function () {
-                return function (win) {
-                    if (win) {
-                        Desktop.minimized.windows.list[win.id] = win;
-                    }
-                    var html = '';
-                    for (var win_id in Desktop.minimized.windows.list) {
-                        if (Desktop.minimized.windows.list[win_id].state === 1) {
-                            html += '<img onclick="Desktop.minimized.windows.restore([\''+win_id+'\'])" style="float: left; position: relative; top: -35px; height: 55px; margin: 0px 5px 0px 5px; cursor: pointer" src="/images/paradigm/window.png"  title="'+Desktop.minimized.windows.list[win_id]._title()+'" />';
-                        }
-                    };
-                    $('#minimized_windows_tray').html(html);
-                } 
-            })());
-        </script>   
-        <div id="desktop-container" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px">
+<link rel="stylesheet" type="text/css" href="/css/desktop" />
+<script type='text/javascript' src="/pages/js/Paradigm.config.js"></script>
+<script type="module">
+    import { Desktop } from '/mjs/paradigm/DesktopModule.js';
+    window.Desktop = Desktop;
+    $(window).ready(Desktop.init);
+    Desktop.minimized.windows.renderer((function () {
+        return function (win) {
+            if (win) {
+                Desktop.minimized.windows.list[win.id] = win;
+            }
+            var html = '';
+            for (var win_id in Desktop.minimized.windows.list) {
+                if (Desktop.minimized.windows.list[win_id].state === 1) {
+                    html += '<img onclick="Desktop.minimized.windows.restore([\''+win_id+'\'])" style="float: left; position: relative; top: -35px; height: 55px; margin: 0px 5px 0px 5px; cursor: pointer" src="/images/paradigm/window.png"  title="'+Desktop.minimized.windows.list[win_id]._title()+'" />';
+                }
+            };
+            $('#minimized_windows_tray').html(html);
+        } 
+    })());
+</script>   
+<div id="desktop-container" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px">
 <table style="width: 80%; margin-left: auto; margin-right: auto">
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>

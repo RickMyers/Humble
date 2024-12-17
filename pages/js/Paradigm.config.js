@@ -3,13 +3,14 @@
  */
 var ParadigmConfig = {
     desktop: {
-        layer: "desktop-container",
-        windows: "desktop-window-container",
+        layer: "humble_labs",
+        windows: "humble_labs",
         apps: true,
+        appurl: '/humble/labs/apps',
         default: {
             window: {
                 icon: "/images/paradigm/icons/humble_icon.png",
-                name: "Admin"
+                name: "Desktop"
             }
         },
         window: {

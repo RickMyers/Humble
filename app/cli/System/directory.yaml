@@ -73,16 +73,6 @@ package :
     parameters:
         required:
         optional:
-#version|ver|v:
-#    description: Displays the version number of the framework or application depending on whether a parameter was passed
-#    usage:
-#        linux:   sudo sh ./humble.sh --version
-#        windows: humble --version
-#    function : version
-#    parameters:
-#        required:
-#        optional: 
-#            app: Will display the application version instead of the framework
 increment|inc|+ : 
     description: Increments the minor version of the framework by 1 rolling over if needed
     usage:

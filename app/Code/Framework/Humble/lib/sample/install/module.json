@@ -26,6 +26,7 @@
             "Entities",
             "RPC",
             "web",
+            "cli",
             "web/js",
             "web/app",
             "web/css",
@@ -47,6 +48,14 @@
             "source": "/lib/sample/module/etc/config.xml",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/config.xml"
         },
+        {
+            "source": "/lib/sample/module/cli/CLI.php",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/cli/&&MODULE&&.php"
+        },
+        {
+            "source": "/lib/sample/module/etc/config.xml",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/config.xml"
+        },                        
         {
             "source": "/lib/sample/module/RPC/mapping.yaml",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/RPC/mapping.yaml"
