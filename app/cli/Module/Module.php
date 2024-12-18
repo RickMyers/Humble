@@ -38,6 +38,20 @@ class Module extends CLI
     }
 
     /**
+     * Toggles the CLI on or off for a specific module
+     */
+    public static function cli() {
+        $args   = self::arguments();
+        $ns     = $args['namespace'];        
+        if ($ns) {
+            $module = \Humble::entity('humble/modules')->setNamespace($ns);
+            $status = $module->load(true);
+            $newval = $status['cli']==='N' ? 'Y' : 'N';
+            $module->setCli($newval)->save();
+            print("\n".'CLI access for '.$ns.' set to '.($newval==='Y' ? 'On' : 'Off' )."\n\n");
+        }
+    }
+    /**
      * 
      */
     public static function uninstall() {

@@ -88,4 +88,14 @@ tailwind :
     parameters:
         required:
             namespace|ns: The module namespace
-        optional:              
+        optional:   
+cli : 
+    description: Toggles the CLI for a particular modules
+    usage:
+        linux:   sudo sh ./humble.sh --cli ns=module_namespace or sudo sh ./humble.sh --cli ns=*
+        windows: humble --cli ns=module_namespace or humble --cli ns=*
+    function : cli
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module to enable
+        optional:    
