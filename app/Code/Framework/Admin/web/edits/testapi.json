@@ -1,0 +1,93 @@
+{
+	"form":
+	{
+		"id":           "simple_api_test_form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+    		{
+			"active":		true,
+			"id": 			"api_payload",
+			"longname":		"API Data",
+			"type":			"textarea",
+			"required":		false,
+			"force":		false,
+                        "style":                ""
+		},
+		{
+			"active":		true,
+			"id": 			"encoding",
+			"longname":		"Payload Encoding",
+			"type":			"select",
+			"required":		true,
+			"force":		true,
+                        "style":                ""
+		},
+		{
+			"active":		true,
+			"id": 			"api_method",
+			"longname":		"Request Method",
+			"type":			"select",
+			"required":		true,
+			"force":		true,
+                        "style":                ""
+		},
+		{
+			"active":		true,
+			"id":			"api_test_submit",
+			"longname":		"API Test Submit",
+			"type":			"button",
+                        "style":                "",
+                        "value":                "",
+                        "onclick":        function () {
+                                if (Edits["test-api"].validate()) {
+                                    let payload = ($("#api_payload").val());
+                                    payload = payload.trim();
+                                    let ao  = new EasyAjax("/api/"+$("#api_uri").val());
+                                    ao.contentType(($("#encoding").val()=="json") ? "application/json" : "application/x-www-form-urlencode" );
+                                    if (!(payload.substr(0,1) == "{") && (payload.indexOf("=")== -1)) {
+                                        let vars = payload.split("\n");
+                                        let parts = ""; let i=0;
+                                        for (i=0; i<vars.length; i++) {
+                                            parts = vars[i].split("=");
+                                            if (parts.length == 2) {
+                                                ao.add(parts[0],parts[1]);
+                                            }
+                                        }
+                                    } else {
+                                        ao.setQueryString(payload.replace("\n",""));
+                                    }
+                                    ao.then((response) => {
+                                       console.log(response);
+                                    });
+                                    switch ($("#api_method").val()) {
+                                        case "get"   : ao.get(); break;
+                                        case "post"  : ao.post(); break;
+                                        case "put"   : ao.put(); break;
+                                        case "delete": ao.delete(); break;
+                                        default: alert("I have no idea how to do that"); break;
+                                    }
+
+                                }
+
+                        }
+		},                
+		{
+			"active":		true,
+			"id":			"api_uri",
+			"longname":		"API URI",
+			"type":			"text",
+                        "style":                "",
+                        "required":             true,
+                        "force":                true
+		}
+	]
+}
+
+
+

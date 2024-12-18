@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+Supports the Labs section of the site
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="labs" use="Twig" author="rmyers Rick" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="apps">
+            <description>Sample Apps</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

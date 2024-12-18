@@ -53,6 +53,10 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/cli/&&MODULE&&.php"
         },
         {
+            "source": "/lib/sample/module/cli/directory.yaml",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/cli/directory.yaml"
+        },
+        {
             "source": "/lib/sample/module/etc/config.xml",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/config.xml"
         },                        

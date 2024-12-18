@@ -31,13 +31,13 @@
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>A Dynamic Desktop</div>
-<div class=''>
+<div>
     <b>Reason for Creation</b>:<br /><br />
     Back in 2005, while I was a technology instructor for one of the biggest companies in the world, I was teaching their Advance Web Topics courses and this is about the time Ajax really began its widespread adoption.
     The promise of Ajax was that you could move away from the "POST" model and create more "Desktop-Like" applications.  At this time I thought (as did many others), instead of creating a "Desktop-Like" application, why not
     create a Desktop?  And so the <a href="https://cloud-it.com/home/Rick%20Myers">Cloud-IT.com</a> project was born.  This is an extremely useful library that is relatively easy to integrate into any project.  What it gives
     you are an icon to window relationship, and the windows have lifecycle hooks, so there are "onOpen", "onClose", "onMinimize", "onMaximize", "onResize", etc... lifecycle hooks to attach handlers (functions) to.  I've found
-    that this makes for a very intuitive user experience, since we are all used to this approach
+    that this makes for a very intuitive user experience, since we are all used to this approach.  Anyways, feel free to play with the icons on the left, there are some neat things there.
 </div><br /><br />
 <b>Source Code</b>:
 <div widget="codeBox" widgetScroll="3%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Paradigm/web/js/Desktop.js" class="humble-code"></div>
