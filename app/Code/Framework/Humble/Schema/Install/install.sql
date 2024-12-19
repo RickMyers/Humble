@@ -168,6 +168,7 @@ CREATE TABLE `humble_modules` (
   `images_cache` varchar(255) DEFAULT '',
   `rpc_mapping` varchar(255) DEFAULT '',
   `helpers` varchar(128) DEFAULT '',
+  `cli` char(01) DEFAULT 'N',
   `enabled` char(1) DEFAULT 'N',
   `mongodb` varchar(64) DEFAULT '',
   `required` char(1) DEFAULT 'N',
