@@ -78,8 +78,8 @@ RUN apt update
 RUN apt upgrade -y
 COPY delay_launch.php /var/www/delay_launch.php
 COPY php.ini /etc/php/8.2/php.ini
-COPY humble.sh /var/www/html/humble.sh
-RUN chmod +x /var/www/html/humble.sh
-RUN dos2unix /var/www/html/humble.sh
+COPY humble /var/www/html/humble
+RUN chmod +x /var/www/html/humble
+RUN dos2unix /var/www/html/humble
 CMD ["apache2ctl", "-D", "FOREGROUND"]
 
