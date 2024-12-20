@@ -337,7 +337,7 @@ FACTORY;
     file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('Code/Framework/Humble/lib/sample/install/etc/application.xml')));    
     chdir('..');
     //$x = (file_exists('humble.bat')) ? @unlink('humble.bat') : '';
-    //$x = (file_exists('humble.sh'))  ? @unlink('humble.sh') : '';
+    //$x = (file_exists('humble'))  ? @unlink('humble') : '';
     //$x = (file_exists('Humble.php')) ? @unlink('Humble.php') : '';
     print("\n\n");
     print('#######################################################################################################################'."\n");
@@ -393,8 +393,8 @@ function restoreProject() {
     if (file_exists('humble.bat')) {
         @unlink('humble.bat');
     }
-    if (file_exists('humble.sh')) {
-        @unlink('humble.sh');
+    if (file_exists('humble')) {
+        @unlink('humble');
     }
     @unlink('Humble.php');
     @unlink('tmp/'.$distro);
@@ -483,11 +483,11 @@ function dockerMe() {
                 file_put_contents('d.sh',$zip->getFromName('d.sh'));
                 file_put_contents('php.ini',$zip->getFromName('php.ini'));
                 file_put_contents('start.sh',$zip->getFromName('start.sh'));
-                file_put_contents('humble.sh',$zip->getFromName('humble.sh'));
+                file_put_contents('humble',$zip->getFromName('humble'));
                 file_put_contents('shell.bat',$zip->getFromName('shell.bat'));
                 @exec('dos2unix start.sh');
-                @exec('dos2unix humble.sh');
-                copy('humble.sh','../../humble.sh');
+                @exec('dos2unix humble');
+                copy('humble','../../humble');
                 file_put_contents('delay_launch.php',$zip->getFromName('delay_launch.php'));
                 $zip->close();
                 print(file_get_contents('docker_instructions.txt'));
