@@ -228,7 +228,7 @@
                 $zip->addFromString('php.ini',str_replace($srch,$repl,file_get_contents('app/install/Docker/php.ini')));
                 $zip->addFromString('delay_launch.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/delay_launch.php')));
                 $zip->addFromString('start.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/start.sh')));
-                $zip->addFromString('humble.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/humble.sh')));
+                $zip->addFromString('humble',str_replace($srch,$repl,file_get_contents('app/install/Docker/humble')));
                 $zip->addFromString('shell.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/shell.bat')));
                 $zip->close();
                 print(file_get_contents('temp.zip'));

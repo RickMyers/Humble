@@ -58,4 +58,14 @@ r|restore :
     parameters:
         required:
             directory|dir: The path to the directory to store/preserve
-        optional:         
+        optional: 
+api|policy : 
+    description: Creates or updates the API Policy JSON file
+    usage:
+        linux:   sudo sh ./humble.sh --policy
+        windows: humble --api
+    function : apiPolicy
+    directive: true
+    parameters:
+        required:
+        optional:              

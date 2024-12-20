@@ -103,7 +103,7 @@ If you do decide to do a local install, you will need to...
     </li>
     <li>Linux Installation Helper
         <ul class="humble-topics">
-            <li> <a href='/app/install/humble.sh'>Humble.sh</a> (<i>optional</i>)</li>
+            <li> <a href='/app/install/humble'>Humble</a> (<i>optional</i>)</li>
         </ul>
     </li>
 
