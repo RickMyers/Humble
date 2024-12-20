@@ -224,7 +224,7 @@
             "classname":        "",
             "value":            "",
             "onclick":          function () {
-                (new EasyAjax('/installtest.php')).add('dbhost',$("#dbhost").val()).add('db',$("#db").val()).add('userid',$("#userid").val()).add('password',$("#password").val()).then((response) => {
+                (new EasyAjax('/install.php')).add('method','mysql').add('dbhost',$("#dbhost").val()).add('db',$("#db").val()).add('userid',$("#userid").val()).add('password',$("#password").val()).then((response) => {
                     alert(response);
                 }).post();
             }
@@ -238,7 +238,7 @@
             "classname":        "",
             "value":            "",
             "onclick":          function () {
-                (new EasyAjax('/mongotest.php')).add('mongo',$("#mongo").val()).add('mongo_userid',$('#mongo_userid').val()).add('mongo_password',$('#mongo_password').val()).then((response) => {
+                (new EasyAjax('/install.php')).add('method','mongo').add('mongo',$("#mongo").val()).add('mongo_userid',$('#mongo_userid').val()).add('mongo_password',$('#mongo_password').val()).then((response) => {
                     alert(response);
                 }).post();
             }
