@@ -17,6 +17,7 @@ $help = <<<HELP
  *      --dockerme    Fetches a docker configuration, partially tailored
  *      --install     Retrieves a Humble.project file from the project hub by Serial Number
  *      --reregister  Gets a serial number for you application
+ *      --driver      Download the Linux driver
  * -----------------------------------------------------------------------------
  */
 HELP;
@@ -549,6 +550,11 @@ if (PHP_SAPI === 'cli') {
             case "new"      :
             case "project"  :
                 initializeProject();
+                break;
+            case "driver"   :
+                file_put_contents('humble',file_get_contents('https://humbleprogramming.com/app/install/humble'));
+                chmod('humble',0775);
+                print("\nDriver Downloaded\n\n");
                 break;
             case "install":
                 if (!file_exists('Humble.project')) {

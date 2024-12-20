@@ -125,7 +125,9 @@ case $1 in
         echo 'rollback';;
   'scrub')
        cd /var/www/Humble/app/install
-       dos2unix humble.sh
+       dos2unix humble
+       cd /var/www/Humble/app
+       dos2unix humble
        echo 'scrub';;
   *)
         echo "i dunno how to do that $1";;
