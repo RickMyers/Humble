@@ -70,7 +70,7 @@ $authorizationEngineEnabled = true;
 //one of the application nodes must be the router.  If this is the MSA Router,
 //include the Micro-Service Router and end.
 if (\Environment::MSARouter()) {
-    require_once("msa.php");
+    require_once("msr.php");
     die();
 }
 

@@ -56,8 +56,15 @@ class Environment {
      */
     public static function routes($project=false) {
         $project = ($project) ? $project : self::getProject();                  //did you pass project information or do I have to load it myself
-        $routes  = \Humble::cache('public_routes');                              //are the routes cached?
-        return ($routes) ? $routes : json_decode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json'));
+        $routes  = \Humble::cache('public_routes');                             //are routes cached?
+        if (!$routes) {
+            if (!file_exists($file = 'Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json')) {
+                header("Location: /install.php");
+                die();
+            }
+            $routes = json_decode(file_get_contents($file));
+        }
+        return $routes??[];
     }
     
     /**
