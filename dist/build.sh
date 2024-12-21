@@ -127,7 +127,6 @@ case $1 in
        cd /var/www/Humble/app/install
        dos2unix humble
        cd /var/www/Humble/app
-       dos2unix humble
        echo 'scrub';;
   *)
         echo "i dunno how to do that $1";;
