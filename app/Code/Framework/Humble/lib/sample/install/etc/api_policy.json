@@ -1,5 +1,8 @@
 {
-    "comment": "Read more about the API policy at https://humbleprogramming.com/pages/APIPolicy.htmls",
+    "comments": [
+        "Read more about the API policy at https://humbleprogramming.com/pages/APIPolicy.htmls",
+        "To create/update the policy, you need to run the --policy command at the CLI"
+    ],
     "default": {
         "authenticated": {
             "read": false,
@@ -11,37 +14,5 @@
         }
     },
     "entities": {
-        "namespace_1": {
-            "entity_1": {
-                "authenticated" : {
-                    "read": true,
-                    "write": false
-                },
-                "public": {
-                    "read": false,
-                    "write": false
-                }
-            },
-            "entity_2": {
-                "authenticated" : {
-                    "read": true,
-                    "write": false
-                },
-                "public": {
-                    "read": false,
-                    "write": false                }
-            }            
-        },
-        "namespace": {
-            "entity_3": {
-                "authenticated" : {
-                    "read": true,
-                    "write": false
-                },
-                "public": {
-                    "read": false,
-                    "write": false                }
-            }
-        }
     }
 }

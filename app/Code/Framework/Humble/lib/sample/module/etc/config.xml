@@ -14,7 +14,7 @@
             <required>&&REQUIRED&&</required>
             <workflow>Y</workflow>
             <package>&&PACKAGE&&</package>
-            <use>Smarty</use>
+            <use>&&TEMPLATER&&</use>
         </module>
         <structure comment="This section describes the layout of your module, technically you can rearrange it anyway you want, but I would recommend just stick with the default structure below or you may encounter upgrading problems in the future">
             <models>

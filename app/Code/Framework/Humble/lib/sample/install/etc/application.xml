@@ -33,7 +33,7 @@
         <timestamp_format>Y-m-d H:i:s</timestamp_format>        
     </default>
     <api>
-        <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/APIPolicy.htmls for more information first -->
+        <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/API.htmls for more information first -->
     </api>
     <exceptions options="JSON,HTML" comment="Choose whether you want a JSON formatted exception or one that is a templated HTML response">HTML</exceptions>
     <documentation_comment>    

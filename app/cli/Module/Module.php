@@ -199,12 +199,14 @@ class Module extends CLI
                 foreach ($mod->structure->basic as $path) {
                     mkdir($root.DIRECTORY_SEPARATOR.$path,0775,true);
                 }
+                $mod         = \Environment::getApplication('default');
+                $templater   = $mod['templater'] ?? 'Smarty';
                 $package     = $mn ? 'Framework' : (string)$project->package;
                 $module      = $mn ? 'Humble'    : (string)$project->module;
                 $required    = $mn ? 'Y'           : 'N';
                 $main_module = $mn ? ucfirst(strtolower($project->namespace))." = {}" : "";  //if this is the main module, of which there can be only one, we will need to add an extra bit of JS
-                $search      = ["&&MAIN_MODULE&&","&&PROJECT&&","&&NAMESPACE&&","&&PREFIX&&","&&AUTHOR&&","&&MODULE&&","&&PACKAGE&&",'&&EMAIL&&','&&FACTORY&&','&&BASE_PACKAGE&&','&&BASE_MODULE&&','&&REQUIRED&&'];
-                $replace     = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required];
+                $search      = ["&&MAIN_MODULE&&","&&PROJECT&&","&&NAMESPACE&&","&&PREFIX&&","&&AUTHOR&&","&&MODULE&&","&&PACKAGE&&",'&&EMAIL&&','&&FACTORY&&','&&BASE_PACKAGE&&','&&BASE_MODULE&&','&&REQUIRED&&','&&TEMPLATER&&'];
+                $replace     = [$main_module,ucfirst(strtolower($project->namespace)),$ns,$px,$au,$md,$pk,$em,$project->factory_name,$package,$module,$required,$templater];
                 self::copyFiles($src,$mod->templates,$search,$replace);
                 self::copyFiles($src,$mod->copy,$search,$replace);
                 if ($mn) {

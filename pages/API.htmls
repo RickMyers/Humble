@@ -1,4 +1,90 @@
 <!--#include virtual="/pages/includes/header.html" -->
 <!--#include virtual="/pages/includes/container.html" -->
-<!--#include virtual="/pages/includes/footer.html" -->
+<style type="text/css">
+    .api_methods > tbody > tr > th {
+        background-color: #333; color: ghostwhite; font-size: 1.3em; text-align: center; font-family: monospace
+    }
+    .api_methods > tbody > tr > td {
+        font-family: sans-serif; font-size: .8em; padding: 5px 10px; border: 1px solid #333; border-collapse: collapse
+    }
+</style>
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href=".htmls" title="" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>API (convention)</div>
+<p>
+The API is a "Convention Over Configuration" convenience for those who wish to perform basic to moderate database activity without writing back end code.  The API is not as full featured as the standard XML controllers and should not be seen as a complete
+replacement for discreet actions as defined in the Controllers.  Access to the API is <b>disallowed</b> by default and must be enabled in the <span class='file'>application.xml</span> file found in the <span class='dir'>/etc/</span> folder of your main module.<br /><br />
+</p>
+<p style="color: #f33">Failure to properly secure the API can lead to database exposure or loss of data!  <b><u>You have been warned!</u></b></p>
+<p><br />
+The API is in the format:<br />
+<div style='padding: 10px 0px 10px 35px'>/api/<i>namespace</i>/<i>entityalias</i></div><br />
+<table class="api_methods" style="width: 80%">
+    <tr>
+        <th>Method</th>
+        <th>Arguments</th>
+        <th>Response</th>
+    </tr>
+    <tr>
+        <td>GET</td>
+        <td>ID</td>
+        <td>Returns one (1) row of the entity in JSON format</td>
+    </tr>
+    <tr>
+        <td>POST</td>
+        <td><i>Varied</i></td>
+        <td>Returns one or more (1-*) rows of the entity in JSON format. Pagination and Cursor are in effect with results returned in response header</td>
+    </tr>
 
+    <tr>
+        <td>PUT</td>
+        <td><i>Varied</i></td>
+        <td>If ID is passed, functions as an update, else a new row is added.  The ID of the new/updated row will be returned, with rows_affected being returned in response header</td>
+    </tr>
+    <tr>
+        <td>DELETE</td>
+        <td>ID</td>
+        <td>Removes the row from identified by the passed ID from the entity. Rows_affected is returned in response header</td>
+    </tr>
+
+</table><br /><br />
+If you specify a method name after the entity alias, that method will be invoked on the identified Entity class.
+<div style='padding: 10px 0px 10px 35px'>/api/<i>namespace</i>/<i>entityalias[/optionalMethodName]</i></div>
+
+<div class='humble-topic-header'>API Policy</div>
+The API Policy document (<span class='file'>api_policy.json</span>), found in the <span class='dir'>/etc/</span> folder of your main module, governs what actions can be done to entities through the API.  To initialize
+or update the existing policy document, go to the command line and issue the <span class='cmd'>--policy</span> directive.  The API policy will be updated with the list of all entities in each enabled module.  If a 
+policy already exists for an entity, that policy will be preserved so this process is safe to run at any time.<br /><br />
+
+<div widget="codeBox" widgetScroll="100%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' class="humble-code">
+{
+    "comments": "Read more about the API policy at https:\/\/humbleprogramming.com\/pages\/API.htmls",
+    "default": {
+        "authenticated": {
+            "read": false,
+            "write": false
+        },
+        "public": {
+            "read": false,
+            "write": false
+        }
+    },
+    "entities": {
+      /* List of entities will go here   */
+    }
+}    
+</div>        
+</div>
+
+
+</div>
+
+</div>
+
+<!--#include virtual="/pages/includes/footer.html" -->

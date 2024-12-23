@@ -747,13 +747,10 @@ PHP;
         if (isset($node['var'])) {
             print($this->tabs().'Humble::response($models["'.$node['var'].'"]);'."\n");
         }   
-        
-        
         /*Must determine if var is present and then reply it back
          * if (isset($node['var'])) {
             print($this->tabs()."Humble::response(\"".addslashes($node['text'])."\");\n");
         } */       
-        
     }
     
     /**
@@ -1300,7 +1297,7 @@ PHP;
      */
     private function generateController($xml)    {
         $this->controller = $xml['name'];
-        $info             = $this->getInfo();
+        $info             = Humble::module();
         $templater        = (isset($xml['use']) ? $xml['use'] : $info['templater']);
         $this->verifyIncludesExist($templater);
         print($this->includes['banner']);
@@ -1624,8 +1621,8 @@ SQL;
             }
             $source          = $source.'/'.$controller.'.xml';
         }
+        $mod    = \Humble::module($namespace);
         if (!$this->getDestination()) {
-            $mod    = \Humble::module($namespace);
             $this->setDestination($mod['package'].'/'.str_replace(['_'],['/'],$mod['controller_cache']));
         }
         if (file_exists($source)) {
@@ -1642,8 +1639,7 @@ SQL;
                     print("Wasn't able to write out compiled controller to $output \n");
                 }
                 if (!$identifier) {
-                    $module     = $this->getInfo();
-                    $identifier = $module['namespace'].'/'.$controller;
+                    $identifier = $mod['namespace'].'/'.$controller;
                 }
                 $this->stampIt($identifier,$compiled = date("Y-m-d, H:i:s", filemtime($source)));
                 \Humble::cache('controller-'.$identifier,['compiled' => $compiled]);

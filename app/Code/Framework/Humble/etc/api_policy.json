@@ -1,5 +1,5 @@
 {
-    "comment": "Read more about the API policy at https://humbleprogramming.com/pages/APIPolicy.htmls",
+    "comments": "Read more about the API policy at https:\/\/humbleprogramming.com\/pages\/API.htmls",
     "default": {
         "authenticated": {
             "read": false,
@@ -11,10 +11,180 @@
         }
     },
     "entities": {
-        "account": {
+        "humble": {
+            "audit_log": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "categories": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "controllers": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "css": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "edits": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "entities": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "entity_columns": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "entity_keys": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "js": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "modules": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "packages": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "roles": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "secrets_manager": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "services": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "service_directory": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "system_variables": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "templaters": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
             "users": {
-                "authenticated" : {
-                    "read": true,
+                "authenticated": {
+                    "read": false,
                     "write": false
                 },
                 "public": {
@@ -23,20 +193,18 @@
                 }
             },
             "user_identification": {
-                "authenticated" : {
-                    "read": true,
+                "authenticated": {
+                    "read": false,
                     "write": false
                 },
                 "public": {
                     "read": false,
                     "write": false
                 }
-            }            
-        },
-        "namespace": {
-            "entity_3": {
-                "authenticated" : {
-                    "read": true,
+            },
+            "user_roles": {
+                "authenticated": {
+                    "read": false,
                     "write": false
                 },
                 "public": {
@@ -44,6 +212,370 @@
                     "write": false
                 }
             }
-        }
+        },
+        "paradigm": {
+            "api_projects": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "api_tests": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "designer_forms": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "events": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "event_listeners": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "event_log": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "export_targets": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "file_log": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "file_triggers": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "import_sources": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "import_tokens": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "job_queue": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "method_listeners": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "system_events": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "webhooks": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "webhook_workflows": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "webservices": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "webservice_workflows": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "workflows": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "workflow_comments": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "workflow_components": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "workflow_listeners": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            }
+        },
+        "workflow": {
+            "sms_carriers": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            }
+        },
+        "admin": {
+            "menus": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "menu_categories": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "system_monitor": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "users": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "user_identification": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            }
+        },
+        "contrive": [],
+        "usps": [],
+        "account": {
+            "registrations": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "users": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "user_identification": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            }
+        },
+        "google": [],
+        "blog": {
+            "whatsnew": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "whatsnew_code": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "whatsnew_languages": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            },
+            "whatsnew_lexicons": {
+                "authenticated": {
+                    "read": false,
+                    "write": false
+                },
+                "public": {
+                    "read": false,
+                    "write": false
+                }
+            }
+        },
+        "chatgpt": []
     }
 }

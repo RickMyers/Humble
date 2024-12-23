@@ -66,8 +66,8 @@ class Users extends Entity
             if ($id) {
                 $this->setId($id);
             }
-            if ($id = $this->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setUserName($uname)->save()) {
-                Humble::entity('admin/user/identification')->setId($id)->setEmail($email ?? '')->setFirstName($fname ?? '')->setLastName($lname ?? '')->save();
+            if ($id = $this->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setEmail($email ?? '')->setUserName($uname)->save()) {
+                Humble::entity('admin/user/identification')->setId($id)->setFirstName($fname ?? '')->setLastName($lname ?? '')->save();
             }
         }
         return $id;

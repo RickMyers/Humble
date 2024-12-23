@@ -85,10 +85,10 @@ class Framework extends CLI
                 }
                 file_put_contents($file,implode("\n",$lines));
             } else {
-                print('File specified ['.$file.'] does not exist');
+                print("\n".'File specified ['.$file.'] does not exist'."\n");
             }
         } else {
-            print('Must pass in an argument of file=###');
+            print("\n".'Must pass in an argument of file=###'."\n");
         }
 
     }    
@@ -99,6 +99,31 @@ class Framework extends CLI
     public static function version() {
         $xml    = Environment::applicationXML();
         print("\n\n".$xml->version->framework."\n\n");
+    }
+    
+    /**
+     * Will update the API Policy document
+     */
+    public static function apiPolicy() {
+        $message = "API Policy File Not Found";
+        $project = Environment::project();
+        if (file_exists($file    = 'Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json')) {
+            $current_policy     = json_decode(file_get_contents($file),true);
+            $comments           = $current_policy['comments'] ?? 'Read more about the API policy at https://humbleprogramming.com/pages/APIPolicy.htmls';
+            $defaults           = (isset($current_policy['default'])) ? $current_policy['default'] : ['authenticated'=>['read'=>false,'write'=>false]] ;
+            $entities           = [];
+            foreach (\Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+                $namespace = $module['namespace'];
+                $entities[$namespace] = [];
+                foreach (\Humble::entity('humble/entities')->setNamespace($module['namespace'])->fetch() as $entity) {
+                    $entities[$namespace][$entity['entity']] = isset($current_policy[$namespace][$entity['entity']]) ? $current_policy[$namespace][$entity['entity']] : ['authenticated'=>['read'=>false,'write'=>false],'public'=>['read'=>false,'write'=>false]];
+                }
+            }
+            $policy = ['comments' => $comments,'default' => $defaults,'entities' => $entities];
+            file_put_contents($file,json_encode($policy,JSON_PRETTY_PRINT));
+            $message = "API Policy has been updated at ".$file."\n";
+        } 
+        print("\n".$message."\n");
     }
 }
 
