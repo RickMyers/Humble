@@ -1297,7 +1297,7 @@ PHP;
      */
     private function generateController($xml)    {
         $this->controller = $xml['name'];
-        $info             = Humble::module();
+        $info             = \Humble::module();
         $templater        = (isset($xml['use']) ? $xml['use'] : $info['templater']);
         $this->verifyIncludesExist($templater);
         print($this->includes['banner']);

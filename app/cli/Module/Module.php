@@ -93,8 +93,8 @@ class Module extends CLI
      * @param array $args (optional)
      */
     public static function disable($args=false) {
-        $args = $args ? $args :self::arguments();
-        $ns = $args['namespace'];        
+        $args   = $args ? $args :self::arguments();
+        $ns     = $args['namespace'];        
         print("Disabling ".$ns."\n\n");
         \Humble::entity("humble/modules")->setNamespace($ns)->setEnabled('N')->save();
     }

@@ -36,10 +36,10 @@ class Log extends Helper
      */
     public function __construct() {
         parent::__construct();
-        $this->project = Environment::getProject();
-        $config = json_decode(file_get_contents('Code/'.$this->project->package.'/'.$this->project->module.'/etc/cadence.json'));
-        $this->logs['cadence'] = $config->log->location;
-        $a=1;
+        $this->project          = Environment::getProject();
+        $source                 = ($this->project->namespace === 'humble') ? 'application.json' : 'cadence.json';
+        $config                 = json_decode(file_get_contents('Code/'.$this->project->package.'/'.$this->project->module.'/etc/'.$source));
+        $this->logs['cadence']  = $config->log->location;
     }
 
     public function processLogs() {

@@ -1,3 +1,19 @@
+/*
+SQLyog Community
+MySQL - 5.7.44 : Database - humble
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*Table structure for table `humble_audit_log` */
+
 DROP TABLE IF EXISTS `humble_audit_log`;
 
 CREATE TABLE `humble_audit_log` (
@@ -79,7 +95,7 @@ CREATE TABLE `humble_entities` (
   `namespace` char(36) NOT NULL,
   `entity` char(128) NOT NULL,
   `actual` char(128) DEFAULT NULL,
-  `alias` char(36) default null,
+  `alias` char(48) DEFAULT NULL,
   `polyglot` char(1) DEFAULT 'N',
   `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -168,7 +184,7 @@ CREATE TABLE `humble_modules` (
   `images_cache` varchar(255) DEFAULT '',
   `rpc_mapping` varchar(255) DEFAULT '',
   `helpers` varchar(128) DEFAULT '',
-  `cli` char(01) DEFAULT 'N',
+  `cli` char(1) DEFAULT 'N',
   `enabled` char(1) DEFAULT 'N',
   `mongodb` varchar(64) DEFAULT '',
   `required` char(1) DEFAULT 'N',
@@ -262,65 +278,7 @@ CREATE TABLE `humble_templaters` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `humble_user_identification` */
-
-DROP TABLE IF EXISTS `humble_user_identification`;
-
-CREATE TABLE `humble_user_identification` (
-  `id` int(11) NOT NULL,
-  `first_name` char(96) DEFAULT NULL,
-  `last_name` char(96) DEFAULT NULL,
-  `middle_name` char(96) DEFAULT NULL,
-  `name_suffix` char(36) DEFAULT NULL,
-  `maiden_name` char(96) DEFAULT NULL,
-  `name` char(192) DEFAULT NULL,
-  `entity` int(11) DEFAULT NULL,
-  `gender` char(3) DEFAULT NULL,
-  `date_of_birth` date DEFAULT NULL,
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Table structure for table `humble_users` */
-
-DROP TABLE IF EXISTS `humble_users`;
-
-CREATE TABLE `humble_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` char(30) DEFAULT '',
-  `password` char(13) DEFAULT '',
-  `salt` char(32) DEFAULT NULL,
-  `email` char(128) DEFAULT '',
-  `authenticated` char(1) DEFAULT 'N',
-  `new_password_token` char(16) DEFAULT '',
-  `reset_password_token` char(16) DEFAULT '',
-  `authentication_token` char(16) DEFAULT '',
-  `logged_in` datetime DEFAULT NULL,
-  `account_status` char(1) DEFAULT '',
-  `login_attempts` int(11) DEFAULT '0',
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_name` (`user_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-drop table if exists humble_roles;
-CREATE TABLE humble_roles
-(
-	id INT NOT NULL AUTO_INCREMENT,
-	role CHAR(32) DEFAULT NULL,
-	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (id),
-	UNIQUE KEY (role)
-);
-
-drop table if exists humble_user_roles;
-
-CREATE TABLE humble_user_roles
-(
-	id INT NOT NULL AUTO_INCREMENT,
-	user_id INT DEFAULT NULL,
-	role_id INT DEFAULT NULL,
-	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (id),
-	UNIQUE KEY (user_id,role_id)
-);
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

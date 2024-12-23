@@ -12,12 +12,12 @@ x|prefix :
 a|clean : 
     description: Remove AUTOINCREMENT=# from SQL dumps
     usage:
-        linux:   sudo sh ./humble.sh --a file=path_to_file
-        windows: humble --a file=path_to_file
+        linux:   sudo sh ./humble.sh --a ns=desired_namespace
+        windows: humble --a ns=desired_namespace
     function : clean
     parameters:
         required:
-            file|fi: The file to clean
+            namespace|ns: A namespace to clean
         optional:         
 c|check : 
     description: Check for namespace availability

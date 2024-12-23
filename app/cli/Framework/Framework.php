@@ -69,26 +69,34 @@ class Framework extends CLI
         }
     }
 
+    /**
+     * When taking a snapshot of the database schema, the increment gets output with the SQL... we need to remove that
+     */
     public static function clean() {
-        $parms = self::arguments();
-        $file  = $args['file'];
-        if ($file) {
-            if (file_exists($file)) {
-                $lines = [];
-                foreach (explode("\n",file_get_contents($file)) as $row) {
-                    if (($pos = strpos($row,"AUTO_INCREMENT="))!==false) {
-                        $pre = substr($row,0,$pos);
-                        $post = strpos(substr($row,$pos),' ');
-                        $row = $pre.substr(substr($row,$pos),$post);
+        $args = self::arguments();
+        if ($ns    = $args['namespace']) {
+            if ($module = \Humble::module($ns)) {
+                $dh = dir($dir = 'Code/'.$module['package'].'/'.$module['schema_install']);
+                if ($dh) {
+                    while ($entry = $dh->read()) {
+                        if (($entry == '.') || ($entry == '..')) {
+                            continue;
+                        }
+                        $file = $dir.'/'.$entry; $lines = [];
+                        print('Cleaning '.$file."\n"); 
+                        foreach ($words = explode(' ',file_get_contents($file)) as $word) {
+                            if (substr(strtoupper($word),0,15)!=='AUTO_INCREMENT=') {
+                                $lines[] = $word;
+                            }
+                        }
+                        file_put_contents($file,implode(' ',$lines));
                     }
-                    $lines[] = $row;
                 }
-                file_put_contents($file,implode("\n",$lines));
             } else {
-                print("\n".'File specified ['.$file.'] does not exist'."\n");
+                print("\n".'Module specified by namespace ['.$ns.'] disabled or does not exist'."\n");
             }
         } else {
-            print("\n".'Must pass in an argument of file=###'."\n");
+            print("\n".'Must pass in an argument of namespace=###'."\n");
         }
 
     }    
