@@ -199,8 +199,8 @@ class Module extends CLI
                 foreach ($mod->structure->basic as $path) {
                     mkdir($root.DIRECTORY_SEPARATOR.$path,0775,true);
                 }
-                $mod         = \Environment::getApplication('default');
-                $templater   = $mod['templater'] ?? 'Smarty';
+                $defaults    = \Environment::getApplication('default');
+                $templater   = $defaults['templater'] ?? 'Smarty';
                 $package     = $mn ? 'Framework' : (string)$project->package;
                 $module      = $mn ? 'Humble'    : (string)$project->module;
                 $required    = $mn ? 'Y'           : 'N';

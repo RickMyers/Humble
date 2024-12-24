@@ -74,8 +74,10 @@ class Framework extends CLI
      */
     public static function clean() {
         $args = self::arguments();
-        if ($ns    = $args['namespace']) {
-            if ($module = \Humble::module($ns)) {
+        $ns    = $args['namespace'];
+        $namespaces = ($ns=='*') ? [] : [$ns];
+        foreach ($namespaces as $namespace) {
+            if ($module = \Humble::module($namespace)) {
                 $dh = dir($dir = 'Code/'.$module['package'].'/'.$module['schema_install']);
                 if ($dh) {
                     while ($entry = $dh->read()) {
@@ -95,10 +97,7 @@ class Framework extends CLI
             } else {
                 print("\n".'Module specified by namespace ['.$ns.'] disabled or does not exist'."\n");
             }
-        } else {
-            print("\n".'Must pass in an argument of namespace=###'."\n");
         }
-
     }    
     
     /**
