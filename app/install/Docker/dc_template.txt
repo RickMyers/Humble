@@ -3,7 +3,7 @@
 #SERVICES
 #####################################
 services:
-  &&NAMESPACE&&-environment:
+  &&NAMESPACE&&_environment:
     container_name: &&NAMESPACE&&
     image: &&NAMESPACE&&
     volumes:

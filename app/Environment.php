@@ -324,7 +324,8 @@ class Environment {
      */
     public static function applicationXML() {
         $project = self::getProject();
-        return simplexml_load_string((file_exists('Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("The application is inaccessible at this time."));
+        $file    = 'Code/'.$project->package.'/'.$project->module.'/etc/application.xml';
+        return file_exists($file) ? simplexml_load_string(file_get_contents($file)) : new stdClass();
     }
     
     /**

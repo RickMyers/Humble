@@ -280,6 +280,7 @@ switch ($method) {
         if ($docker) {
             $settings = yaml_parse_file('Docker/docker-compose.yaml');
             $name     = explode(' ',(string)$project->name);
+            $ns       = $project->namespace;
             $info = [
                 'User' => [
                     'First' => $name[0] ?? '',
@@ -288,13 +289,13 @@ switch ($method) {
                     'ID'    => strtolower((substr($name[0],0,1).$name[1]))
                 ],
                 'MySQL' => [
-                    'Host'      => $settings['services']['mysql']['container_name'] ?? '',
-                    'User'      => $settings['services']['mysql']['environment']['MYSQL_USER'] ?? '',
-                    'Password'  => $settings['services']['mysql']['environment']['MYSQL_PASSWORD'] ?? '',
-                    'Database'  => $settings['services']['mysql']['environment']['MYSQL_DATABASE'] ?? ''
+                    'Host'      => $settings['services'][$ns.'_mysql']['container_name'] ?? '',
+                    'User'      => $settings['services'][$ns.'_mysql']['environment']['MYSQL_USER'] ?? '',
+                    'Password'  => $settings['services'][$ns.'_mysql']['environment']['MYSQL_PASSWORD'] ?? '',
+                    'Database'  => $settings['services'][$ns.'_mysql']['environment']['MYSQL_DATABASE'] ?? ''
                     ],
                 'MongoDB' => [
-                    'Host'      => $settings['services']['mongodb']['container_name'] ?? '',
+                    'Host'      => $settings['services'][$ns.'_mongodb']['container_name'] ?? '',
                     'User'      => '',
                     'Password'  => '',                
                 ]
