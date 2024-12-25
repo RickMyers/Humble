@@ -3,7 +3,7 @@
 #SERVICES
 #####################################
 services:
-  php-apache-environment:
+  &&NAMESPACE&&-environment:
     container_name: &&NAMESPACE&&
     image: &&NAMESPACE&&
     volumes:
@@ -14,8 +14,10 @@ services:
       - &&PORT&&:80
     expose:
       - 9003
-      
-  mysql:
+    networks:
+      - &&NAMESPACE&&_network  
+
+  &&NAMESPACE&&_mysql:
     image: mysql:5.7
     container_name: &&NAMESPACE&&_mysql
     restart: unless-stopped
@@ -32,8 +34,10 @@ services:
       MYSQL_DATABASE: &&NAMESPACE&&
       MYSQL_USER: appuser
       MYSQL_PASSWORD: password123
+    networks:
+      - &&NAMESPACE&&_network  
     
-  mongodb:
+  &&NAMESPACE&&_mongodb:
     image: mongo:latest
     container_name: &&NAMESPACE&&_mongodb
     restart: unless-stopped
@@ -42,6 +46,13 @@ services:
     volumes:
       - &&NAMESPACE&&_mongodb_cfg:/etc
       - &&NAMESPACE&&_mongodb_data:/data/db 
+    networks:
+      - &&NAMESPACE&&_network  
+
+networks:
+  &&NAMESPACE&&_network:
+   name: &&NAMESPACE&&-net      
+
 volumes:
   &&NAMESPACE&&_db_data:
   &&NAMESPACE&&_mongodb_data:
