@@ -111,8 +111,10 @@ class System extends CLI
      * Will take all files that are identifiable on the manifest and put them into a distro/zip
      */
     public static function package() {
+        print("Processing Manifest...\n");
         $content = self::getManifestContent();
-        $xml     = \Environment::applicationXML();        
+        print(count($content['files'])." files to add to package...\n");
+        $xml     = \Environment::applicationXML();  
         chdir('..');
         foreach ($content['files'] as $file) {
             if (!isset($content['xref'][$file])) {
@@ -129,8 +131,12 @@ class System extends CLI
         if ($zip->open($archive, ZipArchive::CREATE) !== true) {
             die('Wasnt able to create zip');
         };
+        $ctr = 0;
         foreach ($content['xref'] as $src => $dest) {
             $exclude = false;
+            if ((++$ctr % 100)===0) {
+                print("Added ".$ctr." files\n");
+            }
             foreach ($content['exclude'] as $mask => $type) {
                 if (strpos($src,$mask) !== false) {
                     $exclude = true;
