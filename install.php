@@ -537,7 +537,25 @@ switch ($method) {
             print('###########################################'."\n\n");
             $util->install($etc);
         }
+        //======================================================================
+
+        $landing_page   = \Environment::getProject('landing_page');
+        $location       = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php`);
+        $cmd            = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'email='.$project->author.' main_module=true';
+        file_put_contents('cmd.txt',$cmd);
+        print("\nExecuting: ".$cmd."\n\n");
+        $output     = []; $rc = -99;
+        exec($cmd,$output,$rc);
+        print("Return Code: ".$rc."\nOuput Follows\n");
+        foreach ($output as $result) {
+            print($result."\n");
+        }
+        $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}','{$support_name}','{$support_email}'];
+        $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1',$project->name,$project->author];
+        @mkdir('Code/'.$project->package.'/'.$project->module.'/etc/',0775,true);
+        file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('Code/Framework/Humble/lib/sample/install/etc/application.xml')));           
         
+        //======================================================================
         $custom = 'Code/'.$project->package.'/'.$project->module.'/etc/Constants.php'; 
         if (($redis) && (file_exists($custom))) {                               //You chose REDIS for cache, so going to uncomment out the line in the Custom.php file
             foreach ($lines = explode("\n",$custom) as $idx => $line) {
@@ -550,7 +568,7 @@ switch ($method) {
         
         $admin_id  = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
         
-        $install_manager = Humble::model('humble/manager');        
+        $install_manager = \Humble::model('humble/manager');        
         $install_manager->tailorSystem($project);                               //We are going to have to copy a model and a controller into the new module to handle logging in        
         $install_manager->setAdminId($admin_id)->setDescription('Homepage Controller')->setActionDescription('The Home Page')->createLandingPage($project);
         

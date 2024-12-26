@@ -320,7 +320,7 @@ FACTORY;
     } else  {
         exec('php /usr/bin/composer.phar install');
     }    
-    require('Environment.php');
+/*    require('Environment.php');
     require('Humble.php');
     $landing_page = \Environment::getProject('landing_page');
     $location   = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php`);
@@ -336,7 +336,7 @@ FACTORY;
     $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}','{$support_name}','{$support_email}'];
     $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1',$project->name,$project->author];
     @mkdir('Code/'.$project->package.'/'.$project->module.'/etc/',0775,true);
-    file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('Code/Framework/Humble/lib/sample/install/etc/application.xml')));    
+    file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('Code/Framework/Humble/lib/sample/install/etc/application.xml')));   */ 
     chdir('..');
     //$x = (file_exists('humble.bat')) ? @unlink('humble.bat') : '';
     //$x = (file_exists('humble'))  ? @unlink('humble') : '';
