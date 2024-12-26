@@ -10,7 +10,7 @@ $docker     = file_exists('Docker/docker-compose.yaml');
 switch ($method) {
     case "mysql"    :
         $project = json_decode(file_get_contents('Humble.project'));
-   /*     $data = (file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Missing application.xml file, Install is not possible at this time.");
+        $data = (file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Missing application.xml file, Install is not possible at this time.");
         $xml  = simplexml_load_string($data);
         if (!empty($xml)) {
             if (isset($xml->status)) {
@@ -24,7 +24,7 @@ switch ($method) {
             }
         } else {
             die("There is an error in the application configuration file");
-        }*/
+        }
         $action = isset($_POST['action']) ? $_POST['action']    : false;
         $host = isset($_POST['dbhost'])   ? $_POST['dbhost']    : false;
         $uid  = isset($_POST['userid'])   ? $_POST['userid']    : false;
@@ -65,7 +65,7 @@ switch ($method) {
         break;
     case "mongo"    :
         $project = json_decode(file_get_contents('Humble.project'));
-      /*  $data = (file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Missing application.xml file, Install is not possible at this time.");
+        $data = (file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Missing application.xml file, Install is not possible at this time.");
         $xml  = simplexml_load_string($data);
 
         if (!empty($xml)) {
@@ -80,7 +80,7 @@ switch ($method) {
             }
         } else {
             die("There is an error in the application configuration file");
-        }*/
+        }
         $action = isset($_POST['action']) ? $_POST['action']    : false;
         $mongo  = isset($_POST['mongo'])   ? $_POST['mongo']    : false;
         if ($action) {
@@ -236,8 +236,8 @@ CONFIG;
 //----------------------------------------------------------------------------------------------------------------
 
 $project    = json_decode(file_get_contents('Humble.project'));
-$xml        = simplexml_load_string((file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Install is not possible at this time due to missing application.xml meta data file."));
-
+$xml        = 'app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml';
+$xml        = file_exists($xml) ? simplexml_load_string(file_get_contents($xml)) : false;
 if (!empty($xml)) {
     if (isset($xml->status)) {
         if (isset($xml->status->enabled) && ((int)$xml->status->enabled)) {
@@ -253,8 +253,6 @@ if (!empty($xml)) {
     } else {
         die("The application is not correctly configured.  Correct the application configuration file and try again");
     }
-} else {
-    die("There is an error in the application configuration file");
 }
 
 $info = [

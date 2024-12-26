@@ -233,8 +233,10 @@
                     $class      = str_replace('/','\\','\\'.$str);
                     $instance   = new $class();
                 }
-                if ($instance) {
+                if ($instance && is_object($instance)) {
                     $instance->_prefix($module['prefix'])->_namespace($identifier['namespace'])->_entity(str_replace('/','_',$identifier['resource']))->_isVirtual(!$class);
+                } else {
+                    print("Entity ".$resource_identifier." failed to allocate\n");
                 }
             }
             return $instance;
