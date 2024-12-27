@@ -1,30 +1,71 @@
 <?php
-    ob_start();
-    function postUpdate($stage='Preparing',$step='Initializeing',$percent=0) {
-        $percent = ($percent > 100) ? 100 : $percent;
-        file_put_contents('../install_status.json','{ "stage": "'.$stage.'",  "step": "'.$step.'", "percent": '.$percent.' }');        
+/*------------------------------------------------------------------------------
+    ____           __        ____
+   /  _/___  _____/ /_____ _/ / /
+   / // __ \/ ___/ __/ __ `/ / / 
+ _/ // / / (__  ) /_/ /_/ / / /  
+/___/_/_/_/____/\__/\__,_/_/_/   
+  / ___/__________(_)___  / /_   
+  \__ \/ ___/ ___/ / __ \/ __/   
+ ___/ / /__/ /  / / /_/ / /_     
+/____/\___/_/  /_/ .___/\__/     
+                /_/              
+
+Crude but effective
+ -------------------------------------------------------------------------------*/
+
+function postUpdate($stage='Preparing',$step='Initializeing',$percent=0) {
+    $percent = ($percent > 100) ? 100 : $percent;
+    file_put_contents('../install_status.json','{ "stage": "'.$stage.'",  "step": "'.$step.'", "percent": '.$percent.' }');        
+}
+//------------------------------------------------------------------------------
+//
+function createMainModule($project) {
+    $landing_page   = \Environment::getProject('landing_page');
+    $location       = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php`);
+    $cmd            = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'email='.$project->author.' main_module=true';
+    file_put_contents('cmd.txt',$cmd);
+    print("\nExecuting: ".$cmd."\n\n");
+    $output     = []; $rc = -99;
+    exec($cmd,$output,$rc);
+    print("Return Code: ".$rc."\nOuput Follows\n");
+    foreach ($output as $result) {
+        print($result."\n");
     }
+    $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}','{$support_name}','{$support_email}'];
+    $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1',$project->name,$project->author];
+    @mkdir('Code/'.$project->package.'/'.$project->module.'/etc/',0775,true);
+    file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('Code/Framework/Humble/lib/sample/install/etc/application.xml')));           
+}
+//==============================================================================
+
+ob_start();
+if (!file_exists('Humble.project')) {
+    die('<h1>Missing Project File.  Run "humble --project" at the command line to create one</h1>');
+}
 $method     = (isset($_POST['method'])) ? $_POST['method'] : "INIT";
 $docker     = file_exists('Docker/docker-compose.yaml');
+$project    = json_decode(file_get_contents('Humble.project'));
+$xml        = 'app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml';
+$xml        = file_exists($xml) ? simplexml_load_string(file_get_contents($xml)) : false;
+if (!empty($xml)) {
+    if (isset($xml->status)) {
+        if (isset($xml->status->enabled) && ((int)$xml->status->enabled)) {
 
+        } else {
+            die("<table width='100%' height='100%'><tr><td align='center'><h1 style='color: red'>Please enable the application before attempting to install</h1></td></tr></table>");
+        }
+        if (isset($xml->status->installer) && ((int)$xml->status->installer)) {
+            //nop; everything is good
+        } else {
+            die("<table width='100%' height='100%'><tr><td align='center'><h1 style='color: red'>Executing the installation script is currently disabled</h1></td></tr></table>");
+        }
+    } else {
+        die("The application is not correctly configured.  Correct the application configuration file and try again");
+    }
+}
 switch ($method) {
     case "mysql"    :
-        $project = json_decode(file_get_contents('Humble.project'));
-        $data = (file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Missing application.xml file, Install is not possible at this time.");
-        $xml  = simplexml_load_string($data);
-        if (!empty($xml)) {
-            if (isset($xml->status)) {
-                if (isset($xml->status->installer) && ((int)$xml->status->installer)) {
-                    //nop; everything is good
-                } else {
-                    die("Executing the installation script is currently disabled");
-                }
-            } else {
-                die("The application is not correctly configured.  Correct the application configuration file and try again");
-            }
-        } else {
-            die("There is an error in the application configuration file");
-        }
         $action = isset($_POST['action']) ? $_POST['action']    : false;
         $host = isset($_POST['dbhost'])   ? $_POST['dbhost']    : false;
         $uid  = isset($_POST['userid'])   ? $_POST['userid']    : false;
@@ -64,23 +105,6 @@ switch ($method) {
         die();
         break;
     case "mongo"    :
-        $project = json_decode(file_get_contents('Humble.project'));
-        $data = (file_exists('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml')) ? file_get_contents('app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml') : die("Missing application.xml file, Install is not possible at this time.");
-        $xml  = simplexml_load_string($data);
-
-        if (!empty($xml)) {
-            if (isset($xml->status)) {
-                if (isset($xml->status->installer) && ((int)$xml->status->installer)) {
-                    //nop; everything is good
-                } else {
-                    die("Executing the installation script is currently disabled");
-                }
-            } else {
-                die("The application is not correctly configured.  Correct the application configuration file and try again");
-            }
-        } else {
-            die("There is an error in the application configuration file");
-        }
         $action = isset($_POST['action']) ? $_POST['action']    : false;
         $mongo  = isset($_POST['mongo'])   ? $_POST['mongo']    : false;
         if ($action) {
@@ -235,26 +259,6 @@ CONFIG;
 //
 //----------------------------------------------------------------------------------------------------------------
 
-$project    = json_decode(file_get_contents('Humble.project'));
-$xml        = 'app/Code/'.$project->package.'/'.$project->module.'/etc/application.xml';
-$xml        = file_exists($xml) ? simplexml_load_string(file_get_contents($xml)) : false;
-if (!empty($xml)) {
-    if (isset($xml->status)) {
-        if (isset($xml->status->enabled) && ((int)$xml->status->enabled)) {
-
-        } else {
-            die("<table width='100%' height='100%'><tr><td align='center'><h1 style='color: red'>Please enable the application before attempting to install</h1></td></tr></table>");
-        }
-        if (isset($xml->status->installer) && ((int)$xml->status->installer)) {
-            //nop; everything is good
-        } else {
-            die("<table width='100%' height='100%'><tr><td align='center'><h1 style='color: red'>Executing the installation script is currently disabled</h1></td></tr></table>");
-        }
-    } else {
-        die("The application is not correctly configured.  Correct the application configuration file and try again");
-    }
-}
-
 $info = [
     'User' => [
         'First' => '',
@@ -392,7 +396,7 @@ switch ($method) {
                                 </fieldset>
                                 <div style="clear: both"></div>
                             </div>
-                            <div id="installer-options" class='installer-form-div' style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+                            <div id="installer-options" class='installer-form-div' style="display: flex; flex-direction: column; justify-content: left; padding-left: 10px ">
                                 <fieldset><legend>Installation Options</legend>
                                     <label for="templater">Default Templater: </label>
                                     <select name="templater" id="templater">
@@ -403,6 +407,9 @@ switch ($method) {
                                         <option value="Savant"> Savant </option>
                                         <option value="TBS"> Tiny But Strong </option>
                                         <option value="PHP Tal"> PHPTal </option>
+                                        <option value="Rain"> Rain </option>
+                                        <option value="Mustache"> Mustache </option>
+                                        <option value="PHP"> PHP </option>
                                     </select><br /><br />
                                     <label for="landing-default">Landing Page: </label>
                                     <input type="radio" name="landing" id="landing-default" checked="checked" value="default" /> Default
@@ -501,9 +508,7 @@ switch ($method) {
         $use    = isset($_POST['templater'])        ? $_POST['templater']       : 'Smarty';
         $srch   = array('&&USERID&&','&&PASSWORD&&','&&DATABASE&&','&&HOST&&','&&MONGO&&','&&CACHE&&','&&MONGOUSER&&','&&MONGOPWD&&');
         $repl   = array($uid,$pwd,$db,$host,$mongo,$cache,$mongou,$mongop);
-        if (!file_exists('Humble.project')) {
-            die('<h1>Missing Project File.  Run "humble --project" at the command line to create one</h1>');
-        }
+
         $registration_data = [
             'serial_number' => $serial,
             'first_name'    => $fname,
@@ -537,21 +542,7 @@ switch ($method) {
         }
         //======================================================================
 
-        $landing_page   = \Environment::getProject('landing_page');
-        $location       = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php`);
-        $cmd            = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'email='.$project->author.' main_module=true';
-        file_put_contents('cmd.txt',$cmd);
-        print("\nExecuting: ".$cmd."\n\n");
-        $output     = []; $rc = -99;
-        exec($cmd,$output,$rc);
-        print("Return Code: ".$rc."\nOuput Follows\n");
-        foreach ($output as $result) {
-            print($result."\n");
-        }
-        $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}','{$support_name}','{$support_email}'];
-        $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1',$project->name,$project->author];
-        @mkdir('Code/'.$project->package.'/'.$project->module.'/etc/',0775,true);
-        file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('Code/Framework/Humble/lib/sample/install/etc/application.xml')));           
+        createMainModule($project);
         
         //======================================================================
         $custom = 'Code/'.$project->package.'/'.$project->module.'/etc/Constants.php'; 
