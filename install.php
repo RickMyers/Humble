@@ -611,9 +611,9 @@ switch ($method) {
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");
         $linux_sh = strtolower((string)$project->factory_name);
-        @copy('Humble.bat',strtolower((string)$project->factory_name).'.bat');
-        file_put_contents($linux_sh,str_replace("\r","",file_get_contents('../humble')));
-        chmod($linux_sh,0775);
+        @copy('humble.bat',strtolower((string)$project->factory_name).'.bat');
+        @copy('humble',$linux_sh);
+        @chmod($linux_sh,0775);
         $x = (file_exists('../Humble.php')) ? @unlink('../Humble.php') : '';
         $x = (file_exists('../humble.bat')) ? @unlink('../humble.bat') : '';
         $x = (file_exists('Humble.bat'))    ? @unlink('Humble.bat') : '';

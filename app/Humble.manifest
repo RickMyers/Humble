@@ -31,6 +31,8 @@ install.php
 loader.php
 lib/*
 web/*
+app/humble
+app/humble.bat
 app/cli/*
 app/PIDS/*
 app/Code/Framework/*
