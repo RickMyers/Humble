@@ -157,10 +157,6 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Schema/Install/Roles.sql"
         },
         {
-            "source": "/lib/sample/install/Schema/Update/query.sql",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Schema/Update/Users.sql"
-        },
-        {
             "source": "/lib/sample/install/Entities/Users.php.txt",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Entities/Users.php"
         },
