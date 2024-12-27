@@ -40,6 +40,9 @@ function createMainModule($project) {
     foreach ($output as $result) {
         print($result."\n");
     }
+    if (!$remote     = json_decode(file_get_contents($project->framework_url.'/distro/version'))) {
+        die('Could not get current version number of the framework, check connectivity issues'."\n");
+    }    
     $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}','{$support_name}','{$support_email}'];
     $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1',$project->name,$project->author];
     @mkdir('Code/'.$project->package.'/'.$project->module.'/etc/',0775,true);
@@ -590,7 +593,7 @@ switch ($method) {
             print('###########################################'."\n\n");
             $util->update($etc);
         }
-
+        $util->update('Code/'.$project->package.'/'.$project->module.'/etc/config.xml');
 
         postUpdate('Finalizing','Registering Administrator',(++$step*$percent));
         //need to create the user tables... should do that
