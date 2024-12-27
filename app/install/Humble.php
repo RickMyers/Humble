@@ -402,7 +402,7 @@ function restoreProject() {
     @unlink('tmp/'.$distro);
     print("\n\n");
     print('#######################################################################################################################'."\n");
-    print("# The framework restore is complete, please go to ".$project->project_url."/install to install your project\n");
+    print("# The framework restore is complete, please go to ".$project->project_url."/install.php to install your project\n");
     print('#######################################################################################################################'."\n");
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         exec('start '.$project->project_url.'/install');
