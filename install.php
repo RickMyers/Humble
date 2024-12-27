@@ -21,10 +21,11 @@ function postUpdate($stage='Preparing',$step='Initializeing',$percent=0) {
 //------------------------------------------------------------------------------
 //
 function createMainModule($project) {
+    print('Creating Main Module'."\n");
     $landing_page   = \Environment::getProject('landing_page');
     $location       = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php`);
     $cmd            = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'email='.$project->author.' main_module=true';
-    file_put_contents('cmd.txt',$cmd);
+  //  file_put_contents('cmd.txt',$cmd);
     print("\nExecuting: ".$cmd."\n\n");
     $output     = []; $rc = -99;
     exec($cmd,$output,$rc);
@@ -35,7 +36,23 @@ function createMainModule($project) {
     $srch = ['{$name}','{$version}','{$serial_number}','{$enabled}','{$polling}','{$interval}','{$installer}','{$quiescing}','{$SSO}','{$authorized}','{$idp}','{$caching}','{$support_name}','{$support_email}'];
     $repl = [$project->project_name,$remote->version,$project->serial_number,'1','0','15','1','0','0','0','','1',$project->name,$project->author];
     @mkdir('Code/'.$project->package.'/'.$project->module.'/etc/',0775,true);
-    file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('Code/Framework/Humble/lib/sample/install/etc/application.xml')));           
+    file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/application.xml',str_replace($srch,$repl,file_get_contents('Code/Framework/Humble/lib/sample/install/etc/application.xml')));   
+    $cmd            = $location.' CLI.php --i ns='.$project->namespace.' etc=Code/'.$project->package.'/'.$project->module.'/etc/config.xml';
+   // file_put_contents('cmd1.txt',$cmd);
+    exec($cmd,$output,$rc);
+    print("\nExecuting: ".$cmd."\n\n");
+    print("Return Code: ".$rc."\nOuput Follows\n");
+    foreach ($output as $result) {
+        print($result."\n");
+    }  
+    $cmd            = $location.' CLI.php --e ns='.$project->namespace;
+    print("\nExecuting: ".$cmd."\n\n");
+  //  file_put_contents('cmd2.txt',$cmd);
+    exec($cmd,$output,$rc);
+    print("Return Code: ".$rc."\nOuput Follows\n");
+    foreach ($output as $result) {
+        print($result."\n");
+    }      
 }
 //==============================================================================
 
@@ -542,6 +559,7 @@ switch ($method) {
         }
         //======================================================================
 
+        postUpdate('Building','Activating Application Module',(++$step*$percent));
         createMainModule($project);
         
         //======================================================================
@@ -572,19 +590,8 @@ switch ($method) {
             print('###########################################'."\n\n");
             $util->update($etc);
         }
-        
-        //This fakes out the CLI to thinking it was called at the command line
-        $args = [
-            "CLI.php",
-            "--activate",
-            "namespace=".$project->namespace,
-            "package=".$project->package,
-            "module=".$project->module
-        ];
-        
-        postUpdate('Finalizing','Activating Application Module',(++$step*$percent));
-        include "CLI.php";        
-        
+
+
         postUpdate('Finalizing','Registering Administrator',(++$step*$percent));
         //need to create the user tables... should do that
         $user_id      = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);        
@@ -596,7 +603,7 @@ switch ($method) {
             print('<pre>'.$results."\n\n\n".'</pre>');
             die('Install did not complete, no user was created'."\n");
         } 
-        print('</pre>');
+        
         session_start();
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");
@@ -619,7 +626,7 @@ switch ($method) {
         print("done with creating drivers\n\n");
         $log = ob_get_flush();
         //if error, then print log
-        print('<textarea style="width: 100%; height: 100%">'.$log.'</textarea>');
+        //print('<html><body><textarea style="width: 100%; height: 100%">'.$log.'</textarea></body></html>');
         postUpdate('Complete','Finished',100);
         file_put_contents('../install.log',$log);
         @unlink('../install_status.json');
