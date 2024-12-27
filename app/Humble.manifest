@@ -15,8 +15,8 @@
 ^.well-known/
 ^dist/
 ^Presentations/
-^Docs
-^pages
+^Docs/
+^pages/
 LICENSE
 index.html
 index.php
@@ -31,7 +31,6 @@ install.php
 loader.php
 lib/*
 web/*
-dist/*
 app/cli/*
 app/PIDS/*
 app/Code/Framework/*
