@@ -12,6 +12,13 @@
                 /_/              
 
 Crude but effective
+ 
+Since this is to install this framework, we have to use a different mechanism outside the framework to do this.
+
+IMPORTANT:
+
+   *** To Enable Install, edit the file application.xml file in the main modules /etc/ folder and set the value to enable (1) ***
+
  -------------------------------------------------------------------------------*/
 
 function postUpdate($stage='Preparing',$step='Initializeing',$percent=0) {
@@ -268,13 +275,6 @@ CONFIG;
     <body>
 <?php
 //----------------------------------------------------------------------------------------------------------------
-//Since this is to install this framework, we have to use a different mechanism outside the framework to do this.
-//
-//IMPORTANT:
-//
-//   *** To Enable Install, edit the file application.xml file in the main modules /etc/ folder and set the value to enable (1) ***
-//
-//----------------------------------------------------------------------------------------------------------------
 
 $info = [
     'User' => [
@@ -351,7 +351,7 @@ switch ($method) {
                         <form name='installer-form' method='post' id='installer-form' onsubmit="return false" action="" style="margin: 0px; border: 0px; font-family: sans-serif;">
                             <div class='installer-form-div' id="installer-form-div" style='text-align: left; position: relative; display: block;'>
                                 <div style="padding: 10px; color: white; font-size: 1em; font-family: sans-serif; margin-bottom: 20px; text-align: center; background-color: #0F3F3F">
-                                    Welcome to the Installation for <?=$xml->name?>
+                                    Welcome to the Installation for <?=$project->project_name?>
                                 </div>
 
                                 <input type="hidden" name="method" id="method" value="INSTALL" />
