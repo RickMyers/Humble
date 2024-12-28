@@ -619,7 +619,7 @@ switch ($method) {
         $x = (file_exists('Humble.bat'))    ? @unlink('Humble.bat') : '';
         $x = (file_exists('../humble'))     ? @unlink('../humble') : '';
         $x = (file_exists('humble'))        ? @unlink('humble') : '';
-        
+        file_put_contents($linux_sh,str_replace("\r","",file_get_contents($linux_sh)));
         if (file_exists('../.htaccess')) {
             $parts  = explode('/',$project->landing_page);
             $srch   = ['&&NAMESPACE&&','&&PACKAGE&&','&&MODULE&&','&&CONTROLLER&&','&&PAGE&&'];
@@ -641,6 +641,7 @@ switch ($method) {
         break;
     default             :
         die("I'm not sure what you want, but I'm pretty sure I don't do that\n");
+        break;
 }
 ?>
     </body>
