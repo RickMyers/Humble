@@ -6,13 +6,18 @@ File Explorer Actions
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="explorer" use="Twig" author="Rick Myers" email="rickmyers1969@gmail.com">
-    <actions blocking="ON" response="false">
-        <action name="app">
+    <actions blocking="off" response="false">
+        <action name="app" passalong="window_id">
             <description>Initial setup</description>
-            <!-- Entity, Helper, Model, Conditional declarations begin here -->
         </action>
 
         <!-- ############################################################### -->
 
+        <action name="filelist" blocking="off" output="JSON">
+            <description>Returns the files and directories contained located at a path that has been passed</description>
+            <helper namespace="admin" class="file/explorer" id="explorer">
+                <parameter name="path" value="explorer_path" source="request" required="true" />
+            </helper>
+        </action>
     </actions>
 </controller>

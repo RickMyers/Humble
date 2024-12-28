@@ -43,7 +43,7 @@
 			"type":			"combo",
 			"required":		true,
 			"force":		true,
-                        "style":                "position: relative; padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+                        "style":                ""
 		},
 		{
 			"active":		true,
@@ -63,7 +63,7 @@
 			"type":			"text",
 			"required":		true,
 			"force":		true,
-                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+                        "style":                ""
 		},                
 		{
 			"active":		true,
@@ -73,16 +73,16 @@
 			"type":			"text",
 			"required":		true,
 			"force":		true,
-                        "style":                "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+                        "style":                ""
 		},                                
 		{
 			"active":		true,
 			"id":			"smtp_settings_submit",
 			"longname":		"Submit Button",
 			"type":			"button",
-                        "style":                "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
-                        "classname":    "settingsButton",
-                        "value":        "",
+                        "style":                "",
+                        "classname":            "",
+                        "value":                "",
                         "onclick":        function () {
                             if (Edits['smtp_settings'].validate()) {
                                 (new EasyAjax('/admin/smtp/save')).packageForm('smtp_settings_form').then((response) => {

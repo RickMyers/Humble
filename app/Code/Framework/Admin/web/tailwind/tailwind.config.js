@@ -13,7 +13,10 @@ module.exports = {
     },
     extend: {
         colors: {
-            brightRed: 'hsl(12,88%,59%)'
+            brightRed: 'hsl(12,88%,59%)',
+            midblack: '#333333',
+            transparent: 'transparent',
+            currentColor: 'currentColor'
         }
     },
   },
