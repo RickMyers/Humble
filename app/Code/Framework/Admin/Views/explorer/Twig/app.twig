@@ -1,59 +1,60 @@
 <script type="text/javascript"> 
-    if (typeof fs_explorer_app === 'undefined') {
-        let fs_explorer_app = Vue.createApp({
-            template: Humble.template('admin','explorer/app'),
-            data: () => {
-                return {
-                }
+    //This is for handling "multiplicity", as in multiple explorer apps open at one time
+    Humble.admin['explorer'] = (!Humble.admin['explorer']) ? {} : Humble.admin['explorer'];
+    Humble.admin['explorer']['{{ window_id }}'] = Vue.createApp({
+        template: Humble.template('admin','explorer/app'),
+        data: () => {
+            return {
+            }
+        },
+        mounted: () => {
+           //new EasyEdits('/edits/admin/explorer','explorer');
+        },
+        created: () => {
+        },
+        updated: () => {
+        },
+        destroyed: () => {
+        },
+        methods: {
+            listFiles: async () => {
+                const form     = document.querySelector('#explorer_path_form');
+                const response = await fetch('/admin/explorer/filelist', {
+                    method: 'POST',
+                    body: new FormData(form)
+                });
+                let text       = await response.text();
+                alert(text);
             },
-            mounted: () => {
-               //new EasyEdits('/edits/admin/explorer','explorer');
-            },
-            created: () => {
-            },
-            updated: () => {
-            },
-            destroyed: () => {
-            },
-            methods: {
-                listFiles: async () => {
-                    const form     = document.querySelector('#explorer_path_form');
-                    const response = await fetch('/admin/explorer/filelist', {
+            createComponent: async () => {
+                if (Edits['new-component'].validate()) {
+                    const form     = document.querySelector('#new_component_form');
+                    const response = await fetch('/admin/component/create', {
                         method: 'POST',
                         body: new FormData(form)
                     });
                     let text       = await response.text();
                     alert(text);
-                },
-                createComponent: async () => {
-                    if (Edits['new-component'].validate()) {
-                        const form     = document.querySelector('#new_component_form');
-                        const response = await fetch('/admin/component/create', {
-                            method: 'POST',
-                            body: new FormData(form)
-                        });
-                        let text       = await response.text();
-                        alert(text);
-                        if (response.headers.get('RC') && (+response.headers.get('RC')===0)) {
-                            let win = Desktop.window.list['{{ window_id }}'];
-                            if (win) {
-                                win._close();
-                            } 
-                        }
-                    }   
-                }
+                    if (response.headers.get('RC') && (+response.headers.get('RC')===0)) {
+                        let win = Desktop.window.list['{{ window_id }}'];
+                        if (win) {
+                            win._close();
+                        } 
+                    }
+                }   
             }
-        });
-        var win = Desktop.window.list['{{ window_id }}'];
-        const explorer_app = fs_explorer_app.mount('#'+win.content.id);
-        win.resize(() => {
-            $('#explorer_file_list').height(win.content.height() - $E('explorer_path_area').offsetHeight - $E('explorer_footer').offsetHeight - 10);
-        });
-        win.close(((app) => {
-            return function () {
-                app.unmount();
-            };
-        })(fs_explorer_app));
-    }    
+        }
+    });
+    var win = Desktop.window.list['{{ window_id }}'];
+    const explorer_app = Humble.admin['explorer']['{{ window_id }}'].mount('#'+win.content.id);
+    win.resize(() => {
+        $('#explorer_file_list').height(win.content.height() - $E('explorer_path_area').offsetHeight - $E('explorer_footer').offsetHeight - 2);
+    });
+    win.close(((app) => {
+        return function () {
+            app.unmount();
+        };
+    })(Humble.admin['explorer']['{{ window_id }}']));
+    
 
 </script>

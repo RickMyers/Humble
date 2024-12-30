@@ -63,6 +63,10 @@
     </div>
     
     <div class="lab-item">
+        &bull; <a href="Labs/Screenshot.htmls">Screenshot Form Element</a> - Send a captured screenshot just like any form element
+    </div>
+        
+    <div class="lab-item">
         &bull; <a href="Labs/Carousel.htmls">Carousels</a> - A "different" take on carousel style photo/video management
     </div>
 

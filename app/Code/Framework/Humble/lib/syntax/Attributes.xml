@@ -1,0 +1,159 @@
+<?xml version="1.0">
+    <controller>
+    </controller>
+    <actions>
+    </action>
+    <action parent="actions">
+        <attributes>
+            
+        </attributes>
+    </action>
+    <model>
+        <attributes>
+            <id         required="false"  purpose="" default="Generated ID" />
+            <namespace  required="false"  purpose="" default="Main Module Namespace" />
+            <class      required="true"   purpose="" default="" />
+            <assign     required="false"  purpose="" default="" />
+            <use        required="false"  purpose="" default=""/>
+            <method     required="false"  purpose="" default="" />
+            <response   required="false"  purpose="" default="" />
+            <wrapper    required="false"  purpose="" default="" />
+        </attributes>
+    </model>
+    <entity>
+        <attributes>
+            <id         required="false"  purpose="" default="Generated ID" />
+            <namespace  required="false"  purpose="" default="Main Module Namespace" />
+            <resource   required="false"  purpose="" default="" />
+            <json       required="false"  purpose="" default="" />
+            <xref       required="false"  purpose="" default="" />
+            <exclude    required="false"  purpose="" default="" />
+            <page       required="false"  purpose="" default="" />
+            <rows       required="false"  purpose="" default="" />
+            <polyglot   required="false"  purpose="" default="" />
+            <orderby    required="false"  purpose="" default="" />
+            <distinct   required="false"  purpose="" default="" />
+            <fields     required="false"  purpose="" default="" /> 
+            <condition  required="false"  purpose="" default="" />
+            <conditionvar required="false"  purpose="" default="" />
+            <retain     required="false"  purpose="" default="" />
+            <argument   required="false"  purpose="" default="" />
+            <transformer required="false"  purpose="" default="" />
+            <defaultRows required="false"  purpose="" default="" />
+            <defaultPage required="false"  purpose="" default="" />
+            <class      required="true"   purpose="" default="" alias="resource" />
+            <assign     required="false"  purpose="" default="" />
+            <use        required="false"  purpose="" default="" />
+            <method     required="false"  purpose="" default="" />
+            <response   required="false"  purpose="" default="" />
+            <wrapper    required="false"  purpose="" default="" />
+        </attributes>
+    </entity>
+    <helper>
+        <attributes>
+            <id         required="false"  purpose="" default="Generated ID" />
+            <namespace  required="false"  purpose="" default="Main Module Namespace" />
+            <class      required="true"   purpose="" default="" />
+            <assign     required="false"  purpose="" default="" />
+            <method     required="false"  purpose="" default="" />
+            <response   required="false"  purpose="" default="" />
+            <wrapper    required="false"  purpose="" default="" />  
+        <attributes>      
+    </helper>
+    <access>
+        <attributes>
+            <namespace  required="false"  purpose="" default="Main Module Namespace" />
+            <class      required="true"   purpose="" default="" />
+            <method     required="true"  purpose="" default="" />
+        </attributes>
+    </access>
+    <mongo>
+        <attributes>
+            <id         required="false"  purpose="" default="Generated ID" />
+            <namespace  required="false"  purpose="" default="Main Module Namespace" />
+            <class      required="true"   purpose="" default="" alias="collection" />
+            <method     required="false"  purpose="" default="" />
+            <response   required="false"  purpose="" default="" />
+            <wrapper    required="false"  purpose="" default="" />     
+        </attributes>   
+    </mongo>
+    <chain>
+        <action parent="chain">
+            <attributes>
+                <name       required="true"   purpose="" default="" />
+                <map        required="false"  purpose="" default="" /> 
+                <controller required="false"  purpose="" default="" />
+            </attributes>        
+        </action>
+    </chain>
+    <output>
+        <attributes>
+            <text       required="true"   purpose="" default="" />
+            <request    required="false"   purpose="" default="" />
+            <var        required="false"   purpose="" default="" />
+        </attributes>
+    </output>
+    <redirect>
+        <attributes>
+            <post       required="post"   purpose="" default="" />
+            <var        required="false"   purpose="" default="" />
+            <href       required="true"   purpose="" default="" />
+        </attributes>
+    </redirect>
+    <application>
+        <attributes>
+            <assign    required="true"   purpose="" default="" />
+            <var       required="true"   purpose="" default="" />
+        </attributes>
+    </application>
+    <project>
+        <attributes>
+            <assign    required="true"   purpose="" default="" />
+            <var       required="true"   purpose="" default="" />            
+        </attributes>        
+    </project>
+    <if>
+        <attributes>
+        </attributes>        
+    </if>
+    <switch>
+        <attributes>
+            
+        </attributes>        
+    </switch>
+    <cache>
+        <attributes>
+            <assign    required="true"   purpose="" default="" />
+            <var       required="true"   purpose="" default="" />
+            <set       required="false"   purpose="" default="" />
+            <get       required="false"   purpose="" default="" />
+            <value     required="false"   purpose="" default="" />
+            <default   required="true"   purpose="" default="" />            
+        </attributes>        
+    </cache>
+    <view>
+        <attributes>
+            <name    required="true"   purpose="" default="" />            
+        </attributes>        
+    </view>
+    <views>
+        <attributes>
+            <name    required="true"   purpose="" default="" />            
+            <order   required="false"  purpose="" default="" />            
+        </attributes>        
+    </views>
+    <header>
+        <attributes>
+            
+        </attributes>        
+    </header>
+    <exception>
+        <attributes>
+            
+        </attributes>        
+    </exception>
+    <parameter>
+        <attributes>
+            
+        </attributes>        
+    </parameter>

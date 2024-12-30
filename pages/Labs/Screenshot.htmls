@@ -1,0 +1,67 @@
+
+
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Labs/EasyTime.htmls" title="EasyTime...." >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Submit Screenshot</div>
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    I've been creating medical web forms for physicians for more than 10 years, with the primary target being Pads and PCs.  Some of the physicians who were using various models of pads were reporting
+    weird behavior, but I couldn't recreate it on PC.  These days you'd probably just do a zoom call to see what they are seeing, but that wasn't available.  Instead I wanted them to take a screenshot
+    and send that to me, but to make it even easier I created this bit of code below which captures a screen shot and attaches it as a normal form element for submission.  It does this by accessing the 
+    screen shot in the memory buffer, base 64 convert the binary data, and attach that as normal a text element.  I actually looked online for an example of someone doing this but didn't find anyone so
+    this appears to be novel coding.  It worked perfectly at the time, and we were able to figure it was some HTML5 introduced tags that did not render properly on some models of pads.
+</div><br /><br />
+
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="100%" lang="js" lexicon="/web/js/ColorizerLanguages.json" class="humble-code">
+    async function getClipboardContents() {
+        const clipboardItems = await navigator.clipboard.read();
+        for (const clipboardItem of clipboardItems) {
+            for (const type of clipboardItem.types) {
+                const blob = await clipboardItem.getType(type);
+            }
+        }        
+    }
+  
+    function _arrayBufferToBase64( buffer ) {
+        var binary = '';
+        var bytes = new Uint8Array( buffer );
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode( bytes[ i ] );
+        }
+        return window.btoa( binary );
+    }
+    (() => {
+        $('#dashboard_bug_screenshot_attach').on('click',function (evt) {
+            navigator.permissions.query({ name: "clipboard-read" }).then(result => {
+                if (result.state == "granted" || result.state == "prompt") {
+                     navigator.clipboard.read().then(clipboardItems => {
+                        for (const clipboardItem of clipboardItems) {
+                            for (const type of clipboardItem.types) {
+                                const blob = clipboardItem.getType(type).then(function (image) {
+                                    const blob = new Blob([image],{ type: 'image/png' });
+                                    blob.arrayBuffer().then(data => {
+                                        $E('dashboard_bug_screenshot').src = "data:image/png;base64,"+_arrayBufferToBase64(data);
+                                    });
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    alert('Didnt get permission');
+                };
+            });
+        });          
+    })();
+</div>
+<br /><br /><br /><br />
+</div>
