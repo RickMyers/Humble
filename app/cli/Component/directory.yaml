@@ -50,3 +50,14 @@ g  :
     parameters:
         required:
         optional:
+sc|syntax  : 
+    description: Generate JSON Edits (Not-Implemented)
+    usage:
+        linux:   sudo sh ./humble.sh --sc ns=desired_namespace cn=path_to_file
+        windows: humble --sc  --sc ns=desired_namespace cn=path_to_file
+    function : syntaxCheck
+    parameters:
+        required:
+            ns|namespace: Namespace of module where controller resides
+            cn|controller: Controller name
+        optional:            

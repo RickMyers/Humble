@@ -1,11 +1,60 @@
 <?xml version="1.0">
     <controller>
+        <attributes>
+            <name required="true"   purpose="" default="" />
+            <use  required="false"  purpose="" default="Default templater found in Application.xml file">
+                <values>
+                    <twig />
+                    <smarty />
+                    <latte />
+                    <blade />
+                    <savant />
+                    <mustache />
+                    <phptal />
+                    <tbs />
+                    <php />
+                    <rain />
+                </values>
+            </use>
+        </attributes>
     </controller>
     <actions>
-    </action>
+        <attributes>
+            <blocking     required="false"  purpose="" default="TRUE" />
+            <response     required="false"  purpose="" default="FALSE" />
+        </attributes>
+    </actions>
     <action parent="actions">
         <attributes>
-            
+            <audit      required="false"  purpose="" default="" />
+            <name       required="true"  purpose="" default="" />
+            <blocking   required="false"  purpose="" default="" />
+            <response   required="false"  purpose="" default="" />
+            <csrf_protection     required="false"  purpose="" default="" />
+            <map        required="false"  purpose="" default="" />
+            <output     required="false"  purpose="" default="">
+                <values>
+                    <html />
+                    <csv />
+                    <xml />
+                    <json />
+                    <javascript alias="js" />
+                    <pdf />
+                    <yaml alias="yml" />
+                    <text />
+                </values>
+            </output>
+            <disposition required="false"  purpose="" default="" />
+            <filename   required="false"  purpose="" default="" />
+            <input      required="false"  purpose="" default="">
+                <values>
+                    <json />
+                    <xml />
+                </values>
+            </input>
+            <passalong  required="false"  purpose="" default="" />
+            <class      required="false"  purpose="" default="" />
+            <namespace  required="false"  purpose="" default="" />
         </attributes>
     </action>
     <model>
@@ -38,7 +87,14 @@
             <conditionvar required="false"  purpose="" default="" />
             <retain     required="false"  purpose="" default="" />
             <argument   required="false"  purpose="" default="" />
-            <transformer required="false"  purpose="" default="" />
+            <transformer required="false"  purpose="" default="" >
+                <values>
+                    <csv />
+                    <pdf />
+                    <xml />
+                    <html />
+                </values>
+            </transformer>
             <defaultRows required="false"  purpose="" default="" />
             <defaultPage required="false"  purpose="" default="" />
             <class      required="true"   purpose="" default="" alias="resource" />
@@ -114,20 +170,34 @@
     </project>
     <if>
         <attributes>
+           <eq      required="false"  purpose="Equal" default="" />
+           <gt      required="false"  purpose="Greater Than" default="" />
+           <lt      required="false"  purpose="Less Than" default="" />
+           <gte     required="false"  purpose="Greater Than Or Equal" default="" />
+           <lte     required="false"  purpose="Less Than Or Equal" default="" />
+           <eqs     required="false"  purpose="Strictly Equal" default="" />
+           <ne      required="false"  purpose="Not Equal" default="" />
+           <arguments required="false"  purpose="Variables to pass to a function" default="" />
+           <id      required="false"  purpose="ID of previously allocated object" default="" />
+           <var     required="false"  purpose="Variable in the request" default="" />
+           <assign  required="false"  purpose="Result from a previous assignment operation" default="" />
+           <sys     required="false"  purpose="Uploaded file counter" default="" />
         </attributes>        
     </if>
     <switch>
         <attributes>
-            
+            <id      required="false"  purpose="" default="" />
+            <var     required="false"  purpose="" default="" />
+            <method  required="false"  purpose="" default="" />
         </attributes>        
     </switch>
     <cache>
         <attributes>
             <assign    required="true"   purpose="" default="" />
             <var       required="true"   purpose="" default="" />
-            <set       required="false"   purpose="" default="" />
-            <get       required="false"   purpose="" default="" />
-            <value     required="false"   purpose="" default="" />
+            <set       required="false"  purpose="" default="" />
+            <get       required="false"  purpose="" default="" />
+            <value     required="false"  purpose="" default="" />
             <default   required="true"   purpose="" default="" />            
         </attributes>        
     </cache>
@@ -144,16 +214,66 @@
     </views>
     <header>
         <attributes>
-            
+            <name    required="true"  purpose="" default="" />            
+            <value   required="true"  purpose="" default="" />             
         </attributes>        
     </header>
     <exception>
         <attributes>
-            
+            <message required="true"  purpose="" default="" />            
+            <code    required="true"  purpose="" default="" />             
         </attributes>        
     </exception>
     <parameter>
         <attributes>
-            
+            <name    required="true"  purpose="" default="" />            
+            <source  required="true"  purpose="" default="" >
+                <values>
+                    <get />
+                    <post />
+                    <put alias="stream" />
+                    <file />
+                    <session />
+                    <assign alias="model,models" />
+                    <request />
+                    <json />
+                </values>
+            </source>
+            <value   required="false" purpose="" default="" />
+            <format  required="false" purpose="" default="" >
+                <values>
+                    <datestamp alias="date" />
+                    <timestamp />
+                    <time />
+                    <password />
+                    <encrypt alias="crypt" />
+                    <json />
+                </values>
+            </format>
+            <required required="false" purpose="" default="" />
+            <optional required="false" purpose="" default="" />
+            <min      required="false" purpose="" default="" />
+            <max      required="false" purpose="" default="" />
+            <default  required="false" purpose="" default="" >
+                <keywords>
+                    <uniqueid />
+                    <timestamp alias="datetime" />
+                    <time />
+                    <datestamp alias="date" />
+                    <currentyear />
+                    <currentmonth />
+                    <currentday />
+                    <currentdayofweek />
+                </keywords>
+            </default>
+            <trim     required="false" purpose="" default="" />
+            <upper    required="false" purpose="" default="" />
+            <lower    required="false" purpose="" default="" />
+            <escape   required="false" purpose="" default="" />
+            <encode   required="false" purpose="" default="" />
+            <decode   required="false" purpose="" default="" />
+            <unescape required="false" purpose="" default="" />
+            <range    required="false" purpose="" default="" />
+            <store    required="false" purpose="" default="" />
         </attributes>        
     </parameter>

@@ -471,7 +471,7 @@ PHP;
         if ($range) {
             print($this->tabs().'if (!(\Validator::range('.$source."['".$field."'".'],"'.$range.'"))) { throw new \Exceptions\ValidationDatatypeException("The value in the variable <i style=\'color: red\'>'.$field.'</i> is outside the range ['.$range.']",10); }'."\n");
         }        
-        if (isset($parameter["store"]) && (strtoupper($parameter['store'])=='TRUE')) {
+        if (isset($parameter["store"]) && ($this->truish($parameter['store']))) {
             if ($custom) {
                 print($this->tabs().'$_SESSION["'.$parameter['name'].'"] = isset('.$source.'["'.$parameter['value'].'"]) ? '.$source.'["'.$parameter['value'].'"] : '.$default.';'."\n");
             } else {

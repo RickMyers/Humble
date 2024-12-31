@@ -20,7 +20,7 @@
     <tr>
         <td><a href="#" onclick="window.history.back()">Back</a></td>
         <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
-        <td style="text-align: right"><a href="/pages/EasyTime.htmls" title="Calendar and Clock" >Next</a></td>
+        <td style="text-align: right"><a href="/pages/Labs/EasyTime.htmls" title="Calendar and Clock" >Next</a></td>
     </tr>
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>

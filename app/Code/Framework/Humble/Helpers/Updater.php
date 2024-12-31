@@ -124,7 +124,7 @@ class Updater extends Installer
             Humble::entity('humble/service/directory')->setNamespace($namespace)->delete();
             if ($module = Humble::module($namespace)) {
                 $services = Humble::entity('humble/service/directory');
-                if (is_dir($location = 'Code/'.$module['package'].'/'.$module['controller'])) {
+                if (is_dir($location = 'Code/'.$module['package'].'/'.$module['controllers'])) {
                     $dh = dir($location);
                     while ($controller = $dh->read()) {
                         if (($controller == '.') || ($controller == '..') || is_dir($location.'/'.$controller)) {

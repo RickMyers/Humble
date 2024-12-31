@@ -6,8 +6,8 @@
 if ($_SESSION['admin_id'] ?? false) {
     if ($util->getNamespace()) {
         $module     = \Humble::module($util->getNamespace());
-        $controller = $module['controller'];
-        $files      = $util->listDirectory('Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']),true);
+        $controller = $module['controllers'];
+        $files      = $util->listDirectory('Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']),true);
         foreach ($files as $file) {
             if (file_exists($file) && (strpos($file,'.xml')!==false)) {
                 print("Compiling: ".$file."\n");
@@ -16,14 +16,14 @@ if ($_SESSION['admin_id'] ?? false) {
                 $compiler->setInfo($module);
                 $compiler->setNamespace($module['namespace']);
                 $compiler->setPackage($module['package']);
-                $compiler->setDestination($module['package'].'/'.str_replace('_','/',$module['controller_cache']));
+                $compiler->setDestination($module['package'].'/'.str_replace('_','/',$module['controllers_cache']));
                 $compiler->compile();
             }
         }
     } else {
         //work this later, all modules in a package compiled
             foreach (\Humble::entities('humble/modules')->setEnabled('Y')->fetch() as $iidx => $module) {
-                $files      = $util->listDirectory('Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']),true);
+                $files      = $util->listDirectory('Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']),true);
                 foreach ($files as $file) {
                     if (file_exists($file) && (strpos($file,'.xml')!==false)) {
                         print("Compiling: ".$file."\n");

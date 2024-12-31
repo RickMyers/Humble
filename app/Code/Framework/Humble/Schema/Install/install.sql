@@ -160,7 +160,7 @@ CREATE TABLE `humble_modules` (
   `module` char(32) DEFAULT NULL,
   `namespace` char(64) NOT NULL,
   `configuration` varchar(128) DEFAULT NULL,
-  `controller` char(64) NOT NULL DEFAULT '',
+  `controllers` char(64) NOT NULL DEFAULT '',
   `package` char(32) DEFAULT '',
   `version` char(10) DEFAULT '0.1.0',
   `installed` datetime DEFAULT NULL,

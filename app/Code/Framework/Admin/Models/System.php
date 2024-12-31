@@ -313,7 +313,7 @@ class System extends Model
             if (!$result) {
                 $stats['modules']['errors'][] = $key;
             }            
-            if ($cdh = dir('Code/'.$module['package'].'/'.$module['controller'])) {
+            if ($cdh = dir('Code/'.$module['package'].'/'.$module['controllers'])) {
                 while ($entry = $cdh->read()) {
                     if (($entry == '.') || ($entry == '..') || ($entry === 'Cache')) {
                         continue;

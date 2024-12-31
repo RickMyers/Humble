@@ -220,7 +220,7 @@ SQL;
     public function compileControllers($namespace=false) {
         $namespace  = $namespace ? $namespace : $this->namespace;
         $module     = \Humble::module($namespace);
-        $controller = $module['controller'];
+        $controller = $module['controllers'];
         $source     = $module['package'].'/'.str_replace('_','/',$controller);
         $dest       = $source.'/Cache';
         $files      = \Humble::helper('humble/directory')->listDirectory('Code/'.$source,false); //this is weird... where do I prepend 'Code' to the name already?

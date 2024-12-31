@@ -1,9 +1,9 @@
 //Establishes a namespace
-var Humble = (function () {
+var Humble = (() => {
     var templates   = [];
     var vars        = [];    
     return {
-        init: function (callback) {
+        init:(callback) => {
             var me = this;
             (new EasyAjax('/paradigm/templates/fetch')).then((response) => {
                 var tpls = JSON.parse(response);
@@ -18,27 +18,33 @@ var Humble = (function () {
                 if (callback) {
                     callback.apply(me);
                 }
+                for (var i in Humble) {
+                    console.log(Humble[i]);
+                    if (Humble[i].init) {
+                        Humble[i].init();
+                    }
+                }
             }).get();
         },
         singleton: {
-            list: function () {
+            list: () => {
                 var args = [];
                 for (var j in vars) {
                     args[args.length] = j;
                 }
                 return args;
             },
-            set: function (v,val) {
+            set: (v,val) => {
                 vars[v] = val;
             },
-            get: function (v) {
+            get: (v) => {
                 return vars[v];
             },
-            show: function () {
+            show: () => {
                 console.log(vars);
             }
         },        
-        template:  function (namespace,identifier) {
+        template:  (namespace,identifier) => {
             let template = templates[namespace] ? (templates[namespace][identifier] ? templates[namespace][identifier] : '')  : '';
             if (!template) {
                 console.log('Attempt to fetch template ['+namespace+','+identifier+'] failed, the template was not found');

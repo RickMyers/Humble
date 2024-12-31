@@ -1,11 +1,8 @@
-Humble.admin = () => {
-    return {
+Humble.admin = {
         apps: {},
         init: () => {
-            alert('I loaded');
         },
         RTC: () => {
             
         }
-    }
-}
+    };

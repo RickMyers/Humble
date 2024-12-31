@@ -47,7 +47,7 @@ class Utility extends Model
      */
     public function compile() {
         $module     = Humble::module($this->getModule());
-        $sourcedir  = 'Code'.DIRECTORY_SEPARATOR.$this->getPackage().''.DIRECTORY_SEPARATOR.str_replace('_','/',$module['controller']);
+        $sourcedir  = 'Code'.DIRECTORY_SEPARATOR.$this->getPackage().''.DIRECTORY_SEPARATOR.str_replace('_','/',$module['controllers']);
         $dir        = dir($sourcedir);
         $compiler   = Environment::getCompiler();
         while (($entry = $dir->read()) !== false) {
@@ -59,8 +59,8 @@ class Utility extends Model
             $identifier = $module['namespace'].''.DIRECTORY_SEPARATOR.$controller;
             $compiler->setInfo($module);
             $compiler->setController($controller);
-            $compiler->setSource($module['package'].''.DIRECTORY_SEPARATOR.str_replace('_','/',$module['controller']));
-            $compiler->setDestination($module['package'].''.DIRECTORY_SEPARATOR.str_replace('_','/',$module['controller_cache']));
+            $compiler->setSource($module['package'].''.DIRECTORY_SEPARATOR.str_replace('_','/',$module['controllers']));
+            $compiler->setDestination($module['package'].''.DIRECTORY_SEPARATOR.str_replace('_','/',$module['controllers_cache']));
             $compiler->compile($identifier);
         }
         return $this;
@@ -305,7 +305,7 @@ class Utility extends Model
         if (!$module    = Humble::module($this->getNamespace(),$override)) {
             return "The ".$this->getNamespace()." module is disabled or does not exist";
         }
-        $dest           = 'Code'.DIRECTORY_SEPARATOR.$module['package']."/".$module['controller'];
+        $dest           = 'Code'.DIRECTORY_SEPARATOR.$module['package']."/".$module['controllers'];
         $dest           = $dest.''.DIRECTORY_SEPARATOR.$this->getName().'.xml';
         if (file_exists($dest)) {
             header('RC: 8');
