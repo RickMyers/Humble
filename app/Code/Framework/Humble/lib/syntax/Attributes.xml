@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tags>
-    <controller>
+    <controller taxonomy="sequence">
         <attributes>
             <name required="true"   purpose="" default="" />
             <use  required="false"  purpose="" default="Default templater found in Application.xml file">
@@ -19,13 +19,10 @@
             </use>
         </attributes>
     </controller>
-    <actions>
+    <actions taxonomy="sequence">
         <attributes>
             <blocking     required="false"  purpose="" default="TRUE" >
                 <values>
-                    <red />
-                    <green />
-                    <blue />
                     <off />
                     <on />
                 </values>
@@ -33,7 +30,7 @@
             <response     required="false"  purpose="" default="FALSE" />
         </attributes>
     </actions>
-    <action>
+    <action taxonomy="sequence">
         <attributes parent="chain">
             <name       required="true"   purpose="" default="" />
             <map        required="false"  purpose="" default="" /> 
@@ -42,8 +39,21 @@
         <attributes parent="actions">
             <audit      required="false"  purpose="" default="" />
             <name       required="true"  purpose="" default="" />
-            <blocking   required="false"  purpose="" default="" />
-            <response   required="false"  purpose="" default="" />
+            <blocking   required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                    
+                </values>                
+            </blocking>
+            <response   required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />                    
+                </values>
+            </response>                
             <csrf_protection     required="false"  purpose="" default="" />
             <map        required="false"  purpose="" default="" />
             <output     required="false"  purpose="" default="">
@@ -73,7 +83,7 @@
             <comment    required="false"  purpose="" default="" />
         </attributes>
     </action>
-    <model>
+    <model taxonomy="allocation">
         <attributes>
             <id         required="false"  purpose="" default="Generated ID" />
             <namespace  required="false"  purpose="" default="Main Module Namespace" />
@@ -81,11 +91,18 @@
             <assign     required="false"  purpose="" default="" />
             <use        required="false"  purpose="" default=""/>
             <method     required="false"  purpose="" default="" />
-            <response   required="false"  purpose="" default="" />
+            <response   required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />                    
+                </values>
+            </response>     
             <wrapper    required="false"  purpose="" default="" />
         </attributes>
     </model>
-    <entity>
+    <entity taxonomy="allocation">
         <attributes>
             <id         required="false"  purpose="" default="Generated ID" />
             <namespace  required="false"  purpose="" default="Main Module Namespace" />
@@ -117,11 +134,18 @@
             <assign     required="false"  purpose="" default="" />
             <use        required="false"  purpose="" default="" />
             <method     required="false"  purpose="" default="" />
-            <response   required="false"  purpose="" default="" />
+            <response   required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />                    
+                </values>
+            </response>     
             <wrapper    required="false"  purpose="" default="" />
         </attributes>
     </entity>
-    <resource>
+    <resource taxonomy="allocation">
         <attributes>
             <id         required="false"  purpose="" default="" />
             <namespace  required="false"  purpose="" default="Main Module Namespace" />
@@ -132,64 +156,85 @@
                     <java />
                 </values>
             </type>
-            <response />
+            <response   required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />                    
+                </values>
+            </response>     
         </attributes>
     </resource>
-    <helper>
+    <helper taxonomy="allocation">
         <attributes>
             <id         required="false"  purpose="" default="Generated ID" />
             <namespace  required="false"  purpose="" default="Main Module Namespace" />
             <class      required="true"   purpose="" default="" />
             <assign     required="false"  purpose="" default="" />
             <method     required="false"  purpose="" default="" />
-            <response   required="false"  purpose="" default="" />
+            <response   required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />                    
+                </values>
+            </response>     
             <wrapper    required="false"  purpose="" default="" />  
         </attributes>      
     </helper>
-    <access>
+    <access taxonomy="authorization">
         <attributes>
             <namespace  required="false"  purpose="" default="Main Module Namespace" />
             <class      required="true"   purpose="" default="" />
             <method     required="true"  purpose="" default="" />
         </attributes>
     </access>
-    <mongo>
+    <mongo taxonomy="allocation">
         <attributes>
             <id         required="false"  purpose="" default="Generated ID" />
             <namespace  required="false"  purpose="" default="Main Module Namespace" />
             <class      required="true"   purpose="" default="" alias="collection" />
             <method     required="false"  purpose="" default="" />
-            <response   required="false"  purpose="" default="" />
+            <response   required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />                    
+                </values>
+            </response>     
             <wrapper    required="false"  purpose="" default="" />     
         </attributes>   
     </mongo>
-    <output>
+    <output taxonomy="response">
         <attributes>
             <text       required="true"   purpose="" default="" />
             <request    required="false"   purpose="" default="" />
             <var        required="false"   purpose="" default="" />
         </attributes>
     </output>
-    <redirect>
+    <redirect taxonomy="response">
         <attributes>
             <post       required="post"   purpose="" default="" />
             <var        required="false"   purpose="" default="" />
             <href       required="true"   purpose="" default="" />
         </attributes>
     </redirect>
-    <application>
+    <application taxonomy="metadata">
         <attributes>
             <assign    required="true"   purpose="" default="" />
             <var       required="true"   purpose="" default="" />
         </attributes>
     </application>
-    <project>
+    <project taxonomy="metadata">
         <attributes>
             <assign    required="true"   purpose="" default="" />
             <var       required="true"   purpose="" default="" />            
         </attributes>        
     </project>
-    <if>
+    <if taxonomy="decision">
         <attributes>
            <eq      required="false"  purpose="Equal" default="" />
            <gt      required="false"  purpose="Greater Than" default="" />
@@ -205,19 +250,19 @@
            <sys     required="false"  purpose="Uploaded file counter" default="" />
         </attributes>        
     </if>
-    <switch>
+    <switch taxonomy="decision">
         <attributes>
             <id      required="false"  purpose="" default="" />
             <var     required="false"  purpose="" default="" />
             <method  required="false"  purpose="" default="" />
         </attributes>        
     </switch>
-    <case>
+    <case taxonomy="decision">
         <attributes>
             <value     required="false"  purpose="" default="" />
         </attributes>
     </case>
-    <cache>
+    <cache taxonomy="metadata">
         <attributes>
             <assign    required="true"   purpose="" default="" />
             <var       required="true"   purpose="" default="" />
@@ -227,40 +272,43 @@
             <default   required="true"   purpose="" default="" />            
         </attributes>        
     </cache>
-    <view>
+    <view taxonomy="sequence">
         <attributes>
             <name    required="true"   purpose="" default="" />            
         </attributes>        
     </view>
-    <views>
+    <views taxonomy="sequence">
         <attributes>
             <name    required="true"   purpose="" default="" />            
             <order   required="false"  purpose="" default="" />            
         </attributes>        
     </views>
-    <header>
+    <header taxonomy="response">
         <attributes>
             <name    required="true"  purpose="" default="" />            
             <value   required="true"  purpose="" default="" />             
         </attributes>        
     </header>
-    <exception>
+    <exception taxonomy="response">
         <attributes>
             <message required="true"  purpose="" default="" />            
             <code    required="true"  purpose="" default="" />             
         </attributes>        
     </exception>
-    <parameter>
+    <parameter taxonomy="data and validation">
         <attributes>
             <name    required="true"  purpose="" default="" />            
             <source  required="true"  purpose="" default="" >
                 <values>
                     <get />
                     <post />
-                    <put alias="stream" />
+                    <put />
+                    <stream alias="put" />
                     <file />
                     <session />
-                    <assign alias="model,models" />
+                    <assign />
+                    <model alias="assign" />
+                    <models alias="assign" />
                     <request />
                     <json />
                 </values>
@@ -269,6 +317,7 @@
             <format  required="false" purpose="" default="" >
                 <values>
                     <datestamp alias="date" />
+                    <date />
                     <timestamp />
                     <time />
                     <password />
@@ -285,8 +334,10 @@
                 <keywords>
                     <uniqueid />
                     <timestamp alias="datetime" />
+                    <datetime />
                     <time />
                     <datestamp alias="date" />
+                    <date />
                     <currentyear />
                     <currentmonth />
                     <currentday />
@@ -303,4 +354,11 @@
             <store    required="false" purpose="" default="" />
         </attributes>        
     </parameter>
+    <description taxonomy="documentation" />
+    <comment taxonomy="documentation" />
+    <default parent="actions" />
+    <default parent="switch" />
+    <chain taxonomy="sequence" />
+    <then taxonomy="decision" />
+    <else taxonomy="decision" />
 </tags>

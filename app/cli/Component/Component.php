@@ -44,25 +44,34 @@ class Component extends CLI
      * @return string
      */
     private static function tagAttributeCheck($parent,$node,$attributes,$validator) {
-        $schema = false;
         $errors = [];
         if (isset($validator->$node)) {                                         //We need to find the correct syntax scheme to compare the attribute to, since some have multiple schemes depending on parent
-            foreach ($validator->$node->attributes as $idx => $check) {
-                $attr = $check->attributes();
+            foreach ($validator->$node->attributes as $idx => $schema) {
+                $attr = $schema->attributes();
                 if (isset($attr->parent) && ((string)$attr->parent==$parent)) {
                     break;
                 }
             }
-            $schema = $check ?? false;
-        }
-        foreach ($attributes as $attribute => $value) {
-            if (!isset($schema->$attribute)) {
-                $errors[] = $attribute." is not a valid attribute of ".$node;
-            } else if (isset($schema->$attribute->values)) {
-                if (!isset($schema->$attribute->values->$value)) {
-                    $errors[] = $value." is not a valid value for ".$attribute;
+            foreach ($attributes as $attribute => $value) {
+                if (!isset($schema->$attribute)) {
+                    $errors[] = $attribute." is not a valid attribute of ".$node;
+                    continue;
+                }
+                if (isset($schema->$attribute->values)) {
+                    if (!isset($schema->$attribute->values->$value)) {
+                        $errors[] = $value." is not a valid value for ".$attribute;
+                    }
+                }
+                if (isset($schema->$attribute->conflicts)) {
+                    foreach (explode(',',$schema->$attribute->conflicts) as $conflict) {
+                        if (isset($attribute->$conflict)) {
+                            $errors[] = 'Conflict detected, '.$attribute.' and '.$conflict.' are mutually exclusive, choose one'; 
+                        }
+                    }
                 }
             }
+        } else {
+            $errors[] = "No validation scheme found for ".$node;
         }
         return $errors;
     }
@@ -78,14 +87,13 @@ class Component extends CLI
      * @return string
      */
     private static function checkControllerNodes($parent,$nodes,$structure,$validator,$errors) {
-        $valid      = false;
         foreach ($nodes as $child => $children) {
-            if (!$valid = isset($structure->$parent->$child)) {
+            if (!isset($structure->$parent->$child)) {
                  $errors[] = 'Tag '.$child.' is not a valid child of '.$parent;
-            } else if ($faults = self::tagAttributeCheck($parent,$child,$nodes->$child->attributes(),$validator)) {
-                foreach ($faults as $error) {
-                    $errors[] = $error;
-                }
+                 continue;
+            }
+            foreach (self::tagAttributeCheck($parent,$child,$nodes->$child->attributes(),$validator) as $error) {
+                $errors[] = $error;
             }
             if ($children->count()) {
                 $errors = self::checkControllerNodes($child,$children,$structure,$validator,$errors);
@@ -107,10 +115,8 @@ class Component extends CLI
                 $source     = simplexml_load_file($file);
                 $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
                 $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
-                if (count($errors = self::checkControllerNodes('controller',$source,$structure,$validator,$errors))) {
-                    foreach ($errors as $idx => $message) {
-                        print($idx+1 .') '.$message."\n");
-                    }
+                foreach ($errors = self::checkControllerNodes('controller',$source,$structure,$validator,$errors) as $idx => $message) {
+                    print($idx+1 .') '.$message."\n");
                 }
             } else {
                 die('Controller not found'."\n\n");
@@ -118,7 +124,7 @@ class Component extends CLI
         } else {
             die("\nModule not found\n\n");
         }
-        return (count($errors)===0);
+        return $errors;
     }
 }
 
