@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <controller name="user" use="Twig">
-    <actions blocking="on">
-
+    <actions blocking="black">
         <action name="login" passalong="user_name:required=true,user_password:format=password:required=true:value=password" event='userLogin' comment='Triggers the user login workflow'>
             <description>Launches the process that a person goes through to login</description>
             <model class="user" id="user">
@@ -16,23 +15,10 @@
                     <redirect href='/index.html?message=Incorrect User ID or Password' />   
                 </default>
             </switch>
+            <blah />
         </action>
  
         <!-- ############################################################### -->
-
-        <action name="resource" output="JSON">
-            <description>Resource execution test</description> 
-            <resource type="sql" namespace="humble" class="medical/forms" resource="mform" response="true">
-                <parameter name="last_name"     source="request" optional="true" />
-                <parameter name="form_id"       source="request" optional="true" />
-                <parameter name="start_date"    format="date" source="request" optional="true" />
-                <parameter name="end_date"      format="date" source="request" optional="true" />
-                <parameter name="status"        source="request" optional="true" />
-            </resource>
-        </action>
-                       
-        <!-- ############################################################### -->
-
 
         <action name="authentication" output="JSON">
             <description>For remote APIs, lets them attempt to authenticate</description>
@@ -56,7 +42,7 @@
         
         <action name='home'>
             <description>The Humble home page</description>
-            <entity namespace='humble' class='permissions' id='permissions' comment="fake class">
+            <entity namespace='humble' class='permissions' id='permissions'>
                 <parameter name='user_id' value="uid"  source='session' />
             </entity>
             <switch id='permissions' method='getUserId'>
@@ -118,11 +104,18 @@
 
         <!-- ############################################################### -->
         
+        <action name="nothingmuch">
+            <description>Nothing</description>
+        </action>
+        
         <action name="emailcheck" output="JSON" blocking="off">
             <description>Checks to see if an email is in our system</description>
             <entity class="users" id="user" method="nonkeysload" response="false">
                 <parameter name="email" source="request" required="true" />
             </entity>
+            <chain>
+                <action name="nothingmuch" />
+            </chain>
         </action>
         
         <!-- ############################################################### -->

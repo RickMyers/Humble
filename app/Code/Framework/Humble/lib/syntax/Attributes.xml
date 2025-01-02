@@ -1,4 +1,5 @@
-<?xml version="1.0">
+<?xml version="1.0"?>
+<tags>
     <controller>
         <attributes>
             <name required="true"   purpose="" default="" />
@@ -20,12 +21,25 @@
     </controller>
     <actions>
         <attributes>
-            <blocking     required="false"  purpose="" default="TRUE" />
+            <blocking     required="false"  purpose="" default="TRUE" >
+                <values>
+                    <red />
+                    <green />
+                    <blue />
+                    <off />
+                    <on />
+                </values>
+            </blocking>
             <response     required="false"  purpose="" default="FALSE" />
         </attributes>
     </actions>
-    <action parent="actions">
-        <attributes>
+    <action>
+        <attributes parent="chain">
+            <name       required="true"   purpose="" default="" />
+            <map        required="false"  purpose="" default="" /> 
+            <controller required="false"  purpose="" default="" />
+        </attributes>        
+        <attributes parent="actions">
             <audit      required="false"  purpose="" default="" />
             <name       required="true"  purpose="" default="" />
             <blocking   required="false"  purpose="" default="" />
@@ -55,6 +69,8 @@
             <passalong  required="false"  purpose="" default="" />
             <class      required="false"  purpose="" default="" />
             <namespace  required="false"  purpose="" default="" />
+            <event      required="false"  purpose="" default="" />
+            <comment    required="false"  purpose="" default="" />
         </attributes>
     </action>
     <model>
@@ -73,7 +89,7 @@
         <attributes>
             <id         required="false"  purpose="" default="Generated ID" />
             <namespace  required="false"  purpose="" default="Main Module Namespace" />
-            <resource   required="false"  purpose="" default="" />
+            <resource   required="false"  purpose="" default="" conflicts="method" />
             <json       required="false"  purpose="" default="" />
             <xref       required="false"  purpose="" default="" />
             <exclude    required="false"  purpose="" default="" />
@@ -105,6 +121,20 @@
             <wrapper    required="false"  purpose="" default="" />
         </attributes>
     </entity>
+    <resource>
+        <attributes>
+            <id         required="false"  purpose="" default="" />
+            <namespace  required="false"  purpose="" default="Main Module Namespace" />
+            <type       required="true"   purpose="" default="" >
+                <values>
+                    <js />
+                    <py />
+                    <java />
+                </values>
+            </type>
+            <response />
+        </attributes>
+    </resource>
     <helper>
         <attributes>
             <id         required="false"  purpose="" default="Generated ID" />
@@ -114,7 +144,7 @@
             <method     required="false"  purpose="" default="" />
             <response   required="false"  purpose="" default="" />
             <wrapper    required="false"  purpose="" default="" />  
-        <attributes>      
+        </attributes>      
     </helper>
     <access>
         <attributes>
@@ -133,15 +163,6 @@
             <wrapper    required="false"  purpose="" default="" />     
         </attributes>   
     </mongo>
-    <chain>
-        <action parent="chain">
-            <attributes>
-                <name       required="true"   purpose="" default="" />
-                <map        required="false"  purpose="" default="" /> 
-                <controller required="false"  purpose="" default="" />
-            </attributes>        
-        </action>
-    </chain>
     <output>
         <attributes>
             <text       required="true"   purpose="" default="" />
@@ -191,6 +212,11 @@
             <method  required="false"  purpose="" default="" />
         </attributes>        
     </switch>
+    <case>
+        <attributes>
+            <value     required="false"  purpose="" default="" />
+        </attributes>
+    </case>
     <cache>
         <attributes>
             <assign    required="true"   purpose="" default="" />
@@ -250,10 +276,11 @@
                     <json />
                 </values>
             </format>
-            <required required="false" purpose="" default="" />
-            <optional required="false" purpose="" default="" />
-            <min      required="false" purpose="" default="" />
-            <max      required="false" purpose="" default="" />
+            <required required="false" purpose="" default="" conflicts="optional" />
+            <optional required="false" purpose="" default="" conflicts="required" />
+            <min      required="false" purpose="" default="" conflicts="range" />
+            <max      required="false" purpose="" default="" conflicts="range" />
+            <range    required="false" purpose="" default="" conflicts="min,max" />            
             <default  required="false" purpose="" default="" >
                 <keywords>
                     <uniqueid />
@@ -267,13 +294,13 @@
                 </keywords>
             </default>
             <trim     required="false" purpose="" default="" />
-            <upper    required="false" purpose="" default="" />
-            <lower    required="false" purpose="" default="" />
-            <escape   required="false" purpose="" default="" />
-            <encode   required="false" purpose="" default="" />
-            <decode   required="false" purpose="" default="" />
-            <unescape required="false" purpose="" default="" />
-            <range    required="false" purpose="" default="" />
+            <upper    required="false" purpose="" default="" conflicts="lower" />
+            <lower    required="false" purpose="" default="" conflicts="upper" />
+            <escape   required="false" purpose="" default="" conflicts="unescape" />
+            <encode   required="false" purpose="" default="" conflicts="decode" />
+            <decode   required="false" purpose="" default="" conflicts="encode" />
+            <unescape required="false" purpose="" default="" conflicts="escape" />
             <store    required="false" purpose="" default="" />
         </attributes>        
     </parameter>
+</tags>

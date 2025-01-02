@@ -1,256 +1,165 @@
-<?xml version="1.0">
-<controller>
+<?xml version="1.0"?>
+<tags>
+    <controller>
+        <comment />
+        <actions />
+    </controller>
     <actions>
-        <action>
-            <description></description>
-            <comment></comment>
-            <model>
-                <comment></comment>                
-                <parameter/>
-            </model>
-            <helper>
-                <comment></comment>                
-                <parameter/>
-            </helper>
-            <entity>
-                <comment></comment>                
-                <parameter/>
-            </entity>
-            <access>
-                <comment></comment>                
-                <parameter/>
-            </access>
-            <mongo>
-                <comment></comment>                
-                <parameter/>
-            </mongo>
-            <if>
-                <comment></comment>                
-                <then>
-                    <comment></comment>
-                    <model>
-                        <parameter/>
-                    </model>
-                    <helper>
-                        <parameter/>
-                    </helper>
-                    <entity>
-                        <parameter/>
-                    </entity>
-                    <access>
-                        <parameter/>
-                    </access>
-                    <mongo>
-                        <parameter/>
-                    </mongo>
-                    <if>
-                        <then></then>
-                        <else></else>
-                    </if>
-                    <switch>
-                        <case></case>
-                        <default></default>
-                    </switch>
-                    <output></output>
-                    <view></view>
-                    <views></views>
-                    <chain></chain>
-                    <redirect></redirect>
-                    <cache></cache>
-                    <project></project>
-                    <application></application>
-                    <exception></exception>
-                    <abort></abort>
-                    <header></header>                    
-                </then>
-                <else>
-                    <comment></comment>
-                    <model>
-                        <parameter/>
-                    </model>
-                    <helper>
-                        <parameter/>
-                    </helper>
-                    <entity>
-                        <parameter/>
-                    </entity>
-                    <access>
-                        <parameter/>
-                    </access>
-                    <mongo>
-                        <parameter/>
-                    </mongo>
-                    <if>
-                        <then></then>
-                        <else></else>
-                    </if>
-                    <switch>
-                        <case></case>
-                        <default></default>
-                    </switch>
-                    <output></output>
-                    <view></view>
-                    <views></views>
-                    <chain></chain>
-                    <redirect></redirect>
-                    <cache></cache>
-                    <project></project>
-                    <application></application>
-                    <exception></exception>
-                    <abort></abort>
-                    <header></header>                    
-
-                </else>
-            </if>
-            <switch>
-                <comment></comment>                
-                <case>
-                    <comment></comment>
-                    <model>
-                        <parameter/>
-                    </model>
-                    <helper>
-                        <parameter/>
-                    </helper>
-                    <entity>
-                        <parameter/>
-                    </entity>
-                    <access>
-                        <parameter/>
-                    </access>
-                    <mongo>
-                        <parameter/>
-                    </mongo>
-                    <if>
-                        <then></then>
-                        <else></else>
-                    </if>
-                    <switch>
-                        <case></case>
-                        <default></default>
-                    </switch>
-                    <output></output>
-                    <view></view>
-                    <views></views>
-                    <chain></chain>
-                    <redirect></redirect>
-                    <cache></cache>
-                    <project></project>
-                    <application></application>
-                    <exception></exception>
-                    <abort></abort>
-                    <header></header>                    
-
-                </case>
-                <default>
-                    <comment></comment>
-                    <model>
-                        <parameter/>
-                    </model>
-                    <helper>
-                        <parameter/>
-                    </helper>
-                    <entity>
-                        <parameter/>
-                    </entity>
-                    <access>
-                        <parameter/>
-                    </access>
-                    <mongo>
-                        <parameter/>
-                    </mongo>
-                    <if>
-                        <then></then>
-                        <else></else>
-                    </if>
-                    <switch>
-                        <case></case>
-                        <default></default>
-                    </switch>
-                    <output></output>
-                    <view></view>
-                    <views></views>
-                    <chain></chain>
-                    <redirect></redirect>
-                    <cache></cache>
-                    <project></project>
-                    <application></application>
-                    <exception></exception>
-                    <abort></abort>
-                    <header></header>                    
-                </default>
-            </switch>
-            <output>
-                <comment></comment>                
-            </output>
-            <view>
-                <comment></comment>                
-            </view>
-            <views>
-                <comment></comment>                
-            </views>
-            <chain>
-                <comment></comment>
-                <action />
-            </chain>
-            <redirect>
-                <comment></comment>                
-            </redirect>
-            <cache>
-                <comment></comment>                
-            </cache>
-            <project>
-                <comment></comment>                
-            </project>
-            <application>
-                <comment></comment>                
-            </application>
-            <exception>
-                <comment></comment>                
-            </exception>
-            <abort>
-                <comment></comment>
-            </abort>
-            <header>
-                <comment></comment>                
-            </header>
-        </action>
-        <default>
-            <comment></comment>
-            <model>
-                <parameter/>
-            </model>
-            <helper>
-                <parameter/>
-            </helper>
-            <entity>
-                <parameter/>
-            </entity>
-            <access>
-                <parameter/>
-            </access>
-            <mongo>
-                <parameter/>
-            </mongo>
-            <if>
-                <then></then>
-                <else></else>
-            </if>
-            <switch>
-                <case></case>
-                <default></default>
-            </switch>
-            <output></output>
-            <view></view>
-            <views></views>
-            <chain></chain>
-            <redirect></redirect>
-            <cache></cache>
-            <project></project>
-            <application></application>
-            <exception></exception>
-            <abort></abort>
-            <header></header>                    
-        </default>
-    </actions>
-</controller>
+        <comment />
+        <action />
+        <default />
+    </actions>        
+    <action>
+        <comment />
+        <description />
+        <model />
+        <helper />
+        <entity />
+        <access />
+        <if />
+        <mongo />
+        <resource />
+        <view />
+        <views />
+        <redirect />
+        <output />
+        <switch />
+        <chain />
+        <cache />
+        <project />
+        <application />
+        <exception />
+        <abort />
+        <header />
+    </action>
+    <chain>
+        <comment />
+        <action />
+    </chain>
+    <description />
+    <comment />
+    <model>
+        <comment />
+        <parameter/>
+    </model>
+    <helper>
+         <comment />
+         <parameter/>
+    </helper>
+    <entity>
+        <comment />                
+        <parameter/>
+    </entity>
+    <access>
+        <comment/>                
+        <parameter/>
+    </access>
+    <mongo>
+        <comment />
+        <parameter/>
+    </mongo>
+    <resource>
+        <comment />
+        <parameter/>
+    </resource>
+    <if>
+        <comment />
+        <then />
+        <else />
+    </if>
+    <then>
+        <comment />
+        <description />
+        <model />
+        <helper />
+        <entity />
+        <access />
+        <if />
+        <mongo />
+        <view />
+        <views />
+        <redirect />
+        <output />
+        <switch />
+        <chain />
+        <cache />
+        <project />
+        <application />
+        <exception />
+        <abort />
+        <header />        
+        
+    </then>
+    <else>
+        <comment />
+        <description />
+        <model />
+        <helper />
+        <entity />
+        <access />
+        <if />
+        <mongo />
+        <view />
+        <views />
+        <redirect />
+        <output />
+        <switch />
+        <chain />
+        <cache />
+        <project />
+        <application />
+        <exception />
+        <abort />
+        <header />        
+    </else>
+    <switch>
+        <comment />
+        <case />
+        <default />        
+    </switch>
+    <case>
+        <comment />
+        <description />
+        <model />
+        <helper />
+        <entity />
+        <access />
+        <if />
+        <mongo />
+        <view />
+        <views />
+        <redirect />
+        <output />
+        <switch />
+        <chain />
+        <cache />
+        <project />
+        <application />
+        <exception />
+        <abort />
+        <header />        
+    </case>
+    <default>
+        <comment />
+        <description />
+        <model />
+        <helper />
+        <entity />
+        <access />
+        <if />
+        <mongo />
+        <view />
+        <views />
+        <redirect />
+        <output />
+        <switch />
+        <chain />
+        <cache />
+        <project />
+        <application />
+        <exception />
+        <abort />
+        <header />        
+    </default>
+    <parameter />
+</tags>
