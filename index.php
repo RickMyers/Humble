@@ -182,7 +182,7 @@ if ($mobile_support && $is_mobile) {
 if (!$request_handled) {
     $core            = \Humble::module(\Environment::namespace());             //A reference to the core functionality held in the applications primary module
     $include         = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller_cache']).'/'.$controller.'Controller.php';
-    $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller']).'/'.$controller.'.xml';
+    $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$controller.'.xml';
 
     //###########################################################################
     //If App Status is not in a production state, we allow for dynamic compilation of controllers.
@@ -226,14 +226,16 @@ if (!$request_handled) {
             if ($ns === $core['namespace']) {
                 $core   = \Humble::module($ns);
                 $compiler->setInfo(\Humble::module($core['namespace']));
-                $compiler->setSource($core['package'].'/'.str_replace('_','/',$core['controller']));
+                $compiler->setSource($core['package'].'/'.str_replace('_','/',$core['controllers']));
                 $compiler->setDestination($core['package'].'/'.str_replace('_','/',$core['controller_cache']));
             } else {
                 $compiler->setInfo($module);
-                $compiler->setSource($module['package'].'/'.str_replace('_','/',$module['controller']));
+                $compiler->setSource($module['package'].'/'.str_replace('_','/',$module['controllers']));
                 $compiler->setDestination($module['package'].'/'.str_replace('_','/',$module['controller_cache']));
             }
-            $compiler->compile($identifier);
+            if ($compiler->syntaxCheck($identifier)) {
+                $compiler->compile($identifier);
+            }
         } catch (ControllerParameterException $e) {
             \HumbleException::standard($e,'Parameter Configuration Error','custom');
         } catch (MissingControllerXMLException $e) {

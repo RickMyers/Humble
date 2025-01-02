@@ -608,10 +608,7 @@ PHP;
      * @param string $node
      */
     private function processEntity($node) {
-        if (isset($node['method']) && isset($node['resource'])) {
-            throw new \Exceptions\EntityResourceContradiction("Misconfigured Entity, Can not have both a 'method' attribute and a 'resource' attribute",20);
-            die();
-        }        
+  
         $node['namespace'] = $node['namespace'] ?? \Environment::namespace();
         $namespace = (strtolower($node['namespace'])==='inherit') ? "\".Humble::_namespace().\"" : ((strtolower($node['namespace'])==='default') ? "\".Environment::namespace().\"" : $node['namespace'] );
 
@@ -1595,7 +1592,26 @@ PHP;
 SQL;
        $this->_db->query($query);
     }
-
+    
+    /**
+     * Does a check to make sure the controller syntax is valid
+     * 
+     * @param type $identifier
+     * @throws \Exceptions\InvalidControllerSyntax
+     */
+    public function syntaxCheck($identifier=false) {
+        $parts = explode('/',$identifier);
+        $location = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php`);
+        $cmd      = $location.' CLI.php --sc namespace='.$parts[0].' controller='.$parts[1];
+        exec($cmd,$output,$rc);
+        if (count($output)) {
+            $message = implode("\n",$output);
+            throw new \Exceptions\InvalidControllerSyntax($message,12);
+            die();
+        }
+        return true;
+    }
+    
     /**
      * It compiles... name says it all
      * 

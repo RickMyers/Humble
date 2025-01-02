@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <controller name="user" use="Twig">
-    <actions blocking="black">
+    <actions blocking="on">
         <action name="login" passalong="user_name:required=true,user_password:format=password:required=true:value=password" event='userLogin' comment='Triggers the user login workflow'>
             <description>Launches the process that a person goes through to login</description>
             <model class="user" id="user">
@@ -15,10 +15,9 @@
                     <redirect href='/index.html?message=Incorrect User ID or Password' />   
                 </default>
             </switch>
-            <blah />
         </action>
  
-        <!-- ############################################################### -->
+        <!-- ############################################################### --> 
 
         <action name="authentication" output="JSON">
             <description>For remote APIs, lets them attempt to authenticate</description>
@@ -104,27 +103,13 @@
 
         <!-- ############################################################### -->
         
-        <action name="nothingmuch">
-            <description>Nothing</description>
-        </action>
-        
         <action name="emailcheck" output="JSON" blocking="off">
             <description>Checks to see if an email is in our system</description>
             <entity class="users" id="user" method="nonkeysload" response="false">
                 <parameter name="email" source="request" required="true" />
             </entity>
-            <chain>
-                <action name="nothingmuch" />
-            </chain>
         </action>
         
-        <!-- ############################################################### -->
-
-        <action name="default">
-            <description>Default Action</description>
-            <model class="user" id="user" method="invite">
-                <parameter name="email" source="request" default="" />
-            </model>
-        </action>        
+     
     </actions>
 </controller>

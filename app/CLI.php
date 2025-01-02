@@ -138,8 +138,17 @@ if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         
                         if (isset($options['function']) && $options['function']) {
                             $method = $options['function'];
                             $include::arguments($include::verifyArguments($args,$options));
-                            if ($returned = $include::$method()) {
-                                (is_string($returned)) ? print("\n".$returned."\n\n") : print_r($returned);
+                            $returned = $include::$method(); 
+                            if (is_string($returned)) {
+                                print("\n".$returned."\n");
+                            } else if (is_array($returned)) {
+                                foreach ($returned as $idx => $line) {
+                                    print(($idx+1).") ".$line."\n");
+                                }
+                            } else if (is_object($returned)) {
+                                print_r($returned);
+                            } else if (is_bool($returned)) {
+                                
                             }
                         }
                     }

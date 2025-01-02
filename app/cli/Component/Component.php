@@ -45,6 +45,7 @@ class Component extends CLI
      */
     private static function tagAttributeCheck($parent,$node,$attributes,$validator) {
         $errors = [];
+        $vars   = clone $attributes;                                            //this has to happen or an infinite loop is created... very bizarre
         if (isset($validator->$node)) {                                         //We need to find the correct syntax scheme to compare the attribute to, since some have multiple schemes depending on parent
             foreach ($validator->$node->attributes as $idx => $schema) {
                 $attr = $schema->attributes();
@@ -62,9 +63,10 @@ class Component extends CLI
                         $errors[] = $value." is not a valid value for ".$attribute;
                     }
                 }
-                if (isset($schema->$attribute->conflicts)) {
-                    foreach (explode(',',$schema->$attribute->conflicts) as $conflict) {
-                        if (isset($attribute->$conflict)) {
+                $attr = $schema->$attribute->attributes();
+                if (isset($attr->conflicts)) {
+                    foreach (explode(',',$attr->conflicts) as $conflict) {
+                        if (isset($vars->$conflict)) {                          //Queue twilight zone music...
                             $errors[] = 'Conflict detected, '.$attribute.' and '.$conflict.' are mutually exclusive, choose one'; 
                         }
                     }
@@ -115,14 +117,12 @@ class Component extends CLI
                 $source     = simplexml_load_file($file);
                 $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
                 $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
-                foreach ($errors = self::checkControllerNodes('controller',$source,$structure,$validator,$errors) as $idx => $message) {
-                    print($idx+1 .') '.$message."\n");
-                }
+                $errors     = self::checkControllerNodes('controller',$source,$structure,$validator,$errors);
             } else {
-                die('Controller not found'."\n\n");
+                $errors[] = "Controller not found";
             }
         } else {
-            die("\nModule not found\n\n");
+            $errors[] = "Module not found";
         }
         return $errors;
     }
