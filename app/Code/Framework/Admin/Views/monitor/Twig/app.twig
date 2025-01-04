@@ -7,8 +7,9 @@
         data() {
                 return {
                     window_id: "{{ window_id }}",
-                    status: [],
-                    timer: false,
+                    system: [
+                
+                    ],
                     processes: [
                         
                     ]
@@ -19,19 +20,17 @@
         },
         methods: {
             poll() {
-                alert('polling');
                 let me = this;
                 (new EasyAjax('/admin/monitor/status')).then((response) => {
                     let results = JSON.parse(response);
                     if (results) {
-                        me.status     = results.status;
+                        me.system     = results.system;
                         me.processes  = results.processes;
-                        window.monitor_timer = window.setTimeout(this.poll,5000);
+                        window.monitor_timer = window.setTimeout(this.poll,3000);
                     }
                 }).post();
             },
             stop() {
-                alert('stopping');
                 window.clearTimeout(window.monitor_timer);
             }
             
@@ -44,7 +43,7 @@
     });
     win.close(((app) => {
         return function () {
-            app._component.methods.stop.apply(app);
+            //app._component.methods.stop.apply(app);
             window.clearTimeout(window.monitor_timer);
             app.unmount();
         };
