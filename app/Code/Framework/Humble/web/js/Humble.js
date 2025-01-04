@@ -19,7 +19,6 @@ var Humble = (() => {
                     callback.apply(me);
                 }
                 for (var i in Humble) {
-                    console.log(Humble[i]);
                     if (Humble[i].init) {
                         Humble[i].init();
                     }
