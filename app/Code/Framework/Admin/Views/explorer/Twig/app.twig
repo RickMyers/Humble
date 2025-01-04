@@ -3,50 +3,57 @@
     Humble.admin['explorer'] = (!Humble.admin['explorer']) ? {} : Humble.admin['explorer'];
     Humble.admin['explorer']['{{ window_id }}'] = Vue.createApp({
         template: Humble.template('admin','explorer/app'),
-        data: () => {
-            return {
-            }
-        },
-        mounted: () => {
+        app: "#explorer_file_list",
+        data() {
+                return {
+                    window_id: "{{ window_id }}",
+                    files: [
+                        
+                    ]
+                }
+            },
+        mounted() {
            //new EasyEdits('/edits/admin/explorer','explorer');
-        },
-        created: () => {
-        },
-        updated: () => {
-        },
-        destroyed: () => {
+           this.listFiles('/');
         },
         methods: {
-            listFiles: async () => {
-                const form     = document.querySelector('#explorer_path_form');
-                const response = await fetch('/admin/explorer/filelist', {
-                    method: 'POST',
-                    body: new FormData(form)
-                });
-                let text       = await response.text();
-                alert(text);
+            listFiles(dir) {
+                var me = this;
+                dir = (!dir) ? '/' : dir;
+                console.log(dir);
+                if (typeof dir === "string" && (dir!=='/')) {
+                    let cwd = $('#explorer_path').val();
+                    cwd += (cwd==='/') ? dir : "/"+dir;
+                    console.log(cwd);
+                } else {
+                    cwd='/';
+                }
+                $('#explorer_path').val(cwd);                
+                (new EasyAjax('/admin/explorer/filelist')).addForm('explorer_path_form').then((response) => {
+                    me.files = JSON.parse(response);
+                //    Desktop.window.list[me.window_id].resize();
+                }).post();
             },
-            createComponent: async () => {
-                if (Edits['new-component'].validate()) {
-                    const form     = document.querySelector('#new_component_form');
-                    const response = await fetch('/admin/component/create', {
-                        method: 'POST',
-                        body: new FormData(form)
-                    });
-                    let text       = await response.text();
-                    alert(text);
-                    if (response.headers.get('RC') && (+response.headers.get('RC')===0)) {
-                        let win = Desktop.window.list['{{ window_id }}'];
-                        if (win) {
-                            win._close();
-                        } 
+            upDirectory() {
+                let cwd = $('#explorer_path').val();
+                console.log(cwd);
+                if (cwd!=='/') {
+                    let dir = cwd.split('/');
+                    if (dir.length>1) {
+                        dir.pop();
                     }
-                }   
+                    cwd = dir.join('/');
+                }
+                $('#explorer_path').val(cwd);
+                this.listFiles();
+            },
+            expandDirectory(directory) {
+                this.listFiles(directory);
             }
         }
     });
     var win = Desktop.window.list['{{ window_id }}'];
-    const explorer_app = Humble.admin['explorer']['{{ window_id }}'].mount('#'+win.content.id);
+    Humble.admin['explorer']['{{ window_id }}'].mount('#'+win.content.id);
     win.resize(() => {
         $('#explorer_file_list').height(win.content.height() - $E('explorer_path_area').offsetHeight - $E('explorer_footer').offsetHeight - 2);
     });
