@@ -96,4 +96,84 @@ class Monitor extends Model
         //print(date('Y-m-d H:i:s',time() - $two_weeks));
         return $this;
     }
+    
+    private function scrunchResults($results=[]) {
+        if (count($results)) {
+            for ($i=0; $i<count($results); $i++) {
+                $row   = [];
+                $parts = explode(' ',$results[$i]);
+                foreach ($parts as $part) {
+                    if (($p = trim($part)) || ($p!=='')) {
+                        $row[] = $p;
+                    }
+                }
+                //$results[$i] = implode('|',$row);
+                $results[$i] = $row;
+            }
+        }
+        return $results;
+    }
+    
+    private function parseProcesses($data=[]) {
+        $processes = [];
+        for ($i=7; $i<count($data); $i++) {
+            $processes[] = [
+                "PID"       => $data[$i][0],
+                "owner"     => $data[$i][1],
+                "priority"  => $data[$i][2],
+                "nice"      => $data[$i][3],
+                "mem_vir"   => $data[$i][4],
+                "mem_res"   => $data[$i][5],
+                "mem_shr"   => $data[$i][6],
+                "status"    => $data[$i][7],
+                "cpu_prc"   => $data[$i][8],
+                "mem_prc"   => $data[$i][9],
+                "time"      => $data[$i][10],
+                "command"   => $data[$i][11],
+            ];
+        }
+        return $processes;
+    }
+    private function parseStatus($data=[]) {
+        $status = [];
+        $status['time']     = $data[0][2];
+        $status['uptime']   = $data[0][4].' '.$data[0][5].' '.$data[0][6];
+        $status['users']    = $data[0][7];
+        $status['load']     = $data[0][11].' '.$data[0][12].' '.$data[0][13];
+        $status['tasks']    = $data[1][1];
+        $status['running']  = $data[1][4];
+        $status['sleeping'] = $data[1][5];
+        $status['stopped']  = $data[1][7];
+        $status['zombie']   = $data[1][9];
+        $status['cpu_us']   = $data[2][1]; /* user space */
+        $status['cpu_sy']   = $data[2][3]; /* kernel space */
+        $parts = explode(',',$data[2][6]);
+        $status['cpu_id']   = $parts[1];   /* idle */
+        $status['cpu_wa']   = $data[2][8];
+        $status['cpu_hi']   = $data[2][10]; /* hardware interrupts */
+        $status['cpu_si']   = $data[2][12]; /* software interrupts */
+        $status['cpu_vm']   = $data[2][14]; /* lost to virtual machines */
+        $status['mem_tot']  = $data[3][3];
+        $status['mem_fre']  = $data[3][5];
+        $status['mem_use']  = $data[3][7];
+        $status['mem_buf']  = $data[3][9];
+        $status['swap_tot'] = $data[4][2];
+        $status['swap_fre'] = $data[4][4];
+        $status['swap_use'] = $data[4][6];
+        $status['swap_av']  = $data[4][8];
+        return $status;
+    }
+    /**
+     * Will take the output from TOP and serialize it into JSON breaking it into two sections, a system section and a processes section
+     * 
+     * @return json
+     */
+    public function systemStatus() {
+        exec('top -n 1 -b',$results,$rc);        
+        $results = $this->scrunchResults($results);        
+        return json_encode($status = [
+            'system'    =>$this->parseStatus($results),
+            'processes' =>$this->parseProcesses($results)
+        ],JSON_PRETTY_PRINT);
+    }
 }

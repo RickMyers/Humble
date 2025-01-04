@@ -1,0 +1,54 @@
+<script type="text/javascript"> 
+    //This is for handling "multiplicity", as in multiple monitor apps open at one time
+    Humble.admin['monitor'] = (!Humble.admin['monitor']) ? {} : Humble.admin['monitor'];
+    Humble.admin['monitor']['{{ window_id }}'] = Vue.createApp({
+        template: Humble.template('admin','monitor/app'),
+        app: "#system_monitor",
+        data() {
+                return {
+                    window_id: "{{ window_id }}",
+                    status: [],
+                    timer: false,
+                    processes: [
+                        
+                    ]
+                }
+            },
+        mounted() {
+            this.poll();
+        },
+        methods: {
+            poll() {
+                alert('polling');
+                let me = this;
+                (new EasyAjax('/admin/monitor/status')).then((response) => {
+                    let results = JSON.parse(response);
+                    if (results) {
+                        me.status     = results.status;
+                        me.processes  = results.processes;
+                        window.monitor_timer = window.setTimeout(this.poll,5000);
+                    }
+                }).post();
+            },
+            stop() {
+                alert('stopping');
+                window.clearTimeout(window.monitor_timer);
+            }
+            
+        }
+    });
+    var win = Desktop.window.list['{{ window_id }}'];
+    Humble.admin['monitor']['{{ window_id }}'].mount('#'+win.content.id);
+    win.resize(() => {
+        $('#monitor_processes').height(win.content.height() - $E('monitor_status').offsetHeight - $E('monitor_footer').offsetHeight - 2);
+    });
+    win.close(((app) => {
+        return function () {
+            app._component.methods.stop.apply(app);
+            window.clearTimeout(window.monitor_timer);
+            app.unmount();
+        };
+    })(Humble.admin['monitor']['{{ window_id }}']));
+    
+
+</script>

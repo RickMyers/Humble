@@ -6,13 +6,19 @@ System Monitoring Actions
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="monitor" use="Twig" author="rmyers Rick" email="rick@humbleprogramming.com">
-    <actions blocking="ON" response="false">
-        <action name="app">
+    <actions>
+        <action name="app" passalong="window_id">
             <description>The App Home Page</description>
             <!-- Entity, Helper, Model, Conditional declarations begin here -->
         </action>
 
         <!-- ############################################################### -->
 
+        <action name="status" blocking="off" output="JSON"> 
+            <description>Returns the status of the system including a process list</description>
+            <model namespace="admin" class="monitor" method="systemStatus" response="true">
+                
+            </model>
+        </action>
     </actions>
 </controller>

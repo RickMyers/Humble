@@ -54,6 +54,7 @@ class Component extends CLI
                 }
             }
             foreach ($attributes as $attribute => $value) {
+                $value = strtolower($value);
                 if (!isset($schema->$attribute)) {
                     $errors[] = $attribute." is not a valid attribute of ".$node;
                     continue;
