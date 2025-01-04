@@ -27,7 +27,14 @@
                     <on />
                 </values>
             </blocking>
-            <response     required="false"  purpose="" default="FALSE" />
+            <response     required="false"  purpose="" default="FALSE" >
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />                    
+                </values>                
+            </response>
         </attributes>
     </actions>
     <action taxonomy="sequence">
@@ -43,7 +50,6 @@
                 <values>
                     <off />
                     <on />
-                    
                 </values>                
             </blocking>
             <response   required="false"  purpose="" default="" >

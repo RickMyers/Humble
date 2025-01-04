@@ -14,17 +14,23 @@
           <th>Owner</th>
           <th>Group</th>
           <th>Modified</th>
+          <th class='text-center'>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(file,i) in files" :key="i">
            <td scope="row"></td>  
            <td>{{ file.permissions }}</td> 
-           <td><a href="#" v-if="file.directory" v-on:click="expandDirectory(file.name)">{{ file.name }}</a><span v-else>{{ file.name }}</span></td>  
+           <td><a href="#" v-if="file.directory" class="text-blue-800" v-on:click="expandDirectory(file.name)">{{ file.name }}</a><span v-else>{{ file.name }}</span></td>  
            <td>{{ file.filesize }}</td>  
            <td>{{ file.owner }}</td>  
            <td>{{ file.group }}</td>  
            <td>{{ file.modified }}</td>  
+           <td>
+               <img v-if="!file.directory" src="/images/admin/browse_file.png" class="h-5 cursor-pointer inline-block mr-2" v-on:click="browseFile(file.name)" />
+               <img v-if="!file.directory" src="/images/admin/edit_file.png"   class="h-5 cursor-pointer inline-block mr-2" v-on:click="editFile(file.name)"/>
+               <img v-if="!file.directory" src="/images/admin/delete_file.png" class="h-5 cursor-pointer inline-block mr-2" v-on:click="deleteFile(file.name)"/>
+           </td>
         </tr>
        </tbody>
       </table>

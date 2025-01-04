@@ -63,7 +63,7 @@
             <mongodb>account</mongodb>
             <entities>
                 <registrations polyglot="Y"/>
-            </entities>
+            <user_identification/><users/></entities>
         </orm>
         <events>
 

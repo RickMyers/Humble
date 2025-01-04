@@ -19,36 +19,52 @@
         methods: {
             listFiles(dir) {
                 var me = this;
-                dir = (!dir) ? '/' : dir;
-                console.log(dir);
+                //dir = (!dir) ? '/' : dir;
+                let cwd = $('#explorer_path').val();
                 if (typeof dir === "string" && (dir!=='/')) {
-                    let cwd = $('#explorer_path').val();
                     cwd += (cwd==='/') ? dir : "/"+dir;
-                    console.log(cwd);
-                } else {
-                    cwd='/';
-                }
+                } 
                 $('#explorer_path').val(cwd);                
                 (new EasyAjax('/admin/explorer/filelist')).addForm('explorer_path_form').then((response) => {
                     me.files = JSON.parse(response);
-                //    Desktop.window.list[me.window_id].resize();
                 }).post();
             },
             upDirectory() {
                 let cwd = $('#explorer_path').val();
-                console.log(cwd);
-                if (cwd!=='/') {
+                if (cwd !== '/') {
                     let dir = cwd.split('/');
-                    if (dir.length>1) {
+                    if (dir.length>2) {
                         dir.pop();
+                        cwd = dir.join('/');
+                    } else {
+                        cwd = '/';
                     }
-                    cwd = dir.join('/');
                 }
                 $('#explorer_path').val(cwd);
                 this.listFiles();
             },
             expandDirectory(directory) {
                 this.listFiles(directory);
+            },
+            browseFile(file) {
+                let win = Desktop.semaphore.checkout(true);
+                (new EasyAjax('/admin/explorer/browse')).add('directory',$('#explorer_path').val()).add('file',file).then((response) => {
+                    win._title('Browse File '+file)._open(response);
+                }).post();
+            },
+            editFile(file) {
+                let win = Desktop.semaphore.checkout(true);
+                (new EasyAjax('/admin/explorer/edit')).add('directory',$('#explorer_path').val()).add('file',file).then((response) => {
+                    win._title('Edit File'+file)._open(response);
+                }).post();           
+            },
+            deleteFile(file) {
+                if (confirm('Are you sure you want to delete '+file+'?')) {
+                    let me = this;
+                    (new EasyAjax('/admin/explorer/delete')).add('directory',$('#explorer_path').val()).add('file',file).then((response) => {
+                       me.listFiles($('#explorer_path').val());
+                    }).post();            
+                }
             }
         }
     });
