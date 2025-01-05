@@ -85,6 +85,17 @@ class Model implements HumbleComponent
     public function underscoreToCamelCase( $string, $first_char_caps = false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }
+     
+    /**
+     * Cute routine to insert an underscore prior to any capitalized letter
+     *
+     * @param string $string
+     * @param boolean $make_lower_case
+     * @return string
+     */
+    public function camelCaseToUnderscore($string='',$make_lower_case=true) {
+        return $make_lower_case ? strtolower(trim(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $string))): trim(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $string));
+    }
     
     /**
      * Returns a unique identifier to help identify request threads when you come from a client who might have the site open in multiple tabs
@@ -110,17 +121,6 @@ class Model implements HumbleComponent
             $_SESSION['BROWSER_TABS'] = [];
         }        
         return $_SESSION['BROWSER_TABS'][$tab_id] = $this->_uniqueId();
-    }
-    
-    /**
-     * Cute routine to insert an underscore prior to any capitalized letter
-     *
-     * @param string $string
-     * @param boolean $make_lower_case
-     * @return string
-     */
-    public function camelCaseToUnderscore($string='',$make_lower_case=true) {
-        return $make_lower_case ? strtolower(trim(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $string))): trim(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $string));
     }
     
     /**
@@ -703,7 +703,6 @@ SOAP;
      * @return type
      */
     private function templateSubstitution($template='',$args=[]) {
-        
         if (strtolower(substr($template,0,5))==='rs://') {
             $template = $this->fetchTemplateResource(substr($template,5));
         }
@@ -846,7 +845,6 @@ SOAP;
         ksort($arguments);
         array_map('mb_strtoupper',$arguments);
         $res = Humble::cache($namespace.'-'.$call_name.'-'.md5(http_build_query($arguments)));
-        //Log::general($res ? 'Pulled From Cache' : 'Not Cached');
         return $res;
     }
     
@@ -969,7 +967,18 @@ SOAP;
                         $userid = (isset($call['userid'])   && $call['userid'])     ? $call['userid']   : false;
                         $passwd = (isset($call['password']) && $call['password'])   ? $call['password'] : false;
                         $secure = (isset($call['secure'])   && $call['secure'])     ? $call['secure']   : false;
+                        $expire = 0;
+                        $engine = false;
+                        $cache  = false;
                         if (isset($call['cache'])) {
+                            if (is_string($call['cache'])) {
+                                $expire = $call['cache'];
+                            } else {
+                                $expire = isset($call['cache']['expire']) ? $call['cache']['expire'] : 0;
+                                if ($engine = isset($call['cache']['engine']) ? $call['cache']['engine'] : 0) {
+                                    Humble::cacheEngine($engine);
+                                }
+                            }
                             if ($retval = $this->pullFromCache($this->_namespace(),$name,$args)) {
                                 return $retval;                                 //this ain't the way m8
                             }

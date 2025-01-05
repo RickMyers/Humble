@@ -35,7 +35,7 @@
     var win = Desktop.window.list['{{ window_id }}'];
     Humble.admin['job']['{{ window_id }}'].mount('#'+win.content.id);
     win.resize(() => {
-        $('#job_list').height(win.content.height() - $E('jobs_header').offsetHeight - $E('jobs_footer').offsetHeight - 2);
+        $('#jobs_list').height(win.content.height() - $E('jobs_header').offsetHeight - $E('jobs_footer').offsetHeight - 2);
     });
     win.close(((app) => {
         return function () {
