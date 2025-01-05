@@ -31,13 +31,10 @@ class Compiler extends Directory
     private $component      = null;
     private $arguments      = [];
     private $response       = false;
+    private $blocking       = false;
     protected $_db          = null;
     private $tabs           = 0;
     private $tabstr         = "";
-    private $global         = [
-        'blocking' => true,
-        'response' => false
-    ];
     private $trueish        = [
         'Y' => true,
         'TRUE' => true,
@@ -91,13 +88,27 @@ class Compiler extends Directory
      * @return type
      */
     private function response($value=null) {
-        $retval = $this;
         if ($value===null) {
-            $retval = $this->response;
+            return $this->response;
         } else {
             $this->response = $value;
         }
-        return $retval;
+        return $this;
+    }
+    
+    /**
+     * A global flag manager for whether the action(s) are blocking on session or not
+     * 
+     * @param type $value
+     * @return type
+     */
+    private function blocking($value=null) {
+        if ($value===null) {
+            return $this->blocking;
+        } else {
+            $this->blocking = $value;
+        }
+        return $this;
     }
     
     /**
@@ -251,6 +262,7 @@ class Compiler extends Directory
                 break;
         }
     }
+    
     /**
      * Who knew you could do all this to simple parameter passing/handling?
      * 
@@ -509,7 +521,7 @@ PHP;
             if (isset($node['assign'])) {
                 $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
             }            
-            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
+            if ((isset($node['response']) && ($this->trueish($node['response']))) || (($this->response()) && !(isset($node['response']) && (!$this->trueish($node['response']))))) {
                 if (isset($node['wrapper'])) {
                     print($this->tabs().'Humble::response('.$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
                 } else {
@@ -545,7 +557,7 @@ PHP;
         }
         $x = array_pop($this->elements);
         if (isset($node['method'])) {
-            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
+            if ((isset($node['response']) && ($this->trueish($node['response']))) || (($this->response()) && !(isset($node['response']) && (!$this->trueish($node['response']))))) {
                 if (isset($node['wrapper'])) {
                     print($this->tabs().'Humble::response('.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
                 } else {
@@ -722,7 +734,7 @@ PHP;
             if (isset($node['transformer'])) {
                 $method_str = $this->processTransformer($node,$method_str);
             }
-            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
+            if ((isset($node['response']) && ($this->trueish($node['response']))) || (($this->response()) && !(isset($node['response']) && (!$this->trueish($node['response']))))) {
                 $method_str = 'Humble::response('.$method_str.')';
             }
             print($this->tabs().$assign_str.$method_str.";\n");
@@ -772,7 +784,7 @@ PHP;
             if (isset($node['assign'])) {
                 $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
             }            
-            if ((isset($node['response']) && (strtolower($node['response'])=='true')) || ($this->global['response']===true) && !(isset($node['response']) && (strtolower($node['response'])=='false'))) {
+            if ((isset($node['response']) && ($this->trueish($node['response']))) || (($this->response()) && !(isset($node['response']) && (!$this->trueish($node['response']))))) {
                 if (isset($node['wrapper'])) {
                     print($this->tabs().'Humble::response('.$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
                 } else {
@@ -1219,6 +1231,7 @@ PHP;
                                         break;
             case    "model"         :   $this->processModel($node);
                                         break;
+            case    "collection"    :
             case    "mongo"         :   $this->processMongo($node);
                                         break;
             case    "entity"        :   $this->processEntity($node);
@@ -1287,6 +1300,227 @@ PHP;
         }
     }
     
+    private function processActionNode($tag2,$action,$init) {
+        $this->response(isset($action['response']) && $this->trueish($action['response']));
+        $this->blocking(isset($action['blocking']) && $this->trueish($action['blocking']));
+        if (strtolower($tag2) === 'default') {
+            return $action;
+        }
+        if ($tag2==='defaultAction') {
+            print($this->tabs().'default :'."\n");            
+        } else {
+            print($this->tabs(1).'case "'.$action['name'].'":'."\n");
+        }
+        $this->tabs(1);
+        if (isset($action['CSRF_PROTECTION'])) {
+            $this->processCSRFProtection((string)$action['CSRF_PROTECTION']);
+        }
+        $this->resetParameters();
+        if (isset($attr['authorize'])) {
+            // Authorize will identify a model that must return 'true' to allow this action to execute, otherwise will get a JSON based exception (or not)
+            // If the attribute 'method' isn't specified, the default method will be 'authorize()'
+            // Primarily for when building REST APIs
+        }
+        if (isset($action['map'])) {
+            $map = explode('/',$action['map']);
+            foreach ($map as $idx => $varname) {
+                if ($varname) {
+                    print($this->tabs().'if (!isset($_REQUEST["'.$varname.'"])) { $_REQUEST["'.$varname.'"] = $mappings['.$idx.']; }'."\n");
+                }
+            }
+        }                  
+        $this->actionId = $this->helper->_uniqueId();
+        if (isset($action['request']) && (strtoupper($action['request']) == 'JSON')) {
+            $this->handleJSONRequest($action);
+        }
+        if (!$this->blocking()) {
+            $this->blockingStatement($this->blocking());
+        }                
+        print($this->tabs().'$P_'.$this->actionId.' = [];'."\n");
+        if (isset($action['output'])) {
+            switch (strtolower($action['output'])) {
+                case 'html'     :   print($this->tabs()."header('content-type: text/html');\n");
+                                    break;
+                case 'csv'      :   print($this->tabs()."header('content-type: text/csv');\n");
+                                    break;
+                case 'xml'      :   print($this->tabs()."header('content-type: text/xml');\n");
+                                    break;
+                case 'json'     :   print($this->tabs()."header('content-type: application/json');\n");
+                                    break;
+                case 'javascript':
+                case 'js'       :   print($this->tabs()."header('content-type: application/javascript');\n");
+                                    break;
+                case 'pdf'       :  print($this->tabs()."header('content-type: application/pdf');\n");
+                                    break;
+                case 'yaml'     :   print($this->tabs()."header('content-type: text/yaml');\n");
+                                    break;
+                case 'text'     :   print($this->tabs()."header('content-type: text/plain');\n");
+                                    break;                                        
+                default         :   print($this->tabs()."header('content-type: application/octet-stream');\n");
+                                    break;
+            }
+        }
+        if (isset($action['disposition']) || isset($action['filename'])) {
+            $filename    = isset($action['filename']) ? '; filename="'.$action['filename'].'"' : "";
+            $disposition = isset($action['disposition']) ? $action['disposition'] : 'attachment'; 
+            print($this->tabs()."header('Content-Disposition: ".$disposition.$filename."');\n");
+        }                
+        //Handles if we are receiving raw json data...
+        if (isset($action['input'])) {
+            switch (strtolower($action['input'])) {
+                case "json" :
+                    print($this->tabs().'$_JSON = json_decode((string)file_get_contents("php://input"),true);'."\n");
+                    break;
+                case "xml"  : 
+                    //@TODO: do something here?
+                    break;
+            }
+        }
+        //Handles options for the variables you want to "pass-along" to the view
+        if (isset($action['passalong'])) {
+            $fields = explode(",",$action['passalong']);
+
+            foreach ($fields as $field) {
+                $format = ''; $required = false; $default = ''; $value = $field; //Remember, "value" is the name of the field in the initial request object
+                if (strpos($field,':')!==false) {
+                    $f      = explode(':',$field);
+                    $field  = $f[0]; 
+                    $value  = $f[0];
+                    $ll     = count($f);
+                    for ($ii=1; $ii < $ll; $ii++) {
+                        $param  = $f[$ii];
+                        $optval = true;
+                        if (strpos($param,'=')) {
+                            $opt    = explode('=',$param);
+                            $param  = $opt[0];
+                            $optval = $opt[1];
+                        }
+                        switch (strtolower($param)) {
+                            case "format"   :
+                                $format = $optval;
+                                break;
+                            case "value"    :
+                                $value = $optval;
+                                break;
+                            case "default" :
+                                $default = $optval;
+                                break;
+                            case "required" :
+                                $required = $optval;
+                                break;
+                            default         : break;
+                        }
+                    }
+                }
+                if ($required) {
+                    $this->processRequired($required,'$_REQUEST',$field);
+                }
+                if ($format) {
+                    $this->processFormat(strtolower($format),'$_REQUEST',$field,$required,$default);                            
+                }
+                if ($default) {
+                    $default = ((strtolower($default)==='true') || (strtolower($default)==='false')) ? $default : '"'.$default.'"';
+                }
+                print($this->tabs().'$models[\''.$value.'\'] = isset($_REQUEST[\''.$field.'\']) ? $_REQUEST[\''.$field.'\'] : '.($default ? $default : 'null').';'."\n");
+            }
+        }
+        if (isset($action['audit'])) {
+            $this->handleAudit($action['audit']);
+        }                
+        if (isset($action['required'])) {
+            $fields = explode(",",$action['required']);                 //I forgot I put this in there... must have been drinking and coding...
+            foreach ($fields as $field) {
+                print($this->tabs().'if (!isset($_REQUEST["'.$field.'"])) { throw new \Exceptions\ValidationRequiredException("A value has not been set for the variable <i style=\'color: red\'>'.$field.'</i>",12); }'."\n");
+            }
+        }
+        foreach ($action as $tag => $node) {
+            $this->processNode($tag,$node);
+        }
+        /**
+         * IF A class was specified on the action, instantiate the class, and call the "execute" method after passing in all the models
+         * 
+         * This is a rarely used feature which is still hanging around from when this framework was just trying to be a PHP version of Struts II
+         */
+        if (isset($action['class']) && isset($action['namespace'])) {
+            $class  = $action['class'];
+            $ns     = $action['namespace'];
+            $id     = (isset($action['id'])) ? $action['id'] : $this->helper->_uniqueId();
+            print($this->tabs().'$v_'.$id." = \Humble::model('".$ns."/".$class."');\n");
+            //might need to add the action model to the list of models for the view... what are the pros and cons?  DEBATE!
+            print($this->tabs().'foreach ($models as $mdl => $val) {'."\n");
+            $this->tabs(1);
+            print($this->tabs().'$mthd = "set".underscoreToCamelCase($mdl);'."\n");
+            print($this->tabs().'$v_'.$id.'->$mthd($val);'."\n");
+            $this->tabs(-1);
+            print($this->tabs()."}\n");
+            print($this->tabs().'$v_'.$id.'->execute();'."\n");         //maybe allow them to pass in the name of the method?  Could be dangerous...
+        }
+        /**
+         * IF the 'event' flag was set on the action, then create a new trigger event and pass in all of the data this action received
+         */
+        if (isset($action['event'])) {
+            $trigger = \Humble::entity('paradigm/workflow/components');
+            $trigger->setNamespace($this->namespace);
+            $trigger->setComponent(ucfirst($this->component));
+            $trigger->setMethod($action['name']);
+            $trigger->setEvent('Y');
+            $trigger->save();
+            $e = \Humble::entity('paradigm/events');
+            $e->setEvent($action['event']);
+            $e->setComment($action['comment']);
+            $e->setNamespace($this->namespace);
+            $e->save();
+            if (isset($action['comment'])) {
+                $comment = \Humble::entity('paradigm/workflow/comments');
+                $comment->setNamespace($this->namespace);
+                $comment->setClass($this->component);
+                $comment->setMethod($action['name']);
+                $comment->setComment($action['comment']);
+                $comment->save();
+            }
+            $id      = $this->helper->_uniqueId();
+            print($this->tabs().'$TRIGGER_'.$id.' = Event::getTrigger();'."\n");
+            print($this->tabs().'$TRIGGER_'.$id.'->_namespace("'.$this->namespace.'");'."\n");
+            print($this->tabs().'$TRIGGER_'.$id.'->_controller("'.$this->component.'");'."\n");
+            print($this->tabs().'$TRIGGER_'.$id.'->_method("'.$action['name'].'");'."\n");
+            if (isset($action['passalong'])) {
+                $fields = explode(",",$action['passalong']);
+                foreach ($fields as $field) {
+                    $field_opts = [];
+                    $value      = $field;
+                    if (strpos($field,':')) {
+                        $field_opts = explode(':',$field);
+                        $value = $field = $field_opts[0];
+                        for ($i=1; $i<count($field_opts); $i++) {
+                            $o = explode('=',$field_opts[$i]);
+                            if (strtolower($o[0])==='value') {
+                                $value = (isset($o[1])) ? $o[1] : $field;
+                            }
+                        }
+                    }
+                    print($this->tabs().'if (isset($_REQUEST["'.$field.'"])) {'."\n");
+                    print($this->tabs(1).'$TRIGGER_'.$id.'->_arguments("'.$value.'",$_REQUEST["'.$field.'"]);'."\n");
+                    print($this->tabs(-1).'}'."\n");
+                }
+            }
+            foreach ($this->arguments as $source => $arguments) {
+                if (($source !== '$models') && ($source !== "CLASS")) {
+                    foreach ($arguments as $field => $arg) {
+                        print($this->tabs().'if (isset('.$source.'["'.$field.'"])) {'."\n");
+                        print($this->tabs(1).'$TRIGGER_'.$id.'->_arguments("'.$arg.'",'.$source.'["'.$field.'"]);'."\n");
+                        print($this->tabs(-1).'}'."\n");
+                    }
+                }
+            }
+            $line = '$TRIGGER_'.$id.'->emit("'.$action['event'].'")';
+            print($this->tabs().($this->response() ? 'Humble::response('.$line.')' : $line).";\n"); 
+        }
+        print($this->tabs(-1)."break;\n");
+        $this->tabs(-1);
+        $this->blocking($init['blocking']);                             //Set blocking and response back to global value if it was overriden at the action level
+        $this->response($init['response']);
+        return false;
+    }
     /**
      * This controls the translation of the controller XML into PHP
      * 
@@ -1320,235 +1554,22 @@ PHP;
             print($this->tabs()."ob_start();\n");
             print($this->tabs().'switch ($method) {'."\n");
             $attr = $actions->attributes();
+            $init = [
+                'blocking' => $this->blocking(),
+                'response' => $this->response()
+            ];
             if (isset($attr['blocking'])) {
-                $this->global['blocking'] = $this->trueish($attr['blocking']);
+                $this->blocking($this->trueish($attr['blocking']));
             }            
             if (isset($attr['response'])) {
-                $this->global['response'] = $this->trueish($attr['response']);
+                $this->response($this->trueish($attr['response']));
             }
             foreach ($actions as $tag2 => $action ) {
-                $this->response(isset($action['response']) && $this->trueish($action['response']));
-                if ($action['name'] == 'default') {
-                    $defaultAction = $action;
-                    continue;
-                }
-                print($this->tabs(1).'case "'.$action['name'].'":'."\n");
-                $this->tabs(1);
-                if (isset($action['CSRF_PROTECTION'])) {
-                    $this->processCSRFProtection((string)$action['CSRF_PROTECTION']);
-                }
-                $this->resetParameters();
-                if (isset($attr['authorize'])) {
-                    // Authorize will identify a model that must return 'true' to allow this action to execute, otherwise will get a JSON based exception (or not)
-                    // If the attribute 'method' isn't specified, the default method will be 'authorize()'
-                    // Primarily for when building REST APIs
-                }
-                if (isset($action['map'])) {
-                    $map = explode('/',$action['map']);
-                    foreach ($map as $idx => $varname) {
-                        if ($varname) {
-                            print($this->tabs().'if (!isset($_REQUEST["'.$varname.'"])) { $_REQUEST["'.$varname.'"] = $mappings['.$idx.']; }'."\n");
-                        }
-                    }
-                }                  
-                $this->actionId = $this->helper->_uniqueId();
-                if (isset($action['request']) && (strtoupper($action['request']) == 'JSON')) {
-                    $this->handleJSONRequest($action);
-                }
-                if (!$this->global['blocking']) {
-                    $this->blockingStatement($this->global['blocking']);
-                }                
-                print($this->tabs().'$P_'.$this->actionId.' = [];'."\n");
-                if (isset($action['output'])) {
-                    switch (strtolower($action['output'])) {
-                        case 'html'     :   print($this->tabs()."header('content-type: text/html');\n");
-                                            break;
-                        case 'csv'      :   print($this->tabs()."header('content-type: text/csv');\n");
-                                            break;
-                        case 'xml'      :   print($this->tabs()."header('content-type: text/xml');\n");
-                                            break;
-                        case 'json'     :   print($this->tabs()."header('content-type: application/json');\n");
-                                            break;
-                        case 'javascript':
-                        case 'js'       :   print($this->tabs()."header('content-type: application/javascript');\n");
-                                            break;
-                        case 'pdf'       :  print($this->tabs()."header('content-type: application/pdf');\n");
-                                            break;
-                        case 'yaml'     :   print($this->tabs()."header('content-type: text/yaml');\n");
-                                            break;
-                        case 'text'     :   print($this->tabs()."header('content-type: text/plain');\n");
-                                            break;                                        
-                        default         :   print($this->tabs()."header('content-type: application/octet-stream');\n");
-                                            break;
-                    }
-                }
-                if (isset($action['disposition']) || isset($action['filename'])) {
-                    $filename    = isset($action['filename']) ? '; filename="'.$action['filename'].'"' : "";
-                    $disposition = isset($action['disposition']) ? $action['disposition'] : 'attachment'; 
-                    print($this->tabs()."header('Content-Disposition: ".$disposition.$filename."');\n");
-                }                
-                //Handles if we are receiving raw json data...
-                if (isset($action['input'])) {
-                    switch (strtolower($action['input'])) {
-                        case "json" :
-                            print($this->tabs().'$_JSON = json_decode((string)file_get_contents("php://input"),true);'."\n");
-                            break;
-                        case "xml"  : 
-                            //@TODO: do something here?
-                            break;
-                    }
-                }
-                //Handles options for the variables you want to "pass-along" to the view
-                if (isset($action['passalong'])) {
-                    $fields = explode(",",$action['passalong']);
-                    
-                    foreach ($fields as $field) {
-                        $format = ''; $required = false; $default = ''; $value = $field; //Remember, "value" is the name of the field in the initial request object
-                        if (strpos($field,':')!==false) {
-                            $f      = explode(':',$field);
-                            $field  = $f[0]; 
-                            $value  = $f[0];
-                            $ll     = count($f);
-                            for ($ii=1; $ii < $ll; $ii++) {
-                                $param  = $f[$ii];
-                                $optval = true;
-                                if (strpos($param,'=')) {
-                                    $opt    = explode('=',$param);
-                                    $param  = $opt[0];
-                                    $optval = $opt[1];
-                                }
-                                switch (strtolower($param)) {
-                                    case "format"   :
-                                        $format = $optval;
-                                        break;
-                                    case "value"    :
-                                        $value = $optval;
-                                        break;
-                                    case "default" :
-                                        $default = $optval;
-                                        break;
-                                    case "required" :
-                                        $required = $optval;
-                                        break;
-                                    default         : break;
-                                }
-                            }
-                        }
-                        if ($required) {
-                            $this->processRequired($required,'$_REQUEST',$field);
-                        }
-                        if ($format) {
-                            $this->processFormat(strtolower($format),'$_REQUEST',$field,$required,$default);                            
-                        }
-                        if ($default) {
-                            $default = ((strtolower($default)==='true') || (strtolower($default)==='false')) ? $default : '"'.$default.'"';
-                        }
-                        print($this->tabs().'$models[\''.$value.'\'] = isset($_REQUEST[\''.$field.'\']) ? $_REQUEST[\''.$field.'\'] : '.($default ? $default : 'null').';'."\n");
-                    }
-                }
-                if (isset($action['audit'])) {
-                    $this->handleAudit($action['audit']);
-                }                
-                if (isset($action['required'])) {
-                    $fields = explode(",",$action['required']);                 //I forgot I put this in there... must have been drinking and coding...
-                    foreach ($fields as $field) {
-                        print($this->tabs().'if (!isset($_REQUEST["'.$field.'"])) { throw new \Exceptions\ValidationRequiredException("A value has not been set for the variable <i style=\'color: red\'>'.$field.'</i>",12); }'."\n");
-                    }
-                }
-                foreach ($action as $tag => $node) {
-                    $this->processNode($tag,$node);
-                }
-                /**
-                 * IF A class was specified on the action, instantiate the class, and call the "execute" method after passing in all the models
-                 * 
-                 * This is a rarely used feature which is still hanging around from when this framework was just trying to be a PHP version of Struts II
-                 */
-                if (isset($action['class']) && isset($action['namespace'])) {
-                    $class  = $action['class'];
-                    $ns     = $action['namespace'];
-                    $id     = (isset($action['id'])) ? $action['id'] : $this->helper->_uniqueId();
-                    print($this->tabs().'$v_'.$id." = \Humble::model('".$ns."/".$class."');\n");
-                    //might need to add the action model to the list of models for the view... what are the pros and cons?  DEBATE!
-                    print($this->tabs().'foreach ($models as $mdl => $val) {'."\n");
-                    $this->tabs(1);
-                    print($this->tabs().'$mthd = "set".underscoreToCamelCase($mdl);'."\n");
-                    print($this->tabs().'$v_'.$id.'->$mthd($val);'."\n");
-                    $this->tabs(-1);
-                    print($this->tabs()."}\n");
-                    print($this->tabs().'$v_'.$id.'->execute();'."\n");         //maybe allow them to pass in the name of the method?  Could be dangerous...
-                }
-                /**
-                 * IF the 'event' flag was set on the action, then create a new trigger event and pass in all of the data this action received
-                 */
-                if (isset($action['event'])) {
-                    $trigger = \Humble::entity('paradigm/workflow/components');
-                    $trigger->setNamespace($this->namespace);
-                    $trigger->setComponent(ucfirst($this->component));
-                    $trigger->setMethod($action['name']);
-                    $trigger->setEvent('Y');
-                    $trigger->save();
-                    $e = \Humble::entity('paradigm/events');
-                    $e->setEvent($action['event']);
-                    $e->setComment($action['comment']);
-                    $e->setNamespace($this->namespace);
-                    $e->save();
-                    if (isset($action['comment'])) {
-                        $comment = \Humble::entity('paradigm/workflow/comments');
-                        $comment->setNamespace($this->namespace);
-                        $comment->setClass($this->component);
-                        $comment->setMethod($action['name']);
-                        $comment->setComment($action['comment']);
-                        $comment->save();
-                    }
-                    $id      = $this->helper->_uniqueId();
-                    print($this->tabs().'$TRIGGER_'.$id.' = Event::getTrigger();'."\n");
-                    print($this->tabs().'$TRIGGER_'.$id.'->_namespace("'.$this->namespace.'");'."\n");
-                    print($this->tabs().'$TRIGGER_'.$id.'->_controller("'.$this->component.'");'."\n");
-                    print($this->tabs().'$TRIGGER_'.$id.'->_method("'.$action['name'].'");'."\n");
-                    if (isset($action['passalong'])) {
-                        $fields = explode(",",$action['passalong']);
-                        foreach ($fields as $field) {
-                            $field_opts = [];
-                            $value      = $field;
-                            if (strpos($field,':')) {
-                                $field_opts = explode(':',$field);
-                                $value = $field = $field_opts[0];
-                                for ($i=1; $i<count($field_opts); $i++) {
-                                    $o = explode('=',$field_opts[$i]);
-                                    if (strtolower($o[0])==='value') {
-                                        $value = (isset($o[1])) ? $o[1] : $field;
-                                    }
-                                }
-                            }
-                            print($this->tabs().'if (isset($_REQUEST["'.$field.'"])) {'."\n");
-                            print($this->tabs(1).'$TRIGGER_'.$id.'->_arguments("'.$value.'",$_REQUEST["'.$field.'"]);'."\n");
-                            print($this->tabs(-1).'}'."\n");
-                        }
-                    }
-                    foreach ($this->arguments as $source => $arguments) {
-                        if (($source !== '$models') && ($source !== "CLASS")) {
-                            foreach ($arguments as $field => $arg) {
-                                print($this->tabs().'if (isset('.$source.'["'.$field.'"])) {'."\n");
-                                print($this->tabs(1).'$TRIGGER_'.$id.'->_arguments("'.$arg.'",'.$source.'["'.$field.'"]);'."\n");
-                                print($this->tabs(-1).'}'."\n");
-                            }
-                        }
-                    }
-                    $line = '$TRIGGER_'.$id.'->emit("'.$action['event'].'")';
-                    print($this->tabs().($this->response() ? 'Humble::response('.$line.')' : $line).";\n"); 
-                }
-                print($this->tabs(-1)."break;\n");
-                $this->tabs(-1);
+                $defaultAction = $this->processActionNode($tag2,$action,$init);
             }
             if ($defaultAction !== false) {
                 //handle default action here
-                print($this->tabs().'default :  $models["action"]=Humble::_action();'."\n");
-                foreach ($defaultAction as $tag => $node) {
-                    $this->tabs(1);
-                    $this->processNode($tag,$node);
-                    $this->tabs(-1);
-                }
-                print($this->tabs()."break;\n");
+                $this->processActionNode('defaultAction',$defaultAction,$init);                
             } else {
                 print($this->tabs()."default :\n");
                 print($this->tabs(1)."\HumbleException::standard(new Exception('Can Not Route Request, Undefined Action',12),'Request Error','routing');\n");

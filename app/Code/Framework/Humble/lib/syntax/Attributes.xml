@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tags>
-    <controller taxonomy="sequence">
+    <controller taxonomy="control">
         <attributes>
             <name required="true"   purpose="" default="" />
             <use  required="false"  purpose="" default="Default templater found in Application.xml file">
@@ -19,7 +19,7 @@
             </use>
         </attributes>
     </controller>
-    <actions taxonomy="sequence">
+    <actions taxonomy="control">
         <attributes>
             <blocking     required="false"  purpose="" default="TRUE" >
                 <values>
@@ -37,7 +37,7 @@
             </response>
         </attributes>
     </actions>
-    <action taxonomy="sequence">
+    <action taxonomy="control">
         <attributes parent="chain">
             <name       required="true"   purpose="" default="" />
             <map        required="false"  purpose="" default="" /> 
@@ -278,12 +278,12 @@
             <default   required="true"   purpose="" default="" />            
         </attributes>        
     </cache>
-    <view taxonomy="sequence">
+    <view taxonomy="control">
         <attributes>
             <name    required="true"   purpose="" default="" />            
         </attributes>        
     </view>
-    <views taxonomy="sequence">
+    <views taxonomy="control">
         <attributes>
             <name    required="true"   purpose="" default="" />            
             <order   required="false"  purpose="" default="" />            
@@ -362,9 +362,60 @@
     </parameter>
     <description taxonomy="documentation" />
     <comment taxonomy="documentation" />
-    <default parent="actions" />
+    <default parent="actions" taxonomy="control" >
+        <attributes parent="chain">
+            <name       required="true"   purpose="" default="" />
+            <map        required="false"  purpose="" default="" /> 
+            <controller required="false"  purpose="" default="" />
+        </attributes>        
+        <attributes parent="actions">
+            <audit      required="false"  purpose="" default="" />
+            <name       required="true"  purpose="" default="" />
+            <blocking   required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                </values>                
+            </blocking>
+            <response   required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />                    
+                </values>
+            </response>                
+            <csrf_protection     required="false"  purpose="" default="" />
+            <map        required="false"  purpose="" default="" />
+            <output     required="false"  purpose="" default="">
+                <values>
+                    <html />
+                    <csv />
+                    <xml />
+                    <json />
+                    <javascript alias="js" />
+                    <pdf />
+                    <yaml alias="yml" />
+                    <text />
+                </values>
+            </output>
+            <disposition required="false"  purpose="" default="" />
+            <filename   required="false"  purpose="" default="" />
+            <input      required="false"  purpose="" default="">
+                <values>
+                    <json />
+                    <xml />
+                </values>
+            </input>
+            <passalong  required="false"  purpose="" default="" />
+            <class      required="false"  purpose="" default="" />
+            <namespace  required="false"  purpose="" default="" />
+            <event      required="false"  purpose="" default="" />
+            <comment    required="false"  purpose="" default="" />
+        </attributes>        
+    </default>
     <default parent="switch" />
-    <chain taxonomy="sequence" />
+    <chain taxonomy="control" />
     <then taxonomy="decision" />
     <else taxonomy="decision" />
 </tags>

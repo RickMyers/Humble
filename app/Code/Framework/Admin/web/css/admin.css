@@ -1043,6 +1043,11 @@ video {
   background-color: rgb(254 249 195 / var(--tw-bg-opacity));
 }
 
+.bg-cyan-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(207 250 254 / var(--tw-bg-opacity));
+}
+
 .from-gray-50 {
   --tw-gradient-from: #f9fafb var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(249 250 251 / 0) var(--tw-gradient-to-position);

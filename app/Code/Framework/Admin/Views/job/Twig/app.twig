@@ -1,0 +1,49 @@
+<script type="text/javascript"> 
+    //This is for handling "multiplicity"
+    Humble.admin['job'] = (!Humble.admin['job']) ? {} : Humble.admin['job'];
+    Humble.admin['job']['{{ window_id }}'] = Vue.createApp({
+        template: Humble.template('admin','jobs/app'),
+        app: "#job_monitor",
+        data() {
+                return {
+                    window_id: "{{ window_id }}",
+                    jobs: [],
+                    pagination: {}
+                }
+            },
+        mounted() {
+            this.poll();
+        },
+        methods: {
+            poll() {
+                let me = this;
+                (new EasyAjax('/admin/job/list')).then((response) => {
+                    let results = JSON.parse(response);
+                    if (results) {
+                        me.jobs         = results.jobs;
+                        me.pagination   = this.getPagination();
+                        window.job_timer = window.setTimeout(this.poll,3000);
+                    }
+                }).post();
+            },
+            stop() {
+                window.clearTimeout(window.job_timer);
+            }
+            
+        }
+    });
+    var win = Desktop.window.list['{{ window_id }}'];
+    Humble.admin['job']['{{ window_id }}'].mount('#'+win.content.id);
+    win.resize(() => {
+        $('#job_list').height(win.content.height() - $E('jobs_header').offsetHeight - $E('jobs_footer').offsetHeight - 2);
+    });
+    win.close(((app) => {
+        return function () {
+            //app._component.methods.stop.apply(app);
+            window.clearTimeout(window.job_timer);
+            app.unmount();
+        };
+    })(Humble.admin['job']['{{ window_id }}']));
+    
+
+</script>
