@@ -40,6 +40,7 @@
         private static $cache       = false;
         private static $cacheConn   = false;
         private static $cacheFailed = false;
+        private static $cacheEngine = 'MEMCACHE';
         private static $workflow    = [
         ];
 
@@ -505,6 +506,13 @@
             }
         }
         
+        public static function cacheEngine($engine=null) {
+            if ($engine===null) {
+                return self::$cacheEngine;
+            }
+            self::$cacheEngine = $engine;
+            
+        }
         /**
          * Caching is implemented here in the factory so that it can be easily switched out to another product (Redis, APC, etc) should it be necessary
          *
@@ -518,11 +526,13 @@
          */
         public static function cache($key,$value=null,$expire=0) {
             global $USE_REDIS;
+            $engine = self::cacheEngine();
             $retval = null; $args   = func_num_args(); $key = trim($key);
             if (\Environment::cachingEnabled()) {
                 if (!self::$cache && !self::$cacheFailed) {
-                    if ($cache_server = Environment::settings()->getCacheHost()) {
+                    if ($cache_server = (($engine=='REDIS') ? 'localhost:6379' : Environment::settings()->getCacheHost())) {
                         $USE_REDIS    = strpos($cache_server,'6379');
+                        $x = $USE_REDIS ? print('REDIS'."\n") : print('MEMCACHED'."\n");
                         $cache_server = explode(':',$cache_server);
                         if (self::$cache = (($USE_REDIS) ? new \Redis() : new \Memcache())) {
                             if (!@self::$cacheConn = self::$cache->connect($cache_server[0],(isset($cache_server[1]) ? $cache_server[1] : (($USE_REDIS) ? 6379 :11211)))) {
