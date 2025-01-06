@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<unit_tests>
+    <packages>
+        <package>
+            <test class="ClassName"   description="Describe here what the test does" namespace='&&NAMESPACE&&' />
+        </package>
+    </packages>
+</unit_tests>
