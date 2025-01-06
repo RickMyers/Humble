@@ -12,7 +12,8 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <description>The Home Page</description>
             <model class="dummy" id="admin">
                 <parameter name="admin_id" source="session" value="admin_id" />
-            </model>
+            </model>  
+            <cache set="cacheStatus" const="he's dead jim" />
             <switch id="admin" method="getAdminId">
                 <case value="TRUE">
                     <model namespace="admin" class="system" id="system" />
