@@ -25,6 +25,7 @@
             "Schema/DSL",
             "Entities",
             "RPC",
+            "Tests",
             "web",
             "cli",
             "web/js",
@@ -87,6 +88,10 @@
         {
             "source": "/lib/sample/module/etc/AdminApps.xml" ,
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/AdminApps.xml" 
+        },
+        {
+            "source": "/lib/sample/module/Tests/index.xml" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Tests/index.xml" 
         }
 
     ],
