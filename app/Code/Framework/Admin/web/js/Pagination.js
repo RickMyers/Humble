@@ -3,7 +3,7 @@
  *
  * @type Pagination_L4.PaginationAnonym$0|Function
  */
-var Pagination = (function ($) {
+var Pagination = ( ($) => {
         var defaults = {
             page: 1,
             rows: 25

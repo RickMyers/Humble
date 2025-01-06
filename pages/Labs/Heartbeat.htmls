@@ -1,0 +1,27 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Labs/Pagination.htmls" title="Pagination..." >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Periodic Polling With Composite Payload</div>
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    This is a great little routine for polling the server, as it can manage any number of requests.  Instead of having one poll per request, all requests are summarized
+    in one poll and a multipart payload is returned from the server, which is then divided out to each requests callback function.  A period can also be registered meaning
+    that you can throttle requests so that some requests are not sent with each poll, but rather as a multiple, so you can say you only want a particular request serviced 
+    every 4 polls, so that if your base poll is 5 seconds, that request will get serviced every 20 seconds.<br /><br />
+    With websockets this approach isn't as widely used anymore, but I still find it to be incredibly useful and I incorporate it in all of my projects.
+</div><br /><br />
+
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="25%" lang="js" lexicon="/web/js/ColorizerLanguages.json" class="humble-code" source="/app/Code/Framework/Admin/web/js/Heartbeat.js">
+
+</div>
+<br /><br /><br /><br />
+</div>
+

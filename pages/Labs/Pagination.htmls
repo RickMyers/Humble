@@ -1,0 +1,25 @@
+<!--#include virtual="/pages/includes/header.html" -->
+<!--#include virtual="/pages/includes/container.html" -->
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Labs/Screenshot.htmls" title="Screenshot..." >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Periodic Polling With Composite Payload</div>
+<div class=''>
+    <b>Reason for Creation</b>:<br /><br />
+    Pagination is a very common feature of applications.  There's a lot of "magic" going on in this small script, you simply have to follow a naming convention of your pagination
+    buttons for this to "magically" work flawlessly.  It certainly has been a useful tool in this regard and I shall continue to use it until I find a better way (if such a way exists)
+</div><br /><br />
+
+<b>Source Code</b>:
+<div widget="codeBox" widgetScroll="50%" lang="js" lexicon="/web/js/ColorizerLanguages.json" class="humble-code" source="/app/Code/Framework/Admin/web/js/Pagination.js">
+
+</div>
+<br /><br /><br /><br />
+</div>
+
+

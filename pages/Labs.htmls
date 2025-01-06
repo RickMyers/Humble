@@ -71,6 +71,14 @@
     </div>
 
     <div class="lab-item">
+        &bull; <a href="Labs/Heartbeat.htmls">Polling</a> - A polling and payload manager, handy if you aren't into websockets
+    </div>
+    
+    <div class="lab-item">
+        &bull; <a href="Labs/Pagination.htmls">Pagination</a> - Simplified pagination controls based on naming conventions
+    </div>
+    
+    <div class="lab-item">
         &bull; <a href="https://www.cloud-it.com/home/Rick%20Myers" target="_BLANK">Cloud-IT</a> - My site that combines many aspects of social networking and learning, abandoned 2015 but is still amazing
     </div>
     
