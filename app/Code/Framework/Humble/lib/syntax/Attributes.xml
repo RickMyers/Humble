@@ -275,6 +275,7 @@
             <set       required="false"  purpose="" default="" />
             <get       required="false"  purpose="" default="" />
             <value     required="false"  purpose="" default="" />
+            <const     required="false"  purpose="" default="" />
             <default   required="true"   purpose="" default="" />            
         </attributes>        
     </cache>

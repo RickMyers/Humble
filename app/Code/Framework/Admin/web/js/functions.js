@@ -68,6 +68,30 @@ var Functions = (() => {
                             }).post();
                         }                      
                     },
+                    socket: {
+                        install: () => {
+                            let win = Desktop.semaphore.checkout(true);
+                            (new EasyAjax('/admin/socket/config')).then((response)=>{
+                                win._title('Server Install')._open(response);
+                            }).post();
+                        },
+                        start: () => {
+                            (new EasyAjax('/admin/socket/start')).then((response)=>{
+                                alert(response);
+                            }).post();
+                        },
+                        stop: () => {
+                            (new EasyAjax('/admin/socket/stop')).then((response)=>{
+                                alert(response);
+                            }).post();
+
+                        },
+                        restart: () => {
+                            (new EasyAjax('/admin/socket/restart')).then((response)=>{
+                                alert(response);
+                            }).post();
+                        }
+                    },
                     desktop: {
                         toggle: (() => {
                             let state = false;
@@ -551,8 +575,16 @@ var Functions = (() => {
                                 $('#cadence_running').css('display',(cadence.running ? 'block' : 'none'));
                             }
                         })();                        
+                        var h = (() => {
+                            return function (data) {
+                                var caching = JSON.parse(data);
+                                $('#cache_server_stopped').css('display',(caching.running ? 'none' : 'block'));
+                                $('#cache_server_running').css('display',(caching.running ? 'block' : 'none'));
+                            }
+                        })();                                                
                         Heartbeat.register('admin',true,'systemStatus',f,1,{});
                         Heartbeat.register('admin',true,'cadenceStatus',g,1,{});
+                        Heartbeat.register('admin',true,'cachingStatus',h,4,{});
                         Heartbeat.init();
                     },
                     action: function (action,pkg,module) {

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+Cache Maintenance Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="caching" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="off" response="false">
+        <action name="status" output="JSON">
+            <description>Is the cache working?</description>
+            <cache assign="status" get="cacheStatus" />
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

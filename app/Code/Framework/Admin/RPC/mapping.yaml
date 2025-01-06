@@ -5,7 +5,6 @@ systemStatus :
     api-var         : 
     blocking        : off
     arguments       : 
-              sessionId : true
     method          : POST
 cadenceStatus :
     url             : /admin/cadence/status
@@ -13,5 +12,12 @@ cadenceStatus :
     api-var         : 
     blocking        : off
     arguments       : 
-              sessionId : true
     method          : POST  
+cachingStatus:
+    url             : /admin/caching/status
+    api-key         :
+    api-var         : 
+    blocking        : off
+    arguments       : 
+    method          : POST  
+    

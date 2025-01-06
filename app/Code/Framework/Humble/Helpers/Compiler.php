@@ -874,10 +874,15 @@ PHP;
         $assign     = (isset($node['assign']))  ? $node['assign']  : false;
         $var        = (isset($node['var']))     ? $node['var']     : false;
         $value      = (isset($node['value']))   ? $node['value']   : false;
+        $const      = (isset($node['const']))   ? $node['const']   : false;
         $default    = (isset($node['default'])) ? $node['default'] : false;
         if (isset($node['set'])) {
-            $source = ($var) ? '$models["'.$var.'"]' : ($value ? '$_REQUEST["'.$value.'"]' : ($default ? "'".$default."'" : '' ));
-            print($this->tabs().'\Humble::cache("'.$node['set'].'",'.$source.");\n");
+            if ($const) {
+                print($this->tabs().'\Humble::cache("'.$node['set'].'","'.$const.'");'."\n");
+            } else {
+                $source = ($var) ? '$models["'.$var.'"]' : ($value ? '$_REQUEST["'.$value.'"]' : ($default ? "'".$default."'" : '' ));
+                print($this->tabs().'\Humble::cache("'.$node['set'].'",'.$source.");\n");
+            }
         } else if (isset($node['get'])) {
             if ($assign) {
                 print($this->tabs().'$'.$assign.' = ');
