@@ -1,8 +1,0 @@
-        var data = {
-            labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
-            datasets: [
-                {$datasets}
-            ]
-        };
-        var ctx = $("#{$layer}").get(0).getContext("2d");
-        var myRadarChart = new Chart(ctx).Radar(data, options);

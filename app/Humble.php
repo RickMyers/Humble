@@ -532,7 +532,7 @@
                 if (!self::$cache && !self::$cacheFailed) {
                     if ($cache_server = (($engine=='REDIS') ? 'localhost:6379' : Environment::settings()->getCacheHost())) {
                         $USE_REDIS    = strpos($cache_server,'6379');
-                        $x = $USE_REDIS ? print('REDIS'."\n") : print('MEMCACHED'."\n");
+                        //$x = $USE_REDIS ? print('REDIS'."\n") : print('MEMCACHED'."\n");
                         $cache_server = explode(':',$cache_server);
                         if (self::$cache = (($USE_REDIS) ? new \Redis() : new \Memcache())) {
                             if (!@self::$cacheConn = self::$cache->connect($cache_server[0],(isset($cache_server[1]) ? $cache_server[1] : (($USE_REDIS) ? 6379 :11211)))) {

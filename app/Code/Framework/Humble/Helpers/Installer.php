@@ -204,7 +204,7 @@ SQL;
         $installed      = date('Y-m-d H:i:s');
         $query = <<<SQL
             insert into humble_modules
-                (`title`,namespace, module, package, installed, configuration, controller, `version`, description, templater, schema_install, schema_update, schema_layout, resources_js, resources_sql, resources_templates, models, prefix, mongodb, entities, controller_cache, views, views_cache, helpers, rpc_mapping, images, images_cache, enabled,required,weight)
+                (`title`,namespace, module, package, installed, configuration, controllers, `version`, description, templater, schema_install, schema_update, schema_layout, resources_js, resources_sql, resources_templates, models, prefix, mongodb, entities, controller_cache, views, views_cache, helpers, rpc_mapping, images, images_cache, enabled,required,weight)
             values
                 ('{$title}','{$this->namespace}','{$moduleName}','{$package}','{$installed}','{$configuration}','{$controller}','{$this->version}','{$description}','{$use}','{$s_install}','{$s_update}','{$s_layout}','{$resourcesJs}','{$resourcesSql}','.{$resourcesTpl}.' ,'{$models}','{$prefix}','{$this->mongodb}','{$entities}','{$controllerCache}','{$views}','{$viewsCache}','{$helpers}','{$RPC}','{$images}','{$imagesCache}','{$enabled}','{$required}','{$weight}')
 SQL;

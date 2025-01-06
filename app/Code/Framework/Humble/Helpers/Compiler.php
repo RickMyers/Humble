@@ -78,7 +78,7 @@ class Compiler extends Directory
      * @return type
      */
     private function trueish($value=false) {
-        return isset($this->trueish[strtoupper($value)]);
+        return isset($this->trueish[(string)strtoupper($value)]);
     }
     
     /**
@@ -133,12 +133,12 @@ class Compiler extends Directory
     private function verifyIncludesExist($templater)   {
         $includes                       = [];
         $includeErrors                  = [];
-        $includes['banner']             = 'lib/Common/banner.php';
-        $includes['common_header']      = 'lib/Common/header.php';
-        $includes['templater_header']   = 'lib/templaters/'.$templater.'/header.php';
-        $includes['common_body']        = 'lib/Common/body.php';
-        $includes['templater_footer']   = 'lib/templaters/'.$templater.'/footer.php';
-        $includes['common_footer']      = 'lib/Common/footer.php';
+        $includes['banner']             = 'Code/Framework/Humble/lib/Common/banner.php';
+        $includes['common_header']      = 'Code/Framework/Humble/lib/Common/header.php';
+        $includes['templater_header']   = 'Code/Framework/Humble/lib/templaters/'.$templater.'/header.php';
+        $includes['common_body']        = 'Code/Framework/Humble/lib/Common/body.php';
+        $includes['templater_footer']   = 'Code/Framework/Humble/lib/templaters/'.$templater.'/footer.php';
+        $includes['common_footer']      = 'Code/Framework/Humble/lib/Common/footer.php';
         foreach ($includes as $type => $include) {
             if (file_exists($include)) {
                 $includes[$type] = file_get_contents($include);
@@ -1301,8 +1301,12 @@ PHP;
     }
     
     private function processActionNode($tag2,$action,$init) {
-        $this->response(isset($action['response']) && $this->trueish($action['response']));
-        $this->blocking(isset($action['blocking']) && $this->trueish($action['blocking']));
+        if (isset($action['response'])) {
+            $this->response($this->trueish($action['response']));
+        }
+        if (isset($action['blocking'])) {
+            $this->blocking($this->trueish($action['blocking']));
+        }
         if (strtolower($tag2) === 'default') {
             return $action;
         }
@@ -1528,8 +1532,9 @@ PHP;
      */
     private function generateController($xml)    {
         $this->controller = $xml['name'];
-        $info             = \Humble::module();
-        $templater        = (isset($xml['use']) ? $xml['use'] : $info['templater']);
+        $attrs = $xml->attributes();
+        $info             = \Humble::module($this->namespace);
+        $templater        = (isset($attrs['use']) ? $attrs['use'] : $info['templater']);
         $this->verifyIncludesExist($templater);
         print($this->includes['banner']);
         print("<?php\n");
@@ -1554,16 +1559,17 @@ PHP;
             print($this->tabs()."ob_start();\n");
             print($this->tabs().'switch ($method) {'."\n");
             $attr = $actions->attributes();
-            $init = [
-                'blocking' => $this->blocking(),
-                'response' => $this->response()
-            ];
             if (isset($attr['blocking'])) {
                 $this->blocking($this->trueish($attr['blocking']));
             }            
             if (isset($attr['response'])) {
                 $this->response($this->trueish($attr['response']));
-            }
+            }            
+            $init = [
+                'blocking' => $this->blocking(),
+                'response' => $this->response()
+            ];
+
             foreach ($actions as $tag2 => $action ) {
                 $defaultAction = $this->processActionNode($tag2,$action,$init);
             }

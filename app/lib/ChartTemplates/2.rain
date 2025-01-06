@@ -1,8 +1,0 @@
-        var data = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [
-                {$datasets}
-            ]
-        };
-        var ctx = $("#{$layer}").get(0).getContext("2d");
-        var myBarChart = new Chart(ctx).Bar(data, options);
