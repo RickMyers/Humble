@@ -14,5 +14,12 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
+        <action name="install" blocking="off">
+            <description>Will install and configure a socket server</description>
+            <model namespace="admin" class="sockets" method="install" >
+                <parameter name="host" source="request" required="true" />
+                <parameter name="port" source="request" required="true" />
+            </model>
+        </action>
     </actions>
 </controller>

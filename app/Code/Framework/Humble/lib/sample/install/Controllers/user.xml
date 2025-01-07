@@ -78,6 +78,15 @@
             <redirect href="/index.html?message=Logout Successful" />
         </action>
         
-
+        <!-- ############################################################### -->
+        
+        <action name="info" blocking="off" ouput="JSON">
+            <description>Returns basic user information</description>
+            <comment>This service is called from the socket server, if it is installed</comment>
+            <entity class="user/identification" response="true" json="true" method="load">
+                <parameter name="id" value="user_id" source="request" required="true" />
+            </entity>
+        </action>
+        
     </actions>
 </controller>

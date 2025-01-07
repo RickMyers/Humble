@@ -237,10 +237,20 @@
                 print("Error creating zip file");
             }
             break;
+        case "socket":
+        case "sockets":
         case "socketserver":
             $port       = $_REQUEST['port'];
             $host       = $_REQUEST['host'];
             $zip        = new ZipArchive();
+            if ($zip->open('tempsocket.zip',ZipArchive::CREATE)) {
+                $zip->addFromString('main.js',file_get_contents('Hub/main.js'));
+                $zip->addFromString('.gitignore',file_get_contents('Hub/.gitignore'));
+                $zip->addFromString('package.json',file_get_contents('Hub/package.json'));
+                $zip->close();
+                print(file_get_contents('tempsocket.zip'));
+                @unlink('tempsocket.zip');
+            }
             break;
         default :
             header("Content-Type: application/json");

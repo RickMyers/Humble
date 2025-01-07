@@ -135,13 +135,14 @@ class Monitor extends Model
         return $processes;
     }
     private function parseStatus($data=[]) {
+        //file_put_contents('top.txt',print_r($data,true));
         $status = [];
         $status['time']     = $data[0][2];
-        $status['uptime']   = $data[0][4].' '.$data[0][5].' '.$data[0][6];
+        $status['uptime']   = $data[0][4].' '.$data[0][5];
         $status['users']    = $data[0][7];
-        $status['load']     = $data[0][11].' '.$data[0][12].' '.$data[0][13];
+        $status['load']     = $data[0][9].' '.($data[0][10]??'').' '.($data[0][11]??'');
         $status['tasks']    = $data[1][1];
-        $status['running']  = $data[1][4];
+        $status['running']  = $data[1][3];
         $status['sleeping'] = $data[1][5];
         $status['stopped']  = $data[1][7];
         $status['zombie']   = $data[1][9];
