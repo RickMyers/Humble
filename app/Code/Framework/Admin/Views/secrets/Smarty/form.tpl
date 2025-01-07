@@ -23,19 +23,10 @@
                     ]
                 }
             },
-            mounted: () => {
-                console.log('mounted');
+            mounted() {
                 new EasyEdits('/edits/admin/newsecret','new-secret');
             },
-            created: () => {
-                console.log('created');
-            },
-            updated: () => {
-                console.log('updated');
-            },
-            destroyed: () => {
-                console.log('destroyed');
-            },
+
             methods: {
                 addSecret: async () => {
                     if (Edits['new-secret'].validate()) {
@@ -62,6 +53,4 @@
 </script>
 <script type='module'>
     import Counter from '/comp/admin/counter.vue';
-    console.log('here');
-    console.log(Counter);
 </script>

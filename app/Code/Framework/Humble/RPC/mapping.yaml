@@ -16,6 +16,17 @@ cadenceStatus :
     arguments       : 
               sessionId :
     method          : POST
+testCache   :
+    url             : /humble/test/cache
+    api-key         :
+    api-var         : 
+    cache           :
+        engine      : REDIS
+        expire      : 90M
+    blocking        : off
+    arguments       : 
+              sessionId :
+    method          : POST
 
  
     

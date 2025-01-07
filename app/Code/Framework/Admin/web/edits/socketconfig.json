@@ -1,0 +1,55 @@
+{
+	"form":
+	{
+		"id":           "config_socket_form",
+		"drawme":		false,
+		"action":		"",
+		"method":		"post",
+		"style":		"",
+		"onenterkey":	"send"
+	},
+	"fields":
+	[
+
+		{
+			"active":		true,
+			"id": 			"socket_server_host",
+			"longname":		"Server Host",
+                        "title":                "Host Name",
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                ""
+		},
+		{
+			"active":		true,
+			"id": 			"socket_server_port",
+			"longname":		"Server Port",
+                        "title":                "Port Number",
+                        "mask":                 "#######",
+                        "maxlength":            7,
+                        "minlength":            3,
+			"type":			"text",
+			"required":		true,
+			"force":		true,
+                        "style":                ""
+		}, 
+		{
+			"active":		true,
+			"id":			"config_socket_submit",
+			"longname":		"Submit Button",
+			"type":			"button",
+                        "style":                "",
+                        "value":                "Continue",
+                        "onclick":        function () {
+                            if (Edits['socketconfig'].validate()) {
+                                (new EasyAjax('/admin/socket/install')).packageForm('socket_config_form').then((response) => {
+                                    
+                                }).post();
+                            }
+                        }
+		}
+	]
+}
+
+

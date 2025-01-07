@@ -157,16 +157,15 @@ app.post('/emit', function (req,res) {
     console.log('Received data via EMIT @ '+(new Date()).toLocaleString());
     console.log(req.body);
     var data = req.body;
-	if (data && data.event && (data.event == 'RTCUserMessage')) {
+    if (data && data.event && (data.event == 'RTCUserMessage')) {
         if (data.user_id && users[data.user_id]) {
             console.log(users[data.user_id]);
             for (var socket in users[data.user_id]) {
                 console.log('Sending to '+socket);
                 io.to(socket).emit(data.message,data);
             }
-            
         }		
-	} else if (data && data.event) {
+    } else if (data && data.event) {
         var e = data.event;
         delete data.event;
         if (data.uid) {
@@ -179,7 +178,7 @@ app.post('/emit', function (req,res) {
                 }
             }
         } else {
-			console.log('Emitting data to client @ '+(new Date()).toLocaleString());
+            console.log('Emitting data to client @ '+(new Date()).toLocaleString());
             io.emit(e,data);                                                    //Global broadcast
         }
     } else {
@@ -208,9 +207,6 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function () {
         let user_id = +sockets[this.id];
         //Removing the user from tracking
-        if (user_id === 2) {
-            io.emit('rickHasLeft');
-        }
         if (users[user_id] && users[user_id][this.id]) {
             console.log('Dropping socket '+this.id+' from user '+user_id);
             delete users[user_id][this.id];
@@ -242,9 +238,6 @@ io.on('connection', function (socket) {
             }
         }
         console.log('~~~~~~~~');
-
-//      console.log(users[data.uid]);
-//      console.log(data);
     });
     
     //--------------------------------------------------------------------------
@@ -274,7 +267,7 @@ io.on('connection', function (socket) {
             socket_id: socket_id,
             host: hosts.user_data, 
             port: '80', 
-            path: '/dashboard/user/info?uid='+data.user_id,
+            path: '/&&MODULE&&/user/info?uid='+data.user_id,
             rejectUnauthorized: false,
             requestCert: true,
             agent: false            
@@ -299,10 +292,6 @@ io.on('connection', function (socket) {
            console.log(e.message); 
         });
         request.end();
-
-        if (+data.user_id === 2) {
-            io.emit('rickIsOnline');
-        }
     });
 
     //--------------------------------------------------------------------------

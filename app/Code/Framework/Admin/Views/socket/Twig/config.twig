@@ -1,0 +1,33 @@
+<script type="text/javascript"> 
+    //This is for handling "multiplicity", as in multiple explorer apps open at one time
+    Humble.admin.apps['sockets'] = (!Humble.admin['sockets']) ? {} : Humble.admin['sockets'];
+    Humble.admin.apps['sockets']['{{ window_id }}'] = Vue.createApp({
+        template: Humble.template('admin','sockets/config'),
+        app: "#socket_configuration",
+        data() {
+                return {
+                    window_id: "{{ window_id }}",
+                    files: [
+                        
+                    ]
+                }
+            },
+        mounted() {
+            new EasyEdits('/edits/admin/socketconfig','socketconfig');
+        },
+        methods: {
+        }
+    });
+    var win = Desktop.window.list['{{ window_id }}'];
+    Humble.admin.apps['sockets']['{{ window_id }}'].mount('#'+win.content.id);
+/*    win.resize(() => {
+        $('#explorer_file_list').height(win.content.height() - $E('explorer_path_area').offsetHeight - $E('explorer_footer').offsetHeight - 2);
+    });*/
+    win.close(((app) => {
+        return function () {
+            app.unmount();
+        };
+    })(Humble.admin.apps['sockets']['{{ window_id }}']));
+    
+
+</script>

@@ -262,6 +262,7 @@ function initializeProject() {
                 $attributes['landing_page']         = scrub(fgets(STDIN));
             }
             $attributes['destination_folder']       = getcwd();
+            $attributes['hub_host']                 = "";
             $attributes['hub_port']                 = "";
             @mkdir($attributes['destination_folder'],0775);
             $result = json_decode(file_get_contents($attributes['framework_url'].'/distro/serialNumber?project='.urlencode(json_encode($attributes))),true);

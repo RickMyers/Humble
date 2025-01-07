@@ -71,7 +71,7 @@ var Functions = (() => {
                     socket: {
                         install: () => {
                             let win = Desktop.semaphore.checkout(true);
-                            (new EasyAjax('/admin/socket/config')).then((response)=>{
+                            (new EasyAjax('/admin/socket/config')).add('window_id',win.id).then((response)=>{
                                 win._title('Server Install')._open(response);
                             }).post();
                         },

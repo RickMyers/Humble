@@ -7,7 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 -->
 <controller name="socket" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="ON" response="false">
-        <action name="config">
+        <action name="config" blocking="off" passalong="window_id">
             <description>The install and configuration page</description>
             <!-- Entity, Helper, Model, Conditional declarations begin here -->
         </action>

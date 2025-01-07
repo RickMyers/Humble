@@ -237,6 +237,11 @@
                 print("Error creating zip file");
             }
             break;
+        case "socketserver":
+            $port       = $_REQUEST['port'];
+            $host       = $_REQUEST['host'];
+            $zip        = new ZipArchive();
+            break;
         default :
             header("Content-Type: application/json");
             print('{ "error": "Unsupported Action: '.$action.'" }');
