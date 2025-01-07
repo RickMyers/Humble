@@ -260,6 +260,9 @@ function initializeProject() {
                 print(justify("Humble ships with a basic login page.  After logging in, you can specify where to get routed to.  Please specify that below.",100)."\n");
                 print(justify("Please enter the URI for the initial landing page [/".$attributes['namespace'].'/home/page]:',100));
                 $attributes['landing_page']         = scrub(fgets(STDIN));
+                if (substr($attributes['landing_page'],0,1)!=='/') {
+                    $attributes['landing_page'] = '/'.$attributes['landing_page'];
+                }
             }
             $attributes['destination_folder']       = getcwd();
             $attributes['hub_host']                 = "";

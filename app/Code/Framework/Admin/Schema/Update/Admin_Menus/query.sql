@@ -1,18 +1,9 @@
-insert  into `admin_menu_categories`(`id`,`category`,`seq`,`modified`) values 
-(1,'Places',1,'2023-12-22 16:45:31'),
-(2,'Documentation',2,'2023-12-22 16:45:38'),
-(3,'Services',3,'2023-12-22 16:45:42'),
-(4,'Tools',4,'2023-12-22 16:45:47'),
-(5,'Environment',6,'2023-12-22 16:57:21'),
-(6,'Users',5,'2023-12-22 17:36:05');
-
-/*Data for the table `admin_menus` */
-
+truncate `admin_menus`;
 insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`href`,`target`,`seq`,`modified`) values 
 (1,'Administration',NULL,1,NULL,'/admin','_BLANK',1,'2023-12-22 16:58:07'),
 (2,'Workflow Editor',NULL,1,NULL,'/paradigm/actions/open','_BLANK',2,'2023-12-22 17:00:15'),
 (3,'Controller Designer',NULL,1,NULL,'/contrive/actions/open','_BLANK',3,'2023-12-22 17:00:42'),
-(4,'API Tester',NULL,1,NULL,'/paragigm/api/home','_BLANK',4,'2023-12-22 17:01:10'),
+(4,'API Tester',NULL,1,'Administration.api.home()','','_BLANK',4,'2023-12-22 17:01:10'),
 (5,'Form Designer',NULL,1,NULL,'/paradigm/actions/designer','_BLANK',5,'2023-12-22 17:01:31'),
 (6,'Logout',NULL,1,NULL,'/admin/user/logout',NULL,6,'2023-12-22 17:01:54'),
 (7,'Generate',NULL,2,'Administration.documentation.run()',NULL,NULL,1,'2023-12-22 17:02:20'),
@@ -42,8 +33,6 @@ insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`hre
 (31,'Reload',25,NULL,'Administration.cadence.action(\"reload\")',NULL,NULL,3,'2023-12-22 17:32:49'),
 (32,'Clear PID',25,NULL,'Administration.cadence.action(\"clear\")',NULL,NULL,4,'2023-12-22 17:33:08'),
 (33,'Tune...',25,NULL,'Administration.cadence.tune()',NULL,NULL,5,'2023-12-22 17:33:30'),
-(34,'Add Administrator',NULL,6,'Administration.add.administrator.form()',NULL,NULL,1,'2023-12-22 17:37:06'),
-(35,'Add General User',NULL,6,'Administration.add.user.form()',NULL,NULL,2,'2023-12-22 17:37:22'),
 (36,'Add New Secret',15,NULL,'Administration.secrets.add()',NULL,NULL,1,'2023-12-22 17:37:58'),
 (37,'Review/Update Secret',15,NULL,'Administration.secrets.review()',NULL,NULL,2,'2023-12-22 17:38:21'),
 (38,'Add Export Target',16,NULL,'Administration.workflows.add.exportTarget()',NULL,NULL,1,'2023-12-22 17:38:56'),
@@ -56,10 +45,15 @@ insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`hre
 (45,'Leave',43,NULL,'Administration.maintenance.leave()',NULL,NULL,2,'2023-12-22 17:42:30'),
 (46,'Settings',26,NULL,'Administration.smtp.settings.open()',NULL,NULL,NULL,'2024-02-15 20:55:32'),
 (47,'Tester',26,NULL,'Administration.smtp.settings.test()',NULL,NULL,NULL,'2024-02-15 20:55:53'),
-(48,'Manage...',NULL,6,'',NULL,NULL,3,'2024-07-14 17:44:14'),
-(49,'Users',48,NULL,'Administration.manage.users(\'General\')',NULL,NULL,1,'2024-07-14 17:45:15'),
-(50,'Administrators',48,NULL,'Administration.manage.users(\'Administrators\')',NULL,NULL,2,'2024-07-14 17:50:59'),
+(48,'Manage...',NULL,6,'Administration.manage.users(\'\')',NULL,NULL,3,'2024-07-14 17:44:14'),
 (51,'System Poll',NULL,5,NULL,NULL,NULL,4,'2024-07-18 17:21:00'),
 (52,'Off',51,NULL,'Heartbeat.stop()',NULL,NULL,1,'2024-07-18 17:21:19'),
 (53,'On',51,NULL,'Heartbeat.reset()',NULL,NULL,2,'2024-07-18 17:21:34'),
-(54,'Cache Health',NULL,5,'Administration.cache.home()',NULL,NULL,5,'2024-07-19 15:48:04');
+(54,'Cache Health',NULL,5,'Administration.cache.home()',NULL,NULL,5,'2024-07-19 15:48:04'),
+(55,'Socket Server',NULL,5,NULL,NULL,NULL,6,'2025-01-06 15:36:15'),
+(56,'Install',55,NULL,'Administration.socket.install()',NULL,NULL,1,'2025-01-06 15:36:50'),
+(57,'Start',55,NULL,'Administration.socket.start()',NULL,NULL,2,'2025-01-06 15:37:31'),
+(58,'Stop',55,NULL,'Administration.socket.stop()',NULL,NULL,3,'2025-01-06 15:37:45'),
+(59,'Restart',55,NULL,'Administration.socket.restart()',NULL,NULL,4,'2025-01-06 15:38:02');
+
+
