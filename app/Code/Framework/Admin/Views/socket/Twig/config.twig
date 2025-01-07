@@ -20,9 +20,6 @@
     });
     var win = Desktop.window.list['{{ window_id }}'];
     Humble.admin.apps['sockets']['{{ window_id }}'].mount('#'+win.content.id);
-/*    win.resize(() => {
-        $('#explorer_file_list').height(win.content.height() - $E('explorer_path_area').offsetHeight - $E('explorer_footer').offsetHeight - 2);
-    });*/
     win.close(((app) => {
         return function () {
             app.unmount();

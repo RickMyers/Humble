@@ -240,8 +240,6 @@
         case "socket":
         case "sockets":
         case "socketserver":
-            $port       = $_REQUEST['port'];
-            $host       = $_REQUEST['host'];
             $zip        = new ZipArchive();
             if ($zip->open('tempsocket.zip',ZipArchive::CREATE)) {
                 $zip->addFromString('main.js',file_get_contents('Hub/main.js'));

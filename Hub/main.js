@@ -22,135 +22,41 @@ String.prototype.pad = function (len,char,left) {
     }
     return ps;
 };
-let fs     = require('fs');
-let config = JSON.parse(fs.readFileSync('../Humble.project','utf8'));
+function standardHeaders(res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    return res;
+}
+//------------------------------------------------------------------------------
+let fs          = require('fs');
+let project     = JSON.parse(fs.readFileSync('../Humble.project','utf8'));
 
-if (!config) {
+if (!project) {
     console.log("Unable to process Humble.project file... it is either missing or has issues");
-    exit;
+    process.exit();
 }
-
-//let settings    = httpSetup(fs,config);
-let express     = require('express');
-let app         = express();
-let mysql       = require('mysql');
-let parser      = require('body-parser');
-let http        = require("http").createServer(app).listen(config.hub_port,function () {
-//let https       = require("https").createServer({ key:  settings.key,  cert: settings.cert,  ca:  settings.ca },app).listen(3000,function () {
-    
-    loadHosts();
-    //mysqlConnect(config);     
-    console.log('If you are seeing this, the server started successfully...');
-});
-let io              = require('socket.io').listen(http);
-let hosts           = { };
-let users           = { };                                                      //Tracks Users and Sockets... there are more than one socket assigned to a user if they have the dashboard open in multiple tabs
-let users_online    = { };                                                      //Strictly tracks Users
-let sockets         = { };
-let observers       = { };
-let dentist         = false;
-let forms           = { };
-let conn            = false;
-let callers         = { };
-let flags           = {
-    "patientWaiting": false,
-    "patient": false
-};
-
-//==============================================================================
-function httpSetup(fs,data) {
-  //  let key         = (data.ssl.key)  ? fs.readFileSync(data.ssl.root+data.ssl.key)  : '';
-   // let cert        = (data.ssl.cert) ? fs.readFileSync(data.ssl.root+data.ssl.cert) : '';
-    //let ca          = (data.ssl.ca)   ?  fs.readFileSync(data.ssl.root+data.ssl.ca)  : '';
-  //  return { "key": key, "cert": cert, "ca": ca};
-}
-//==============================================================================
-function routeMessage(message,data) {
-    if (observers[message]) {
-        for (var i in observers[message]) {
-            io.to(i).emit(message,data);
-        }
-    }
-}
-
-//------------------------------------------------------------------------------
-function countUsersOnline() {
-    var num = 0;
-    for (var i in users) {
-        num++;
-    }
-    return num;
-}
-//------------------------------------------------------------------------------
-function loadHosts() {
-    let data = '';
-    if (data = fs.readFileSync('../host_list.json','utf8')) { 
-        if (hosts = JSON.parse(data)) {
-            console.log("Hosts have been loaded");
-        } else {
-            console.log("Error reading hosts file");
-            process.exit();
-        }
-    } else {
-        console.log('List of external host (host_list.json) had an error, aborting');
-        process.exit();
-    }
-}
-//------------------------------------------------------------------------------
-function mysqlConnect(data) {
-    if (data.mysql) {
-        console.log("MySQL Settings have loaded")
-        conn = mysql.createConnection({
-            host:       data.mysql.host,
-            port:       data.mysql.port,
-            user:       data.mysql.user,
-            database:   data.mysql.database,
-            password:   data.mysql.password
-        });
-        conn.connect(function (err) {
-            if (err) {
-                console.log(err);
-                process.exit()
-            } else {
-                console.log("MySQL Connection Succeeded");
-            }
-        });
-        conn.end((err) => {
-            if (err) {
-                console.log(err);
-                process.exit()
-            } else {
-                console.log('Ending MySQL Connection');
-            }
-        })
-    } else {
-        console.log("Error loading MySQL settings");
-        process.exit();
-    }
- }
-//------------------------------------------------------------------------------
-function mysqlQuery(query,after) {
-    if (query) {
-        conn.query((err,rows)=>{
-            if (err) {
-                console.log(err);
-            } else {
-                after(rows);
-            }
-        });
-    }
-}
-//------------------------------------------------------------------------------
+console.log(project);
+fs.writeFile('../app/PIDS/sockets.pid', process.pid, err => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log('PID has been recorded');
+  }
+})
+//let settings      = httpSetup(fs,config);
+let express         = require('express');
+let app             = express();
+let parser          = require('body-parser');
+let socketio        = require("socket.io");
+let secure          = (project.project_url.substr(0,5) === 'https');
 app.use(parser.urlencoded({extended: true}));
 app.use(parser.json());
 app.get('/', function (req,res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res = standardHeaders(res);
     res.sendFile(__dirname+'/index.html');
 });
-
 //------------------------------------------------------------------------------
-//This listens for the dashboard to send an event by POSTing data, rather than
+//This listens for the application to send an event by POSTing data, rather than
 //  using sockets.  An alternative could be to use an actual socket, but then
 //  we'd have to manage socket state, rather than remain "stateless"
 app.post('/emit', function (req,res) {
@@ -185,7 +91,10 @@ app.post('/emit', function (req,res) {
         console.log('I did not emit the event');
     }
 });
-
+app.get('/status',function (req,res) {
+    res = standardHeaders(res);
+    res.send('Ok');
+});
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -194,7 +103,39 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+let http            = require("http").createServer(app).listen(project.hub_port,function () {
+    console.log('If you are seeing this, the server started successfully on port '+project.hub_port+'...');
+});
+const io            = new socketio.Server(http);
 
+let users           = { };                                                      //Tracks Users and Sockets... there are more than one socket assigned to a user if they have the application open in multiple tabs
+let users_online    = { };                                                      //Strictly tracks Users
+let sockets         = { };
+let observers       = { };
+
+//==============================================================================
+function httpSetup(fs,data) {
+  //  let key         = (data.ssl.key)  ? fs.readFileSync(data.ssl.root+data.ssl.key)  : '';
+  //  let cert        = (data.ssl.cert) ? fs.readFileSync(data.ssl.root+data.ssl.cert) : '';
+  //  let ca          = (data.ssl.ca)   ?  fs.readFileSync(data.ssl.root+data.ssl.ca)  : '';
+  //  return { "key": key, "cert": cert, "ca": ca};
+}
+//==============================================================================
+function routeMessage(message,data) {
+    if (observers[message]) {
+        for (var i in observers[message]) {
+            io.to(i).emit(message,data);
+        }
+    }
+}
+//------------------------------------------------------------------------------
+function countUsersOnline() {
+    var num = 0;
+    for (var i in users) {
+        num++;
+    }
+    return num;
+}
 //------------------------------------------------------------------------------
 //
 //------------------------------------------------------------------------------
@@ -265,9 +206,9 @@ io.on('connection', function (socket) {
         //NEED TO GET THE RIGHT SERVER TO TALK TO!
         var options = {
             socket_id: socket_id,
-            host: hosts.user_data, 
-            port: '80', 
-            path: '/&&MODULE&&/user/info?uid='+data.user_id,
+            host: project.project_url,
+            port: project.project_port, 
+            path: '/'+project.module+'/user/info?user_id='+data.user_id,
             rejectUnauthorized: false,
             requestCert: true,
             agent: false            

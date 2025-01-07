@@ -20,4 +20,11 @@ cachingStatus:
     blocking        : off
     arguments       : 
     method          : POST  
+cachingStatus:
+    url             : /admin/socket/status
+    api-key         :
+    api-var         : 
+    blocking        : off
+    arguments       : 
+    method          : POST  
     
