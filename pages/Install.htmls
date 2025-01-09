@@ -94,16 +94,16 @@ If you do decide to do a local install, you will need to...
 <ul class="humble-topics">
     <li>Shared Driver (<u>required</u>)
         <ul class="humble-topics">
-            <li> <a href='/app/install/Humble.php'>Humble.php</a></li>
+            <li>&bull; <a href='/app/install/Humble.php' style="color: blue">Humble.php</a></li>
         </ul>
     <li>Windows Installation Helper
         <ul class="humble-topics">
-            <li> <a href='/app/install/humble.bat'>Humble.bat</a> (<i>optional</i>)</li>
+            <li>&bull; <a href='/app/install/humble.bat' style="color: blue">Humble.bat</a> (<i>optional</i>)</li>
         </ul>
     </li>
     <li>Linux Installation Helper
         <ul class="humble-topics">
-            <li> <a href='/app/install/humble'>Humble</a> (<i>optional</i>)</li>
+            <li>&bull; <a href='/app/install/humble' style="color: blue">Humble</a> (<i>optional</i>)</li>
         </ul>
     </li>
 
@@ -113,9 +113,11 @@ If you do decide to do a local install, you will need to...
 Now you are ready to create a Humble project, run <span style='font-family: monospace'>humble --project</span> to create the new project.  This will guide the install process and will identify the canonical source location for any future updates of the framework.<br /><br />
 Finally, after the project is created you are ready to fetch and install the source.  Run <span style='font-family: monospace'>humble --fetch</span>, and you will be taken to the projects website to provide the run time configuration information.
 </p>
-
+<br /><br /><p class="humble-emphasis">
 This video can provide a walk-through:
+</p>
 
-
+<iframe width="1000" height="600" src="https://www.youtube.com/embed/Ew9CrrKfAKI?si=RrZfQ0uwIwZ5Ez7I" title="YouTube video player" frameborder="0" class="margin-left: auto; margin-right: auto"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <!--#include virtual="/pages/includes/footer.html" -->

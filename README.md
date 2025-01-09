@@ -184,14 +184,24 @@ unlockUser:
         SessionId   :
         UserGID     :
 ```
-Here is a real quick video of building a module to manage the MySQL demonstration tables found here: https://dev.mysql.com/doc/employee/en/
-
-<iframe width="900" height="675" src="https://www.youtube.com/embed/jCoUNIUmSjI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## A final note...
 
 _**Don't Fork And Run!**_  You won't be getting what you think you are getting.  The proper way to install this framework for testing is to visit the project home page
 at https://humbleprogramming.com and make sure you have the dependencies properly installed and configured.  You will also need to have an Apache web server running and your VHOST
-configured properly.
+configured properly.  
 
 Any questions?  The Author of this framework can be reached here... <a href="mailto:rick@humbleprogramming.com?subject=Humble%20Framework">Rick Myers</a>
+
+Click the image below to view the Installation video...
+<a href="https://www.youtube.com/watch?v=Ew9CrrKfAKI" target="_BLANK" style="text-decoration: none">
+![Installation](https://humbleprogramming.com/web/images/installation.png "Installation")</a>
+
+
+
+
+
+
+
+
+
