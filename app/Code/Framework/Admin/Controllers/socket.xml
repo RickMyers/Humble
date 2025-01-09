@@ -21,5 +21,24 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
                 <parameter name="port" source="request" required="true" />
             </model>
         </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="start" blocking="off">
+            <description>Starts the socket server</description>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="stop" blocking="off">
+            <description>Stops the socket server</description>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="restart" blocking="off">
+            <description>Restarts the socket server</description>
+        </action>
+        
     </actions>
 </controller>

@@ -1,5 +1,8 @@
 {
-    "comments": "Read more about the API policy at https:\/\/humbleprogramming.com\/pages\/API.htmls",
+    "comments": [
+        "Read more about the API policy at https://humbleprogramming.com/pages/APIPolicy.htmls",
+        "To create/update the policy, you need to run the --update-policy command at the CLI"        
+    ],
     "default": {
         "authenticated": {
             "read": false,

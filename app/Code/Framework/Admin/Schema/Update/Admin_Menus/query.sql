@@ -1,4 +1,29 @@
-truncate `admin_menus`;
+/*
+SQLyog Community
+MySQL - 5.7.44 : Database - humble
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*Data for the table `admin_menu_categories` */
+truncate admin_menu_categories;
+insert  into `admin_menu_categories`(`id`,`category`,`seq`,`modified`) values 
+(1,'Places',1,'2023-12-22 16:45:31'),
+(2,'Documentation',2,'2023-12-22 16:45:38'),
+(3,'Services',3,'2023-12-22 16:45:42'),
+(4,'Tools',4,'2023-12-22 16:45:47'),
+(5,'Environment',6,'2023-12-22 16:57:21'),
+(6,'Users',5,'2023-12-22 17:36:05');
+
+/*Data for the table `admin_menus` */
+truncate admin_menus;
 insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`href`,`target`,`seq`,`modified`) values 
 (1,'Administration',NULL,1,NULL,'/admin','_BLANK',1,'2023-12-22 16:58:07'),
 (2,'Workflow Editor',NULL,1,NULL,'/paradigm/actions/open','_BLANK',2,'2023-12-22 17:00:15'),
@@ -56,4 +81,7 @@ insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`hre
 (58,'Stop',55,NULL,'Administration.socket.stop()',NULL,NULL,3,'2025-01-06 15:37:45'),
 (59,'Restart',55,NULL,'Administration.socket.restart()',NULL,NULL,4,'2025-01-06 15:38:02');
 
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

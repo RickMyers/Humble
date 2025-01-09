@@ -278,6 +278,13 @@ class System extends CLI
         @rmdir($distro);
         chdir('app');
     }    
+
+    //--------------------------------------------------------------------------
+    public static function cloneTemplates() {
+        $util = \Humble::model('humble/utility');
+        $util->clone();
+        print("\nTemplates Cloned... they are in lib/ directory of your main module\n\n");
+    }
 }
 
 

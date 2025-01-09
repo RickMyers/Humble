@@ -88,7 +88,19 @@ tailwind :
     parameters:
         required:
             namespace|ns: The module namespace
-        optional:   
+        optional:
+clone-templates :
+    description: Copies the component templates to the main modules lib/ directory
+    extended: You can customize the base templates for controllers, models, helpers, and entities
+    usage:
+        linux:   sudo sh ./humble.sh --clone-templates
+        windows: humble --clone-templates
+    function : cloneTemplates
+    directive: true
+    parameters:
+        required:
+        optional:
+    
 cli : 
     description: Toggles the CLI for a particular modules
     usage:
