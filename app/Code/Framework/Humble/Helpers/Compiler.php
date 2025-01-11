@@ -1665,7 +1665,7 @@ SQL;
             $source          = $this->getSource();
             if (!$source) {
                 $mod    = \Humble::module($namespace);
-                $source = 'Code/'.$mod['package'].'/'.str_replace(['_'],['/'],$mod['controller']);
+                $source = 'Code/'.$mod['package'].'/'.str_replace(['_'],['/'],$mod['controllers']);
             }
             $source          = $source.'/'.$controller.'.xml';
         }

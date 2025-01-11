@@ -5,7 +5,7 @@
  */
 if ($_SESSION['admin_id'] ?? false) {
     foreach ((($util->getNamespace() == "") ? Humble::entity('humble/modules')->setEnabled('Y')->fetch() : Humble::entity('humble/modules')->setNamespace($util->getNamespace())->fetch()) as $module) {
-        if ($util->purgeDirectory('Code/'.str_replace('_','/',$module['package'].'/'.$module['controllers_cache']),true)) {
+        if ($util->purgeDirectory('Code/'.str_replace('_','/',$module['package'].'/'.$module['controller_cache']),true)) {
             print("SUCCESS: The ".$module['namespace']." controller cache was cleared\n");
         } else {
             print("ERROR: The ".$module['namespace']." controller cache was not cleared due to an unknown error\n");

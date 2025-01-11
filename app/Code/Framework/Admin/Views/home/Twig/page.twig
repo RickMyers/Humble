@@ -184,7 +184,22 @@
     </script>
     </head>
     <body>
-        <div id="desktop-window-container" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;">
+    <div id="admin-lightbox" style="position: absolute; top: 0px; left: 0px; background-color: rgba(50,50,50,.6); display: none; z-index: 9999">
+        <table style="width: 100%; height: 100%;">
+            <tr>
+                <td>
+                   <div style="margin: auto; height: 500px; width: 800px; padding: 10px; background-color: ghostwhite; border: 1px solid silver; border-radius: 10px">
+                       <div id="admin-lightbox-output" style="height: 455px; border: 1px solid silver; overflow: auto; background-color: lightcyan; white-space: pre; font-family: monospace; font-size: .9em">
+                       </div>
+                       <center>
+                            <button style="margin-left: auto; margin-right: auto; padding: 5px 10px; background-color: dodgerblue; font-family: sans-serif; letter-spacing: 2px; color: ghostwhite" onclick="$('#admin-lightbox').css('display','none')">Close</button>
+                       </center>
+                   </div>
+                </td>
+            </tr>
+        </table>
+    </div>        
+    <div id="desktop-window-container" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;">
     <div id="paradigm-virtual-desktop" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;">     
         <div id="page" class="box-border flex flex-col bg-white">
             <div style="z-index: 9" id='admin-indicators' class='text-white inline-block rounded-md content-center pt-1 pb-1 pr-2 pl-2 whitespace-nowrap absolute grid rid-rows-1 grid-flow-col gap 4' >
