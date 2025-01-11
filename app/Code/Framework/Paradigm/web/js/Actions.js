@@ -16,6 +16,7 @@ Paradigm.actions = (function () {
     var namespace           = '';
     var major_version       = 0;
     var minor_version       = 0;
+    var generating          = false;
     return {
         animate:  (function () {
             var timer       = null;
@@ -205,12 +206,18 @@ Paradigm.actions = (function () {
             }).post();
         },
         generate: function () {
+            if (generating) {
+                console.log('Generate called while generating a workflow');
+                return;
+            }
             if (!generateWindow) {
                 generateWindow = Desktop.semaphore.checkout();
             }
+            generating = true;
             Desktop.window.list[generateWindow]._open('Generating...');
             Paradigm.console.reply('Generating...','',1);
             (new EasyAjax('/paradigm/workflow/generate')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',generateWindow).add('workflow',JSON.stringify(Paradigm.elements.list)).add('id',currentDiagramId).add('image',Paradigm.canvas.toDataURL()).then((response) => {
+                generating = false;
                 Desktop.window.list[generateWindow]._title('Workflow Generation | Paradigm');
                 Desktop.window.list[generateWindow].set(response);
             }).post();

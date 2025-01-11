@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <controller name="console" use="Twig">
-    <actions blocking="false">
+    <actions blocking="off">
 
         <action name="init" passalong="window_id">
             <description>Lays out the console, intializing it</description>

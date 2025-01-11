@@ -26,8 +26,8 @@
     gtb.add('JSON',null,'generated-json-tab');
     gtb.tabClick(0);
     var win = Desktop.window.list['{$generator->getWindowId()}'];
-    win.resize = (function (win) {
-        return function () {
+
+    win.resize(() => {
             Paradigm.actions.set.mongoWorkflowId('{$generator->_workflowId()}');
             $('#generator-tabs-area').height($(win.content).height() - $('#generate-workflow-tabs').height() -15);
             var h = $('#generator-tabs-area').height();
@@ -37,7 +37,6 @@
             $('#generated-workflow-text').height(h);
             $('#generated-workflow-text').width(w);
             $('#generated-workflow-image').height(h);
-        }
-    })(win)
+    });
     win._resize();
 </script>

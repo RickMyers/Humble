@@ -499,7 +499,7 @@ Copyright humbleprogramming.com, all rights reserved
             $('#paradigm-import-option').prop('disabled',true).css('color','rgba(90,90,90,.3)');
             $('#paradigm-export-option').prop('disabled',true).css('color','rgba(90,90,90,.3)');
             $('#lightbox').height(window.innerHeight);
-            $('#paradigm-quick-generate').on('click',Paradigm.actions.generate);
+            //$('#paradigm-quick-generate').on('click',Paradigm.actions.generate);
             $(window).resize(Paradigm.desktop.resize).resize();
             window.setTimeout(function () {
                 $(Paradigm.canvas).prop('width',$(Paradigm.container).width()*2);
@@ -732,7 +732,7 @@ Copyright humbleprogramming.com, all rights reserved
                                    </li>
                                    <li><img class="paradigm-quick-icon" id="paradigm-quick-save" src="/images/paradigm/clipart/save-icon.png" style="height: 28px;" /></li>
                                    <li><img class="paradigm-quick-icon" id="paradigm-quick-generate" src="/images/paradigm/clipart/generate-icon.png" style="height: 28px" /></li>
-                                   <li><img class="paradigm-quick-icon" title="This workflow is active, click to make inactivate" id="paradigm-quick-activate" src="/images/paradigm/clipart/active-icon.png" style="height: 28px;" /><img title="This workflow is inactive.  Click to make active" class="paradigm-quick-icon" id="paradigm-quick-inactivate" src="/images/paradigm/clipart/inactive-icon.png" style="height: 28px; display: none" /></li>
+                                   <li><img class="paradigm-quick-icon" title="This workflow is active, click to make inactivate" id="paradigm-quick-activate" src="/images/paradigm/clipart/power_button_on.png" style="height: 28px;" /><img title="This workflow is inactive.  Click to make active" class="paradigm-quick-icon" id="paradigm-quick-inactivate" src="/images/paradigm/clipart/power_button_off.png" style="height: 28px; display: none" /></li>
                                    <li><a draggable='false' href='#' style=' text-align: right' onclick="return false"><span><img title="This Workflow Has Been Generated" id="generated-icon" style='visibility: hidden; position: relative; top: 3px;' height="16" src="/images/paradigm/clipart/green-check.png" /></span></a></li>
                                    <li><a draggable='false' href='#' onclick="return false"><table cellspacing='0' cellpadding='0' border='0'><tr><td>x:</td><td id='mouseX' style='text-align: right; width: 25px; font-size: .8em;'>0</td><td style='padding-left: 5px'>y:</td><td id='mouseY' style='text-align: right;  width: 25px; font-size: .8em;'>0</td></tr></table></a></li>
                                    <li><a draggable='false' href='#' onclick="return false">

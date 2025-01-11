@@ -21,13 +21,13 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <!-- ################################################################################################# -->
 
-        <actions name="update">
+        <action name="update">
             <description>Updates the MySQL DB with the MongoDB ID of the entry point of the workflow.  For all practical purposes, during execution the workflow is referenced by the MongoDB ID of the 'Start' component/glyph.</description>
             <entity namespace='paradigm' class='workflows' method='save'>
                 <parameter name="id"          source='post'  default="" />
                 <parameter name="workflow_id" source='post'  default="" />
             </entity>
-        </actions>
+        </action>
 
         <!-- ################################################################################################# -->
 
