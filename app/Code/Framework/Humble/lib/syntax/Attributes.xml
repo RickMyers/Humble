@@ -25,6 +25,8 @@
                 <values>
                     <off />
                     <on />
+                    <true />
+                    <false />                     
                 </values>
             </blocking>
             <response     required="false"  purpose="" default="FALSE" >
@@ -32,7 +34,11 @@
                     <off />
                     <on />
                     <true />
-                    <false />                    
+                    <false /> 
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                   
                 </values>                
             </response>
         </attributes>
@@ -110,6 +116,7 @@
     </model>
     <entity taxonomy="allocation">
         <attributes>
+            <comment    required="false"  purpose="" default="" />
             <id         required="false"  purpose="" default="Generated ID" />
             <namespace  required="false"  purpose="" default="Main Module Namespace" />
             <resource   required="false"  purpose="" default="" conflicts="method" />

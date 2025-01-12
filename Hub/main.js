@@ -47,7 +47,7 @@ fs.writeFile('../app/PIDS/sockets.pid', ""+process.pid, err => {
 let express         = require('express');
 let app             = express();
 let parser          = require('body-parser');
-let socketio        = require("socket.io");
+//let socketio        = require('socket.io');
 let secure          = (project.project_url.substr(0,5) === 'https');
 app.use(parser.urlencoded({extended: true}));
 app.use(parser.json());
@@ -106,8 +106,29 @@ app.use(function (req, res, next) {
 let http            = require("http").createServer(app).listen(project.hub_port,function () {
     console.log('If you are seeing this, the server started successfully on port '+project.hub_port+'...');
 });
-const io            = new socketio.Server(http);
+//const io            = new socketio.Server(http);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
+
+
+//let io              = require('socket.io').listen(http);
+/*const io = require("socket.io")(http, {
+    handlePreflightRequest: (req, res) => {
+        const headers = {
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+            "Access-Control-Allow-Origin": true, //or the specific origin you want to give access to,
+            "Access-Control-Allow-Credentials": true
+        };
+        res.writeHead(200, headers);
+        res.end();
+        console.log(headers);
+    }
+});*/
 let users           = { };                                                      //Tracks Users and Sockets... there are more than one socket assigned to a user if they have the application open in multiple tabs
 let users_online    = { };                                                      //Strictly tracks Users
 let sockets         = { };
@@ -140,6 +161,7 @@ function countUsersOnline() {
 //
 //------------------------------------------------------------------------------
 io.on('connection', function (socket) {
+    console.log('Connected');
     io.to(this.id).emit('registerUserId');
 
     //--------------------------------------------------------------------------

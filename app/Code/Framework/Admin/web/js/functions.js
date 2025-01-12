@@ -1,5 +1,6 @@
 var Functions = (() => {
                 var servicesWindow = false;
+                var socketio       = false;
                 function translate (char) {
                     let diff;
                     if (/[A-Z]/.test (char)) {
@@ -561,6 +562,19 @@ var Functions = (() => {
                     init:   () => {
                         Desktop.init(Desktop.enable);
                         Desktop.semaphore.init();
+                        console.log('socket to it');
+                       // return;
+                        socketio = io('http://humble.com:3000');
+                        socketio.on('connect',function () {
+                            console.log('Connected to socket server');
+                            window.setTimeout(function () {
+                                for (var i in Humble) {
+                                    if (Humble[i].RTC) {
+                                        Humble[i].RTC();
+                                    }
+                                }
+                            },2000);
+                        });
                         var f = (() => {
                             return function (server) {
                                 server = JSON.parse(server);
@@ -595,6 +609,7 @@ var Functions = (() => {
                         Heartbeat.register('admin',true,'cachingStatus',h,2,{});
                         Heartbeat.register('admin',true,'socketStatus',i,2,{});
                         Heartbeat.init();
+                        Humble.init();
                     },
                     action: function (action,pkg,module) {
                         var ao = new EasyAjax('/admin/actions/'+action);

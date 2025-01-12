@@ -23,14 +23,14 @@
             window.Administration = administration;
             window.DigitalClock = DigitalClock;
             window.Desktop = Desktop;
-            console.log(window.Administration);
+
             $(window).ready(Desktop.init);
             $(document).ready(Administration.init);
             $(document).ready(() => {
                 $('#minimized_windows_tray').css('left',((screen.width-600)/2));
             })
-            Desktop.minimized.windows.renderer((function () {
-                return function (win) {
+            Desktop.minimized.windows.renderer((() => {
+                return (win) => {
                     if (win) {
                         Desktop.minimized.windows.list[win.id] = win;
                     }
@@ -55,7 +55,6 @@
         {% set tab_id = system.browserTabId()%}
         EasyAjax.always.add('browser_tab_id','{{ tab_id }}')
         EasyAjax.always.add('csrf_buster','{{ system.csrfBuster(tab_id) }}');
-        Humble.init();
         const tools = {
             encryptFiles: (source,callback) => {
                 fileInput   = (typeof source === 'string') ? $E(source) : source;
