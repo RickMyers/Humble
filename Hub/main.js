@@ -36,7 +36,7 @@ if (!project) {
     process.exit();
 }
 console.log(project);
-fs.writeFile('../app/PIDS/sockets.pid', process.pid, err => {
+fs.writeFile('../app/PIDS/sockets.pid', ""+process.pid, err => {
   if (err) {
     console.error(err);
   } else {

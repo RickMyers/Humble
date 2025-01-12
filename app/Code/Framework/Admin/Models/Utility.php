@@ -115,7 +115,7 @@ class Utility extends Model
      */
     public function createPath()
     {
-        $dir = 'Code'.DIRECTORY_SEPARATOR.$this->getPackage().''.DIRECTORY_SEPARATOR.str_replace('_','/',$this->getDirectory());
+        $dir = 'Code'.DIRECTORY_SEPARATOR.$this->getPackage().DIRECTORY_SEPARATOR.str_replace('_','/',$this->getDirectory());
         $paths = explode('/',$dir);
         $dir = '';
         foreach ($paths as $idx => $path) {

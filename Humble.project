@@ -12,6 +12,6 @@
     "name": "Rick Myers",
     "destination_folder": "c:\\var\\www\\Humble",
     "serial_number": "JSFQ-VSYF-QRKQ-CJQQ",
-    "hub_host": "",
-    "hub_port": ""
+    "hub_host": "http://localhost",
+    "hub_port": "3000"
 }

@@ -47,7 +47,7 @@ class Admin extends Helper
      */
     public function exists($file,$module) {
         $package = $module['package'];
-        $icon = '<img style="cursor: pointer" onclick="Humble.admin.create(\''.$file.'\',\''.$package.'\')" height="15" src="/web/images/redx.gif" title="This directory is missing"  style="float: left; margin-right: 3px" />';
+        $icon = '<img onclick="Administration.create.directory(\''.$file.'\',\''.$package.'\')" src="/web/images/redx.gif" title="This directory is missing"  style="cursor: pointer; float: left; margin-right: 3px" />';
         if (strlen(trim($file)) != 0) {
             $file = 'Code/'.$package.'/'.str_replace('_','/',$file);
             if (file_exists($file)) {

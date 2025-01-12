@@ -165,7 +165,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
         <action name="create">
             <description>Creates a directory inside a module structure</description>
-            <model namespace="admin" class="Utility" id='admin'>
+            <model namespace="admin" class="utility" id='admin'>
                 <parameter name='uid' source='session' value='uid' default='' />
                 <parameter name='directory' source='post' default='' />
                 <parameter name='package' source='post'   default='' />

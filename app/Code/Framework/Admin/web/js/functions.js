@@ -26,6 +26,7 @@ var Functions = (() => {
                             }
                         }
                     },
+                
                     code: {
                         explore: (namespace, type, resource) => {
                             let win = Desktop.semaphore.checkout(true);
@@ -263,6 +264,13 @@ var Functions = (() => {
                             sec: false,
                             api: false
                         },
+                        directory: (directory,pkg) => {
+                            if (confirm('Would you like to create the path '+directory+' in the '+pkg+' package?')) {
+                                (new EasyAjax('/admin/actions/create')).add('package',pkg).add('directory',directory).then(() => {
+                                    window.location.reload(true);
+                                }).post();
+                            }
+                        },                           
                         package: () => {
                             var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Package");
                             (new EasyAjax('/admin/actions/package')).add('window_id',win.id).then((response) => {
@@ -543,13 +551,6 @@ var Functions = (() => {
                             $('#admin-lightbox-output').html(response);
                         }).post();
                     },
-/*                    create:     function (directory,pkg) {
-                        if (confirm('Would you like to create the path '+directory+' in the '+pkg+' package?')) {
-                            (new EasyAjax('/admin/actions/create')).add('package',pkg).add('directory',directory).then(() => {
-                                window.location.reload(true);
-                            }).post();
-                        }
-                    },*/
                     activate:   function (what) {
                         if ($E(what).style.display !== 'block') {
                             $E(what).style.display = 'block';
@@ -581,10 +582,18 @@ var Functions = (() => {
                                 $('#cache_server_stopped').css('display',(caching.running ? 'none' : 'block'));
                                 $('#cache_server_running').css('display',(caching.running ? 'block' : 'none'));
                             }
-                        })();                                                
-                        Heartbeat.register('admin',true,'systemStatus',f,1,{});
-                        Heartbeat.register('admin',true,'cadenceStatus',g,1,{});
-                        Heartbeat.register('admin',true,'cachingStatus',h,4,{});
+                        })();  
+                        var i = (() => {
+                            return function (data) {
+                                var socket = JSON.parse(data);
+                                $('#message_hub_stopped').css('display',(socket.status=="Ok" ? 'none' : 'block'));
+                                $('#message_hub_running').css('display',(socket.status=="Ok" ? 'block' : 'none'));
+                            }
+                        })();                          
+                        Heartbeat.register('admin',true,'systemStatus',f,2,{});
+                        Heartbeat.register('admin',true,'cadenceStatus',g,2,{});
+                        Heartbeat.register('admin',true,'cachingStatus',h,2,{});
+                        Heartbeat.register('admin',true,'socketStatus',i,2,{});
                         Heartbeat.init();
                     },
                     action: function (action,pkg,module) {

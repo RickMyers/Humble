@@ -40,5 +40,11 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             <description>Restarts the socket server</description>
         </action>
         
+        <!-- ############################################################### -->
+        
+        <action name="status" blocking="off" response="true">
+            <description>Pings the socket server</description>
+            <model namespace="admin" class="sockets" id="sockets" />
+        </action>
     </actions>
 </controller>
