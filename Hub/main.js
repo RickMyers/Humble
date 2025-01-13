@@ -54,6 +54,7 @@ app.use(parser.json());
 app.get('/', function (req,res) {
     res = standardHeaders(res);
     res.sendFile(__dirname+'/index.html');
+    res.end();
 });
 //------------------------------------------------------------------------------
 //This listens for the application to send an event by POSTing data, rather than
@@ -90,10 +91,12 @@ app.post('/emit', function (req,res) {
     } else {
         console.log('I did not emit the event');
     }
+    res.end();
 });
 app.get('/status',function (req,res) {
     res = standardHeaders(res);
     res.send('Ok');
+    res.end();
 });
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');

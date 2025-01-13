@@ -560,15 +560,17 @@
         public static function push($eventName,$data=[]) {
             $success = false;
             $project = Environment::getProject();
-            if ($server = file_get_contents('../../socketserver_'.$project->namespace.'.txt')) {
+           
+            if ($project->hub_host && $project->hub_port) {
                 //change to read from Humble.project file
                 $data['event'] = $eventName;
+                $server = $project->hub_host.':'.$project->hub_port;
                 $ch = curl_init($server.'/emit');
                 curl_setopt($ch, CURLOPT_POST,1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data,'','&'));
                 curl_setopt($ch, CURLOPT_HEADER, 1);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 3);
                 curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.12011-10-16");        
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);        

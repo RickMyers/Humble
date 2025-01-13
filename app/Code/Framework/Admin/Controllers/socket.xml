@@ -46,5 +46,12 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             <description>Pings the socket server</description>
             <model namespace="admin" class="sockets" id="sockets" />
         </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="test" blocking="off">
+            <description>Will test pushing a message</description>
+            
+        </action>
     </actions>
 </controller>
