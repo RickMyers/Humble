@@ -51,7 +51,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="test" blocking="off">
             <description>Will test pushing a message</description>
-            
+            <model namespace="admin" class="sockets" method="testSocketServer">
+                <parameter name="event" source="request" required="true" />
+                <parameter name="*" source="request" />
+            </model>
         </action>
     </actions>
 </controller>

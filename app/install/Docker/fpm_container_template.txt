@@ -72,7 +72,7 @@ RUN mkdir /var/www/logs && chmod -R 0777 /var/www/logs
 RUN mkdir /var/www/logs/&&NAMESPACE&& && chmod -R 0777 /var/www/logs/&&NAMESPACE&&
 RUN mkdir /var/www/Settings
 RUN mkdir /var/www/Settings/&&NAMESPACE&& && chmod -R 0777 /var/www/Settings/&&NAMESPACE&&
-RUN a2enmod rewrite && a2enmod ssl && a2enmod include && a2enmod proxy_fcgi && a2enmod proxy
+RUN a2enmod rewrite && a2enmod ssl && a2enmod include && a2enmod proxy_fcgi && a2enmod proxy && a2enmod headers
 COPY vhost.conf /etc/apache2/sites-enabled/&&NAME&&.conf
 COPY ports.conf /etc/apache2/ports.conf
 RUN apt update
