@@ -562,9 +562,7 @@ var Functions = (() => {
                     init:   () => {
                         Desktop.init(Desktop.enable);
                         Desktop.semaphore.init();
-                        console.log('socket to it');
-                       // return;
-                        socketio = io('http://humble.com:3000');
+                        socketio = io('http://localhost:3000');
                         socketio.on('connect',function () {
                             console.log('Connected to socket server');
                             window.setTimeout(function () {
@@ -574,6 +572,10 @@ var Functions = (() => {
                                     }
                                 }
                             },2000);
+                        });
+                        socketio.on('testEvent',function (data) {
+                            console.log(data);
+                            alert('testEvent');
                         });
                         var f = (() => {
                             return function (server) {

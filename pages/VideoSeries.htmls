@@ -9,8 +9,51 @@
 </table>
 <div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
 <div class='humble-topic-header'>Video Series</div>
-
-
+<div style="display: inline-grid; grid-template-columns: 33% 33% 33%; grid-gap: .3%; width: 100%">
+    <div style="text-align: center; font-size: 1.1em; font-weight: bold; padding-bottom: 5px">Description</div>
+    <div style="text-align: center; font-size: 1.1em; font-weight: bold; padding-bottom: 5px">Main Video</div>
+    <div style="text-align: center; font-size: 1.1em; font-weight: bold; padding-bottom: 5px">Quick Hit</div>    
+    <div style="">Overview</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Installation</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">First App</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Building an API</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Second App</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Administration</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Controller Basics</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Controller Intermediate</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>    
+    <div style="">Controller Advanced</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Unity Basics</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Unity Intermediate</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Unity Advanced</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style="">Table API (Auto-CRUD)</div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    <div style=""><img src="/images/humble/comming_soon.png" style="width: 100%"/></div>
+    
+</div>
 
 </div>
 <!--#include virtual="/pages/includes/footer.html" -->

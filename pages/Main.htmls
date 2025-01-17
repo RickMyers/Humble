@@ -19,7 +19,7 @@
         margin-top: 15px; letter-spacing: 1.5px; font-weight: bolder; clear: both
     }
 </style>
-<script type="text/javascript">
+<script>
     console.log('SSI Check');
     console.log('<!--#config timefmt="%c" --><!--#echo var="DATE_LOCAL" -->');
     var Main = (function () {
@@ -114,9 +114,13 @@
     $(document).ready(Main.prime());
 </script>
 <div style="text-align: center">
+
     <div style="display: inline-block; border: 1px double #333; padding: 0px 20px">
         Version: <!--#include virtual="/version.php" -->
     </div>
+    <div style="font-size: 1.1em; display: inline-block; vertical-align: top;  margin-left: 30px">
+        A <a style="color: blue" target="_BLANK" href="/pages/VideoSeries.htmls">Video Series</a> Is In The Works!
+    </div>    
 </div>
 <div style=" font-size: 2em; font-family: sans-serif; font-weight: bold; color: rgba(50,50,50,.8)">
     <div style="float: right; margin-right: 5px; font-size: .5em">(<a href="/pages/Concepts.htmls">Simplified...</a>)</div>It Is Good To Be Humble...
