@@ -301,6 +301,7 @@ var Functions = (() => {
                         }
                     },
                     documentation: {
+                        win:    false,
                         run: () => {
                             if (confirm("Are you sure you want to run the docs?  It could take a while...")) {
                                 let win = Desktop.semaphore.checkout(true);
@@ -316,6 +317,13 @@ var Functions = (() => {
                             (new EasyAjax('/admin/documentation/review')).add('window_id',win.id).then((response) => {
                                 win.set(response);
                             }).post();
+                        },
+                        home: () => {
+                            let win = Administration.documentation.win ? Administration.documentation.win : Desktop.semaphore.checkout(true);
+                            win._static(true)._title('Documentation')._open();
+                            (new EasyAjax('/admin/documentation/review')).then((response) => {
+                                win.set(response);
+                            }).get();
                         }
                     },
                     services: {
