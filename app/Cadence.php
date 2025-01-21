@@ -34,7 +34,7 @@ $installer                  = \Environment::getInstaller();                     
 $is_production              = \Environment::isProduction();                     //Am I in production? Somethings will be skipped if so
 $project                    = \Environment::getProject();
 $config                     = (\Environment::namespace() !== 'humble') ? 'Code/'.$project->package.'/'.$project->module.'/etc/cadence.json' : 'Code/Framework/Humble/etc/application.json';
-$callbacks                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Callbacks.php';
+$callbacks                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Cadence.php';
 $constants                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Constants.php';
 $framework                  = 'Code/Framework/Humble/etc/cadence.json';
 
