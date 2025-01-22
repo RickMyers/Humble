@@ -117,8 +117,11 @@ class Sockets extends Model
      * @return string
      */    
     public function status() {
+        $status     = false;
         $project    = Environment::project();
-        $status     = file_get_contents($project->hub_host.':'.$project->hub_port.'/status');
+        if ($project->hub_host && $project->hub_port) {
+            $status     = file_get_contents($project->hub_host.':'.$project->hub_port.'/status');
+        }
         return $status;
     }
 }

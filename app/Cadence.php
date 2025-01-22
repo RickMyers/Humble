@@ -16,7 +16,10 @@ require_once "Humble.php";
 $started                    = time();                                           //The time used in all offset calculations
 $pid                        = getmypid();                                       //My process ID
 $first_time                 = [
-    'images'                => true
+    'images'                => true,
+    'models'                => true,
+    'configs'               => true,
+    'system'                => true    
 ];
 $cadence_ctr                = 0;                                                //Lets count the beat
 $cadence                    = [];                                               //The JSON stored instructions for what to run and when
@@ -108,7 +111,7 @@ function scanControllersForChanges($last_run=false) {
         $namespaces  = [];
         foreach (Humble::entity('humble/controllers')->orderBy('namespace=ASC')->fetch() as $idx => $metadata) {
             if ($ns     = $namespaces[$metadata['namespace']] = isset($namespaces[$metadata['namespace']]) ? $namespaces[$metadata['namespace']] : Humble::module($metadata['namespace'])) {
-                $file   = 'Code/'.$ns['package'].'/'.$ns['controller'].'/'.$metadata['controller'].'.xml';
+                $file   = 'Code/'.$ns['package'].'/'.$ns['controllers'].'/'.$metadata['controller'].'.xml';
                 if (file_exists($file) && ($ft = filemtime($file))) {
                     if ($ft !== ($st = strtotime($metadata['compiled']))) {
                        logMessage('---------> Going to compile '.$file." [".$ft."/".$st."]");
