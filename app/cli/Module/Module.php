@@ -247,6 +247,7 @@ class Module extends CLI
         $args       = self::arguments();
         if ($module = \Humble::module($args['namespace'])) {
             $install_path = 'Code/'.$module['package'].'/'.$module['module'].'/web/';
+            $css_path = $install_path.'css/input.css';
             @mkdir($install_path,0775,true);
             print("\nRetrieving Tailwindcss package from ".Environment::project('framework_url')."\n");
             file_put_contents('tailwind.zip',file_get_contents(Environment::project('framework_url').'/dist/tailwind.zip'));
@@ -255,6 +256,15 @@ class Module extends CLI
                 $zip->extractTo($install_path);
                 $zip->close();                
             } 
+            $css = <<<TEXT
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+TEXT;
+                    
+            file_put_content($css_path,$css);
             @unlink('tailwind.zip');
             print("\nDone.\n");
         } else {
