@@ -17,8 +17,8 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <switch id="admin" method="getAdminId">
                 <case value="TRUE">
                     <model namespace="admin" class="system" id="system" />
-                    <project name="hub_host" assign="hub_host" />
-                    <project name="hub_port" assign="hub_port" />
+                    <project var="hub_host" assign="hub_host" />
+                    <project var="hub_port" assign="hub_port" />
                     <entity namespace='humble' class='modules'      id='available_modules' orderby='package=ASC,namespace=ASC' />
                     <model  namespace='admin'  class='menus'        id="menus" />
                     <entity namespace='admin'  class='users' assign='user' method='information'>

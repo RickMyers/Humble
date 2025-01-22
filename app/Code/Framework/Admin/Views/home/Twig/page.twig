@@ -18,17 +18,20 @@
         }            
         </style>
         <script type="module">
+            window.message_hub = {
+                "host": "{{ hub_host }}",
+                "port": "{{ hub_port }}"
+            };
             import { DigitalClock,administration } from '/mjs/admin/functions.js';
             import { Desktop } from '/mjs/paradigm/DesktopModule.js';
             window.Administration = administration;
             window.DigitalClock = DigitalClock;
             window.Desktop = Desktop;
-
             $(window).ready(Desktop.init);
             $(document).ready(Administration.init);
             $(document).ready(() => {
                 $('#minimized_windows_tray').css('left',((screen.width-600)/2));
-            })
+            });
             Desktop.minimized.windows.renderer((() => {
                 return (win) => {
                     if (win) {
@@ -41,7 +44,7 @@
                         }
                     };
                     $('#minimized_windows_tray').html(html);
-                } 
+                }; 
             })());
         </script>        
         <script type="text/javascript" src='/js/humble-jquery'></script>

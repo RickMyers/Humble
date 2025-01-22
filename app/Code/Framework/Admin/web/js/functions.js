@@ -570,21 +570,23 @@ var Functions = (() => {
                     init:   () => {
                         Desktop.init(Desktop.enable);
                         Desktop.semaphore.init();
-                        socketio = io('http://localhost:3000');
-                        socketio.on('connect',function () {
-                            console.log('Connected to socket server');
-                            window.setTimeout(function () {
-                                for (var i in Humble) {
-                                    if (Humble[i].RTC) {
-                                        Humble[i].RTC();
+                        if (window.message_hub.host) {
+                            socketio = io(window.message_hub.host+':'+window.message_hub.port);
+                            socketio.on('connect',function () {
+                                console.log('Connected to socket server');
+                                window.setTimeout(function () {
+                                    for (var i in Humble) {
+                                        if (Humble[i].RTC) {
+                                            Humble[i].RTC();
+                                        }
                                     }
-                                }
-                            },2000);
-                        });
-                        socketio.on('testEvent',function (data) {
-                            console.log(data);
-                            alert('testEvent');
-                        });
+                                },2000);
+                            });
+                            socketio.on('testEvent',function (data) {
+                                console.log(data);
+                                alert('testEvent');
+                            });
+                        }
                         var f = (() => {
                             return function (server) {
                                 server = JSON.parse(server);
