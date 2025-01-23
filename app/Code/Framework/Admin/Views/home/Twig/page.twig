@@ -204,17 +204,16 @@
     <div id="desktop-window-container" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;">
     <div id="paradigm-virtual-desktop" style="margin: 0px; padding: 0xp; height: 100%; width: 100%; position: absolute; top: 0px; left: 0px;">     
         <div id="page" class="box-border flex flex-col bg-white">
-            <div style="z-index: 9" id='admin-indicators' class='text-white inline-block rounded-md content-center pt-1 pb-1 pr-2 pl-2 whitespace-nowrap absolute grid rid-rows-1 grid-flow-col gap 4' >
-
-                <div class="pr-3"><img src="/images/humble/green_status.png" title="Cadence is Running" class="hidden h-4 float-left mt-1.5 mr-2" id="cadence_running" />
-                    <img src="/images/humble/red_status.png" title="Cadence is Stopped" class="block h-4 float-left mt-1.5 mr-2" id="cadence_stopped" /> Cadence</div>
-                <div class="pr-3"><img src="/images/humble/green_status.png" title="Message Hub Running" class="hidden h-4 float-left mt-1.5 mr-2" id="message_hub_running" />
-                    <img src="/images/humble/red_status.png" title="Message Hub Stopped" class="block h-4 float-left mt-1.5 mr-2" id="message_hub_stopped" /> Message Hub</div>
-                <div class="pr-3"><img src="/images/humble/green_status.png" title="Cache Server Running" class="hidden h-4 float-left mt-1.5 mr-2" id="cache_server_running" />
-                    <img src="/images/humble/red_status.png" title="Cache Server Stopped" class="block h-4 float-left mt-1.5 mr-2" id="cache_server_stopped" />Cache Server</div>
-                <div class="pr-3"><img src="/images/humble/green_status.png" title="System Poll Running" class="hidden h-4 float-left mt-1.5 mr-2" id="system_poll_running" />
-                    <img src="/images/humble/red_status.png" title="System Poll Stopped" class="block h-4 float-left mt-1.5 mr-2" id="system_poll_stopped" /><a href="#" onclick="Heartbeat.toggle(); return false">System Poll</a></div>
-            </div>              
+            <div style="z-index: 7" id='admin-indicators' class='text-white inline-block rounded-md content-center pt-1 pb-1 pr-2 pl-2 whitespace-nowrap absolute grid rid-rows-1 grid-flow-col gap 4' >
+                <div class="pr-2 pt-1 text-sm"><img src="/images/humble/green_status.png" title="Cadence is Running" class="hidden h-4 float-left mt-1.5 mr-2" id="cadence_running" />
+                    <img src="/images/humble/red_status.png" title="Cadence is Stopped" class="block h-4 float-left mt-1.5 mr-2" id="cadence_stopped" /><div class="pt-1 inline-block">Cadence</div></div>
+                <div class="pr-2 pt-1 text-sm"><img src="/images/humble/green_status.png" title="Message Hub Running" class="hidden h-4 float-left mt-1.5 mr-2" id="message_hub_running" />
+                    <img src="/images/humble/red_status.png" title="Message Hub Stopped" class="block h-4 float-left mt-1.5 mr-2" id="message_hub_stopped" /><div class="pt-1 inline-block">Message Hub</div></div>
+                <div class="pr-2 pt-1 text-sm"><img src="/images/humble/green_status.png" title="Cache Server Running" class="hidden h-4 float-left mt-1.5 mr-2" id="cache_server_running" />
+                    <img src="/images/humble/red_status.png" title="Cache Server Stopped" class="block h-4 float-left mt-1.5 mr-2" id="cache_server_stopped" /><div class="pt-1 inline-block">Cache Server</div></div>
+                <div class="pr-2 pt-1 text-sm"><img src="/images/humble/green_status.png" title="System Poll Running" class="hidden h-4 float-left mt-1.5 mr-2" id="system_poll_running" />
+                    <img src="/images/humble/red_status.png" title="System Poll Stopped" class="block h-4 float-left mt-1.5 mr-2" id="system_poll_stopped" /><div class="pt-1 inline-block"><a href="#" onclick="Heartbeat.toggle(); return false">System Poll</a></div></div>
+            </div>                
             <nav id="navigation-bar" class="relative flex-row bg-gray-100" style="z-index: 5">
                 <div id='admin-clock' class="float-right text-3xl text-white"></div>
               
