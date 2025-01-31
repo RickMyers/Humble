@@ -88,8 +88,7 @@
     //Policy allows for different actions depending on users logged in status
     session_start();
     $user_state      = isset($_SESSION['user']['id']) ? 'authenticated' : 'public';
-    print($user_state."\n");
-    print_r($_SESSION);
+    
     //--------------------------------------------------------------------------
     //Let's see what the api policy says about what actions can be done on entity
     $policy_file     = 'Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json';
@@ -111,6 +110,17 @@
         $defaults       = $policy['default'][$user_state];
         $entity_policy  = isset($policy['entities'][$namespace][$entity['entity']]) ? $policy['entities'][$namespace][$entity['entity']][$user_state] : $defaults;
         $entity         = \Humble::entity($entity['namespace'].'/'.$entity['entity']);
+        $rows_var       = (isset($policy['entities'][$namespace][$entity['entity']]['pagination']['rows'])) ? $policy['entities'][$namespace][$entity['entity']]['pagination']['rows'] : 'rows';
+        $page_var       = (isset($policy['entities'][$namespace][$entity['entity']]['pagination']['page'])) ? $policy['entities'][$namespace][$entity['entity']]['pagination']['page'] : 'page';
+        if (isset($_REQUEST[$rows_var])) {
+            $entity->_rows($_REQUEST[$rows_var]);
+        }
+        if (isset($_REQUEST[$page_var])) {
+            $entity->_page($_REQUEST[$page_var]);
+        }
+        /*
+         * SOMEWHERE IN HERE HANDLE THE OPTIONAL PAGINATION
+         */
         foreach ($content as $var => $value) {
             $method = 'set'.underscoreToCamelCase($var,true);
             $entity->$method($value);

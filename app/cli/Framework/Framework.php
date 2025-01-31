@@ -123,7 +123,7 @@ class Framework extends CLI
                 $namespace = $module['namespace'];
                 $entities[$namespace] = [];
                 foreach (\Humble::entity('humble/entities')->setNamespace($module['namespace'])->fetch() as $entity) {
-                    $entities[$namespace][$entity['entity']] = isset($current_policy[$namespace][$entity['entity']]) ? $current_policy[$namespace][$entity['entity']] : ['authenticated'=>['read'=>false,'write'=>false],'public'=>['read'=>false,'write'=>false]];
+                    $entities[$namespace][$entity['entity']] = isset($current_policy[$namespace][$entity['entity']]) ? $current_policy[$namespace][$entity['entity']] : ['authenticated'=>['read'=>false,'write'=>false],'public'=>['read'=>false,'write'=>false],'pagination'=>["rows"=>"rows","page"=>"page","cursor"=>"cursor"]];
                 }
             }
             $policy = ['comments' => $comments,'default' => $defaults,'entities' => $entities];
