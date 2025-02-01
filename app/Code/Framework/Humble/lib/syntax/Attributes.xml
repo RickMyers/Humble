@@ -21,7 +21,8 @@
     </controller>
     <actions taxonomy="control">
         <attributes>
-            <blocking     required="false"  purpose="" default="TRUE" >
+            <throttle   required="false"  purpose="" default="" />
+            <blocking   required="false"  purpose="" default="TRUE" >
                 <values>
                     <off />
                     <on />
@@ -29,7 +30,7 @@
                     <false />                     
                 </values>
             </blocking>
-            <response     required="false"  purpose="" default="FALSE" >
+            <response  required="false"  purpose="" default="FALSE" >
                 <values>
                     <off />
                     <on />
@@ -48,6 +49,7 @@
             <name       required="true"   purpose="" default="" />
             <map        required="false"  purpose="" default="" /> 
             <controller required="false"  purpose="" default="" />
+            <throttle   required="false"  purpose="" default="" />
         </attributes>        
         <attributes parent="actions">
             <audit      required="false"  purpose="" default="" />

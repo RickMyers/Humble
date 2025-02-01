@@ -1225,6 +1225,11 @@ PHP;
         }
     }
     
+    private function handleThrottling($throttle=false) {
+        if ($throttle) {
+            //and then we do stuff here
+        }
+    }
     /**
      * For each XML DOM node encountered, routes to the proper handler
      *
@@ -1314,6 +1319,9 @@ PHP;
         }
         if (strtolower($tag2) === 'default') {
             return $action;
+        }
+        if (isset($action['throttle'])) {
+            $this->handleThrottling($action['throttle']);
         }
         if ($tag2==='defaultAction') {
             print($this->tabs().'default :'."\n");            
@@ -1564,6 +1572,9 @@ PHP;
             print($this->tabs()."ob_start();\n");
             print($this->tabs().'switch ($method) {'."\n");
             $attr = $actions->attributes();
+            if (isset($attr['throttle'])) {
+                $this->handleThrottling($attr['throttle']);
+            }            
             if (isset($attr['blocking'])) {
                 $this->blocking($this->trueish($attr['blocking']));
             }            
