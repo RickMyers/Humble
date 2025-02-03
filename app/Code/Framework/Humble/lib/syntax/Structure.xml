@@ -35,20 +35,28 @@
     <chain>
         <comment />
         <action />
+        <if />
+        <switch />
     </chain>
     <description />
     <comment />
     <model>
         <comment />
         <parameter/>
+        <if />
+        <switch />        
     </model>
     <helper>
-         <comment />
-         <parameter/>
+        <comment />
+        <parameter/>
+        <if />
+        <switch />         
     </helper>
     <entity>
         <comment />                
         <parameter/>
+        <if />
+        <switch />        
     </entity>
     <access>
         <comment/>                
@@ -57,10 +65,14 @@
     <mongo>
         <comment />
         <parameter/>
+        <if />
+        <switch />        
     </mongo>
     <resource>
         <comment />
         <parameter/>
+        <if />
+        <switch />        
     </resource>
     <if>
         <comment />
@@ -88,7 +100,7 @@
         <exception />
         <abort />
         <header />        
-        
+        <parameter />
     </then>
     <else>
         <comment />
@@ -110,7 +122,8 @@
         <application />
         <exception />
         <abort />
-        <header />        
+        <header />
+        <parameter />     
     </else>
     <switch>
         <comment />

@@ -14,7 +14,6 @@ class CLI
     
     private static $args = [];
     
-    
     /**
      * Converts variable_name to VariableName
      * 

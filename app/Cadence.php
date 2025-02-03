@@ -31,7 +31,7 @@ $systemfiles                = [];                                               
 $images                     = [];                                               //These are images contained in the image folder
 $modules                    = Humble::entity('humble/modules')->setEnabled('Y')->fetch();
 $system                     = Humble::entity('admin/system/monitor');
-$monitor                    = \Environment::getMonitor();                       //System monitor for checking on performanc
+$monitor                    = \Environment::getMonitor();                       //System monitor for checking on performance
 $updater                    = \Environment::getUpdater();                       //Singleton reference to the module updater
 $installer                  = \Environment::getInstaller();                     //Singleton reference to the module installer
 $is_production              = \Environment::isProduction();                     //Am I in production? Somethings will be skipped if so
@@ -141,7 +141,7 @@ function snapshotSystem() {
 //------------------------------------------------------------------------------
 function recurseDirectory($dir=[]) {
     $list = [];
-    $dh = dir($dir);
+    $dh   = dir($dir);
     while ($entry = $dh->read()) {
         if (($entry == '.') || ($entry == '..')) {
             continue;
@@ -409,7 +409,6 @@ if (file_exists($config) || file_exists($framework)) {
     $cadence        = array_merge_recursive($application,$cadence);
 }
 if ($cadence) {
-//    print_r($cadence); unlink('PIDS/cadence.pid'); die();
     logMessage("Starting Cadence...");
     while (file_exists('PIDS/cadence.pid') && ((int)file_get_contents('PIDS/cadence.pid')===$pid)) {
         sleep($cadence['period']);

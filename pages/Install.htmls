@@ -12,8 +12,8 @@
 <hr />
 <br />
 <p class="humble-emphasis">
-Humble is partially opinionated. What this means is that some parts of the software stack are not fungible, such as you can not swap nginX for Apache since the framework relies heavily on htaccess files.
-Also the Unity ORM specifically joins MySQL and MongoDB queries, so those products are also not fungible.  However, whether you use the JSON API with a decoupled UI or use traditional server side rendering, that is up
+Humble is partially opinionated. What this means is that some parts of the software stack are not fungible, such as you can not swap nginX for Apache since the framework relies heavily on rewrite rules.
+Also the Unity ORM specifically joins MySQL and MongoDB queries (working on that though), so those products are also not fungible.  However, whether you use the JSON API with a decoupled UI or use traditional server side rendering, that is up
 to each team to decide, and you can even use a combination of the two.
 </p>
 <br />

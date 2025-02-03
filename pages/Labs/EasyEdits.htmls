@@ -14,7 +14,11 @@
     Once upon a time I worked at a startup that was trying to create a document format for the Medical Industry, and it was based on SVG, JavaScript, and JSON.  A "Medical Document Format" (MDF) instead of PDF, and 
     this was because, at the time, advanced features like signing, hadn't made it to PDF yet.
 </div><br /><br />
-
+<div style="padding: 20px; border: 1px solid #333; border-radius: 10px">
+    <form name="test_form" id="test_form" onsubmit="return false">
+    </form
+</div>
+<div widget="codeBox" widgetScroll="3%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/EasyEdit.js" class="humble-code"></div>
 </div>
 
 <!--#include virtual="/pages/includes/footer.html" -->
