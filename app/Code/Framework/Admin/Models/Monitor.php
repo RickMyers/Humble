@@ -170,7 +170,8 @@ class Monitor extends Model
      * @return json
      */
     public function systemStatus() {
-        exec('top -n 1 -b',$results,$rc);        
+        exec('top -n 1 -b',$results,$rc);
+        //exec('ps -aux',$processes,$rc);  //someday xref these 2
         $results = $this->scrunchResults($results);        
         return json_encode($status = [
             'system'    =>$this->parseStatus($results),

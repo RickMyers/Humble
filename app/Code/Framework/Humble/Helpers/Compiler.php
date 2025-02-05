@@ -320,9 +320,7 @@ class Compiler extends Directory
         $format     = isset($parameter['format'])    ? strtolower((string)$parameter['format']) : false;
         $minlength  = isset($parameter['min']) ? (int)$parameter['min'] : false;
         $maxlength  = isset($parameter['max']) ? (int)$parameter['max'] : false;
-        $timestamp  = false;
-        $datestamp  = false;
-        $time       = false;
+        $timestamp  = $datestamp = $time = false;
         $default    = (isset($parameter['default']) ? (($parameter['default']!='') ? '"'.$parameter['default'].'"' : 'null') : 'null');
         $default    = $this->processDefault($default);
         if ($default && (strtolower($default) == '"now"') && ($format)) {
@@ -334,14 +332,14 @@ class Compiler extends Directory
         $this->processRequired($required,$source,$field);
         $optional   = (isset($parameter['optional']) && ($parameter['name']!=='*') ? strtolower((string)$parameter['optional']) : false);
         $optional   = ($optional) ? ($optional==='true' ? true : false) : false;
-        $trim       = (isset($parameter['trim']) ? strtolower((string)$parameter['trim']) : false);
-        $upper      = (isset($parameter['upper']) ? strtolower((string)$parameter['upper']) : false);
-        $lower      = (isset($parameter['lower']) ? strtolower((string)$parameter['lower']) : false);
-        $escape     = (isset($parameter['escape']) ? strtolower((string)$parameter['escape']) : false);
-        $encode     = (isset($parameter['encode']) ? strtolower((string)$parameter['encode']) : false);
-        $decode     = (isset($parameter['decode']) ? strtolower((string)$parameter['decode']) : false);
-        $range      = isset($parameter['range'])  ? (string)$parameter['range'] : false;
-        $unescape   = (isset($parameter['unescape']) ? strtolower((string)$parameter['unescape']) : false);
+        $trim       = (isset($parameter['trim'])    ? strtolower((string)$parameter['trim']) : false);
+        $upper      = (isset($parameter['upper'])   ? strtolower((string)$parameter['upper']) : false);
+        $lower      = (isset($parameter['lower'])   ? strtolower((string)$parameter['lower']) : false);
+        $escape     = (isset($parameter['escape'])  ? strtolower((string)$parameter['escape']) : false);
+        $encode     = (isset($parameter['encode'])  ? strtolower((string)$parameter['encode']) : false);
+        $decode     = (isset($parameter['decode'])  ? strtolower((string)$parameter['decode']) : false);
+        $range      = (isset($parameter['range']))  ? (string)$parameter['range'] : false;
+        $unescape   = (isset($parameter['unescape'])? strtolower((string)$parameter['unescape']) : false);
         $type       = (isset($parameter['type']) ? strtolower((string)$parameter['type']) : false);
         if ($type) {
             switch ($type) {
@@ -394,20 +392,13 @@ class Compiler extends Directory
             print($this->tabs().'if (isset('.$source.'["'.$field.'"])) {'."\n");
             $this->tabs(1);
         }
-        if ($timestamp || $datestamp || $time) {
-            $php = <<<PHP
-                                if (!isset({$source}["{$field}"]) || (!{$source}["{$field}"])) {
-                                    if ({$datestamp}) {
-                                        {$source}["{$field}"] = date('Y-m-d');
-                                    } else if ({$timestamp}) {
-                                        {$source}["{$field}"] = date('Y-m-d H:i:s');
-                                    } else if ({$time}) {
-                                        {$source}["{$field}"] = date('H:i:s');
-                                    }
-                                }
 
-PHP;
-           print($php);
+        if ($timestamp) {
+            print($this->tabs().$source.'["'.$field.'"] = date(\'Y-m-d H:i:s\'); '."\n");
+        } else if ($datestamp) {
+            print($this->tabs().$source.'["'.$field.'"] = date(\'Y-m-d\'); '."\n");
+        } else if ($time) {
+            print($this->tabs().$source.'["'.$field.'"] = date(\'H:i:s\'); '."\n");
         }
         if ($format) {
             $this->processFormat($format,$source,$field,$required,$default);
@@ -415,7 +406,6 @@ PHP;
         if (($source == '$_GET') || ($source == '$_POST')) {
             $this->parameters[$source][] = $field;
         }
-
         if ((string)$parameter['name'] === '*') {
             print('
                                 $exc = [];
@@ -462,7 +452,7 @@ PHP;
                     throw new \Exceptions\ControllerParameterException("The parameter <i style=\'color: red\'>'".$parameter['name']."'</i> of object <i style=\'color: red\'>'".$node['id']."'</i> is misconfigured or missing required values.  Please refer to documentation to correct this.",16);
                 }
             } else if ($custom) {
-                print($this->tabs().'$'.$node['id'].'->set'.$this->underscoreToCamelCase($parameter['name'],true)."( isset(".$source.'["'.$parameter['source'].'"]'.") ? ".$source.'["'.$parameter['source'].'"]'." : ".$default.");\n");
+                print($this->tabs().'$'.$node['id'].'->set'.$this->underscoreToCamelCase($parameter['name'],true)."( isset(".$source.'["'.$field.'"]'.") ? ".$source.'["'.$field.'"]'." : ".$default.");\n");
             } else {
                 if ($upper) {
                     print($this->tabs().$source.'["'.$field.'"] = strtoupper('.$source.'["'.$field.'"]);'."\n");    
