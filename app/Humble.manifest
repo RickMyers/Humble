@@ -31,8 +31,6 @@ install.php
 loader.php
 app/composer.json
 app/filelaunch.php
-app/humble
-app/humble.bat
 app/autoload.php
 app/launch.php
 app/AuthorizationEngine.php

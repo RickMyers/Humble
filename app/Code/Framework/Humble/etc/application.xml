@@ -3,7 +3,7 @@
     <name>The Humble Project</name>
     <serial_number comment="Do Not Change, Value Is Required In Several Parts Of The Framework">JSFQ-VSYF-QRKQ-CJQQ</serial_number>
     <version>
-        <framework>0.8.0.3.1</framework>
+        <framework>0.8.0.3.2</framework>
         <app>0.0.0.1</app>
     </version>
     <state comment="switch to current">DEVELOPMENT</state>
@@ -31,7 +31,7 @@
     <api comment="Know the risks before enabling.  There is a section in the documentation on this">
         <enabled>1</enabled>
     </api>
-    <exceptions options="JSON,HTML" comment="Choose whether you want a JSON formatted exception or one that is a templated HTML response">HTML</exceptions>
+    <exceptions options="JSON,HTML" comment="Choose whether you want a JSON formatted exception or one that is a templated HTML response">JSON</exceptions>
     <documentation_comment>
         The next section outlines the choices for creating automated documentation.   Choose either PHPDoc2 or APIGen(PHP 8.2+).  Select the option for each from the options
         listed on the tag.  PHPDoc2 is the default since it supports more versions of PHP, but if you are using PHP 8.2 and later, APIGen is an excellent option as well.
