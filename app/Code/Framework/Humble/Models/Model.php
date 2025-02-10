@@ -417,6 +417,7 @@ class Model implements HumbleComponent
         $auth           = ($userid && $password) ? array("Authorization"=> ["Basic" => base64_encode($userid.":".$password)]) : [];
         $protocol       = ($secure) ? 'ssl' : 'http';
         $sessionControl = isset($call['blocking']) && ($call['blocking']===false);  //do I need to suspend the current session to give access to the session during the remote call
+        $sessionControl = $sessionControl || (substr($URL,0,1)=='/');
         $SID            = false;
 
         if ($sessionControl) {

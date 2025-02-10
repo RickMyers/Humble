@@ -270,8 +270,8 @@ class Compiler extends Directory
      * @throws \Exceptions\ControllerParameterException
      */
     private function processParameter($parameter)  {
-        if (count($this->elements) == 0){
-            die("There are parameter statements floating around unattached to objects");
+        if ($parameter['name'] == 'created') {
+            $a = 1;
         }
         $node   = $this->elements[count($this->elements)-1];
         $source = '$_REQUEST'; $custom = false;
@@ -1215,11 +1215,6 @@ class Compiler extends Directory
         }
     }
     
-    private function handleThrottling($throttle=false) {
-        if ($throttle) {
-            //and then we do stuff here
-        }
-    }
     /**
      * For each XML DOM node encountered, routes to the proper handler
      *
@@ -1309,9 +1304,6 @@ class Compiler extends Directory
         }
         if (strtolower($tag2) === 'default') {
             return $action;
-        }
-        if (isset($action['throttle'])) {
-            $this->handleThrottling($action['throttle']);
         }
         if ($tag2==='defaultAction') {
             print($this->tabs().'default :'."\n");            
@@ -1562,9 +1554,6 @@ class Compiler extends Directory
             print($this->tabs()."ob_start();\n");
             print($this->tabs().'switch ($method) {'."\n");
             $attr = $actions->attributes();
-            if (isset($attr['throttle'])) {
-                $this->handleThrottling($attr['throttle']);
-            }            
             if (isset($attr['blocking'])) {
                 $this->blocking($this->trueish($attr['blocking']));
             }            

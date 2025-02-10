@@ -2,6 +2,7 @@
 <!--#include virtual="/pages/includes/container.html" -->
 <link rel="stylesheet" type="text/css" href="/css/desktop" />
 <script type='text/javascript' src="/pages/js/Paradigm.config.js"></script>
+<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 <script type="module">
     import { Desktop } from '/mjs/paradigm/DesktopModule.js';
     window.Desktop = Desktop;

@@ -14,5 +14,45 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
+        <action name="asteroids">
+            <description>Video Game</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>
+        
+        <!-- ############################################################### -->        
+        
+        <action name="galaga">
+            <description>Video Game</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>     
+        
+        <!-- ############################################################### -->        
+        
+        <action name="transformers">
+            <description>Video Game</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>                
+        
+        <!-- ############################################################### -->        
+        
+        <action name="overview">
+            <description>Video</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>          
+        
+        <!-- ############################################################### -->        
+                
+        <action name="installation">
+            <description>Video</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>          
+
+        <!-- ############################################################### -->        
+        
+        <action name="todo">
+            <description>Video</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>          
+                
     </actions>
 </controller>
