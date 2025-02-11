@@ -21,25 +21,27 @@
     <div>
         <b>Invocation</b>:
     </div>
-    <div widget="codeBox" widgetScroll="100%" lang="js" lexicon="/web/js/ColorizerLanguages.json" class="humble-code">
-        //Example 1
-        (new EasyAjax('/user/data/save')).addForm('form_id').then(function (response) {
-            document.getElementById('response_layer').innerHTML = response;
-        }).post();
+    <div widget="codeBox" widgetScroll="98%" lang="js" lexicon="/web/js/ColorizerLanguages.json" class="humble-code">
+    //Example 1
+    (new EasyAjax('/user/data/save')).addForm('form_id').then(function (response) {
+        document.getElementById('response_layer').innerHTML = response;
+    }).post();
 
-        //Example 2
-        var ajax = new EasyAjax('/user/data/save');
-        ajax.add('first_name','Rick').add('city','Las Vegas');
-        ajax.add('state','NV').add('zip_code','89129');
-        ajax.then(function (response) {
-            document.getElementById('response_layer').innerHTML = response;
-        });
-        ajax.error(function (response) {
-            alert('An Error Occurred!\n\n'+response);
-        });
-        ajax.put();
+    //Example 2
+    var ajax = new EasyAjax('/user/data/save');
+    ajax.add('first_name','Rick').add('city','Las Vegas');
+    ajax.add('state','NV').add('zip_code','89129');
+    ajax.then(function (response) {
+        document.getElementById('response_layer').innerHTML = response;
+    });
+    ajax.error(function (response) {
+        alert('An Error Occurred!\n\n'+response);
+    });
+    ajax.put();
+            
     </div><br /><br />
-<b>Source Code</b>:
-<div widget="codeBox" widgetScroll="6%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Humble/web/js/EasyAjax.js" class="humble-code"></div>        
+    <b>Source Code</b>:
+    <div widget="codeBox" widgetScroll="6%" lang="js" lexicon="/web/js/ColorizerLanguages.json" source="/app/Code/Framework/Humble/web/js/EasyAjax.js" class="humble-code"></div>         
 </div>
+<br /><br /><br /><br />
 <!--#include virtual="/pages/includes/footer.html" -->

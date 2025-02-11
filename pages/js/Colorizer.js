@@ -73,13 +73,13 @@ var Colorizer = (function (languageFile) {
             var me    = this;
             if ((this.language !== false) && (this.languages !== false) && (this.code !== false)) {
                 var lines =  me.code.split("\n");
-                var nl    = "<div id='colorizer_code_source_"+this.id+"' style=' width: "+(this.codeBox.offsetWidth-58)+"px; height: "+(this.codeBox.offsetHeight-1)+"px; display: inline-block; vertical-align: top; overflow: auto'>";
+                var nl    = "<div id='colorizer_code_source_"+this.id+"' style=' width: "+(this.codeBox.offsetWidth-58)+"px; height: "+(this.codeBox.offsetHeight-1)+"px; display: inline-block; vertical-align: top; overflow: auto; box-style: border-box'>";
                 var rows  = "<div id='colorizer_code_rows_"+this.id+"' style='display: inline-block; width: 45px; height: 100%; overflow: hidden'>";
                 this.codeBox.innerHTML = "";
                 var rt = false;
                 for (var i=0; i<lines.length; i++) {
                     rt   = !rt;
-                    rows += '<div style="height: 1.2em; font-family: monospace; margin: 0px; padding: 0px 3px 0px 0px; width: 45px; white-space: nowrap; text-align: right; color: '+Colors['num']+'; background-color: '+Colors["ln"]+'; padding-right: 3px">'+(i+1)+'</div>';
+                    rows += '<div style="height: 1.2em; font-family: monospace; margin: 0px; box-style: border-box; padding: 0px 3px 0px 0px; width: 45px; white-space: nowrap; text-align: right; color: '+Colors['num']+'; background-color: '+Colors["ln"]+'; padding-right: 3px">'+(i+1)+'</div>';
                     nl   += '<div class="'+this.id+'" style="height: 1.2em; font-family: monospace; background: '+Colors[rt]+'; white-space: pre; clear:both;">'+this.colorSource(lines[i].replace(/\n/g,""))+'</div>';
                 }
                 this.codeBox.innerHTML = rows+'</div>'+nl+'</div>';
@@ -161,7 +161,7 @@ var Colorizer = (function (languageFile) {
     };
     return {
         render: function (codeBox) {
-            var options = {
+            let options = {
                 "id"     : {
                     "value": id(9)
                 },
@@ -181,6 +181,7 @@ var Colorizer = (function (languageFile) {
                     "value": codeBox
                 }
             };
+
             Colorizers[options.id.value] = Object.create(Prototype,options);
             return Colorizers[options.id.value].init();
         },

@@ -73,7 +73,7 @@ var Colorizer = (function (languageFile) {
             var me    = this;
             if ((this.language !== false) && (this.languages !== false) && (this.code !== false)) {
                 var lines =  me.code.split("\n");
-                var nl    = "<div id='colorizer_code_source_"+this.id+"' style=' width: "+(this.codeBox.offsetWidth-58)+"px; height: "+(this.codeBox.offsetHeight-1)+"px; display: inline-block; vertical-align: top; overflow: auto'>";
+                var nl    = "<div id='colorizer_code_source_"+this.id+"' style=' width: "+(this.width)+"px; height: "+(this.codeBox.offsetHeight-1)+"px; display: inline-block; vertical-align: top; overflow: auto'>";
                 var rows  = "<div id='colorizer_code_rows_"+this.id+"' style='display: inline-block; width: 45px; height: 100%; overflow: hidden'>";
                 this.codeBox.innerHTML = "";
                 var rt = false;
@@ -92,15 +92,19 @@ var Colorizer = (function (languageFile) {
                     $(this.box).height(size);
                 }
                 if (this.box.scrollWidth > 0) {
+                    $(this.codeBox).width(965);  //CHEESE!
                     $(this.box).width(this.codeBox.offsetWidth-this.rows.offsetWidth-3);
                     $('.'+this.id).width(this.box.scrollWidth);
                 }
                 $(this.box).on('scroll',function () {
+                    console.log('waiting');
                     me.rows.scrollTop = this.scrollTop;
                 });
+
             } else {
                 window.setTimeout(function () { me.run(); }, 50);
             }
+            
             return this;
         },
         colorSource: function (line) {
@@ -165,6 +169,9 @@ var Colorizer = (function (languageFile) {
                 "id"     : {
                     "value": id(9)
                 },
+                "width": {
+                    "value": codeBox.offsetWidth,
+                },
                 "lexicon": {
                     "value": codeBox.getAttribute('lexicon')
                 },
@@ -181,6 +188,7 @@ var Colorizer = (function (languageFile) {
                     "value": codeBox
                 }
             };
+            console.log(options);
             Colorizers[options.id.value] = Object.create(Prototype,options);
             return Colorizers[options.id.value].init();
         },
