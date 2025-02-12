@@ -1,0 +1,4 @@
+{
+    "/admin": "/admin/home/page",
+    "/home": "/&&NAMESPACE&&/&&CONTROLLER&&/&&PAGE&&"
+}
