@@ -68,6 +68,21 @@ class Environment {
     }
     
     /**
+     * Attempts to put the route aliases into the cache for faster retrieval
+     * 
+     * @param type $project
+     */
+    public static function recacheRouteAliases($project=false) {
+        $result = false;
+        $project = ($project) ? $project : self::getProject();
+        if (file_exists($alias_file = 'Code/'.$project->package.'/'.$project->module.'/etc/route_aliases.json')){
+            Humble::cache('humble_route_aliases',json_decode(file_get_contents($alias_file),true));
+            $result = true;
+        }
+        return $result;
+    }
+    
+    /**
      * Returns the location of the modules root, use this instead of hardcoding module paths
      *
      * @param string $namespace

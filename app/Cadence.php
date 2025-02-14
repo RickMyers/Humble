@@ -40,6 +40,7 @@ $config                     = (\Environment::namespace() !== 'humble') ? 'Code/'
 $callbacks                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Cadence.php';
 $constants                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Constants.php';
 $framework                  = 'Code/Framework/Humble/etc/cadence.json';
+$windows                    = (PHP_OS_FAMILY === "Windows");
 
 if (file_exists($constants)) {
     require_once($constants);
@@ -134,23 +135,28 @@ function clearSystemStats() {
 }
 //------------------------------------------------------------------------------
 function snapshotSystem() {
-    global $monitor, $system;
-    logMessage('Taking A Snapshot Of System Statistics');
-    $monitor->record();
+    global $monitor, $system, $windows;
+    if (!$windows) {
+        logMessage('Taking A Snapshot Of System Statistics');
+        $monitor->record();
+    }
 }
 //------------------------------------------------------------------------------
 function recurseDirectory($dir=[]) {
     $list = [];
-    $dh   = dir($dir);
-    while ($entry = $dh->read()) {
-        if (($entry == '.') || ($entry == '..')) {
-            continue;
+    if ($dh   = dir($dir)) {
+        while ($entry = $dh->read()) {
+            if (($entry == '.') || ($entry == '..')) {
+                continue;
+            }
+            if (is_dir($dir.'/'.$entry)) {
+                array_merge($list,recurseDirectory($dir.'/'.$entry));
+            } else {
+                $list[] = $dir.'/'.$entry;
+            }
         }
-        if (is_dir($dir.'/'.$entry)) {
-            array_merge($list,recurseDirectory($dir.'/'.$entry));
-        } else {
-            $list[] = $dir.'/'.$entry;
-        }
+    } else {
+        die($dir.' was unreadable');
     }
     return $list;
 }
@@ -221,6 +227,20 @@ function watchApplicationXML() {
         $systemfiles[$applicationXML] = $appTime;
     }
     clearstatcache(true,$applicationXML);
+}
+//------------------------------------------------------------------------------
+function watchRouteAliases() {
+    global $systemfiles,$project;
+    if (file_exists($alias_file  = 'Code/'.$project->package.'/'.$project->module.'/etc/route_aliases.json')) {
+        $fileTime        = filemtime($alias_file);
+        $systemfiles[$alias_file] = isset($systemfiles[$alias_file]) ? $systemfiles[$alias_file] : $fileTime;
+        if ($fileTime !== $systemfiles[$alias_file]) {
+            logMessage('---------> Recaching Route Aliases');
+            \Environment::recacheRouteAliases($project);
+            $systemfiles[$alias_file] = $fileTime;
+        }
+        clearstatcache(true,$alias_file);
+    }
 }
 //------------------------------------------------------------------------------
 function watchAPIPolicy() {
@@ -420,8 +440,7 @@ if ($cadence) {
         }
         $handlers = array_merge($cadence['handlers']['framework'],$cadence['handlers']['application']);
         foreach ($handlers as $component => $handler) {
-            $t = $handler['multiple'] * $cadence['period'];
-            if (($cadence_ctr % $t) == 0) {
+            if (($cadence_ctr % $cadence['period']) == 0) {
                 $start  = time();
                 logMessage("Processing ".ucfirst($component)." Now...");
                 foreach ($handler['callbacks'] as $callback => $status) {
@@ -432,7 +451,7 @@ if ($cadence) {
                 logMessage(ucfirst($component)." Processing took ".($start - time())." seconds");                
             }
         }
-        if (($cadence_ctr++ > 500)) {
+        if ((++$cadence_ctr > 500)) {
             logMessage("Reseting Cadence...");                                     //Due to "fuzziness" caused by sleep/awake timer, we need to periodically reset counters
             $started        = time();
             $cadence_ctr    = 0;

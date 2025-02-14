@@ -172,7 +172,7 @@ SQL;
               left outer join admin_users as c
                 on a.id = c.id
                 {$search_clause}
-        SQL;
+SQL;
         return $this->_polyglot(true)->query($query);
     }
 }

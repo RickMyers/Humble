@@ -89,7 +89,8 @@ class Cadence extends Model
     public function start() {
         $this->_RC(8);
         $message = 'Cadence Is Already Running...';
-        if (file_exists('PIDS/cadence.pid') && !($running = $this->check())) {
+        $running = $this->check();
+        if (file_exists('PIDS/cadence.pid') && !($running)) {
             //Removes PID file so can start cleanly
             $this->clear();
         }

@@ -60,6 +60,12 @@
                     "scanImagesForChanges": true
                 },
                 "multiple": 3
+            },
+            "routes": {
+                "callbacks": {
+                    "watchRouteAliases": true
+                },
+                "multiple": 3
             }
         }           
     }

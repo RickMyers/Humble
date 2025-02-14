@@ -204,7 +204,7 @@ SQL;
               from admin_users as a
               left outer join admin_user_identification as b
                 on a.id = b.id
-        SQL;
+SQL;
         return $this->query($query);
     }
     
