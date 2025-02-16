@@ -19,13 +19,15 @@ class Cadence extends Model
 {
 
     use \Code\Framework\Humble\Traits\EventHandler;
-	
-    private $RC = null;
+    
+    private $windows    = false;
+    private $RC         = null;
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct();
+        $this->windows = (PHP_OS_FAMILY === "Windows");
     }
 
     /**
@@ -71,10 +73,13 @@ class Cadence extends Model
      */
     public function check() {
         if ($running = file_exists('PIDS/cadence.pid')) {
+            if ($this->windows) {
+                return $running;
+            }
             exec('ps -aux | grep Cadence.php',$results);
             $running = false;
             foreach ($results as $row) {
-                $row = preg_replace('/\s+/', ' ', $row);
+                $row     = preg_replace('/\s+/', ' ', $row);
                 $section = explode(" ",$row);
                 $running = $running || (($section[10]=='php') && ($section[11]=='Cadence.php'));
             }
