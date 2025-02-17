@@ -21,7 +21,6 @@ function secureCheck($file=[]) {
     return (!isset($file['secure']) || ($file['secure']==='N')) ? true : isset($_SESSION['uid']); 
 }
     ob_start();
-    chdir('app');                               //always start in this directory
     require_once('Humble.php');                   //our friend
     if ($_GET['type']!=='mjs') {
         $orm = \Humble::entity('humble/'.$_GET['type'])->setNamespace('');

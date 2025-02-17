@@ -17,8 +17,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         <action name="install" blocking="off">
             <description>Will install and configure a socket server</description>
             <model namespace="admin" class="sockets" method="install" response="true">
-                <parameter name="host" source="request" required="true" />
-                <parameter name="port" source="request" required="true" />
+                <parameter name="admin_id"  source="session" required="true" />
+                <parameter name="host"      source="request" value="socket_server_host" required="true" />
+                <parameter name="port"      source="request" value="socket_server_port" required="true" />
             </model>
         </action>
         
@@ -26,18 +27,30 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="start" blocking="off">
             <description>Starts the socket server</description>
+            <model namespace="admin" class="sockets" method="start" response="true">
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
+            
         </action>
         
         <!-- ############################################################### -->
         
         <action name="stop" blocking="off">
             <description>Stops the socket server</description>
+            <model namespace="admin" class="sockets" method="stop" response="true">
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
+            
         </action>
 
         <!-- ############################################################### -->
         
         <action name="restart" blocking="off">
             <description>Restarts the socket server</description>
+            <model namespace="admin" class="sockets" method="restart" response="true">
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
+            
         </action>
         
         <!-- ############################################################### -->

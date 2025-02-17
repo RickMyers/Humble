@@ -62,7 +62,7 @@ class Sockets extends Model
                 chdir('../Hub');
                 exec('npm install',$result,$rc);
                 $message['message'] = 'Installation Successful';
-                $message['RC'] = $rc;
+                $message['RC']      = $rc;
                 chdir('../app');
             }
         }

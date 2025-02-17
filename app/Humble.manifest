@@ -21,14 +21,14 @@ LICENSE
 index.html
 index.php
 app/install/.htaccess .htaccess
-api.php
-iapi.php
-mapi.php
-msr.php
+app/api.php
+app/iapi.php
+app/mapi.php
+app/msr.php
 mobile.php
 debug.php
 install.php
-loader.php
+app/loader.php
 app/aliases.php
 app/composer.json
 app/filelaunch.php

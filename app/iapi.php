@@ -121,7 +121,6 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, PUT');
 header('Access-Control-Allow-Headers: HTTP_X_REQUESTED_WITH');
 
-chdir('app');
 require_once('Humble.php');
 require_once('Constants.php');
 $request_method  = strtolower($_SERVER['REQUEST_METHOD']);

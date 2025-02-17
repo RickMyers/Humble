@@ -22,7 +22,6 @@
 
     ob_start();
 
-    chdir('app');
     require_once('Humble.php');
     session_start();
     if (!isset($_SESSION['uid'])) {

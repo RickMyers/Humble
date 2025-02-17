@@ -21,7 +21,6 @@
      }
     ob_start();
 
-    chdir('app');
     //--------------------------------------------------------------------------
     //Basic setup stuff
     require_once('Humble.php');
