@@ -29,6 +29,7 @@ mobile.php
 debug.php
 install.php
 loader.php
+app/aliases.php
 app/composer.json
 app/filelaunch.php
 app/autoload.php
