@@ -1,6 +1,4 @@
 {
     "/admin":   "/admin/home/page",
-    "/home":    "/humble/home/page",
-    "/install": "/install.php",
-    "/inst": "/install.php"
+    "/home":    "/humble/home/page"
 }

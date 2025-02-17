@@ -53,3 +53,4 @@ app/cli/*
 app/PIDS/*
 app/Code/Framework/*
 app/Exceptions/*
+app/install/config.xml app/Code/Framework/Humble/etc/config.xml

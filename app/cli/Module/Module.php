@@ -239,7 +239,31 @@ class Module extends CLI
         }
         return $result;
     }
+#{
+#   "source": "/lib/sample/module/Images/admin_app_icon.png",
+#   "destination": "Code/&&PACKAGE&&/&&MODULE&&/Images/admin_app_icon.png"
+#}      
+#        {
+#            "source": "/lib/sample/module/etc/AdminApps.xml" ,
+#            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/AdminApps.xml" 
+#        },   
+    
+    public static function apps() {
+        $args       = self::arguments();
+        
+        if ($module = \Humble::module($args['namespace'])) {
+            $name       = $args['name'] ?? $module['module']." App";
+            $files      = [
+                "xml"   => "/lib/sample/module/etc/AdminApps.xml",
+                "icon"  => "/lib/sample/module/Images/admin_app_icon.png"
+            ];
+            $destination = [
+                "xml"   => "Code/".$module['package'].'/'.$module['configuration']."/AdminApps.xml",
+                "icon"  => "Code/".$module['package'].'/'.$module['images']."/AdminApps.xml"
+            ];
+        }
 
+    }
     /**
      * Retrieves a pre-setup version of tailwind and installs it in a module
      */

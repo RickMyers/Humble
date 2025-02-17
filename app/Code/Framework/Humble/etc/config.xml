@@ -81,7 +81,6 @@
                 <users alias="usr"/>
                 <user_identification polyglot="Y" alias="userinfo"/>     
                 <entity_keys/>
-                <roles/>
                 <user_roles/>
             </entities>
         </orm>

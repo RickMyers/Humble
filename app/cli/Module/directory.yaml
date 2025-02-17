@@ -100,14 +100,25 @@ clone-templates :
     parameters:
         required:
         optional:
-    
 cli : 
-    description: Toggles the CLI for a particular modules
+    description: Toggles CLI access for a particular modules
     usage:
         linux:   sudo sh ./humble.sh --cli ns=module_namespace or sudo sh ./humble.sh --cli ns=*
         windows: humble --cli ns=module_namespace or humble --cli ns=*
     function : cli
     parameters:
         required:
-            namespace|ns: You must specify the namespace of the module to enable
-        optional:    
+            namespace|ns: You must specify the namespace of the module to grant CLI access to
+        optional:
+admin-apps|apps :
+    description: Installs the Admin Apps XML file in the /etc folder
+    usage:
+        linux:   sudo sh ./humble.sh --admin-apps ns=module_namespace or sudo sh ./humble.sh --apps ns=*
+        windows: humble --admin-apps ns=module_namespace or humble --apps ns=*
+    function : apps
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module to install the apps xml
+        optional:
+            name|n: The name of the admin app
+ 

@@ -86,20 +86,13 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Entities/Entity.php"
         },
         {
-            "source": "/lib/sample/module/etc/AdminApps.xml" ,
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/AdminApps.xml" 
-        },
-        {
             "source": "/lib/sample/module/Tests/index.xml" ,
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Tests/index.xml" 
         }
 
     ],
     "copy": [
-        {
-            "source": "/lib/sample/module/Images/admin_app_icon.png",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Images/admin_app_icon.png"
-        }        
+     
     ],
     "regular_module": [
         {
