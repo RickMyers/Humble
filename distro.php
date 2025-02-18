@@ -195,7 +195,6 @@
             break;
         case "container":
         case "docker" :
-        case "config" :
             $ns       = $_REQUEST['namespace'] ?? 'namespace';
             $engine   = $_REQUEST['engine'] ?? 'MOD_PHP';
             $dir      = str_replace('\\','/',($_REQUEST['destination_folder'] ?? ''));
@@ -249,6 +248,9 @@
                 print(file_get_contents('tempsocket.zip'));
                 @unlink('tempsocket.zip');
             }
+            break;
+        case "config":
+            print(file_get_contents('app/install/config.xml');
             break;
         default :
             header("Content-Type: application/json");

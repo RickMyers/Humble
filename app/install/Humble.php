@@ -197,6 +197,11 @@ function fetchProject($version,$framework_url,$update=false) {
     print("Files Merged                     ".$merge_ctr."\n");
     print("Files Ignored                    ".$ignore_ctr."\n");
     print("=====================================\n\n");
+    /* The configuration file in the distro is the one for humbleprogramming.com, not an application based on humble
+     * 
+     * We are getting the proper config for an application based on the humble framework here
+     */
+    file_put_contents('app/Code/Framework/Humble/etc/config.xml',file_get_contents('https://humbleprogramming.com/distro/config'));
 
 }
 /* ---------------------------------------------------------------------------------- */
