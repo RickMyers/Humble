@@ -250,7 +250,7 @@
             }
             break;
         case "config":
-            print(file_get_contents('app/install/config.xml');
+            print(file_get_contents('app/install/config.xml'));
             break;
         default :
             header("Content-Type: application/json");
