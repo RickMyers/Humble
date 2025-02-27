@@ -31,7 +31,7 @@ class Compiler extends Directory
     private $component      = null;
     private $arguments      = [];
     private $response       = false;
-    private $blocking       = false;
+    private $blocking       = true;
     protected $_db          = null;
     private $tabs           = 0;
     private $tabstr         = "";
