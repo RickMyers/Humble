@@ -76,10 +76,11 @@ class Sockets extends Model
      */
     public function start() {
         $message = "Socket Server Is Already Running, Or You May Have To Clear the PID";
-        if (!file_exists('PIDS/sockets.pid')) {
+        if (!file_exists('PIDS/sockets.pid') && (is_dir('../Hub'))) {
+            chdir('../Hub');
             $cmd = "nohup node main.js > /dev/null 2>&1 &";
             exec($cmd,$results,$rc);
-            $message = "Socket Server Started";
+            $message = "Socket Server Started [".$rc."]";
         } 
         return $message;
     }
@@ -93,10 +94,10 @@ class Sockets extends Model
         $message = "Could not stop Socket Server, you will have to do it manually";
         $pid_file = 'PIDS/sockets.pid';
         if (file_exists($pid_file)) {
-            $pid = file_get_contents($pid_file);
-            exec('kill '.$pid,$results,$rc);
+            $pid    = trim(file_get_contents($pid_file));
+            $rc     = posix_kill($pid,15);
             @unlink($pid_file);
-            $message = "Socket Server Stopped";
+            $message = "Socket Server Stopped [".$rc."]";
         }
         return $message;
     }
@@ -120,7 +121,7 @@ class Sockets extends Model
         $status     = false;
         $project    = Environment::project();
         if ($project->hub_host && $project->hub_port) {
-            $status     = file_get_contents($project->hub_host.':'.$project->hub_port.'/status');
+            $status     = @file_get_contents($project->hub_host.':'.$project->hub_port.'/status');
         }
         return $status;
     }
