@@ -82,7 +82,7 @@
                 <user_identification polyglot="Y" alias="userinfo"/>     
                 <entity_keys/>
                 <user_roles/>
-            </entities>
+            <roles/></entities>
         </orm>
         <events>
 

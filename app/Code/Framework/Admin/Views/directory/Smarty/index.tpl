@@ -111,9 +111,8 @@
     
     $('#hide_framework_services').on("click",goHome);
     $('#module_namespace').on("change", goHome);
-    $("#services-prev").on("click",function () {
+    $("#services-prev").on("click", () => {
         Services.currentPage = Services.currentPage -1;
-
         if (Services.currentPage<1) {
             Services.currentPage = Services.pages;
         }

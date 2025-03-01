@@ -86,6 +86,7 @@
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>
+        
         <!-- ################################################################################################# -->
 
         <action name="file" passalong="window_id">
@@ -102,6 +103,17 @@
                 <parameter name='id' source='post' required='true' default='' />
             </model>
         </action>        
+
+        <!-- ################################################################################################# -->
+
+        <action name="input">
+            <description>Input a file, either by value or reference, to the workflow</description>
+            <model namespace="workflow" class='manager' id='manager'>
+                <parameter name='namespace' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' default='' />
+                <parameter name='id' source='post' required='true' default='' />
+            </model>
+        </action>
 
         <!-- ################################################################################################# -->
 

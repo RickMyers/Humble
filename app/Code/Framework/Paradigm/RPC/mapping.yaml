@@ -31,8 +31,8 @@ triggerConfiguration  :
   method          : POST
   blocking        : false
   arguments       : [namespace,id,window_id,data,component,method]
-fileConfiguration  :
-  url             : /workflow/elements/file
+inputConfiguration  :
+  url             : /workflow/elements/input
   api-key         :
   api-var         :
   secure          : true
@@ -47,6 +47,14 @@ externalConfiguration  :
   method          : POST
   blocking        : false
   arguments       : [namespace,id,window_id,data,component,method]
+exceptionConfiguration  :
+  url             : /workflow/exception/configure
+  api-key         :
+  api-var         :
+  secure          : true
+  blocking        : false
+  method          : POST
+  arguments       : [namespace,id,window_id,data,component,method]  
 detectorConfiguration  :
   url             : /workflow/detector/elements
   api-key         :
