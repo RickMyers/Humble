@@ -41,10 +41,10 @@
 			"type":			"button",
                         "style":                "",
                         "value":                "Continue",
-                        "onclick":        function () {
+                        "onclick":         () => {
                             if (Edits['socketconfig'].validate()) {
-                                (new EasyAjax('/admin/socket/install')).packageForm('socket_config_form').then((response) => {
-                                    
+                                (new EasyAjax('/admin/socket/install')).addForm('config_socket_form').then((response) => {
+                                    alert(response);
                                 }).post();
                             }
                         }
