@@ -159,35 +159,36 @@ class Compiler extends Directory
      * @param type $default
      * @return string
      */
-    private function processDefault($default='') {
+    private function processDefault($default='',$format=false) {
         if (($default)) {
-            switch (strtoupper($default)) {
-                case '"UNIQUEID"' :
+            switch (str_replace(["'",'"'],["",""],strtoupper($default))) {
+                case 'UNIQUEID' :
                     $default = '"'.$this->_uniqueId(true).'"';
                     break;
-                case '"DATETIME"'  :
-                case '"TIMESTAMP"' :
-                    $default = '"'.date(\Environment::getTimestampFormat()).'"';
+                case 'NOW'       :
+                case 'DATETIME'  :
+                case 'TIMESTAMP' :
+                    $default = 'date(\Environment::getTimestampFormat())';
                     break;
-                case '"TIME"' :
-                    $default = '"'.date(\Environment::getTimeFormat()).'"';
+                case 'TIME' :
+                    $default = 'date(\Environment::getTimeFormat())';
                     break;
-                case '"DATESTAMP"':
-                case '"DATE"' :
-                    $default = '"'.date(\Environment::getDateFormat()).'"';
+                case 'DATESTAMP':
+                case 'DATE' :
+                    $default = '.date(\Environment::getDateFormat()).';
                     break;
-                case '"CURRENTYEAR"':
+                case 'CURRENTYEAR':
                     $default = 'date("Y")';
                     break;
-                case '"CURRENTMONTH"':
+                case 'CURRENTMONTH':
                     $default = 'date("m")';
                     break;
-                case '"CURRENTDAY"':
+                case 'CURRENTDAY':
                     $default = 'date("d")';
                     break;
-                case '"CURRENTDAYOFWEEK"':
+                case 'CURRENTDAYOFWEEK':
                     $default = 'date("D")';
-                    break;                
+                    break;  
                 default:
                     break;
             }
@@ -224,13 +225,14 @@ class Compiler extends Directory
             print($this->tabs().$source.'["'.$field.'"] = addslashes('.$default.');'."\n");
             print($this->tabs()."}\n");
         }
-        switch ($format) {
+        switch (strtolower($format)) {
             case "datestamp":
             case "date" :
                 print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
                 print($this->tabs(1).$source.'["'.$field.'"] = \Environment::formatDate('.$source.'["'.$field.'"]'.');'."\n");
                 print($this->tabs(-1)."}\n");
                 break;
+            case "datetime"  : 
             case "timestamp" :
                 print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
                 print($this->tabs(1).$source.'["'.$field.'"] = \Environment::formatTimestamp('.$source.'["'.$field.'"]'.');'."\n");
@@ -317,17 +319,17 @@ class Compiler extends Directory
             $this->arguments[$source] = [];
         }
         $this->arguments[$source][$field] = (string)$parameter['name'];
-        $format     = isset($parameter['format'])    ? strtolower((string)$parameter['format']) : false;
-        $minlength  = isset($parameter['min']) ? (int)$parameter['min'] : false;
-        $maxlength  = isset($parameter['max']) ? (int)$parameter['max'] : false;
-        $timestamp  = $datestamp = $time = false;
+        $format     = isset($parameter['format'])   ? strtolower((string)$parameter['format']) : false;
+        $minlength  = isset($parameter['min'])      ? (int)$parameter['min'] : false;
+        $maxlength  = isset($parameter['max'])      ? (int)$parameter['max'] : false;
         $default    = (isset($parameter['default']) ? (($parameter['default']!='') ? '"'.$parameter['default'].'"' : 'null') : 'null');
-        $default    = $this->processDefault($default);
-        if ($default && (strtolower($default) == '"now"') && ($format)) {
+        $default    = $this->processDefault($default,$format);
+        $timestamp  = $datestamp = $time = false;        
+/*        if ($default && (strtolower($default) == '"now"') && ($format)) {
             $timestamp = ($format   == 'timestamp') ? 1 : 0;
             $datestamp = (($format  == 'date') || ($format == "datestamp")) ? 1 : 0;
             $time      = ($format   == 'time') ? 1 : 0;
-        }
+        }*/
         $required   = (isset($parameter['required']) ? strtolower((string)$parameter['required']) : false);
         $this->processRequired($required,$source,$field);
         $optional   = (isset($parameter['optional']) && ($parameter['name']!=='*') ? strtolower((string)$parameter['optional']) : false);
@@ -1411,15 +1413,18 @@ class Compiler extends Directory
                         }
                     }
                 }
+                if ($default) {
+                    if ($default = $this->processDefault($default,$format)) {
+                        print($this->tabs().'$_REQUEST["'.$field.'"] = $_REQUEST["'.$field.'"] ?? '.$default.";\n");
+                    }
+                }                
                 if ($required) {
                     $this->processRequired($required,'$_REQUEST',$field);
                 }
                 if ($format) {
                     $this->processFormat(strtolower($format),'$_REQUEST',$field,$required,$default);                            
                 }
-                if ($default) {
-                    $default = ((strtolower($default)==='true') || (strtolower($default)==='false')) ? $default : '"'.$default.'"';
-                }
+
                 print($this->tabs().'$models[\''.$value.'\'] = isset($_REQUEST[\''.$field.'\']) ? $_REQUEST[\''.$field.'\'] : '.($default ? $default : 'null').';'."\n");
             }
         }

@@ -193,6 +193,23 @@ class Environment {
     }
 
     /**
+     * Will start a program in the background
+     * 
+     * @param type $program
+     * @param type $arguments
+     * @return type
+     */
+    public static function start($program=false,...$arguments) {
+        $arg_str = '';
+        foreach ($arguments as $argument) {
+            $arg_str .= ' '.$argument;
+        }
+        $cmd_str = 'nohup '.$program.$arg_str.' > /dev/null 2>&1 &';
+        exec($cmd_str,$result,$rc);
+        return $rc;
+    }
+    
+    /**
      * Returns the location of the PHP executable
      * 
      * @return string
