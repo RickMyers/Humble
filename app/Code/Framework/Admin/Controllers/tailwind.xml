@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+
+Tailwindcss related actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="tailwind" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="off" response="true">
+        
+        <action name="start">
+            <description>Starts the tailwind watch program</description>
+            <model namespace="admin" class="tailwind" method="start" response="true" id="tailwind">
+                <parameter name="namespace" source="request" default="admin" />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="stop">
+            <description>Starts the tailwind watch program</description>
+            <model namespace="admin" class="tailwind" method="start" response="true" id="tailwind">
+                <parameter name="namespace" source="request" default="admin" />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="install">
+            <description>Starts the tailwind watch program</description>
+            <model namespace="admin" class="tailwind" method="start" response="true" id="tailwind">
+                <parameter name="namespace" source="request" default="admin" />
+            </model>
+        </action>        
+    </actions>
+</controller>

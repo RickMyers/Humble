@@ -1,0 +1,34 @@
+({
+    form:
+    {
+        id: 		"paradigm-config-io-form-&id&",
+        drawme:		false,
+        action:		"",
+        onload:     function () {
+
+        },
+        method:		"post",
+        style:		"",
+        onenterkey:	"send"
+    },
+    fields:
+    [
+        {
+            active:		true,
+            id: 		"paradigm-config-io-form-save-&id&",
+            longname:		"Configure Save",
+            title:		"Press to initially establish this workflow component",
+            type:               "button",
+            required:		false,
+            force:		false,
+            value:              "Save",
+            onclick:        function (evt) {
+                if (Edits['io_&id&'].validate()) {
+                    $('#humble-paradigm-config-io-form-&id&').submit();
+                }
+            },
+            classname:		"",
+            style:		""
+        }
+    ]
+})

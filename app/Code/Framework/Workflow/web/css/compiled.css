@@ -580,6 +580,10 @@ video {
   position: relative;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .table {
   display: table;
 }

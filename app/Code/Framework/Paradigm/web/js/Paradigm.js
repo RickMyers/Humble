@@ -170,7 +170,7 @@ var Paradigm = (function () {
                 label: 'Program'
             },
             input: {
-                label: 'File Input'
+                label: 'File I/O'
             },
             terminus: {
                 label: ''

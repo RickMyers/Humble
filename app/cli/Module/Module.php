@@ -288,7 +288,7 @@ class Module extends CLI
 @tailwind utilities;
 TEXT;
                     
-            file_put_content($css_path,$css);
+            file_put_contents($css_path,$css);
             @unlink('tailwind.zip');
             print("\nDone.\n");
         } else {

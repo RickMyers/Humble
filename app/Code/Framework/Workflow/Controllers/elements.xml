@@ -85,8 +85,8 @@
                 <parameter name='window_id' source='post' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
-        </action>
-        
+        </action>  
+          
         <!-- ################################################################################################# -->
 
         <action name="file" passalong="window_id">
@@ -98,7 +98,7 @@
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>            
             <model namespace="workflow" class='manager' id='manager'>
-                <parameter name='namespace' source='post' required='true' default='' />
+                <parameter name='namespace' source='post' required='true' default='' />   
                 <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
@@ -106,8 +106,11 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="input">
+        <action name="input" passalong="window_id">
             <description>Input a file, either by value or reference, to the workflow</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>              
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
                 <parameter name='window_id' source='post' default='' />
