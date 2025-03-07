@@ -928,8 +928,8 @@ class Compiler extends Directory
             foreach ($fields as $idx => $name) {
                 $parts = explode('=',$name);
                 if (isset($parts[1])) {
-                    print($this->tabs().'$_POST["'.$parts[0].'"] = $'.$parts[1].";\n");
-                    print($this->tabs().'$_REQUEST["'.$parts[0].'"] = $'.$parts[0].";\n");
+                    print($this->tabs().'$_POST["'.$parts[0].'"]    = $_REQUEST["'.$parts[1].'"];'."\n");
+                    print($this->tabs().'$_REQUEST["'.$parts[0].'"]    = $_REQUEST["'.$parts[1].'"];'."\n");
                 }
             }
         }

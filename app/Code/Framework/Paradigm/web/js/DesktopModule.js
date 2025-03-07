@@ -521,8 +521,6 @@ var Functions = {
         window.location.reload();
     },
     promptBeforeLeaving: function (evt) {
-        var win     = null;
-        var status  = true;
         if ((!Desktop.refreshing) && (Desktop.logoffOnReload)) {
         }
         Desktop.logoff = true;
@@ -549,6 +547,7 @@ var Functions = {
                 '<img desktop_id="&&w_id&&" style="position: relative; height: 20px; width: 20px; cursor: pointer;" id="&&w_id&&-minimize" class="paradigm-window-minimize" src="/images/paradigm/desktop/minimize.gif" alt="Hide Window" title="Hide this window"  />'+
                 '<img desktop_id="&&w_id&&" style="position: relative; height: 20px; width: 16px; margin-right: 8px; cursor: pointer;  display: none" id="&&w_id&&-lockscroll" onclick="Desktop.sync.toggle(this); return false" class="paradigm-window-minimize" src="/images/paradigm/desktop/locked.png" alt="Lock Scroll" title="Lock window scroll" />'+
                 '<img desktop_id="&&w_id&&" style="position: relative; height: 20px; width: 16px; margin-right: 8px; cursor: pointer;" id="&&w_id&&-unlockscroll" onclick="Desktop.sync.toggle(this); return false" class="paradigm-window-minimize" src="/images/paradigm/desktop/unlocked.png" alt="Release Scroll Lock" title="Unlock window scroll" />'+
+                '<div id="&&w_id&&-titlebar-area" style="height: 100%; float: right; margin-right: 10px"></div>'+ 
                 DesktopWindow.corner()+'<span onclick="return false" desktop_id="&&w_id&&" id="&&w_id&&-title">&&title&&</span>'+
                 '</div>'+
                 '<div class="paradigm-desktop-window-content" id="&&w_id&&-content" desktop_id="&&w_id&&" onmousedown="Desktop.stopPropagation(event)">'+

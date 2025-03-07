@@ -19,5 +19,39 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
                 <parameter name="path" value="explorer_path" source="request" required="true" />
             </helper>
         </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="delete" blocking="off">
+            <description>Deletes a file (if you have permission)</description>
+            <helper namespace="admin" class="file/explorer" method="delete">
+                <parameter name="directory" source="post" required="true" />
+                <parameter name="file"      source="post" required="true" />
+            </helper>
+            <chain>
+                <action name="filelist" map="explorer_path=directory" />       
+            </chain>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="browse" passalong="window_id">
+            <description>Opens a file in browse mode</description>
+            <helper namespace="admin" class="file/explorer">
+                <parameter name="directory" source="post" required="true" />
+                <parameter name="file"      source="post" required="true" />
+            </helper>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="edit" passalong="window_id">
+            <description>Opens a file in browse mode</description>
+            <helper namespace="admin" class="file/explorer" id="explorer">
+                <parameter name="directory" source="post" required="true" />
+                <parameter name="file"      source="post" required="true" />
+            </helper>
+        </action>
+                
     </actions>
 </controller>

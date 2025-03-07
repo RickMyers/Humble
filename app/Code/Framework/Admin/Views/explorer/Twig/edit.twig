@@ -1,0 +1,21 @@
+<div id='explorer_ace_editor_{{ window_id }}' class='w-full border-2 border-black'>{{ explorer.edit() }}</div>
+{% set id = explorer._uniqueId() %}
+<script>
+    (() => {
+        var win = Desktop.window.list['{{ window_id }}'];
+        $('#explorer_ace_editor_{{ window_id }}').height(win.content.height() - 4);
+        var editor_{{ id }} = ace.edit("explorer_ace_editor_{{ window_id }}");
+        editor_{{ id }}.setTheme("ace/theme/monokai");
+        editor_{{ id }}.session.setMode("ace/mode/{{ explorer.getFileExtension() }}");   
+        win.resize(() => {
+            $('#explorer_ace_editor_{{ window_id }}').height(win.content.height() - 4);
+        });
+        
+        $('#{{ window_id }}-titlebar-area').html('<button class="" onclick="Administration.code.save(\'howdy\')">Save</button>')
+        /*$('#save_button_{{ window_id }}').on('click',() => {
+            (new EasyAjax('/admin/code/save')).add('type','{{ type }}').add('resource','{{ resource }}').add('source_code',editor_{{ id }}.getValue()).then( (response) => {
+                alert(response);
+            }).post();
+        });*/        
+    })();
+</script>

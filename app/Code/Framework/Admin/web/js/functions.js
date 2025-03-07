@@ -36,6 +36,9 @@ var Functions = (() => {
                                 win.set(response);
                                 Colorizer.scan(win.content);
                             }).post();
+                        },
+                        save: (file,window_id) => {
+                            alert(file);
                         }
                     },
                     users: {

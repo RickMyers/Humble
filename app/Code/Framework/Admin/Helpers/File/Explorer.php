@@ -30,7 +30,7 @@ class Explorer extends \Code\Framework\Admin\Helpers\Helper
      *
      * @return system
      */
-    public function getClassName() {
+    public function getClassName():string {
         return __CLASS__;
     }
 
@@ -39,7 +39,7 @@ class Explorer extends \Code\Framework\Admin\Helpers\Helper
      * 
      * @return type
      */
-    public function files() {
+    public function files():string {
         $files = [];
         if ($path = $this->getPath()) {
             if (chdir($path)) {
@@ -62,5 +62,30 @@ class Explorer extends \Code\Framework\Admin\Helpers\Helper
             }
         }
         return json_encode($files,JSON_PRETTY_PRINT);
+    }
+    
+    /**
+     * Deletes a file
+     * 
+     * @return bool
+     */
+    public function delete():bool {
+        $deleted = false;
+        if (($dir = $this->getDirectory()) && ($file = $this->getFile())) {
+            if (file_exists($dir.'/'.$file)) {
+                $deleted = unlink($dir.'/'.$file);
+            }
+        }
+        return $deleted;
+    }
+
+    public function edit():string {
+        if (($dir = $this->getDirectory()) && ($file = $this->getFile())) {
+            $parts = explode('.',$file);
+            $extension = (count($parts)!==1) ? $parts[count($parts)-1] : 'text';
+            $this->setFileExtension($extension);
+            return (file_exists($dir.'/'.$file)) ? file_get_contents($dir.'/'.$file) : 'File not found';
+        }
+        return '';
     }
 }
