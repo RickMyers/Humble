@@ -230,9 +230,9 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData(true);
         }
-        return (isset(self::$application['msa']['router'])
-                && ((self::$application['msa']['router']===1)
-                || (self::$application['msa']['router']==='Y')));
+        return (isset(self::$application->msa->router)
+                && ((self::$application->msa->router===1)
+                || (self::$application->msa->router === 'Y')));
     }
 
     /**
@@ -244,7 +244,7 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData($dontUseCache);
         }
-        return isset(self::$application['state']) ?  self::$application['state'] : 'Unknown';
+        return isset(self::$application->state) ?  self::$application->state : 'Unknown';
     }
 
     /**
@@ -280,7 +280,7 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return (isset(self::$application['state']) && (self::$application['state']==='PRODUCTION'));
+        return (isset(self::$application->state) && (self::$application->state === 'PRODUCTION'));
     }
 
     /**
@@ -292,7 +292,7 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return (!isset(self::$application['state']) || (isset(self::$application['state']) && (self::$application['state']==='DEVELOPMENT')));
+        return (!isset(self::$application->state) || (isset(self::$application->state) && (self::$application->state==='DEVELOPMENT')));
     }
 
     /**
@@ -304,7 +304,7 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return (isset(self::$application['state']) && (self::$application['state']==='TEST'));
+        return (isset(self::$application->state) && (self::$application->state === 'TEST'));
     }
 
     /**
@@ -316,7 +316,7 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return (isset(self::$application['state']) && (self::$application['state']==='DEBUG'));
+        return (isset(self::$application->state) && (self::$application->state==='DEBUG'));
     }
     
     /**
@@ -328,7 +328,7 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return (isset(self::$application['state']) && (self::$application['state']==='DEBUG'));
+        return (isset(self::$application->state) && (self::$application->state === 'DEBUG'));
     }
     
     /**
@@ -384,7 +384,7 @@ class Environment {
      */
     public static function loadApplicationMetaData($dontUseCache=false) {
         if ($dontUseCache) {
-            return self::$application = json_decode(json_encode(self::applicationXML()),true);
+            return self::$application = json_decode(json_encode(self::applicationXML()));
         } else {
             if (!self::$application = Humble::cache('application')) {
                 self::recacheApplication();
@@ -447,7 +447,7 @@ class Environment {
             if (!self::$application) {
                 self::loadApplicationMetaData();
             }
-            $value = self::$application['flags'][$flag] ?: null;
+            $value = self::$application->flags->$flag ?: null;
            // return $value;
             print($value);
         }
@@ -460,11 +460,10 @@ class Environment {
      * @return boolean
      */
     public static function cachingEnabled() {
-        return true;
-/*        if (!self::$application) {
+        if (!self::$application) {
             self::loadApplicationMetaData(true);
         }
-        return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);*/
+        return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
     }
     
     /**
@@ -531,10 +530,10 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
             if (!empty(self::$application)) {
-                if (isset(self::$application['status'])) {
-                    if (isset(self::$application['status']['quiescing']) && ((int)self::$application['status']['quiescing'])) {
+                if (isset(self::$application->status)) {
+                    if (isset(self::$application->status->quiescing) && ((int)self::$application->status->quiescing)) {
                         $status = "System is going offline...";
-                    } else if (isset(self::$application['status']['enabled']) && ((int)self::$application['status']['enabled'])) {
+                    } else if (isset(self::$application->status->enabled) && ((int)self::$application->status->enabled)) {
                         //nop; everything is good
                     } else {
                         $status = "System is currently offline";
@@ -550,7 +549,7 @@ class Environment {
             header("location: /index.html?message=".$status);
             die();
         }
-        return (isset(self::$application['status']['authorization']) && (int)self::$application['status']['authorization']['enabled']); //this will always, or should always, be false
+        return (isset(self::$application->status->authorization) && (int)self::$application->status->authorization->enabled); //this will always, or should always, be false
     }
 
     /**
@@ -608,7 +607,7 @@ class Environment {
      * @return type
      */
     public static function command($cmd=false) {
-        exec($cmd,$results);
+        exec($cmd,$results,$rc);
         return $results;
     }
 
@@ -639,6 +638,13 @@ class Environment {
         return self::getProject($node);
     }    
     
+    /**
+     * 4000th recursive thingy routine
+     * 
+     * @param type $struct
+     * @param type $nodes
+     * @return type
+     */
     private static function recurse($struct=false,$nodes=false) {
         foreach ($nodes as $field => $node) {
             $app = isset($struct[$field]) ? $struct[$field] : false;

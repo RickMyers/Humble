@@ -250,17 +250,25 @@ class Module extends CLI
     
     public static function apps() {
         $args       = self::arguments();
-        
+        print_r($args); die();
+        $ext        = [
+            'Twig' => 'twig', 'Smarty' => 'tpl', 'Latte' => 'latte', 'Blade' => 'blade', 'Rain' => 'rain', 'Mustache' => 'mustache', 'Savant' => 'savant', 'PHP' => 'php', 'Phptal' => 'php', 'TBS' => 'tbs'
+        ];
         if ($module = \Humble::module($args['namespace'])) {
             $name       = $args['name'] ?? $module['module']." App";
             $files      = [
                 "xml"   => "/lib/sample/module/etc/AdminApps.xml",
-                "icon"  => "/lib/sample/module/Images/admin_app_icon.png"
+                "icon"  => "/lib/sample/module/Images/admin_app_icon.png",
+                "view"  => "/lib/sample/module/Views/admin/app.html"
             ];
+            $templater   = $args['use']  ?? 'Smarty';
+            $name        = $args['name'] ?? 'app';
             $destination = [
                 "xml"   => "Code/".$module['package'].'/'.$module['configuration']."/AdminApps.xml",
-                "icon"  => "Code/".$module['package'].'/'.$module['images']."/AdminApps.xml"
+                "icon"  => "Code/".$module['package'].'/'.$module['images']."/",
+                "view"  => "Code/".$module['package'].'/'.$module['views']."/admin/".$templater.'/'.$name.'.'.$ext[$templater]
             ];
+            
         }
 
     }

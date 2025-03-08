@@ -436,6 +436,8 @@ switch ($method) {
                                     <input type="checkbox" name="authorization_engine" id="authorization_engine" value="Y" /> Include Basic Authorization Engine<br /><br />
                                     <input type="checkbox" name="roles_and_relationships" id="roles_and_relationships" value="Y" /> Include Roles And Relationships Features<br /><br />
                                     <input type="checkbox" name="socket_server" id="socket_server" value="Y" /> Install Socket Server (Node.js/NPM Required)<br /><br />
+                                    Admin App Name: <input type="text" name="app_name" id="app_name" value="app" /><br /><br />
+                                    
                                 </fieldset>
                             </div>                        
                         </form>
@@ -525,8 +527,10 @@ switch ($method) {
         $fname  = isset($_POST['firstname'])        ? $_POST['firstname']       : '';
         $lname  = isset($_POST['lastname'])         ? $_POST['lastname']        : '';
         $use    = isset($_POST['templater'])        ? $_POST['templater']       : 'Smarty';
+        $app    = isset($_POST['app_name'])         ? $_POST['app_name']        : 'app';
         $srch   = array('&&USERID&&','&&PASSWORD&&','&&DATABASE&&','&&HOST&&','&&MONGO&&','&&CACHE&&','&&MONGOUSER&&','&&MONGOPWD&&');
         $repl   = array($uid,$pwd,$db,$host,$mongo,$cache,$mongou,$mongop);
+        
 
         $registration_data = [
             'serial_number' => $serial,
@@ -632,6 +636,12 @@ switch ($method) {
         postUpdate('Complete','Finished',100);
         file_put_contents('../install.log',$log);
         @unlink('../install_status.json');
+        //no create the admin app
+        $cmd = 'php CLI.php --admin-apps ns='.$project->namespace.' nm='.$app;
+        postUpdate('Creating Admin App');
+        exec($cmd,$results,$rc);
+        print('Admin App Results: '.$rc."\n");
+        print_r($results);
         ?>
         <script>
             window.location.href = '/index.html?message=Installation Completed, Please Login...';

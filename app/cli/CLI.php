@@ -227,6 +227,27 @@ HELP;
         return $parms;
     }
 
+    protected static function verifyValues($args,$values) {
+        foreach ($values as $parms => $vals) {
+            $parm  = false;
+            $parts = explode('|',$parms);
+            foreach ($parts as $idx => $arg) {
+                if (isset($args[$arg])) {
+                    $options = [];
+                    foreach (explode(',',$vals) as $idx2 => $option) {
+                        $options[$option] = true;
+                    } 
+                    if (!isset($options[$args[$arg]])) {
+                        print("\n".'Parameter value incorrect, '.$args[$arg]. ' is not a valid value for \''.$arg."'.\n\n");
+                        die('Valid values are: '.$vals."\n\n");
+                    }
+                }
+                
+            }
+                
+        }
+    }            
+
     /**
      * Verify required parameters are present and organize the arguments in name=value way instead of as an indexed array
      * 
@@ -248,6 +269,9 @@ HELP;
                     }
                     ($section==='required') ? ($valid[$parts[0]] ? "" : die("\n[missing argument: ".str_replace('|',' or ',$parm).'] '.$error_message."\n") ) : "";
                 }
+            }
+            if (isset($options['parameters']['values'])) {
+                self::verifyValues($args,$options['parameters']['values']);
             }
         }
         return $valid;

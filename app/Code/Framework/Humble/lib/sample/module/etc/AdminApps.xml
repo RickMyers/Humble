@@ -14,12 +14,12 @@
         <icon>
             <text>&&NAMESPACE&& Tool</text>
             <image>
-                <desktop>/images/&&NAMESPACE&&/admin_app_icon.png</desktop>
-                <minimized>/images/&&NAMESPACE&&/admin_app_icon.png</minimized>
+                <desktop>/images/&&NAMESPACE&&/&&NAME&&_app_icon.png</desktop>
+                <minimized>/images/&&NAMESPACE&&/&&NAME&&_app_icon.png</minimized>
             </image>
         </icon>
         <start>
-            <uri>/&&NAMESPACE&&/admin/app</uri>
+            <uri>/&&NAMESPACE&&/admin/&&NAME&&</uri>
         </start>
     </app>
 </apps>

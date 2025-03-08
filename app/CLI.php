@@ -132,7 +132,7 @@ if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         
                             require_once $file;
                         }
                     }
-                    if (helpRequest(($argv[0] ?? ''),$options)) {         //php CLI.php --u help   #handles a request for information on a command
+                    if (helpRequest(($argv[0] ?? ''),$options)) {               //php CLI.php --u help   #handles a request for information on a command
                         $include::describe($command,$options);
                     } else {
                         if (isset($options['function']) && $options['function']) {

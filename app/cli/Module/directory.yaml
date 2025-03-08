@@ -93,13 +93,14 @@ clone-templates :
     description: Copies the component templates to the main modules lib/ directory
     extended: You can customize the base templates for controllers, models, helpers, and entities
     usage:
-        linux:   sudo sh ./humble.sh --clone-templates
-        windows: humble --clone-templates
+        linux:   sudo sh ./humble.sh --clone-templates ns=module_namespace
+        windows: humble --clone-templates ns=module_namespace
     function : cloneTemplates
     directive: true
     parameters:
         required:
         optional:
+            namespace|ns: The module namespace to copy to
 cli : 
     description: Toggles CLI access for a particular modules
     usage:
@@ -120,5 +121,9 @@ admin-apps|apps :
         required:
             namespace|ns: You must specify the namespace of the module to install the apps xml
         optional:
-            name|n: The name of the admin app
+            name|n|ns: The name of the admin app
+            use|u: The name of the templating engine to use
+        values:         
+            use|u: Twig,Smarty,Latte,Blade,Savant,TBS,PHP,Phptal,Rain,Mustache
+               
  

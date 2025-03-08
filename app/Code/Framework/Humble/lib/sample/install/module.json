@@ -66,10 +66,6 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/RPC/mapping.yaml"
         },
         {
-            "source": "/lib/sample/module/Views/admin/Smarty/app.tpl",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/admin/Smarty/app.tpl"
-        },
-        {
             "source": "/lib/sample/module/web/css/template.css",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/web/css/&&MODULE&&.css"
         },
