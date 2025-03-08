@@ -242,12 +242,26 @@ HELP;
                         die('Valid values are: '.$vals."\n\n");
                     }
                 }
-                
             }
-                
         }
     }            
 
+    public static function verifyParameters($args,$options) {
+        $valid = [];
+        foreach (['required','optional'] as $section) {
+            foreach (($options['parameters'][$section] ?? []) as $parm => $error_message) {
+                $parts            = explode('|',$parm);
+                foreach ($parts as $part) {
+                    $valid[$part] = true;
+                }
+            }
+        }
+        foreach ($args as $arg => $val) {
+            if (!isset($valid[$arg])) {
+                die("\n'".$arg."' is not a valid parameter, please check the help\n\n");
+            }
+        }
+    }
     /**
      * Verify required parameters are present and organize the arguments in name=value way instead of as an indexed array
      * 
@@ -270,6 +284,7 @@ HELP;
                     ($section==='required') ? ($valid[$parts[0]] ? "" : die("\n[missing argument: ".str_replace('|',' or ',$parm).'] '.$error_message."\n") ) : "";
                 }
             }
+            self::verifyParameters($args,$options);
             if (isset($options['parameters']['values'])) {
                 self::verifyValues($args,$options['parameters']['values']);
             }

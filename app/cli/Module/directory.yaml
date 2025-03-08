@@ -121,7 +121,7 @@ admin-apps|apps :
         required:
             namespace|ns: You must specify the namespace of the module to install the apps xml
         optional:
-            name|n|ns: The name of the admin app
+            name|n|nm: The name of the admin app
             use|u: The name of the templating engine to use
         values:         
             use|u: Twig,Smarty,Latte,Blade,Savant,TBS,PHP,Phptal,Rain,Mustache

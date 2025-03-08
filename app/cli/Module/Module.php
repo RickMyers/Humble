@@ -250,25 +250,38 @@ class Module extends CLI
     
     public static function apps() {
         $args       = self::arguments();
-        print_r($args); die();
         $ext        = [
             'Twig' => 'twig', 'Smarty' => 'tpl', 'Latte' => 'latte', 'Blade' => 'blade', 'Rain' => 'rain', 'Mustache' => 'mustache', 'Savant' => 'savant', 'PHP' => 'php', 'Phptal' => 'php', 'TBS' => 'tbs'
         ];
         if ($module = \Humble::module($args['namespace'])) {
             $name       = $args['name'] ?? $module['module']." App";
+            $project    = \Environment::project();
             $files      = [
-                "xml"   => "/lib/sample/module/etc/AdminApps.xml",
-                "icon"  => "/lib/sample/module/Images/admin_app_icon.png",
-                "view"  => "/lib/sample/module/Views/admin/app.html"
+                "etc"   => "Code/Framework/Humble/lib/sample/module/etc/AdminApps.xml",
+                "icon"  => "Code/Framework/Humble/lib/sample/module/Images/admin_app_icon.png",
+                "view"  => "Code/Framework/Humble/lib/sample/module/Views/admin/Smarty/app.tpl"
             ];
             $templater   = $args['use']  ?? 'Smarty';
             $name        = $args['name'] ?? 'app';
+            $srch        = ['&&MODULE&&','&&PROJECT&&','&&NAMESPACE&&','&&NAME&&'];
+            $repl        = [$project->module,$project->project_name,$args['namespace'],$name];
+            
+            mkdir("Code/".$module['package'].'/'.$module['views']."/admin/".$templater,0775,true);
+            $controller = "Code/".$module['package'].'/'.$module['controllers'].'/admin.xml';
             $destination = [
-                "xml"   => "Code/".$module['package'].'/'.$module['configuration']."/AdminApps.xml",
-                "icon"  => "Code/".$module['package'].'/'.$module['images']."/",
+                "etc"   => "Code/".$module['package'].'/'.$module['configuration']."/AdminApps.xml",
+                "icon"  => "Code/".$module['package'].'/'.$module['images']."/".$name.'_app_icon.png',
                 "view"  => "Code/".$module['package'].'/'.$module['views']."/admin/".$templater.'/'.$name.'.'.$ext[$templater]
             ];
-            
+            if (file_exists($controller)) {
+                //Going to need to read, then update, then write the controller
+            } else {
+                $source = "Code/Framework/Humble/lib/sample/module/Controllers/admin.xml";
+                file_put_contents("Code/".$module['package'].'/'.$module['controllers']."/admin.xml",str_replace($srch,$repl,file_get_contents($source)));
+            }
+            foreach ($files as $type => $file) {
+                file_put_contents($destination[$type],str_replace($srch,$repl,file_get_contents($file)));
+            }
         }
 
     }
