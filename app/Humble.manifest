@@ -48,6 +48,8 @@ app/HumbleException.php
 app/Log.php
 app/Singleton.php
 app/Trigger.php
+app/RunWrapper.php
+app/humble
 app/Validator.php
 web/*
 app/cli/*

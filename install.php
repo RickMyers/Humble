@@ -31,7 +31,7 @@ function createMainModule($project) {
     print('Creating Main Module'."\n");
     $landing_page   = \Environment::getProject('landing_page');
     $location       = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php`);
-    $cmd            = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module.' prefix='.$project->namespace.'_ '. 'email='.$project->author.' main_module=true';
+    $cmd            = $location.' CLI.php --b namespace='.$project->namespace.' package='.$project->package.' module='.$project->module. ' email='.$project->author.' main_module=true';
     print("\nExecuting: ".$cmd."\n\n");
     $output     = []; $rc = -99;
     exec($cmd,$output,$rc);

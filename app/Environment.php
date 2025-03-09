@@ -647,8 +647,8 @@ class Environment {
      */
     private static function recurse($struct=false,$nodes=false) {
         foreach ($nodes as $field => $node) {
-            $app = isset($struct[$field]) ? $struct[$field] : false;
-            $app = ($app && is_array($node)) ? self::recurse($app,$node) : (isset($app[$node]) ? $app[$node] : false);
+            $app = isset($struct->$field) ? $struct->$field : false;
+            $app = ($app && is_array($node)) ? self::recurse($app,$node) : (isset($app->$node) ? $app->$node : false);
         }
         return $app;
     }
@@ -663,7 +663,7 @@ class Environment {
     public static function getApplication($node=false,$dontUseCache=false) {
         $app = self::loadApplicationMetaData($dontUseCache);
         if ($node) {
-            $app = is_array($node) ? self::recurse($app,$node) : (isset($app[$node]) ? $app[$node] : null);
+            $app = is_array($node) ? self::recurse($app,$node) : (isset($app->$node) ? $app->$node : null);
         }
         return $app;
     }
