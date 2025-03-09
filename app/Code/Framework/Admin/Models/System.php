@@ -136,8 +136,10 @@ class System extends Model
     public function stages() {
         $stages = [];
         $this->xml = $this->xml ? $this->xml : Environment::status(true);
-        foreach (($this->xml['stages'] ?? []) as $stage => $attr) {
-            $order = $attr['@attributes']['order'] ?? '1';
+        foreach (($this->xml->stages ?? []) as $stage => $attr) {
+            $x = (array)$attr;
+            $y = (array)$x['@attributes'];
+            $order = $y['order'] ?? '1';
             $stages[(int)$order] = $stage;
         }
         ksort($stages);
@@ -151,7 +153,7 @@ class System extends Model
      */
     public function state() {
         $this->xml = $this->xml ? $this->xml : Environment::status(true);
-        return (isset($this->xml['state'])) ? $this->xml['state'] : 'DEVELOPMENT';
+        return (isset($this->xml->state)) ? $this->xml->state : 'DEVELOPMENT';
     }
     
     /**

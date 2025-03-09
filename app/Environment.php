@@ -374,7 +374,7 @@ class Environment {
      * Application XML has changed and we need to recache it
      */
     public static function recacheApplication() {
-        self::$application = json_decode(json_encode(self::applicationXML()),true);
+        self::$application = json_decode(json_encode(self::applicationXML()));
         Humble::cache('application',self::$application);        
     }
     /**
