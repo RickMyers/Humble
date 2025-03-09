@@ -52,8 +52,14 @@
             <throttle   required="false"  purpose="" default="" />
         </attributes>        
         <attributes parent="actions">
+            <method     required="false"  purpose="" default="" />
+            <request    required="false"  purpose="" default="" >
+                <values>
+                    <json />
+                </values>
+            </request>
             <audit      required="false"  purpose="" default="" />
-            <name       required="true"  purpose="" default="" />
+            <name       required="true"   purpose="" default="" />
             <blocking   required="false"  purpose="" default="" >
                 <values>
                     <off />
