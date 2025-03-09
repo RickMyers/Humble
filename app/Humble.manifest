@@ -50,6 +50,7 @@ app/Singleton.php
 app/Trigger.php
 app/RunWrapper.php
 app/humble
+app/humble.bat
 app/Validator.php
 web/*
 app/cli/*

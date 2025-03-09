@@ -206,6 +206,8 @@ class System extends CLI
                 file_put_contents($file,$distro->getFromName($file));
             }
             chdir('app');
+            @unlink('humble.bat');
+            @unlink('humble');
             print("Now running update...\n\n");
             require 'cli/Module/Module.php';
             Module::update(['namespace'=>'*']);
@@ -223,14 +225,7 @@ class System extends CLI
      * @param type $version
      */
     protected static function evaluateCoreDifferences($app,$project,$version) {
-        $local_manifest = (file_exists('app/Humble.local.manifest')) ? json_decode(file_get_contents('app/Humble.local.manifest'),true) : ['merge'=>[],'ignore'=>[]];   //Load the manifest that tells us what files to not update
-        if (file_exists('app/Humble.local.manifest')) {
-            print("\n\n".'Found Local Manifest file...'."\n\n");
-        }
-        if (!$local_manifest) {
-            die("\n\nERROR: Could not read Humble.local.manifest.  Check to see it exists or if there is a parsing issue with the file\n\n");
-        }
-
+        $local_manifest = []; //this is a relic of times past... ultimately remove this
         file_put_contents('distro_'.$version.'/humble.zip',file_get_contents($project->framework_url.'/distro/fetch'));                                               //Download the current source base
         $changed    = []; $insertions = []; $source = []; $contents = []; $ignore = []; $merge = []; $matched = 0;
         $distro     = new ZipArchive();
