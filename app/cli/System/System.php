@@ -206,6 +206,7 @@ class System extends CLI
                 file_put_contents($file,$distro->getFromName($file));
             }
             chdir('app');
+            file_put_contents('Code/Framework/Humble/etc/config.xml',file_get_contents('https://humbleprogramming.com/distro/config'));
             @unlink('humble.bat');
             @unlink('humble');
             print("Now running update...\n\n");
@@ -239,9 +240,7 @@ class System extends CLI
         }
         foreach ($contents as $file_idx => $file) {
             print("processing ".$file."\n");
-            if ($file=='app/Code/Framework/Humble/etc/config.xml') {
-                continue;  //don't update this one
-            }
+
             if (file_exists($file)) {
                 if (isset($local_manifest['ignore'][$file]) && $local_manifest['ignore'][$file]) {
                     $ignore[] = $file;
