@@ -43,7 +43,6 @@ class Manager extends Model {
      */
     public function saveComponent() {
         $data    = json_decode($this->getData(),true);
-        Log::console(implode(',',$this->_data));
         $element = Humble::collection('paradigm/elements');
         $element->setId($data['id']);
         $b       = $element->load();

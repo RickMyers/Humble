@@ -13,6 +13,40 @@
     },
     fields:
     [
+        
+{
+            active:		true,
+            id: 		"paradigm-config-io-form-type-&id&",
+            longname:		"I/O Selection",
+            title:		"I/O Selection",
+            type:               "select",
+            required:		true,
+            force:		true,
+            classname:		"",
+            style:		"width: 275px; padding: 2px; border: 1px solid #333; border-radius: 2px"
+        },
+        {
+            active:		true,
+            id: 		"component-&id&",
+            longname:		"Component",
+            title:		"Component",
+            type:               "hidden",
+            required:		true,
+            force:		true,
+            classname:		"",
+            style:		""
+        }, 
+        {
+            active:		true,
+            id: 		"method-&id&",
+            longname:		"Method",
+            title:		"Method",
+            type:               "hidden",
+            required:		false,
+            force:		false,
+            classname:		"",
+            style:		""
+        },                                        
         {
             active:		true,
             id: 		"paradigm-config-io-form-save-&id&",
@@ -24,7 +58,8 @@
             value:              "Save",
             onclick:        function (evt) {
                 if (Edits['io_&id&'].validate()) {
-                    $('#humble-paradigm-config-io-form-&id&').submit();
+                    $('#method-&id&').val($('#paradigm-config-io-form-type-&id&').val());
+                    $('#paradigm-config-io-form-&id&').submit();
                 }
             },
             classname:		"",

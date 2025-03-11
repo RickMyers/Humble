@@ -124,6 +124,7 @@ function DesktopWindow(icon,refId) {
     this.minimizeIcon   = $E(this.id+"-minimize");
     this.closeIcon      = $E(this.id+"-close");
     var splashScreen    = $E(this.id+"-splash");
+    this.titleArea      = $E(this.id+"-titlebar-area");
     this.namespace      = icon.namespace;     //I am a window of what application
     this.appid          = 0;        //numerical instance of an app
     this.state          = 0;        //0 - closed, 1 - minimized, 2 - open, 3 - maximized
@@ -388,6 +389,9 @@ function DesktopWindow(icon,refId) {
                 break;
         }
         return this;
+    }
+    this.inject = (html) =>  {
+        this.titleArea.innerHTML = html;
     }
     return this;
 }

@@ -167,7 +167,6 @@ HDR;
                 $includeBranch = false;  //No need to include the goto since I'm at the start
             case "operation"    :
                 //We have the namespace, method and component set in the operation.tpl configuration page
-                
             default             :
                 if ($includeBranch) {
                     $this->workflow .= $tabs.'Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"));'."\n";

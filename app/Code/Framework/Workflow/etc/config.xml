@@ -71,7 +71,7 @@
                 <notification>Workflow/web/edits/notification.json</notification>
                 <email>Workflow/web/edits/mail.json</email>
                 <trigger>Workflow/web/edits/trigger.json</trigger>
-                <io>Workflow/web/edits/trigger.json</io>
+                <io>Workflow/web/edits/io.json</io>
             </edits>
             <common>
                 <css>Workflow/web/css/compiled.css</css>

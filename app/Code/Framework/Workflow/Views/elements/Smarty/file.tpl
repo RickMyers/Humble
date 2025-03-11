@@ -97,7 +97,6 @@
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
     Form.intercept($('#config-file-trigger-form-{$data.id}').get(),'{$data.id}','/workflow/file/update',"{$window_id}");
-    console.log(Workflows);
     $('#workflow_id_{$data.id}').val(Workflows.activeDiagram());
 </script>
 

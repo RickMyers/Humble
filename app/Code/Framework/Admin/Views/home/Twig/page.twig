@@ -370,7 +370,6 @@
                             {% for module in modules %}
                                 {% set data = directory.moduleInformation(module.namespace) %}
                                 {% set tw_installed = tailwind.check(module.namespace) %}   
-                                {% set tw_running   = tailwind.running(module.namespace) %}
                                 <div class='w-auto text-md inline-block mr-2 border-black border-2'>
                                     <div class='from-gray-50 pt-2 pb-2'>
                                         <div class="float-right mr-1">   
@@ -378,7 +377,7 @@
                                                 <tr>
                                                     {% if data.installed != '' %}
                                                         {% set color = 'white' %}
-                                                        <td class="border-solid"><div class="bg-red-300 border-2 border-black p-1 rounded-full"><img src="/images/admin/tailwind.png" class="cursor-pointer w-[26px] " /></div></td>
+                                                        <td class="border-solid"><div style="opacity: {% if (tw_installed) %}1.0{% else %}.3{% endif %}" class="bg-white border-2 border-black p-1 rounded-full"><img src="/images/admin/tailwind.png" class="cursor-pointer w-[26px] " /></div></td>
                                                         <td class="border-solid"><img onclick='Administration.update("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/update.png' class="cursor-pointer h-7"   title='Update...'/></td>
                                                         <td class="border-solid"><img onclick='Administration.compile("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/compile.png' class="cursor-pointer h-6"  title='Compile Controllers...'/></td>
                                                         <td class="border-solid"><img onclick='Administration.clearcache("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/clearcache.png' class="cursor-pointer h-8" title='Clear Cache...'/></td>
