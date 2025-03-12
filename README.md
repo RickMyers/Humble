@@ -1,3 +1,10 @@
+== Important Note: DO NOT FORK THIS PROJECT. 
+
+This Repository is the repository for [Humble Programming]https://humbleprogramming.com , not
+the Humble Framework.
+
+The guide to installing the Humble Framework is at the bottom of the page ==
+
 # The Humble Project
 
         ____                       ___                 ______    ___ __  _
