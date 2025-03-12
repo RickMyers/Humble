@@ -27,8 +27,8 @@
         $bind       = ((int)$port===80) ? '' : ' *:'.$port;
         $server     = $args['SERVER_NAME'] ?? ($parts[1] ?? 'localhost');
         $cont       = explode('/',$args['landing_page'])[2];
-        $path       = $args['destination_folder']  ?? '';
-        $basedir    = $path;
+        $basedir    = $args['destination_folder']  ?? '';
+        $path       = str_replace('\\','/',$path);
         if (strpos($path,':')!==false) { 
             $parts  = explode(':',$path);
             $path   = $parts[1];    

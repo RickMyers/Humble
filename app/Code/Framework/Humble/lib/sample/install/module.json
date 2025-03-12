@@ -163,6 +163,10 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/public_routes.json"
         },
         {
+            "source": "/lib/sample/install/etc/route_aliases.json",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/route_aliases.json"
+        },            
+        {
             "source": "/lib/sample/install/etc/api_policy.json",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/api_policy.json"
         },
