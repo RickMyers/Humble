@@ -37,8 +37,13 @@ var Functions = (() => {
                                 Colorizer.scan(win.content);
                             }).post();
                         },
-                        save: (file,window_id) => {
-                            alert(file);
+                        save: (window_id) => {
+                            let editor = ace_editors[window_id];
+                            alert(editor.fileSource);
+                            (new EasyAjax('/admin/explorer/save').add('file',editor.fileSource).add('content',editor.getValue())).then((response) => {
+                                alert('Saved?');
+                                console.log(response);
+                            })
                         }
                     },
                     users: {

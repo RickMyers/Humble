@@ -45,7 +45,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
         
-        <action name="edit" passalong="window_id">
+        <action name="edit" passalong="window_id,directory,file">
             <description>Opens a file in browse mode</description>
             <helper namespace="admin" class="file/explorer" id="explorer">
                 <parameter name="directory" source="post" required="true" />
