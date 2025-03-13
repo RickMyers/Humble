@@ -14,23 +14,36 @@
     fields:
     [
         
-{
+        {
             active:		true,
-            id: 		"paradigm-config-io-form-type-&id&",
+            id: 		"io_input_&id&",
+            group:              "io_type",
             longname:		"I/O Selection",
             title:		"I/O Selection",
-            type:               "select",
+            type:               "radio",
             required:		true,
             force:		true,
             classname:		"",
-            style:		"width: 275px; padding: 2px; border: 1px solid #333; border-radius: 2px"
+            style:		""
         },
         {
             active:		true,
-            id: 		"component-&id&",
-            longname:		"Component",
-            title:		"Component",
-            type:               "hidden",
+            id: 		"io_output_&id&",
+            group:              "io_type",
+            longname:		"I/O Selection",
+            title:		"I/O Selection",
+            type:               "radio",
+            required:		true,
+            force:		true,
+            classname:		"",
+            style:		""
+        },
+        {
+            active:		true,
+            id: 		"input_field_&id&",
+            longname:		"Input Field",
+            title:		"Event Input Field",
+            type:               "text",
             required:		true,
             force:		true,
             classname:		"",
@@ -38,15 +51,37 @@
         }, 
         {
             active:		true,
-            id: 		"method-&id&",
-            longname:		"Method",
-            title:		"Method",
-            type:               "hidden",
-            required:		false,
-            force:		false,
+            id: 		"input_source_&id&",
+            longname:		"Input Directory",
+            title:		"Directory",
+            type:               "text",
+            required:		true,
+            force:		true,
             classname:		"",
             style:		""
-        },                                        
+        },  
+        {
+            active:		true,
+            id: 		"output_field_&id&",
+            longname:		"Output Field",
+            title:		"Event Input Field",
+            type:               "text",
+            required:		true,
+            force:		true,
+            classname:		"",
+            style:		""
+        }, 
+        {
+            active:		true,
+            id: 		"output_target_&id&",
+            longname:		"Output Directory",
+            title:		"Directory",
+            type:               "text",
+            required:		true,
+            force:		true,
+            classname:		"",
+            style:		""
+        },                            
         {
             active:		true,
             id: 		"paradigm-config-io-form-save-&id&",

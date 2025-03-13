@@ -24,7 +24,8 @@ class Manager extends Model
 {
 
     private $configs     = [
-        'webservice' => true
+        'webservice' => true,
+        'input' => true
     ];
     public function __construct()    {
         parent::__construct();

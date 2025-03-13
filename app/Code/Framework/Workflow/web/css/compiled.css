@@ -608,6 +608,10 @@ video {
   resize: both;
 }
 
+.rounded-sm {
+  border-radius: 0.125rem;
+}
+
 .border {
   border-width: 1px;
 }

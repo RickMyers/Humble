@@ -89,7 +89,8 @@ HDR;
             'system'    => true,
             'trigger'   => true,
             'external'  => true,
-            'file'      => true
+            'file'      => true,
+            'input'     => true
         ];
         if (!isset($exclude[$node['element']])) {
             if ( !($node['configuration'] ?? false) || !($node['configuration']['namespace'] ?? false) || !($node['configuration']['method'] ?? false) || !($node['configuration']['component'] ?? false)) {
@@ -122,6 +123,15 @@ HDR;
                     }
                 }
                 break;   
+            case "input":                
+                $this->workflow .= $tabs.'Humble::model("workflow/io")->process(Event::set($EVENT,"'.$node['id'].'"));'."\n";
+                foreach ($node['connectors'] as $direction) {
+                    if (isset($direction['begin']) && (isset($direction['begin']['from'])) && (isset($direction['begin']['from']['id']))) {
+                        $this->workflow .= $tabs."goto label_".$direction['begin']['to']['id'].";\n";
+                        $this->traverse($this->components[$direction['begin']['to']['id']]);
+                    }
+                }                
+                break;
             case "file" :
                 //do i really need to do anything?
                 //yes, log the filename
