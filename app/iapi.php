@@ -21,9 +21,9 @@ function triggerWorkflow($EVENT,$workflow) {
     }
 }
 //this function obtained from PHPPro blog.                                      */
-function underscoreToCamelCase( $string, $first_char_caps = false) {
+/*function underscoreToCamelCase( $string, $first_char_caps = false) {
     return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
-}
+}*/
 /*
  * Dumps anything that any stages appended to the response
  */
@@ -112,17 +112,23 @@ function createWorkflowEvent($criteria) {
     return $EVENT;
 }
 //##############################################################################
+require_once('Humble.php');
+require_once('Environment.php');
 ob_start();
+$project        = \Environment::project();
+
+
 $session_expire = 300;                  //Expire the session after five minutes#
 $workflowRC     = false;
 $cancelBubble   = false;
+if (file_exists('Code/'.$project->package.'/'.$project->module.'/etc/Constants.php')) {
+    require_once('Code/'.$project->package.'/'.$project->module.'/etc/Constants.php');
+}
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, PUT');
 header('Access-Control-Allow-Headers: HTTP_X_REQUESTED_WITH');
 
-require_once('Humble.php');
-require_once('Constants.php');
 $request_method  = strtolower($_SERVER['REQUEST_METHOD']);
 $error           = false;
 $results         = false;
@@ -173,7 +179,7 @@ try {
                             }
                             break;
                         case 'session':
-                            if ($sessionId = (isset($_POST['sessionId']) ? $_POST['sessionId'] : false)) {
+                            if ($sessionId = (($_POST['sessionId'] ?? $_POST['session_id'])) ?? false) {
                                 session_id($sessionId);
                                 session_start();
                                 header('Content-Type: application/json');
