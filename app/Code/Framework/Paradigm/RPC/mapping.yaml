@@ -48,7 +48,7 @@ externalConfiguration  :
   blocking        : false
   arguments       : [namespace,id,window_id,data,component,method]
 exceptionConfiguration  :
-  url             : /workflow/exception/configure
+  url             : /workflow/elements/exception
   api-key         :
   api-var         :
   secure          : true

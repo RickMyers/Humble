@@ -246,6 +246,9 @@
                 <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
+            <entity namespace="humble" class="modules" id="modules">
+                <parameter name="enabled" source="request" default="Y" />
+            </entity>
             <mongo namespace="paradigm" class="elements" id="component">
                 <parameter name='id' source='post' required='true' default='' />
             </mongo>
