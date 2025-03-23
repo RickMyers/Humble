@@ -66,6 +66,12 @@
                     "watchRouteAliases": true
                 },
                 "multiple": 3
+            },
+            "events": {
+                "callbacks": {
+                    "timedEvents": false
+                },
+                "multiple": 2
             }
         }           
     }

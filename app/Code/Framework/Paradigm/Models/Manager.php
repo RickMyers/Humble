@@ -25,8 +25,10 @@ class Manager extends Model
 
     private $configs     = [
         'webservice' => true,
-        'input' => true
+        'input' => true,
+        'system' => true
     ];
+    
     public function __construct()    {
         parent::__construct();
     }
@@ -69,9 +71,6 @@ class Manager extends Model
         return $id;
     }
 
-    private function specialRoutes($element=[]) {
-        
-    }
     /**
      * Gets the configuration screen and also any pre-configured data
      *
@@ -117,7 +116,6 @@ class Manager extends Model
                 $this->setData($data);
                 $this->setElement($element);
             }
-            //$data = $this->specialRoutes($data);
             if (isset($data['configuration']) && $data['configuration']) {
                     $configURL = $data['configuration'];
                     $configURL = (substr($configURL,0,1)=='/') ? $configURL : '/'.$configURL;
@@ -162,7 +160,7 @@ class Manager extends Model
                      $service    = Humble::entity('paradigm/webservices');
                      $service->setWebserviceId($data['_id'])->load(true);
                      if ($service->getUri() && $service->getId()) {
-                        Humble::entity('paradigm/webservice_workflows')->setWebserviceId($service->getId())->delete(true);
+                        Humble::entity('paradigm/webservice/workflows')->setWebserviceId($service->getId())->delete(true);
                         $service->delete();
                      }
                     break;

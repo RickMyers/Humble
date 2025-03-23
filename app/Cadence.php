@@ -215,6 +215,9 @@ function scanModelsForChanges() {
         $first_time['models'] = false;
     }
 }
+function timedEvents() {
+    
+}
 //------------------------------------------------------------------------------
 function watchApplicationXML() {
     global $systemfiles;

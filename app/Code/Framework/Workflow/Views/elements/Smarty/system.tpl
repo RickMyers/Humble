@@ -42,7 +42,6 @@
                 <input type="hidden" id="humble-paradigm-config-system-event-form-id-{$id}" name="id" value="{$id}" />
                 <input type="hidden" name="workflow_id" id="workflow_id-{$id}" value="" />
                 <input type="hidden" name="window_id" id="window_id-{$id}" value="{$window_id}" />
-                <input type="hidden" name="window_id" id="window_id-{$id}" value="{$window_id}" />
                 <input type="hidden" id="event_date-{$id}" name="event_date" value="{if (isset($data.event_date))}{$data.event_date}{/if}" />
                 <input type="hidden" id="event_time-{$id}" name="event_time" value="{if (isset($data.event_time))}{$data.event_time}{/if}" />
                 <div class='form-field-description'>Date and Time to launch workflow</div><br />
@@ -110,6 +109,10 @@
                 timePicker.appendChild(opt);                
             }
         }
+        let g = (evt) => {
+            $('#event_time-{$id}').val($(evt.target).val());
+        }
+        $(timePicker).on('change',g);
         y.set(now.getMonth(),now.getFullYear());
         var f = function (mm,dd,yyyy) {
             mm++;
