@@ -27,15 +27,20 @@ ob_start();                                                                     
 chdir('app');                                                                   //This is the root directory of the application
 require_once('Humble.php');                                                     //This is the engine of the whole system
 
+$namespace              = ($_GET['humble_framework_namespace']  ?? false);
+$namespace              = $namespace ?: \Environment::namespace();
+$controller             = $_GET['humble_framework_controller']  ?? false;
+$action                 = $_GET['humble_framework_action']      ?? false;
+if (!($namespace && $controller && $action)) {
+    die();
+}
+
 //###########################################################################
 //Scrubba-dub-dub
 foreach ($_GET as $var => $val) {
     $_REQUEST[$var] = $_GET[$var] = htmlspecialchars($val,ENT_QUOTES);
 }
 $mappings               = [];
-$namespace              = ($_GET['humble_framework_namespace'] === 'default') ? \Environment::namespace() : $_GET['humble_framework_namespace'];
-$controller             = $_GET['humble_framework_controller'];
-$action                 = $_GET['humble_framework_action'];
 if (strpos($action,'/')!==false) {
     $mappings = explode('/',$action);
     $action   = array_shift($mappings);
