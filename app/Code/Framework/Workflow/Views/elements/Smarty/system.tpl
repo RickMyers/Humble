@@ -49,6 +49,18 @@
                 <select name="event_time_picker" id="event_time_picker-{$id}" style="margin-left: 4px; padding: 4px; font-size: 1.4em">
                 </select>
                 <div style="clear: both; margin-top: 10px;"><br /></div>
+                <div style="padding-bottom: 20px">
+                    <div style="width: 48%; display: inline-block">
+                        Date:
+                        <span id="event_date_display_{$id}">{if (isset($data.event_date))}{$data.event_date}{/if}
+                        </span>
+                    </div>
+                    <div style="width: 48%; display: inline-block">
+                    Time:
+                    <span id="event_time_display_{$id}">{if (isset($data.event_time))}{$data.event_time}{/if}</span>
+                    </div>
+                    
+                </div>
                 <input type="checkbox" value='Y' {if (isset($data.recurring_flag))} {if ($data.recurring_flag == 'Y')}checked{/if}{/if} name="recurring_flag" id="event_recurring_flag-{$id}" /> Repeatable Event
                 <input style='margin-left: 40px' type="checkbox" value='Y' {if (isset($data.active_flag))} {if ($data.active_flag == 'Y')}checked{/if}{/if} name="active_flag" id="event_active_flag-{$id}" /> Activate <br /><br />
                 <select name="period" id="recurring_event_period-{$id}">
@@ -111,24 +123,33 @@
         }
         let g = (evt) => {
             $('#event_time-{$id}').val($(evt.target).val());
+            $('#event_time_display_{$id}').html($(evt.target).val());
         }
         $(timePicker).on('change',g);
+        {if (isset($data.event_time))}
+        $(timePicker).val('{$data.event_time}');
+        {/if}
         y.set(now.getMonth(),now.getFullYear());
+        {if (isset($data.event_date))}
+            let cell = y.getCellRef('{$data.event_date}');
+            cell.css('background-color','#333').css('color','white')
+        {/if}        
         var f = function (mm,dd,yyyy) {
             mm++;
-            this.clear();
+            this.reset();
+            mm = (mm<10) ? '0'+mm : mm;
             $('#event_date-{$id}').val(yyyy+'-'+mm+'-'+dd);
-            $('#'+this.xref['d_'+yyyy+mm+dd]).css('background-color','red');
+            $('#'+this.xref['d_'+yyyy+mm+dd]).css('background-color','#333').css('color','white');
+            $('#event_date_display_{$id}').html(yyyy+'-'+mm+'-'+dd);
         }
         y.setDayHandler(f);
         y.onMonthChange = (calendar) => {
             if ($('#event_date-{$id}').val()) {
                 var dates = $('#event_date-{$id}').val().split('-');
                 if ((dates[1]-1 == calendar.thisMonth) && (dates[0]== calendar.thisYear)) {
-                    $('#'+calendar.xref['d_'+dates[0]+(dates[1])+dates[2]]).css('background-color','red');
+                    $('#'+calendar.xref['d_'+dates[0]+(dates[1])+dates[2]]).css('background-color','#333').css('color','white');
                 }
             }
         };
-         
     })(window_id);
 </script>

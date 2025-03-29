@@ -11,7 +11,7 @@
     </actions>        
     <action>
         <comment />
-        <description />
+        <description required="true" />
         <model />
         <helper />
         <entity />

@@ -80,7 +80,10 @@ function EasyCalendar (div_id){
         $E(me.id+"monthName").innerHTML = me.month[parseInt(mm)]+" "+yyyy;
         do {
             var cd = $E(me.id+"c"+(startDay+(dayCounter-1)));
-            this.original[cd.id] = $('#'+cd.id).css('background-color');
+            this.original[cd.id] = {
+                "background-color": $('#'+cd.id).css('background-color'),
+                "color": $('#'+cd.id).css('color')
+            };
             cd.innerHTML = dayCounter;
             cd.title = '';
             var isoDay = "d_"+yyyy+""+(((mm+1)<10) ? "0" + +(mm+1) : (mm+1))+""+((dayCounter<10) ? "0"+dayCounter : dayCounter);
@@ -96,7 +99,20 @@ function EasyCalendar (div_id){
     this.clear		= function ()	{
         for (var i=0; i<41; i++) {
             var cell = $E(me.id+"c"+i);
-            cell.style.backgroundColor = this.original[cell.id];
+            if (this.original[cell.id]) {
+                cell.innerHTML = '';
+            }
+        }
+        return this;
+    }
+    this.reset          = function () {
+        for (var i=0; i<41; i++) {
+            var cell = $E(me.id+"c"+i);
+            if (this.original[cell.id]) {
+                cell.style.backgroundColor = this.original[cell.id]['background-color'];
+                cell.style.color = this.original[cell.id]['color'];
+
+            }
         }
         return this;
     }
@@ -111,12 +127,12 @@ function EasyCalendar (div_id){
     this.getYear = function () {
         return this.thisYear;
     }
-    this.toggleDay = function (bold) {
-        var now = new Date();
-        var yyyy = now.getFullYear();
-        var mm	= now.getMonth();
-        var dd = now.getDate();
-        var today = "d_"+yyyy + "" + (((mm+1)<10) ? "0"+(mm+1) : (mm+1)) + "" + ((dd<10) ? "0"+dd : dd);
+    this.toggleDay  = function (bold) {
+        var now     = new Date();
+        var yyyy    = now.getFullYear();
+        var mm      = now.getMonth();
+        var dd      = now.getDate();
+        var today   = "d_"+yyyy + "" + (((mm+1)<10) ? "0"+(mm+1) : (mm+1)) + "" + ((dd<10) ? "0"+dd : dd);
         if (me.xref[today]) {
             $E(me.xref[today]).style.fontWeight = bold;
             $E(me.xref[today]).style.backgroundColor = "rgba(240,240,240,.3)";
@@ -138,6 +154,10 @@ function EasyCalendar (div_id){
         this.monthname = classname;
         return this;
     }
+    this.getCellRef = (date) => {
+        let dt = date.split('-');
+        return $('#'+this.xref['d_'+dt[0]+dt[1]+dt[2]]);
+    }
     this.onMonthChange = null;
     EasyCalendars[this.id] = me;
     return this;
@@ -150,7 +170,7 @@ EasyCalendar.prototype.next	= function (id) {
         calendar.thisYear++;
         calendar.thisMonth = 0;
     }
-    calendar.clear();
+    calendar.reset().clear();
     calendar.set(calendar.thisMonth, calendar.thisYear);
     if (calendar.onMonthChange)	{
         calendar.onMonthChange(calendar);
@@ -165,7 +185,7 @@ EasyCalendar.prototype.back	= function (id) {
         calendar.thisYear--;
         calendar.thisMonth = 11;
     }
-    calendar.clear();
+    calendar.reset().clear();
     calendar.set(calendar.thisMonth, calendar.thisYear);
     if (calendar.onMonthChange)	{
         calendar.onMonthChange(calendar);
