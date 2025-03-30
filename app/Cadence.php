@@ -12,7 +12,6 @@ Let's just do something every so often...
 
 require_once "Humble.php";
 
-
 $started                    = time();                                           //The time used in all offset calculations
 $pid                        = getmypid();                                       //My process ID
 $first_time                 = [
@@ -31,6 +30,7 @@ $systemfiles                = [];                                               
 $images                     = [];                                               //These are images contained in the image folder
 $modules                    = Humble::entity('humble/modules')->setEnabled('Y')->fetch();
 $system                     = Humble::entity('admin/system/monitor');
+$job_queue                  = Humble::entity('paradigm/job/queue');
 $monitor                    = \Environment::getMonitor();                       //System monitor for checking on performance
 $updater                    = \Environment::getUpdater();                       //Singleton reference to the module updater
 $installer                  = \Environment::getInstaller();                     //Singleton reference to the module installer
@@ -215,8 +215,60 @@ function scanModelsForChanges() {
         $first_time['models'] = false;
     }
 }
+//------------------------------------------------------------------------------
 function timedEvents() {
-    
+    if (file_exists('PIDS/scheduler.pid')) {
+        logMessage('Scheduler may already be running so skipping'."\n");
+        return;
+    }
+    file_put_contents('PIDS/scheduler.pid',getmypid()); 
+    $now             = strtotime(date('Y-m-d H:i:s'));
+    $job_queue       = Humble::entity('paradigm/job/queue');
+    $event_queue     = Humble::entity('paradigm/system/events');
+    $events          = $event_queue->setActive('Y')->fetch();
+    foreach ($events as $event) {
+        //if your next execution cycle is within 5 minutes and you haven't been run in the last 10 minutes, you will be queued for execution
+        if ((int)$event['period'] == $event['period']) {
+            if ((!$event['last_queued']) || ($now - strtotime($event['last_queued']) >= 120)) {  //there is definitely some cheese here
+                $med = $now - strtotime($event['event_start']);             //This is the time since the event was initially run
+                $off = ($med % $event['period']);                           //This is the remainder if you divide that time by the event period
+                $int = ($event['period'] - $off) ;                          //And this subtracts the value to see if we are almost at the period where we need to run it again
+                print('Med: '.$med.' Offset: '.$off.' Int: '.$int."\n");
+                @unlink('PIDS/cadence.pid');
+                if (($int <= 60) || ($med < (int)$event['period'])) {      //If the next interval is within 1 minutes 
+                    $event_queue->reset()->setLastQueued(date('Y-m-d H:i:s'))->setId($event['id'])->save();
+                    $queued = $job_queue->reset()->setSystemEventId($event['id'])->setStatus(NEW_EVENT_JOB)->load(true);
+                    if (!$queued) {
+                        //Don't queue it up if there's one run there already
+                        $job_queue->reset()->setSystemEventId($event['id'])->setQueued(date('Y-m-d H:i:s',$now))->save();
+                    }
+                } 
+            }
+        }
+    }
+    @unlink('PIDS/scheduler.pid');
+    return true;   
+}
+//------------------------------------------------------------------------------
+function launchWorkflows() {
+    global $windows,$job_queue;
+    logMessage('Checking for launching workflows');
+    $jobs   = $job_queue->statusIn([NEW_FILE_JOB,NEW_EVENT_JOB])->fetch();
+
+    foreach ($jobs as $job) {
+        $launcher = ($job['status'] === NEW_FILE_JOB) ? 'filelaunch.php' : 'launch.php';
+        //$cmd = 'php launch.php '.$job['id']." > ../SDSF/job_".$job['id'].".txt 2>&1";
+        $cmd = str_replace(["\r","\n"],["",""],Environment::PHPLocation()).' '.$launcher.' '.$job['id'];
+        
+        logMessage('------> Running Command: '.$cmd);
+        if ($windows) {
+//            pclose(popen("start ".$cmd,"r"));
+        } else {
+            exec('/usr/bin/nohup '.$cmd.' 2>&1 &');
+        }
+    }
+    die();
+    return true;    
 }
 //------------------------------------------------------------------------------
 function watchApplicationXML() {
@@ -422,7 +474,6 @@ if (file_exists('PIDS/cadence.pid') && ($running_pid = trim(file_get_contents('P
 } 
 file_put_contents('PIDS/cadence.pid',$pid);                                     //alright, let's record your process number
 
-
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //Check for configuration file, which configures how period for the cadence, and when to do which checks...
 //
@@ -434,7 +485,6 @@ if (file_exists($config) || file_exists($framework)) {
 if ($cadence) {
     logMessage("Starting Cadence...");
     while (file_exists('PIDS/cadence.pid') && ((int)file_get_contents('PIDS/cadence.pid')===$pid)) {
-        sleep($cadence['period']);
         logMessage('Waking...');
         $duration       = time();
         if (file_exists('cadence.cmd') && ($cmds = json_decode(file_get_contents('cadence.cmd')))) {
@@ -445,13 +495,13 @@ if ($cadence) {
         foreach ($handlers as $component => $handler) {
             if (($cadence_ctr % $cadence['period']) == 0) {
                 $start  = time();
-                logMessage("Processing ".ucfirst($component)." Now...");
                 foreach ($handler['callbacks'] as $callback => $status) {
                     if ($status === true) {
+                        logMessage("Processing ".ucfirst($component)." Now...");
                         $callback();
+                        logMessage(ucfirst($component)." Processing took ".($start - time())." seconds");
                     }
                 }
-                logMessage(ucfirst($component)." Processing took ".($start - time())." seconds");                
             }
         }
         if ((++$cadence_ctr > 500)) {
@@ -459,9 +509,10 @@ if ($cadence) {
             $started        = time();
             $cadence_ctr    = 0;
         }
-        
+
         logMessage('This run took '.date('s',time()-$duration).' seconds');
         logMessage('Sleeping for '.$cadence['period'].' seconds');
+        sleep($cadence['period']);        
     }
     @unlink('PIDS/cadence.pid');
     die("\n\nAborting due to PID file being deleted or PID changed...\n\n");

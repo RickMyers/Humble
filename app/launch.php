@@ -14,9 +14,10 @@
  *
  */
 
-$project = \Environment::getProject();
 require "Humble.php";
+require "Environment.php";
 require "Code/Framework/Humble/includes/Constants.php";
+$project = \Environment::getProject();
 if (file_exists($custom = 'Code/'.$project->package.'/'.$project->module.'/includes/Custom.php')) {
     require $custom;
 }
@@ -67,7 +68,7 @@ if ($workflow) {
     $job->setStatus(JOB_FAILED);
     $rc = 8;
 }
-
+print("Launcher finished at ".date("H:i:s")."\n");
 file_put_contents('../SDSF/job_'.$job_id.'.txt',ob_get_clean());
 $job->setFinished(date('Y-m-d H:i:s'))->save();
 exit($rc);

@@ -84,12 +84,12 @@ class System extends Model
     public function runScheduler() {
         //@TODO: Think about setting a sticky bit that flags the scheduler as running, so we don't launch this thing more than once
         if (file_exists('PIDS/scheduler.pid')) {
-            die('Scheduler may already be running so skipping'."\n");
+            print('Scheduler may already be running so skipping'."\n");
+            return;
         }
         file_put_contents('PIDS/scheduler.pid',getmypid()); 
         $now             = strtotime(date('Y-m-d H:i:s'));
         $job_queue       = Humble::entity('paradigm/job/queue');
-        $schedule_log    = Humble::entity('paradigm/scheduler/log');   
         $schedule_id     = $schedule_log->setStarted(\date('Y-m-d H:i:s'))->save();    //Let's record when you started
         foreach (Humble::entity('paradigm/system/events')->setActive('Y')->fetch() as $event) {
             //if your next execution cycle is within 5 minutes and you haven't been run in the last 10 minutes, you will be queued for execution

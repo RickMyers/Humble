@@ -69,7 +69,8 @@
             },
             "events": {
                 "callbacks": {
-                    "timedEvents": false
+                    "timedEvents": true,
+                    "launchWorkflows": true
                 },
                 "multiple": 2
             }

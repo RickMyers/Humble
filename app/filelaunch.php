@@ -1,5 +1,6 @@
 <?php
 /**
+ * File...
  __    __           _     __ _
 / / /\ \ \___  _ __| | __/ _| | _____      __
 \ \/  \/ / _ \| '__| |/ / |_| |/ _ \ \ /\ / /
@@ -39,7 +40,7 @@ $job->reset()->setId($job_id)->load();                                          
 $workflow_data  = Humble::entity('paradigm/workflows')->setId($job->getWorkflowId())->load();
 $workflow       = ($workflow_data && isset($workflow_data['workflow_id']) && $workflow_data['workflow_id']) ? $workflow_data['workflow_id'] : false;
 $filename       = $job->getFilename();
-$action         = $job->getFileAction()??'new';
+$action         = $job->getFileAction() ?? 'new';
 if ($workflow && $job->getFilename()) {
     if (file_exists('Workflows/'.$workflow.".php")) {
         print('Executing Workflow: '.$workflow."\n");
