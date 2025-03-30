@@ -153,6 +153,7 @@ DROP TABLE IF EXISTS `paradigm_job_queue`;
 CREATE TABLE `paradigm_job_queue` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `system_event_id` int(11) DEFAULT NULL,
+  `workflow_id` int(11) DEFAULT NULL,
   `queued` datetime DEFAULT NULL,
   `started` datetime DEFAULT NULL,
   `pid` int(11) DEFAULT NULL,
@@ -189,6 +190,7 @@ CREATE TABLE `paradigm_system_events` (
   `event_start` datetime DEFAULT NULL,
   `recurring` char(1) DEFAULT 'N',
   `period` char(32) DEFAULT '0',
+  `last_queued` datetime DEFAULT NULL,
   `last_run` datetime DEFAULT NULL,
   `active` char(1) DEFAULT 'N',
   `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
