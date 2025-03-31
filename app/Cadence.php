@@ -11,6 +11,7 @@ Let's just do something every so often...
  */
 
 require_once "Humble.php";
+require_once('Code/Framework/Humble/includes/Constants.php');
 
 $started                    = time();                                           //The time used in all offset calculations
 $pid                        = getmypid();                                       //My process ID
@@ -42,12 +43,15 @@ $constants                  = 'Code/'.$project->package.'/'.$project->module.'/i
 $framework                  = 'Code/Framework/Humble/etc/cadence.json';
 $windows                    = (PHP_OS_FAMILY === "Windows");
 
+//------------------------------------------------------------------------------
+//Load custom constants, if any
+//------------------------------------------------------------------------------
 if (file_exists($constants)) {
     require_once($constants);
 }
 
 //------------------------------------------------------------------------------
-//Load custom callbacks if any
+//Load custom callbacks, if any
 //------------------------------------------------------------------------------
 if (file_exists($callbacks)) {
     require_once($callbacks);
