@@ -17,4 +17,4 @@ require "&&FACTORY&&.php";
 require "Environment.php";
 require "Log.php";
 require "Code/Framework/Humble/includes/Constants.php";
-require "Code/&&PACKAGEG&&/&&MODULE&&/includes/Custom.php";
+require "Code/&&PACKAGE&&/&&MODULE&&/includes/Custom.php";
