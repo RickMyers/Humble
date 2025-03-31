@@ -113,13 +113,15 @@
     })();
     $(document).ready(Main.prime());
 </script>
-<div style="text-align: center">
-
+<div style="display: flex; flex-align: column;  justify-content: space-between; margin-bottom: 10px">
+    <div style="font-size: 1.1em; display: inline-block; vertical-align: top; margin-left: 10px">
+        A <a style="color: blue" target="_BLANK" href="/pages/VideoSeries.htmls">Video Series</a> Is In The Works!
+    </div>    
     <div style="display: inline-block; border: 1px double #333; padding: 0px 20px">
         Version: <!--#include virtual="/version.php" -->
     </div>
-    <div style="font-size: 1.1em; display: inline-block; vertical-align: top;  margin-left: 30px">
-        A <a style="color: blue" target="_BLANK" href="/pages/VideoSeries.htmls">Video Series</a> Is In The Works!
+    <div style="font-size: 1.1em; display: inline-block; vertical-align: top; margin-right: 10px">
+        Feature Video: <a style="color: blue" target="_BLANK" href="/pages/VideoSeries.htmls">Building An App With Humble</a> 
     </div>    
 </div>
 <div style=" font-size: 2em; font-family: sans-serif; font-weight: bold; color: rgba(50,50,50,.8)">
