@@ -28,7 +28,7 @@ chdir('app');                                                                   
 require_once('Humble.php');                                                     //This is the engine of the whole system
 
 $namespace              = ($_GET['humble_framework_namespace']  ?? false);
-$namespace              = $namespace ?: \Environment::namespace();
+$namespace              = (!$namespace || ($namespace==='default')) ? \Environment::namespace() : $namespace;
 $controller             = $_GET['humble_framework_controller']  ?? false;
 $action                 = $_GET['humble_framework_action']      ?? false;
 if (!($namespace && $controller && $action)) {
