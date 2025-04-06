@@ -77,6 +77,10 @@
        "/blog/whatsnew/home": {
            "reason":   "No need to log in to see the whats new section",
            "description": "Shows recent changes to product and site"
+       },
+       "/humble/labs/apps": {
+           "reason":   "Gets list of sample apps from the labs",
+           "description": "Labs EasyDesktop apps list"
        }
        
     }
