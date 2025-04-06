@@ -72,6 +72,8 @@
                 <email>Workflow/web/edits/mail.json</email>
                 <trigger>Workflow/web/edits/trigger.json</trigger>
                 <io>Workflow/web/edits/io.json</io>
+                <exception>Workflow/web/edits/exception.json</exception>
+                <adhocexception>Workflow/web/edits/adhocexception.json</adhocexception>
             </edits>
             <common>
                 <css>Workflow/web/css/compiled.css</css>

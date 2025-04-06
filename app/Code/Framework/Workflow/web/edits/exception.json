@@ -1,0 +1,74 @@
+({
+    form:
+    {
+        id: 		"module-exception-form-&id&",
+        drawme:		false,
+        action:		"",
+        onload:     function () {
+            var id = '&id&';
+        },
+        method:		"post",
+        style:		"",
+        onenterkey:	"send"
+    },
+    fields:
+    [
+        {
+                active:			true,
+                id: 			"module-&id&",
+                longname:		"Module",
+                title:			"Choose a module",
+                onchange:       function (evt) {
+                    if (evt.target.value) {
+                        (new EasyAjax('/workflow/component/objects')).add('namespace',evt.target.value).then((response) => {
+                            EasyEdits.populateSelectBox($E('exception-&id&'),eval(response));
+                        }).post();
+                    } 
+                },
+                type:                   "select",
+                required:		true,
+                force:			true,
+                classname:		"",
+                style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+            },
+            {
+                active:			true,
+                id: 			"exception-&id&",
+                longname:		"Exception",
+                title:			"Exception to throw",
+                type:                   "select",
+                required:		true,
+                force:			true,
+                classname:		"",
+                style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+            },
+            {
+                active:			true,
+                id: 			"exception_rc-&id&",
+                longname:		"Return Code",
+                title:			"Return Code To Set",
+                type:                   "text",
+                required:		true,
+                force:			true,
+                classname:		"",
+                style:			"border-radius: 3px; padding: 3px; width: 60px; border: 1px solid #aaf"
+            },
+            {
+                active:			true,
+                id: 			"exception_form_save-&id&",
+                longname:		"Configure Save",
+                title:			"Press to initially establish this workflow component",
+                type:                   "button",
+                required:		false,
+                force:			false,
+                value:                  "Save",
+                onclick:        function (evt) {
+                    if (Edits['exception-&id&'].validate()) {
+                        $('#module-exception-form-&id&').submit();
+                    }
+                },
+                classname:		"settingsButton",
+                style:			"font-size: 1em; padding: 2px 5px"
+            }
+    ]
+})

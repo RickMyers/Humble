@@ -26,7 +26,8 @@ class Manager extends Model
     private $configs     = [
         'webservice' => true,
         'input' => true,
-        'system' => true
+        'system' => true,
+        'exception' => true
     ];
     
     public function __construct()    {

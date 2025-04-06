@@ -246,7 +246,7 @@
                 <parameter name='window_id' source='post' required='true' default='' />
                 <parameter name='id' source='post' required='true' default='' />
             </model>
-            <entity namespace="humble" class="modules" id="modules">
+            <entity namespace="humble" class="modules" id="modules" orderby="module=ASC">
                 <parameter name="enabled" source="request" default="Y" />
             </entity>
             <mongo namespace="paradigm" class="elements" id="component">

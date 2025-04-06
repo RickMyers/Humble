@@ -112,7 +112,10 @@ function secureCheck($file=[]) {
             break;
         case 'edits' :
             header('Content-Type: application/json');
-            $data = $orm->setNamespace($_GET['n'])->setForm($_GET['f'])->load(true);
+            if (!$data = $orm->setNamespace($_GET['n'])->setForm($_GET['f'])->load(true)) {
+                header("Location: /404");
+                die();  //no form was found
+            };
             $module = \Humble::module($_GET['n']);
             if ($module && secureCheck($data)) {
                 $file = 'Code/'.$module['package'].'/'.$orm->getSource();
