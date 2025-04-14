@@ -84,7 +84,9 @@ class Tailwind extends Model
      */
     public function check($namespace=false):bool {
         $installed = false;
-        if ($module = $this->modules[$namespace = ($namespace ? $namespace : $this->getNamespace())]) {
+        $namespace = ($namespace ? $namespace : $this->getNamespace());
+        if (isset($this->modules[$namespace])) {
+            $module = $this->modules[$namespace];
             $installed = (file_exists('Code/'.$module['package'].'/'.$module['module'].'/web/tailwind/package.json'));
         }
         

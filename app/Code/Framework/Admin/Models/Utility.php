@@ -180,7 +180,7 @@ class Utility extends Model
         $user   = Humble::entity('admin/users');
         $user->setId($this->getUid())->load();
         $data   = Humble::entity('admin/user/identification')->setId($this->getUid())->load();
-        $cmd    = Environment::PHPLocation().' CLI.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' prefix='.$this->getNamespace().'_ author="'.$data['first_name'].' '.$data['last_name'].'"';
+        $cmd    = Environment::PHPLocation().' CLI.php --b email='.$user->getEmail().' package='.$this->getPackage().' namespace='.$this->getNamespace().' module='.ucfirst($this->getModule()).' author="'.$data['first_name'].' '.$data['last_name'].'"';
         $cmd    = str_replace(["\r","\n"],['',''],$cmd);
         file_put_contents('cmd.txt',$cmd);
         \Log::general("I am going to create a module by executing the following command:\n\n".$cmd);
