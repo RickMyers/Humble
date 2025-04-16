@@ -8,7 +8,6 @@
     <tr>
         <td valign='middle'>
             <form name='process-form' id='humble-paradigm-config-process-form-{$manager->getId()}' onsubmit='return false'>
-            <input type="hidden" name="window_id" id="window-id-{$manager->getId()}" value="{$manager->getWindowId()}" />
             <input type="hidden" name="id" id="element-id-{$manager->getId()}" value="{$manager->getId()}" />
             <div style='margin-left: auto; margin-right: auto; width: 545px; font-size: 2em; font-family: sans-serif; color: #333; border-bottom: 1px solid #777; margin-bottom: 6px'>
                 Initial Component Configuration
@@ -36,10 +35,11 @@
                     </select>
                     </div>
                     <div class='form-field-description'>Available Process Objects</div>
-                    <div style='white-space: nowrap'>
+                    <div style='white-space: nowrap; position: relative'>
                         <select name='method' id='humble-paradigm-config-process-form-method-{$manager->getId()}'>
                             <option value=''>Please choose from this list</option>
-                        </select><img id='view_code-{$manager->getId()}' src='/images/workflow/view_code.png' title='View Code' style='height: 22px; position: relative; top:6px; margin-right: 4px; cursor: pointer; visibility: hidden' />
+                        </select><input type="text" name="humble-paradigm-config-process-form-method-{$manager->getId()}_combo" id="humble-paradigm-config-process-form-method-{$manager->getId()}_combo" value="" />
+                              <img id='view_code-{$manager->getId()}' src='/images/workflow/view_code.png' title='View Code' style='height: 22px; position: relative; top:6px; margin-right: 4px; cursor: pointer; visibility: hidden' />
                     </div>
                     <div class='form-field-description'>Available Process Methods</div>
                 </div>
@@ -56,9 +56,10 @@
     ee.process(ee.getJSON().replace(/&id&/g,'{$manager->getId()}').replace(/&window_id&/g,'{$manager->getWindowId()}'));
     Form.intercept($('#humble-paradigm-config-process-form-{$manager->getId()}').get(),'{$manager->getId()}');
     $('#view_code-{$manager->getId()}').on('click',(evt)=>{
-        let win = Desktop.semaphore.checkout(true);
+        var win = Desktop.semaphore.checkout(true);
+        win = Desktop.semaphore.checkout(true);  //BECAUSE REASONS!!!!
         (new EasyAjax('/workflow/elements/explore')).add('window_id',win.id).packageForm('humble-paradigm-config-process-form-{$manager->getId()}').then((response) => {
-            win._title('Workflow Explore')._scroll(true)._open(response);
+            win._title('Model Explore')._scroll(false)._open(response);
         }).post();
     });
 </script>

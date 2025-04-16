@@ -34,6 +34,11 @@ class Utility extends Helper
         return __CLASS__;
     }
 
+    /**
+     * Tries to find the code and return it along with the position in the file
+     * 
+     * @return string
+     */
     public function fetchWorkflowElementCode() {
         $code       = '';
         $namespace  = $this->getNamespace();
@@ -41,6 +46,7 @@ class Utility extends Helper
         $method     = $this->getMethod();
         if ($module    = Humble::module($namespace)) {
             if (file_exists($file = 'Code/'.$module['package'].'/'.$module['models'].'/'.$class.'.php')) {
+                $this->setSourceFile($file);
                 $code  = ''; 
                 $found = $ctr = 0;
                 $this->setTotalLines($tot   = count($lines = explode("\n",$code .= file_get_contents($file))));
@@ -49,9 +55,12 @@ class Utility extends Helper
                         $ctr++;
                     }
                 }
+                if ($found) {
+                    $this->setScrollAmount(round($ctr/$tot,2));
+                }
             }
-            $this->setMethodLineNumber($ctr);
+            $this->setMethodLineNumber($ctr+1);
         }
-        return $code;
+        return htmlentities($code);
     }
 }

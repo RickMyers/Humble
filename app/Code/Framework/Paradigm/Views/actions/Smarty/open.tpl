@@ -158,6 +158,8 @@ Copyright humbleprogramming.com, all rights reserved
     
         <script type="text/javascript">
             var UseTranparentWindows = 'N';
+            var ace_editors          = [];
+
         </script>
         <script type="text/javascript" src="/js/engine"></script>
         <script type="text/javascript" src="/js/widgets"></script>

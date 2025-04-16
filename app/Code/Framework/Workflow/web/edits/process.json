@@ -56,7 +56,7 @@
                 id: 			"humble-paradigm-config-process-form-method-&id&",
                 longname:		"Function/Method",
                 title:			"The function to execute",
-                type:                   "select",
+                type:                   "combo",
                 required:		true,
                 force:			true,
                 onchange:       function (evt) {
@@ -77,6 +77,15 @@
                 },
                 classname:		"",
                 style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+            },
+            {
+                active:                 true,
+                id:                     "humble-paradigm-config-process-form-method-&id&_combo",
+                type:                   "text",
+                required:               true,
+                force:                  true,
+                classname:              "",
+                style:                  "border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"    
             },
             {
                 active:			true,

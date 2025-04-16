@@ -1,19 +1,20 @@
-<div id='code_explorer-{$window_id}' widget="codeBox" widgetScroll="100%" lang="php" style='white-space: nowrap' lexicon="/pages/js/ColorizerLanguages.json" class="humble-code font-family: monospace; overflow: hidden; width: 100%; height: 100%">{$util->fetchWorkflowElementCode()}</div>
+<div id='paradigm_ace_editor_{$window_id}' class='w-full border-2 border-black'>{$util->fetchWorkflowElementCode()}</div>
 <script>
-    (()=>{
-        Colorizer.scan($E('code_explorer-{$window_id}'));
-        var ctr = 0;
+    (() => {
         var win = Desktop.window.list['{$window_id}'];
+        console.log('{$window_id}');
+        $('#paradigm_ace_editor_{$window_id}').height(win.content.height() - 4);
+        ace_editors['{$window_id}'] = ace.edit("paradigm_ace_editor_{$window_id}");
+        ace_editors['{$window_id}'].setTheme("ace/theme/monokai");
+        ace_editors['{$window_id}'].session.setMode("ace/mode/php");   
+        ace_editors['{$window_id}'].fileSource = '/var/www/html/app/{$util->getSourceFile()}';
+        ace_editors['{$window_id}'].resize(true);
+        ace_editors['{$window_id}'].scrollToLine('{$util->getMethodLineNumber()}',true,true,function () {})
+        ace_editors['{$window_id}'].gotoLine('{$util->getMethodLineNumber()}',10,true);
         win.resize(() => {
-            var cb = $E('code_explorer-{$window_id}');        
-            return function () {
-                console.log(++ctr);
-                cb.style.width = win.content.offsetWidth+"px";
-                cb.style.height = win.content.offsetHeight+"px";
-            }
-        });
-        win.resize();
+            $('#paradigm_ace_editor_{$window_id}').height(win.content.height() - 4);
+        }).resize();
+       
     })();
-    
-    
 </script>
+

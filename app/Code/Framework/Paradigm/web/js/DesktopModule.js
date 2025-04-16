@@ -179,6 +179,7 @@ function DesktopWindow(icon,refId) {
         if (typeof func == 'function') {
             this.handlers.maximize[this.handlers.maximize.length] = func;
         }
+        return this;
     };    
     this.resize = (func) => {
         if (typeof func == 'function') {
@@ -186,6 +187,7 @@ function DesktopWindow(icon,refId) {
         } else {
             this._resize();
         }
+        return this;
     };    
     this.close = (func) => {
         if (typeof func == 'function') {
@@ -362,8 +364,8 @@ function DesktopWindow(icon,refId) {
         return this._static(false);
     }
     this.dock   = function (where) {
-        var w = window.innerWidth;
-        var h = window.innerHeight;
+        var w  = window.innerWidth;
+        var h  = window.innerHeight;
         var hw = Math.round(w/2)-2;
         var hh = Math.round(h/2)-2;
         switch (where) {
@@ -1097,7 +1099,7 @@ var Functions = {
                     Desktop.drag.window.delta.X = Desktop.drag.window.click.X - Desktop.drag.window.start.X;
                     Desktop.drag.window.delta.Y = Desktop.drag.window.click.Y - Desktop.drag.window.start.Y;
 
-                    var resizing =  Desktop.drag.window.resize.left   =  (Desktop.drag.window.delta.X < 6);
+                    var resizing =  Desktop.drag.window.resize.left       =  (Desktop.drag.window.delta.X < 6);
                     resizing     = ((Desktop.drag.window.resize.right     =  (+Math.abs(Desktop.drag.window.click.X - (Desktop.drag.window.start.X + Desktop.drag.window.start.W))<6)) || resizing);
                     resizing     = ((Desktop.drag.window.resize.top       =  (Desktop.drag.window.delta.Y < 6)) || resizing);
                     resizing     = ((Desktop.drag.window.resize.bottom    =  (+Math.abs(Desktop.drag.window.click.Y - (Desktop.drag.window.start.Y + Desktop.drag.window.start.H)) < 6)) || resizing);
@@ -1143,7 +1145,7 @@ var Functions = {
                 var newPosY = (evt.clientY - Desktop.drag.window.delta.Y);
 
                 if ((Desktop.drag.window.scroll.left + newPosX) <= 1) newPosX = 1;
-                if ((Desktop.drag.window.scroll.top+ newPosY) <= 1) newPosY = 1;
+                if ((Desktop.drag.window.scroll.top  + newPosY) <= 1) newPosY = 1;
                 newPosX +="px";
                 newPosY +="px";
 
