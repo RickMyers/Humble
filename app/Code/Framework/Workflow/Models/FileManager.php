@@ -165,15 +165,27 @@ class FileManager extends Model
      */
     public function moveFile($EVENT=false) {
         $copied = false;
+        $result = ['moved'=>false,'message'=>'','RC'=>0];
         if ($EVENT!==false) {
-            $data = $EVENT->load();
-            $cnf  = $EVENT->fetch();
-            print_r($data);
-            print_r($cnf);
-            die();
-            if (isset($data[$cnf['source']])) {
-                $stored = file_put_contents($cnf['destination'],$data[$cnf['source']]);
+            $data        = $EVENT->load();
+            $cnf         = $EVENT->fetch();
+         //   print_r($data);print_r($cnf); die();
+            $source      = ($cnf['source_is']       ===  'Value')? $cnf['source'] : $data[$cnf['source']];
+            $destination = ($cnf['destination_is']  ===  'Value')? $cnf['destination'] : $data[$cnf['destination']];
+            $filename    = isset($data[$cnf['field']]) && $data[$cnf['field']] ? $data[$cnf['field']] : false;
+            if ($source && $destination && $filename) {
+                $file     = $source.DIRECTORY_SEPARATOR.$filename;
+                $target   = $destination.DIRECTORY_SEPARATOR.$filename;
+                print($file."==>".$target."\n");
+                if ($copied = copy($file,$target)) {
+                   @unlink($file);
+                }
+                $result['moved'] = true;
+            } else {
+                $result['message']  = 'Could not find file to copy, check configuration';
+                $result['RC']       = 16;
             }
+            $EVENT->update(['moveFile'=>$result]);
         }
         return $copied;
     }    
@@ -194,7 +206,7 @@ class FileManager extends Model
             print_r($cnf);
             die();
             if (isset($data[$cnf['source']])) {
-                $stored = file_put_contents($cnf['destination'],$data[$cnf['source']]);
+                $copied = file_put_contents($cnf['destination'],$data[$cnf['source']]);
             }
         }
         return $copied;

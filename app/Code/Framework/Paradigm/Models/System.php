@@ -122,7 +122,7 @@ class System extends Model
         foreach ($jobs as $job) {
             if (isset($job['filename'])) {
                 //$cmd = 'php launch.php '.$job['id']." > ../SDSF/job_".$job['id'].".txt 2>&1";
-                $cmd = Environment::PHPLocation().' filelaunch.php '.$job['id'].' &2>&1';
+                $cmd = Environment::PHPLocation().' filelaunch.php '.$job['id'].' 2>&1';
                 print("Running launcher at ".date("H:i:s")."\n");
                 print($cmd."\n");
                 if ($this->_isWindows) {

@@ -27,6 +27,18 @@
         </action>
 
         <!-- ################################################################################################# -->
+
+        <action name="newmethod" passalong="window_id">
+            <description>Creates a new method and returns an ace editor session to allow tailoring of new method</description>
+            <helper namespace="workflow" class="utility" id="util">
+                <parameter name="namespace" required="true" source="post" />
+                <parameter name="component" required="true" source="post" />
+                <parameter name="method"    required="true" source="post" />
+                <parameter name="type"      required="true" source="post" />
+            </helper>
+        </action>
+        
+        <!-- ################################################################################################# -->
         
         <action name="explore" passalong="window_id">
             <description>Will explore a piece of code</description>

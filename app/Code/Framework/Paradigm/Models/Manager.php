@@ -25,9 +25,11 @@ class Manager extends Model
 
     private $configs     = [
         'webservice' => true,
-        'input' => true,
-        'system' => true,
-        'exception' => true
+        'input'     => true,
+        'system'    => true,
+        'exception' => true,
+        'file'      => true,
+        'terminus'  => true
     ];
     
     public function __construct()    {
@@ -67,8 +69,7 @@ class Manager extends Model
         if ($id) {
             $workflow->setId($id);
         }
-        $id =    $workflow->save();
-        
+        $id = $workflow->save();
         return $id;
     }
 
@@ -85,10 +86,9 @@ class Manager extends Model
      */
     public function configureElement() {
         $id         = $this->getId();
-        $element    = Humble::collection('paradigm/elements');
-        $element->setId($id);
+        $element    = Humble::collection('paradigm/elements')->setId($id);
         $results    = $element->load();
-        $window_id   = $this->getWindowId();
+        $window_id  = $this->getWindowId();
         $config     = null;
         $configURL  = false;
         //First, check to see if the element has some configuration data

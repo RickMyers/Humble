@@ -35,6 +35,29 @@ class Utility extends Helper
     }
 
     /**
+     * Attempts to stick a stub in an existing class
+     */
+    public function workflowElementNewMethod() {
+        $namespace  = $this->getNamespace();
+        $class      = ucfirst($this->getComponent());
+        $method     = $this->getMethod();
+        $type       = $this->getType();
+        $newcode    = '';
+        if ($module    = Humble::module($namespace)) {
+            if (file_exists($file = 'Code/'.$module['package'].'/'.$module['models'].'/'.$class.'.php')) {
+                $cnt    = $lines  = trim(file_get_contents($file));
+                $stub   = str_replace(['&&METHOD&&'],[$method],file_get_contents('Code/Framework/Paradigm/lib/templates/'.$type.'.tpl'));
+                $x      = strlen($lines)-1;
+                while ($x && ($lines[$x] != '}')) {
+                    $x = $x - 1;
+                }
+                $newcode = substr($lines,0,$x).$stub.'}';
+            }
+        }
+        return htmlentities($newcode);
+    }
+    
+    /**
      * Tries to find the code and return it along with the position in the file
      * 
      * @return string

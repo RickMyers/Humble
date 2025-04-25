@@ -39,6 +39,14 @@ inputConfiguration  :
   method          : POST
   blocking        : false
   arguments       : [namespace,id,window_id,data,component,method]
+fileConfiguration  :
+  url             : /workflow/elements/file
+  api-key         :
+  api-var         :
+  secure          : true
+  method          : POST
+  blocking        : false
+  arguments       : [namespace,id,window_id,data,component,method]  
 externalConfiguration  :
   url             : /workflow/elements/external
   api-key         :

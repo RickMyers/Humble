@@ -180,6 +180,13 @@ var Paradigm = (function () {
             }
 
         },
+        code: {
+            save: (namespace,classname,window_id) => {
+                (new EasyAjax('/paradigm/code/save')).add('namespace',namespace).add('class',classname).add('code',ace_editors['window_id'].getValue()).then((response)=>{
+                    console.log(response);
+                }).post();
+            }
+        },
         prompts:    {
             decision: {
                 title: "Add a new decision",

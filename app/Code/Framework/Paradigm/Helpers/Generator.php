@@ -163,6 +163,7 @@ HDR;
                     $this->workflow .= $tabs.'$cancelBubble = false;'."\n";
                 }
                 $this->workflow .= $tabs.'$workflowRC = '.($cnf['returns'] ? 'true':'false').";\n";
+                $this->workflow .= $tabs."goto label_".$this->_workflowId()."_THE_END;\n";
                 $this->workflow .= $tabs."//END OF WORKFLOW BRANCH\n";
                 break;
             case "actor"        :
@@ -281,6 +282,7 @@ HDR;
                 }
             }
         }
+        $this->workflow .= "\nlabel_".$this->_workflowId()."_THE_END:\n";       //infinite loop protection
         @mkdir('Workflows',0775);
         file_put_contents("Workflows/".$this->_workflowId().".php",$this->workflow);
         return $this->workflow;

@@ -57,7 +57,7 @@
 </table>
 <script type='text/javascript'>
     (() => {
-        {if (isset($data.io_field))}$('#io_field_{$id}').val('{$data.input_field}');{/if}
+        {if (isset($data.io_field))}$('#io_field_{$id}').val('{$data.io_field}');{/if}
         {if (isset($data.io_directory))}$('#io_directory_{$id}').val('{$data.io_directory}');{/if}
             {if (isset($data.io_file))}$('#io_file_{$id}').val('{$data.io_file}');{/if}
         {if (isset($data.io_type))}

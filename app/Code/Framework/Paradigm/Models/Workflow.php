@@ -143,9 +143,9 @@ class Workflow extends Model
         //&& count(Humble::entity('paradigm/import/tokens')->setToken($workflow['token'])->load(true))  do this differently
         if ($workflow) {
             $mysql                  = Humble::entity('paradigm/workflows');
-            $webservice_workflow    = Humble::entity('paradigm/webservice_workflows');
+            $webservice_workflow    = Humble::entity('paradigm/webservice/workflows');
             $webservice             = Humble::entity('paradigm/webservices');
-            $listeners              = Humble::entity('paradigm/workflow_listeners');
+            $listeners              = Humble::entity('paradigm/workflow/listeners');
             $element                = Humble::collection('paradigm/elements');
             $results[] = 'Removing Workflow (MySQL): '.$workflow['data']['id'];
             $mysql->setId($workflow['data']['id'])->delete();
@@ -272,8 +272,8 @@ class Workflow extends Model
         if ($id) {
             $component      = Humble::collection('paradigm/elements');
             $diagram        = Humble::entity('paradigm/workflows')->setId($id);
-            $webservice     = Humble::entity('paradigm/webservice_workflows');
-            $listener       = Humble::entity('paradigm/workflow_listeners');
+            $webservice     = Humble::entity('paradigm/webservice/workflows');
+            $listener       = Humble::entity('paradigm/workflow/listeners');
             $data           = $diagram->load();
             $workflow_id    = $data['workflow_id'];
             $workflow       = json_decode($data['workflow'],true);
@@ -286,4 +286,13 @@ class Workflow extends Model
         }
     }
 
+    /**
+     * Will write timestamp to a file
+     * 
+     * @workflow use(PROCESS)
+     * @param type $EVENT
+     */
+    public function dumpTimeStamp($EVENT=false) {
+       file_put_contents('workflow_timestamp.txt',date('Y-m-d H:i:s')) ;
+    }
 }

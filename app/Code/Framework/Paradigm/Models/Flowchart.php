@@ -40,6 +40,21 @@ class Flowchart extends Model
     }
 
     /**
+     * Extracts a compound value of an array (field.sub.sub becomes $field['sub']['sub'])
+     * 
+     * @param string $field
+     * @param array $data
+     * @return string
+     */
+    private function parseField($field,$data) {
+        $int = false;
+        foreach (explode('.',$field) as $part) {
+            $int = $int ? $int[$part] : $data[$part];
+        }
+        return $int;
+    }
+    
+    /**
      * A general purpose if symbol that can be configured to evaluate values in the triggering event action
      *
      * @workflow use(decision) configuration(/workflow/flowchart/if)
@@ -51,28 +66,29 @@ class Flowchart extends Model
         if ($EVENT!==false) {
             $data = $EVENT->load();
             $cnfg = $EVENT->fetch();
-            if (isset($cnfg['field']) && isset($data[$cnfg['field']])) {
+            if (isset($cnfg['field'])) {
+                $field = $this->parseField($cnfg['field'],$data);
                 switch ($cnfg['operator']) {
                     case "=="   :
-                        $outcome = ($data[$cnfg['field']] == $cnfg['value']);
+                        $outcome = ($field == $cnfg['value']);
                         break;
                     case "==="   :
-                        $outcome = ($data[$cnfg['field']] === $cnfg['value']);
+                        $outcome = ($field === $cnfg['value']);
                         break;
                     case ">="   :
-                        $outcome = ($data[$cnfg['field']] >= $cnfg['value']);
+                        $outcome = ($field >= $cnfg['value']);
                         break;
                     case "<="   :
-                        $outcome = ($data[$cnfg['field']] <= $cnfg['value']);
+                        $outcome = ($field <= $cnfg['value']);
                         break;
                     case ">"   :
-                        $outcome = ($data[$cnfg['field']] > $cnfg['value']);
+                        $outcome = ($field > $cnfg['value']);
                         break;
                     case "<"   :
-                        $outcome = ($data[$cnfg['field']] < $cnfg['value']);
+                        $outcome = ($field < $cnfg['value']);
                         break;
                     case "!="   :
-                        $outcome = ($data[$cnfg['field']] != $cnfg['value']);
+                        $outcome = ($field != $cnfg['value']);
                         break;
                     default :
                         $EVENT->error('Unsupported operator type of '.$cnfg['operator']);

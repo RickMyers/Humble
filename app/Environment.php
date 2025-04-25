@@ -218,7 +218,7 @@ class Environment {
         if (!self::$application) {
              self::loadApplicationMetaData(true);
         }
-        return (strncasecmp(PHP_OS, 'WIN', 3) === 0) ? `where php.exe` : `which php`;
+        return str_replace(["\r","\n"],["",""],((strncasecmp(PHP_OS, 'WIN', 3) === 0) ? `where php.exe` : `which php`));
     }
     
     /**
