@@ -64,7 +64,8 @@ if ($workflow && $job->getFilename()) {
     $job->setStatus(JOB_FAILED);
     $rc = 8;
 }
-
-file_put_contents('../SDSF/job_'.$job_id.'.txt',ob_get_clean());
+print("Writing report output\n");
+@mkdir('../SDSF',0775,true);
+@file_put_contents('../SDSF/job_'.$job_id.'.txt',ob_get_clean());
 $job->setFinished(date('Y-m-d H:i:s'))->save();
 exit($rc);

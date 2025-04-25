@@ -389,6 +389,7 @@ function scanImagesForChanges() {
 function scanFilesForChanges() {
     global $files,$modules;
     $triggers = ['changed'=>[],'new'=>[]];
+    logMessage('scanning files for changes');
     foreach (Humble::entity('paradigm/file/triggers')->setActive('Y')->fetch() as $trigger) {
         if (is_dir($trigger['directory'])) {
             $dir        = dir($trigger['directory']);
@@ -424,7 +425,6 @@ function scanFilesForChanges() {
 }
 //------------------------------------------------------------------------------
 function triggerFileWorkflows($triggers=[]) {
-   
     $job = Humble::entity('paradigm/job/queue');
     foreach ($triggers['new'] as $file => $trigger) {
         $job->setWorkflowId($trigger['workflow_id'])->setQueued(date('Y-m-d H:i:s'))->setFilename($file)->setFileAction('new')->setStatus(NEW_FILE_JOB)->save();
@@ -433,9 +433,9 @@ function triggerFileWorkflows($triggers=[]) {
         $job->setWorkflowId($trigger['workflow_id'])->setQueued(date('Y-m-d H:i:s'))->setFilename($file)->setFileAction('change')->setStatus(NEW_FILE_JOB)->save();
     }
     Humble::model('paradigm/system')->runFileLauncher();
-     print_r($triggers);unlink('PIDS/cadence.pid');die();
+//     print_r($triggers);unlink('PIDS/cadence.pid');die();
 }
-// To spin off a process in another thread... 'nohup php Program.php > /dev/null &'
+// To spin off a process in another thread... 'nohup php Program.php > /dev/null 2>&1 &'
 //------------------------------------------------------------------------------
 function processCadenceCommand($cmds) {
     foreach ($cmds as $cmd) {
@@ -513,7 +513,6 @@ if ($cadence) {
             $started        = time();
             $cadence_ctr    = 0;
         }
-
         logMessage('This run took '.date('s',time()-$duration).' seconds');
         logMessage('Sleeping for '.$cadence['period'].' seconds');
         sleep($cadence['period']);        
