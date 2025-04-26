@@ -238,7 +238,6 @@ function timedEvents() {
                 $off = ($med % $event['period']);                           //This is the remainder if you divide that time by the event period
                 $int = ($event['period'] - $off) ;                          //And this subtracts the value to see if we are almost at the period where we need to run it again
                 print('Med: '.$med.' Offset: '.$off.' Int: '.$int."\n");
-                @unlink('PIDS/cadence.pid');
                 if (($int <= 60) || ($med < (int)$event['period'])) {      //If the next interval is within 1 minutes 
                     $event_queue->reset()->setLastQueued(date('Y-m-d H:i:s'))->setId($event['id'])->save();
                     $queued = $job_queue->reset()->setSystemEventId($event['id'])->setStatus(NEW_EVENT_JOB)->load(true);
@@ -271,7 +270,6 @@ function launchWorkflows() {
             exec('/usr/bin/nohup '.$cmd.' 2>&1 &');
         }
     }
-    die();
     return true;    
 }
 //------------------------------------------------------------------------------
@@ -368,7 +366,6 @@ function scanImagesForChanges() {
     foreach ($modules as $module) {
         $files[$module['namespace']] = recurseDirectory('Code/'.$module['package'].'/'.$module['images']);  
         foreach ($files[$module['namespace']] as $file) {
-            //$images[$file] = $images[$file] ?? filemtime($file);
             if (!isset($images[$file]) || ($images[$file] !== filemtime($file))) {
                 //this is a new or updated file, must copy over
                 $parts = explode('/',$file);
@@ -394,7 +391,6 @@ function scanFilesForChanges() {
         if (is_dir($trigger['directory'])) {
             $dir        = dir($trigger['directory']);
             $extension  = $trigger['extension'] ? str_replace(['*','.'],['',''],$trigger['extension']): false;
-            // print_r($extension."\n"); unlink('PIDS/cadence.pid'); die();
             while ($entry = $dir->read()) {
                 if (($entry == '.') || ($entry == '..')) {
                     continue;
@@ -433,7 +429,6 @@ function triggerFileWorkflows($triggers=[]) {
         $job->setWorkflowId($trigger['workflow_id'])->setQueued(date('Y-m-d H:i:s'))->setFilename($file)->setFileAction('change')->setStatus(NEW_FILE_JOB)->save();
     }
     Humble::model('paradigm/system')->runFileLauncher();
-//     print_r($triggers);unlink('PIDS/cadence.pid');die();
 }
 // To spin off a process in another thread... 'nohup php Program.php > /dev/null 2>&1 &'
 //------------------------------------------------------------------------------
@@ -477,12 +472,15 @@ if (file_exists('PIDS/cadence.pid') && ($running_pid = trim(file_get_contents('P
     }
 } 
 file_put_contents('PIDS/cadence.pid',$pid);                                     //alright, let's record your process number
+if (!file_exists('PIDS/cadence.pid')) {
+    logMessage("Could not write PID to file, aborting");
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //Check for configuration file, which configures how period for the cadence, and when to do which checks...
 //
 if (file_exists($config) || file_exists($framework)) {
-    $cadence        = file_exists($config) ? json_decode(file_get_contents($config),true) : die('no config');
+    $cadence        = file_exists($config)    ? json_decode(file_get_contents($config),true) : die('no config');
     $application    = file_exists($framework) ? json_decode(file_get_contents($framework),true): [];
     $cadence        = array_merge_recursive($application,$cadence);
 }

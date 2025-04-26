@@ -75,7 +75,8 @@ class Log extends Helper
                 $fp         = fopen($this->logs[$log], "r");
                 $size       = filesize($this->logs[$log]);
                 $howmuch    = $size > 20000 ? 20000 : $size;
-                fseek($fp, -1*$howmuch, SEEK_END);
+                $howmuch    = ($howmuch<=0)  ? 1 : $howmuch;
+                fseek($fp, $size - $howmuch, SEEK_SET);
                 if ($rows = fread($fp,$howmuch)) {
                     $rows = explode("\n",$rows);
                     for ($i=count($rows)-1; $i>=0; $i--) {

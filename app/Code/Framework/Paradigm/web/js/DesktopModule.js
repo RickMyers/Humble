@@ -247,6 +247,7 @@ function DesktopWindow(icon,refId) {
                 this.state = 0;
                 this.frame.style.display = "none";
                 this.content.innerHTML = '';
+                this.inject('');
                 this.handlers       = {
                     "open":     [],
                     "close":    [],
