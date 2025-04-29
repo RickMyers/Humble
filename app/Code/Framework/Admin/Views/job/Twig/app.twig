@@ -8,21 +8,24 @@
                 return {
                     window_id: "{{ window_id }}",
                     jobs: [],
-                    pagination: {}
+                    pagination: {},
+                    joblist: Humble.template('admin','jobs/list')
                 }
             },
         mounted() {
             this.poll();
+            console.log(this.joblist)
         },
         methods: {
             poll() {
                 let me = this;
-                (new EasyAjax('/admin/job/list')).then((response) => {
+                let ao = new EasyAjax('/admin/job/list');
+                ao.then((response) => {
                     let results = JSON.parse(response);
                     if (results) {
                         me.jobs         = results.jobs;
-                        me.pagination   = this.getPagination();
-                        window.job_timer = window.setTimeout(this.poll,3000);
+                        me.pagination   = ao.getPagination();
+                        window.job_timer = window.setTimeout(this.poll,30000);
                     }
                 }).post();
             },
@@ -33,6 +36,7 @@
         }
     });
     var win = Desktop.window.list['{{ window_id }}'];
+    win._title('Job Monitor');
     Humble.admin['job']['{{ window_id }}'].mount('#'+win.content.id);
     win.resize(() => {
         $('#jobs_list').height(win.content.height() - $E('jobs_header').offsetHeight - $E('jobs_footer').offsetHeight - 2);
@@ -44,6 +48,4 @@
             app.unmount();
         };
     })(Humble.admin['job']['{{ window_id }}']));
-    
-
 </script>

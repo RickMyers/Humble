@@ -6,9 +6,11 @@ Job Monitor Actions
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="job" use="Twig" author="rmyers Rick" email="rick@humbleprogramming.com">
-    <actions blocking="ON" response="false">
+    <actions blocking="Off" response="false">
+        
         <action name="app" passalong="window_id">
             <description>The App Home Page</description>  
+            
             <!-- Entity, Helper, Model, Conditional declarations begin here -->   
         </action>
      
@@ -16,9 +18,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <action name="list" blocking="off" response="true" output="JSON">
             <description>Returns a list of jobs</description>
-            <entity namespace="paradigm" class="job/queue" rows="rows" page="page" defaultRows="25" defaultPage="1" method="fetch">
+            <entity namespace="paradigm" class="job/queue" orderby="queued=DESC" method="fetch" rows="rows" page="page" defaultRows="50" defaultPage="1">
                 <parameter name="status" source="request" optional="true" />
-            </entity>  
+            </entity>
         </action>
         
         <!-- ############################################################### -->

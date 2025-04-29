@@ -46,7 +46,7 @@ class FileManager extends Model
             if ((isset($cnf['field']) && $cnf['field'])) {
                 $EVENT->update([$cnf['field']=>$data['name']]);
             }
-            $log = Humble::entity('paradigm/file/log')->setJobId($data['workflow_id']??'99')->setDirectory($data['dir']??'N/A')->setFile($data['name']??'Unknown')->save();
+            $log = Humble::entity('paradigm/file/log')->setJobId($data['workflow_id']??'')->setDirectory($data['dir']??'N/A')->setFile($data['name']??'Unknown')->save();
             
         }
     }
