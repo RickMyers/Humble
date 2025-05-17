@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+
+Various Paradigm Engine code related actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="code" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="off" response="false">
+        <action name="save">
+            <description>Saves some code</description>
+            <model namespace="paradigm" class="code" method="save" response="true">
+                <parameter name="namespace" source="post" required="true" />
+                <parameter name="class"     source="post" required="true" />
+                <parameter name="code"      source="post" required="true" />
+            </model>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

@@ -1,8 +1,12 @@
 <div id='newmethod_ace_editor_{$window_id}' class='w-full border-2 border-black'>{$util->workflowElementNewMethod()}</div>
+<form nohref name="code_editor_{$window_id}">
+    <input type="hidden" name="namespace" value="" />
+    <input type="hidden" name="component" value="" />
+</form>
 <script>
     (() => {
         var win = Desktop.window.list['{$window_id}'];
-        win.inject('<button class="bg-gray-300 border-2 rounded-md pr-1 pl-1 text-black" onclick="Paradigm.code.save(\'{{ window_id }}\'); ">Save</button>');
+        win.inject('<button class="bg-gray-300 border-2 rounded-md pr-1 pl-1 text-black" onclick="Paradigm.code.save(\'{$namespace}\',\'{$component}\',\'{$window_id}\'); ">Save</button>');
         $('#newmethod_ace_editor_{$window_id}').height(win.content.height() - 4);
         ace_editors['{$window_id}'] = ace.edit("newmethod_ace_editor_{$window_id}");
         ace_editors['{$window_id}'].setTheme("ace/theme/monokai");

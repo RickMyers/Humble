@@ -385,6 +385,17 @@ EasyEdits.execute	= function (easy){
                 if (easyField.remove) {
                     formField.setAttribute("remove",easyField.remove);
                 }
+                if (easyField.onenterkey) {
+                    var f = ((callback) => {
+                        return (evt) => {
+                            if (evt.keyCode === 13) {
+                                callback(evt);
+                                evt.stopPropagation();
+                            }
+                        }
+                    })(easyField.onenterkey);
+                    (isCombo) ? (combo.onkeypress = f) : (formField.onkeypress = f);
+                }
                 if (easyField.onfill) {
                     if (typeof(easyField.onfill)=="string")	{
                         formField.onfill = function () {

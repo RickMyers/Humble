@@ -38,9 +38,8 @@
                     <div style='white-space: nowrap; position: relative'>
                         <select name='method' id='humble-paradigm-config-process-form-method-{$manager->getId()}'>
                             <option value=''>Please choose from this list</option>
-                        </select><input type="text" placeholder='Select from below or create a new method' name="humble-paradigm-config-process-form-method-{$manager->getId()}_combo" id="humble-paradigm-config-process-form-method-{$manager->getId()}_combo" value="" />
+                        </select><input type="text" placeholder='Select from below or create a new method' name="method" id="humble-paradigm-config-process-form-method-{$manager->getId()}_combo" value="" />
                               <img id='view_code-{$manager->getId()}' src='/images/workflow/view_code.png' title='View Code' style='height: 22px; position: relative; top:6px; margin-right: 4px; cursor: pointer; visibility: hidden' />
-                              <input type='button' value=' + ' id='new_method_button-{$manager->getId()}'
                     </div>
                     <div class='form-field-description'>Available Process Methods</div>
                 </div>
@@ -56,12 +55,6 @@
     ee.fetch('/edits/workflow/process');
     ee.process(ee.getJSON().replace(/&id&/g,'{$manager->getId()}').replace(/&window_id&/g,'{$manager->getWindowId()}'));
     Form.intercept($('#humble-paradigm-config-process-form-{$manager->getId()}').get(),'{$manager->getId()}');
-    $('#new_method_button-{$manager->getId()}').on('click',(evt) => {
-        let win = Desktop.semaphore.checkout(true);
-        (new EasyAjax('/workflow/elements/newmethod')).add('type','process').add('window_id',win.id).packageForm('humble-paradigm-config-process-form-{$manager->getId()}').then((response) => {
-            win._title('New Method')._scroll(false)._open(response);
-        }).post();
-    });
     $('#view_code-{$manager->getId()}').on('click',(evt)=>{
         var win = Desktop.semaphore.checkout(true);
         win = Desktop.semaphore.checkout(true);  //BECAUSE REASONS!!!!

@@ -28,7 +28,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="newmethod" passalong="window_id">
+        <action name="newmethod" passalong="window_id,namespace,component">
             <description>Creates a new method and returns an ace editor session to allow tailoring of new method</description>
             <helper namespace="workflow" class="utility" id="util">
                 <parameter name="namespace" required="true" source="post" />

@@ -53,7 +53,7 @@
             active:		true,
             id: 		"humble-paradigm-config-process-form-method-&id&",
             longname:		"Function/Method",
-            title:		"The function to execute",
+            title:		"The function to execute, or create a new function name here and hit enter",
             type:               "combo",
             required:		true,
             force:		true,
@@ -73,6 +73,15 @@
                     $('#view_code-&id&').css('visibility','hidden');
                 }
             },
+            onenterkey: (evt) => {
+                if (confirm('Would you like to create the method '+$(evt.target).val())) {
+                    let win = Desktop.semaphore.checkout(true);
+                    win = Desktop.semaphore.checkout(true);
+                    (new EasyAjax('/workflow/elements/newmethod')).add('type','process').add('window_id',win.id).addForm('humble-paradigm-config-process-form-&id&').then((response) => {
+                        win._title('New Method')._scroll(false)._open(response);
+                    }).post();                        
+                }
+            },    
             classname:		"",
             style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
         },
