@@ -748,6 +748,10 @@ video {
   width: 16.666667%;
 }
 
+.w-12 {
+  width: 3rem;
+}
+
 .w-48 {
   width: 12rem;
 }
@@ -872,8 +876,8 @@ video {
   justify-content: center;
 }
 
-.justify-between {
-  justify-content: space-between;
+.justify-stretch {
+  justify-content: stretch;
 }
 
 .gap-8 {
@@ -894,6 +898,10 @@ video {
 
 .whitespace-nowrap {
   white-space: nowrap;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
 }
 
 .rounded-3xl {
