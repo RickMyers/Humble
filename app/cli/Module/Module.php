@@ -251,7 +251,7 @@ class Module extends CLI
     public static function apps() {
         $args       = self::arguments();
         $ext        = [
-            'Twig' => 'twig', 'Smarty' => 'tpl', 'Latte' => 'latte', 'Blade' => 'blade', 'Rain' => 'rain', 'Mustache' => 'mustache', 'Savant' => 'savant', 'PHP' => 'php', 'Phptal' => 'php', 'TBS' => 'tbs'
+            'Twig' => 'twig', 'Smarty' => 'tpl', 'Latte' => 'latte', 'Blade' => 'blade', 'Rain' => 'rain', 'Mustache' => 'mustache', 'Savant' => 'savant', 'PHP' => 'php', 'PHPTAL' => 'php', 'TBS' => 'tbs'
         ];
         if ($module = \Humble::module($args['namespace'])) {
             $name       = $args['name'] ?? $module['module']." App";
@@ -261,11 +261,11 @@ class Module extends CLI
                 "icon"  => "Code/Framework/Humble/lib/sample/module/Images/admin_app_icon.png",
                 "view"  => "Code/Framework/Humble/lib/sample/module/Views/admin/Smarty/app.tpl"
             ];
-            $templater   = $args['use']  ?? 'Smarty';
-            $name        = $args['name'] ?? 'app';
+            $templater   = isset($args['use']) && $args['use']  ? $args['use'] : 'Smarty';
+            $name        = isset($args['name']) && $args['name'] ? $args['name'] : 'app';
             $srch        = ['&&MODULE&&','&&PROJECT&&','&&NAMESPACE&&','&&NAME&&'];
             $repl        = [$project->module,$project->project_name,$args['namespace'],$name];
-            
+
             mkdir("Code/".$module['package'].'/'.$module['views']."/admin/".$templater,0775,true);
             $controller = "Code/".$module['package'].'/'.$module['controllers'].'/admin.xml';
             $destination = [

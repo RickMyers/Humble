@@ -185,6 +185,9 @@ class Utility extends Model
         file_put_contents('cmd.txt',$cmd);
         \Log::general("I am going to create a module by executing the following command:\n\n".$cmd);
         $result = shell_exec($cmd);
+        if ($this->getAdminapp() === 'Y') {
+            //now call the command line tool to create the adminapp
+        }
         return $result;
     }
 

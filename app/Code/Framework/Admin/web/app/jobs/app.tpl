@@ -13,7 +13,7 @@
         <div class="bg-slate-200 p-1  text-center w-12">Output</div>
     </div>
 </div>
-
+   
 <div id='jobs_list'>
     Ths list of jobs
 </div>

@@ -12,6 +12,9 @@
             <div class='font-mono pb-2 text-slate-1000'>Namespace</div>
             <input type="text" name="module" id="module" class="p-2 font-sans text-slate-900 w-[600] rounded-sm"/><br />
             <div class='font-mono pb-2 text-slate-1000'>Module Name</div>
+            <div class='pb-2'>
+                <input type="checkbox" name="adminapp" id="adminapp" value='Y' /> Check to include a default configuration app
+            </div>
             <input type="button" name="new_module_submit" id="new_module_submit" v-on:click="createModule()" value="Create" class="text-slate-1000 border border-gray-300 w-[125] focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-lg px-15 py-2.5 me-2 mb-2 bg-white"/>                 
         </form>
     </div>

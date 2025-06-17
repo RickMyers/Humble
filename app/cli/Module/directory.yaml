@@ -124,6 +124,6 @@ admin-apps|apps :
             name|n|nm: The name of the admin app
             use|u: The name of the templating engine to use
         values:         
-            use|u: Twig,Smarty,Latte,Blade,Savant,TBS,PHP,Phptal,Rain,Mustache
+            use|u: Twig,Smarty,Latte,Blade,Savant,TBS,PHP,PHPTAL,Rain,Mustache
                
  

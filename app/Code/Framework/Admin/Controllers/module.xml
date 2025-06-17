@@ -9,6 +9,7 @@
                 <parameter name="package"   source="post"    default="" />
                 <parameter name="module"    source="post"    default="" />
                 <parameter name="namespace" source="post"    default="" />
+                <parameter name="adminapp"  source="post"    default="N" />
             </model>
         </action>
 

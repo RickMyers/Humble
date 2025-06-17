@@ -109,8 +109,6 @@ class CLI
             }
         }
         chdir('app');
-        //print_r($content);
-        //die();
         return $content;
     }
     

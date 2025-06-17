@@ -268,6 +268,12 @@ function initializeProject() {
                 if (substr($attributes['landing_page'],0,1)!=='/') {
                     $attributes['landing_page'] = '/'.$attributes['landing_page'];
                 }
+                $parts = explode('/',$attributes['landing_page']);
+                if ($parts[1]!==$attributes['namespace']) {
+                    print(justify('The first part of the Landing Page must be the main module namespace, correcting this',100));
+                    $parts[1] == $attributes['namespace'];
+                    $attributes['landing_page'] = implode('/',$parts);
+                }
             }
             $attributes['destination_folder']       = getcwd();
             $attributes['hub_host']                 = "";
