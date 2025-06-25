@@ -3,7 +3,7 @@
         "account": true
     },
     "controllers": {
-
+        "humble/labs": true
     },
     "routes": {
         "/humble/home/index": {

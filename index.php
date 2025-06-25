@@ -126,7 +126,7 @@ if ($admin && !$logged_in) {
 if (!$bypass && !$logged_in) {
     //check to see if the service they are trying to access is publicly visible
     $allowed = \Environment::routes($project);
-    if (isset($allowed->routes->{'/'.$namespace.'/'.$controller.'/'.$action}) || isset($allowed->namespaces->$namespace) || isset($allowed->controllers->{'/'.$namespace.'/'.$controller})) {
+    if (isset($allowed->routes->{'/'.$namespace.'/'.$controller.'/'.$action}) || isset($allowed->namespaces->$namespace) || isset($allowed->controllers->{$namespace.'/'.$controller})) {
         $bypass = true;
         //NOP, you are ok to hit that resource
     } else {
