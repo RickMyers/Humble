@@ -50,7 +50,7 @@ RUN apt install -y php8.2-dev
 RUN apt install -y nala
 RUN apt install -y mkcert
 RUN apt install -y xdg-utils
-RUN pecl install xdebug
+#RUN pecl install xdebug
 #RUN mkcert -install
 RUN apt install -y w3m
 RUN apt install -y dos2unix
