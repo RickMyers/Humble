@@ -40,7 +40,6 @@ class Event  {
     private     $_files          = [];
     private     $_reports        = [];
 
-
     private     $instance        = '';      //Every time you clone this object, the instance counter will get incremented
     static private $instances    = 0;       //For the original object, the empty string leaves the MongoID intact
 
@@ -59,6 +58,10 @@ class Event  {
         $this->_id($doc['_id'].$this->instance);            //assign generated id to Event ID
     }
 
+    protected function underscoreToCamelCase($string, $first_char_caps=false) {
+        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
+    } 
+    
     /**
      * Ensures that the event information is persisted
      */
@@ -86,11 +89,10 @@ class Event  {
     /**
      * Returns the data attached to the original event
      *
-     * @TODO: Again, investigate whether this should be underscoreToCamelCase
      * @return array
      */
     public function load() {
-        $method = 'get'.ucfirst($this->_name);
+        $method = 'get'.$this->underscoreToCamelCase($this->_name,true);
         return $this->$method();
     }
 
@@ -127,7 +129,7 @@ class Event  {
         $ref->setReports($this->_reports);
         $ref->setConfigurations($this->_configurations);
         foreach ($this->_data as $var => $val) {
-            $method = 'set'.ucfirst($var);
+            $method = 'set'.$this->underscoreToCamelCase($var,true);
             $ref->$method($val);
         }
         if ($this->_id()) {
@@ -145,13 +147,12 @@ class Event  {
     /**
      * This appends to the original event data some new information, if there's already a node of the same name and the node is not an array, then the node is converted to an array with an initial value of the original value
      *
-     * @TODO: Review ucfirst below... should be underscoreToCamelCase?
      * @param type $newData
      */
     public function update($newData=[],$persist=false) {
         if (is_array($newData)) {
-            $getter  = 'get'.ucfirst($this->_name());
-            $setter  = 'set'.ucfirst($this->_name());
+            $getter  = 'get'.$this->underscoreToCamelCase($this->_name(),true);
+            $setter  = 'set'.$this->underscoreToCamelCase($this->_name(),true);
             $this->$setter(array_merge_recursive($this->$getter(),$newData));
         } else {
             $this->error('An attempt was made to update the core event attributes rather than creating a node off of the core event attributes');
@@ -180,8 +181,8 @@ class Event  {
      * @param type $newData
      */
     public function replace($newData) {
-        $getter     = 'get'.ucfirst($this->_name());
-        $setter     = 'set'.ucfirst($this->_name());
+        $getter     = 'get'.$this->underscoreToCamelCase($this->_name(),true);
+        $setter     = 'set'.$this->underscoreToCamelCase($this->_name(),true);
         $eventData  = $this->$getter();
         foreach ($newData as $field => $val) {
             if (isset($eventData[$field])) {
@@ -213,7 +214,7 @@ class Event  {
             $this->_stages[$x-1]['finished'] = time();
         }
         $this->_completed(true);
-        print_r($this->_stages);
+       // print_r($this->_stages);
         return $this;
     }
 
@@ -549,9 +550,9 @@ class Event  {
      */
     public function __call($name, $arguments)    {
         $token = lcfirst(substr($name,3));
-        if (substr($name,0,3)=='set') {
+        if (substr($name,0,3)==='set') {
             return $this->__set($token,$arguments[0]);
-        } else if (substr($name,0,3)=='get') {
+        } else if (substr($name,0,3)==='get') {
             $result = $this->__get($token);
             return $result;
         } else {

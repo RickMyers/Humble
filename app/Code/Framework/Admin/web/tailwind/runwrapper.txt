@@ -1,0 +1,12 @@
+Array
+(
+    [program] => tailwind
+    [root] => Code/Framework/Admin/web/tailwind
+    [command] => npm run watch
+    [namespace] => admin
+)
+
+> tailwind@1.0.0 watch
+> tailwindcss -i ../css/input.css -o ../css/admin.css --watch
+
+Finished
