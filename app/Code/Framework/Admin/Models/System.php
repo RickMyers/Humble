@@ -253,7 +253,7 @@ class System extends Model
      * @return array
      */
     public function flags() {
-        return Environment::getApplication('flags');
+        return Environment::application('flags');
     }
     
     /**

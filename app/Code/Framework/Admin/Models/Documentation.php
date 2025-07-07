@@ -52,7 +52,7 @@ class Documentation extends Model
      * @return boolean
      */
     protected function documentorExists() {
-        if ($documentor = Environment::getApplication('documentation',true)) {
+        if ($documentor = Environment::application('documentation',true)) {
             $this->documentor        = isset($documentor['engine'])   ? $documentor['engine']   : false;
             $this->documentor_source = isset($documentor['source'])   ? $documentor['source']   : false;
             $this->command           = isset($documentor['command'])  ? $documentor['command']  : false;

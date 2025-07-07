@@ -36,7 +36,7 @@ $monitor                    = \Environment::getMonitor();                       
 $updater                    = \Environment::getUpdater();                       //Singleton reference to the module updater
 $installer                  = \Environment::getInstaller();                     //Singleton reference to the module installer
 $is_production              = \Environment::isProduction();                     //Am I in production? Somethings will be skipped if so
-$project                    = \Environment::getProject();
+$project                    = \Environment::project();
 $config                     = (\Environment::namespace() !== 'humble') ? 'Code/'.$project->package.'/'.$project->module.'/etc/cadence.json' : 'Code/Framework/Humble/etc/application.json';
 $callbacks                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Cadence.php';
 $constants                  = 'Code/'.$project->package.'/'.$project->module.'/includes/Constants.php';

@@ -9,7 +9,7 @@
 
         public static function handler($className) {
             if ($className === 'Settings') {
-                $project = \Environment::getProject();
+                $project = \Environment::project();
                 if (!file_exists('../../Settings/'.$project->namespace.'/Settings.php')) {
                     header('Location: /install.php');
                     die();

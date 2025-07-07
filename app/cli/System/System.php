@@ -170,15 +170,11 @@ class System extends CLI
      * @param type $app
      * @param type $version
      */
-    protected static function performCoreUpdate($distro,$changed,$insertions,$matched,$ignored,$merged,$app,$version) {
+    protected static function performCoreUpdate($distro,$changed,$insertions,$matched,$ignored,$app,$version) {
         ob_start();
         print("\nPATCH REPORT\n########################################################\n\nMatched Files: ".$matched."\n\nThe following files will be updated by this process:\n\n");
         print("\nThe following files are on the local manifest indicating they should be IGNORED in the patch:\n\n");
         foreach ($ignored as $idx => $file) {
-            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
-        }
-        print("\nThe following files are on the local manifest indicating they should be MERGED in the patch:\n\n");
-        foreach ($merged as $idx => $file) {
             print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
         }
         print("\nThe following files will be patched:\n\n");
@@ -226,9 +222,13 @@ class System extends CLI
      * @param type $version
      */
     protected static function evaluateCoreDifferences($app,$project,$version) {
-        $local_manifest = []; //this is a relic of times past... ultimately remove this
         file_put_contents('distro_'.$version.'/humble.zip',file_get_contents($project->framework_url.'/distro/fetch'));                                               //Download the current source base
-        $changed    = []; $insertions = []; $source = []; $contents = []; $ignore = []; $merge = []; $matched = 0;
+        $changed    = []; $insertions = []; $contents = []; $matched = 0;
+        $ignore = [   //these files are removed after installation and should not be restored during a patch, but still need to be in the initial pull
+            '.htaccess'=>true,
+            'app/humble'=>true,
+            'app/humble.bat'=>true
+        ];
         $distro     = new ZipArchive();
         $dist_file = 'distro_'.$version.'/humble.zip';
         if ($distro->open($dist_file)) {
@@ -239,14 +239,13 @@ class System extends CLI
             die("\nFailed To open distro zip file\n");
         }
         foreach ($contents as $file_idx => $file) {
+            if (isset($ignore[$file]) && $ignore[$file]) {
+                continue;
+            }
             print("processing ".$file."\n");
 
             if (file_exists($file)) {
-                if (isset($local_manifest['ignore'][$file]) && $local_manifest['ignore'][$file]) {
-                    $ignore[] = $file;
-                } else if (isset($local_manifest['merge'][$file]) && $local_manifest['merge'][$file]) {
-                    $merge[]  = $file;
-                } else if ($distro->getFromIndex($file_idx) != file_get_contents($file)) {
+                if ($distro->getFromIndex($file_idx) != file_get_contents($file)) {
                     $changed[] = $file;
                 } else {
                     $matched++;
@@ -255,12 +254,15 @@ class System extends CLI
                 $insertions[] = $file;
             }
         }
-        self::performCoreUpdate($distro,$changed,$insertions,$matched,$ignore,$merge,$app,$version);
+        self::performCoreUpdate($distro,$changed,$insertions,$matched,$ignore,$app,$version);
         @unlink($dist_file);
     }
     //--------------------------------------------------------------------------
     public static function patch() {
-        $project = \Environment::getProject();
+        $project = \Environment::project();
+        if ($project->name === 'Humble') {
+            die("\nDo Not Run Patch On Framework!, use Git Pull\n\n");
+        }
         $app     = \Environment::applicationXML();
         $canonical = json_decode(file_get_contents($project->framework_url."/distro/version"),true);
         $canon_version = (int)str_replace(".","",(string)$canonical['version']);

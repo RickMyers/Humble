@@ -139,7 +139,7 @@ trait Base {
      */
     public function __set($name,$value)   {
         if ($this->_encrypt) {
-            $value = openssl_encrypt($value,'aes-128-ctr',\Environment::getApplication('serial_number'),0,$this->iv());
+            $value = openssl_encrypt($value,'aes-128-ctr',\Environment::application('serial_number'),0,$this->iv());
             $this->_encrypt = false;
         }
         $this->_data[$name] = $value;
@@ -167,7 +167,7 @@ trait Base {
             if (isset($this->_data[$name])) {
                 $retval = $this->_data[$name];
                 if ($this->_decrypt) {
-                    $retval = openssl_decrypt($retval,'aes-128-ctr',\Environment::getApplication('serial_number'),0,$this->iv());
+                    $retval = openssl_decrypt($retval,'aes-128-ctr',\Environment::application('serial_number'),0,$this->iv());
                     $this->_decrypt = false;
                 }
             }

@@ -120,9 +120,16 @@ class Actions extends Model
         }        
     }
     
+    /**
+     * Moves the site into or out of maintenance mode by swapping the index.tpl file
+     * 
+     * @param string $enable
+     * @return string
+     */
     public function maintenance($enable=false) {
-        $enable =  ($enable) ? $enable : ($this->getEnable() ? $this->getEnable() : false);
-        chdir('..');
+        $enable  =  ($enable) ? $enable : ($this->getEnable() ? $this->getEnable() : false);
+        $project = \Environment::project();
+        $home    = 'app/'.$project->package.'/'.$project->module.'/Views/';
         $message = 'No flag was passed, so no action was taken';
         if ($enable==='Y') {
             if (file_exists('maint.html')) {
@@ -142,7 +149,6 @@ class Actions extends Model
                 $message = 'Normal login page not found, aborting';
             }
         }
-        chdir('app');
         return $message;
     }
     

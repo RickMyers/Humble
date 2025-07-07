@@ -42,7 +42,7 @@ class Installer extends Directory
     public function __construct()    {
         parent::__construct();
         $this->_db  = Humble::connection($this);
-        $project    = Environment::getProject();
+        $project    = Environment::project();
         if ($project->namespace) {
             @mkdir('../../logs/'.$project->namespace,0777,true);   //added this later
         }

@@ -81,7 +81,7 @@ class Email extends Helper
     public function sendEmail($to=false,$subject=false,$body=false,$from=false,$reply=false,$attachment=false) {
         $to         = (is_string($to)) ? [$to] : $to;
         $settings   = $this->emailSettings();
-        $project    = Environment::getProject();
+        $project    = Environment::project();
         $prj        = explode(':',(string)$project->project_url);
         $from       = ($from ? $from : 'webmaster@'.substr($prj[1],2));
         $reply      = ($reply ? $reply : 'noreply@'.substr($prj[1],2));

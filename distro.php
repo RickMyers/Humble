@@ -64,7 +64,7 @@
             chdir('app');  
             require_once('Humble.php');
             require_once('Environment.php');  
-            if (file_exists('downloads.txt')) {
+            if (file_exists('downloads.txt')) { //just counting the number of times the ftramework has been downloaded
                 $downloads = file_get_contents('downloads.txt');
                 $downloads = (int)$downloads;
                 file_put_contents('downloads.txt',++$downloads);
