@@ -113,10 +113,10 @@ class User extends Model {
      */
     public function routeToHomePage($EVENT=false) {
         if ($EVENT!==false) {
-            $project = Environment::getProject();
+            $project = Environment::project();
             header('Location: '.$project->landing_page);
         } else {
-            $project = Environment::getProject();
+            $project = Environment::project();
             header('Location: '.$project->landing_page);
         }
     }

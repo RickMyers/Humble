@@ -94,7 +94,7 @@ class Log {
 
     public static function getProject() {
         if (!self::$project) {
-            self::$project = \Environment::getProject();
+            self::$project = \Environment::project();
         }
         return self::$project;
     }
@@ -178,7 +178,7 @@ class Log {
         if (is_array($message)) {
             $message = implode("\n",$message);
         }
-        if (Environment::getApplication(['flags'=>'display_mysql_errors'])) {
+        if (Environment::application(['flags'=>'display_mysql_errors'])) {
             print('<pre>'.$message.'</pre>'."\n");
         }
         self::prependFile($message, $file);
@@ -214,7 +214,7 @@ class Log {
                    'Content-Type: text/html' . "\r\n" .
                    'X-Mailer: PHP/' .phpversion();
         
-        $user = Environment::getApplication('support');
+        $user = Environment::application('support');
         if (isset($user['email']) && $user['email']) {
             mail($user['email'],$subject,$text,$headers);
         }

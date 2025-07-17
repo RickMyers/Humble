@@ -177,7 +177,7 @@ class Module extends CLI
      */
     public static function build() {
         $result  = 'Module not built';
-        $project = \Environment::getProject();
+        $project = \Environment::project();
         $args    = self::arguments();
         $ns      = $args['namespace'];
         $pk      = $args['package'];
@@ -199,7 +199,7 @@ class Module extends CLI
                 foreach ($mod->structure->basic as $path) {
                     mkdir($root.DIRECTORY_SEPARATOR.$path,0775,true);
                 }
-             //   $defaults    = \Environment::getApplication('default');
+             //   $defaults    = \Environment::application('default');
                 $templater   = 'Smarty';
                 $package     = $mn ? 'Framework' : (string)$project->package;
                 $module      = $mn ? 'Humble'    : (string)$project->module;

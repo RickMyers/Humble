@@ -564,7 +564,7 @@
          */
         public static function push($eventName,$data=[]) {
             $success = false;
-            $project = Environment::getProject();
+            $project = Environment::project();
            
             if ($project->hub_host && $project->hub_port) {
                 //change to read from Humble.project file

@@ -17,7 +17,7 @@
 require "Humble.php";
 require "Environment.php";
 require "Code/Framework/Humble/includes/Constants.php";
-$project = \Environment::getProject();
+$project = \Environment::project();
 if (file_exists($custom = 'Code/'.$project->package.'/'.$project->module.'/includes/Custom.php')) {
     require $custom;
 }

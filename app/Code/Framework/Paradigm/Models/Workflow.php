@@ -49,7 +49,7 @@ class Workflow extends Model
      */
     public function export() {
         if (!$this->exporter) {
-            $this->exporter              = Environment::getProject();
+            $this->exporter              = Environment::project();
             $this->_namespace($this->exporter->namespace);
         }
         $target = false; $file = false;

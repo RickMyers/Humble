@@ -55,7 +55,7 @@ class Environment {
      * @return object
      */
     public static function routes($project=false) {
-        $project = ($project) ? $project : self::getProject();                  //did you pass project information or do I have to load it myself
+        $project = ($project) ? $project : self::project();                  //did you pass project information or do I have to load it myself
         $routes  = \Humble::cache('public_routes');                             //are routes cached?
         if (!$routes) {
             if (!file_exists($file = 'Code/'.$project->package.'/'.$project->module.'/etc/public_routes.json')) {
@@ -74,7 +74,7 @@ class Environment {
      */
     public static function recacheRouteAliases($project=false) {
         $result = false;
-        $project = ($project) ? $project : self::getProject();
+        $project = ($project) ? $project : self::project();
         if (file_exists($alias_file = 'Code/'.$project->package.'/'.$project->module.'/etc/route_aliases.json')){
             Humble::cache('humble_route_aliases',json_decode(file_get_contents($alias_file),true));
             $result = true;
@@ -106,7 +106,7 @@ class Environment {
      * @return string
      */
     public static function  getDateFormat() {
-        $defaults    = self::getApplication('default');
+        $defaults    = self::application('default');
         return (isset($defaults['date_format'])) ? $defaults['date_format'] : 'Y-m-d';
     }
 
@@ -116,7 +116,7 @@ class Environment {
      * @return string
      */
     public static function  getTimeFormat() {
-        $defaults    = self::getApplication('default');
+        $defaults    = self::application('default');
         return (isset($defaults['time_format'])) ? $defaults['time_format'] : 'H:i:s';
     }
     
@@ -126,7 +126,7 @@ class Environment {
      * @return string
      */
     public static function  getTimestampFormat() {
-        $defaults    = self::getApplication('default');
+        $defaults    = self::application('default');
         return (isset($defaults['timestamp_format'])) ? $defaults['timestamp_format'] : 'Y-m-d H:i:s';
     }
     
@@ -138,7 +138,7 @@ class Environment {
      */
     public static function formatDate($date=false) {
         $date        = ($date) ? $date : date('Y-m-d');
-        $defaults    = self::getApplication('default');
+        $defaults    = self::application('default');
         $date_format = isset($defaults['date_format']) ? $defaults['date_format'] : false;
         return $date_format ? date($date_format, strtotime($date)) : $date;
     }
@@ -151,7 +151,7 @@ class Environment {
      */
     public static function formatTime($date=false) {
         $date        = ($date) ? $date : date('H:i:s');
-        $defaults    = self::getApplication('default');
+        $defaults    = self::application('default');
         $time_format = isset($defaults['time_format']) ? $defaults['time_format'] : false;
         return $time_format ? date($time_format, strtotime($date)) : $date;
     }
@@ -164,7 +164,7 @@ class Environment {
      */
     public static function formatTimestamp($date=false) {
         $date        = ($date) ? $date : date('Y-m-d H:i:s');
-        $defaults    = self::getApplication('default');
+        $defaults    = self::application('default');
         $time_format = isset($defaults['timestamp_format']) ? $defaults['timestamp_format'] : false;
         return $time_format ? date($time_format, strtotime($date)) : $date;
     }
@@ -176,7 +176,7 @@ class Environment {
      */
     public static function namespace() {
         if (!self::$project) {
-           self::$project = self::getProject();
+           self::$project = self::project();
         }
         return (isset(self::$project->namespace)) ? self::$project->namespace : '';        
     }
@@ -355,7 +355,7 @@ class Environment {
      * @return type
      */
     public static function applicationXML() {
-        $project = self::getProject();
+        $project = self::project();
         $file    = 'Code/'.$project->package.'/'.$project->module.'/etc/application.xml';
         return file_exists($file) ? simplexml_load_string(file_get_contents($file)) : new stdClass();
     }
@@ -366,7 +366,7 @@ class Environment {
      * @return string
      */
     public static function applicationXMLLocation() {
-        $project = self::getProject();
+        $project = self::project();
         return 'Code/'.$project->package.'/'.$project->module.'/etc/application.xml';
     }
     
@@ -473,7 +473,7 @@ class Environment {
      */
     public static function serialNumber() {
         if (!self::$project) {
-           self::$project = self::getProject();
+           self::$project = self::project();
         }
         return (isset(self::$project->serial_number)) ? self::$project->serial_number : '';
     }
@@ -635,7 +635,7 @@ class Environment {
      * @return type
      */
     public static function project($node=false) {
-        return self::getProject($node);
+        return self::project($node);
     }    
     
     /**
@@ -660,7 +660,7 @@ class Environment {
      * @param type $dontUseCache
      * @return type
      */
-    public static function getApplication($node=false,$dontUseCache=false) {
+    public static function application($node=false,$dontUseCache=false) {
         $app = self::loadApplicationMetaData($dontUseCache);
         if ($node) {
             $app = is_array($node) ? self::recurse($app,$node) : (isset($app->$node) ? $app->$node : null);

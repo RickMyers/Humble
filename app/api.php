@@ -39,13 +39,13 @@
     $namespace       = $_GET['humble_api_namespace'] ?? false;
     $entity_alias    = $_GET['humble_api_entity']    ?? false;
     $action          = $_GET['humble_api_method']    ?? false;
-    $project         = Environment::getProject();
+    $project         = Environment::project();
     \Humble::_namespace($namespace);
     \Humble::_controller($entity_alias);
 
     //--------------------------------------------------------------------------
     //Lets check to see if this API is enabled in the application.xml file
-    $status          = Environment::getApplication('api',true);
+    $status          = Environment::application('api',true);
     if (!isset($status['enabled']) || !(int)$status['enabled']) {
         errorOff('API is disabled');
     }

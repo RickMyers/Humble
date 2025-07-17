@@ -36,7 +36,7 @@ class Log extends Helper
      */
     public function __construct() {
         parent::__construct();
-        $this->project          = Environment::getProject();
+        $this->project          = Environment::project();
         $source                 = ($this->project->namespace === 'humble') ? 'application.json' : 'cadence.json';
         $config                 = json_decode(file_get_contents('Code/'.$this->project->package.'/'.$this->project->module.'/etc/'.$source));
         $this->logs['cadence']  = $config->log->location;
@@ -136,7 +136,7 @@ class Log extends Helper
      */
     public function availableUserLogs() {
         $logs = [];
-        $project = \Environment::getProject();
+        $project = \Environment::project();
         $users = '../../logs/'.$project->namespace.'/users';
 
         $dh = dir($users);

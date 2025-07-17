@@ -197,7 +197,7 @@ class Utility extends Model
     public function createComponent() {
         $data                   = Humble::entity('admin/users')->setId($this->getUid())->load();
         $user                   = Humble::entity('admin/user/identification')->setId($this->getUid())->load();
-        $project                = Environment::getProject();
+        $project                = Environment::project();
         $module                 = Humble::module($this->getNamespace());
         $custom_root            = 'Code'.DIRECTORY_SEPARATOR.$project->package.DIRECTORY_SEPARATOR.$project->module.'/lib/sample/component';
         $module_root            = 'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module['module'].'/lib/sample/component';
@@ -293,8 +293,8 @@ class Utility extends Model
             $user = Humble::entity('admin/user/identification')->setId($this->getAdminId())->load();
         }
         //need to look for other custom controller template as well...
-        $project        = \Environment::getProject();
-        $application    = \Environment::getApplication();
+        $project        = \Environment::project();
+        $application    = \Environment::application();
         $engine         = $this->getEngine() ? $this->getEngine() : ($application['default']['templater'] ?? "Smarty"); //check for what the default templating engine is and if not found, default to Smarty
         $templates      = [];
         $main           = Humble::module($project->namespace);
@@ -398,7 +398,7 @@ class Utility extends Model
      * Creates a copy of the component templates in the main modules directory structure
      */
     public function clone() {
-        if ($namespace = \Environment::getProject('namespace')) {
+        if ($namespace = \Environment::project('namespace')) {
             if ($module = Humble::module($namespace)) {
                 $base = 'Code/Framework/Humble/lib';
                 $dest = 'Code'.DIRECTORY_SEPARATOR.$module['package'].''.DIRECTORY_SEPARATOR.$module['module'].'/lib';

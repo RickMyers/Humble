@@ -102,6 +102,10 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/index.tpl"
         },    
         {
+            "source": "/lib/sample/install/Views/maint.html",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/Views/&&CONTROLLER&&/Smarty/maint.tpl"
+        },         
+        {
             "source": "/lib/sample/install/Views/template.tpl",
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/template.tpl"
         },    

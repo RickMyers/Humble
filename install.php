@@ -636,7 +636,7 @@ switch ($method) {
         postUpdate('Complete','Finished',100);
         file_put_contents('../install.log',$log);
         @unlink('../install_status.json');
-        //no create the admin app
+        //now create the admin app
         $cmd = 'php CLI.php --admin-apps ns='.$project->namespace.' nm='.$app;
         postUpdate('Creating Admin App');
         exec($cmd,$results,$rc);

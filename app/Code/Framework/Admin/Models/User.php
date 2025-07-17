@@ -145,10 +145,10 @@ class User extends Model
     public function routeToHomePage($EVENT=false) {
         if ($EVENT!==false) {
             //just duplicating for now... not sure if I want special "polymorphic" behavior for this if passed an event
-            $project = Environment::getProject();
+            $project = Environment::project();
             header('Location: '.$project->landing_page);
         } else {
-            $project = Environment::getProject();
+            $project = Environment::project();
             header('Location: '.$project->landing_page);
         }
     }

@@ -49,7 +49,7 @@ class HumbleException {
             $ac = Humble::_action();
             $rq = print_r($_REQUEST,true);
             $filename = '';
-            if (\Environment::getApplication('exceptions')=='JSON') {
+            if (\Environment::application('exceptions')=='JSON') {
                 header('Content-Type: application/json');
                 $message = strip_tags($e->getMessage());
                 $JSON = <<<JSON

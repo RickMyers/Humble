@@ -252,7 +252,7 @@ class Compiler extends Directory
             case "crypt" :
                 //need to think this through with a salt and all that
                 print($this->tabs().'if (isset('.$source.'["'.$field.'"]) && ('.$source.'["'.$field.'"])) {'."\n");
-                print($this->tabs(1).$source.'["'.$field.'"] = openssl_encrypt('.$source.'["'.$field.'"]'.',"aes-128-ctr",Environment::getApplication("serial_number"),0,$currentModel->iv());'."\n");
+                print($this->tabs(1).$source.'["'.$field.'"] = openssl_encrypt('.$source.'["'.$field.'"]'.',"aes-128-ctr",Environment::application("serial_number"),0,$currentModel->iv());'."\n");
                 print($this->tabs(-1)."}\n");
                 break;
             case "json" :
@@ -895,7 +895,7 @@ class Compiler extends Directory
         if ($assign) {
             print($this->tabs().'$'.$assign.' = ');
         }
-        print('$models["'.$assign.'"] = \Environment::getProject("'.$var.'");'."\n");
+        print('$models["'.$assign.'"] = \Environment::project("'.$var.'");'."\n");
     }
     
     /**
@@ -909,7 +909,7 @@ class Compiler extends Directory
         if ($assign) {
             print($this->tabs().'$'.$assign.' = ');
         }
-        print('$models["'.$assign.'"] = \Environment::getApplication("'.$var.'");'."\n");
+        print('$models["'.$assign.'"] = \Environment::application("'.$var.'");'."\n");
     }    
     
     /**
