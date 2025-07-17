@@ -272,9 +272,6 @@ class Compiler extends Directory
      * @throws \Exceptions\ControllerParameterException
      */
     private function processParameter($parameter)  {
-        if ($parameter['name'] == 'created') {
-            $a = 1;
-        }
         $node   = $this->elements[count($this->elements)-1];
         $source = '$_REQUEST'; $custom = false;
         $isFile = false;
@@ -822,7 +819,11 @@ class Compiler extends Directory
      * @param string $node
      */
     private function processView($node) {
-        print($this->tabs().'$view'." = '".$node['name']."';\n");
+        if (!isset($node['name']) || $node['name']=='') {
+            print($this->tabs().'$skipView = true;'."\n");
+        } else {
+            print($this->tabs().'$view'." = '".$node['name']."';\n");
+        }
     }
 
     /**

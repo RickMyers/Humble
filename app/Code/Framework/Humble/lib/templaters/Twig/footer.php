@@ -49,8 +49,10 @@ foreach ($chainActions as $idx => $action) {
             foreach ($views as $v) {
                 manageView($controller,$templater,$v);
             }
-        } else {        
-            manageView($chainControllers[$idx],$templater,($view!==false) ? $view : $action);
+        } else { 
+            if (!$skipView) {
+                manageView($chainControllers[$idx],$templater,($view!==false) ? $view : $action);
+            }
         }
     }
 }

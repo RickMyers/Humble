@@ -214,7 +214,6 @@ class Event  {
             $this->_stages[$x-1]['finished'] = time();
         }
         $this->_completed(true);
-       // print_r($this->_stages);
         return $this;
     }
 
@@ -540,7 +539,7 @@ class Event  {
     }
 
     /**
-     * Magic method to handle non-existant methods being invoked
+     * Magic method to handle non-existent methods being invoked
      *
      * Whenever a method is called that doesn't exist, this method traps the name
      * of the method, and any arguments.
@@ -564,8 +563,6 @@ class Event  {
      * When we "clone" (or copy) an event, this method is called, and it lets us update the mongo_id so we dont get a duplicate while also maintaining a way to identify this events "parent"
      */
     public function __clone() {
-        //$this->_id($this->_id().$this->instance);            //assign generated id to Event ID
-        //ok, i really need to do this, but when?
         $this->instance = ++self::$instances;
     }
 }

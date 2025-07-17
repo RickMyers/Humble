@@ -14,7 +14,7 @@
             }
             require_once($template);
         } else {
-            print('not found');
+            print('PHP Template Not Found'."\n");
         }
     }
     if (!$abort) {
@@ -27,7 +27,9 @@
             processMethod($action);
         }
         if (!$abort) {
-            manageView($chainControllers[$idx],$templater,(($view!==false) ? $view : $method));
+            if (!$skipView) {
+                manageView($chainControllers[$idx],$templater,(($view!==false) ? $view : $method));
+            }
         }
     }    
 ?>

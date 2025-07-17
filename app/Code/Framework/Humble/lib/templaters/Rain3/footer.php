@@ -36,7 +36,9 @@ foreach ($chainActions as $idx => $action) {
         processMethod($action);
     }
     if (!$abort) {
-        manageView($chainControllers[$idx],$templater,($view!==false) ? $view : $action);
+        if (!$skipView) {
+            manageView($chainControllers[$idx],$templater,($view!==false) ? $view : $action);
+        }
     }
 }
 ?>

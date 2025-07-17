@@ -14,6 +14,7 @@ if (!isset($origin) || ($origin !=='front_controller')) {
 $models             = [];
 $view               = false;
 $views              = [];
+$skipView           = false;
 $chainActions       = [];
 $chainControllers   = [];
 $abort              = false;
