@@ -635,7 +635,7 @@ class Environment {
      * @return type
      */
     public static function project($node=false) {
-        return self::project($node);
+        return self::getProject($node);
     }    
     
     /**
