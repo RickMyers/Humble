@@ -150,7 +150,8 @@
         <application />
         <exception />
         <abort />
-        <header />        
+        <header />  
+        <assign />      
     </case>
     <default>
         <comment />
@@ -172,7 +173,8 @@
         <application />
         <exception />
         <abort />
-        <header />        
+        <header />
+        <assign />        
     </default>
     <parameter />
 </tags>

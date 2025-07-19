@@ -86,10 +86,10 @@ class Event {
      * @param string $eventName
      * @return boolean
      */
-    public static function trigger($EVENT=false,$eventName=false) {
-        if ($EVENT && $eventName) {
+    public static function trigger($eventName=false,$data=[]) {
+        if ($eventName) {
             $trigger = self::getTrigger();
-            return $trigger($EVENT,$eventName);
+            return $trigger->emit($eventName,$data);
         }
         return false;
     }
