@@ -6,13 +6,19 @@ Admin Users Actions
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="users" use="Twig" author="rmyers Rick" email="rick@humbleprogramming.com">
-    <actions blocking="ON" response="false">
-        <action name="app">
+    <actions blocking="off" response="false">
+        <action name="app" passalong='window_id'>
             <description>The App Home Page</description>
             <!-- Entity, Helper, Model, Conditional declarations begin here -->
         </action>
 
         <!-- ############################################################### -->
 
+        <action name="list" response="true" output="JSON">
+            <description>Generates a list of users</description>
+            <entity class="users" resource="Userlist" rows="rows" page="page" >
+                
+            </entity>
+        </action>
     </actions>
 </controller>

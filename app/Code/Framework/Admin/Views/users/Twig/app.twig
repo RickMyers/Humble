@@ -1,85 +1,64 @@
-<div id="users_list_{{ window_id }}">
-</div>
+
 <script type="text/javascript"> 
     //This is for handling "multiplicity", as in multiple explorer apps open at one time
     Humble.admin['users'] = (!Humble.admin['users']) ? {} : Humble.admin['users'];
     Humble.admin['users']['{{ window_id }}'] = Vue.createApp({
         template: Humble.template('admin','users/app'),
-        app: "#users_list_{{ window_id }}",
+        app: "#users_list_body",
         data() {
                 return {
                     window_id: "{{ window_id }}",
-                    files: [
+                    starts_with: "",
+                    page: 1,
+                    rows: 25,
+                    role_id: false,
+                    users: [
                         
+                    ],
+                    roles: [
+                    
                     ]
                 }
             },
         mounted() {
-           //new EasyEdits('/edits/admin/explorer','explorer');
-           this.listFiles('/');
+            console.log('mounted');
+            //this.listUsers();
         },
         methods: {
-            listFiles(dir) {
+            listUsers() {
                 var me = this;
-                //dir = (!dir) ? '/' : dir;
-                let cwd = $('#explorer_path').val();
-                if (typeof dir === "string" && (dir !== '/') && (dir !== '')) {
-                    cwd += (cwd === '/') ? dir : "/"+dir;
-                } 
-                $('#explorer_path').val(cwd);                
-                (new EasyAjax('/admin/explorer/filelist')).addForm('explorer_path_form').then((response) => {
-                    me.files = JSON.parse(response);
+                (new EasyAjax('/admin/users/list')).addForm('user_list_form').then((response) => {
+                    let result = JSON.parse(response);
+                    if (result.users) {
+                        me.users = result.users;
+                    }
+                    if (result.roles) {
+                        me.roles = result.roles;
+                    }
                 }).post();
+            },
+            startsWith(letter) {
+                $('#')
+                alert('t');
+            },
+            promoteUser() {
+            },
+            demoteUser() {
+            },
+            assignRole() {
             },
             upDirectory() {
-                let cwd = $('#explorer_path').val();
-                if (cwd !== '/') {
-                    let dir = cwd.split('/');
-                    if (dir.length>2) {
-                        dir.pop();
-                        cwd = dir.join('/');
-                    } else {
-                        cwd = '/';
-                    }
-                }
-                $('#explorer_path').val(cwd);
-                this.listFiles();
-            },
-            expandDirectory(directory) {
-                this.listFiles(directory);
-            },
-            browseFile(file) {
-                let win = Desktop.semaphore.checkout(true);
-                (new EasyAjax('/admin/explorer/browse')).add('window_id',win.id).add('directory',$('#explorer_path').val()).add('file',file).then((response) => {
-                    win._title('Browse '+file)._open(response);
-                }).post();
-            },
-            editFile(file) {
-                let win = Desktop.semaphore.checkout(true);
-                (new EasyAjax('/admin/explorer/edit')).add('window_id',win.id).add('directory',$('#explorer_path').val()).add('file',file).then((response) => {
-                    win._title('Edit '+file)._open(response);
-                }).post();           
-            },
-            deleteFile(file) {
-                if (confirm('Are you sure you want to delete '+file+'?')) {
-                    let me = this;
-                    (new EasyAjax('/admin/explorer/delete')).add('window_id',win.id).add('directory',$('#explorer_path').val()).add('file',file).then((response) => {
-                       me.listFiles('');
-                    }).post();            
-                }
             }
         }
     });
     var win = Desktop.window.list['{{ window_id }}'];
-    Humble.admin['explorer']['{{ window_id }}'].mount('#'+win.content.id);
+    Humble.admin['users']['{{ window_id }}'].mount('#'+win.content.id);
     win.resize(() => {
-        $('#explorer_file_list').height(win.content.height() - $E('explorer_path_area').offsetHeight - $E('explorer_footer').offsetHeight - 2);
+        $('#user_list_body').height(win.content.height() - $E('user_list_header').offsetHeight - $E('user_list_footer').offsetHeight - 2);
     });
     win.close(((app) => {
         return function () {
             app.unmount();
         };
-    })(Humble.admin['explorer']['{{ window_id }}']));
-    
-
+    })(Humble.admin['users']['{{ window_id }}']));     
 </script>

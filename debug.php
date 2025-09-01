@@ -1,7 +1,7 @@
 <?php
 chdir('app');
 require "Humble.php";
-$state = strtoupper(Environment::getApplication('state'));
+$state = strtoupper(Environment::application('state'));
 if (($state == 'DEVELOPMENT') || ($state == 'DEBUG') || ($state === 'TEST')) {
     phpinfo();    
 } else {
