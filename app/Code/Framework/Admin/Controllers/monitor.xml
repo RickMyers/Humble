@@ -17,7 +17,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         <action name="status" blocking="off" output="JSON"> 
             <description>Returns the status of the system including a process list</description>
             <model namespace="admin" class="monitor" method="systemStatus" response="true">
-                
+                <parameter name="process_name" optional="true" source="request" />
             </model>
         </action>
     </actions>

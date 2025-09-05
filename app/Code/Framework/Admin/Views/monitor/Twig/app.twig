@@ -7,6 +7,8 @@
         data() {
                 return {
                     window_id: "{{ window_id }}",
+                    monitor_timer: null,
+                    process_name: '',
                     system: [
                 
                     ],
@@ -17,34 +19,45 @@
             },
         mounted() {
             this.poll();
+            let me = this;
+            $('#process-search-field').on("keydown",function (evt) {
+                if (evt.keyCode == 13) {
+                    me.process_name = evt.target.value;
+                    window.clearTimeout(me.monitor_timer);
+                    me.poll();
+                }        
+            });
+        },
+        unmounted() {
+            console.log('unmounting monitor');
+            window.clearTimeout(this.monitor_timer);
         },
         methods: {
             poll() {
                 let me = this;
-                (new EasyAjax('/admin/monitor/status')).then((response) => {
+                (new EasyAjax('/admin/monitor/status')).add('process_name',this.process_name).then((response) => {
                     let results = JSON.parse(response);
                     if (results) {
                         me.system     = results.system;
                         me.processes  = results.processes;
-                        window.monitor_timer = window.setTimeout(this.poll,3000);
+                        me.monitor_timer = window.setTimeout(this.poll,3000);
                     }
                 }).post();
             },
             stop() {
-                window.clearTimeout(window.monitor_timer);
+                window.clearTimeout(this.monitor_timer);
             }
             
         }
     });
     var win = Desktop.window.list['{{ window_id }}'];
+    win._title('Process Monitor');
     Humble.admin['monitor']['{{ window_id }}'].mount('#'+win.content.id);
     win.resize(() => {
         $('#monitor_processes').height(win.content.height() - $E('monitor_status').offsetHeight - $E('monitor_footer').offsetHeight - 2);
     });
     win.close(((app) => {
         return function () {
-            //app._component.methods.stop.apply(app);
-            window.clearTimeout(window.monitor_timer);
             app.unmount();
         };
     })(Humble.admin['monitor']['{{ window_id }}']));

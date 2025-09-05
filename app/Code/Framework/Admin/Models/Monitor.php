@@ -114,10 +114,17 @@ class Monitor extends Model
         return $results;
     }
     
-    private function parseProcesses($data=[]) {
+    private function parseProcesses($data=[],$xref=[],$search=false) {
         $processes = [];
         for ($i=7; $i<count($data); $i++) {
-            $processes[] = [
+            $cmd = isset($xref[(int)$data[$i][0]]) ? $xref[(int)$data[$i][0]]: "N/A";            
+            if ($search) {
+                $found = strpos(strtoupper($cmd),strtoupper($search));
+                if (!$found) {
+                    continue;
+                }
+            }
+            $processes[(int)$data[$i][0]] = [
                 "PID"       => $data[$i][0],
                 "owner"     => $data[$i][1],
                 "priority"  => $data[$i][2],
@@ -130,10 +137,12 @@ class Monitor extends Model
                 "mem_prc"   => $data[$i][9],
                 "time"      => $data[$i][10],
                 "command"   => $data[$i][11],
+                "extended"  => $cmd
             ];
         }
         return $processes;
     }
+    
     private function parseStatus($data=[]) {
         //file_put_contents('top.txt',print_r($data,true));
         $status = [];
@@ -164,6 +173,7 @@ class Monitor extends Model
         $status['swap_av']  = $data[4][8];
         return $status;
     }
+
     /**
      * Will take the output from TOP and serialize it into JSON breaking it into two sections, a system section and a processes section
      * 
@@ -171,11 +181,23 @@ class Monitor extends Model
      */
     public function systemStatus() {
         exec('top -n 1 -b',$results,$rc);
-        //exec('ps -aux',$processes,$rc);  //someday xref these 2
-        $results = $this->scrunchResults($results);        
+        exec('ps -aux',$processes,$rc);  
+        $results    = $this->scrunchResults($results);
+        $processes  = $this->scrunchResults($processes);
+        $search     = $this->getProcessName();
+        $xref    = [];
+        $pids = count($processes);
+        for ($j=1; $j<$pids; $j++) {
+            $pid    = (int)$processes[$j][1];
+            $cmd    = '';
+            for ($i=10; $i < count($processes[$j]); $i++) {
+                $cmd .= ' '.$processes[$j][$i];
+            }
+            $xref[$pid] = trim($cmd);
+        }        
         return json_encode($status = [
             'system'    =>$this->parseStatus($results),
-            'processes' =>$this->parseProcesses($results)
+            'processes' =>$this->parseProcesses($results,$xref,$search)
         ],JSON_PRETTY_PRINT);
     }
 }

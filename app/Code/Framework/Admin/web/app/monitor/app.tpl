@@ -1,4 +1,9 @@
 <div id='system_monitor'>
+    <div style="position: absolute; top: 0px; right: 0px">
+        <div class="process-search-box" style="display: inline-block; border-radius: 8px; height: 25px; border: 1px solid #333; padding-left: 30px; background-color: ghostwhite; background-image: url(/images/admin/search.png); background-repeat: no-repeat">
+            <input class="process-search-field" type="text" style="border: 0px; color: #333; background-color: ghostwhite; width: 230px; height: 20px; position: relative; top: 2px" name="process-search-field" id="process-search-field" placeholder="Search..." value="">
+        </div>
+    </div>    
     <div id='monitor_status' class='bg-grey-200 text-lg text-black-800'>
         <div class='text-sm'>
             <div class='w-1/2 inline-block p-0 m-0'>
@@ -122,6 +127,7 @@
             </div>
         </div>           
     </div>
+    <div id="monitor_search"></div>
     <div id='monitor_processes' class='bg-yellow-100 scroll-auto' style='overflow: auto'>
         <table class='table table-striped text-xs'>
             <thead class='p-2'>
@@ -178,7 +184,7 @@
                     <td class='text-center p-2'>{{ process.cpu_prc }} </td>
                     <td class='text-center p-2'>{{ process.mem_prc }} </td>
                     <td class='text-center p-2'>{{ process.time }} </td>
-                    <td class='text-center p-2'>{{ process.command }} </td>
+                    <td class='text-center p-2 cursor-pointer' :title="process.extended">{{ process.command }} </td>
                 </tr>
             </tbody>
         </table>
