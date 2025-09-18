@@ -85,10 +85,10 @@
             "value":            "",
             "required":		true,
             "force":		true,
-            "type":		"text",
-            "style":            "width: 275px",
+            "type":		"combo",
+            "style":            "",
             "classname":        ""
-        },
+        },           
         {
             "active":		true,
             "id":		"db",
