@@ -29,7 +29,6 @@
             });
         },
         unmounted() {
-            console.log('unmounting monitor');
             window.clearTimeout(this.monitor_timer);
         },
         methods: {
@@ -38,8 +37,8 @@
                 (new EasyAjax('/admin/monitor/status')).add('process_name',this.process_name).then((response) => {
                     let results = JSON.parse(response);
                     if (results) {
-                        me.system     = results.system;
-                        me.processes  = results.processes;
+                        me.system        = results.system;
+                        me.processes     = results.processes;
                         me.monitor_timer = window.setTimeout(this.poll,3000);
                     }
                 }).post();

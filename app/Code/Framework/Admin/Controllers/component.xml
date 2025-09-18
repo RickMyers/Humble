@@ -44,7 +44,7 @@
 
         <action name="categories" output="json">
             <description>Will generate a list of categories that have been used before  </description>
-            <entity namespace="humble" class="categories" id="categories" responst="TRUE">
+            <entity namespace="humble" class="categories" id="categories" response="TRUE">
             </entity>
         </action>
 

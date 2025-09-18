@@ -198,7 +198,7 @@ CONFIG;
 }
 
 ?>
-<!--!DOCTYPE html-->
+<!DOCTYPE html>
 <html>
     <head>
         <link rel='stylesheet' type='text/css' href='/web/css/index.css' />
@@ -381,18 +381,26 @@ switch ($method) {
                                     <input type="button" id="install-submit" name="install-submit" value=" Install " />
                                 </fieldset>
 
-                                <fieldset style="display: inline-block; width: 350px; position: relative; margin: 0px" id="div_2"><legend>Database Information</legend>
-                                    <input type='text' placeholder="127.0.0.1:3306" class='installer-form-field' id='dbhost' name='dbhost'  value="<?=$info['MySQL']['Host']?>" /><input type='button' value=' Test ' id='install-test' name='install-test' />
-                                    <div class='installer-field-description'>MySQL Host (localhost:port or leave out port for default)</div>
-
+                                <fieldset style="display: inline-block; width: 350px; margin: 0px" id="div_2"><legend>Database Information</legend>
+                                    <!--input type='text' placeholder="127.0.0.1:3306" class='installer-form-field' id='dbhost' name='dbhost'  value="<?=$info['MySQL']['Host']?>" /-->
+                                    
+                                    <select name="dbhost" id="dbhost" class="installer-form-field">
+                                        <option value=""> </option>
+                                        <option value="127.0.0.1:3306"> MySQL [127.0.0.1:3306]</option>
+                                        <option value="127.0.0.1:1433" disabled="true"> MS SQL Server [127.0.0.1:1433]</option>
+                                        <option value="127.0.0.1:5432" disabled="true"> PostGres [127.0.0.1:5432]</option>                                        
+                                        <option value="SQLLite" disabled="true"> SQLLite </option>                                        
+                                    </select><input type="text" name="dbhost_combo" id="dbhost_combo" /><input type='button' value=' Test ' id='install-test' name='install-test' />
+                                    <div class='installer-field-description'>DB Host (localhost:port or leave out port for default)</div>
+                                    
                                     <input type='text' class='installer-form-field' id='db' name='db'  value="<?=$info['MySQL']['Database']?>"/>
-                                    <div class='installer-field-description'>MySQL Database Name</div>
+                                    <div class='installer-field-description'>Database Name</div>
 
                                     <input type='text' class='installer-form-field' id='userid' name='userid' value="<?=$info['MySQL']['User']?>" />
-                                    <div class='installer-field-description'>MySQL User Id</div>
+                                    <div class='installer-field-description'>Database User Id</div>
 
                                     <input type='password' class='installer-form-field' id='password' name='password' value="<?=$info['MySQL']['Password']?>" />
-                                    <div class='installer-field-description'>MySQL Password</div>
+                                    <div class='installer-field-description'>Database Password</div>
 
                                     <input type='text' placeholder="127.0.0.1:27017" class='installer-form-field' id='mongo' name='mongo' value="<?=$info['MongoDB']['Host']?>"/><input type="button" value=" Test " id='mongo-test' name='mongo-test' />
                                     <div class='installer-field-description'>MongoDB Host</div>
@@ -542,7 +550,7 @@ switch ($method) {
             'factory_name'  => $project->factory_name
         ];
 
-        $context = stream_context_create(['http'=>['method'=>'POST','header'=>'Content-type: application/json' ,'content'=>json_encode($registration_data)]]);
+        $context  = stream_context_create(['http'=>['method'=>'POST','header'=>'Content-type: application/json' ,'content'=>json_encode($registration_data)]]);
         $response = file_get_contents($project->framework_url.'/account/registration/activation',false,$context);    
         
         @mkdir('../Settings/'.$project->namespace,0775,true);

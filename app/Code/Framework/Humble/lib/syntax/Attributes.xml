@@ -336,6 +336,7 @@
                 </values>
             </source>
             <value   required="false" purpose="" default="" />
+            <type   required="false" purpose="" default="" />
             <format  required="false" purpose="" default="" >
                 <values>
                     <datestamp alias="date" />
