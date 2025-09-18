@@ -9,7 +9,7 @@
         <action />
         <default />
     </actions>        
-    <action>
+    <action required="description">
         <comment />
         <description required="true" />
         <model />

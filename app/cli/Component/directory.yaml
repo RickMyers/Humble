@@ -51,7 +51,7 @@ g  :
         required:
         optional:
 sc|syntax  : 
-    description: Generate JSON Edits (Not-Implemented)
+    description: Syntax check a controller
     usage:
         linux:   sudo sh ./humble.sh --sc ns=desired_namespace cn=path_to_file
         windows: humble --sc  --sc ns=desired_namespace cn=path_to_file

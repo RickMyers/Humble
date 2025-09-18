@@ -227,6 +227,23 @@ class Workflow extends Model
     }
 
     /**
+     * Can allocate objects and execute methods outside of the app filesystem, very useful for interacting with other frameworks
+     * 
+     * @workflow use(PROCESS) configuration(paradigm/resource/details)
+     * @param type $EVENT
+     */
+    public function remoteResource($EVENT=false) {
+        if ($EVENT) {
+            $data   = $EVENT->load();
+            $cfg    = $EVENT->fetch();
+            
+            $dir    = $cfg['directory'] ?? false;
+            $incl   = $cfg['includes'] ?? false;
+            $class  = $cfg['class'] ?? false;
+            $method = $cfg['method'] ?? false;
+        }
+    }
+    /**
      * Will enable a workflow
      *
      * @workflow use(process)

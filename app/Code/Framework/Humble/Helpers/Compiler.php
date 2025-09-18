@@ -1628,7 +1628,7 @@ SQL;
      * @throws \Exceptions\InvalidControllerSyntax
      */
     public function syntaxCheck($identifier=false) {
-        $parts = explode('/',$identifier);
+        $parts    = explode('/',$identifier);
         $location = str_replace(["\r","\n","\m"],['','',''],((strncasecmp(PHP_OS, 'WIN', 3) === 0)) ? `where php.exe` : `which php`);
         $cmd      = $location.' CLI.php --sc namespace='.$parts[0].' controller='.$parts[1];
         exec($cmd,$output,$rc);

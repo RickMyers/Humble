@@ -55,6 +55,7 @@ class Component extends CLI
             }
             foreach ($attributes as $attribute => $value) {
                 $value = strtolower($value);
+                //print($attribute."\n");
                 if (!isset($schema->$attribute)) {
                     $errors[] = $attribute." is not a valid attribute of ".$node;
                     continue;
@@ -92,9 +93,17 @@ class Component extends CLI
     private static function checkControllerNodes($parent,$nodes,$structure,$validator,$errors) {
         foreach ($nodes as $child => $children) {
             if (!isset($structure->$parent->$child)) {
-                 $errors[] = 'Tag '.$child.' is not a valid child of '.$parent;
+                 $errors[] = 'Tag '.strtoupper($child).' is not a valid child of '.strtoupper($parent);
                  continue;
             }
+            $attr = $structure->$parent->attributes();
+            if (isset($attr->required)) {
+                $req = $attr->required;
+                if (!isset($nodes->$req)) {
+                    $errors[] = strtoupper($req).' is a required child for '.strtoupper($parent).' but was not found'."\n";
+                }
+            }
+            
             foreach (self::tagAttributeCheck($parent,$child,$nodes->$child->attributes(),$validator) as $error) {
                 $errors[] = $error;
             }
@@ -111,8 +120,8 @@ class Component extends CLI
      * @return array
      */
     public static function syntaxCheck() {
-        $args     = self::arguments();
-        $errors   = [];
+        $args       = self::arguments();
+        $errors     = [];
         if ($module = \Humble::module($args['ns'])) {
             if (file_exists($file = 'Code/'.$module['package'].'/'.$module['controllers'].'/'.str_replace('.xml','',$args['cn']).'.xml')) {
                 $source     = simplexml_load_file($file);
