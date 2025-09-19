@@ -99,8 +99,10 @@ class Component extends CLI
             $attr = $structure->$parent->attributes();
             if (isset($attr->required)) {
                 $req = $attr->required;
-                if (!isset($nodes->$req)) {
-                    $errors[] = strtoupper($req).' is a required child for '.strtoupper($parent).' but was not found'."\n";
+                foreach (explode(',',$req) as $required) {                
+                    if (!isset($nodes->$required)) {
+                        $errors[] = strtoupper($required).' is a required child for '.strtoupper($parent).' but was not found'."\n";
+                    }
                 }
             }
             
