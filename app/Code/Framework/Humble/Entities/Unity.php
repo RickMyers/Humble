@@ -624,7 +624,6 @@ SQL;
         } else {
             $query .= ' LIMIT 1'; //load returns the first instance to match only
         }
-
         $row_total  = count($results = $this->query($query));                    //This is where the query happens
         $result     = $results->first();
         if ($this->_polyglot() && ($row_total>0)) {
@@ -662,8 +661,8 @@ SQL;
             }
         }
         $this->_lastResult->snip();
-        return $this->_json() ? json_encode($result,JSON_PRETTY_PRINT) : $result;
-  //      return Humble::array($result); ///someday
+       // require_once "Code/Framework/Humble/Models/HumbleArrayIterator.php";
+        return Humble::model('humble/humbleArrayIterator')->set($result);
     }
 
     /**
