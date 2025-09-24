@@ -222,7 +222,6 @@
                 } else {
                     $zip->addFromString('vhost.conf',processVhost('app/install/Docker/Contribute/vhost.conf',array_merge($_REQUEST,['SERVER_NAME'=>$name])));
                 }
-                $zip->addFromString('docker-compose.yaml',str_replace($srch,$repl,file_get_contents('app/install/Docker/Config/dc_template.txt')));
                 $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents($copttpl[$engine])));
                 $zip->addFromString('docker-compose.yaml',str_replace($srch,$repl,file_get_contents('app/install/Docker/Development/docker_compose.txt')));
                 $zip->addFromString('ports.conf',str_replace(['&&LISTENPORT&&'],[$listen],file_get_contents('app/install/Docker/Config/ports_template.conf')));
