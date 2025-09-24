@@ -197,6 +197,7 @@
         case "docker" :
             $ns       = $_REQUEST['namespace'] ?? 'namespace';
             $engine   = $_REQUEST['engine'] ?? 'MOD_PHP';
+            $purpose  = $_REQUEST['purpose'] ?? 'Development';
             $dir      = str_replace('\\','/',($_REQUEST['destination_folder'] ?? ''));
             $parts    = explode('/',$dir);
             $base     = '';
@@ -210,25 +211,30 @@
             $listen   = ((int)$port===80) ? '' : 'Listen '.$port;
             $srch     = ['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&PORT&&','&&SERVER&&'];
             $repl     = [$ns,$dir,$base.'/',$port,$name];            
-            $vopttpl  = ['PHP_FPM' => 'app/install/Docker/fpm_vhost_template.conf','MOD_PHP'=>'app/install/Docker/vhost_template.conf'];
-            $copttpl  = ['PHP_FPM' => 'app/install/Docker/fpm_container_template.txt','MOD_PHP'=>'app/install/Docker/container_template.txt'];
+            $vopttpl  = ['PHP_FPM' => 'app/install/Docker/Development/FPM/vhost.conf','MOD_PHP'=>'app/install/Docker/Development/MODPHP/vhost.conf'];
+            $copttpl  = ['PHP_FPM' => 'app/install/Docker/Development/FPM/docker_image.txt','MOD_PHP'=>'app/install/Docker/Development/MODPHP/docker_image.txt'];
             $zip      = new ZipArchive();
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
-                $parts  = explode(':',$_REQUEST['project_url']??'');                
-                $zip->addFromString('vhost.conf',processVhost($vopttpl[$engine],array_merge($_REQUEST,['SERVER_NAME'=>$name])));
-                $zip->addFromString('ports.conf',str_replace(['&&LISTENPORT&&'],[$listen],file_get_contents('app/install/Docker/ports_template.conf')));
+                $parts  = explode(':',$_REQUEST['project_url']??'');    
                 $zip->addFromString('.gitignore','*');
+                if ($purpose === 'Development') {
+                    $zip->addFromString('vhost.conf',processVhost($vopttpl[$engine],array_merge($_REQUEST,['SERVER_NAME'=>$name])));
+                } else {
+                    $zip->addFromString('vhost.conf',processVhost('app/install/Docker/Contribute/vhost.conf',array_merge($_REQUEST,['SERVER_NAME'=>$name])));
+                }
+                $zip->addFromString('docker-compose.yaml',str_replace($srch,$repl,file_get_contents('app/install/Docker/Config/dc_template.txt')));
                 $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents($copttpl[$engine])));
-                $zip->addFromString('docker-compose.yaml',str_replace($srch,$repl,file_get_contents('app/install/Docker/dc_template.txt')));
-                $zip->addFromString('docker_instructions.txt',str_replace($srch,$repl,file_get_contents('app/install/Docker/docker_instructions.txt')));
-                $zip->addFromString('d.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/d.bat')));
-                $zip->addFromString('d.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/d.sh')));
-                $zip->addFromString('action.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/action.php')));
-                $zip->addFromString('php.ini',str_replace($srch,$repl,file_get_contents('app/install/Docker/php.ini')));
-                $zip->addFromString('delay_launch.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/delay_launch.php')));
-                $zip->addFromString('start.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/start.sh')));
-                $zip->addFromString('humble',str_replace($srch,$repl,file_get_contents('app/install/Docker/humble')));
-                $zip->addFromString('shell.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/shell.bat')));
+                $zip->addFromString('docker-compose.yaml',str_replace($srch,$repl,file_get_contents('app/install/Docker/Development/docker_compose.txt')));
+                $zip->addFromString('ports.conf',str_replace(['&&LISTENPORT&&'],[$listen],file_get_contents('app/install/Docker/Config/ports_template.conf')));
+                $zip->addFromString('docker_instructions.txt',str_replace($srch,$repl,file_get_contents('app/install/Docker/Config/docker_instructions.txt')));
+                $zip->addFromString('php.ini',str_replace($srch,$repl,file_get_contents('app/install/Docker/Config/php.ini')));
+                $zip->addFromString('d.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/d.bat')));
+                $zip->addFromString('d.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/d.sh')));
+                $zip->addFromString('action.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/action.php')));
+                $zip->addFromString('delay_launch.php',str_replace($srch,$repl,file_get_contents('app/install/Tools/Docker/delay_launch.php')));
+                $zip->addFromString('start.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/start.sh')));
+                $zip->addFromString('humble',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/humble')));
+                $zip->addFromString('shell.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/shell.bat')));
                 $zip->close();
                 print(file_get_contents('temp.zip'));
                 @unlink('temp.zip');

@@ -479,6 +479,7 @@ function dockerMe() {
     if ($project = loadProjectFile()) {
         $purpose = '';
         $engine  = ''; $options = ['1'=>'MOD_PHP','2'=>'PHP_FPM'];
+        $purposes = ['1'=>'Development','2'=>'Contribute'];
         while (!(($purpose==='1') || ($purpose==='2'))) {
             print("\nWhat is the purpose of this installation??\n");
             print("\n1) Application development\n");
@@ -494,7 +495,7 @@ function dockerMe() {
             $engine = scrub(fgets(STDIN));
         }
         $project['engine']  = $options[$engine] ?? 'MOD_PHP';                    //Attach selected engine or MOD_PHP by default
-        $project['purpose'] = $purpose;
+        $project['purpose'] = $purposes[$purpose] ?? 'Development';
         if ($package = HURL($project['framework_url'].'/distro/docker',$project)) {
             file_put_contents('docker_temp.zip',$package);
             $zip = new ZipArchive();
