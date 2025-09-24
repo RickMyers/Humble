@@ -477,7 +477,15 @@ function configProject($dir='',$name='localhost',$port=80,$log='') {
 //------------------------------------------------------------------------------
 function dockerMe() {
     if ($project = loadProjectFile()) {
-        $engine = ''; $options = ['1'=>'MOD_PHP','2'=>'PHP_FPM'];
+        $purpose = '';
+        $engine  = ''; $options = ['1'=>'MOD_PHP','2'=>'PHP_FPM'];
+        while (!(($purpose==='1') || ($purpose==='2'))) {
+            print("\nWhat is the purpose of this installation??\n");
+            print("\n1) Application development\n");
+            print("2) I wish to contribute to the Humble Project\n\n");
+            print("Enter selection here: ");
+            $purpose = scrub(fgets(STDIN));
+        }        
         while (!(($engine==='1') || ($engine==='2'))) {
             print("\nChoose the PHP Engine You'd like to configure from below");
             print("\n\n1) Apache MOD_PHP\n");
@@ -485,7 +493,8 @@ function dockerMe() {
             print("Enter selection here: ");
             $engine = scrub(fgets(STDIN));
         }
-        $project['engine'] = $options[$engine] ?? 'MOD_PHP';                    //Attach selected engine or MOD_PHP by default
+        $project['engine']  = $options[$engine] ?? 'MOD_PHP';                    //Attach selected engine or MOD_PHP by default
+        $project['purpose'] = $purpose;
         if ($package = HURL($project['framework_url'].'/distro/docker',$project)) {
             file_put_contents('docker_temp.zip',$package);
             $zip = new ZipArchive();
