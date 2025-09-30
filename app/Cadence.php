@@ -148,7 +148,7 @@ function snapshotSystem() {
 //------------------------------------------------------------------------------
 function recurseDirectory($dir=[]) {
     $list = [];
-    if ($dh   = dir($dir)) {
+    if ((is_dir($dir)) && ($dh   = dir($dir))) {
         while ($entry = $dh->read()) {
             if (($entry == '.') || ($entry == '..')) {
                 continue;
@@ -160,7 +160,7 @@ function recurseDirectory($dir=[]) {
             }
         }
     } else {
-        die($dir.' was unreadable');
+        logMessage($dir.' was unreadable');
     }
     return $list;
 }

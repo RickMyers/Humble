@@ -366,12 +366,13 @@
                         <div onclick="Administration.create.controller()" class="drop-shadow-xl flex-initial basis-1/5 bg-blue-600 text-white p-2 rounded-3xl cursor-pointer hover:bg-blue-500 tracking-wider text-center" title="Create New Controller"><span class="text-xl font-bold">+</span> Controller</div>
                         <div onclick="Administration.create.component()"  class="drop-shadow-xl flex-initial basis-1/5 bg-blue-600 text-white p-2 rounded-3xl cursor-pointer hover:bg-blue-500 tracking-wider text-center" title="Create New Component (Model, Entity, or Helper)"><span class="text-xl font-bold">+</span> Component</div>
                     </div>
-                       {% for package, modules in installer.getModules() %}
+                        {% for package, modules in installer.getModules() %}
                             <div class='w-full bold pt-2 pb-2 text-lg clear-both font-black border-2 border-solid border-black bg-white'>Package: <b> {{ package }} </b></div><div class='h-1'></div>
                             {% for module in modules %}
                                 {% set data = directory.moduleInformation(module.namespace) %}
                                 {% set tw_installed = tailwind.check(module.namespace) %}   
-                                <div class='w-auto text-md inline-block mr-2 border-black border-2'>
+                                
+<div class='w-auto text-md inline-block mr-2 border-black border-2'>
                                     <div class='from-gray-50 pt-2 pb-2'>
                                         <div class="float-right mr-1">   
                                             <table>
@@ -497,7 +498,7 @@
                                             </tr>
                                         </table>
                                     </div>
-                                </div>
+                                </div>                             
                             {% endfor %}
                         {% endfor %}
                                                     

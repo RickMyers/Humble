@@ -68,6 +68,7 @@ class Admin extends Helper
         $data   = [];
         if ($namespace) {
             $data = Humble::entity('humble/modules')->setNamespace($namespace)->load(true);
+            $data = $data->getArrayCopy();
         }
         return $data;
     }
