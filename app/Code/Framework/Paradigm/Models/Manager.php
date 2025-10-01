@@ -29,7 +29,10 @@ class Manager extends Model
         'system'    => true,
         'exception' => true,
         'file'      => true,
-        'terminus'  => true
+        'terminus'  => true,
+        'operation' => true,
+        'trigger'   => true,
+        'begin'     => true
     ];
     
     public function __construct()    {
@@ -104,7 +107,7 @@ class Manager extends Model
                 if ($var !== '_id') { //do we still need to do this? I still think so...
                     $args[$var] = $val;
                 }
-            }                
+            }     
             if (isset($results['configured']) && $results['configured']) {
                 $this->setResults($results);
                 $element = Humble::entity('paradigm/workflow/components');
@@ -114,6 +117,7 @@ class Manager extends Model
                 $element->setComponent(isset($results['component']) ? $results['component'] : false);
                 $element->setMethod(isset($results['method']) ? $results['method'] : false);
                 $data    = $element->load(true);
+                $data    = $data->getArrayCopy();
                 $this->setData($data);
                 $this->setElement($element);
             }
