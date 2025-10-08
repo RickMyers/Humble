@@ -24,9 +24,11 @@ var Form = (function ($) {
                 if (event.data.preprocess) {
                     event.data.preprocess(this,event);
                 }
-                var form     = $E(event.data.form.id);
+                console.log('form data');
+                console.log(event.data.form[0]);
+                var form     = event.data.form[0];
                 if (!form) {
-                    form = event.data.form[0];
+                    form = $E(event.data.form.id);
                 }
                 var ao      = new EasyAjax('/bogus/url');
                 var id       = event.data.element_id;
@@ -37,9 +39,8 @@ var Form = (function ($) {
                 var name     = ';'
                //console.log(form.elements);
                 for (var i in form.elements) {
-                    
                     field    = form.elements[i];
-                    if ((!field) || (!field.name) || (!field.id) || (typeof(field) === "function")) {
+                    if ((!field) || (!field.name) || (typeof(field) === "function")) {
                         continue;
                     }
                     name = (field.name) ? field.name : i;

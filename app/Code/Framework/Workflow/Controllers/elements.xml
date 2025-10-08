@@ -60,10 +60,13 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="trigger">
+        <action name="trigger" passalong="window_id,component,method">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <entity namespace='paradigm' class='events' id='events'>
             </entity>
+            <mongo namespace="paradigm" class="elements" id='element'>
+                <parameter name='id' source='post' default='' />
+            </mongo>                 
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
                 <parameter name='window_id' source='post' required='true' default='' />

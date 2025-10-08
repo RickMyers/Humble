@@ -52,7 +52,10 @@
     <support>
         <name>{$support_name}</name>
         <email>{$support_email}</email>  
-    </support>    
+    </support>
+    <external comment="List of directories outside of the framework that are to be scanned for workflow components">
+        <directory>/var/www/otherframework/app</directory>
+    </external> 
     <status>
         <enabled>{$enabled}</enabled>           <!-- Switch to 0 to take the application offline -->
         <quiescing>{$quiescing}</quiescing>     <!-- switch to 1 to being the process of taking the system offline -->

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+
+Event Trigger Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="trigger" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="off" response="true">
+        <action name="save">
+            <description>Sets a trigger</description>
+            <model namespace='paradigm' class='manager' id='manager' method='updateElement'>
+                <parameter name='data'      source='post' required='true' default='' />
+            </model>            
+            <model namespace="workflow" class='trigger' id='trigger' method='save'>
+                <parameter name='data'     source='post' required='true' default='' />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

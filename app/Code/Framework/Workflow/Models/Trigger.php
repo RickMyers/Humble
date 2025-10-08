@@ -50,4 +50,22 @@ class Trigger extends Model
         $el->setEnabled($enabled)->save();
         $listen_id  = \Humble::entity('paradigm/event/listeners')->setNamespace($d['namespace'])->setEvent($d['method'])->setWorkflowId($data['workflow_id'])->setActive($enabled)->save();
     }
+    
+    /**
+     * Preprocesses the JSON passed fields and then saves the listener
+     */
+    public function save() {
+        if ($data = $this->getData()) {
+            if ($data = json_decode($data,true)) {
+                $namespace      = $data['namespace'] ?? '';
+                $workflow_id    = $data['workflow_id'] ?? null;
+                $event          = $data['event'] ?? null;
+                $active         = $data['active'] ?? 'N';
+                Humble::entity('paradigm/event/listeners')->setNamespace($namespace)
+                        ->setWorkflowId($workflow_id)->setEvent($event)->setActive($active)->save();
+            }
+        }
+        
+        
+    }
 }
