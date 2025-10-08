@@ -242,6 +242,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <!-- ############################################################### -->
         
         <action name="install">
+            <description>Installs something </description>
             <model namespace="humble" class="permissions" id="permissions">
                 <parameter name="user_id" value="admin_id" source="session" required="true" />
             </model>
@@ -281,6 +282,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name='namespace' source='request' required='true' />
                 <parameter name='uid' source='session' required='true' />
             </model>
+        </action>
+        
+        <action name='pgmtest' event='programTest' comment='Will call a program'>
+            <description>Test Program</description>
         </action>
         
     </actions>

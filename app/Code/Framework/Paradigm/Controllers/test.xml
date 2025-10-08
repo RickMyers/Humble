@@ -37,8 +37,18 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             </mongo>
         </action>
         
+        <!-- ############################################################### -->
+        
         <action name="user">
+            <description>Something User</description>
             <entity namespace="default" class="users" id="user"></entity>
+        </action>
+        
+        
+        <!-- ############################################################### -->
+        
+        <action name="program" event="testProgramExecution" comment="Will be used to test the program execution" response="true">
+            <description>Just a test trigger</description>
         </action>
         
     </actions>
