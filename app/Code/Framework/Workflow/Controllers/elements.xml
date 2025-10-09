@@ -302,7 +302,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name='save'>
+        <action name='save' passalong='window_id'>
             <description>Saves the initial component selection, not the configuration, and loads the configuration</description>
             <model namespace="workflow" class='manager' id='manager' method='saveComponent'>
                 <parameter name='data'      source='post' required='true' default='' />

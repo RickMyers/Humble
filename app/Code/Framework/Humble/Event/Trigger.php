@@ -150,7 +150,10 @@ class Trigger  {
                 }
             }
             foreach (Humble::entity('paradigm/event/listeners')->setNamespace($this->_namespace())->setEvent($eventName)->setActive('Y')->fetch() as $diagram) {
-                if (count(Humble::entity('paradigm/workflows')->setWorkflowId($diagram['workflow_id'])->setActive('Y')->load(true))) {
+                $wf = Humble::entity('paradigm/workflows')->setId($diagram['workflow_id'])->setActive('Y')->load(true);
+                if (count($wf)) {
+                    //@TODO: Fix this... inconsistency caused this...  confusion on what workflow_id is
+                    $diagram['workflow_id']  = $wf['workflow_id'];
                     $results[$diagram['id']] = $this->runWorkflow($diagram,$cleanEvent);
                     if ($cancelBubble) {
                         $this->_error('bubbling was canceled');
