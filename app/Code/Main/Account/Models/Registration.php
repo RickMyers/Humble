@@ -61,22 +61,25 @@ class Registration extends Model
      * @return string
      */
     public function registerNew($details) {
-        $serial_number  = '';
+        $serial_number  = false;
         $project_name   = $details['project_name'];
         $email          = $details['author'] ?? $details['email'];
         $URL            = $details['project_url'];
         $factory        = $details['factory_name'];
         $orm            = Humble::entity('account/registrations');
         if ($data = $orm->setEmail($email)->setProject($project_name)->load(true)) {
-            $serial_number = $data['serial_number'];
-        } else {
+            $serial_number = $data['serial_number'] ?? false;
+        } 
+        if (!$serial_number) {
             $not_found = true; $ctr = 0;
             while ($not_found && (++$ctr<10)) {                                 //we are going to try a max of 9 times to come up with a unique 16 digit serial number
                 if (!$not_found  = $orm->reset()->setSerialNumber($serial_number)->load(true)) {
                     $serial_number = $this->serialNumber();
                 }
             }
-            $orm->reset()->setSerialNumber($serial_number)->setEmail($email)->setProject($project_name)->setProjectUrl($URL)->setFactory($factory)->setProjectDetails($this->getProjectDetails())->save();
+            if ($serial_number) {
+                $orm->reset()->setSerialNumber($serial_number)->setEmail($email)->setProject($project_name)->setProjectUrl($URL)->setFactory($factory)->setProjectDetails($this->getProjectDetails())->save();
+            }
         }
         return $serial_number;
     }
