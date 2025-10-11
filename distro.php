@@ -230,7 +230,7 @@
                 $zip->addFromString('d.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/d.bat')));
                 $zip->addFromString('d.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/d.sh')));
                 $zip->addFromString('action.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/action.php')));
-                $zip->addFromString('delay_launch.php',str_replace($srch,$repl,file_get_contents('app/install/Tools/Docker/delay_launch.php')));
+                $zip->addFromString('delay_launch.php',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/delay_launch.php')));
                 $zip->addFromString('start.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/start.sh')));
                 $zip->addFromString('humble',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/humble')));
                 $zip->addFromString('shell.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/shell.bat')));
