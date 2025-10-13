@@ -71,9 +71,10 @@ class Registration extends Model
             $serial_number = $data['serial_number'] ?? false;
         } 
         if (!$serial_number) {
-            $not_found = true; $ctr = 0;
-            while ($not_found && (++$ctr<10)) {                                 //we are going to try a max of 9 times to come up with a unique 16 digit serial number
-                if (!$not_found  = $orm->reset()->setSerialNumber($serial_number)->load(true)) {
+            $found = true; $ctr = 0;
+            $serial_number = $this->serialNumber();
+            while ($found && (++$ctr<10)) {                                 //we are going to try a max of 9 times to come up with a unique 16 digit serial number
+                if ($found = count($orm->reset()->setSerialNumber($serial_number)->load(true))!==0) {
                     $serial_number = $this->serialNumber();
                 }
             }
