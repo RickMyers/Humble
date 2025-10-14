@@ -85,7 +85,7 @@
             "value":            "",
             "required":		true,
             "force":		true,
-            "type":		"combo",
+            "type":		"text",
             "style":            "",
             "classname":        ""
         },           
