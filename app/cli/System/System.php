@@ -175,8 +175,10 @@ class System extends CLI
         print("\nPATCH REPORT\n########################################################\n\nMatched Files: ".$matched."\n\nThe following files will be updated by this process:\n\n");
         print("\nThe following files are on the local manifest indicating they should be IGNORED in the patch:\n\n");
         $c=0;
-        foreach ($ignored as $idx => $file) {
-            print(str_pad(++$c,5,"0",STR_PAD_LEFT).") ".$file."\n");
+        foreach ($ignored as $file => $ignore) {
+            if ($ignore) {
+                print(str_pad(++$c,5,"0",STR_PAD_LEFT).") ".$file."\n");
+            }
         }
         print("\nThe following files will be patched:\n\n");
         foreach ($changed as $idx => $file) {
@@ -192,7 +194,7 @@ class System extends CLI
         print("Do you wish to continue [yes/no]? ");
         if (strtolower(self::scrub(fgets(STDIN))) === 'yes') {
             $app->version->framework = $version;
-            file_put_contents(Environment::applicationXMLLocation(),$app->asXML());
+            file_put_contents('app/'.Environment::applicationXMLLocation(),$app->asXML());
             foreach ($changed as $file) {
                 file_put_contents($file,$distro->getFromName($file));
             }
