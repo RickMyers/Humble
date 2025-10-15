@@ -174,8 +174,9 @@ class System extends CLI
         ob_start();
         print("\nPATCH REPORT\n########################################################\n\nMatched Files: ".$matched."\n\nThe following files will be updated by this process:\n\n");
         print("\nThe following files are on the local manifest indicating they should be IGNORED in the patch:\n\n");
+        $c=0;
         foreach ($ignored as $idx => $file) {
-            print(str_pad($idx+1,5,"0",STR_PAD_LEFT).") ".$file."\n");
+            print(str_pad(++$c,5,"0",STR_PAD_LEFT).") ".$file."\n");
         }
         print("\nThe following files will be patched:\n\n");
         foreach ($changed as $idx => $file) {
