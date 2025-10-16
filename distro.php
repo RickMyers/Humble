@@ -234,6 +234,8 @@
                 $zip->addFromString('start.sh',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/start.sh')));
                 $zip->addFromString('humble',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/humble')));
                 $zip->addFromString('shell.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/shell.bat')));
+                $zip->addFromString('mongo.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/mongo.bat')));
+                $zip->addFromString('sqldb.bat',str_replace($srch,$repl,file_get_contents('app/install/Docker/Tools/sqldb.bat')));
                 $zip->close();
                 print(file_get_contents('temp.zip'));
                 @unlink('temp.zip');

@@ -477,16 +477,7 @@ function configProject($dir='',$name='localhost',$port=80,$log='') {
 //------------------------------------------------------------------------------
 function dockerMe() {
     if ($project = loadProjectFile()) {
-        $purpose = '';
         $engine  = ''; $options = ['1'=>'MOD_PHP','2'=>'PHP_FPM'];
-        $purposes = ['1'=>'Development','2'=>'Contribute'];
-        while (!(($purpose==='1') || ($purpose==='2'))) {
-            print("\nWhat is the purpose of this installation??\n");
-            print("\n1) Application development\n");
-            print("2) I wish to contribute to the Humble Project\n\n");
-            print("Enter selection here: ");
-            $purpose = scrub(fgets(STDIN));
-        }        
         while (!(($engine==='1') || ($engine==='2'))) {
             print("\nChoose the PHP Engine You'd like to configure from below");
             print("\n\n1) Apache MOD_PHP\n");
@@ -495,7 +486,7 @@ function dockerMe() {
             $engine = scrub(fgets(STDIN));
         }
         $project['engine']  = $options[$engine] ?? 'MOD_PHP';                    //Attach selected engine or MOD_PHP by default
-        $project['purpose'] = $purposes[$purpose] ?? 'Development';
+        $project['purpose'] = ($project->namespace === 'humble') ? 'Contribute' : 'Development';
         if ($package = HURL($project['framework_url'].'/distro/docker',$project)) {
             file_put_contents('docker_temp.zip',$package);
             $zip = new ZipArchive();
@@ -515,6 +506,8 @@ function dockerMe() {
                 file_put_contents('start.sh',$zip->getFromName('start.sh'));
                 file_put_contents('humble',$zip->getFromName('humble'));
                 file_put_contents('shell.bat',$zip->getFromName('shell.bat'));
+                file_put_contents('mongo.bat',$zip->getFromName('mongo.bat'));
+                file_put_contents('sqldb.bat',$zip->getFromName('sqldb.bat'));
                 @exec('dos2unix start.sh');
                 @exec('dos2unix humble');
                 copy('humble','../../humble');
