@@ -44,12 +44,20 @@
             <entity namespace='humble' class='permissions' id='permissions'>
                 <parameter name='admin_id' source='session' required="true" />
             </entity>            
-            <model namespace='humble' class='utility' id='util' method="uninstall">
+            <model assign='result' namespace='admin' class='utility' id='util' method="uninstall">
                 <parameter name='uid' source='session' default = '' />
                 <parameter name='package'   source='post' default = '' />
                 <parameter name='root'      source='post' default = '' />
                 <parameter name='namespace' source='post' default = '' />
             </model>
+            <if assign="result" eq="TRUE">
+                <then>
+                    <output text="Module Uninstalled, you can now delete the module if need be" />
+                </then>
+                <else>
+                    <output text="Error during uninstall, try again, or you might have to do this at the command line" />
+                </else>
+            </if>
 
         </action>
 

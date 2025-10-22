@@ -173,6 +173,10 @@ class MySQL extends ORM implements ORMEngine  {
         }
         if (is_object($resultSet) && $resultSet->num_rows) {
             $resultSet = $this->translateResultSet($resultSet);
+        } else if (is_bool($resultSet)) {
+            //nop, due to the fact that the query method can return "mixed" results, we are just 
+            //making sure that what is returned makes sense.  If a non boolean, or iterator is returned,
+            //we return an array just so that iterators can iterate...
         } else {
             $resultSet = [];
         }

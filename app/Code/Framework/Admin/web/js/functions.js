@@ -651,15 +651,17 @@ var Functions = (() => {
                            $('#admin-lightbox').css('display','block');
                            $('#admin-lightbox-output').html('Working...');
                            ao.then((response) => {
-                               alert(response);
-                               //window.location.reload();
+                               $('#admin-lightbox-output').html(response);
+                               alert('done');
+                               window.location.reload();
                            });
                            ao.post();
                        }
                     },
                     uninstall: function (pkg,root,namespace) {
                        if (confirm('This action will disable and uninstall the module.\n\nAre you sure you wish to continue?')) {
-                           (new EasyAjax('/admin/utilities/uninstall')).add('namespace',namespace).add('root',root).add('package',pkg).then(() => {
+                           (new EasyAjax('/admin/utilities/uninstall')).add('namespace',namespace).add('root',root).add('package',pkg).then((response) => {
+                               alert(response);
                                window.location.reload();
                            }).post();
                        }

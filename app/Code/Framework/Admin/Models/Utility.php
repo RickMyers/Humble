@@ -89,7 +89,7 @@ class Utility extends Model
         $status     = false;
         $installer  = Environment::getInstaller();
         $package    = $this->getPackage();
-        $ns = $this->getNamespace();
+        $ns         = $this->getNamespace();
         $module     = Humble::module($this->getNamespace(),true);
         if ($module['configuration']) {
             $etc        = 'Code'.DIRECTORY_SEPARATOR.$package.DIRECTORY_SEPARATOR.str_replace("_","/",$module['configuration']).'/config.xml';
