@@ -29,7 +29,7 @@ class Settings
     private $cacheHost      = null;
     private $memcache_ip    = '127.0.0.1';
     private $memcache_port  = '11211';
-    protected $secrets_id   = 'HedisRDSSecret';    
+    protected $secrets_id   = '&&SECRET&&';    
 
     /**
      * Let's stick a copy in the cache so we don't have to suffer the performance penalty over and over
@@ -60,7 +60,7 @@ class Settings
     }
     
     /**
-     * Let's go get the credentials from the secrets repository
+     * Let's go get the credentials from the secrets repository, and then store them in Memcache
      *
      * @return array
      */
@@ -68,8 +68,8 @@ class Settings
         $results        = [];
         $credentials    = '';
         $client =  new SecretsManagerClient([
-            'version' => '2017-10-17',
-            'region' => 'us-east-1'
+            'version' => '&&VERSION&&',
+            'region' => '&&REGION&&'
         ]);
         try {
             if ($results = $client->getSecretValue(['SecretId' => $this->secrets_id])) {
@@ -88,22 +88,28 @@ class Settings
         return json_decode($credentials,true);
     }
     
+    /**
+     * Attempts to pull the credentials from cache (fastest) otherwise goes out to S3 to get them
+     */
     public function __construct()    {
         if ($credentials = (($credentials = $this->pullFromCache()) ? $credentials : $credentials = $this->pullFromS3())) {
             $this->userid           = $credentials['username'];
             $this->password         = $credentials['password'];
-            $this->database         = "dashboard";
+            $this->database         = '&&DATABASE&&';
             $this->dbhost           = $credentials['host'];
             $this->mongodb          = 'localhost:27017';
             $this->mongodbUserId    = '';
             $this->mongodbPwd       = '';
-            $this->cacheHost        = '127.0.0.1:11211';
-            $this->smtpUserName     = 'apikey';
+            $this->cacheHost        = $this->memcache_ip.':'.$this->memcache_port;
+            $this->smtpUserName     = '';
             $this->smtpPassword     = '';
             $this->smtpHost         = '';
         }
     }
     
+    /**
+     * Someday...
+     */
     public function reset() {
         
     }
