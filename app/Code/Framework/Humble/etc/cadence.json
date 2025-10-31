@@ -45,7 +45,8 @@
             },
             "models": {
                 "callbacks": {
-                    "scanModelsForChanges": true
+                    "scanModelsForChanges": true,
+                    "scanExternalsForChanges": true
                 },
                 "multiple": 3
             },

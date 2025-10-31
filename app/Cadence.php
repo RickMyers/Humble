@@ -29,6 +29,7 @@ $models                     = [];                                               
 $configs                    = [];                                               //These are the configuration files in the modules to watch
 $systemfiles                = [];                                               //These are the loose files belonging to the framework to watch
 $images                     = [];                                               //These are images contained in the image folder
+$externals                  = [];                                               //These are classes that are not the responsibility of the framework but still want to be included as Paradigm components
 $modules                    = Humble::entity('humble/modules')->setEnabled('Y')->fetch();
 $system                     = Humble::entity('admin/system/monitor');
 $job_queue                  = Humble::entity('paradigm/job/queue');
@@ -59,13 +60,14 @@ if (file_exists($callbacks)) {
 
 //------------------------------------------------------------------------------
 function resetCadence() {
-    global $started, $pid, $cadence, $cadence_ctr,$files, $models, $configs, $systemfiles, $config, $images, $first_time;
+    global $started, $pid, $cadence, $cadence_ctr,$files, $models, $configs, $systemfiles, $config, $images, $first_time, $externals;
     $started                = time();                                           //The time used in all offset calculations
     $pid                    = getmypid();                                       //My process ID
     $cadence_ctr            = 0;                                                //Lets count the beat
     $files                  = [];
     $models                 = [];
     $images                 = [];
+    $externals              = [];
     $first_time             = [
         'images'            => true,
         'models'            => true,
@@ -218,6 +220,17 @@ function scanModelsForChanges() {
         }
         $first_time['models'] = false;
     }
+}
+//------------------------------------------------------------------------------
+function primeExternalsArray() {
+    global $externals;
+}
+//------------------------------------------------------------------------------
+function scanExternalsForChanges() {
+    global $externals;
+    foreach ($externals as $external) {
+        //do something here
+    }    
 }
 //------------------------------------------------------------------------------
 function timedEvents() {

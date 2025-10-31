@@ -14,6 +14,8 @@ use Humble;
 class Updater extends Installer
 {
 
+    private $customAnnotations = ['workflow'=>true,'use'=>true,'tags'=>true,'listen'=>true,'listener'=>true,'event'=>true,'auth'=>true,'authorization'=>true,'conf'=>true,'config'=>true,'cfg'=>true,'configuration'=>true];
+    
     public function __construct()   {
         parent::__construct();
     }
@@ -156,6 +158,125 @@ class Updater extends Installer
             }
         }
         $this->output('DIRECTORY','Finished Generating Directory');
+    }
+    
+    /**
+     * Truncate the paradigm_external_components table
+     */
+    private function deregisterExternalComponents() {
+        print("Deregistering\n");
+    }
+    
+    /**
+     * IMPORTANT: "namespace" in this case is actually the containing directory name
+     * 
+     * @param string $namespace
+     * @param string $classFile
+     */
+    public function scanAndRegisterExternalComponents($namespace=null,$classFile=null) {
+        if ($namespace && $classFile) {
+            $here               = getcwd();
+            $component  = Humble::entity('paradigm/workflow/components');
+            $comment    = Humble::entity('paradigm/workflow/comments');
+            $this->output("EXTERNAL","Processing Class [".$namespace.$classFile."]...");
+            chdir($namespace);
+            $classBase      = str_replace('.php','',$classFile);
+            $class          = new $classBase();
+            $name           = $class->getClassName() ?? $classBase;
+            chdir($here);
+            $reflection     = new \ReflectionClass($name);
+            $methods        = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+            foreach ($methods as $idx => $method) {
+                $m  = new \ReflectionMethod($class,$method->name);
+                $c  = $m->getDeclaringClass();
+                if ($c->name !== $name) {
+                    //this skips any methods belonging to the parent class
+                    continue;
+                }
+                $annotations      = $this->processDocAnnotations($reflection->getMethod($method->name),$method);
+                $authorization    = false;
+                $listener         = false;
+                foreach ($annotations as $annotation) {
+                    $clauses   = explode(' ',$annotation);
+                    //print_r($clauses);die();
+                    foreach ($clauses as $clause) {
+                        //print($clause."\n");
+                        $value = '';
+                        if (strpos($clause,'(') && (strpos($clause,')'))) {
+                            $data  = explode('(',$clause);
+                            $token = $data[0];
+                            $data  = explode(')',$data[1]);
+                            $value = strtolower($data[0]);
+                        } else {
+                            $token = $clause;
+                        }
+                        if (isset($this->customAnnotations[$token])) {
+                            if ($comments = trim($this->processDocComments($reflection->getMethod($method->name),$method))) {
+                                $comment->reset()->setNamespace($namespace)->setClass($classBase)->setMethod($method->name)->setComment($comments)->save();
+                            }                            
+                            $component->reset()->setNamespace($namespace)->setComponent($classBase)->setMethod($method->name);
+                            switch ($token) {
+                                case "workflow"         :   //nop
+                                                            break;
+                                case "use"              :   $uses = explode(',',$value);
+                                                            $this->output("EXTERNAL","     Registering Workflow Element ".$method->name);
+                                                            foreach ($uses as $use) {
+                                                                $use = 'set'.ucfirst(strtolower($use));
+                                                                $component->$use('Y');
+                                                            }
+                                                            break;
+                                case "tags"             :
+                                                            break;
+                                case "listen"           :
+                                case "listener"         :   $listener = true;
+                                                            break;  
+                                case "event"            :   if ($listener) {
+                                                                $this->registerMethodListeners($namespace,$model,$method->name,$value);
+                                                            }
+                                                            break 2;              //this is different from a component so just skip to the next one
+                                case "auth"             :
+                                case "authorization"    :   if ($value == 'true') {
+                                                                $authorization = true;
+                                                            } else if ($value == 'false') {
+                                                                $authorization = false;
+                                                            } else {
+                                                                //throw an exception and stop processing
+                                                            }
+                                                            $component->setAuthorization((($authorization) ? 'Y' : 'N'));
+                                                            break;
+                                case "conf"             :
+                                case "config"           :
+                                case "cfg"              :
+                                case "configuration"    :   $component->setConfiguration($value);
+                                                            $this->configurationInitializationCheck($value);
+                                                            break;
+                                default                 :   break;
+                            }
+                            $component->save();
+                        }
+                    }
+                }
+            }
+            $this->output("EXTERNAL","Finished Processing ".ucfirst($classFile)."...");
+        }
+    }
+    
+    public function scanExternalDirectories() {
+        $this->deregisterExternalComponents();
+        if ($externals = \Environment::application('external')) {
+            foreach ($externals->directory as $idx => $directory) {
+                if (($dh = dir($directory)) !== false) {
+                    while ($entry = $dh->read()) {
+                        if (($entry == '.') || ($entry == '..')) {
+                            continue;
+                        }
+                        print('Scanning for components in '.$directory.$entry."\n");
+                        $this->scanAndRegisterExternalComponents($directory,$entry);
+                    }
+                }
+            }        
+        }
+    
     }
     
     /**

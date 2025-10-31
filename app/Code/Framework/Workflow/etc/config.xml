@@ -67,7 +67,10 @@
             <edits>
                 <process>Workflow/web/edits/process.json</process>
                 <actor>Workflow/web/edits/actor.json</actor>
-                <decision>Workflow/web/edits/decision.json</decision>
+                <internaldecision>Workflow/web/edits/internaldecision.json</internaldecision>
+                <externaldecision>Workflow/web/edits/externaldecision.json</externaldecision>
+                <internalprocess>Workflow/web/edits/internalprocess.json</internalprocess>
+                <externalprocess>Workflow/web/edits/externalprocess.json</externalprocess>                
                 <notification>Workflow/web/edits/notification.json</notification>
                 <email>Workflow/web/edits/mail.json</email>
                 <trigger>Workflow/web/edits/trigger.json</trigger>

@@ -18,7 +18,7 @@
                 title:			"Choose a client or core for namespace",
                 onchange:       function (evt) {
                         if (evt.target.value) {
-                            (new EasyAjax('/workflow/component/objects')).add('namespace',evt.target.value).then((response) => {
+                            (new EasyAjax('/workflow/external/components')).add('namespace',evt.target.value).then((response) => {
                                 EasyEdits.populateSelectBox($E('humble-paradigm-config-external-decision-form-component-&id&'),eval(response));
                             }).post();
                         }
@@ -36,7 +36,7 @@
                     title:		"The object component",
                     onchange:       function (evt) {
                         if (evt.target.value) {
-                            (new EasyAjax('/workflow/component/methods')).add('decision','Y').add('namespace',$('#humble-paradigm-config-external-decision-form-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
+                            (new EasyAjax('/workflow/external/methods')).add('decision','Y').add('namespace',$('#humble-paradigm-config-external-decision-form-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
                                 EasyEdits.populateSelectBox($E('humble-paradigm-config-external-decision-form-method-&id&'),eval(response));
                             }).post();
                         }
@@ -93,7 +93,7 @@
                     value:              "Save",
                     classname:		"settingsButton",
                     onclick:        function (evt) {
-                        if (Edits['decision_&id&'].validate()) {
+                        if (Edits['decision_external_&id&'].validate()) {
                             $('#humble-paradigm-config-external-decision-form-&id&').submit();
                         }
                     },

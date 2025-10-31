@@ -265,7 +265,7 @@ DROP TABLE IF EXISTS `paradigm_workflow_comments`;
 
 CREATE TABLE `paradigm_workflow_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `namespace` char(32) DEFAULT '',
+  `namespace` char(196) DEFAULT '',
   `class` char(64) DEFAULT '',
   `method` char(64) DEFAULT '',
   `comment` varchar(1024) DEFAULT '',
@@ -280,7 +280,7 @@ DROP TABLE IF EXISTS `paradigm_workflow_components`;
 
 CREATE TABLE `paradigm_workflow_components` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `namespace` char(32) NOT NULL,
+  `namespace` char(196) NOT NULL,
   `component` char(64) NOT NULL,
   `method` char(128) NOT NULL,
   `event` char(1) DEFAULT 'N',

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+
+External Component Actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="external" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="namespaces" output="JSON">
+            <description>Namespace/Directories managed by other frameworks</description>
+            <entity assign="namespaces" resource="externalnamespaces" namespace="paradigm" class="workflow/components">
+                
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="components" output="JSON">
+            <description>Components managed by other frameworks</description>
+            <entity assign="components" resource="externalcomponents" namespace="paradigm" class="workflow/components">
+                <parameter name="namespace" source="request" default='' />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="methods" output="JSON">
+            <description>Methods within components managed by other frameworks</description>
+            <entity assign="methods" resource="externalmethods" namespace="paradigm" class="workflow/components">
+                <parameter name="namespace" source="request" default='' />
+                <parameter name="component" source="request" default='' />
+            </entity>
+        </action>                
+    </actions>
+</controller>

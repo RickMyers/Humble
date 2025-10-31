@@ -93,7 +93,7 @@
                     value:              "Save",
                     classname:		"settingsButton",
                     onclick:        function (evt) {
-                        if (Edits['decision_&id&'].validate()) {
+                        if (Edits['decision_internal_&id&'].validate()) {
                             $('#humble-paradigm-config-internal-decision-form-&id&').submit();
                         }
                     },

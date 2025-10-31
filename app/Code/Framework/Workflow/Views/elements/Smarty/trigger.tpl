@@ -97,7 +97,7 @@
 <table style='width: 100%; height: 100%;'>
     <tr>
         <td valign='middle'>
-            <form name='process-form' id='humble-paradigm-config-trigger-form' onsubmit='return false'>
+            <form name='trigger-form' id='humble-paradigm-config-trigger-form-{$manager->getId()}' onsubmit='return false'>
             <input type="hidden" name="window_id" id="window-id" value="{$manager->getWindowId()}" />
             <input type="hidden" name="id" id="element-id" value="{$manager->getId()}" />
             <input type="hidden" name="component" id="component-id" value="Event" />
@@ -111,7 +111,7 @@
             </div>
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
                 <img src='/images/paradigm/clipart/trigger.png' style='float: right' />
-                <select name='namespace' id='humble-paradigm-config-trigger-form-namespace'>
+                <select name='namespace' id='humble-paradigm-config-trigger-form-namespace-{$manager->getId()}'>
                     <option value=''>Please choose from this list</option>
                     {foreach from=$events->uniqueNamespaces() item="event"}
                         {if (!$event.namespace)}
@@ -123,13 +123,13 @@
                 </select>
                 <div class='form-field-description'>Available Object Collections</div>
                 <br />
-                <select name='method' id='humble-paradigm-config-trigger-form-events'>
+                <select name='method' id='humble-paradigm-config-trigger-form-events-{$manager->getId()}'>
                     <option value=''>Please choose from this list</option>
                 </select>
                 <div class='form-field-description'>Available Events</div><br />
                 <br />
                 <div style='float: right; display: none; width: 470px; border: 1px solid #aaf; padding: 5px 10px; background-color: #F0F0D0; border-radius: 10px ' id='config-component-comment'></div>
-                <input type='button' name='save' id='humble-paradigm-config-trigger-form-save' />
+                <input type='button' name='save' id='humble-paradigm-config-trigger-form-save-{$manager->getId()}' />
             </div>
             </form>
         </td>
@@ -137,14 +137,9 @@
 </table>
 <script type='text/javascript'>
     var ee = new EasyEdits(null,'trigger_{$manager->getId()}');
-       
-    
     ee.fetch('/edits/workflow/trigger');
     ee.process(ee.getJSON().replace(/&id&/g,'{$manager->getId()}').replace(/&window_id&/g,'{$manager->getWindowId()}'));
-    Form.intercept($('#humble-paradigm-config-trigger-form').get(),'{$manager->getId()}',false,false,false,false,function (thing,event,data) {
-        
-       // $('#humble-paradigm-config-trigger-form').submit();
-        console.log(data);
+    Form.intercept($('#humble-paradigm-config-trigger-form-{$manager->getId()}').get(),'{$manager->getId()}',false,'{$manager->getWindowId()}',false,false, (thing,event,data) => {
     });
 </script>
 {/if}

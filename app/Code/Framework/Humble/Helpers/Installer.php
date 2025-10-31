@@ -355,7 +355,7 @@ SQL;
      * @param Object $method
      * @return string
      */
-    private function processDocComments($md=false,$method=false) {
+    protected function processDocComments($md=false,$method=false) {
         $skip = array('/**'=>true, '/'=>true, '*/'=>true, ''=>true, '/**/'=>true);
         $comments = [];
         try {
@@ -383,7 +383,7 @@ SQL;
      * @param Object $method
      * @return array
      */
-    private function processDocAnnotations($md=false,$method=false) {
+    protected function processDocAnnotations($md=false,$method=false) {
         $components = [];
         try {
             $comments = explode("\n",$md->getDocComment());

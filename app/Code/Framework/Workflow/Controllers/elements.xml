@@ -165,6 +165,9 @@
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />
             </entity>
+            <entity assign="externals" resource="externalnamespaces" namespace="paradigm" class="workflow/components">
+                
+            </entity>            
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
                 <parameter name='window_id' source='post' required='true' default='' />

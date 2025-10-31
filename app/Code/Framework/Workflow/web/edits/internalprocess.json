@@ -1,0 +1,115 @@
+({
+    form:
+    {
+        id: 		"humble-paradigm-config-process-form-&id&",
+        drawme:		false,
+        action:		"",
+        onload:     function () {
+            var id = '&id&';
+        },
+        method:		"post",
+        style:		"",
+        onenterkey:	"send"
+    },
+    fields:
+    [
+        {
+            active:		true,
+            id: 		"humble-paradigm-config-process-form-namespace-&id&",
+            longname:		"Namespace",
+            title:		"Choose a client or core for namespace",
+            onchange:       function (evt) {
+                if (evt.target.value) {
+                    (new EasyAjax('/workflow/component/objects')).add('namespace',evt.target.value).then((response) => {
+                        EasyEdits.populateSelectBox($E('humble-paradigm-config-process-form-component-&id&'),eval(response));
+                    }).post();
+                } 
+            },
+            type:               "select",
+            required:		true,
+            force:		true,
+            classname:		"",
+            style:		"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+        },
+        {
+            active:         true,
+            id:             "humble-paradigm-config-process-form-component-&id&",
+            longname:       "Component to use",
+            title:          "title for mouse rollover",
+            onchange:       function (evt) {
+                if (evt.target.value) {
+                    (new EasyAjax('/workflow/component/methods')).add('process','Y').add('namespace',$('#humble-paradigm-config-process-form-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
+                        EasyEdits.populateSelectBox($E('humble-paradigm-config-process-form-method-&id&'),eval(response));
+                    }).post();
+                } 
+            },
+            type:           "select",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+        },
+        {
+            active:		true,
+            id: 		"humble-paradigm-config-process-form-method-&id&",
+            longname:		"Function/Method",
+            title:		"The function to execute, or create a new function name here and hit enter",
+            type:               "combo",
+            required:		true,
+            force:		true,
+            onchange:       function (evt) {
+                if (evt.target.value) {
+                    $('#view_code-&id&').css('visibility','visible');
+                    var ao = new EasyAjax('/workflow/component/comment');
+                    ao.add('namespace',$('#humble-paradigm-config-process-form-namespace-&id&').val());
+                    ao.add('class',$('#humble-paradigm-config-process-form-component-&id&').val());
+                    ao.add('method',evt.target.value);
+                    ao.then((response) => {
+                        if (response) {
+                            $('#config-component-comment-&id&').css('display','inline-block').html(response);
+                        }
+                    }).post();
+                } else {
+                    $('#view_code-&id&').css('visibility','hidden');
+                }
+            },
+            onenterkey: (evt) => {
+                if (confirm('Would you like to create the method '+$(evt.target).val())) {
+                    let win = Desktop.semaphore.checkout(true);
+                    win = Desktop.semaphore.checkout(true);
+                    (new EasyAjax('/workflow/elements/newmethod')).add('type','process').add('window_id',win.id).addForm('humble-paradigm-config-process-form-&id&').then((response) => {
+                        win._title('New Method')._scroll(false)._open(response);
+                    }).post();                        
+                }
+            },    
+            classname:		"",
+            style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+        },
+            {
+                active:                 true,
+                id:                     "humble-paradigm-config-process-form-method-&id&_combo",
+                type:                   "text",
+                required:               true,
+                force:                  true,
+                classname:              "",
+                style:                  "border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"    
+            },
+            {
+                active:			true,
+                id: 			"humble-paradigm-config-process-form-save-&id&",
+                longname:		"Configure Save",
+                title:			"Press to initially establish this workflow component",
+                type:                   "button",
+                required:		false,
+                force:			false,
+                value:                  "Save",
+                onclick:        function (evt) {
+                    if (Edits['process_&id&'].validate()) {
+                        $('#humble-paradigm-config-process-form-&id&').submit();
+                    }
+                },
+                classname:		"settingsButton",
+                style:			"font-size: 1em; padding: 2px 5px"
+            }
+    ]
+})
