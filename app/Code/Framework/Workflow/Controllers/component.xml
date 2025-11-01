@@ -4,7 +4,7 @@
 
         <action name="objects">
             <description>Gets a list of objects</description>
-            <entity namespace='paradigm' class='workflow_components' id='objects' distinct='true' fields='component'>
+            <entity namespace='paradigm' class='workflow/components' id='objects' distinct='true' fields='component'>
                 <parameter name='namespace' source='request' default='humble' />
                 <parameter name='process'   source='request' optional='true' default=''/>
                 <parameter name='decision'  source='request' optional='true' default='' />
@@ -31,7 +31,7 @@
 
         <action name="methods">
             <description>Gets a list of events attached to an object</description>
-            <entity namespace='paradigm' class='workflow_components' id='methods' distinct='true' fields='method'>
+            <entity namespace='paradigm' class='workflow/components' id='methods' distinct='true' fields='method'>
                 <parameter name='namespace' source='request' default='humble' />
                 <parameter name='component' source='request' default='' />
                 <parameter name='process'   source='request' optional='true' default=''/>

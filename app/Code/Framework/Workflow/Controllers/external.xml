@@ -32,5 +32,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
                 <parameter name="component" source="request" default='' />
             </entity>
         </action>                
+        
+        <!-- ############################################################### -->
+        
+        <action name="test" event="externalMethodTest" comment="Will test an external thingy">
+            <description>An external Test</description>
+            <model class="someclass" namespace="workflow" id="someclass">
+                <parameter name="*" source="request" />
+            </model>
+        </action>
     </actions>
 </controller>

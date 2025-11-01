@@ -24,13 +24,13 @@ var Form = (function ($) {
                 if (event.data.preprocess) {
                     event.data.preprocess(this,event);
                 }
-                console.log('form data');
-                console.log(event.data.form[0]);
+//                console.log('form data');
+//                console.log(event.data.form[0]);
                 var form     = event.data.form[0];
                 if (!form) {
                     form = $E(event.data.form.id);
                 }
-                var ao      = new EasyAjax('/bogus/url');
+                var ao       = new EasyAjax('/bogus/url');
                 var id       = event.data.element_id;
                 var URL      = event.data.url;
                 var callback = event.data.callback;

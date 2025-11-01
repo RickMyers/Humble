@@ -65,6 +65,16 @@ HDR;
     }
 
     /**
+     * Detects if the namespace is a directory, which indicates this is an external class
+     * 
+     * @param type $namespace
+     * @return boolean
+     */
+    private function isExternal($namespace=false) {
+        return ((strpos($namespace,'/') !== false) || (strpos($namespace,'\\') !== false));
+    }
+    
+    /**
      *
      */
     protected function traverse($node) {
@@ -144,7 +154,16 @@ HDR;
                 }                
                 break;
             case "decision"     :
-                $this->workflow .= $tabs.'if (Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";
+                if ($this->isExternal($cnf['namespace'])) {
+                    $this->workflow .= $tabs.'$cwd = getcwd();'."\n";
+                    $this->workflow .= $tabs.'chdir(\''.$cnf['namespace'].'\');'."\n";
+                    $this->workflow .= $tabs."require_once('".$cnf['component'].".php');\n";
+                    $this->workflow .= $tabs.'$cnd = (new '.$cnf['component'].'())->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"));'."\n";
+                    $this->workflow .= $tabs.'chdir($cwd);'."\n";
+                    $this->workflow .= $tabs.'if ($cnd) {'."\n";
+                } else {        
+                    $this->workflow .= $tabs.'if (Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";
+                }
                 $tabs .= "\t";
                 $this->workflow .= $tabs."goto label_".$node['connectors']['E']['begin']['to']['id'].";\n";
                 $this->traverse($this->components[$node['connectors']['E']['begin']['to']['id']]);
@@ -180,7 +199,15 @@ HDR;
                 //We have the namespace, method and component set in the operation.tpl configuration page
             default             :
                 if ($includeBranch) {
-                    $this->workflow .= $tabs.'Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"));'."\n";
+                    if ($this->isExternal($cnf['namespace'])) {
+                        $this->workflow .= $tabs.'$cwd = getcwd();'."\n";
+                        $this->workflow .= $tabs.'chdir(\''.$cnf['namespace'].'\');'."\n";
+                        $this->workflow .= $tabs."require_once('".$cnf['component'].".php');\n";
+                        $this->workflow .= $tabs.'(new '.$cnf['component'].'())->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"));'."\n";
+                        $this->workflow .= $tabs.'chdir($cwd);'."\n";
+                    } else {                    
+                        $this->workflow .= $tabs.'Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"));'."\n";
+                    }
                 }
                 foreach ($node['connectors'] as $direction) {
                     if (isset($direction['begin']) && (isset($direction['begin']['from'])) && (isset($direction['begin']['from']['id']))) {
