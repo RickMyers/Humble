@@ -178,13 +178,13 @@ class Updater extends Installer
             $here               = getcwd();
             $component  = Humble::entity('paradigm/workflow/components');
             $comment    = Humble::entity('paradigm/workflow/comments');
-            $this->output("EXTERNAL","Processing Class [".$namespace.$classFile."]...");
+            $this->output("EXTERNAL","Processing Class [".$namespace.'/'.$classFile."]...");
             chdir($namespace);
             $classBase      = str_replace('.php','',$classFile);
             $class          = new $classBase();
             $name           = $class->getClassName() ?? $classBase;
             chdir($here);
-            $reflection     = new \ReflectionClass($name);
+            $reflection      = new \ReflectionClass($name);
             $methods        = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
             foreach ($methods as $idx => $method) {
                 $m  = new \ReflectionMethod($class,$method->name);
@@ -198,9 +198,7 @@ class Updater extends Installer
                 $listener         = false;
                 foreach ($annotations as $annotation) {
                     $clauses   = explode(' ',$annotation);
-                    //print_r($clauses);die();
                     foreach ($clauses as $clause) {
-                        //print($clause."\n");
                         $value = '';
                         if (strpos($clause,'(') && (strpos($clause,')'))) {
                             $data  = explode('(',$clause);
@@ -256,7 +254,10 @@ class Updater extends Installer
                         }
                     }
                 }
+                
             }
+            if (isset($class)) { unset($class); }
+            if (isset($reflection)) { unset($reflection); }
             $this->output("EXTERNAL","Finished Processing ".ucfirst($classFile)."...");
         }
     }

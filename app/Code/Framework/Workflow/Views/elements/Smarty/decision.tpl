@@ -21,7 +21,8 @@
                 <div style='margin-left: auto; margin-right: auto; width: 545px'>
                     <form name='decision-form' id='humble-paradigm-config-internal-decision-form-{$id}' onsubmit='return false'>
                     <input type="hidden" name="window_id" id="window-id-internal-{$manager->getId()}" value="{$manager->getWindowId()}" />
-                    <input type="hidden" name="id" id="humble-paradigm-config-internal-decision-form-id-{$id}" value="{$manager->getId()}" />                    
+                    <input type="hidden" name="id" id="humble-paradigm-config-internal-decision-form-id-{$id}" value="{$manager->getId()}" />      
+                    <input type="hidden" name="decision" value="Y" />   
                     <img src='/images/paradigm/clipart/decision.png' style='float: right' />
                     <select name='namespace' id='humble-paradigm-config-internal-decision-form-namespace-{$id}'>
                         <option value=''>Please choose from this list</option>
@@ -57,7 +58,8 @@
                     <img src='/images/paradigm/clipart/decision.png' style='float: right' />
                     <form name='decision-form' id='humble-paradigm-config-external-decision-form-{$id}' onsubmit='return false'>
                     <input type="hidden" name="window_id" id="window-id-external-{$manager->getId()}" value="{$manager->getWindowId()}" />
-                    <input type="hidden" name="id" id="humble-paradigm-config-external-decision-form-id-{$id}" value="{$manager->getId()}" />                      
+                    <input type="hidden" name="id" id="humble-paradigm-config-external-decision-form-id-{$id}" value="{$manager->getId()}" />    
+                    <input type="hidden" name="decision" value="Y" />   
                     <select name='namespace' id='humble-paradigm-config-external-decision-form-namespace-{$id}'>
                         <option value=''>Please choose from this list</option>
                         {foreach from=$externals item="dirs"}

@@ -78,6 +78,7 @@ function resetCadence() {
     $systemfiles            = [];    
     $cadence                = json_decode(file_get_contents($config),true);
     $is_production          = \Environment::isProduction();
+    Humble::cache('cadence-config',$cadence);
 }
 //------------------------------------------------------------------------------
 function calcMaxFileSize($value='1M') {
@@ -191,10 +192,10 @@ function primeModelsArray() {
 //------------------------------------------------------------------------------
 function scanModelsForChanges() {
     global $is_production,$models,$installer,$modules,$first_time;
-    if ($first_time['models']) {
-        primeModelsArray();
-    }
     if (!$is_production) {
+        if ($first_time['models']) {
+            primeModelsArray();
+        }        
         foreach ($modules as $module) {
             if ($module['namespace']=='humble') {
                 //Due to criticality of components, scanning can cause an abend, so do manual scans of this module
@@ -224,13 +225,40 @@ function scanModelsForChanges() {
 //------------------------------------------------------------------------------
 function primeExternalsArray() {
     global $externals;
+    if ($external = \Environment::application('external')) {
+        foreach ($external->directory as $idx => $directory) {
+            if (($dh = dir($directory)) !== false) {
+                while ($entry = $dh->read()) {
+                    if (($entry == '.') || ($entry == '..')) {
+                        continue;
+                    }
+                    if (strpos($entry,'.php')) {                    
+                        $file = $directory.'/'.$entry;
+                        $externals[$file] = filemtime($file);
+                        clearstatcache(true,$file);
+                    }
+                }
+            }
+        }
+        Humble::cache('externals-array',$externals);
+    }
+    
 }
 //------------------------------------------------------------------------------
 function scanExternalsForChanges() {
-    global $externals;
-    foreach ($externals as $external) {
-        //do something here
-    }    
+    global $is_production,$externals,$updater,$first_time;
+    if (!$is_production) {
+        logMessage('Scanning External Directories for Workflow Components');
+        if (isset($first_time['externals']) && $first_time['externals']) {
+            primeExternalsArray();
+        }
+        $first_time['externals'] = false;
+        
+        exec('php Scanner.php',$output);
+        foreach ($output as $row) {
+            logMessage($row);
+        }
+    }
 }
 //------------------------------------------------------------------------------
 function timedEvents() {
@@ -498,6 +526,7 @@ if (file_exists($config) || file_exists($framework)) {
     $cadence        = array_merge_recursive($application,$cadence);
 }
 if ($cadence) {
+    Humble::cache('cadence-config',$cadence);
     logMessage("Starting Cadence...");
     while (file_exists('PIDS/cadence.pid') && ((int)file_get_contents('PIDS/cadence.pid')===$pid)) {
         logMessage('Waking...');
