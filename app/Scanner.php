@@ -39,3 +39,4 @@ foreach ($external->directory as $idx => $directory) {
         }
     }
 }
+Humble::cache('externals-array',$externals);

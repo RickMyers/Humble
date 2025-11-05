@@ -48,7 +48,7 @@
                     "scanModelsForChanges": true,
                     "scanExternalsForChanges": true
                 },
-                "multiple": 3
+                "multiple": 2
             },
             "files": {
                 "callbacks": {
