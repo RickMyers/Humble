@@ -100,6 +100,7 @@
                 <password>Admin/web/edits/adminpassword.json</password>
                 <roles>Admin/web/edits/newuserrole.json</roles>
                 <socketconfig>Admin/web/edits/socketconfig.json</socketconfig>
+                <uploadmodule>Admin/web/edits/uploadmodule.json</uploadmodule>
             </edits>
             <admin>
                 <css>

@@ -50,7 +50,7 @@ class Email extends Helper
         $user     = $settings->setVariable('SMTP_UserName')->load(true);
         $host     = $settings->reset()->setVariable('SMTP_Host')->load(true);
         $pass     = $settings->reset()->setVariable('SMTP_Password')->load(true);
-        if (strtoupper(substr($host['value'],0,5)==='SM://')) {
+        if (strtoupper(substr($host['value'],0,5))==='SM://') {
             if ($secrets->setSecretName(substr($host['value'],5))->load(true)) {
                 $host = $secrets->decrypt(true)->getSecretValue();
             }

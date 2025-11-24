@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="module" use="Smarty">
+<controller name="module" use="Twig">
     <actions blocking="off">
 
         <action name="create">
@@ -22,8 +22,6 @@
                 </model>
         </action>
 
-
-
         <!-- ############################################################### -->
 
         <action name="install">
@@ -35,20 +33,27 @@
         </action>
         
         <!-- ############################################################### -->
+        
+        <action name="form" passalong="package,window_id">
+            <description>The new module form</description>
+        </action>
+        
+        <!-- ############################################################### -->
                                 
-        <!--action name="install">
+        <action name="upload">
             <description>Will take an uploaded file (zip) and extract it into a Package directory</description> 
             <if sys="files" eq="TRUE">
                 <then>
-                    <helper namespace='humble' class='module' method='install'>
-                        <parameter name='module' source='file' required='true' />
+                    <helper response="true" namespace='admin' class='module' method='upload'>
+                        <parameter name='module'  source='file' required='true' />
+                        <parameter name='package' source='post' required='true' />
                     </helper>
                 </then> 
                 <else>
                     <output text="No file (zip) was uploaded, install of module aborted" />
                 </else>
             </if>
-        </action-->
+        </action>
         
     </actions>
 </controller>

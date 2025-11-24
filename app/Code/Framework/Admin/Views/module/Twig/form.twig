@@ -1,0 +1,22 @@
+<div class='flex flex-row h-full w-full justify-center items-center'>
+    <div class='w-[600px]'>
+        <form nohref name="upload_new_module_form" id="upload_new_module_form" onsubmit='return false'>
+            <input type='hidden' name='window_id' id="upload_window_id" value='{{ window_id }}' />
+            <input type='hidden' name='package'   id="upload_module_package" value='{{ package }}' />
+            <fieldset><legend>New {{ package }} Module</legend>
+                    <hr />
+                    Instructions:<br /><br />
+                    In the field below, select the compressed (ZIP) module to be installed in to the {{ package }} package<br /><br />
+                    <input type='file' name='module' id='upload_module' accept='application/zip' /><br /><br />
+                    <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded text-lg' value=' Upload' name='upload_module_submit' id='upload_module_submit' >
+                        Upload   
+                    </button>
+            </fieldset>
+        </form>
+    </div>
+</div>   
+<script>
+    (()=> {
+        new EasyEdits('/edits/admin/uploadmodule','upload_module_form');
+    })();
+</script>    

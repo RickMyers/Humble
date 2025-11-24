@@ -214,6 +214,7 @@ var Functions = (() => {
                         }
                     },
                     module: {
+                        uploadform: false,
                         import: (namespace) => {
                             let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/actions/importpage')).add('namespace',namespace).then((response) => {
@@ -230,6 +231,12 @@ var Functions = (() => {
                             (new EasyAjax('/admin/module/install')).add('namespace',namespace).then((response) => {
                                 win._open(response)._scroll(true)._title('Install Module');
                             }).post();                            
+                        },
+                        form: (pkg) => {
+                            let win = Administration.module.uploadwin = Administration.module.uploadwin ? Administration.module.uploadwin : Desktop.semaphore.checkout(true);
+                            (new EasyAjax('/admin/module/form')).add('package',pkg).add('window_id',win.id).then((response) => {
+                                win._static(true)._open(response)._title('Add New Module');
+                            }).post();  
                         }
                     },
                     secrets: {
