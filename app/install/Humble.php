@@ -510,7 +510,7 @@ function dockerMe() {
                 file_put_contents('sqldb.bat',$zip->getFromName('sqldb.bat'));
                 @exec('dos2unix start.sh');
                 @exec('dos2unix humble');
-                copy('humble','../../humble');
+                //copy('humble','../../humble');
                 file_put_contents('delay_launch.php',$zip->getFromName('delay_launch.php'));
                 $zip->close();
                 print(file_get_contents('docker_instructions.txt'));
