@@ -20,6 +20,7 @@
 LICENSE
 index.html
 index.php
+router.php
 app/install/.htaccess .htaccess
 app/api.php
 app/iapi.php
