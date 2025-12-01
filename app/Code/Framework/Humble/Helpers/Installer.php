@@ -606,42 +606,44 @@ SQL;
               show keys in {$table} where key_name = 'PRIMARY'
 SQL;
             $results   = $this->_db->query($query);
-            foreach ($results as $rKey => $row) {
-                $col   = $row['Column_name'];
-                $query = <<<SQL
-                        SELECT extra FROM  information_schema.COLUMNS WHERE table_schema = '{$environment->getDatabase()}' AND TABLE_NAME = '{$table}' AND column_name = '{$col}'
-SQL;
-                $data  = $this->_db->query($query);
-                $inc   = 'N';
-                if (isset($data[0]['extra'])) {
-                    $inc = ($data[0]['extra']=="auto_increment") ? 'Y' : 'N';
-                }
-                $query = <<<SQL
-                       insert into humble_entity_keys
-                          (namespace,entity,`key`,auto_inc)
-                       values
-                          ('{$this->namespace}','{$name}','{$col}','{$inc}')
-SQL;
-                    $this->_db->query($query);
-                }
-                //now get a list of columns that are non-key.  If you try to save a field that isn't in this list, it will get redirected to a mongodb collection
-                $query = <<<SQL
-                    SHOW COLUMNS IN {$table} WHERE `Key` != 'PRI'
-SQL;
-                $results = $this->_db->query($query);
-                if ($results) {
-                    foreach ($results as $row) {
-                        $query = <<<SQL
-                             insert into humble_entity_columns
-                                (namespace, entity, `column`)
-                             values
-                                ('{$this->namespace}','{$name}','{$row['Field']}')
-SQL;
+            if ($results) {
+                foreach ($results as $rKey => $row) {
+                    $col   = $row['Column_name'];
+                    $query = <<<SQL
+                            SELECT extra FROM  information_schema.COLUMNS WHERE table_schema = '{$environment->getDatabase()}' AND TABLE_NAME = '{$table}' AND column_name = '{$col}'
+    SQL;
+                    $data  = $this->_db->query($query);
+                    $inc   = 'N';
+                    if (isset($data[0]['extra'])) {
+                        $inc = ($data[0]['extra']=="auto_increment") ? 'Y' : 'N';
+                    }
+                    $query = <<<SQL
+                           insert into humble_entity_keys
+                              (namespace,entity,`key`,auto_inc)
+                           values
+                              ('{$this->namespace}','{$name}','{$col}','{$inc}')
+    SQL;
                         $this->_db->query($query);
                     }
-                }
-                if ($e = \Humble::entity($this->namespace.'/'.$name)) {
-                    $e->recache();
+                    //now get a list of columns that are non-key.  If you try to save a field that isn't in this list, it will get redirected to a mongodb collection
+                    $query = <<<SQL
+                        SHOW COLUMNS IN {$table} WHERE `Key` != 'PRI'
+    SQL;
+                    $results = $this->_db->query($query);
+                    if ($results) {
+                        foreach ($results as $row) {
+                            $query = <<<SQL
+                                 insert into humble_entity_columns
+                                    (namespace, entity, `column`)
+                                 values
+                                    ('{$this->namespace}','{$name}','{$row['Field']}')
+    SQL;
+                            $this->_db->query($query);
+                        }
+                    }
+                    if ($e = \Humble::entity($this->namespace.'/'.$name)) {
+                        $e->recache();
+                    }
                 }
             }
         }

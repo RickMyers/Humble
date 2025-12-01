@@ -486,7 +486,7 @@ function dockerMe() {
             $engine = scrub(fgets(STDIN));
         }
         $project['engine']  = $options[$engine] ?? 'MOD_PHP';                    //Attach selected engine or MOD_PHP by default
-        $project['purpose'] = ($project->namespace === 'humble') ? 'Contribute' : 'Development';
+        $project['purpose'] = ($project['namespace'] === 'humble') ? 'Contribute' : 'Development';
         if ($package = HURL($project['framework_url'].'/distro/docker',$project)) {
             file_put_contents('docker_temp.zip',$package);
             $zip = new ZipArchive();
@@ -504,12 +504,14 @@ function dockerMe() {
                 file_put_contents('d.sh',$zip->getFromName('d.sh'));
                 file_put_contents('php.ini',$zip->getFromName('php.ini'));
                 file_put_contents('start.sh',$zip->getFromName('start.sh'));
-                file_put_contents('humble',$zip->getFromName('humble'));
+                //file_put_contents('humble',$zip->getFromName('humble'));
                 file_put_contents('shell.bat',$zip->getFromName('shell.bat'));
                 file_put_contents('mongo.bat',$zip->getFromName('mongo.bat'));
                 file_put_contents('sqldb.bat',$zip->getFromName('sqldb.bat'));
-                @exec('dos2unix start.sh');
-                @exec('dos2unix humble');
+                ob_start();
+                //@exec('dos2unix start.sh');
+                //@exec('dos2unix humble');
+                ob_end_clean();
                 //copy('humble','../../humble');
                 file_put_contents('delay_launch.php',$zip->getFromName('delay_launch.php'));
                 $zip->close();

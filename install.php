@@ -520,6 +520,7 @@ switch ($method) {
     case "INSTALL"      :
         ob_start();
         $project = json_decode(file_get_contents('Humble.project'));
+        $purpose = ($project->namespace == 'humble') ? 'Contribute' : 'Development';
         $step   = 0;
         $email  = isset($_POST['email'])            ? $_POST['email']           : $project->author;
         $host   = isset($_POST['dbhost'])           ? $_POST['dbhost']          : false;
@@ -574,8 +575,10 @@ switch ($method) {
         }
         //======================================================================
 
-        postUpdate('Building','Activating Application Module',(++$step*$percent));
-        createMainModule($project);
+        if ($purpose!=='Contribute') {
+            postUpdate('Building','Activating Application Module',(++$step*$percent));
+            createMainModule($project);
+        }
         
         //======================================================================
         $custom = 'Code/'.$project->package.'/'.$project->module.'/etc/Constants.php'; 
@@ -606,11 +609,16 @@ switch ($method) {
             $util->update($etc);
         }
         $util->update('Code/'.$project->package.'/'.$project->module.'/etc/config.xml');
-
         postUpdate('Finalizing','Registering Administrator',(++$step*$percent));
-        //need to create the user tables... should do that
-        $user_id      = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);        
-        $util->disable();                                                       //Disabling the installer to prevent accidental re-run
+        $user_id = false;
+        if ($purpose === 'Contribute') {
+            $humble  = \Humble::entity('humble/users');
+            $humble->createUserEntities();
+            $util->update('Code/Framework/Humble/etc/config.xml');
+            $user_id = $humble->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
+        } else {
+            $user_id = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);        
+        }
         
         $results      = ob_get_flush();
         if (!$user_id) {
@@ -619,6 +627,7 @@ switch ($method) {
             die('Install did not complete, no user was created'."\n");
         } 
         
+        $util->disable();                                                       //Disabling the installer to prevent accidental re-run
         session_start();
         $_SESSION['uid'] = $user_id;
         print('Attempting to create drivers'."\n");

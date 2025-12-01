@@ -2,7 +2,7 @@
     "require": {
         "php": ">=7.1",
         "mongodb/mongodb": ">=2.1.0",
-        "smarty/smarty": "4.3.1",
+        "smarty/smarty": "4.5.3",
         "twig/twig": ">=3.0",
         "mustache/mustache": ">=2.14.1",
         "phptal/phptal": ">=1.3",
