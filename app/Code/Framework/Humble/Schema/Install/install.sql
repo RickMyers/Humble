@@ -14,8 +14,6 @@ MySQL - 5.7.44 : Database - humble
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 /*Table structure for table `humble_audit_log` */
 
-DROP TABLE IF EXISTS `humble_audit_log`;
-
 CREATE TABLE `humble_audit_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `namespace` char(64) DEFAULT NULL,
@@ -30,8 +28,6 @@ CREATE TABLE `humble_audit_log` (
 
 /*Table structure for table `humble_categories` */
 
-DROP TABLE IF EXISTS `humble_categories`;
-
 CREATE TABLE `humble_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` char(128) DEFAULT NULL,
@@ -40,8 +36,6 @@ CREATE TABLE `humble_categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_controllers` */
-
-DROP TABLE IF EXISTS `humble_controllers`;
 
 CREATE TABLE `humble_controllers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -54,8 +48,6 @@ CREATE TABLE `humble_controllers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_css` */
-
-DROP TABLE IF EXISTS `humble_css`;
 
 CREATE TABLE `humble_css` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -73,8 +65,6 @@ CREATE TABLE `humble_css` (
 
 /*Table structure for table `humble_edits` */
 
-DROP TABLE IF EXISTS `humble_edits`;
-
 CREATE TABLE `humble_edits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `namespace` char(32) NOT NULL DEFAULT '',
@@ -87,8 +77,6 @@ CREATE TABLE `humble_edits` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_entities` */
-
-DROP TABLE IF EXISTS `humble_entities`;
 
 CREATE TABLE `humble_entities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -104,8 +92,6 @@ CREATE TABLE `humble_entities` (
 
 /*Table structure for table `humble_entity_columns` */
 
-DROP TABLE IF EXISTS `humble_entity_columns`;
-
 CREATE TABLE `humble_entity_columns` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `namespace` char(64) NOT NULL,
@@ -117,8 +103,6 @@ CREATE TABLE `humble_entity_columns` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_entity_keys` */
-
-DROP TABLE IF EXISTS `humble_entity_keys`;
 
 CREATE TABLE `humble_entity_keys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -132,8 +116,6 @@ CREATE TABLE `humble_entity_keys` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_js` */
-
-DROP TABLE IF EXISTS `humble_js`;
 
 CREATE TABLE `humble_js` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -151,8 +133,6 @@ CREATE TABLE `humble_js` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_modules` */
-
-DROP TABLE IF EXISTS `humble_modules`;
 
 CREATE TABLE `humble_modules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -196,8 +176,6 @@ CREATE TABLE `humble_modules` (
 
 /*Table structure for table `humble_packages` */
 
-DROP TABLE IF EXISTS `humble_packages`;
-
 CREATE TABLE `humble_packages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` char(128) DEFAULT NULL,
@@ -205,9 +183,17 @@ CREATE TABLE `humble_packages` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `humble_secrets_manager` */
+/*Table structure for table `humble_roles` */
 
-DROP TABLE IF EXISTS `humble_secrets_manager`;
+CREATE TABLE `humble_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role` char(32) DEFAULT NULL,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `role` (`role`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Table structure for table `humble_secrets_manager` */
 
 CREATE TABLE `humble_secrets_manager` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -222,8 +208,6 @@ CREATE TABLE `humble_secrets_manager` (
 
 /*Table structure for table `humble_service_directory` */
 
-DROP TABLE IF EXISTS `humble_service_directory`;
-
 CREATE TABLE `humble_service_directory` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `namespace` char(32) DEFAULT NULL,
@@ -236,8 +220,6 @@ CREATE TABLE `humble_service_directory` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `humble_services` */
-
-DROP TABLE IF EXISTS `humble_services`;
 
 CREATE TABLE `humble_services` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -254,8 +236,6 @@ CREATE TABLE `humble_services` (
 
 /*Table structure for table `humble_system_variables` */
 
-DROP TABLE IF EXISTS `humble_system_variables`;
-
 CREATE TABLE `humble_system_variables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `namespace` char(32) DEFAULT NULL,
@@ -267,8 +247,6 @@ CREATE TABLE `humble_system_variables` (
 
 /*Table structure for table `humble_templaters` */
 
-DROP TABLE IF EXISTS `humble_templaters`;
-
 CREATE TABLE `humble_templaters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `templater` char(64) DEFAULT NULL,
@@ -277,6 +255,19 @@ CREATE TABLE `humble_templaters` (
   `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `humble_user_roles` */
+
+CREATE TABLE `humble_user_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Table structure for table `humble_users` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
