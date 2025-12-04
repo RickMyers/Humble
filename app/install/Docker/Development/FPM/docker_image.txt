@@ -80,11 +80,11 @@ RUN apt upgrade -y
 COPY delay_launch.php /var/www/delay_launch.php
 COPY php.ini /etc/php/8.2/fpm/php.ini
 COPY start.sh /var/www/start.sh
-COPY humble /var/www/html/humble
+#COPY humble /var/www/html/humble
 RUN chmod +x /var/www/start.sh
 RUN dos2unix /var/www/start.sh
-RUN chmod +x /var/www/html/humble
-RUN dos2unix /var/www/html/humble
+#RUN chmod +x /var/www/html/humble
+#RUN dos2unix /var/www/html/humble
 #CMD ["apache2ctl", "-D", "FOREGROUND"]
 CMD ["/bin/bash", "/var/www/start.sh"]
 

@@ -277,7 +277,7 @@ CONFIG;
     <body>
 <?php
 //----------------------------------------------------------------------------------------------------------------
-
+file_put_contents('install.json','{ "stage": "Starting",  "step": "Initializing", "percent": 0 }');
 $info = [
     'User' => [
         'First' => '',
