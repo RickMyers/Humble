@@ -1,8 +1,7 @@
 <?php
 
-$parts  = explode(DIRECTORY_SEPARATOR,getcwd());
-
-$ns     = $parts[count($parts)-1];
+$project = (file_exists('../Humble.project')) ? json_decode(file_get_contents('../Humble.project'),true) : die('Project file not found'."\n");
+$ns      = $project['namespace'];
 
 function removeDanglingVolumes($namespace,$object=false) {
     $skip = true;
@@ -17,7 +16,9 @@ function removeDanglingVolumes($namespace,$object=false) {
     }
 }
 $pgm = array_shift($argv);
+
 if ($cmd = array_shift($argv)) {
+    $ns = ($opt = array_shift($argv)) ? $opt : $ns;
     switch (strtolower($cmd)) {
         case "clean"  :
             removeDanglingVolumes($ns,'volume');
@@ -72,12 +73,12 @@ if ($cmd = array_shift($argv)) {
                 print(shell_exec('docker image rm '.$ns));
                 print(shell_exec('docker image rm '.$ns.'_mysql'));
                 print(shell_exec('docker image rm '.$ns.'_mongodb'));
-                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_mongodb_cfg'));
-                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_mongodb_data'));
-                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_mysql_cfg'));
-                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_settings'));
-                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_db_data'));
-                print(shell_exec('docker volume rm '.$ns.'_'.$ns.'_web_cfg'));
+                print(shell_exec('docker volume rm docker_'.$ns.'_mongodb_cfg'));
+                print(shell_exec('docker volume rm docker_'.$ns.'_mongodb_data'));
+                print(shell_exec('docker volume rm docker_'.$ns.'_mysql_cfg'));
+                print(shell_exec('docker volume rm docker_'.$ns.'_settings'));
+                print(shell_exec('docker volume rm docker_'.$ns.'_db_data'));
+                print(shell_exec('docker volume rm docker_'.$ns.'_web_cfg'));
             }
             break;
         default:
