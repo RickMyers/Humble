@@ -377,6 +377,7 @@ class Environment {
         self::$application = json_decode(json_encode(self::applicationXML()));
         Humble::cache('application',self::$application);        
     }
+    
     /**
      * Either returns the previously loaded metadata or loads and returns it
      * 
@@ -460,10 +461,12 @@ class Environment {
      * @return boolean
      */
     public static function cachingEnabled() {
-        if (!self::$application) {
-            self::loadApplicationMetaData(true);
-        }
-        return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
+        
+        return ini_get('humble_caching');
+ //       if (!self::$application) {
+  //          self::loadApplicationMetaData(true);
+   //     }
+   //     return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
     }
     
     /**
