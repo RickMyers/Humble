@@ -47,6 +47,7 @@ app/Harness.php
 app/Humble.php
 app/HumbleException.php
 app/Log.php
+app/Scanner.php
 app/Singleton.php
 app/Trigger.php
 app/RunWrapper.php
