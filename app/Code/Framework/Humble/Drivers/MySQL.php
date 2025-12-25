@@ -100,6 +100,14 @@ class MySQL extends ORM implements ORMEngine  {
         return $this->_dbref->query($qry);
     }
 
+    
+    public function listEntities($namespace=false) {
+        $project = \Environment::project();
+        print_r($project);
+        $results = $this->_dbref('show table status from '.$project->namespace);
+        print_r($results);
+        die();
+    }
     /**
      * Executes a query and records any issues with it
      *

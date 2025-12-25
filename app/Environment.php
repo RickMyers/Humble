@@ -430,6 +430,7 @@ class Environment {
             case "0":
             case "":
                 $t_o_f = false;
+            
             default:
                 break;
         }

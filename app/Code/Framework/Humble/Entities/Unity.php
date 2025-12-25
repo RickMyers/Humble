@@ -56,6 +56,7 @@ class Unity
     protected $_bulk          = false;
     protected $_rowsAffected  = 0;
     public    $_lastResult    = [];
+    private   $_engine        = null;
 
     /**
      * Initial constructor
@@ -66,7 +67,8 @@ class Unity
      *
      */
     public function __construct() {
-        $this->_db = Humble::connection($this);
+        $this->_engine  = '';        
+        $this->_db      = Humble::connection($this);
     }
     
     /**
