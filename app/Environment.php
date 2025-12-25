@@ -462,12 +462,10 @@ class Environment {
      * @return boolean
      */
     public static function cachingEnabled() {
-        
-        return ini_get('humble_caching');
- //       if (!self::$application) {
-  //          self::loadApplicationMetaData(true);
-   //     }
-   //     return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
+        if (!self::$application) {
+            self::loadApplicationMetaData(true);
+        }
+        return (isset(self::$application->status) && isset(self::$application->status->caching) && (int)self::$application->status->caching);
     }
     
     /**
