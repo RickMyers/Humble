@@ -72,6 +72,7 @@ class MySQL extends ORM implements ORMEngine  {
             }
         }
         $this->_environment->clearPassword();
+        return $this;
     }
 
     /**
@@ -100,7 +101,6 @@ class MySQL extends ORM implements ORMEngine  {
         return $this->_dbref->query($qry);
     }
 
-    
     public function listEntities($namespace=false) {
         $project = \Environment::project();
         print_r($project);
@@ -108,6 +108,7 @@ class MySQL extends ORM implements ORMEngine  {
         print_r($results);
         die();
     }
+    
     /**
      * Executes a query and records any issues with it
      *

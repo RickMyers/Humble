@@ -604,8 +604,6 @@
             if (!($conn = ($callingClass instanceof \Code\Framework\Humble\Entities\Unity))) {
                 if ($callingClass) {
                     $name = $callingClass->getClassName();
-                } else {
-                    $name = (!isset($this)) ? self::getClassName() : null;
                 }
                 $shortList  = array('Humble','Code\Framework\Humble\Helpers\Installer','Code\Framework\Humble\Helpers\Updater','Code\Framework\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
                 $conn       = in_array($name,$shortList);

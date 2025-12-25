@@ -25,11 +25,16 @@ interface ORMEngine {
 class ORM
 {
 
-    protected $_lastQuery     = null;
-    protected $_lastError     = null;
-    protected $_prefix        = null;
-    protected $_namespace     = null;
-    protected $_isVirtual     = false;    
+    protected $_lastQuery   = null;
+    protected $_lastError   = null;
+    protected $_prefix      = null;
+    protected $_namespace   = null;
+    protected $_isVirtual   = false;    
+    private   $shortList    = [ 'Humble',
+                                'Code\Framework\Humble\Helpers\Installer',
+                                'Code\Framework\Humble\Helpers\Updater',
+                                'Code\Framework\Humble\Helpers\Compiler'
+                              ]; //These classes are allowed to specifically request a connection to the DB
     
     /**
      * Constructor
