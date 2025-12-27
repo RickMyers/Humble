@@ -1,5 +1,5 @@
 <?php
-namespace Code\Framework\Humble\Drivers;
+namespace Code\Framework\Humble\Entities\Drivers;
 /**
  * MySQL connection manager
  *
@@ -28,7 +28,10 @@ class MySQL extends ORM implements ORMEngine  {
      * Loads the environment information, such as userid and password
      */
     public function __construct() {
+        parent::__construct();
+        die("Got It\n\n");
         $this->_environment = \Singleton::getEnvironment();
+        
         $this->connect();
     }
      

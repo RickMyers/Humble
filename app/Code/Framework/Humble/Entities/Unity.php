@@ -67,7 +67,8 @@ class Unity
      *
      */
     public function __construct() {
-        $this->_engine  = '';        
+        $this->_engine  = ($db_engine = Humble::cache('humble_db_engine')) ? $db_engine : 'MySQL';
+  
         $this->_db      = Humble::connection($this);
     }
     

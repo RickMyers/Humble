@@ -220,6 +220,7 @@
             $identifier = self::parseResource($resource_identifier);
             $instance   = null;
             if ($module = self::module($identifier['namespace'])) {
+                print_r($module);
                 $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
                     $instance = new class(str_replace('/','\\','\\'.$str)) extends \Code\Framework\Humble\Entities\Unity {
@@ -240,6 +241,7 @@
                     print("Entity ".$resource_identifier." failed to allocate\n");
                 }
             }
+            print_r($instance); die();
             return $instance;
         }
 
@@ -604,6 +606,8 @@
             if (!($conn = ($callingClass instanceof \Code\Framework\Humble\Entities\Unity))) {
                 if ($callingClass) {
                     $name = $callingClass->getClassName();
+                } else {
+                    $name = self::getclassName();
                 }
                 $shortList  = array('Humble','Code\Framework\Humble\Helpers\Installer','Code\Framework\Humble\Helpers\Updater','Code\Framework\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
                 $conn       = in_array($name,$shortList);

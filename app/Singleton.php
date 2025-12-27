@@ -59,7 +59,7 @@ class Singleton
      */
     public static function getMySQLAdapter()  {
         if (!isset(self::$mySQLAdapter)) {
-            self::$mySQLAdapter = new \Code\Framework\Humble\Drivers\MySQL();
+            self::$mySQLAdapter = new \Code\Framework\Humble\Entities\Drivers\MySQL();
         }
         return self::$mySQLAdapter;
     }
