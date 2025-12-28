@@ -49,16 +49,16 @@
     <tr>
         <td colspan="3" align="center" valign="middle">
             <!-- ########################## FORM SECTION ########################################-->
-            <form name="config-FORM-ELEMENT-NAME-HERE-form" id="config-FORM-ELEMENT-NAME-HERE-form-{$data.id}" onsubmit="return false">
-                <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
-                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />    <!-- Leave this As-Is -->
+            <form name="config-form-{$data.id}" id="config-form-{$data.id}" onsubmit="return false">
+                <input type="hidden" name="id" value="{$data.id}" />             <!-- Leave this As-Is -->
+                <input type="hidden" name="window_id" value="{$window_id}" />    <!-- Leave this As-Is -->
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
                     <!--
                         PUT YOUR CONFIGURATION INSTRUCTIONS HERE
                     -->
-                    Field 1: <input class='paradigm-config-form-field' type="text" name="field_1_name" id="field_1_name_{$data.id}" value="{if (isset($data.field_1_name))}{$data.field_1_name}{/if}" /><br /><br >
-                    Field 2: <input class='paradigm-config-form-field' type="text" name="field_2_name" id="field_2_name_{$data.id}" value="{if (isset($data.field_2_name))}{$data.field_2_name}{/if}" /><br /><br >
-                    Checkbox Flag: <input type="checkbox" name="checkbox_field" id="checkbox_field_{$data.id}" value="Y"
+                    Field 1: <input class='paradigm-config-form-field' type="text" name="field_1_name"  value="{if (isset($data.field_1_name))}{$data.field_1_name}{/if}" /><br /><br >
+                    Field 2: <input class='paradigm-config-form-field' type="text" name="field_2_name"  value="{if (isset($data.field_2_name))}{$data.field_2_name}{/if}" /><br /><br >
+                    Checkbox Flag: <input type="checkbox" name="checkbox_field" value="Y"
                            {if (isset($data.checkbox_field) && ($data.checkbox_field == "Y"))}
                                    checked
                            {/if}
@@ -77,5 +77,5 @@
 <script type="text/javascript">
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    Form.intercept($('#config-FORM-ELEMENT-NAME-HERE-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+    Form.intercept($('#config-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>
