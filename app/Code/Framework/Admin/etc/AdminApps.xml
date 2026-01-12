@@ -78,5 +78,18 @@
             <uri>/admin/file/app</uri>
         </start>
     </app>         
-    
+    <app>
+        <name>Database Explorer</name>
+        <description>Manage and Explore Polyglot Entities </description>
+        <icon>
+            <text>DB Explorer</text>
+            <image>
+                <desktop>/images/admin/polyglot_db.png</desktop>
+                <minimized>/images/admin/polyglot_db.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/admin/db/home</uri>
+        </start>
+    </app>       
 </apps>

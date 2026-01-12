@@ -1,5 +1,5 @@
 <?php
-namespace Code\Framework\Humble\Drivers;
+namespace Code\Framework\Humble\Models;
 use Humble;
 use MongoDB;
 
@@ -18,7 +18,6 @@ use MongoDB;
  * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
  * @license    https://humbleprogramming.com/LICENSE.txt
  * @version    1.0
- * @link       http://pear.php.net/package/PackageName
  */
 class Mongo  {
 

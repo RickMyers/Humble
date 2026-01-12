@@ -1,5 +1,5 @@
 <?php
-namespace Code\Framework\Humble\Entities\Drivers;
+namespace Code\Framework\Humble\Models;
 
 /**
  * Any ORM Engine (MySQL, Postgres, etc) must implement these methods
@@ -7,6 +7,8 @@ namespace Code\Framework\Humble\Entities\Drivers;
 interface ORMEngine {
     public function connect();
     public function query($query);
+    public function buildWhereClause();
+  //  public function calculateStats();
     public function close();
 }
 
@@ -29,7 +31,10 @@ class ORM
     protected $_lastError   = null;
     protected $_prefix      = null;
     protected $_namespace   = null;
-    protected $_isVirtual   = false;    
+    protected $_isVirtual   = false;  
+    private   $_rows        = null;
+    private   $_page        = null;
+    private   $_cursor      = null;
     private   $shortList    = [ 'Humble',
                                 'Code\Framework\Humble\Helpers\Installer',
                                 'Code\Framework\Humble\Helpers\Updater',

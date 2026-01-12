@@ -1,13 +1,13 @@
 <?php
-namespace Code\Framework\Humble\Drivers;
+namespace Code\Framework\Humble\Models;
 use Humble;
 use Log;
 use Environment;
 /**
  *
- * Postgres Wrapper
+ * SQLLite Wrapper
  *
- * Methods to support PostGRE SQL Integration
+ * Methods to support SQLLite Integration
  *
  * PHP version 7.0+
  *
@@ -15,7 +15,7 @@ use Environment;
  * @package    Core
  * @author     Rick Myers <rick@humbleprogramming.com>
  */
-class Postgres extends ORM implements ORMEngine
+class SQLLite extends ORM implements ORMEngine
 {
 
     

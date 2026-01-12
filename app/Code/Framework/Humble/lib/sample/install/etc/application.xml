@@ -54,7 +54,7 @@
         <email>{$support_email}</email>  
     </support>
     <external comment="List of directories outside of the framework that are to be scanned for workflow components">
-        <directory>/var/www/otherframework/app</directory>
+        <directory alias="app_name">/var/www/otherframework/app</directory>
     </external> 
     <status>
         <enabled>{$enabled}</enabled>           <!-- Switch to 0 to take the application offline -->

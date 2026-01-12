@@ -1,5 +1,6 @@
 <?php
-namespace Code\Framework\Humble\Entities\Drivers;
+namespace Code\Framework\Humble\Models;
+//require_once('Code/Framework/Humble/Models/ORM.php');
 /**
  * MySQL connection manager
  *
@@ -20,7 +21,7 @@ class MySQL extends ORM implements ORMEngine  {
     private $_dbref         = NULL;
     private $_state         = NULL;
     private $_prep          = NULL;
-    private $_connected     = true;
+    private $_connected     = false;
     private $_environment   = null;
     private $_rowsAffected  = 0;
 
@@ -29,7 +30,7 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function __construct() {
         parent::__construct();
-        die("Got It\n\n");
+        print("MySQL Created\n\n");
         $this->_environment = \Singleton::getEnvironment();
         
         $this->connect();
@@ -40,7 +41,8 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function connect() {
         global $USE_CONNECTION_POOL;                                            //use persistent connections?
-        if (!$this->_dbref	=  @new \mysqli((($USE_CONNECTION_POOL) ? 'p:' : '').$this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword())) {
+        $errorstring = '';
+        if (!$this->_dbref	=  new \mysqli((($USE_CONNECTION_POOL) ? 'p:' : '').$this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword())) {
             die('Error attempting to connect to the database.  Is the server running?  If so, check you DB settings'."\n");
         }
         if ($this->_dbref->connect_error ?? false) {
@@ -50,7 +52,6 @@ class MySQL extends ORM implements ORMEngine  {
             $errorstring .= "\t<errortext> ".$this->_dbref->connect_error." </errortext>\n";
             $errorstring .= "</error>\n";
             \Log::sql($errorstring);
-            $this->_connected = false;
             if (php_sapi_name()=='cli') {
                 print($this->_dbref->connect_error."\n");
                 debug_print_backtrace();
@@ -71,18 +72,22 @@ class MySQL extends ORM implements ORMEngine  {
                 if (\Environment::flag('display_mysql_errors')) {
                     print($errorstring."\n\n");
                 }
-                $this->_connected = false;
             }
         }
         $this->_environment->clearPassword();
+        print("Ins MYSQL Object\n");
         return $this;
     }
 
+    public function buildWhereClause() {
+        
+    }
+    
     /**
      * Closes the DB connection
      */
     public function close() {
-        //$this->_dbref->close();
+        $this->_dbref->close();
         return $this;
     }
 
@@ -166,8 +171,8 @@ class MySQL extends ORM implements ORMEngine  {
                     }                    
                 }
             } else {
-                $rs = $this->_dbref->query('SELECT ROW_COUNT() as ROWS_AFFECTED');
-                $row = $rs->fetch_assoc();
+                $rs     = $this->_dbref->query('SELECT ROW_COUNT() as ROWS_AFFECTED');
+                $row    = $rs->fetch_assoc();
                 $this->_rowsAffected($row['ROWS_AFFECTED']);
             }
         } else {

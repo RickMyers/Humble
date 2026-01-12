@@ -465,7 +465,29 @@ function loadProjectFile() {
 //------------------------------------------------------------------------------
 function configProject($dir='',$name='localhost',$port=80,$log='') {
     if ($args    = loadProjectFile()) {
-        if ($vhost = HURL($args['framework_url'].'/distro/vhost',array_merge($args,['name'=>$name,'port'=>$port,'error_log'=>$log,'current_dir'=>getcwd()]))) {
+
+        $option  = false; $options=['1'=>true,'2'=>true];
+        while (!isset($options[$option])) {
+            print(justify("Please choose how you wish to run this project",100)."\n");
+            print(justify("  1) Local Installation",30));
+            print(justify("  2) Docker Container",30));
+            print("\n");
+            print(justify("Enter selection here: ",30));
+            $option        = scrub(fgets(STDIN));
+        }  
+        $dir 	 = ($option === '2') ? '/var/www/html' : getcwd();
+		
+        $engine  = '';
+        while (!(($engine==='1') || ($engine==='2'))) {
+            print(justify("\nChoose the PHP Engine You'd like to configure from below",100)."\n");
+            print(justify("\n\n1) Apache MOD_PHP",30));
+            print(justify("2) PHP_FPM",30));
+            print("\n");
+            print(justify("Enter selection here: ",30));
+            $engine = scrub(fgets(STDIN));
+        }
+        
+        if ($vhost = HURL($args['framework_url'].'/distro/vhost',array_merge($args,['name'=>$name,'port'=>$port,'error_log'=>$log,'current_dir'=>$dir, 'engine'=>$engine,'option'=>$option]))) {
             file_put_contents('vhost.conf',$vhost);
         } else {
             die("There was a problem creating a virtual host file for you, please make sure the framework URL found in the Humble.project file is available and then try again.\n");
@@ -582,10 +604,10 @@ if (PHP_SAPI === 'cli') {
                 break;
             case "install":
                 if (!file_exists('Humble.project')) {
-                        if ($serial_number = fetchParameter('serial_number',$args) ? fetchParameter('serial_number',$args) : fetchParameter('sn',$args)) {
-                                print("\nInstalling SN:".$serial_number."\n");
-                                installProjectFile($serial_number);
-                        }
+                if ($serial_number = fetchParameter('serial_number',$args) ? fetchParameter('serial_number',$args) : fetchParameter('sn',$args)) {
+                        print("\nInstalling SN:".$serial_number."\n");
+                        installProjectFile($serial_number);
+                    }
                 } else {
                         die("\n\nA Humble.project file already exists.  Installation aborted\n\n");
                 }
@@ -596,11 +618,11 @@ if (PHP_SAPI === 'cli') {
                 prepareProject();
                 break;
             case "register":
-                    if (!file_exists('Humble.project')) {
-                            die("\n\nRun 'humble --init' to create the .project file first\n\n");
-                    }
-                    registerExistingProject();
-                    break;
+                if (!file_exists('Humble.project')) {
+                    die("\n\nRun 'humble --init' to create the .project file first\n\n");
+                }
+                registerExistingProject();
+                break;
             case "docker":
             case "dockerme":
                // installedExtensionCheck();

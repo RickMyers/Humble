@@ -14,9 +14,7 @@ namespace Code\Main\Blog\Entities;
  * @author     Original Author <rick@humbleprogramming.com>
  * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
  * @license    https://humbleprogramming.com/LICENSE.txt
- * @version    3.0.0
- * @link       http://pear.php.net/package/PackageName
-
+ * @version    1.0.0
  */
 class Entity extends \Code\Framework\Humble\Entities\Unity
 {
