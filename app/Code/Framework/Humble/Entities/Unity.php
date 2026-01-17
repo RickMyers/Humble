@@ -14,6 +14,7 @@ class Unity
     protected $_orderBy       = [];
     private   $_orderBuilt    = false;
     protected $_fieldList     = "*";
+    protected $_db            = null;
     protected $_search        = [];
     protected $_autoinc       = [];
     protected $_currentPage   = 0;
@@ -55,20 +56,17 @@ class Unity
     protected $_bulk          = false;
     protected $_rowsAffected  = 0;
     public    $_lastResult    = [];
-    private   $_engine        = null;
 
     /**
      * Initial constructor
      *
      * If this is a polyglot transaction, use the $this->query() function since
      * it performs the necessary checks.  Otherwise it is ok to just go against
-     * the $this->_engine->query() direct DB call, which bypasses mongodb
+     * the $this->_db->query() direct DB call, which bypasses mongodb
      *
      */
     public function __construct() {
-        $this->_engine  =  Humble::connection($this);
-        $this->_engine->linkUnity($this);
-        return $this;
+        $this->_db = Humble::connection($this);
     }
     
     /**
@@ -382,7 +380,7 @@ SQL;
         $query   = <<<SQL
           describe {$table}
 SQL;
-        return $this->_engine->query($query);
+        return $this->_db->query($query);
     }
 
     /**
@@ -441,7 +439,7 @@ SQL;
         $query = <<<SQL
         truncate table {$table}
 SQL;
-        return $this->_engine->query($query);
+        return $this->_db->query($query);
     }
 
     /**
@@ -459,7 +457,7 @@ SQL;
         $group = implode(',',$group);
         $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query = "select {$group},coalesce(avg({$field}),'0') as `average` from ".$table;
-        $results = $this->_engine->query($query);
+        $results = $this->_db->query($query);
         return $results[0]['average'];
     }
 
@@ -503,11 +501,11 @@ SQL;
             }
             $query .= $this->addLimit($this->_page());
         }
-        $results = $this->_engine->query($query);
+        $results = $this->_db->query($query);
         $query = <<<SQL
          select FOUND_ROWS()
 SQL;
-        $rows = $this->_engine->query($query);
+        $rows = $this->_db->query($query);
         $this->_rowCount($rows[0]['FOUND_ROWS()']);
         return $results;
     }
@@ -522,7 +520,7 @@ SQL;
         $query = <<<SQL
             select count(*) as total from {$table}
 SQL;
-        $results = $this->_engine->query($query);
+        $results = $this->_db->query($query);
         return (count($results) == 1) ? $results[0]["total"] : 0;
     }
 
@@ -626,7 +624,7 @@ SQL;
         } else {
             $query .= ' LIMIT 1'; //load returns the first instance to match only
         }
-        $row_total  = count($results = $this->_engine->query($query));          //This is where the query happens
+        $row_total  = count($results = $this->query($query));                    //This is where the query happens
         $result     = $results->first();
         if ($this->_polyglot() && ($row_total>0)) {
             //now get the mongo object...
@@ -756,11 +754,11 @@ SQL;
         }
         $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query   = "select ". $this->_distinct() ." ".$this->_fieldList()." from ".$table;
-        $query  .= $this->_engine->buildWhereClause($useKeys);
+        $query  .= $this->buildWhereClause($useKeys);
         $this->_noLimitQuery = $query;                                          //for pagination purposes        
-        $query  .= $this->_engine->buildOrderByClause();
-        $query  .= $this->_engine->addLimit($this->_currentPage);
-        return $this->_engine->query($query);
+        $query  .= $this->buildOrderByClause();
+        $query  .= $this->addLimit($this->_currentPage);
+        return $this->query($query);
     }
 
     /**
@@ -786,7 +784,7 @@ SQL;
      * @return $this
      */
     protected function calculateStats($query,&$results) {
-        $rows = $this->_engine->query($query);
+        $rows = $this->_db->query($query);
         $this->_rowCount($rows[0]['FOUND_ROWS']);
         if ($this->_rowCount()) {
             if ($this->_page()) {
@@ -904,9 +902,9 @@ SQL;
               on duplicate key update
                 {$duplicate}
 SQL;
-        $this->_engine->query($query);
-        $insertId = $this->_engine->getInsertId();
-        $this->rowsAffected($this->_engine->_rowsAffected());
+        $this->_db->query($query);
+        $insertId = $this->_db->getInsertId();
+        $this->rowsAffected($this->_db->_rowsAffected());
         if (!$insertId && !$this->getId()) {
             $d = $this->load(true);
             if (isset($d['id'])) {
@@ -997,7 +995,7 @@ SQL;
             }
             return false;
         }
-        $results = $this->_engine->query($query);
+        $results = $this->_db->query($query);
         //\Log::error($query);
         if ($this->_page() || $this->_cursor()) {
             $this->calculateStats($noLimitQuery,$results);
@@ -1117,8 +1115,8 @@ SQL;
             }
         }
         if ($conditionFound) {
-            $this->_engine->query($query);
-            $this->rowsAffected($this->_engine->_rowsAffected());
+            $this->_db->query($query);
+            $this->rowsAffected($this->_db->_rowsAffected());
             //POLYGLOT check here
             //@TODO: Implement a check to see if this is a polyglot table, and remove corresponding row in MongoDB
         } else {
@@ -1209,7 +1207,7 @@ SQL;
     }
 
     public function commit() {
-       $this->_engine->endTransaction();
+       $this->_db->endTransaction();
     }
     /**
      *
@@ -1239,7 +1237,7 @@ SQL;
                 $andFlag = true;
             }
         }
-        $results = $this->_engine->query($query);
+        $results = $this->_db->query($query);
         return ((count($results)>0) ? $results[0]['count'] : 0);
     }
 
@@ -1353,7 +1351,7 @@ SQL;
                  where a.namespace = '{$namespace}'
                    and a.entity    = '{$entity}'
 SQL;
-            $primary    = $this->_engine->query($query);
+            $primary    = $this->_db->query($query);
             if (count($primary)===0) {
                 /*
                  * We haven't found any keys for this table, so it probably means that this table
@@ -1368,7 +1366,7 @@ SQL;
                      where a.namespace  = 'humble'
                        and a.entity     = '{$entity}'
 SQL;
-                $primary    = $this->_engine->query($query);
+                $primary    = $this->_db->query($query);
                 if (count($primary)!==0) {
                     $this->_namespace('humble');  //Mark that we got this from humble
                     $this->_prefix('humble_');
@@ -1402,7 +1400,7 @@ SQL;
                  where namespace = '{$namespace}'
                    and entity    = '{$entity}'
 SQL;
-            $columns    = $this->_engine->query($query);
+            $columns    = $this->_db->query($query);
             if (count($columns)===0) {
                 /*
                  * We haven't found any fields for this table, so it probably means that this table
@@ -1416,7 +1414,7 @@ SQL;
                      where namespace = 'humble'
                        and entity    = '{$entity}'
 SQL;
-                $columns    = $this->_engine->query($query);
+                $columns    = $this->_db->query($query);
                 if (count($columns)!==0) {
                     $this->_namespace('humble');  //Mark that we got this from humble
                     $this->_prefix('humble_');
@@ -1445,14 +1443,14 @@ SQL;
      *
      */
     public function lastQuery() {
-        return $this->_engine->_lastQuery();
+        return $this->_db->_lastQuery();
     }
 
     /**
      *
      */
     public function lastError() {
-        return $this->_engine->_lastError();
+        return $this->_db->_lastError();
     }
 
     //################################################################################################
@@ -1461,18 +1459,18 @@ SQL;
     //
     //################################################################################################
     public function nonKeysLoad() {
-        return $this->_engine->load(true);
+        return $this->load(true);
     }
     public function useKeysFetch() {
-        return $this->_engine->fetch(true);
+        return $this->fetch(true);
     }
     public function loadNext() {
-        $this->_engine->load();
-        return $this->_engine->next();
+        $this->load();
+        return $this->next();
     }
     public function loadPrevious() {
-        $this->_engine->load();
-        return $this->_engine->previous();
+        $this->load();
+        return $this->previous();
     }
     //###############################################################################################
     //                      END OF SPECIAL METHODS FOR XML CONTROLLERS
@@ -1485,7 +1483,11 @@ SQL;
      * @return $this
      */
     public function _cursor($cursor=null) {
-        return $this->_engine->_cursor($cursor);
+        if ($cursor!==null) {
+            $this->_cursor = $cursor;
+            return $this;
+        }
+        return $this->_cursor;
     }
     
     /**
@@ -1662,31 +1664,51 @@ SQL;
     }
 
     /**
-     *  Relay to the engine
+     *
      */
     public function _page($arg=false)   {
-        return $this->_engine->_page($arg);
+        if ($arg === false) {
+            return $this->_page;
+        } else {
+            $this->_page                = ($arg > 1) ? $arg : 1;
+        }
+        return $this;
     }
 
     /**
      *
      */
     public function _rows($arg=false) {
-        return $this->_engine->_rows($arg);
+        if ($arg === false) {
+            return $this->_rows;
+        } else {
+            $this->_rows                = $arg;
+        }
+        return $this;
     }
 
     /**
      *
      */
     public function _rowCount($arg=false){
-        return $this->_engine->_rowCount($arg);        
+        if ($arg === false) {
+            return $this->_rowCount;
+        } else {
+            $this->_rowCount             = $arg;
+        }
+        return $this;
     }
 
     /**
      *
      */
     public function _fromRow($arg=false) {
-        return $this->_engine->_fromRow($arg);
+        if ($arg === false) {
+            return $this->_fromRow;
+        } else {
+            $this->_fromRow             = $arg;
+        }
+        return $this;
     }
 
     /**
@@ -1695,7 +1717,12 @@ SQL;
      * @return $this
      */
     public function _toRow($arg=false) {
-        return $this->_engine->_toRow($arg);        
+        if ($arg === false) {
+            return $this->_toRow;
+        } else {
+            $this->_toRow             = $arg;
+        }
+        return $this;
     }
 
     /**
@@ -1704,14 +1731,24 @@ SQL;
      * @return mixed
      */
     public function _rowsReturned($arg=false) {
-        return $this->_engine->_rowsReturned($arg);  
+        if ($arg === false) {
+            return $this->_rowsReturned;
+        } else {
+            $this->_rowsReturned    = $arg;
+        }
+        return $this;
     }
     
     /**
      *
      */
     public function _currentPage($arg=false) {
-        return $this->_engine->_currentPage($arg);  
+        if ($arg === false) {
+            return $this->_currentPage;
+        } else {
+            $this->_currentPage                = $arg;
+        }
+        return $this;
     }
 
     /**
@@ -1866,4 +1903,3 @@ SQL;
     }
 
 }
-?>
