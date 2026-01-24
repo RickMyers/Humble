@@ -45,6 +45,10 @@ class Postgres extends ORM implements ORMEngine
         
     }
     
+    public function calculateStats($noLimitQuery='',$results=[]) {
+        
+    }
+    
     public function close() {
         
     }

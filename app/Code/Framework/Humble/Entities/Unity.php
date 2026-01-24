@@ -716,52 +716,6 @@ SQL;
         $this->_cursor($max_id);
         return $max_id;
     }
-    
-    /**
-     * Determines pagination values
-     * 
-     * @param string $query
-     * @param iterator $results
-     * @return $this
-     */
-    protected function calculateStats($query,&$results) {
-        $rows = $this->_engine->query($query);
-        $this->_rowCount($rows[0]['FOUND_ROWS']);
-        if ($this->_rowCount()) {
-            if ($this->_page()) {
-                if ($this->_toRow() > $this->_rowCount()) {
-                    $this->_toRow($this->_rowCount());
-                }
-                $this->_fromRow($this->_rows() * ($this->_page()-1)+1);
-                $this->_headers['pagination'] = json_encode([
-                    'rows' => [
-                        'from'  => $this->_fromRow(),
-                        'to'    => $this->_toRow(),
-                        'total' => $this->_rowCount()
-                    ],
-                    'pages' => [
-                        'current' => $this->_page(),
-                        'total'   => $this->_pages()
-                    ]
-                ]);
-            } else if ($this->_cursor()) {
-                $this->cursorId($results);
-                $this->_rowsReturned(count($results));
-                $this->_pages(floor($this->_rowsReturned() / $this->_rows()));
-                $this->_headers['pagination'] = json_encode([
-                    'cursor_id' => $this->_cursor(),
-                    'pages' => [
-                        'total' => $this->_pages()
-                    ],
-                    'rows' => [
-                        'returned' => $this->_rowsReturned(),
-                        'total' => $this->_rowCount()
-                    ]
-                ]);
-            }
-        }
-        return $this;
-    }
 
     /**
      *
@@ -939,10 +893,6 @@ SQL;
         //\Log::error($query);
         if ($this->_page() || $this->_cursor()) {
             $this->_engine->calculateStats($noLimitQuery,$results);
-        }
-        if (is_bool($results)) {
-            print("Boolean detected, wtf\n");
-            die($query);
         }
         if (!is_bool($results) && $this->_polyglot()) {
             //now get the mongo document and merge with the mysql row...

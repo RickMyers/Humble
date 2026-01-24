@@ -8,7 +8,7 @@ interface ORMEngine {
     public function connect();
     public function query($query);
     public function buildWhereClause($useKeys);
-  //  public function calculateStats();
+    public function calculateStats($noLimitQuery,&$results);
     public function buildOrderByClause();
     public function addLimit($page);
     public function close();
@@ -52,7 +52,7 @@ class ORM
      * Constructor
      */
     public function __construct() {
-        //print("ORM Parent\n");
+        //nop
     }
     
     /**
@@ -141,7 +141,8 @@ class ORM
             $this->_toRow   = $arg;
         }
         return $this->_unity;
-    }    
+    } 
+    
     /**
      * 
      * @param type $arg
@@ -226,6 +227,5 @@ class ORM
         }
         return $this->_unity;
     }
-    
 
 }

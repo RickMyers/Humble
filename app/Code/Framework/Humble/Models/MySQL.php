@@ -169,6 +169,52 @@ class MySQL extends ORM implements ORMEngine  {
         }
         return $query;
     }    
+
+    /**
+     * Determines pagination values
+     * 
+     * @param string $query
+     * @param iterator $results
+     * @return $this
+     */
+    public function calculateStats($query,&$results) {
+        $rows = $this->query($query);
+        $this->_unity->_rowCount($rows[0]['FOUND_ROWS']);
+        if ($this->_unity->_rowCount()) {
+            if ($this->_unity->_page()) {
+                if ($this->_unity->_toRow() > $this->_unity->_rowCount()) {
+                    $this->_unity->_toRow($this->_unity->_rowCount());
+                }
+                $this->_unity->_fromRow($this->_unity->_rows() * ($this->_unity->_page()-1)+1);
+                $this->_unity->_headers['pagination'] = json_encode([
+                    'rows' => [
+                        'from'  => $this->_unity->_fromRow(),
+                        'to'    => $this->_unity->_toRow(),
+                        'total' => $this->_unity->_rowCount()
+                    ],
+                    'pages' => [
+                        'current' => $this->_unity->_page(),
+                        'total'   => $this->_unity->_pages()
+                    ]
+                ]);
+            } else if ($this->_unity->_cursor()) {
+                $this->_unity->cursorId($results);
+                $this->_unity->_rowsReturned(count($results));
+                $this->_unity->_pages(floor($this->_unity->_rowsReturned() / $this->_unity->_rows()));
+                $this->_unity->_headers['pagination'] = json_encode([
+                    'cursor_id' => $this->_unity->_cursor(),
+                    'pages' => [
+                        'total' => $this->_unity->_pages()
+                    ],
+                    'rows' => [
+                        'returned' => $this->_unity->_rowsReturned(),
+                        'total' => $this->_unity->_rowCount()
+                    ]
+                ]);
+            }
+        }
+        return $this->_unity;
+    }
     
     /**
      * Closes the DB connection
@@ -217,7 +263,7 @@ class MySQL extends ORM implements ORMEngine  {
             if ($logQuery) {
                 \Log::query($qry."\n\nELAPSED TIME: ".(microtime(true)-$st)."\nSQL STATE: ".$this->_state."\nERROR: ".$this->_dbref->error."\n");
             }
-            if (($this->_dbref->sqlstate != "00000")) {
+            if (($this->_dbref->sqlstate != '00000')) {
                 if ($this->_dbref->errno!=1062) {
                     $errorstring = "<error date=\"".date(DATE_RFC822)."\">\n";
                     global $namespace, $controller, $action;
@@ -268,16 +314,7 @@ class MySQL extends ORM implements ORMEngine  {
             $errorstring .= "</error>\n";
             \Log::sql($errorstring);
         }
-        if (is_object($resultSet) && $resultSet->num_rows) {
-            $resultSet = $this->translateResultSet($resultSet);
-        } else if (is_bool($resultSet)) {
-            //nop, due to the fact that the query method can return "mixed" results, we are just 
-            //making sure that what is returned makes sense.  If a non boolean, or iterator is returned,
-            //we return an array just so that iterators can iterate...
-        } else {
-            $resultSet = [];
-        }
-	return $resultSet;
+	return $resultSet = (is_object($resultSet) && $resultSet->num_rows) ? $this->translateResultSet($resultSet) : [];
     }
 
     /**
