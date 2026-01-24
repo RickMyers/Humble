@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+
+    For instructions on how to create your own apps on the administrators page
+    please go to...
+    
+        https://humbleprogramming.com/pages/AdminApps.htmls
+    
+    For creating glass icons, I use this site...
+    
+        http://www.holshousersoftware.com/glass/
+    
+-->
+<apps>
+    <app>
+        <name>Store App</name>
+        <description>Store for shopping for modules and workflows</description>
+        <icon>
+            <text>Store App</text>
+            <image>
+                <desktop>/images/paradigm/store_app.png</desktop>
+                <minimized>/images/paradigm/store_app.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/paradigm/store/home</uri>
+        </start>
+    </app>
+</apps>
+
