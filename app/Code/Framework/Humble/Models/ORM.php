@@ -7,8 +7,10 @@ namespace Code\Framework\Humble\Models;
 interface ORMEngine {
     public function connect();
     public function query($query);
-    public function buildWhereClause();
+    public function buildWhereClause($useKeys);
   //  public function calculateStats();
+    public function buildOrderByClause();
+    public function addLimit($page);
     public function close();
 }
 
@@ -32,10 +34,15 @@ class ORM
     protected $_prefix      = null;
     protected $_namespace   = null;
     protected $_isVirtual   = false;  
-    private   $_rows        = null;
-    private   $_page        = null;
-    private   $_cursor      = null;
-    private   $shortList    = [ 'Humble',
+    protected $_rows        = null;
+    protected $_page        = null;
+    protected $_fromRow     = null;
+    protected $_toRow       = null;
+    protected $_cursor      = null;
+    protected $_unity       = null;
+    protected $_orderBy     = [];
+    protected $_orderBuilt  = false;
+    protected $shortList    = [ 'Humble',
                                 'Code\Framework\Humble\Helpers\Installer',
                                 'Code\Framework\Humble\Helpers\Updater',
                                 'Code\Framework\Humble\Helpers\Compiler'
@@ -45,20 +52,135 @@ class ORM
      * Constructor
      */
     public function __construct() {
-        print("ORM Parent\n");
+        //print("ORM Parent\n");
+    }
+    
+    /**
+     * This is a link back to the Unity object for daisy chaining methods
+     * 
+     * @param object $caller
+     */
+    public function linkUnity($unity=false) {
+        if ($unity) {
+            $this->_unity = $unity;
+        }
+    }
+    
+    protected function underscoreToCamelCase($string, $first_char_caps=false) {
+        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
+    }    
+    
+    /**
+     *
+     */
+    public function _pages()            {
+        $pages = 1;
+        if ($this->_rows() && $this->_rowCount) {
+            $pages = ceil($this->_rowCount/$this->_rows());
+        }
+        return $pages;
     }
 
     /**
      *
      */
-    public function _isVirtual($state=null) {
-        if ($state === null) {
-            return $this->_isVirtual;
+    public function _page($arg=false)   {
+        if ($arg === false) {
+            return $this->_page;
         } else {
-            $this->_isVirtual = $state;
+            $this->_page = ($arg > 1) ? $arg : 1;
         }
-        return $this;
+        return $this->_unity;
+    }
+
+    /**
+     *
+     */
+    public function _rows($arg=false) {
+        if ($arg === false) {
+            return $this->_rows;
+        } else {
+            $this->_rows = $arg;
+        }
+        return $this->_unity;
+    }
+    
+    /**
+     *
+     */
+    public function _rowCount($arg=false){
+        if ($arg === false) {
+            return $this->_rowCount;
+        } else {
+            $this->_rowCount  = $arg;
+        }
+        return $this->_unity;
+    }
+
+    /**
+     *
+     */
+    public function _fromRow($arg=false) {
+        if ($arg === false) {
+            return $this->_fromRow;
+        } else {
+            $this->_fromRow  = $arg;
+        }
+        return $this->_unity;
+    }
+
+    /**
+     * 
+     * @param type $arg
+     * @return $this
+     */
+    public function _toRow($arg=false) {
+        if ($arg === false) {
+            return $this->_toRow;
+        } else {
+            $this->_toRow   = $arg;
+        }
+        return $this->_unity;
     }    
+    /**
+     * 
+     * @param type $arg
+     * @return mixed
+     */
+    public function _rowsReturned($arg=false) {
+        if ($arg === false) {
+            return $this->_rowsReturned;
+        } else {
+            $this->_rowsReturned    = $arg;
+        }
+        return $this->_unity;
+    }
+    
+    /**
+     *
+     */
+    public function _currentPage($arg=false) {
+        if ($arg === false) {
+            return $this->_currentPage;
+        } else {
+            $this->_currentPage                = $arg;
+        }
+        return $this->_unity;    
+    }
+    
+    /**
+     * For pagination, can set whether to use a cursor or not.  Primarily for use when in a controller
+     * 
+     * @param bool $cursor
+     * @return $this
+     */
+    public function _cursor($cursor=null) {
+        if ($cursor!==null) {
+            $this->_cursor = $cursor;
+            return $this->_unity;
+        }
+        return $this->_cursor;
+    }
     
     /**
      *
@@ -74,15 +196,6 @@ class ORM
         }
 	return $n_rs;
     }
-    
-    /**
-     * Enables or disables query logging
-     * 
-     * @return type
-     */
-    public function logging() {
-       return \Humble::cache('queryLogging',$this->getStatus() ? ($this->getStatus()==='On') : false);
-    }
 
     /**
      * Returns the last query executed, or saves it off if passed in
@@ -91,10 +204,12 @@ class ORM
      * @return String
      */
     public function _lastQuery($qry=false) {
-        if ($qry) {
+        if ($qry===false) {
+            return $this->_lastQuery;
+        } else {
             $this->_lastQuery = $qry;
         }
-        return $this->_lastQuery;
+        return $this->_unity;
     }
 
     /**
@@ -104,29 +219,13 @@ class ORM
      * @return type
      */
     public function _lastError($err=false) {
-        if ($err) {
+        if ($err===false) {
+            return $this->_lastError;
+        } else {
             $this->_lastError = $err;
         }
-        return $this->_lastError;
-    }
-
-    public function _prefix($prefix=false) {
-        if ($prefix) {
-            $this->_prefix = $prefix;
-        } else {
-            return $this->_prefix;
-        }
-        return $this;
-    }
-
-    public function _namespace($ns=false) {
-        if ($ns) {
-            $this->_namespace = $ns;
-        } else {
-            return $this->_namespace;
-        }
-        return $this;
+        return $this->_unity;
     }
     
-    
+
 }

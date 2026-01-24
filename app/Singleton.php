@@ -16,7 +16,7 @@
  */
 class Singleton
 {
-    private static $mySQLAdapter     = null;
+    private static $DBEngine     = null;
     private static $mongoAdapter     = null;
     private static $settings         = null;
     private static $environment      = null;
@@ -54,14 +54,29 @@ class Singleton
      */
     public static function destruct() {
     }
+    
     /**
      *
      */
-    public static function getMySQLAdapter()  {
-        if (!isset(self::$mySQLAdapter)) {
-            self::$mySQLAdapter = new \Code\Framework\Humble\Entities\Drivers\MySQL();
+    public static function getDBEngine()  {
+        if (!isset(self::$DBEngine)) {
+            $class = ($db_engine = Humble::cache('humble_db_engine')) ? $db_engine : 'MySQL';
+            switch ($class) {
+                case 'Postgres' :
+                    self::$DBEngine = new \Code\Framework\Humble\Models\Postgres();
+                    break;
+                case 'SQLLite' :
+                    self::$DBEngine = new \Code\Framework\Humble\Models\SQLLite();
+                    break;
+                case 'SQLServer' :
+                    self::$DBEngine = new \Code\Framework\Humble\Models\SQLServer();
+                    break;
+                default     :
+                    self::$DBEngine = new \Code\Framework\Humble\Models\MySQL();
+                    break;
+            }
         }
-        return self::$mySQLAdapter;
+        return self::$DBEngine;
     }
 
     /**
@@ -69,7 +84,7 @@ class Singleton
      */
     public static function getMongoAdapter()  {
         if (!isset(self::$mongoAdapter)) {
-            self::$mongoAdapter = new \Code\Framework\Humble\Driver\Mongo();
+            self::$mongoAdapter = new \Code\Framework\Humble\Model\Mongo();
         }
         return self::$mongoAdapter;
     }

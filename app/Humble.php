@@ -220,7 +220,6 @@
             $identifier = self::parseResource($resource_identifier);
             $instance   = null;
             if ($module = self::module($identifier['namespace'])) {
-                print_r($module);
                 $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
                 if (!$class = file_exists($str.".php") ? $str : false) {
                     $instance = new class(str_replace('/','\\','\\'.$str)) extends \Code\Framework\Humble\Entities\Unity {
@@ -241,7 +240,6 @@
                     print("Entity ".$resource_identifier." failed to allocate\n");
                 }
             }
-            print_r($instance); die();
             return $instance;
         }
 
@@ -323,7 +321,7 @@
             $instance   = null;
             if ($module = self::module($identifier['namespace'])) {
                 if ($module['mongodb']) {
-                    $instance   = new \Code\Framework\Humble\Drivers\Mongo;//What is this for?
+                    $instance   = new \Code\Framework\Humble\Models\Mongo;//What is this for?
                     if (isset($identifier['resource'])) {
                         $instance->_collection(str_replace('/','_',$identifier['resource']));
                     }
@@ -588,6 +586,13 @@
             return $success;
         }
 
+        /**
+         * Yet another way to send an event
+         * 
+         * @param type $eventName
+         * @param type $data
+         * @return type
+         */
         public static function emit($eventName=false,$data=[]) {
             $result = false;
             if ($eventName) {
@@ -596,6 +601,7 @@
             }
             return $result;
         }
+        
         /**
          * To protect yourself from bad impulses, access to the DB is restricted to instances of Unity (ORM) or a short list of privileged classes.  This is to encourage DAO style development
          *
@@ -603,6 +609,7 @@
          * @return mixed
          */
         public static function connection($callingClass=false)        {
+            //print_r($callingClass);
             if (!($conn = ($callingClass instanceof \Code\Framework\Humble\Entities\Unity))) {
                 if ($callingClass) {
                     $name = $callingClass->getClassName();
@@ -611,8 +618,8 @@
                 }
                 $shortList  = array('Humble','Code\Framework\Humble\Helpers\Installer','Code\Framework\Humble\Helpers\Updater','Code\Framework\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
                 $conn       = in_array($name,$shortList);
-            }
-            return $conn ? Singleton::getMySQLAdapter() : $conn;
+            } 
+            return $conn ? Singleton::getDBEngine() : $conn;
         }
 
         /**
@@ -656,7 +663,7 @@
                     select * from humble_modules
                       where namespace = '{$module[0]}'
 SQL;
-                $data = $db->query($query);                
+                $data = $db->query($query);
                 if (count($data) === 1) {
                     self::cache('module-'.$namespace,$data = self::$modules[$namespace] = $data[0]);
                 }

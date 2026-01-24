@@ -27,7 +27,7 @@
         $bind       = ((int)$port===80) ? '' : ' *:'.$port;
         $server     = $args['SERVER_NAME'] ?? ($parts[1] ?? 'localhost');
         $cont       = explode('/',$args['landing_page'])[2];
-        $basedir    = $args['destination_folder']  ?? '';
+        $basedir    = $args['current_dir']  ?? '';
         $path       = str_replace('\\','/',$basedir);
         if (strpos($path,':')!==false) { 
             $parts  = explode(':',$path);
@@ -186,8 +186,11 @@
                 $name      = str_replace(['http://','https://'],['',''],($_REQUEST['project_name'] && $_REQUEST['project_name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));
                 $error_log = isset($_REQUEST['error_log'])&& $_REQUEST['error_log'] ? 'ErrorLog '.$_REQUEST['error_log']:'';
                 $port      = $_REQUEST['port'] ?? '80';
+				$engines   = [ '1'=>'MODPHP', '2'=>'FPM' ];
                 $dir       = $_REQUEST['destination_folder'] ?? ($_REQUEST['current_dir'] ?? '/var/www/html');
-                $vhost     = processVhost('app/install/Docker/vhost_template.conf',array_merge($_REQUEST,['project_name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
+				$root      = ($_REQUEST['namespace']=='humble') ? 'Contribute' : 'Development';
+				$engine    = ($_REQUEST['engine']==='2') ? 'FPM' : 'MODPHP';
+                $vhost     = processVhost('app/install/Docker/'.$root.'/'.$engine.'/vhost.conf',array_merge($_REQUEST,['project_name'=>$name,'port'=>$port,'destination_folder'=>$dir,'error_log'=>$error_log]));
                 print($vhost);
             } else {
                 print('{ "error": "Project data not passed in request" }');

@@ -23,26 +23,22 @@ class MySQL extends ORM implements ORMEngine  {
     private $_prep          = NULL;
     private $_connected     = false;
     private $_environment   = null;
-    private $_rowsAffected  = 0;
 
     /**
      * Loads the environment information, such as userid and password
      */
     public function __construct() {
         parent::__construct();
-        print("MySQL Created\n\n");
         $this->_environment = \Singleton::getEnvironment();
-        
-        $this->connect();
+        return $this->connect();
     }
-     
     /**
      * Connects to a DB source
      */
     public function connect() {
         global $USE_CONNECTION_POOL;                                            //use persistent connections?
         $errorstring = '';
-        if (!$this->_dbref	=  new \mysqli((($USE_CONNECTION_POOL) ? 'p:' : '').$this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword())) {
+        if (!$this->_dbref	=  @new \mysqli((($USE_CONNECTION_POOL) ? 'p:' : '').$this->_environment->getDBHost(),$this->_environment->getUserid(),$this->_environment->getPassword())) {
             die('Error attempting to connect to the database.  Is the server running?  If so, check you DB settings'."\n");
         }
         if ($this->_dbref->connect_error ?? false) {
@@ -59,8 +55,8 @@ class MySQL extends ORM implements ORMEngine  {
             }
             die('Failed to connect to database server'."\n");
         } else {
-            mysqli_report(MYSQLI_REPORT_OFF);
-            @ $this->_dbref->select_db($this->_environment->getDatabase());
+            @mysqli_report(MYSQLI_REPORT_OFF);
+            $this->_dbref->select_db($this->_environment->getDatabase());
             if ($this->_dbref->sqlstate != "00000")	{
                 $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";
                 $errorstring .= "\t<class> ".$this->_environment->getDBHost()." </class>\n";
@@ -72,16 +68,107 @@ class MySQL extends ORM implements ORMEngine  {
                 if (\Environment::flag('display_mysql_errors')) {
                     print($errorstring."\n\n");
                 }
+            } else {
+                $this->_connected = true;
             }
         }
         $this->_environment->clearPassword();
-        print("Ins MYSQL Object\n");
         return $this;
     }
 
-    public function buildWhereClause() {
-        
+    /**
+     * Builds a where clause for the query
+     * 
+     * @param boolean $useKeys
+     * @return string
+     */
+    public function buildWhereClause($useKeys) {
+        $query   = '';
+        $results = [];
+        if ($useKeys) {
+            foreach ($this->_unity->_keys() as $idx => $key) {
+                $method = 'get'.$this->underscoreToCamelCase($idx,true);
+                $results[$idx] = $this->_unity->$method();
+            }
+        }
+        foreach ($this->_unity->_fields() as $idx => $key) {
+            $method = 'get'.$this->underscoreToCamelCase($idx,true);
+            $results[$idx] = $this->_unity->$method();
+        }
+        $andFlag = false;
+        foreach ($results as $field => $value) {
+            if ($results[$field]!="") {
+                 if ($andFlag == false) {
+                    $query .= ' where ';
+                }
+                $query .= ($andFlag ? "and ": "").($this->_unity->_alias() ? $this->_unity->_alias().'.':'')."`".$field."` = '".addslashes($value)."' ";
+                $andFlag = true;
+            }
+        }
+        if ($this->_unity->_in()) {
+            $query .= ($andFlag) ? " and " : ' where ';
+            $query .= "`".$this->_unity->_inField()."` in ('".implode("','",$this->_unity->_in)."') ";
+            $andFlag = true;
+        }
+        if ($this->_unity->_between()) {  //THERES A PROBLEM HERE!
+            $query .= ($andFlag) ? " and " : ' where ';
+            $query .= "`".$this->_unity->_betweenField()."` between '".$this->_between[0]."' and '".$this->_between[1]."' ";
+            $andFlag = true;
+        }
+        if ($this->_unity->condition()) {
+            foreach ($this->_unity->condition() as $condition) {
+                $query .= ($andFlag) ? " and " : ' where ';
+                $query .= " ".$condition." ";                
+                $andFlag = true;
+            }
+        }   
+        if ($this->_unity->_cursor()) {
+            $query .= ($andFlag) ? " and " : ' where ';
+            $query .= $this->_unity->_prefix().$this->_unity->_entity().'.id > '.$this->_unity->_cursor.' ';
+        }        
+        return $query;
     }
+    
+    /**
+     *
+     */
+    public function addLimit($page) {
+        $query = '';
+        if ($this->_rows()) {
+             if ($this->_page() && $page) {
+                  $this->_fromRow($pre = (($page-1) * $this->_rows()));
+                  $this->_toRow($page * $this->_rows());
+                  $query .= ' limit '.$pre.','.$this->_rows();
+             } else if ($this->_cursor()) {
+                 $query .= ' limit '.$this->_rows();
+             }
+        }
+        return $query;
+    }
+    
+    /**
+     * Builds an order by clause for the query
+     * 
+     * @return string
+     */
+    public function buildOrderByClause() {
+        $query = '';
+        if (count($this->_orderBy) > 0) {
+            $query .= ' order by ';
+            $ctr = 0;
+            foreach ($this->_orderBy as $field => $direction) {
+                if ($ctr) {
+                    $query .= ', ';
+                }
+                $query .= '`'.$field.'` '.$direction;
+                $ctr++;
+            }
+        }
+        if ($query) {
+            $this->_orderBuilt = true;
+        }
+        return $query;
+    }    
     
     /**
      * Closes the DB connection
@@ -91,14 +178,6 @@ class MySQL extends ORM implements ORMEngine  {
         return $this;
     }
 
-    public function _rowsAffected($rows=null) {
-        if ($rows===null) {
-            return $this->_rowsAffected;
-        }
-        $this->_rowsAffected = $rows;
-        return $this;
-    }
-    
     /**
      * Executes a raw SQL query that is passed in
      *
@@ -125,14 +204,15 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function query($qry)	{
         $this->_lastQuery($qry);
-        $resultSet = null;
-        $status = \Humble::cache('queryLogging');
-        $logQuery  = ($status==='On');
+        $resultSet  = null;
+        $status     = \Humble::cache('queryLogging');
+        $logQuery   = ($status==='On');
         if ($this->_connected) {
             if ($logQuery) {
                 $st = microtime(true);
             }
             $resultSet = $this->_dbref->query($qry);
+//            print('State: '.$this->_dbref->sqlstate."\n");
             $this->_state = $this->_dbref->sqlstate;
             if ($logQuery) {
                 \Log::query($qry."\n\nELAPSED TIME: ".(microtime(true)-$st)."\nSQL STATE: ".$this->_state."\nERROR: ".$this->_dbref->error."\n");
@@ -173,7 +253,7 @@ class MySQL extends ORM implements ORMEngine  {
             } else {
                 $rs     = $this->_dbref->query('SELECT ROW_COUNT() as ROWS_AFFECTED');
                 $row    = $rs->fetch_assoc();
-                $this->_rowsAffected($row['ROWS_AFFECTED']);
+                $this->_unity->rowsAffected($row['ROWS_AFFECTED']);
             }
         } else {
             $errorstring="<error date=\"".date(DATE_RFC822)."\">\n";
@@ -201,7 +281,7 @@ class MySQL extends ORM implements ORMEngine  {
     }
 
     /**
-     * Allows you to prepare a query for exectuion
+     * Allows you to prepare a query for execution
      *
      * @param type $query
      */

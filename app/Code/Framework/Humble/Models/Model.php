@@ -46,6 +46,7 @@ class Model implements HumbleComponent
     protected           $_DEBUG         = false;
     protected           $_REPORT        = [];
     protected           $whatAmI        = 'model';
+    protected           $SOAP           = null;
     
     public function __construct()    {
         $this->_isWindows = (strncasecmp(PHP_OS, 'WIN', 3) === 0);
@@ -541,125 +542,6 @@ class Model implements HumbleComponent
         return isset($call['transform']) ? $this->transformResult($call['transform'],$res) : $res;
     }
 
-    /**
-     * Bakes in a WS-Addressing SOAP Header in a less than desirable way
-     *
-     * @param type $action
-     * @param type $to
-     * @param type $replyto
-     * @param type $message_id
-     * @return \SoapHeader
-     */
-    private function generateWSAddressingHeader($action,$to,$replyto,$message_id=false,$ns='ns2')
-    {
-        $message_id = ($message_id) ? $message_id : $this->_uniqueId(true);
-        $soap_header = <<<SOAP
-            <{$ns}:Action env:mustUnderstand="0">{$action}</{$ns}:Action>
-            <{$ns}:MessageID>urn:uuid:{$message_id}</{$ns}:MessageID>
-            <{$ns}:ReplyTo>
-              <{$ns}:Address>{$replyto}</{$ns}:Address>
-            </{$ns}:ReplyTo>
-            <{$ns}:To env:mustUnderstand="0">$to</{$ns}:To>
-SOAP;
-        return new \SoapHeader('http://www.w3.org/2005/08/addressing','Addressing',new \SoapVar($soap_header, XSD_ANYXML),true);
-    }
-
-    /**
-     * Bakes in a WS-Security SOAP Header in a less than desirable way
-     *
-     * @param type $username
-     * @param type $password
-     * @param type $timestamp
-     * @return \SoapHeader
-     */
-    private function generateWSSecurityHeader($username,$password,$timestamp)
-    {
-        $soap_header = <<<SOAP
-            <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-                    <wsse:UsernameToken wsu:Id="UsernameToken-10">
-                            <wsse:Username>{$username}</wsse:Username>
-                            <wsse:Password Type='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText'>{$password}</wsse:Password>
-                    </wsse:UsernameToken>
-SOAP;
-        if ($timestamp) {
-            $hs = gmdate('Y-m-d\TH:i:s.u\Z', strtotime(date('Y-m-d H:i:s')) - (120));
-            $he = gmdate('Y-m-d\TH:i:s.u\Z', strtotime(date('Y-m-d H:i:s')) + (120));
-            $soap_header .= <<<SOAP
-                    <wsu:Timestamp wsu:Id="TS-9">
-                            <!-- # CURRENT UTC TIME -->
-                            <wsu:Created>{$hs}</wsu:Created>
-                            <wsu:Expires>{$he}</wsu:Expires>
-                    </wsu:Timestamp>
-SOAP;
-        }
-        $soap_header .= '               </wsse:Security>';
-        return new \SoapHeader('http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd','Security',new \SoapVar($soap_header, XSD_ANYXML),true);
-    }
-
-    /**
-     * Processes the arguments array to remove non name/value pairs.
-     *
-     * @param array $call Composite array
-     *
-     * @return array Processed args
-     */
-    protected function _processSoapArguments($arguments,$ucfirst=false) {
-        $args = []; $cast = false;
-        foreach ($arguments as $var => $val) {
-            if ($p = strpos($var,'|')) {
-                $cast = substr($var,$p+1);
-                $var  = substr($var,0,$p);
-            }
-            if ($cast) {
-                switch (strtolower($cast)) {
-                    case "lc"   :
-                        $var = lcfirst($var);
-                        break;
-                    case "uc"   :
-                        $var = ucfirst($var);
-                        break;
-                    default : break;
-                }
-            }
-            if (is_array($val)) {
-                $args = array_merge($args,[$var => $this->_processSoapArguments($val,$ucfirst)]);
-            } else {
-                $var  = ($ucfirst) ? ucfirst($var) : $var;
-                $cast = false;
-                if (!is_numeric($var)) {
-                    if (trim($val) != '') {
-                        $args[$var] = $val;
-                    } else {
-                        $method = 'get'.ucfirst(underscoreToCamelCase(str_replace('-','_',$var)));
-                        $args[$var] = $this->$method();
-                        if ($cast) {
-                            switch (strtolower($cast)) {
-                                case "int"  :
-                                    $args[$var] = (int)$args[$var];
-                                    break;
-                                case "float"  :
-                                    $args[$var] = (float)$args[$var];
-                                    break;
-                                case "string"  :
-                                    $args[$var] = (string)$args[$var];
-                                    break;
-                                case "bool"  :
-                                    $args[$var] = (bool)$args[$var];
-                                    break;
-                                default     :
-                                    break;
-                            }
-                        }
-                    }
-                } else {
-                    $method = 'get'.ucfirst(underscoreToCamelCase(str_replace('-','_',$var)));
-                    $args[$val] = $this->$method();
-                }
-            }
-        }
-        return $args;
-    }
-
     /* //just saving this madness for posterity sake
         $file       = $module['resources_templates'].'/'.$template;
         $count      = 0; $max = count($exts); $found = false;
@@ -751,22 +633,6 @@ SOAP;
         }
         $this->_RPC($rpc);  //restore RPC state
         return $args;
-    }
-
-    /**
-     * A handy dandy method to print all that we can about the last SOAP transaction to a specifiable directory
-     *
-     * @param \SoapClient $client
-     * @param string $prefix
-     * @param object $result
-     */
-    private function writeSoapHeaders($client,$prefix='SOAP',$result='') {
-        @mkdir('headers',0775,true);
-        file_put_contents('headers/'.$prefix.'_last_request.txt',$client->__getLastRequest());
-        file_put_contents('headers/'.$prefix.'_last_request_headers.txt',$client->__getLastRequestHeaders());
-        file_put_contents('headers/'.$prefix.'_last_response.txt',$client->__getLastResponse());
-        file_put_contents('headers/'.$prefix.'_last_response_headers.txt',$client->__getLastResponseHeaders());
-        file_put_contents('headers/'.$prefix.'_last_result.txt',$result);
     }
 
     /**
@@ -959,6 +825,7 @@ SOAP;
                     }
                 } else {
                     if (isset($call['method']) && (strtoupper($call['method'])!=='SOAP')) {
+                        $this->SOAP = Humble::model('humble/SOAP');
                         if (is_string($call['arguments']) && (substr($call['url'],strlen($call['url'])-1,1)=='+')) {  //this is special handling for those APIs that tack the arguments onto the end of the URI, like dictionary.com does
                             $method      = 'get'.ucfirst($call['arguments']);
                             $call['url'] = substr($call['url'],0,strlen($call['url'])-1).'/'.$this->$method();
@@ -1022,7 +889,7 @@ SOAP;
                                 $client = new \SoapClient($wsdl,$options);
                             }
                             if ($wss) {
-                                $headers[] = $this->generateWSSecurityHeader($username,$password,$stamp);
+                                $headers[] = $this->SOAP->generateWSSecurityHeader($username,$password,$stamp);
                             }
                             if (isset($call['header']) && count($call['header'])) {
                                 foreach ($call['header'] as $hdr => $hdropts) {
@@ -1035,13 +902,13 @@ SOAP;
                             }
                             if (isset($call['ws-addressing'])) {
                                 $ns = (isset($call['ws-addressing']['Namespace']) && $call['ws-addressing']['Namespace']) ? $call['ws-addressing']['Namespace'] : 'ns2';
-                                $headers[] = $this->generateWSAddressingHeader($call['ws-addressing']['Action'],$call['ws-addressing']['To'],$call['ws-addressing']['ReplyTo'],false,$ns);
+                                $headers[] = $this->SOAP->generateWSAddressingHeader($call['ws-addressing']['Action'],$call['ws-addressing']['To'],$call['ws-addressing']['ReplyTo'],false,$ns);
                             }
                             if (count($headers)) {
                                 $client->__setSoapHeaders($headers);
                             }
 
-                            $args   = $this->_processSoapArguments($call['arguments'],(isset($call['uc-first']) && $call['uc-first']));
+                            $args   = $this->SOAP->_processSoapArguments($call['arguments'],(isset($call['uc-first']) && $call['uc-first']));
 
                             if (isset($call['url']) && $call['url']) {
                                 $retval = $client->__soapCall($call['operation'],$args);
@@ -1049,7 +916,7 @@ SOAP;
                                 $retval = $client->{$call['operation']}($args);
                             }
                             //uncomment this next line to help in debugging
-                            //$this->writeSoapHeaders($client,$call['operation'],$retval);
+                            //$this->SOAP->writeSoapHeaders($client,$call['operation'],$retval);
                         }
                     }
                 }

@@ -1,6 +1,6 @@
 <?php
     spl_autoload_register(['Humble_Autoloader_PSR_4_Compliant','handler']); //Our Autoloader
-    require_once('vendor/autoload.php');                                        //Their Autoloader
+    require_once('vendor/autoload.php');                                    //Their Autoloader
 
     //----------------------------------------------------------------------------------------------------------------------
     //Autoloader, assumes you are in the 'app' directory.  If not, this will blow up like the reactor at Fukishima...
