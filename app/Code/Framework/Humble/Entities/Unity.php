@@ -14,7 +14,7 @@ class Unity
     protected $_orderBy       = [];
     private   $_orderBuilt    = false;
     protected $_fieldList     = "*";
-    protected $_db            = null;
+    protected $_engine        = null;
     protected $_search        = [];
     protected $_autoinc       = [];
     protected $_currentPage   = 0;
@@ -62,11 +62,12 @@ class Unity
      *
      * If this is a polyglot transaction, use the $this->query() function since
      * it performs the necessary checks.  Otherwise it is ok to just go against
-     * the $this->_db->query() direct DB call, which bypasses mongodb
+     * the $this->_engine->query() direct DB call, which bypasses mongodb
      *
      */
     public function __construct() {
-        $this->_db = Humble::connection($this);
+        $this->_engine =  Humble::connection($this);
+        $this->_engine->linkUnity($this);        
     }
     
     /**
@@ -106,6 +107,23 @@ class Unity
     protected function underscoreToCamelCase($string, $first_char_caps=false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }
+    
+    public function _keys($keys=false) {
+        if ($keys === false) {
+            return $this->_keys;
+        }
+        $this->_keys = $keys;
+        return $this;
+    }
+
+    public function _fields($fields=false) {
+        if ($fields === false) {
+            return $this->_fields;
+        }
+        $this->_fields = $fields;
+        return $this;
+    }
+
     
     /**
      * Sets the ORM back to pristine state ready to run another query
@@ -205,8 +223,8 @@ class Unity
             $query = <<<SQL
                 select distinct {$field} from {$table}
 SQL;
-            $query .= $this->buildWhereClause(true);
-            $query .= $this->buildOrderByClause();
+            $query .= $this->_engine->buildWhereClause(true);
+            $query .= $this->_engine->buildOrderByClause();
             $retval = $this->query($query);
         }
         return $retval;
@@ -380,24 +398,7 @@ SQL;
         $query   = <<<SQL
           describe {$table}
 SQL;
-        return $this->_db->query($query);
-    }
-
-    /**
-     *
-     */
-    protected function addLimit($page) {
-        $query = '';
-        if ($this->_rows()) {
-             if ($this->_page() && $page) {
-                  $this->_fromRow($pre = (($page-1) * $this->_rows()));
-                  $this->_toRow($page * $this->_rows());
-                  $query .= ' limit '.$pre.','.$this->_rows();
-             } else if ($this->_cursor()) {
-                 $query .= ' limit '.$this->_rows();
-             }
-        }
-        return $query;
+        return $this->_engine->query($query);
     }
 
     /**
@@ -429,6 +430,14 @@ SQL;
         }
     }
 
+    public function _between($args=false) {
+        if ($args === false) {
+            return $this->_between;
+        }
+        $this->_between = $args;
+        return $this;
+    }
+    
     /**
      * Will remove all rows from a table and reset auto incrementing ID
      * 
@@ -439,7 +448,7 @@ SQL;
         $query = <<<SQL
         truncate table {$table}
 SQL;
-        return $this->_db->query($query);
+        return $this->_engine->query($query);
     }
 
     /**
@@ -448,7 +457,7 @@ SQL;
     public function average($field)  {
         $group = [];
         foreach ($this->_keys as $idx => $key) {
-            $method = 'get'.ucfirst($idx);
+            $method = 'get'.$this->underscoreToCamelCase($idx,true);
             $res = $this->$method();
             if ($this->$method() != "") {
                 $group[$idx] = $idx;
@@ -457,7 +466,7 @@ SQL;
         $group = implode(',',$group);
         $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query = "select {$group},coalesce(avg({$field}),'0') as `average` from ".$table;
-        $results = $this->_db->query($query);
+        $results = $this->_engine->query($query);
         return $results[0]['average'];
     }
 
@@ -479,12 +488,12 @@ SQL;
                 //basically, you passed a true in the first field and nothing in the second,
                 //this means you want to also search the key fields (quasi-polymorphic)
                 foreach ($this->_keys as $idx => $key) {
-                    $method = 'get'.ucfirst($idx);
+                    $method = 'get'.$this->underscoreToCamelCase($idx,true);
                     $results[$idx] = $this->$method();
                 }
             }
             foreach ($this->_fields as $idx => $key) {
-                $method = 'get'.ucfirst($idx);
+                $method = 'get'.$this->underscoreToCamelCase($idx,true);
                 $results[$idx] = $this->$method();
             }
             $countRowClause = ($this->_rows() && $this->_page()) ? " SQL_CALC_FOUND_ROWS " : "";
@@ -501,11 +510,11 @@ SQL;
             }
             $query .= $this->addLimit($this->_page());
         }
-        $results = $this->_db->query($query);
+        $results = $this->_engine->query($query);
         $query = <<<SQL
          select FOUND_ROWS()
 SQL;
-        $rows = $this->_db->query($query);
+        $rows = $this->_engine->query($query);
         $this->_rowCount($rows[0]['FOUND_ROWS()']);
         return $results;
     }
@@ -520,7 +529,7 @@ SQL;
         $query = <<<SQL
             select count(*) as total from {$table}
 SQL;
-        $results = $this->_db->query($query);
+        $results = $this->_engine->query($query);
         return (count($results) == 1) ? $results[0]["total"] : 0;
     }
 
@@ -540,6 +549,15 @@ SQL;
         return (count($results) == 1) ? $results[0] : null;
     }
 
+    
+    public function _in($args=false) {
+        if ($args===false) {
+            return $this->_in;
+        }
+        $this->_in = $args;
+        return $this;
+    }
+    
     /**
      * Collects fields/ids to build an in clause later
      * 
@@ -589,14 +607,14 @@ SQL;
         foreach ($this->_keys as $idx => $key) {
             //we check to see if the a key value was attempted to be set, even if it was set to a null
             if (isset($this->_data[$idx]) || (array_key_exists($idx,$this->_data) && ($this->_data[$idx] === null))) {
-                $method = 'get'.ucfirst($idx);
+                $method = 'get'.$this->underscoreToCamelCase($idx,true);
                 $results[$idx] = $this->$method();
             }
         }
         if ($nonkeys) {
             $polyglot = $this->_polyglot();
             foreach ($this->_fields as $idx => $key) {
-                $method = 'get'.ucfirst($idx);
+                $method = 'get'.$this->underscoreToCamelCase($idx,true);
                 $results[$idx] = $this->$method();
             }
         }
@@ -666,83 +684,6 @@ SQL;
     }
 
     /**
-     * Builds a where clause for the query
-     * 
-     * @param boolean $useKeys
-     * @return string
-     */
-    protected function buildWhereClause($useKeys) {
-        $query   = '';
-        $results = [];
-        if ($useKeys) {
-            foreach ($this->_keys as $idx => $key) {
-                $method = 'get'.ucfirst($idx);
-                $results[$idx] = $this->$method();
-            }
-        }
-        foreach ($this->_fields as $idx => $key) {
-            $method = 'get'.ucfirst($idx);
-            $results[$idx] = $this->$method();
-        }
-        $andFlag = false;
-        foreach ($results as $field => $value) {
-            if ($results[$field]!="") {
-                 if ($andFlag == false) {
-                    $query .= ' where ';
-                }
-                $query .= ($andFlag ? "and ": "").($this->_alias() ? $this->_alias().'.':'')."`".$field."` = '".addslashes($value)."' ";
-                $andFlag = true;
-            }
-        }
-        if ($this->_in) {
-            $query .= ($andFlag) ? " and " : ' where ';
-            $query .= "`".$this->_inField."` in ('".implode("','",$this->_in)."') ";
-            $andFlag = true;
-        }
-        if ($this->_between) {
-            $query .= ($andFlag) ? " and " : ' where ';
-            $query .= "`".$this->_betweenField."` between '".$this->_between[0]."' and '".$this->_between[1]."' ";
-            $andFlag = true;
-        }
-        if ($this->condition()) {
-            foreach ($this->condition() as $condition) {
-                $query .= ($andFlag) ? " and " : ' where ';
-                $query .= " ".$condition." ";                
-                $andFlag = true;
-            }
-        }   
-        if ($this->_cursor()) {
-            $query .= ($andFlag) ? " and " : ' where ';
-            $query .= $this->_prefix().$this->_entity().'.id > '.$this->_cursor.' ';
-        }        
-        return $query;
-    }
-
-    /**
-     * Builds an order by clause for the query
-     * 
-     * @return string
-     */
-    protected function buildOrderByClause() {
-        $query = '';
-        if (count($this->_orderBy) > 0) {
-            $query .= ' order by ';
-            $ctr = 0;
-            foreach ($this->_orderBy as $field => $direction) {
-                if ($ctr) {
-                    $query .= ', ';
-                }
-                $query .= '`'.$field.'` '.$direction;
-                $ctr++;
-            }
-        }
-        if ($query) {
-            $this->_orderBuilt = true;
-        }
-        return $query;
-    }
-
-    /**
      * Fetches a dataset, normally looks at just fields, pass in true to get it to include the ID primary key in the query
      * 
      * @param boolean $useKeys
@@ -754,10 +695,10 @@ SQL;
         }
         $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query   = "select ". $this->_distinct() ." ".$this->_fieldList()." from ".$table;
-        $query  .= $this->buildWhereClause($useKeys);
+        $query  .= $this->_engine->buildWhereClause($useKeys);
         $this->_noLimitQuery = $query;                                          //for pagination purposes        
-        $query  .= $this->buildOrderByClause();
-        $query  .= $this->addLimit($this->_currentPage);
+        $query  .= $this->_engine->buildOrderByClause();
+        $query  .= $this->_engine->addLimit($this->_currentPage);
         return $this->query($query);
     }
 
@@ -784,7 +725,7 @@ SQL;
      * @return $this
      */
     protected function calculateStats($query,&$results) {
-        $rows = $this->_db->query($query);
+        $rows = $this->_engine->query($query);
         $this->_rowCount($rows[0]['FOUND_ROWS']);
         if ($this->_rowCount()) {
             if ($this->_page()) {
@@ -854,7 +795,7 @@ SQL;
         }
         $db_fields  = [];
         foreach ($this->_keys as $idx => $key) {
-            $method = 'get'.ucfirst($idx);
+            $method = 'get'.$this->underscoreToCamelCase($idx,true);
             $data   = $this->$method();
             if ($data) {
                 $db_fields[$idx] = $data;
@@ -862,7 +803,7 @@ SQL;
         }
         $non_values = [];
         foreach ($this->_fields as $key => $value) {
-            $method   = 'get'.ucfirst($key);
+            $method   = 'get'.$this->underscoreToCamelCase($key,true);
             $data     = $this->$method();
             if (isset($this->_column[$key]) || (isset($this->_keys[$key]))) {
                 $db_fields[$key] = $data;
@@ -902,9 +843,8 @@ SQL;
               on duplicate key update
                 {$duplicate}
 SQL;
-        $this->_db->query($query);
-        $insertId = $this->_db->getInsertId();
-        $this->rowsAffected($this->_db->_rowsAffected());
+        $this->_engine->query($query);
+        $insertId = $this->_engine->getInsertId();
         if (!$insertId && !$this->getId()) {
             $d = $this->load(true);
             if (isset($d['id'])) {
@@ -915,7 +855,7 @@ SQL;
             //first we look for mongo record with the same ID value
             foreach ($this->_keys as $key => $data) {
                 if (($key === 'id')) {
-                    $method = 'get'.ucfirst($key);
+                    $method = 'get'.$this->underscoreToCamelCase($key,true);
                     $id = $this->$method();
                     $mdb->setId(($id) ? $id : $insertId);
                     $d = $mdb->load();
@@ -928,7 +868,7 @@ SQL;
             //then we add/update with new values
             foreach ($non_values as $key => $value) {
                 if ($key !== '_id') {
-                    $method = 'set'.ucfirst($key);
+                    $method = 'set'.$this->underscoreToCamelCase($key,true);
                     $mdb->$method($value);
                 }
             }
@@ -949,10 +889,10 @@ SQL;
             return $query;
         }
         if ($this->_dynamic()) {
-            $query .= $this->buildWhereClause(true);
+            $query .= $this->_engine->buildWhereClause(true);
         }
         if (!$this->_orderBuilt && (count($this->_orderBy)>0)) {
-            $query .= $this->buildOrderByClause();
+            $query .= $this->_engine->buildOrderByClause();
         }
         $noLimit      = [];
         $words        = explode(' ',trim($query));
@@ -982,7 +922,7 @@ SQL;
                 }
                 $query = implode(' ',$words);
                 if (!$limitFound) {
-                    $query = $query .' '. $this->addLimit($this->_page());
+                    $query = $query .' '. $this->_engine->addLimit($this->_page());
                 }
                 $noLimitQuery = implode(' ',$noLimit);
             }
@@ -995,12 +935,16 @@ SQL;
             }
             return false;
         }
-        $results = $this->_db->query($query);
+        $results = $this->_engine->query($query);
         //\Log::error($query);
         if ($this->_page() || $this->_cursor()) {
-            $this->calculateStats($noLimitQuery,$results);
+            $this->_engine->calculateStats($noLimitQuery,$results);
         }
-        if ($this->_polyglot()) {
+        if (is_bool($results)) {
+            print("Boolean detected, wtf\n");
+            die($query);
+        }
+        if (!is_bool($results) && $this->_polyglot()) {
             //now get the mongo document and merge with the mysql row...
             $mJoin  = $this->_mongoJoin;      //what field in the query will we join with the mongo db, default is 'id' but can be any field in the result set
             if (!$this->_mongodb) {
@@ -1064,8 +1008,8 @@ SQL;
                         }
                     }
                 }
-        }        
-        $results = Humble::model('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);  //is this backwards?
+        }       
+        $results = Humble::model('humble/iterator')->clean($this->_polyglot() && $this->_clean())->withTranslation($this->_translation)->set($results);
         if (\Environment::isActiveDebug()) {
             \Log::user(array_merge(['Query'=>$query],$results->toArray()));
         }
@@ -1083,12 +1027,12 @@ SQL;
     public function delete($useFields=false) {
         $results = [];
         foreach ($this->_keys as $idx => $key) {
-            $method = 'get'.ucfirst($idx);
+            $method = 'get'.$this->underscoreToCamelCase($idx,true);
             $results[$idx] = $this->$method();
         }
         if ($useFields) {
             foreach ($this->_fields as $idx => $key) {
-                $method = 'get'.ucfirst($idx);
+                $method = 'get'.$this->underscoreToCamelCase($idx,true);
                 $results[$idx] = $this->$method();
             }
         }
@@ -1097,7 +1041,7 @@ SQL;
         $query   = "delete from ".$table;
         $conditionFound = false;
         if ($useFields) {
-            if ($whereClause = $this->buildWhereClause(true)) {
+            if ($whereClause = $this->_engine->buildWhereClause(true)) {
                 $conditionFound = true;
                 $query .= $whereClause;
             }
@@ -1115,8 +1059,7 @@ SQL;
             }
         }
         if ($conditionFound) {
-            $this->_db->query($query);
-            $this->rowsAffected($this->_db->_rowsAffected());
+            $this->_engine->query($query);
             //POLYGLOT check here
             //@TODO: Implement a check to see if this is a polyglot table, and remove corresponding row in MongoDB
         } else {
@@ -1207,7 +1150,7 @@ SQL;
     }
 
     public function commit() {
-       $this->_db->endTransaction();
+       $this->_engine->endTransaction();
     }
     /**
      *
@@ -1217,12 +1160,12 @@ SQL;
         $results = [];
         if ($useKeys) {
             foreach ($this->_keys as $idx => $key) {
-                $method = 'get'.ucfirst($idx);
+                $method = 'get'.$this->underscoreToCamelCase($idx,true);
                 $results[$idx] = $this->$method();
             }
         }
         foreach ($this->_fields as $idx => $key) {
-            $method = 'get'.ucfirst($idx);
+            $method = 'get'.$this->underscoreToCamelCase($idx,true);
             $results[$idx] = $this->$method();
         }
         $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
@@ -1237,7 +1180,7 @@ SQL;
                 $andFlag = true;
             }
         }
-        $results = $this->_db->query($query);
+        $results = $this->_engine->query($query);
         return ((count($results)>0) ? $results[0]['count'] : 0);
     }
 
@@ -1351,7 +1294,7 @@ SQL;
                  where a.namespace = '{$namespace}'
                    and a.entity    = '{$entity}'
 SQL;
-            $primary    = $this->_db->query($query);
+            $primary    = $this->_engine->query($query);
             if (count($primary)===0) {
                 /*
                  * We haven't found any keys for this table, so it probably means that this table
@@ -1366,7 +1309,7 @@ SQL;
                      where a.namespace  = 'humble'
                        and a.entity     = '{$entity}'
 SQL;
-                $primary    = $this->_db->query($query);
+                $primary    = $this->_engine->query($query);
                 if (count($primary)!==0) {
                     $this->_namespace('humble');  //Mark that we got this from humble
                     $this->_prefix('humble_');
@@ -1400,7 +1343,7 @@ SQL;
                  where namespace = '{$namespace}'
                    and entity    = '{$entity}'
 SQL;
-            $columns    = $this->_db->query($query);
+            $columns    = $this->_engine->query($query);
             if (count($columns)===0) {
                 /*
                  * We haven't found any fields for this table, so it probably means that this table
@@ -1414,7 +1357,7 @@ SQL;
                      where namespace = 'humble'
                        and entity    = '{$entity}'
 SQL;
-                $columns    = $this->_db->query($query);
+                $columns    = $this->_engine->query($query);
                 if (count($columns)!==0) {
                     $this->_namespace('humble');  //Mark that we got this from humble
                     $this->_prefix('humble_');
@@ -1426,6 +1369,7 @@ SQL;
             $this->_column[$entity['column']]    = true;   //register column
         }
     }
+    
     /**
      *
      * @param type $field
@@ -1443,14 +1387,14 @@ SQL;
      *
      */
     public function lastQuery() {
-        return $this->_db->_lastQuery();
+        return $this->_engine->_lastQuery();
     }
 
     /**
      *
      */
     public function lastError() {
-        return $this->_db->_lastError();
+        return $this->_engine->_lastError();
     }
 
     //################################################################################################
@@ -1895,10 +1839,13 @@ SQL;
             $this->_betweenField = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-7)));
             $this->between($arguments);
             return $this;
-        }        
+        } elseif (substr($name,-4,4)==="Like") {
+            $this->_likeField = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-4)));
+            $this->likeAndSubscribe($arguments);
+            return $this;
+        }
         //method couldn't be handled
-        $virtual = $this->_isVirtual() ? 'Virtual' : 'Real';
-        die("<pre>\nError:\n\nMethod not found: (".$name.") from (".$virtual.')'.$this->getClassName().".\n\n</pre>");
+        die("<pre>\nError:\n\nMethod not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->getClassName().".\n\n</pre>");        
         return null;
     }
 

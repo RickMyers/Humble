@@ -17,7 +17,6 @@ use Environment;
  */
 class Postgres extends ORM implements ORMEngine
 {
-
     
     /**
      * Constructor
@@ -34,7 +33,20 @@ class Postgres extends ORM implements ORMEngine
         
     }
     
+    public function addLimit($page=1) {
+        
+    }
+    
+    public function buildOrderByClause() {
+        
+    }
+    
+    public function buildWhereClause($useKeys=false) {
+        
+    }
+    
     public function close() {
         
     }
+    
 }

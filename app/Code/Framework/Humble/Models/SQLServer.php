@@ -5,9 +5,9 @@ use Log;
 use Environment;
 /**
  *
- * SQLLite Wrapper
+ * SQLServer Wrapper
  *
- * Methods to support SQLLite Integration
+ * Methods to support SQLServer Integration
  *
  * PHP version 7.0+
  *
@@ -15,7 +15,7 @@ use Environment;
  * @package    Core
  * @author     Rick Myers <rick@humbleprogramming.com>
  */
-class SQLLite extends ORM implements ORMEngine
+class SQLServer extends ORM implements ORMEngine
 {
     
     /**
@@ -50,3 +50,4 @@ class SQLLite extends ORM implements ORMEngine
     }
 
 }
+
