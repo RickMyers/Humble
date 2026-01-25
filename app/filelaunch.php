@@ -33,8 +33,8 @@ if (isset($args[1])) {
         }
     }
 }
-$pid        = getmypid();
-$job        = Humble::entity('paradigm/job/queue');
+$pid            = getmypid();
+$job            = Humble::entity('paradigm/job/queue');
 $job->setId($job_id)->setStarted(date('Y-m-d H:i:s'))->setPid($pid)->save();    //persist the PID of this run
 $job->reset()->setId($job_id)->load();                                          //reload the job
 $workflow_data  = Humble::entity('paradigm/workflows')->setId($job->getWorkflowId())->load();

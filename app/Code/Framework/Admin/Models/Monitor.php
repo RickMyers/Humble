@@ -92,9 +92,8 @@ class Monitor extends Model
      */
     public function clear() {
         $two_weeks = 60 * 60 * 24 * 14;
-        Humble::entity('admin/system/monitor')->condition("modified < '".date('Y-m-d H:i:s',time() - $two_weeks)."'")->delete(true);
         //print(date('Y-m-d H:i:s',time() - $two_weeks));
-        return $this;
+        return Humble::entity('admin/system/monitor')->condition("modified < '".date('Y-m-d H:i:s',time() - $two_weeks)."'")->delete(true);
     }
     
     private function scrunchResults($results=[]) {

@@ -591,8 +591,7 @@ switch ($method) {
             file_put_contents($custom,implode("\n",$lines));
         }
         
-        $admin_id  = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
-        
+        $admin_id        = \Humble::entity('admin/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
         $install_manager = \Humble::model('humble/manager');        
         $install_manager->tailorSystem($project);                               //We are going to have to copy a model and a controller into the new module to handle logging in        
         $install_manager->setAdminId($admin_id)->setDescription('Homepage Controller')->setActionDescription('The Home Page')->createLandingPage($project);
@@ -621,7 +620,7 @@ switch ($method) {
         }
         
         $results      = ob_get_flush();
-        if (!$user_id) {
+        if (!$user_id ||  !$admin_id) {
             file_put_contents('install_failed.txt',$results);
             print('<pre>'.$results."\n\n\n".'</pre>');
             die('Install did not complete, no user was created'."\n");

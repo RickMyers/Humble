@@ -138,7 +138,7 @@ function scanControllersForChanges($last_run=false) {
 function clearSystemStats() {
     global $monitor;
     logMessage('Clearing System Monitoring Data Over Two Weeks Old');
-    $monitor->clear();
+    logMessage('Removed '.$monitor->clear().' Records from the System Monitor Log');
 }
 //------------------------------------------------------------------------------
 function snapshotSystem() {
@@ -298,7 +298,6 @@ function launchWorkflows() {
     global $windows,$job_queue;
     logMessage('Checking for launching workflows');
     $jobs   = $job_queue->statusIn([NEW_FILE_JOB,NEW_EVENT_JOB])->fetch();
-
     foreach ($jobs as $job) {
         $launcher = ($job['status'] === NEW_FILE_JOB) ? 'filelaunch.php' : 'launch.php';
         //$cmd = 'php launch.php '.$job['id']." > ../SDSF/job_".$job['id'].".txt 2>&1";
@@ -306,7 +305,7 @@ function launchWorkflows() {
         
         logMessage('------> Running Command: '.$cmd);
         if ($windows) {
-//            pclose(popen("start ".$cmd,"r"));
+            pclose(popen("start ".$cmd,"r"));
         } else {
             exec('/usr/bin/nohup '.$cmd.' 2>&1 &');
         }
@@ -398,9 +397,38 @@ function primeImagesArray() {
     }
 }
 //------------------------------------------------------------------------------
+function scanForNewImages() {
+    global $modules;
+    foreach ($modules as $module) {
+        $stamps     = [];
+        $images     = recurseDirectory('Code/'.$module['package'].'/'.$module['images']);
+        $deployed   = '../images/'.$module['namespace'];
+        foreach ($images as $source_image) {
+            $image                   = implode('/',array_slice(explode('/',$source_image),4));
+            $stamps[$source_image]   = [ $image => filemtime($source_image)];
+            $target                  = $deployed.'/'.$image;
+            if (!file_exists($target)) {
+                logMessage('Copying missing image '.$source_image.' to '.$target);
+                copy($source_image,$target);
+            } else {
+                /*
+                 * This isnt really working... shelve it for now
+                 * if ($stamps[$source_image][$image] != ($f = filemtime($target))) {
+                    logMessage($stamps[$source_image][$image].' == '.$f);
+                    logMessage('Deploying updated image '.$source_image.' to '.$target);
+                    if (!copy($source_image,$target)) {
+                        logMessage('Failed Copy');
+                    };
+                }*/
+            }
+        }
+    }
+}
+//------------------------------------------------------------------------------
 function scanImagesForChanges() {
     global $images,$modules,$first_time;
     if ($first_time['images']) {
+        scanForNewImages();
         primeImagesArray();
     }
     $files = [];
@@ -525,6 +553,7 @@ if (file_exists($config) || file_exists($framework)) {
     $application    = file_exists($framework) ? json_decode(file_get_contents($framework),true): [];
     $cadence        = array_merge_recursive($application,$cadence);
 }
+
 if ($cadence) {
     Humble::cache('cadence-config',$cadence);
     logMessage("Starting Cadence...");
@@ -542,6 +571,7 @@ if ($cadence) {
                 foreach ($handler['callbacks'] as $callback => $status) {
                     if ($status === true) {
                         logMessage("Processing ".ucfirst($component)." Now...");
+                        //print("Callback:  ".$callback."\n");
                         $callback();
                         logMessage(ucfirst($component)." Processing took ".($start - time())." seconds");
                     }
