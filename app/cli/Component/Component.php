@@ -209,13 +209,22 @@ class Component extends CLI
         if ($module = \Humble::module($args['ns'])) {
             if (file_exists($file = 'Code/'.$module['package'].'/'.$module['controllers'].'/'.str_replace('.xml','',$args['cn']).'.xml')) {
                 $dom        = new DOMDocument();
-                $xml        = $dom->loadXML(file_get_contents($file));
-                $struct     = self::recurseControllerNodes($dom->firstChild);
-                $source     = simplexml_load_file($file);
- 
-                $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
-                $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
-                $errors     = self::checkControllerNodes('controller',$struct,$structure,$validator,$errors);
+                libxml_use_internal_errors(true);
+                if (($xml = @$dom->loadXML(file_get_contents($file)))===false) {
+                    print("Errors exist\n");
+                    $errors = libxml_get_errors();
+                    foreach ($errors as $error) {
+                        // You can log the error or display a user-friendly message
+                        echo "* ", $error->message, " on line ", $error->line, "\n";
+                    }
+                } else {
+                    $struct     = self::recurseControllerNodes($dom->firstChild);
+                    $source     = simplexml_load_file($file);
+                    $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
+                    $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
+                    $errors     = self::checkControllerNodes('controller',$struct,$structure,$validator,$errors);
+                }
+
             } else {
                 $errors[]   = "Controller not found";
             }
