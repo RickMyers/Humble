@@ -43,9 +43,7 @@ class Component extends CLI
      * @param type $validator
      * @return string
      */
-    private static function tagAttributeCheck($parent,$node,$attributes,$validator) {
-        $errors = [];
-        $vars   = clone $attributes;                                            //this has to happen or an infinite loop is created... very bizarre
+    private static function tagAttributeCheck($parent,$node,$attributes,$validator,$lineNumber,$errors) {
         if (isset($validator->$node)) {                                         //We need to find the correct syntax scheme to compare the attribute to, since some have multiple schemes depending on parent
             foreach ($validator->$node->attributes as $idx => $schema) {
                 $attr = $schema->attributes();
@@ -55,115 +53,114 @@ class Component extends CLI
             }
             foreach ($attributes as $attribute => $value) {
                 $value = strtolower($value);
-                //print($attribute."\n");
                 if (!isset($schema->$attribute)) {
-                    $errors[] = $attribute." is not a valid attribute of ".$node;
+                    $errors[] = $attribute." is not a valid attribute of ".$node." on line number ".$lineNumber;
                     continue;
                 }
                 if (isset($schema->$attribute->values)) {
                     if (!isset($schema->$attribute->values->$value)) {
-                        $errors[] = $value." is not a valid value for ".$attribute;
+                        $errors[] = $value." is not a valid value for ".$attribute." on line number ".$lineNumber;
                     }
                 }
                 $attr = $schema->$attribute->attributes();
                 if (isset($attr->conflicts)) {
                     foreach (explode(',',$attr->conflicts) as $conflict) {
                         if (isset($vars->$conflict)) {                          //Queue twilight zone music...
-                            $errors[] = 'Conflict detected, '.$attribute.' and '.$conflict.' are mutually exclusive, choose one'; 
+                            $errors[] = 'Conflict detected, '.$attribute.' and '.$conflict.' are mutually exclusive'." on line number ".$lineNumber.', choose one'; 
                         }
                     }
                 }
             }
         } else {
-            $errors[] = "No validation scheme found for ".$node;
+            $errors[] = "No validation scheme found for ".$node." on line number ".$lineNumber;
         }
         return $errors;
     }
     
     /**
-     * Checks a particular parent/child combination against the Structure tree to see if that is a valid combination
+     * If a child tag is required by the parent, this routine makes sure it exists
+     * 
+     * @param type $tag
+     * @param type $tags
+     * @param type $children
+     * @param type $validator
+     * @param type $lineNumber
+     * @param string $errors
+     * @return string
+     */
+    private static function requiredTagCheck($tag,$tags,$children,$validator,$lineNumber,$errors) {
+        $req = [];
+        foreach ($tags as $tag => $node) {
+            $attrs = $node->attributes();
+            foreach ($attrs as $attr => $val) {
+                if ($attr == 'required') {
+                    $req[] = (string)$val;
+                }
+            }
+            
+        }
+        if (count($req)) {
+            foreach ($req as $val) {
+                foreach (explode(',',$val) as $required) {
+                    $found = false;
+                    foreach ($children as $child => $status) {
+                        $found = $found || ($child==$required);
+                    } 
+                    if (!$found) {
+                        $errors[] = 'On line '.$lineNumber.', '.strtoupper($required).' is a required child for '.strtoupper($tag).' but was not found';
+                    }
+                }
+            }
+        }
+        return $errors;
+    }
+    
+    /**
+     * Makes sure there are no nodes out of place, or unknown nodes
      * 
      * @param type $parent
      * @param type $nodes
      * @param type $structure
-     * @param type $attributes
-     * @param type $depth
-     * @return string
+     * @param type $validator
+     * @param type $errors
+     * @return type
      */
-/*    private static function checkControllerNodes($parent,$nodes,$structure,$validator,$errors) {
-        file_put_contents('struct.txt',print_r($nodes,true));
-        foreach ($nodes as $child => $children) {
-            //print($child."\n"); die();
-            print_r($children); die();
-            if (!isset($structure->$parent->$child)) {
-                 $errors[] = 'Tag '.strtoupper($child).' is not a valid child of '.strtoupper($parent);
-                 continue;
-            }
-            $attr = $structure->$parent->attributes();
-            if (isset($attr->required)) {
-                $req = $attr->required;
-                foreach (explode(',',$req) as $required) {                
-                    if (!isset($nodes->$required)) {
-                        $errors[] = strtoupper($required).' is a required child for '.strtoupper($parent).' but was not found'."\n";
-                    }
-                }
-            }
-            
-            foreach (self::tagAttributeCheck($parent,$child,$nodes->$child->attributes(),$validator) as $error) {
-                $errors[] = $error;
-            }
-            if ($children->count()) {
-                $errors = self::checkControllerNodes($child,$children,$structure,$validator,$errors);
-            }
-        }
-        return $errors;
-    }*/
     private static function checkControllerNodes($parent,$nodes,$structure,$validator,$errors) {
-        //file_put_contents('struct.txt',print_r($nodes,true));
-
         foreach ($nodes as $index1 => $children) {
             foreach ($children as $node => $child) {
-                //print("IDX: ".$index1."\n");
-               // print("Parent Node: ".$node."\n");
-                //file_put_contents('struct.txt',print_r($child,true)); 
+                if (isset($child['attributes']) && count($child['attributes'])) {
+                    $errors = self::tagAttributeCheck($parent,$node,$child['attributes'],$validator,$child['lineNumber'],$errors);
+                }
                 if (isset($child['children']) && count($child['children'])) {
+                    $candidates = [];
+                    foreach ($child['children'] as $i => $tags) {
+                        foreach ($tags as $tag => $data) {
+                            $candidates[$tag] = true;
+                        }
+                    } 
+                    $errors = self::requiredTagCheck($node,$structure->$node,$candidates,$validator,$child['lineNumber'],$errors);                    
                     foreach ($child['children'] as $index2 => $tags) {
-                 //       print("Index2: ".$index2."\n");
                         foreach ($tags as $tag => $properties) {
-                   //         print("Tag: ".$tag."\n");
                             if (!isset($structure->$node->$tag)) {
-                                print('Tag '.strtoupper($tag).' is not a valid child of '.strtoupper($node)." on line number ".$properties['lineNumber']."\n");
                                  $errors[] = 'Tag '.strtoupper($tag).' is not a valid child of '.strtoupper($node)." on line number ".$properties['lineNumber'];
                                  continue;
                             }
+
                         }
                     }
                     $errors = self::checkControllerNodes($child,$child['children'],$structure,$validator,$errors);
-
                 } 
             }
-        
-/*
-            $attr = $structure->$parent->attributes();
-            if (isset($attr->required)) {
-                $req = $attr->required;
-                foreach (explode(',',$req) as $required) {                
-                    if (!isset($nodes->$required)) {
-                        $errors[] = strtoupper($required).' is a required child for '.strtoupper($parent).' but was not found'."\n";
-                    }
-                }
-            }
-            
-            foreach (self::tagAttributeCheck($parent,$child,$nodes->$child->attributes(),$validator) as $error) {
-                $errors[] = $error;
-            }
- * 
- */
         }
         return $errors;
     }
 
-
+    /**
+     * Object to array conversion... for like the 300 millionth time
+     * 
+     * @param type $attributes
+     * @return type
+     */
     private static function hashAttributes($attributes=false) {
         $attrs = [];
         foreach ($attributes as $attribute) {
@@ -171,23 +168,29 @@ class Component extends CLI
         }
         return $attrs;
     }
-    
+
+    /**
+     * Recursion... you either love it or hate it...
+     * 
+     * @param type $dom
+     * @return type
+     */
     private static function recurseControllerNodes($dom=[]) {
         $struct = [];
         if ($dom->hasChildNodes()) {
-            foreach ($dom->childNodes as $tag => $node) {
+            foreach ($dom->childNodes as $idx => $node) {
                 if (isset($node->tagName)) {
                     $tagName = $node->tagName;
-                    $t = [
+                    $tag     = [
                         $tagName => [
                             "lineNumber" => $node->getLineNo(),
                             "attributes" => [],
                             "children"   => []
                         ]
                     ];
-                    $t[$tagName]['attributes']  = ($node->hasAttributes()) ? self::hashAttributes($node->attributes) : [];
-                    $t[$tagName]['children']    = ($node->hasChildNodes()) ? self::recurseControllerNodes($node): [];
-                    $struct[] = $t;
+                    $tag[$tagName]['attributes']  = ($node->hasAttributes()) ? self::hashAttributes($node->attributes) : [];
+                    $tag[$tagName]['children']    = ($node->hasChildNodes()) ? self::recurseControllerNodes($node)     : [];
+                    $struct[]                     = $tag;
                 }
 
             }
@@ -200,7 +203,7 @@ class Component extends CLI
      * 
      * @return array
      */
-    public static function syntaxCheck() {
+    public static function syntaxCheck($namespace=false,$controller=false) {
         $args       = self::arguments();
         $errors     = [];
         if ($module = \Humble::module($args['ns'])) {
@@ -209,12 +212,12 @@ class Component extends CLI
                 $xml        = $dom->loadXML(file_get_contents($file));
                 $struct     = self::recurseControllerNodes($dom->firstChild);
                 $source     = simplexml_load_file($file);
-                //print_r($source);die();
+ 
                 $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
                 $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
                 $errors     = self::checkControllerNodes('controller',$struct,$structure,$validator,$errors);
             } else {
-                $errors[] = "Controller not found";
+                $errors[]   = "Controller not found";
             }
         } else {
             $errors[] = "Module not found";
@@ -222,5 +225,3 @@ class Component extends CLI
         return $errors;
     }
 }
-
-
