@@ -153,10 +153,10 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function buildOrderByClause() {
         $query = '';
-        if (count($this->_orderBy) > 0) {
+        if (count($this->_unity->_orderBy()) > 0) {
             $query .= ' order by ';
             $ctr = 0;
-            foreach ($this->_orderBy as $field => $direction) {
+            foreach ($this->_unity->_orderBy() as $field => $direction) {
                 if ($ctr) {
                     $query .= ', ';
                 }
@@ -165,7 +165,7 @@ class MySQL extends ORM implements ORMEngine  {
             }
         }
         if ($query) {
-            $this->_orderBuilt = true;
+            $this->_unity->_orderBuilt = true;
         }
         return $query;
     }    

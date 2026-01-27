@@ -12,7 +12,7 @@ class Unity
     protected $_column        = [];
     protected $_fields        = [];
     protected $_orderBy       = [];
-    private   $_orderBuilt    = false;
+    public    $_orderBuilt    = false;
     protected $_fieldList     = "*";
     protected $_engine        = null;
     protected $_search        = [];
@@ -1651,7 +1651,10 @@ SQL;
      * @param type $field
      * @return $this
      */
-    public function _orderBy($field) {
+    public function _orderBy($field=false) {
+        if ($field===false) {
+            return $this->_orderBy;
+        }
         $fields = explode(",",$field);
         foreach ($fields as $field) {
             $data       = explode('=',$field);
