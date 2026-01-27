@@ -196,6 +196,7 @@ HELP;
         $repl = ["","",""];
         return str_replace($srch,$repl,$str);
     }
+    
     /**
      * Set or return the arguments passed in on the command line
      * 
@@ -225,6 +226,12 @@ HELP;
         return $parms;
     }
 
+    /**
+     * Verify that parameter values are correct
+     * 
+     * @param type $args
+     * @param type $values
+     */
     protected static function verifyValues($args,$values) {
         foreach ($values as $parms => $vals) {
             $parm  = false;
@@ -244,6 +251,12 @@ HELP;
         }
     }            
 
+    /**
+     * Verifies that the necessary arguments are present
+     * 
+     * @param type $args
+     * @param type $options
+     */
     public static function verifyParameters($args,$options) {
         $valid = [];
         foreach (['required','optional'] as $section) {
@@ -260,6 +273,7 @@ HELP;
             }
         }
     }
+    
     /**
      * Verify required parameters are present and organize the arguments in name=value way instead of as an indexed array
      * 

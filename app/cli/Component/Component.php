@@ -211,11 +211,9 @@ class Component extends CLI
                 $dom        = new DOMDocument();
                 libxml_use_internal_errors(true);
                 if (($xml = @$dom->loadXML(file_get_contents($file)))===false) {
-                    print("Errors exist\n");
-                    $errors = libxml_get_errors();
-                    foreach ($errors as $error) {
-                        // You can log the error or display a user-friendly message
-                        echo "* ", $error->message, " on line ", $error->line, "\n";
+                    $err = libxml_get_errors();
+                    foreach ($err as $error) {
+                        $errors[] = $error->message. " on line ". $error->line;
                     }
                 } else {
                     $struct     = self::recurseControllerNodes($dom->firstChild);
@@ -224,7 +222,6 @@ class Component extends CLI
                     $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
                     $errors     = self::checkControllerNodes('controller',$struct,$structure,$validator,$errors);
                 }
-
             } else {
                 $errors[]   = "Controller not found";
             }
@@ -233,4 +230,5 @@ class Component extends CLI
         }
         return $errors;
     }
+
 }
