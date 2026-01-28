@@ -134,13 +134,13 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function addLimit($page) {
         $query = '';
-        if ($this->_rows()) {
-             if ($this->_page() && $page) {
-                  $this->_fromRow($pre = (($page-1) * $this->_rows()));
-                  $this->_toRow($page * $this->_rows());
-                  $query .= ' limit '.$pre.','.$this->_rows();
+        if ($this->_unity->_rows()) {
+             if ($this->_unity->_page() && $page) {
+                  $this->_unity->_fromRow($pre = (($page-1) * $this->_unity->_rows()));
+                  $this->_unity->_toRow($page * $this->_unity->_rows());
+                  $query .= ' limit '.$pre.','.$this->_unity->_rows();
              } else if ($this->_cursor()) {
-                 $query .= ' limit '.$this->_rows();
+                 $query .= ' limit '.$this->_unity->_rows();
              }
         }
         return $query;
@@ -186,7 +186,7 @@ class MySQL extends ORM implements ORMEngine  {
                     $this->_unity->_toRow($this->_unity->_rowCount());
                 }
                 $this->_unity->_fromRow($this->_unity->_rows() * ($this->_unity->_page()-1)+1);
-                $this->_unity->_headers['pagination'] = json_encode([
+                $this->_unity->_headers(['pagination' => json_encode([
                     'rows' => [
                         'from'  => $this->_unity->_fromRow(),
                         'to'    => $this->_unity->_toRow(),
@@ -196,12 +196,12 @@ class MySQL extends ORM implements ORMEngine  {
                         'current' => $this->_unity->_page(),
                         'total'   => $this->_unity->_pages()
                     ]
-                ]);
+                ])]);
             } else if ($this->_unity->_cursor()) {
                 $this->_unity->cursorId($results);
                 $this->_unity->_rowsReturned(count($results));
                 $this->_unity->_pages(floor($this->_unity->_rowsReturned() / $this->_unity->_rows()));
-                $this->_unity->_headers['pagination'] = json_encode([
+                $this->_unity->_headers(['pagination' => json_encode([
                     'cursor_id' => $this->_unity->_cursor(),
                     'pages' => [
                         'total' => $this->_unity->_pages()
@@ -210,7 +210,7 @@ class MySQL extends ORM implements ORMEngine  {
                         'returned' => $this->_unity->_rowsReturned(),
                         'total' => $this->_unity->_rowCount()
                     ]
-                ]);
+                ])]);
             }
         }
         return $this->_unity;

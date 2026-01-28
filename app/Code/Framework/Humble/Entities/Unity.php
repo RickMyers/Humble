@@ -98,7 +98,9 @@ class Unity
     }
 
     /**
-     *
+     * For error log reporting
+     * 
+     * @return system
      */
     public function getClassName()  {
         return __CLASS__;
@@ -142,7 +144,8 @@ class Unity
     }
     
     /**
-     *
+     * 
+     * @return $this
      */
     public function reset()  {
         $this->clean();
@@ -177,6 +180,17 @@ class Unity
         return $this->_resource;
     }
     
+    public function _headers($headers=false) {
+        if ($headers === false) {
+            return $this->_headers;
+        } 
+        if (is_array($headers)) {
+            foreach ($headers as $header => $data) {
+                $this->_headers[$header] = $data;
+            }
+        }
+        return $this;
+    }
     /**
      * Because of the variable columns per row, we need to get a list of all columns across our dataset
      * 
@@ -1403,7 +1417,7 @@ SQL;
                     $this->_toRow($this->_rowCount());
                 }
                 $this->_fromRow($this->_rows() * ($this->_page()-1)+1);
-                $this->_headers['pagination'] = json_encode([
+                $this->_headers(['pagination' => json_encode([
                     'rows' => [
                         'from'  => $this->_fromRow(),
                         'to'    => $this->_toRow(),
@@ -1413,7 +1427,7 @@ SQL;
                         'current' => $this->_page(),
                         'total'   => $this->_pages()
                     ]
-                ]);
+                ])]);
             }
         }
         return $history;
