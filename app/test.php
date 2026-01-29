@@ -5,20 +5,20 @@ require "Environment.php";
 require "Code/Framework/Humble/includes/Constants.php";
 require "Code/Framework/Humble/includes/Custom.php";
 require "cli/Component/Component.php";
-$x = new Component();
-print_r($x);
-$x::check('humble','user');
-/*
+//$x = new Component();
+//print_r($x);
+
+//$x::check('humble','user');
+
 $x = Humble::entity('humble/user/identification');
 
 print('<pre>');
 //$x->_rows(5)->_page(1)->fetch();
-print_r($x->_rows(5)->_page(1)->fetch());
+print_r($x->rows(5)->page(1)->fetch());
 die();
 //
 $y =  $x->setId(1)->load();
- * 
- */
+
 //print_r($y->getArrayCopy());
 /*
 for ($i=0; $i<100; $i++) {

@@ -240,7 +240,9 @@
                     print("Entity ".$resource_identifier." failed to allocate\n");
                 }
             }
-            return $instance;
+            print("Linking\n");
+            die("HERE\n");
+            return $instance->link();
         }
 
         /**
@@ -609,7 +611,6 @@
          * @return mixed
          */
         public static function connection($callingClass=false)        {
-            //print_r($callingClass);
             if (!($conn = ($callingClass instanceof \Code\Framework\Humble\Entities\Unity))) {
                 if ($callingClass) {
                     $name = $callingClass->getClassName();
@@ -619,7 +620,7 @@
                 $shortList  = array('Humble','Code\Framework\Humble\Helpers\Installer','Code\Framework\Humble\Helpers\Updater','Code\Framework\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
                 $conn       = in_array($name,$shortList);
             } 
-            return $conn ? Singleton::getDBEngine() : $conn;
+            return ($conn ? Singleton::getDBEngine() : $conn);
         }
 
         /**

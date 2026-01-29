@@ -59,7 +59,7 @@ class Singleton
      *
      */
     public static function getDBEngine()  {
-        if (!isset(self::$DBEngine)) {
+        if (!(isset(self::$DBEngine) || self::$DBEngine)) {
             $class = ($db_engine = Humble::cache('humble_db_engine')) ? $db_engine : 'MySQL';
             switch ($class) {
                 case 'Postgres' :

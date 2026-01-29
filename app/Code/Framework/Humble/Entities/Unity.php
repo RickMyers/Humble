@@ -59,17 +59,18 @@ class Unity
 
     /**
      * Initial constructor
-     *
-     * If this is a polyglot transaction, use the $this->query() function since
-     * it performs the necessary checks.  Otherwise it is ok to just go against
-     * the $this->_engine->query() direct DB call, which bypasses mongodb
-     *
      */
     public function __construct() {
+        print("Constructing\n");
         $this->_engine =  Humble::connection($this);
+        print_r($this->_engine);
         $this->_engine->linkUnity($this);        
     }
     
+    public function link() {
+        $this->_engine->linkUnity($this);
+        return $this;
+    }
     /**
      * Can set the Initialization Vector for SSL encryption/decryption or just return the current value for that vector
      * 
@@ -180,7 +181,12 @@ class Unity
         return $this->_resource;
     }
     
-    public function _headers($headers=false) {
+    /**
+     * 
+     * @param type $headers
+     * @return $this
+     */
+    public function headers($headers=false) {
         if ($headers === false) {
             return $this->_headers;
         } 
@@ -275,7 +281,7 @@ SQL;
      * @return $this
      */
     public function rowsAffected($rows=null) {
-        if ($rows===null) {
+        if ($rows === null) {
             return $this->_rowsAffected;
         }
         $this->_rowsAffected = $rows;
@@ -289,9 +295,10 @@ SQL;
      * @return $this
      */
     public function on($field=false) {
-        if ($field!==false) {
-            $this->_mongoJoin = $field;
+        if ($field === false) {
+            return $this->_mongoJoin;
         }
+        $this->_mongoJoin = $field;
         return $this;
     }
 
@@ -301,8 +308,8 @@ SQL;
      * @param type $number
      * @return $this
      */
-    public function _bulk($number=false) {
-        if ($number===false) {
+    public function bulk($number=false) {
+        if ($number === false) {
             return $this->_bulk;
         }
         $this->_bulk = $number;
@@ -361,7 +368,7 @@ SQL;
      * @param mixed $list
      * @return $this
      */
-    public function _xref($list=[]) {
+    public function xref($list=[]) {
         if ($list) {
             if (is_string($list)) {
                 $pairs = explode(',',$list);
@@ -396,7 +403,7 @@ SQL;
      * @param string $exclude
      * @return $this
      */
-    public function _exclude($exclude=false) {
+    public function exclude($exclude=false) {
         if ($exclude) {
             $this->_exclude = $exclude;
             return $this;
@@ -444,14 +451,6 @@ SQL;
         }
     }
 
-    public function _between($args=false) {
-        if ($args === false) {
-            return $this->_between;
-        }
-        $this->_between = $args;
-        return $this;
-    }
-    
     /**
      * Will remove all rows from a table and reset auto incrementing ID
      * 
@@ -562,15 +561,6 @@ SQL;
         $results = $this->query($query);
         return (count($results) == 1) ? $results[0] : null;
     }
-
-    
-    public function _in($args=false) {
-        if ($args===false) {
-            return $this->_in;
-        }
-        $this->_in = $args;
-        return $this;
-    }
     
     /**
      * Collects fields/ids to build an in clause later
@@ -579,14 +569,15 @@ SQL;
      * @return $this
      */
     public function in($args=false) {
-        if ($args) {
-            if (is_array($args)) {
-                foreach ($args as $arg) {
-                    $this->_in[] = addslashes($arg);
-                }
-            } else {
-                $this->_in[] = addslashes($args);
+        if ($args === false) {
+            return $this->_in;
+        }
+        if (is_array($args)) {
+            foreach ($args as $arg) {
+                $this->_in[] = addslashes($arg);
             }
+        } else {
+            $this->_in[] = addslashes($args);
         }
         return $this;
     }
@@ -1350,15 +1341,23 @@ SQL;
     /**
      *
      */
-    public function lastQuery() {
-        return $this->_engine->_lastQuery();
+    public function lastQuery($query=false) {
+        if ($query === false) {
+            return $this->_lastQuery;
+        }
+        $this->_lastQuery = $query;
+        return $this;
     }
 
     /**
      *
      */
-    public function lastError() {
-        return $this->_engine->_lastError();
+    public function lastError($error=false) {
+        if ($error === false) {
+            return $this->_lastError;
+        }
+        $this->_lastError = $error;
+        return $this;
     }
 
     //################################################################################################
@@ -1390,7 +1389,7 @@ SQL;
      * @param bool $cursor
      * @return $this
      */
-    public function _cursor($cursor=null) {
+    public function cursor($cursor=null) {
         if ($cursor!==null) {
             $this->_cursor = $cursor;
             return $this;
@@ -1563,7 +1562,7 @@ SQL;
     /**
      *
      */
-    public function _pages()            {
+    public function pages()            {
         $pages = 1;
         if ($this->_rows() && $this->_rowCount) {
             $pages = ceil($this->_rowCount/$this->_rows());
@@ -1574,7 +1573,7 @@ SQL;
     /**
      *
      */
-    public function _page($arg=false)   {
+    public function page($arg=false)   {
         if ($arg === false) {
             return $this->_page;
         } else {
@@ -1586,7 +1585,7 @@ SQL;
     /**
      *
      */
-    public function _rows($arg=false) {
+    public function rows($arg=false) {
         if ($arg === false) {
             return $this->_rows;
         } else {
@@ -1598,7 +1597,7 @@ SQL;
     /**
      *
      */
-    public function _rowCount($arg=false){
+    public function rowCount($arg=false){
         if ($arg === false) {
             return $this->_rowCount;
         } else {
@@ -1610,7 +1609,7 @@ SQL;
     /**
      *
      */
-    public function _fromRow($arg=false) {
+    public function fromRow($arg=false) {
         if ($arg === false) {
             return $this->_fromRow;
         } else {
@@ -1624,7 +1623,7 @@ SQL;
      * @param type $arg
      * @return $this
      */
-    public function _toRow($arg=false) {
+    public function toRow($arg=false) {
         if ($arg === false) {
             return $this->_toRow;
         } else {
@@ -1638,7 +1637,7 @@ SQL;
      * @param type $arg
      * @return mixed
      */
-    public function _rowsReturned($arg=false) {
+    public function rowsReturned($arg=false) {
         if ($arg === false) {
             return $this->_rowsReturned;
         } else {
@@ -1650,7 +1649,7 @@ SQL;
     /**
      *
      */
-    public function _currentPage($arg=false) {
+    public function currentPage($arg=false) {
         if ($arg === false) {
             return $this->_currentPage;
         } else {
@@ -1660,12 +1659,10 @@ SQL;
     }
 
     /**
-     * Adds the order by clause with a default collation of ascending if not passed one
-     * 
+     * Relay... do I really need this?
      * @param type $field
-     * @return $this
      */
-    public function _orderBy($field=false) {
+    public function orderBy($field) {
         if ($field===false) {
             return $this->_orderBy;
         }
@@ -1675,15 +1672,6 @@ SQL;
             $direction  = (isset($data[1])) ? $data[1] : ' ASC ';
             $this->_orderBy[$data[0]]   = $direction;
         }
-        return $this;
-    }
-
-    /**
-     * Relay... do I really need this?
-     * @param type $field
-     */
-    public function orderBy($field) {
-        $this->_orderBy($field);
         return $this;
     }
     

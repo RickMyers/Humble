@@ -107,12 +107,12 @@ class MySQL extends ORM implements ORMEngine  {
         }
         if ($this->_unity->_in()) {
             $query .= ($andFlag) ? " and " : ' where ';
-            $query .= "`".$this->_unity->_inField()."` in ('".implode("','",$this->_unity->_in)."') ";
+            $query .= "`".$this->_unity->inField()."` in ('".implode("','",$this->_unity->_in)."') ";
             $andFlag = true;
         }
         if ($this->_unity->_between()) {  //THERES A PROBLEM HERE!
             $query .= ($andFlag) ? " and " : ' where ';
-            $query .= "`".$this->_unity->_betweenField()."` between '".$this->_between[0]."' and '".$this->_between[1]."' ";
+            $query .= "`".$this->_unity->betweenField()."` between '".$this->_between[0]."' and '".$this->_between[1]."' ";
             $andFlag = true;
         }
         if ($this->_unity->condition()) {
@@ -122,7 +122,7 @@ class MySQL extends ORM implements ORMEngine  {
                 $andFlag = true;
             }
         }   
-        if ($this->_unity->_cursor()) {
+        if ($this->_unity->cursor()) {
             $query .= ($andFlag) ? " and " : ' where ';
             $query .= $this->_unity->_prefix().$this->_unity->_entity().'.id > '.$this->_unity->_cursor.' ';
         }        
@@ -134,13 +134,13 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function addLimit($page) {
         $query = '';
-        if ($this->_unity->_rows()) {
-             if ($this->_unity->_page() && $page) {
-                  $this->_unity->_fromRow($pre = (($page-1) * $this->_unity->_rows()));
-                  $this->_unity->_toRow($page * $this->_unity->_rows());
-                  $query .= ' limit '.$pre.','.$this->_unity->_rows();
-             } else if ($this->_cursor()) {
-                 $query .= ' limit '.$this->_unity->_rows();
+        if ($this->_unity->rows()) {
+             if ($this->_unity->page() && $page) {
+                  $this->_unity->fromRow($pre = (($page-1) * $this->_unity->rows()));
+                  $this->_unity->toRow($page * $this->_unity->rows());
+                  $query .= ' limit '.$pre.','.$this->_unity->rows();
+             } else if ($this->cursor()) {
+                 $query .= ' limit '.$this->_unity->rows();
              }
         }
         return $query;
@@ -153,10 +153,10 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function buildOrderByClause() {
         $query = '';
-        if (count($this->_unity->_orderBy()) > 0) {
+        if (count($this->_unity->orderBy()) > 0) {
             $query .= ' order by ';
             $ctr = 0;
-            foreach ($this->_unity->_orderBy() as $field => $direction) {
+            foreach ($this->_unity->orderBy() as $field => $direction) {
                 if ($ctr) {
                     $query .= ', ';
                 }
@@ -179,36 +179,36 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function calculateStats($query,&$results) {
         $rows = $this->query($query);
-        $this->_unity->_rowCount($rows[0]['FOUND_ROWS']);
-        if ($this->_unity->_rowCount()) {
-            if ($this->_unity->_page()) {
-                if ($this->_unity->_toRow() > $this->_unity->_rowCount()) {
-                    $this->_unity->_toRow($this->_unity->_rowCount());
+        $this->_unity->rowCount($rows[0]['FOUND_ROWS']);
+        if ($this->_unity->rowCount()) {
+            if ($this->_unity->page()) {
+                if ($this->_unity->toRow() > $this->_unity->rowCount()) {
+                    $this->_unity->toRow($this->_unity->rowCount());
                 }
-                $this->_unity->_fromRow($this->_unity->_rows() * ($this->_unity->_page()-1)+1);
-                $this->_unity->_headers(['pagination' => json_encode([
+                $this->_unity->fromRow($this->_unity->rows() * ($this->_unity->page()-1)+1);
+                $this->_unity->headers(['pagination' => json_encode([
                     'rows' => [
-                        'from'  => $this->_unity->_fromRow(),
-                        'to'    => $this->_unity->_toRow(),
-                        'total' => $this->_unity->_rowCount()
+                        'from'  => $this->_unity->fromRow(),
+                        'to'    => $this->_unity->toRow(),
+                        'total' => $this->_unity->rowCount()
                     ],
                     'pages' => [
-                        'current' => $this->_unity->_page(),
-                        'total'   => $this->_unity->_pages()
+                        'current' => $this->_unity->page(),
+                        'total'   => $this->_unity->pages()
                     ]
                 ])]);
-            } else if ($this->_unity->_cursor()) {
+            } else if ($this->_unity->cursor()) {
                 $this->_unity->cursorId($results);
-                $this->_unity->_rowsReturned(count($results));
-                $this->_unity->_pages(floor($this->_unity->_rowsReturned() / $this->_unity->_rows()));
-                $this->_unity->_headers(['pagination' => json_encode([
-                    'cursor_id' => $this->_unity->_cursor(),
+                $this->_unity->rowsReturned(count($results));
+                $this->_unity->pages(floor($this->_unity->rowsReturned() / $this->_unity->rows()));
+                $this->_unity->headers(['pagination' => json_encode([
+                    'cursor_id' => $this->_unity->cursor(),
                     'pages' => [
-                        'total' => $this->_unity->_pages()
+                        'total' => $this->_unity->pages()
                     ],
                     'rows' => [
-                        'returned' => $this->_unity->_rowsReturned(),
-                        'total' => $this->_unity->_rowCount()
+                        'returned' => $this->_unity->rowsReturned(),
+                        'total' => $this->_unity->rowCount()
                     ]
                 ])]);
             }
@@ -249,7 +249,9 @@ class MySQL extends ORM implements ORMEngine  {
      * @return array
      */
     public function query($qry)	{
-        $this->_lastQuery($qry);
+        print_r($this->_unity);
+
+        $this->_unity->lastQuery($qry);
         $resultSet  = null;
         $status     = \Humble::cache('queryLogging');
         $logQuery   = ($status==='On');
@@ -299,6 +301,8 @@ class MySQL extends ORM implements ORMEngine  {
             } else {
                 $rs     = $this->_dbref->query('SELECT ROW_COUNT() as ROWS_AFFECTED');
                 $row    = $rs->fetch_assoc();
+                print_r($this->_unity);
+                die();
                 $this->_unity->rowsAffected($row['ROWS_AFFECTED']);
             }
         } else {

@@ -624,25 +624,25 @@ class Compiler extends Directory
             print($this->tabs().'$currentModel->_json(true);'."\n");
         }
         if (isset($node['xref'])) {
-            print($this->tabs().'$'.$node['id'].'->_xref("'.$node['xref'].'");'."\n");
+            print($this->tabs().'$'.$node['id'].'->xref("'.$node['xref'].'");'."\n");
         }
         if (isset($node['exclude'])) {
-            print($this->tabs().'$'.$node['id'].'->_exclude("'.$node['exclude'].'");'."\n");
+            print($this->tabs().'$'.$node['id'].'->exclude("'.$node['exclude'].'");'."\n");
         }        
         if (isset($node['page'])) {
-            print($this->tabs().'$'.$node['id'].'->_page(null);'."\n");  //essentially, you first make sure that pagination is turned off by passing a null
+            print($this->tabs().'$'.$node['id'].'->page(null);'."\n");  //essentially, you first make sure that pagination is turned off by passing a null
             print($this->tabs().'if (isset($_REQUEST["'.$node['page'].'"])) {'."\n");  //then you look to see if it is turned on
-            print($this->tabs(1).'$'.$node['id'].'->_page($_REQUEST["'.$node['page'].'"]);'."\n");  //and then you set the corresponding variable from the request
+            print($this->tabs(1).'$'.$node['id'].'->page($_REQUEST["'.$node['page'].'"]);'."\n");  //and then you set the corresponding variable from the request
             print($this->tabs(-1)."}\n");
             if (isset($node['defaultPage'])) {
                 print($this->tabs().'if (!isset($_REQUEST["'.$node['page'].'"])) {'."\n");
-                print($this->tabs(1).'$'.$node['id'].'->_page('.$node['defaultPage'].')'.";\n");
+                print($this->tabs(1).'$'.$node['id'].'->page('.$node['defaultPage'].')'.";\n");
                 print($this->tabs(-1)."}\n");
             }
         }
         if (isset($node['cursor'])) {
             print($this->tabs().'if (isset($_REQUEST["'.$node['cursor'].'"])) {'."\n");  //then you look to see if it is turned on
-            print($this->tabs(1).'$'.$node['id'].'->_cursor($_REQUEST["'.$node['cursor'].'"])'.";\n");            
+            print($this->tabs(1).'$'.$node['id'].'->cursor($_REQUEST["'.$node['cursor'].'"])'.";\n");            
             print($this->tabs(-1)."}\n");
         }
         if (isset($node['polyglot'])) {
@@ -652,15 +652,15 @@ class Compiler extends Directory
             print($this->tabs().'$'.$node['id'].'->withTranslation(true);'."\n");
         }
         if (isset($node['rows'])) {
-            print($this->tabs().'if (!$'.$node['id'].'->_rows()) {'."\n");
-            print($this->tabs(1).'$'.$node['id'].'->_rows(null);'."\n");        //essentially, you first make sure that pagination is turned off by passing a null
+            print($this->tabs().'if (!$'.$node['id'].'->rows()) {'."\n");
+            print($this->tabs(1).'$'.$node['id'].'->rows(null);'."\n");        //essentially, you first make sure that pagination is turned off by passing a null
             print($this->tabs(-1)."}\n");
             if (isset($node['defaultRows'])) {
-                print($this->tabs().'$'.$node['id'].'->_rows('.$node['defaultRows'].');'."\n");  //then set the default rows
+                print($this->tabs().'$'.$node['id'].'->rows('.$node['defaultRows'].');'."\n");  //then set the default rows
             }
             print($this->tabs().'if (isset($_REQUEST["'.$node['rows'].'"])) {'."\n");  //then you look to see if the rows value has been passed, and if so, then use that value by assigning the rows
             print($this->tabs(1).'if (intval($_REQUEST["'.$node['rows'].'"])) {'."\n");
-            print($this->tabs(1).'$'.$node['id'].'->_rows($_REQUEST["'.$node['rows'].'"]);'."\n");  //and then you set the corresponding variable from the request
+            print($this->tabs(1).'$'.$node['id'].'->rows($_REQUEST["'.$node['rows'].'"]);'."\n");  //and then you set the corresponding variable from the request
             print($this->tabs(-1)."}\n");
             print($this->tabs(-1)."}\n");
         }
