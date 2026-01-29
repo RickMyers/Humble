@@ -30,6 +30,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             <entity assign="methods" resource="externalmethods" namespace="paradigm" class="workflow/components">
                 <parameter name="namespace" source="request" default='' />
                 <parameter name="component" source="request" default='' />
+                <parameter name="*"         source="request" />
             </entity>
         </action>                
         

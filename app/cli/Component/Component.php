@@ -203,7 +203,7 @@ class Component extends CLI
      * 
      * @return array
      */
-    public static function syntaxCheck($namespace=false,$controller=false) {
+    public static function syntaxCheck() {
         $args       = self::arguments();
         $errors     = [];
         if ($module = \Humble::module($args['ns'])) {
@@ -231,4 +231,16 @@ class Component extends CLI
         return $errors;
     }
 
+    public static function check($namespace=false,$controller=false) {
+        print("Checking Controller\n");
+        if ($namespace && $controller) {
+            self::arguments([
+                'ns' => $namespace,
+                'cn' => $controller
+            ]);
+            return self::syntaxCheck();
+        } else {
+            print("Didnt do it\n");
+        }
+    }
 }

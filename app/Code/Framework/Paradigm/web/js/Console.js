@@ -334,6 +334,12 @@ Paradigm.console = (function () {
                     break;
                 case "info"         :   //lists information about the current workflow
                     break;
+                case "help" :
+                    Paradigm.console.add(command + ' '+text+'\n','',1);
+                    (new EasyAjax('/paradigm/console/help')).add('term',text).then((response) => {
+                        Paradigm.console.reply(response,'',1);
+                    }).post();                    
+                    break;
                 default             :   
                     Paradigm.console.add('Unknown command: <span style="color: red; font-style: italic">'+command+'</span>','',1);
                     break;

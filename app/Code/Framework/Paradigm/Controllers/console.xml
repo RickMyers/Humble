@@ -33,5 +33,13 @@
             </model>
         </action>
 
+        <!-- ################################################################################################# -->
+        
+        <action name='cli'>
+            <description>Command Line Interface for the console</description>
+            <helper namespace='paradigm' class='console' response='true' method='cli'>
+                <parameter name='term' source='request' optional='true' />
+            </helper>
+        </action>
     </actions>
 </controller>
