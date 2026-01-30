@@ -61,16 +61,33 @@ class Unity
      * Initial constructor
      */
     public function __construct() {
-        print("Constructing\n");
-        $this->_engine =  Humble::connection($this);
-        print_r($this->_engine);
-        $this->_engine->linkUnity($this);        
+        $this->engine(Humble::connection($this))->link();
     }
     
+    /**
+     * Sets which product we will use for the DB Engine
+     * 
+     * @param type $engine
+     * @return $this
+     */
+    public function engine($engine=false) {
+        if ($engine === false) {
+            return $this->_engine;
+        }
+        $this->_engine = $engine;
+        return $this;
+    }    
+    
+    /**
+     * Links the DB Engine back to Unity.  
+     * 
+     * @return $this
+     */
     public function link() {
-        $this->_engine->linkUnity($this);
+        $this->engine()->unity($this);
         return $this;
     }
+    
     /**
      * Can set the Initialization Vector for SSL encryption/decryption or just return the current value for that vector
      * 
@@ -89,7 +106,7 @@ class Unity
      *
      */
     public function __destruct()   {
-        if ($this->_page()) {
+        if ($this->page()) {
             if (!(php_sapi_name() === 'cli')) {
                 foreach ($this->_headers as $header => $val) {
                     header($header.': '.$val);
@@ -243,8 +260,8 @@ class Unity
             $query = <<<SQL
                 select distinct {$field} from {$table}
 SQL;
-            $query .= $this->_engine->buildWhereClause(true);
-            $query .= $this->_engine->buildOrderByClause();
+            $query .= $this->engine()->buildWhereClause(true);
+            $query .= $this->engine()->buildOrderByClause();
             $retval = $this->query($query);
         }
         return $retval;
@@ -419,7 +436,7 @@ SQL;
         $query   = <<<SQL
           describe {$table}
 SQL;
-        return $this->_engine->query($query);
+        return $this->engine()->query($query);
     }
 
     /**
@@ -461,7 +478,7 @@ SQL;
         $query = <<<SQL
         truncate table {$table}
 SQL;
-        return $this->_engine->query($query);
+        return $this->engine()->query($query);
     }
 
     /**
@@ -479,7 +496,7 @@ SQL;
         $group = implode(',',$group);
         $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query = "select {$group},coalesce(avg({$field}),'0') as `average` from ".$table;
-        $results = $this->_engine->query($query);
+        $results = $this->engine()->query($query);
         return $results[0]['average'];
     }
 
@@ -509,7 +526,7 @@ SQL;
                 $method = 'get'.$this->underscoreToCamelCase($idx,true);
                 $results[$idx] = $this->$method();
             }
-            $countRowClause = ($this->_rows() && $this->_page()) ? " SQL_CALC_FOUND_ROWS " : "";
+            $countRowClause = ($this->rows() && $this->page()) ? " SQL_CALC_FOUND_ROWS " : "";
             $query   = "select {$countRowClause} * from {$table}";
             $orFlag = false;
             foreach ($results as $field => $value) {
@@ -521,13 +538,13 @@ SQL;
                     $orFlag = true;
                 }
             }
-            $query .= $this->addLimit($this->_page());
+            $query .= $this->addLimit($this->page());
         }
-        $results = $this->_engine->query($query);
+        $results = $this->engine()->query($query);
         $query = <<<SQL
          select FOUND_ROWS()
 SQL;
-        $rows = $this->_engine->query($query);
+        $rows = $this->engine()->query($query);
         $this->_rowCount($rows[0]['FOUND_ROWS()']);
         return $results;
     }
@@ -542,7 +559,7 @@ SQL;
         $query = <<<SQL
             select count(*) as total from {$table}
 SQL;
-        $results = $this->_engine->query($query);
+        $results = $this->engine()->query($query);
         return (count($results) == 1) ? $results[0]["total"] : 0;
     }
 
@@ -695,15 +712,15 @@ SQL;
      * @return iterator
      */
     public function fetch($useKeys = false) {
-        if ($this->_page()) {
-            $this->_currentPage($this->_page());
+        if ($this->page()) {
+            $this->currentPage($this->page());
         }
         $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
         $query   = "select ". $this->_distinct() ." ".$this->_fieldList()." from ".$table;
-        $query  .= $this->_engine->buildWhereClause($useKeys);
+        $query  .= $this->engine()->buildWhereClause($useKeys);
         $this->_noLimitQuery = $query;                                          //for pagination purposes        
-        $query  .= $this->_engine->buildOrderByClause();
-        $query  .= $this->_engine->addLimit($this->_currentPage);
+        $query  .= $this->engine()->buildOrderByClause();
+        $query  .= $this->engine()->addLimit($this->_currentPage);
         return $this->query($query);
     }
 
@@ -802,8 +819,8 @@ SQL;
               on duplicate key update
                 {$duplicate}
 SQL;
-        $this->_engine->query($query);
-        $insertId = $this->_engine->getInsertId();
+        $this->engine()->query($query);
+        $insertId = $this->engine()->getInsertId();
         if (!$insertId && !$this->getId()) {
             $d = $this->load(true);
             if (isset($d['id'])) {
@@ -848,17 +865,17 @@ SQL;
             return $query;
         }
         if ($this->_dynamic()) {
-            $query .= $this->_engine->buildWhereClause(true);
+            $query .= $this->engine()->buildWhereClause(true);
         }
         if (!$this->_orderBuilt && (count($this->_orderBy)>0)) {
-            $query .= $this->_engine->buildOrderByClause();
+            $query .= $this->engine()->buildOrderByClause();
         }
         $noLimit      = [];
         $words        = explode(' ',trim($query));
         $words[0]     = strtoupper(trim($words[0]));
         $noLimitQuery = ($this->_noLimitQuery) ? $this->_noLimitQuery : $query; //used for pagination
         if ($words[0]==='SELECT') {
-            if ($this->_page()) {
+            if ($this->page()) {
                 if ($noLimitQuery) {
                     $include = false;                                           //To create the pagination query, we need to drop the column section...
                     foreach (explode(' ',trim($noLimitQuery)) as $idx => $word) {
@@ -881,7 +898,7 @@ SQL;
                 }
                 $query = implode(' ',$words);
                 if (!$limitFound) {
-                    $query = $query .' '. $this->_engine->addLimit($this->_page());
+                    $query = $query .' '. $this->engine()->addLimit($this->page());
                 }
                 $noLimitQuery = implode(' ',$noLimit);
             }
@@ -894,10 +911,10 @@ SQL;
             }
             return false;
         }
-        $results = $this->_engine->query($query);
+        $results = $this->engine()->query($query);
         //\Log::error($query);
-        if ($this->_page() || $this->_cursor()) {
-            $this->_engine->calculateStats($noLimitQuery,$results);
+        if ($this->page() || $this->_cursor()) {
+            $this->engine()->calculateStats($noLimitQuery,$results);
         }
         if (!is_bool($results) && $this->_polyglot()) {
             //now get the mongo document and merge with the mysql row...
@@ -996,7 +1013,7 @@ SQL;
         $query   = "delete from ".$table;
         $conditionFound = false;
         if ($useFields) {
-            if ($whereClause = $this->_engine->buildWhereClause(true)) {
+            if ($whereClause = $this->engine()->buildWhereClause(true)) {
                 $conditionFound = true;
                 $query .= $whereClause;
             }
@@ -1014,7 +1031,7 @@ SQL;
             }
         }
         if ($conditionFound) {
-            $this->_engine->query($query);
+            $this->engine()->query($query);
             //POLYGLOT check here
             //@TODO: Implement a check to see if this is a polyglot table, and remove corresponding row in MongoDB
         } else {
@@ -1105,7 +1122,7 @@ SQL;
     }
 
     public function commit() {
-       $this->_engine->endTransaction();
+       $this->engine()->endTransaction();
     }
     /**
      *
@@ -1135,7 +1152,7 @@ SQL;
                 $andFlag = true;
             }
         }
-        $results = $this->_engine->query($query);
+        $results = $this->engine()->query($query);
         return ((count($results)>0) ? $results[0]['count'] : 0);
     }
 
@@ -1249,7 +1266,7 @@ SQL;
                  where a.namespace = '{$namespace}'
                    and a.entity    = '{$entity}'
 SQL;
-            $primary    = $this->_engine->query($query);
+            $primary    = $this->engine()->query($query);
             if (count($primary)===0) {
                 /*
                  * We haven't found any keys for this table, so it probably means that this table
@@ -1264,7 +1281,7 @@ SQL;
                      where a.namespace  = 'humble'
                        and a.entity     = '{$entity}'
 SQL;
-                $primary    = $this->_engine->query($query);
+                $primary    = $this->engine()->query($query);
                 if (count($primary)!==0) {
                     $this->_namespace('humble');  //Mark that we got this from humble
                     $this->_prefix('humble_');
@@ -1298,7 +1315,7 @@ SQL;
                  where namespace = '{$namespace}'
                    and entity    = '{$entity}'
 SQL;
-            $columns    = $this->_engine->query($query);
+            $columns    = $this->engine()->query($query);
             if (count($columns)===0) {
                 /*
                  * We haven't found any fields for this table, so it probably means that this table
@@ -1312,7 +1329,7 @@ SQL;
                      where namespace = 'humble'
                        and entity    = '{$entity}'
 SQL;
-                $columns    = $this->_engine->query($query);
+                $columns    = $this->engine()->query($query);
                 if (count($columns)!==0) {
                     $this->_namespace('humble');  //Mark that we got this from humble
                     $this->_prefix('humble_');
@@ -1409,21 +1426,21 @@ SQL;
             $revisions  = clone $this;
             $data       = $revisions->reset()->setId($id)->_polyglot(true)->load();
             $history    = (isset($data['revision_history'])) ? $data['revision_history'] : [];
-            if ($this->_page()) {
+            if ($this->page()) {
                 $this->_rowCount(count($history));
-                $this->addLimit($this->_page());
-                if ($this->_toRow() > $this->_rowCount()) {
-                    $this->_toRow($this->_rowCount());
+                $this->addLimit($this->page());
+                if ($this->toRow() > $this->_rowCount()) {
+                    $this->toRow($this->_rowCount());
                 }
-                $this->_fromRow($this->_rows() * ($this->_page()-1)+1);
+                $this->fromRow($this->rows() * ($this->page()-1)+1);
                 $this->_headers(['pagination' => json_encode([
                     'rows' => [
-                        'from'  => $this->_fromRow(),
-                        'to'    => $this->_toRow(),
+                        'from'  => $this->fromRow(),
+                        'to'    => $this->toRow(),
                         'total' => $this->_rowCount()
                     ],
                     'pages' => [
-                        'current' => $this->_page(),
+                        'current' => $this->page(),
                         'total'   => $this->_pages()
                     ]
                 ])]);
@@ -1564,8 +1581,8 @@ SQL;
      */
     public function pages()            {
         $pages = 1;
-        if ($this->_rows() && $this->_rowCount) {
-            $pages = ceil($this->_rowCount/$this->_rows());
+        if ($this->rows() && $this->_rowCount) {
+            $pages = ceil($this->_rowCount/$this->rows());
         }
         return $pages;
     }
@@ -1662,7 +1679,7 @@ SQL;
      * Relay... do I really need this?
      * @param type $field
      */
-    public function orderBy($field) {
+    public function orderBy($field=false) {
         if ($field===false) {
             return $this->_orderBy;
         }

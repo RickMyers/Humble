@@ -1,23 +1,28 @@
 <?php
-$s = microtime(true);
+
 require "Humble.php";
 require "Environment.php";
 require "Code/Framework/Humble/includes/Constants.php";
 require "Code/Framework/Humble/includes/Custom.php";
-require "cli/Component/Component.php";
+//require "cli/Component/Component.php";
 //$x = new Component();
 //print_r($x);
 
 //$x::check('humble','user');
-
-$x = Humble::entity('humble/user/identification');
-
+$s = microtime(true);
 print('<pre>');
+$x = Humble::entity('humble/user/identification');
+print("In: ".microtime(true)-$s."\n");
+
 //$x->_rows(5)->_page(1)->fetch();
-print_r($x->rows(5)->page(1)->fetch());
-die();
-//
-$y =  $x->setId(1)->load();
+print_r($x->rows(5)->page(1)->fetch()->toArray());
+print("In: ".microtime(true)-$s."\n");
+print_r($x->rows(5)->page(2)->fetch()->toArray());
+print("In: ".microtime(true)-$s."\n");
+print_r($x->rows(5)->page(3)->fetch()->toArray());
+print("In: ".microtime(true)-$s."\n");
+print_r($x->rows(5)->page(4)->fetch()->toArray());
+//$y =  $x->setId(1)->load();
 
 //print_r($y->getArrayCopy());
 /*

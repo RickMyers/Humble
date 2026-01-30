@@ -219,30 +219,28 @@
         public static function entity($resource_identifier) {
             $identifier = self::parseResource($resource_identifier);
             $instance   = null;
-            if ($module = self::module($identifier['namespace'])) {
-                $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
-                if (!$class = file_exists($str.".php") ? $str : false) {
-                    $instance = new class(str_replace('/','\\','\\'.$str)) extends \Code\Framework\Humble\Entities\Unity {
-                        private $anon_class = null;
-                        public function __construct($a) {
-                            parent::__construct();
-                            $this->anon_class = $a;
-                        }
-                        public function getClassName() {  return $this->anon_class; }
-                    };
-                } else {
-                    $class      = str_replace('/','\\','\\'.$str);
-                    $instance   = new $class();
-                }
-                if ($instance && is_object($instance)) {
-                    $instance->_prefix($module['prefix'])->_namespace($identifier['namespace'])->_entity(str_replace('/','_',$identifier['resource']))->_isVirtual(!$class);
-                } else {
-                    print("Entity ".$resource_identifier." failed to allocate\n");
-                }
+            if (!$module = self::module($identifier['namespace'])) {
+                die("MODULE NOT FOUND!\n");  //TODO: Change to throw
             }
-            print("Linking\n");
-            die("HERE\n");
-            return $instance->link();
+            $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
+            if (!$class = file_exists($str.".php") ? $str : false) {
+                $instance = new class(str_replace('/','\\','\\'.$str)) extends \Code\Framework\Humble\Entities\Unity {
+                    private $anon_class = null;
+                    public function __construct($a) {
+                        parent::__construct();
+                        $this->anon_class = $a;
+                    }
+                    public function getClassName() {  return $this->anon_class; }
+                };
+            } else {
+                $class      = str_replace('/','\\','\\'.$str);
+                $instance   = new $class();
+            }
+            if (!($instance && is_object($instance))) {
+                print("Entity ".$resource_identifier." failed to allocate\n");
+            }
+            $instance->_prefix($module['prefix'])->_namespace($identifier['namespace'])->_entity(str_replace('/','_',$identifier['resource']))->_isVirtual(!$class);
+            return $instance;
         }
 
         /**
@@ -664,10 +662,12 @@
                     select * from humble_modules
                       where namespace = '{$module[0]}'
 SQL;
-                $data = $db->query($query);
-                if (count($data) === 1) {
-                    self::cache('module-'.$namespace,$data = self::$modules[$namespace] = $data[0]);
+                if (!$data = $db->rawQuery($query)) {
+                    //TODO: Change to throw an error instead
+                    die('Module not found ['.$namespace."]\n");
                 }
+                self::cache('module-'.$namespace,$data = self::$modules[$namespace] = $data->fetch_array(MYSQLI_ASSOC));
+
             } else {
                 self::$modules[$namespace] = $data;
             }

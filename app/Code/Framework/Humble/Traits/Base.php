@@ -32,6 +32,8 @@ trait Base {
     /**
      * Returns true if this is a virtual class (not a physical one)
      * 
+     * @TODO: Review This! Since false is a valid value, the logic here might be off
+     * 
      * @param type $virtual
      * @return $this
      */

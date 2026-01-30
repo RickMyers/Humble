@@ -29,7 +29,7 @@ interface ORMEngine {
 class ORM
 {
 
-    public    $_unity       = null;
+    protected $_unity       = null;
     protected $shortList    = [ 'Humble',
                                 'Code\Framework\Humble\Helpers\Installer',
                                 'Code\Framework\Humble\Helpers\Updater',
@@ -48,20 +48,18 @@ class ORM
      * 
      * @param object $caller
      */
-    public function linkUnity($unity=false) {
-        print("Trying to link\n");
-        if ($unity) {
-            $this->_unity = $unity;
-            print("Linked\n");
+    public function unity($unity=false) {
+        if ($unity === false) {
+            return $this->_unity;
         }
+        $this->_unity = $unity;
         return $this;
     }
     
     protected function underscoreToCamelCase($string, $first_char_caps=false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }    
-    
-
+ 
     /**
      *
      * @param type $rs
