@@ -228,19 +228,26 @@ class Component extends CLI
         } else {
             $errors[] = "Module not found";
         }
-        return $errors;
+
+        return (isset($args['out']) && (strtoupper($args['out'])=='JSON')) ? str_replace("\n","",json_encode($errors)) : $errors;
     }
 
-    public static function check($namespace=false,$controller=false) {
-        print("Checking Controller\n");
+    /**
+     * For when you want to call it from a method instead of the CLI
+     * 
+     * @param type $namespace
+     * @param type $controller
+     * @param type $output
+     * @return type
+     */
+    public static function check($namespace=false,$controller=false,$output='') {
         if ($namespace && $controller) {
             self::arguments([
                 'ns' => $namespace,
-                'cn' => $controller
+                'cn' => $controller,
+                'out' => $output
             ]);
             return self::syntaxCheck();
-        } else {
-            print("Didnt do it\n");
         }
     }
 }

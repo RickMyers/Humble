@@ -15,12 +15,15 @@ Scans for changes using Reflection...
 main:
 
 require_once 'Humble.php';
-print('Scanning External Directories for Workflow Components'."\n");
 $updater    = \Environment::getUpdater();
 $cadence    = Humble::cache('cadence-config');
 $external   = \Environment::application('external');
 $externals  = Humble::cache('externals-array');
 foreach ($external->directory as $idx => $directory) {
+    if (!is_dir($directory)) {
+        print('Directory '.$directory.' Not Found, Skipping'."\n");
+        continue;
+    }
     if (($dh = dir($directory)) !== false) {
         while ($entry = $dh->read()) {
             if (($entry == '.') || ($entry == '..')) {

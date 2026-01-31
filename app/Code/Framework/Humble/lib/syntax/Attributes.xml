@@ -348,7 +348,12 @@
                     <json />
                 </values>
             </format>
-            <required required="false" purpose="" default="" conflicts="optional" />
+            <required required="false" purpose="" default="" conflicts="optional" >
+                <values>
+                    <true />
+                    <false />
+                </values>
+            </required>
             <optional required="false" purpose="" default="" conflicts="required" />
             <min      required="false" purpose="" default="" conflicts="range" />
             <max      required="false" purpose="" default="" conflicts="range" />

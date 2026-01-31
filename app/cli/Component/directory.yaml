@@ -61,3 +61,4 @@ sc|syntax  :
             ns|namespace: Namespace of module where controller resides
             cn|controller: Controller name
         optional:            
+            out: out=JSON will return the errors as a JSON string

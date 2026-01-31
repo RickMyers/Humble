@@ -735,7 +735,7 @@ SQL;
         foreach ($rows as $row) {
             $max_id = ($row['id'] ?? 0) > $max_id ? $row['id'] : $max_id;
         }
-        $this->_cursor($max_id);
+        $this->cursor($max_id);
         return $max_id;
     }
 
@@ -913,7 +913,7 @@ SQL;
         }
         $results = $this->engine()->query($query);
         //\Log::error($query);
-        if ($this->page() || $this->_cursor()) {
+        if ($this->page() || $this->cursor()) {
             $this->engine()->calculateStats($noLimitQuery,$results);
         }
         if (!is_bool($results) && $this->_polyglot()) {

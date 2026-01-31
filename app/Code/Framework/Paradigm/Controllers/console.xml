@@ -15,11 +15,13 @@
         <!-- ################################################################################################# -->
 
         <action name='status'>
+            <description>Returns the current system status</description>
         </action>
 
         <!-- ################################################################################################# -->
 
         <action name='whoami'>
+            <description>Returns who you are</description>
             <entity namespace='admin' class='user/identification' id='user'>
                 <parameter name='id' value='admin_id' source='session' required="true" />
             </entity>
@@ -28,6 +30,7 @@
         <!-- ################################################################################################# -->
 
         <action name='search'>
+            <description>Searches something?</description>
             <model namespace='paradigm' class='data' id='data'>
                 <parameter name='term' value='term' source='post' default='stupid' />
             </model>

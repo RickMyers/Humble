@@ -12,7 +12,9 @@ Let's just do something every so often...
 
 require_once "Humble.php";
 require_once('Code/Framework/Humble/includes/Constants.php');
+require_once("cli/Component/Component.php");
 
+$controller                 = new Component();                                  //Used to syntax check a controller
 $started                    = time();                                           //The time used in all offset calculations
 $pid                        = getmypid();                                       //My process ID
 $first_time                 = [
@@ -113,7 +115,7 @@ function logMessage($message=false,$timestamp=true) {
 }
 //------------------------------------------------------------------------------
 function scanControllersForChanges($last_run=false) {
-    global $compiler,$is_production;
+    global $compiler,$controller,$is_production;
     if (!$is_production) {
         $compiler    = false;
         $namespaces  = [];
@@ -123,8 +125,14 @@ function scanControllersForChanges($last_run=false) {
                 if (file_exists($file) && ($ft = filemtime($file))) {
                     if ($ft !== ($st = strtotime($metadata['compiled']))) {
                        logMessage('---------> Going to compile '.$file." [".$ft."/".$st."]");
-                       $compiler   = ($compiler) ? $compiler : \Environment::getCompiler();
-                       $compiler->compile($metadata['namespace'].'/'.$metadata['controller']);
+                       if (count($errors = json_decode($controller->check($metadata['namespace'],$metadata['controller'],'JSON')))==0) {
+                           $compiler   = ($compiler) ? $compiler : \Environment::getCompiler();
+                           $compiler->compile($metadata['namespace'].'/'.$metadata['controller']);
+                       } else {
+                           foreach ($errors as $error) {
+                               logMessage($error);
+                           }
+                       }
                     }
                     clearstatcache(true,$file);
                 }
@@ -253,7 +261,6 @@ function scanExternalsForChanges() {
             primeExternalsArray();
         }
         $first_time['externals'] = false;
-        
         exec('php Scanner.php',$output);
         foreach ($output as $row) {
             logMessage($row);
