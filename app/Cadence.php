@@ -14,6 +14,7 @@ require_once "Humble.php";
 require_once('Code/Framework/Humble/includes/Constants.php');
 require_once("cli/Component/Component.php");
 
+$queryFlag                  = false;
 $controller                 = new Component();                                  //Used to syntax check a controller
 $started                    = time();                                           //The time used in all offset calculations
 $pid                        = getmypid();                                       //My process ID
@@ -35,6 +36,7 @@ $externals                  = [];                                               
 $modules                    = Humble::entity('humble/modules')->setEnabled('Y')->fetch();
 $system                     = Humble::entity('admin/system/monitor');
 $job_queue                  = Humble::entity('paradigm/job/queue');
+$event_queue                = Humble::entity('paradigm/system/events');
 $monitor                    = \Environment::getMonitor();                       //System monitor for checking on performance
 $updater                    = \Environment::getUpdater();                       //Singleton reference to the module updater
 $installer                  = \Environment::getInstaller();                     //Singleton reference to the module installer
@@ -269,15 +271,14 @@ function scanExternalsForChanges() {
 }
 //------------------------------------------------------------------------------
 function timedEvents() {
+    global $job_queue,$event_queue;
     if (file_exists('PIDS/scheduler.pid')) {
         logMessage('Scheduler may already be running so skipping'."\n");
         return;
     }
     file_put_contents('PIDS/scheduler.pid',getmypid()); 
     $now             = strtotime(date('Y-m-d H:i:s'));
-    $job_queue       = Humble::entity('paradigm/job/queue');
-    $event_queue     = Humble::entity('paradigm/system/events');
-    $events          = $event_queue->setActive('Y')->fetch();
+    $events          = $event_queue->reset()->setActive('Y')->fetch();
     foreach ($events as $event) {
         //if your next execution cycle is within 5 minutes and you haven't been run in the last 10 minutes, you will be queued for execution
         if ((int)$event['period'] == $event['period']) {
@@ -302,9 +303,12 @@ function timedEvents() {
 }
 //------------------------------------------------------------------------------
 function launchWorkflows() {
-    global $windows,$job_queue;
+    global $windows,$queryFlag;
     logMessage('Checking for launching workflows');
-    $jobs   = $job_queue->statusIn([NEW_FILE_JOB,NEW_EVENT_JOB])->fetch();
+    $queryFlag = true;
+    $job_queue = Humble::entity('paradigm/job/queue');
+    $jobs = $job_queue->statusIn([NEW_FILE_JOB,NEW_EVENT_JOB])->fetch();
+    $queryFlag = false;
     foreach ($jobs as $job) {
         $launcher = ($job['status'] === NEW_FILE_JOB) ? 'filelaunch.php' : 'launch.php';
         //$cmd = 'php launch.php '.$job['id']." > ../SDSF/job_".$job['id'].".txt 2>&1";

@@ -92,6 +92,7 @@ class MySQL extends ORM implements ORMEngine  {
                 $results[$idx] = $this->unity()->$method();
             }
         }
+
         foreach ($this->unity()->_fields() as $idx => $key) {
             $method = 'get'.$this->underscoreToCamelCase($idx,true);
             $results[$idx] = $this->unity()->$method();
@@ -106,9 +107,9 @@ class MySQL extends ORM implements ORMEngine  {
                 $andFlag = true;
             }
         }
-        if ($this->unity()->in()) {
+        if (count($this->unity()->in())) {
             $query .= ($andFlag) ? " and " : ' where ';
-            $query .= "`".$this->unity()->inField()."` in ('".implode("','",$this->unity()->_in)."') ";
+            $query .= "`".$this->unity()->inField()."` in ('".implode("','",$this->unity()->in())."') ";
             $andFlag = true;
         }
         if ($this->unity()->between()) {  //THERES A PROBLEM HERE!
@@ -286,9 +287,9 @@ class MySQL extends ORM implements ORMEngine  {
                         $errorstring .= "\t\tNot Available\n";
                     }
                     $errorstring .= "\t</rowsreturned>\n";
-                  /*  ob_start();
-                    debug_print_backtrace();
-                    $errorstring .="\t<trace>".ob_get_clean()."</trace>\n"; */  //@TODO: suspending this until I can come up with something that doesnt clog up the log
+                   // ob_start();
+                   // debug_print_backtrace();
+                  //  $errorstring .="\t<trace>\n".ob_get_clean()."</trace>\n";   //@TODO: suspending this until I can come up with something that doesnt clog up the log
                     $errorstring .= "</error>\n";
                     \Log::sql($errorstring);
                     if (php_sapi_name()=='cli') {

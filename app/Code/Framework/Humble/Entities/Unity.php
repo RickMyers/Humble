@@ -88,6 +88,14 @@ class Unity
         return $this;
     }
     
+    public function inField($field=false) {
+        if ($field === false) {
+            return $this->_inField;
+        }
+        $this->_inField = $field;
+        return $this;
+    }
+    
     /**
      * Can set the Initialization Vector for SSL encryption/decryption or just return the current value for that vector
      * 
@@ -1804,7 +1812,7 @@ SQL;
             $token      = lcfirst(substr($name,5));
             return $this->_unset($token);
         } elseif (substr($name,-2,2)==="In") {
-            $this->_inField = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-2)));
+            $this->inField(strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-2))));
             $this->in($arguments[0]);
             return $this;
         } elseif (substr($name,-7,7)==="Between") {
