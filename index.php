@@ -242,6 +242,8 @@ if (!$request_handled) {
             \HumbleException::standard($e,'File Name Or Location Error','custom');
         } catch (Exception $e) {
             \HumbleException::standard($e, "Compilation Error");
+        } finally {
+            die();
         }
     }
 
@@ -301,7 +303,12 @@ if (!$request_handled) {
         \HumbleException::standard($e,'Workflow Component Error','workflow');
     } catch (SmartyCompilerException $e) {
         \HumbleException::standard($e,'Smarty Compiler Error','smarty');
+    } catch (MalformedXMLException $e) {
+        \HumbleException::standard($e,'Malformed XML','custom');
+        die();
     } catch (Exception $e) {
         \HumbleException::standard($e,"Error Encountered");
+    } finally {
+        die();
     }
 }

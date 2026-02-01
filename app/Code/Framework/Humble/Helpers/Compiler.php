@@ -665,7 +665,7 @@ class Compiler extends Directory
             print($this->tabs(-1)."}\n");
         }
         if (isset($node['orderby'])) {
-            print($this->tabs().'$'.$node['id'].'->_orderBy(\''.$node['orderby'].'\');'."\n");
+            print($this->tabs().'$'.$node['id'].'->orderBy(\''.$node['orderby'].'\');'."\n");
         }
         if (isset($node['distinct']) && (strtolower($node['distinct'])==='true')) {
             print($this->tabs().'$'.$node['id'].'->_distinct(true);'."\n");

@@ -30,7 +30,7 @@ function secureCheck($file=[]) {
     switch ($_GET['type']) {
         case 'js':
             header('Content-Type: application/javascript');
-            $orm->setPackage(str_replace('.js','',$_GET['package']))->_orderBy('weight');
+            $orm->setPackage(str_replace('.js','',$_GET['package']))->orderBy('weight');
             $packageFiles = $orm->fetchEnabled(str_replace('.js','',$_GET['package']));
             foreach ($packageFiles as $idx => $file) {
                 if (secureCheck($file)) {
@@ -85,7 +85,7 @@ function secureCheck($file=[]) {
             break;            
         case 'css' :   
             header('Content-Type: text/css');
-            $orm->setPackage(str_replace('.css','',$_GET['package']))->_orderBy('weight');
+            $orm->setPackage(str_replace('.css','',$_GET['package']))->orderBy('weight');
             $packageFiles = $orm->fetchEnabled(str_replace('.css','',$_GET['package']));
             foreach ($packageFiles as $idx => $file) {
                 if (secureCheck($file)) {
