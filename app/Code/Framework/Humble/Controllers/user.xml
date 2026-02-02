@@ -13,7 +13,7 @@
                 </case>
                 <default>
                     <redirect href='/index.html?message=Incorrect User ID or Password' />   
-                </default>
+                </default>  
             </switch>
         </action>
  

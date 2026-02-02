@@ -457,6 +457,11 @@ SQL;
      *
      */
     public function registerWorkflowComponents($namespace=false) {
+        $skip = ['MySQL'=>true,
+            'ORM'=>true,
+            'Postgres' => true,
+            'SQLLite'=> true,
+            'SQLServer' => true];
         $namespace  = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
         if ($namespace) {
             $this->deRegisterWorkflowComponents($namespace);            
@@ -467,6 +472,12 @@ SQL;
         $workflowComment    = Humble::entity('paradigm/workflow/comments');
         $this->output("WORKFLOW","Processing Namespace [".$namespace."]...");
         foreach ($models as $model) { 
+            if ($namespace === 'humble') {
+                if (isset($skip[$model])) {
+                    $this->output('WORKFLOW','Skipping '.$model);
+                    continue;
+                }
+            }
             $this->output("WORKFLOW","");
             $this->output("WORKFLOW","Scanning Model Class ".ucfirst($model)."...");
             $workflowComponent->setNamespace($namespace);
