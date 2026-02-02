@@ -206,7 +206,7 @@ trait Base {
                     }
                     return $retval;
                 } else {
-                    die("Undefined Method: ".$name." invoked from ".$this->getClassName().".");
+                    throw new \Exceptions\MethodNotFound("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->getClassName(),16);                    
                 }
             }
         }

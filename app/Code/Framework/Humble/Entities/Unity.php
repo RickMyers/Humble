@@ -1825,7 +1825,7 @@ SQL;
             return $this;
         }
         //method couldn't be handled
-        die("<pre>\nError:\n\nMethod not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->getClassName().".\n\n</pre>");        
+        throw new \Exceptions\MethodNotFound("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->getClassName(),16);
         return null;
     }
 

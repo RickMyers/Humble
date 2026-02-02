@@ -305,7 +305,8 @@ if (!$request_handled) {
         \HumbleException::standard($e,'Smarty Compiler Error','smarty');
     } catch (MalformedXMLException $e) {
         \HumbleException::standard($e,'Malformed XML','custom');
-        die();
+    } catch (MethodNotFound $e) {
+        \HumbleException::standard($e,'Missing Method','custom');
     } catch (Exception $e) {
         \HumbleException::standard($e,"Error Encountered");
     } finally {
