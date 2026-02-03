@@ -59,9 +59,9 @@ function aggregateDirectories($dh) {
         if (($entry == '.') || ($entry == '..')) {
             continue;
         }
-        if (is_dir('cli/'.$entry)) {
-            if (file_exists('cli/'.$entry.'/directory.yaml')) {
-                $available_commands[$entry] = yaml_parse_file('cli/'.$entry.'/directory.yaml');
+        if (is_dir('CLI/'.$entry)) {
+            if (file_exists('CLI/'.$entry.'/directory.yaml')) {
+                $available_commands[$entry] = yaml_parse_file('CLI/'.$entry.'/directory.yaml');
             }
         }
     }
@@ -73,7 +73,7 @@ function aggregateDirectories($dh) {
 function aggregateModuleCommands() {
     $available_commands = [];        
     foreach ($modules = \Humble::entity('humble/modules')->setEnabled('Y')->setCli('Y')->fetch() as $module) {
-        $commands = 'Code/'.$module['package'].'/'.$module['module'].'/cli/directory.yaml';
+        $commands = 'Code/'.$module['package'].'/'.$module['module'].'/CLI/directory.yaml';
         if (file_exists($commands)) {
             $available_commands[ucfirst($module['namespace'])] = yaml_parse_file($commands);
         }
@@ -83,7 +83,7 @@ function aggregateModuleCommands() {
 function modulePath($namespace=false) {
     $path = '';
     if ($module = \Humble::entity('humble/modules')->setNamespace(strtolower($namespace))->load(true)) {
-        $path = 'Code/'.$module['package'].'/'.$module['module'].'/cli/'.$namespace.'.php';
+        $path = 'Code/'.$module['package'].'/'.$module['module'].'/CLI/'.$namespace.'.php';
     }
     return $path;
 }
@@ -103,7 +103,7 @@ if (!count($argv ?? []) && (count($args ?? []))) {
     $argv = $args;  //not called from command line but included by another program so we are faking it
 }
 $args               = [];                                                       //declaring global variable
-$available_commands = array_merge_recursive(aggregateDirectories(dir('cli')),aggregateModuleCommands());   
+$available_commands = array_merge_recursive(aggregateDirectories(dir('CLI')),aggregateModuleCommands());   
 if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         //pop program name and grab the command they entered
     if (isset($help_cmd[strtolower($entered_command)])) {
         if (isset($argv[1])) {
@@ -126,7 +126,7 @@ if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         
                         }
                         $args[] = $arg;                                             //we are copying passed in args to a global variable
                     }
-                    $files = ['classes'   => (($options['custom'] ?? false) ? modulePath($include) :'cli/'.$include.'/'.$include.'.php')];
+                    $files = ['classes'   => (($options['custom'] ?? false) ? modulePath($include) :'CLI/'.$include.'/'.$include.'.php')];
                     foreach ($files as $type => $file) {
                         if (file_exists($file)) {
                             require_once $file;
