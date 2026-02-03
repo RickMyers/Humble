@@ -27,7 +27,7 @@
             "RPC",
             "Tests",
             "web",
-            "cli",
+            "CLI",
             "web/js",
             "web/app",
             "web/css",
@@ -50,12 +50,12 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/config.xml"
         },
         {
-            "source": "/lib/sample/module/cli/CLI.php",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/cli/&&MODULE&&.php"
+            "source": "/lib/sample/module/CLI/CLI.php",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/CLI/&&MODULE&&.php"
         },
         {
-            "source": "/lib/sample/module/cli/directory.yaml",
-            "destination": "Code/&&PACKAGE&&/&&MODULE&&/cli/directory.yaml"
+            "source": "/lib/sample/module/CLI/directory.yaml",
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/CLI/directory.yaml"
         },
         {
             "source": "/lib/sample/module/etc/config.xml",

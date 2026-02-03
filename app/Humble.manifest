@@ -55,7 +55,7 @@ app/humble
 app/humble.bat
 app/Validator.php
 web/*
-app/cli/*
+app/CLI/*
 app/PIDS/*
 app/Code/Framework/*
 app/Exceptions/*

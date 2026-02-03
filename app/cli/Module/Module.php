@@ -1,5 +1,5 @@
 <?php
-require_once 'cli/CLI.php';
+require_once 'CLI/CLI.php';
 class Module extends CLI 
 {
 
@@ -221,7 +221,7 @@ class Module extends CLI
                     $search[]    = '&&BASEDIR&&';    $replace[]   = '';
                     $search[]    = '&&PROJECT_NAME&&'; $replace[] = $project->project_name;
                     @mkdir("Code/".$pk."/".$md."/Views/".$controller."/Smarty/",0775,true);
-                    @mkdir('cli/'.$md,0775,true);
+                    @mkdir('CLI/'.$md,0775,true);
                     self::copyFiles($src,$mod->main_module,$search,$replace);
                 } else {
                     self::copyFiles($src,$mod->regular_module,$search,$replace);

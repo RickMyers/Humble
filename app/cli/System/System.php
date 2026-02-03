@@ -1,5 +1,5 @@
 <?php
-require_once 'cli/CLI.php';
+require_once 'CLI/CLI.php';
 require_once 'Humble.php';
 require_once 'Environment.php';
 class System extends CLI 
@@ -151,7 +151,7 @@ class System extends CLI
         }
         //Now add manifest file in the form of a git ignore...
         $ignore = array_merge(['Docs/*','/images/*','/app/Constants.php','/app/vendor/*','**/cache/*','**/Cache/*','/app/Workflows'],array_keys($content['xref']));
-        $ignore = array_merge(['app/cli/Component/*','app/cli/CLI.php','app/cli/Workflow/*','app/cli/Framework/*','app/cli/System/*','app/cli/Module/*'],$ignore);
+        $ignore = array_merge(['app/CLI/Component/*','app/CLI/CLI.php','app/CLI/Workflow/*','app/CLI/Framework/*','app/CLI/System/*','app/CLI/Module/*'],$ignore);
         $zip->addFromString('.gitignore',implode("\n",$ignore));
         //$zip->addFromString('.manifest',implode("\n",$content['xref']));
         $zip->close();
@@ -209,7 +209,7 @@ class System extends CLI
             @unlink('humble.bat');
             @unlink('humble');
             print("Now running update...\n\n");
-            require 'cli/Module/Module.php';
+            require 'CLI/Module/Module.php';
             Module::update(['namespace'=>'*']);
             chdir('..');
         } else {

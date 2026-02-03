@@ -1,5 +1,5 @@
 <?php
-require_once 'cli/CLI.php';
+require_once 'CLI/CLI.php';
 class &&MODULE&& extends CLI 
 {
     
