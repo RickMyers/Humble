@@ -18,3 +18,11 @@ require "Environment.php";
 require "Log.php";
 require "Code/Framework/Humble/includes/Constants.php";
 require "Code/&&PACKAGE&&/&&MODULE&&/includes/Custom.php";
+try {
+    //Do Stuff Here
+} catch (Exception $ex) {
+
+} finally {
+    die("An Error Has Occurred\n");
+}
+
