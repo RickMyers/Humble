@@ -126,7 +126,10 @@ install :
 sync : 
     description: Updates the core files (deprecated)
     usage:
+        linux:   sudo sh ./humble --sync
+        windows: humble --sync      
     function :
+    directive: true
     parameters:
         required:
         optional:               
