@@ -1,0 +1,129 @@
+---
+b : 
+    description: Build a new module
+    usage: 
+        linux:   sudo sh ./humble.sh --b ns=newmod module=NewMod package=Main author="John Doe" email=johndoe@here.com
+        windows: humble --b ns=newmod module=NewMod package=Main author="John Doe" email=johndoe@here.com
+    function : build
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the new module
+            package|pk: You must specify the "package", or folder, to build the module in
+            module|md|name: You must specify the Module name
+        optional:
+            author|au: The authors name
+            email|em: The authors email address
+            main_module: Flag for marking this a the main module of an application
+i : 
+    description: Install a module
+    usage:
+        linux:   sudo sh ./humble.sh --i etc=path_to_config.xml or sudo sh ./humble.sh --i etc=path_to_config.xml
+        windows: humble --i etc=path_to_config.xml or humble --i etc=path_to_config.xml
+    function : install
+    parameters:
+        required:
+            etc: You must specify the path to the module configuration file (i.e. app/Code/Main/MyMod/etc/config.xml)
+            namespace|ns: You must specify the namespace of the module
+        optional:          
+k : 
+    description: Uninstall (Kill) a module    
+    usage:
+        linux:   sudo sh ./humble.sh --k ns=module_namespace or sudo sh ./humble.sh --k ns=*
+        windows: humble --k ns=module_namespace or humble --k ns=*
+    function : uninstall
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module to uninstall, or an * to uninstall all non-required modules
+        optional:  
+u : 
+    description: Run the Update process on a module or group of modules
+    usage: 
+        linux:   sudo sh ./humble.sh --u ns=module_namespace or sudo sh ./humble.sh --u ns=*
+        windows: humble --u ns=module_namespace or humble --u ns=*
+    function : update
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module to update, or an * to update all modules
+        optional:    
+            workflow|w : A flag (Y/N) for whether to generate all workflows on update (default Y)
+e : 
+    description: Enable a module
+    usage:
+        linux:   sudo sh ./humble.sh --e ns=module_namespace or sudo sh ./humble.sh --e ns=*
+        windows: humble --e ns=module_namespace or humble --e ns=*
+    function : enable
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module to enable, or an * to enable all modules
+        optional:          
+d : 
+    description: Disable a module
+    usage:
+        linux:   sudo sh ./humble.sh --d ns=module_namespace or sudo sh ./humble.sh --d ns=*
+        windows: humble --d ns=module_namespace or humble --d ns=*
+    function : disable
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module to disable, or an * to disable all non-required modules
+        optional:          
+activate : 
+    description: Build, Install and Enable (activate) a Module
+    usage:
+        linux:   sudo sh ./humble.sh --activate namespace=module_namespace package=directory_name module=module_name
+        windows: humble --activate namespace=module_namespace package=directory_name module=module_name
+    function : activate
+    parameters:
+        required:
+            namespace|ns: The module namespace
+            package|pk: Package (which is the directory) to install the module
+            module|mod: The module name
+        optional:     
+tailwind : 
+    description: Enable tailwindcss support for a given module 
+    extended: Tailwind should be enabled on a per module basis, see the tutorial here https://humblepgramming.com/pages/Tailwind.htmls
+    usage:
+        linux:   sudo sh ./humble.sh --tailwind namespace=module_namespace 
+        windows: humble --tailwind namespace=module_namespace
+    function : tailwind
+    parameters:
+        required:
+            namespace|ns: The module namespace
+        optional:
+clone-templates :
+    description: Copies the component templates to the main modules lib/ directory
+    extended: You can customize the base templates for controllers, models, helpers, and entities
+    usage:
+        linux:   sudo sh ./humble.sh --clone-templates ns=module_namespace
+        windows: humble --clone-templates ns=module_namespace
+    function : cloneTemplates
+    directive: true
+    parameters:
+        required:
+        optional:
+            namespace|ns: The module namespace to copy to
+cli : 
+    description: Toggles CLI access for a particular modules
+    usage:
+        linux:   sudo sh ./humble.sh --cli ns=module_namespace or sudo sh ./humble.sh --cli ns=*
+        windows: humble --cli ns=module_namespace or humble --cli ns=*
+    function : cli
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module to grant CLI access to
+        optional:
+admin-apps|apps :
+    description: Installs the Admin Apps XML file in the /etc folder
+    usage:
+        linux:   sudo sh ./humble.sh --admin-apps ns=module_namespace or sudo sh ./humble.sh --apps ns=*
+        windows: humble --admin-apps ns=module_namespace or humble --apps ns=*
+    function : apps
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module to install the apps xml
+        optional:
+            name|n|nm: The name of the admin app
+            use|u: The name of the templating engine to use
+        values:         
+            use|u: Twig,Smarty,Latte,Blade,Savant,TBS,PHP,PHPTAL,Rain,Mustache
+               
+ 

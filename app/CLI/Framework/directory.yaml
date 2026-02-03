@@ -1,0 +1,71 @@
+---
+x|prefix : 
+    description: Check if a module prefix is available (deprecated)
+    usage:
+        linux:   sudo sh ./humble.sh --x prefix=desired_prefix
+        windows: humble --x prefix=desired_prefix
+    function : prefixAvailability
+    parameters:
+        required:
+            prefix|pre|px: The prefix value to check
+        optional:         
+a|clean : 
+    description: Remove AUTOINCREMENT=# from SQL dumps
+    usage:
+        linux:   sudo sh ./humble.sh --a ns=desired_namespace
+        windows: humble --a ns=desired_namespace
+    function : clean
+    parameters:
+        required:
+            namespace|ns: A namespace to clean
+        optional:         
+c|check : 
+    description: Check for namespace availability
+    usage:
+        linux:   sudo sh ./humble.sh --c namespace=desired_namespace 
+        windows: humble --c namespace=desired_namespace
+    function : namespaceAvailability
+    parameters:
+        required:
+            namespace|ns: A namespace to check
+        optional:
+p|preserve : 
+    description: Preserve (copy) a directory off of the application path
+    usage:
+        linux:   sudo sh ./humble.sh --p dir=path_to_directory
+        windows: humble --p dir=path_to_directory
+    function : preserve
+    parameters:
+        required:
+            directory|dir: The path to the directory to store/preserve
+        optional:         
+v|ver|version : 
+    description: Prints the framework version
+    directive: true
+    usage:
+        linux:   sudo sh ./humble.sh --v
+        windows: humble --v 
+    function : version
+    parameters:
+        required:
+        optional:            
+r|restore : 
+    description: Restore a directory that was previously preserved
+    usage:
+        linux:   sudo sh ./humble.sh --r dir=path_to_directory
+        windows: humble --r dir=path_to_directory
+    function : restore
+    parameters:
+        required:
+            directory|dir: The path to the directory to store/preserve
+        optional: 
+api|policy|update-policy : 
+    description: Creates or updates the API Policy JSON file
+    usage:
+        linux:   sudo sh ./humble.sh --policy
+        windows: humble --api
+    function : apiPolicy
+    directive: true
+    parameters:
+        required:
+        optional:              
