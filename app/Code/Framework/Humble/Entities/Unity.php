@@ -11,9 +11,8 @@ class Unity
     protected $_keys          = [];
     protected $_column        = [];
     protected $_fields        = [];
-    protected $_mongoFields   = [];
     protected $_orderBy       = [];
-    protected $_orderBuilt    = false;
+    //public    $_orderBuilt    = false;
     protected $_fieldList     = "*";
     protected $_engine        = null;
     protected $_search        = [];
@@ -167,7 +166,6 @@ class Unity
         $this->_search       = [];
         $this->_data         = [];
         $this->_noLimitQuery = '';
-        $this->_orderBuilt   = false;
         return $this;
     }
     
@@ -729,8 +727,8 @@ SQL;
         $query   = "select ". $this->_distinct() ." ".$this->_fieldList()." from ".$table;
         $query  .= $this->engine()->buildWhereClause($useKeys);
         $this->_noLimitQuery = $query;                                          //for pagination purposes        
-        $query  .= $this->engine()->buildOrderByClause();
-        $query  .= $this->engine()->addLimit($this->_currentPage);
+       // $query  .= $this->engine()->buildOrderByClause();
+       // $query  .= $this->engine()->addLimit($this->_currentPage);
         return $this->query($query);
     }
 
@@ -749,20 +747,6 @@ SQL;
         return $max_id;
     }
 
-    /**
-     * Has the 'order by' segment been constructed?  Flag to indicate not to build it more than once
-     * 
-     * @param type $status
-     * @return $this
-     */
-    public function orderBuilt($built=null) {
-        if ($built === null) {
-            return $this->_orderBuilt;
-        }
-        $this->_orderBuilt = $built;
-        return $this;
-    }
-    
     /**
      *
      */
@@ -891,7 +875,7 @@ SQL;
         if ($this->_dynamic()) {
             $query .= $this->engine()->buildWhereClause(true);
         }
-        if (!$this->orderBuilt() && (count($this->orderBy())>0)) {
+        if (count($this->_orderBy)>0) {
             $query .= $this->engine()->buildOrderByClause();
         }
         $noLimit      = [];
@@ -900,6 +884,7 @@ SQL;
         $noLimitQuery = ($this->_noLimitQuery) ? $this->_noLimitQuery : $query; //used for pagination
         if ($words[0]==='SELECT') {
             if ($this->page()) {
+                $query  .= $this->engine()->addLimit($this->_currentPage);                
                 if ($noLimitQuery) {
                     $include = false;                                           //To create the pagination query, we need to drop the column section...
                     foreach (explode(' ',trim($noLimitQuery)) as $idx => $word) {
@@ -1707,7 +1692,8 @@ SQL;
         if ($field===false) {
             return $this->_orderBy;
         }
-        foreach (explode(",",$field) as $field) {
+        $fields = explode(",",$field);
+        foreach ($fields as $field) {
             $data       = explode('=',$field);
             $direction  = (isset($data[1])) ? $data[1] : ' ASC ';
             $this->_orderBy[$data[0]]   = $direction;
