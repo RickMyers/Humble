@@ -12,7 +12,7 @@ class Unity
     protected $_column        = [];
     protected $_fields        = [];
     protected $_orderBy       = [];
-    public    $_orderBuilt    = false;
+    //public    $_orderBuilt    = false;
     protected $_fieldList     = "*";
     protected $_engine        = null;
     protected $_search        = [];
@@ -727,8 +727,8 @@ SQL;
         $query   = "select ". $this->_distinct() ." ".$this->_fieldList()." from ".$table;
         $query  .= $this->engine()->buildWhereClause($useKeys);
         $this->_noLimitQuery = $query;                                          //for pagination purposes        
-        $query  .= $this->engine()->buildOrderByClause();
-        $query  .= $this->engine()->addLimit($this->_currentPage);
+       // $query  .= $this->engine()->buildOrderByClause();
+       // $query  .= $this->engine()->addLimit($this->_currentPage);
         return $this->query($query);
     }
 
@@ -875,7 +875,7 @@ SQL;
         if ($this->_dynamic()) {
             $query .= $this->engine()->buildWhereClause(true);
         }
-        if (!$this->_orderBuilt && (count($this->_orderBy)>0)) {
+        if (count($this->_orderBy)>0) {
             $query .= $this->engine()->buildOrderByClause();
         }
         $noLimit      = [];
@@ -884,6 +884,7 @@ SQL;
         $noLimitQuery = ($this->_noLimitQuery) ? $this->_noLimitQuery : $query; //used for pagination
         if ($words[0]==='SELECT') {
             if ($this->page()) {
+                $query  .= $this->engine()->addLimit($this->_currentPage);                
                 if ($noLimitQuery) {
                     $include = false;                                           //To create the pagination query, we need to drop the column section...
                     foreach (explode(' ',trim($noLimitQuery)) as $idx => $word) {
