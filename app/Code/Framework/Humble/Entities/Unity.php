@@ -11,8 +11,9 @@ class Unity
     protected $_keys          = [];
     protected $_column        = [];
     protected $_fields        = [];
+    protected $_mongoFields   = [];
     protected $_orderBy       = [];
-    public    $_orderBuilt    = false;
+    protected $_orderBuilt    = false;
     protected $_fieldList     = "*";
     protected $_engine        = null;
     protected $_search        = [];
@@ -166,6 +167,7 @@ class Unity
         $this->_search       = [];
         $this->_data         = [];
         $this->_noLimitQuery = '';
+        $this->_orderBuilt   = false;
         return $this;
     }
     
@@ -748,6 +750,20 @@ SQL;
     }
 
     /**
+     * Has the 'order by' segment been constructed?  Flag to indicate not to build it more than once
+     * 
+     * @param type $status
+     * @return $this
+     */
+    public function orderBuilt($built=null) {
+        if ($built === null) {
+            return $this->_orderBuilt;
+        }
+        $this->_orderBuilt = $built;
+        return $this;
+    }
+    
+    /**
      *
      */
     private function implode_keys($char,$arr) {
@@ -875,7 +891,7 @@ SQL;
         if ($this->_dynamic()) {
             $query .= $this->engine()->buildWhereClause(true);
         }
-        if (!$this->_orderBuilt && (count($this->_orderBy)>0)) {
+        if (!$this->orderBuilt() && (count($this->orderBy())>0)) {
             $query .= $this->engine()->buildOrderByClause();
         }
         $noLimit      = [];
@@ -1691,8 +1707,7 @@ SQL;
         if ($field===false) {
             return $this->_orderBy;
         }
-        $fields = explode(",",$field);
-        foreach ($fields as $field) {
+        foreach (explode(",",$field) as $field) {
             $data       = explode('=',$field);
             $direction  = (isset($data[1])) ? $data[1] : ' ASC ';
             $this->_orderBy[$data[0]]   = $direction;

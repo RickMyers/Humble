@@ -167,7 +167,7 @@ class MySQL extends ORM implements ORMEngine  {
             }
         }
         if ($query) {
-            $this->unity()->_orderBuilt = true;
+            $this->unity()->orderBuilt(true);
         }
         return $query;
     }    
