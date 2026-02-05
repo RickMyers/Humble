@@ -91,5 +91,19 @@
         <start>
             <uri>/admin/db/home</uri>
         </start>
+    </app>      
+    <app>
+        <name>Access Log Explorer</name>
+        <description>Interrogate and review access logs </description>
+        <icon>
+            <text>Access Logs</text>
+            <image>
+                <desktop>/images/admin/access_log_app_icon.png</desktop>
+                <minimized>/images/admin/access_log_app_icon.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/admin/logs/home</uri>
+        </start>
     </app>       
 </apps>
