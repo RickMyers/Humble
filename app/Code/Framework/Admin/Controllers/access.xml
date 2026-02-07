@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+
+Access log actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="access" use="Twig" author="Myers Rick" email="rick@humbleprogramming.com">
+    <actions blocking="off" response="false">
+        
+        <action name="home" passalong="window_id">
+            <description>The main page</description>
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="list">
+            <description>Lists the log files in a directory</description>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="summarize">
+            <description>Summarizes an access log and presents the details</description>
+            <helper name="admin" class="log" id="log">
+                <parameter name="file" source="request" required="true" />
+            </helper>            
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="whois">
+            <description>Runs a "whois" on an IP address and presents the results</description>
+            <helper name="admin" class="log" method="whois" assign="results">
+                <parameter name="ip" source="request" required="true" />
+            </helper>
+        </action>
+    </actions>
+</controller>

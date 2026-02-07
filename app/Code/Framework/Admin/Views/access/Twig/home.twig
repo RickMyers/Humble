@@ -1,0 +1,29 @@
+<div style="padding-top: 5px">
+    <form name="access_log_analyzer-{{ window_id }}">
+        <input type="hidden" name="window_id" value="{{ window_id }}" />
+        <div style="width: 100%; white-space: nowrap">
+            <div id="dir_label-{{ window_id }}" style="padding-right: 5px; padding-left: 10px; text-align: right; display: inline-block; position: relative">
+                Directory
+            </div>
+            <div style="display: inline-block; position: relative; " id="dir_text-{{ window_id }}">
+                <input type="text" name="root_directory" style="width: 96%; background-color: lightcyan; border: 1px solid #333; color: #333; padding: 2px; border-radius: 2px" />
+            </div>
+        </div>
+        <hr style="margin-top: 6px"/>
+        
+    </form>
+</div>
+<div id="access_log_list-{{ window_id }}">
+</div>
+<script>
+    (() => {
+        let win = Desktop.window.list['{{ window_id }}'];
+        let f = ((win,win_id) => {
+            return function () {
+                $('#dir_text-'+win_id).width(win.content.width() - $('#dir_label-'+win_id).width());
+            }
+        })(win,'{{ window_id }}');
+        console.log(f);
+        win.resize(f);
+    })();
+</script>

@@ -103,7 +103,7 @@
             </image>
         </icon>
         <start>
-            <uri>/admin/logs/home</uri>
+            <uri>/admin/access/home</uri>
         </start>
     </app>       
 </apps>
