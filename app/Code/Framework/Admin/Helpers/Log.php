@@ -20,6 +20,9 @@ use Environment;
  */
 class Log extends Helper
 {
+    private $report = [
+        
+    ];
     private $logs   = array(
                     'error'     => '../../logs/&&NAMESPACE&&/error.log',
                     'warning'   => '../../logs/&&NAMESPACE&&/warning.log',
@@ -42,12 +45,16 @@ class Log extends Helper
         $this->logs['cadence']  = $config->log->location;
     }
 
+    /**
+     * 
+     */
     public function processLogs() {
         $user_id = $this->getUserId();
         foreach ($this->logs as $log => $location) {
             $this->logs[$log] = str_replace(['&&NAMESPACE&&','&&USERID&&'],[$this->project->namespace,$user_id],$location);
         }
     }
+    
     /**
      * Required for Helpers, Models, and Events, but not Entities
      *
@@ -149,4 +156,95 @@ class Log extends Helper
         return \Humble::entity('default/users')->usersById($logs);
     }
 
+    /**
+     * Couldn't get a proper regex for pregex_match so we are doing it the hard way
+     * 
+     * @param type $record
+     * @return type
+     */
+    private function parseAccessLogRecord($record=false) {
+        $rec    = [];
+        $tokens = [
+            'host'      => ' ',
+            'identity'  => ' ',
+            'userid'    => ' ',
+            'datetime'  => ']',
+            'stub1'     => '"',
+            'method'    => ' ',
+            'resource'  => '"',
+            'status'    => ' ',
+            'size'      => ' ',
+            'stub2'     => '"',
+            'something' => '"',
+            'stub3'     => '"',
+            'agent'     => '"'
+            
+        ];
+        foreach ($tokens as $field => $token) {
+            $pos         = strpos($record,$token);
+            $rec[$field] = str_replace($token,'',trim(substr($record,0,$pos).$token));
+            $record      = trim(substr($record,$pos+1));
+        }
+        return $rec;
+    }
+    
+    /**
+     * Just sets up the tracking record
+     * 
+     * @return array
+     */
+    private function initializeReportEntry() {
+        return [
+            'encounters'=> 0,
+            'resources' => [],
+            'transfered'=> 0,
+            'methods'   => [
+                
+            ],
+            'statuses'  => [
+                
+            ]
+        ];
+    }
+    
+    /**
+     * 
+     * 
+     * @param type $entry
+     */
+    protected function updateLogReport($entry) {
+        if (!isset($this->report[$host = $entry['host']])) {
+            $this->report[$host] = $this->initializeReportEntry();
+        }
+        $this->report[$host]['encounters']++;
+        $this->report[$host]['statuses'][$entry['status']]  = isset($this->report[$host]['statuses'][$entry['status']]) ? $this->report[$host]['statuses'][$entry['status']]+1 : 1;
+        $this->report[$host]['methods'][$entry['method']]   = isset($this->report[$host]['methods'][$entry['method']])  ? $this->report[$host]['methods'][$entry['method']]+1 : 1;
+        $this->report[$host]['resources'][$entry['resource']] = $entry['status'];
+        $this->report[$host]['transfered']                  += (int)$entry['size'];
+    }
+    
+    /**
+     * "%h %l %u %t \"%r\" %>s %b"
+     * 
+45.148.10.247 - - [09/Feb/2026:00:04:30 +0000] "GET /api/graphql HTTP/1.1" 404 1558 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
+     * @param type $file
+     */
+    public function summarize($file=false) {
+        if ($file = ($file) ? $file : $this->getFile()) {
+            $ctr=0;
+            if ($fp = fopen('access.log','rb')) {
+                $record = fgets($fp);
+                while (!feof($fp)){
+                    $record = str_replace(["\n","\t","\r"],["","",""],$record);
+                    if ($entry = $this->parseAccessLogRecord($record)) {
+                        $this->updateLogReport($entry);
+                    } 
+                    $record = fgets($fp);
+                }
+                fclose($fp);
+            }            
+        }
+        print_r($this->report);
+        return $this->report;
+    }
 }
