@@ -208,7 +208,7 @@ class Log extends Helper
     }
     
     /**
-     * 
+     * Summarizes an entry to the report
      * 
      * @param type $entry
      */
@@ -230,7 +230,7 @@ class Log extends Helper
      * @param type $file
      */
     public function summarize($file=false) {
-        if ($file = ($file) ? $file : $this->getFile()) {
+        if ($file = ($file) ? $file : $this->getLog()) {
             $ctr=0;
             if ($fp = fopen('access.log','rb')) {
                 $record = fgets($fp);
@@ -244,7 +244,38 @@ class Log extends Helper
                 fclose($fp);
             }            
         }
-        print_r($this->report);
         return $this->report;
+    }
+    
+    /**
+     * 
+            if ($dh = dir($dir)) {
+                while (($entry = $dh->read()) != false) {
+                    if (($entry == '.') || ($entry == '..')) {
+                        continue;
+                    }
+                    $t = $dir.'/'.$entry;
+                    if (!is_dir($t)) {
+                        print("Getting data for ".$t."\n");
+                        $results[$entry] = pathinfo($t);
+                        print("Done\n");
+                    }
+                }
+            } else {
+                print("No Dir\n");
+            }
+     * @param string $dir
+     * @return array
+     */    
+    public function list($dir=false) {
+        $files = [];
+           if ($dir = ($dir) ? $dir : $this->getDirectory()) {
+            foreach (json_decode(\Humble::helper('admin/file/explorer')->files($dir),true) as $result) {
+                if (!$result['directory']) {
+                    $files[] = $result;
+                }
+            }
+        }
+        return $files;
     }
 }

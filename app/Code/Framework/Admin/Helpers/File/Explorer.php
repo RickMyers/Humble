@@ -39,13 +39,17 @@ class Explorer extends \Code\Framework\Admin\Helpers\Helper
      * 
      * @return type
      */
-    public function files():string {
-        $files = [];
-        if ($path = $this->getPath()) {
+    public function files($path=false):string {
+        $files = []; $first=true;
+        if ($path = ($path) ? $path : $this->getPath()) {
             if (chdir($path)) {
                 foreach (explode("\n",`ls -l | awk '{print $1","$2","$3","$4","$5","$6","$7","$8","$9}'`) as $line) {
                     $parts   = explode(',',$line);
                     if (!isset($parts[7])) {
+                        continue;
+                    }
+                    if ($first) {
+                        $first = false;
                         continue;
                     }
                     $files[] = [

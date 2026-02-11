@@ -1,1 +1,49 @@
-
+<style type="text/css">
+    .access-cell-title {
+        font-size: .8em; letter-spacing: 2px; font-family: monospace;
+    }
+    .access-cell-data {
+        font-size: .95em; font-family: sans-serif; padding-left: 15px
+    }
+</style>
+{% for host,entry in log.summarize() %}
+    <div style="background-color: {{ cycle(['rgba(140,140,140,.1)', 'rgba(140,140,140,.3)'], loop.index0) }}; padding: 4px">
+        <div><div style="display: inline-block; width: 20%; whitespace: no-wrap">
+                <div class="access-cell-title">Host</div>
+                <div class="access-cell-data">{{ host }}</div>
+            </div><div
+                style="display: inline-block; width: 20%; whitespace: no-wrap">
+                <div class="access-cell-title">Encounters</div>
+                <div class="access-cell-data">{{ entry.encounters }}</div>
+            </div><div
+                style="display: inline-block; width: 20%; whitespace: no-wrap">
+                <div class="access-cell-title">Methods</div>
+                <div class="access-cell-data">
+                    {% for i in entry.methods|keys %}
+                        {{ i }}
+                    {% endfor %}
+                </div>
+            </div><div
+                style="display: inline-block; width: 20%; whitespace: no-wrap">
+                <div class="access-cell-title">Statuses</div>
+                <div class="access-cell-data">
+                    {% for i in entry.statuses|keys %}
+                        {{ i }}
+                    {% endfor %}
+                </div>
+            </div><div         
+                style="display: inline-block; width: 20%; whitespace: no-wrap">
+                <div class="access-cell-title">Transfered</div>
+                <div class="access-cell-data">{{ entry.transfered }}</div>
+            </div></div><div
+                style="display: inline-block; width: 100%; whitespace: no-wrap">
+                <div class="access-cell-title">Resources</div>
+                <div class="access-cell-data">
+                    {% for i,status in entry.resources %}
+                        {{ i }}[{{ status }}]
+                    {% endfor %}                    
+                </div>
+            </div></div>    
+ 
+{% endfor %}
+<h1>Done</h1>

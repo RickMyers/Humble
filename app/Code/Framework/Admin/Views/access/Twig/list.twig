@@ -1,1 +1,22 @@
-
+<div style="padding: 0px; margin: 0px">
+    <div style="display: inline-block; width: 20%; whitespace: no-wrap; font-weight: bold; border-bottom: 1px solid #333"> LOG </div><div
+    style="display: inline-block; width: 20%; whitespace: no-wrap; font-weight: bold; border-bottom: 1px solid #333"> PERMISSIONS </div><div
+    style="display: inline-block; width: 20%; whitespace: no-wrap; font-weight: bold; border-bottom: 1px solid #333"> File Size</div><div
+    style="display: inline-block; width: 20%; whitespace: no-wrap; font-weight: bold; border-bottom: 1px solid #333"> Modified</div><div
+    style="display: inline-block; width: 20%; whitespace: no-wrap; font-weight: bold; border-bottom: 1px solid #333"> &nbsp; </div>
+</div>
+{% for entry in directory.list() %}
+    <div style="background-color: {{ cycle(['rgba(140,140,140,.1)', 'rgba(140,140,140,.3)'], loop.index0) }}; padding: 4px">
+        <div style="display: inline-block; width: 20%; whitespace: no-wrap"><a class="log_file_summarize" href="#" entry="{{ entry.name }}" onclick="return false"><img src="/images/admin/summarize_log.png" style="height: 16px; display: inline-block; margin-left: 5px; cursor: pointer" /> {{ entry.name }}</a> </div>
+        <div style="display: inline-block; width: 20%; whitespace: no-wrap">{{ entry.permissions }}</div>
+        <div style="display: inline-block; width: 20%; whitespace: no-wrap">{{ entry.filesize }} </div>
+        <div style="display: inline-block; width: 20%; whitespace: no-wrap">{{ entry.modified }} </div>
+    </div>
+{% endfor %}
+<script>
+    $('.log_file_summarize').on('click',(evt) => {
+        (new EasyAjax('/admin/access/summarize')).add('directory',$($('form[name=access_log_analyzer-{{ window_id }}] input[name=root_directory]').get()[0]).val()).add('log',$(evt.target).attr('entry')).add('window_id','{{ window_id }}').then((response)=>{
+            $('#access_log_summary-{{ window_id }}').html(response);
+        }).post();
+    })    
+</script>

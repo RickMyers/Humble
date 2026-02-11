@@ -1,4 +1,4 @@
-<div style="padding-top: 5px">
+<div style="padding-top: 5px; position: relative" id="analyzer-{{ window_id }}">
     <form name="access_log_analyzer-{{ window_id }}" onsubmit="return false" nohref>
         <input type="hidden" name="window_id" value="{{ window_id }}" />
         <div style="width: 100%; white-space: nowrap; box-style: border-box">
@@ -8,32 +8,44 @@
             <div style="display: inline-block; position: relative; background-color: blue" id="dir_text-{{ window_id }}">
                 <input type="text" name="root_directory" style="width: 100%; background-color: lightcyan; border: 1px solid #333; color: #333; padding: 2px; border-radius: 2px" />
             </div>
-            <div style="display: inline-block; position: relative; background-color: red" id="dir_list-{{ window_id }}">
-                <button name="dir_list_submit"> List </button>
+            <div style="display: inline-block; position: relative" id="dir_list-{{ window_id }}">
+                <button name="dir_list_submit" style="width: 40px; background-color: #cecece; border: 1px solid #bbb; padding: 2px; border-radius: 2px"> List </button>
             </div>
         </div>
         <hr style="margin-top: 6px"/>
-        
+        <div style="padding-top: 10px" id="directory_list-{{ window_id }}">
+        </div>
     </form>
 </div>
-<div id="access_log_list-{{ window_id }}">
+<div id="access_log_list-{{ window_id }}" style="width: 49%; overflow: auto; display: inline-block">
+</div>
+<div id="access_log_summary-{{ window_id }}" style="width: 49%; overflow: auto; display: inline-block">
 </div>
 <script>
     (() => {
         let win = Desktop.window.list['{{ window_id }}'];
-        let f = ((win,win_id) => {
+        let f   = ((win,win_id) => {
             return function () {
                 $('#dir_text-'+win_id).width(win.content.width() - $('#dir_list-'+win_id).width() -$('#dir_label-'+win_id).width()-40);
+                console.log(win.content.height());
+                console.log(win.content.height() - $('#analyzer-'+win_id).height());
+                $('#access_log_summary-'+win_id).height(win.content.height() - $('#analyzer-'+win_id).height());
+                $('#access_log_list-'+win_id).height(win.content.height() - $('#analyzer-'+win_id).height());
             }
         })(win,'{{ window_id }}');
-        let ff = $('form[name=access_log_analyzer-{{ window_id }}]').get();
-        console.log(ff);
-        console.log(ff[0].elements);
-        for (var i in ff[0].elements) {
-            console.log(ff[0].elements[i]);
+        let dir = EasyAjax.getCookie('directory');
+        if (dir) {
+            $($('form[name=access_log_analyzer-{{ window_id }}] input[name=root_directory]').get()[0]).val(dir);
         }
-        //$('#access_log_analyzer-'+win_id+':name=dir_list_submit').on('click',(evt) => {
-        //});
+        $($('form[name=access_log_analyzer-{{ window_id }}] button[name=dir_list_submit]').get()[0]).on('click',function (evt) {
+            let dir = $($('form[name=access_log_analyzer-{{ window_id }}] input[name=root_directory]').get()[0]).val();
+            if (dir) {
+                EasyAjax.setCookie('directory',dir);
+                (new EasyAjax('/admin/access/list')).add('directory',dir).add('window_id','{{ window_id }}').then((response) => {
+                    $('#access_log_list-{{ window_id }}').html(response);
+                }).post();
+            }
+        });
         win.resize(f);
     })();
 </script>

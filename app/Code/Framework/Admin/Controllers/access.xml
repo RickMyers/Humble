@@ -14,16 +14,20 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
-        <action name="list">
+        <action name="list" passalong="window_id">
             <description>Lists the log files in a directory</description>
+            <helper namespace="admin" class="log" id="directory">
+                <parameter name="directory" source="request" required="true" />
+            </helper>
         </action>
 
         <!-- ############################################################### -->
         
-        <action name="summarize">
+        <action name="summarize" passalong="window_id">
             <description>Summarizes an access log and presents the details</description>
-            <helper name="admin" class="log" id="log">
-                <parameter name="file" source="request" required="true" />
+            <helper namespace="admin" class="log" id="log">
+                <parameter name="directory" source="request" required="true" />
+                <parameter name="log" source="request" required="true" />
             </helper>            
         </action>
         
@@ -31,7 +35,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="whois">
             <description>Runs a "whois" on an IP address and presents the results</description>
-            <helper name="admin" class="log" method="whois" assign="results">
+            <helper namespace="admin" class="log" method="whois" assign="results">
                 <parameter name="ip" source="request" required="true" />
             </helper>
         </action>
