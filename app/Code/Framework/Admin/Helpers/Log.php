@@ -251,7 +251,8 @@ class Log extends Helper
     public function summarize($file=false) {
         if ($file = ($file) ? $file : $this->getLog()) {
             $ctr=0;
-            if ($fp = fopen('access.log','rb')) {
+            $dir = $this->getDirectory();
+            if ($fp = fopen($dir.'/'.$file,'rb')) {
                 $record = fgets($fp);
                 while (!feof($fp)){
                     $record = str_replace(["\n","\t","\r"],["","",""],$record);
