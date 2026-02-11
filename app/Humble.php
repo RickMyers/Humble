@@ -306,7 +306,6 @@
             }  else {
                // \Log::general($identifier);
             }
-            
             return self::$helpers[$resource_identifier] = $instance;
         }
 

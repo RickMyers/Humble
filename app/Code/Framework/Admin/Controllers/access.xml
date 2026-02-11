@@ -33,11 +33,12 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <!-- ############################################################### -->
         
-        <action name="whois">
+        <action name="whois" passalong="window_id">
             <description>Runs a "whois" on an IP address and presents the results</description>
-            <helper namespace="admin" class="log" method="whois" assign="results">
-                <parameter name="ip" source="request" required="true" />
+            <helper namespace="admin" class="log" id="log">
+                <parameter name="host" source="request" required="true" />
             </helper>
         </action>
+        
     </actions>
 </controller>
