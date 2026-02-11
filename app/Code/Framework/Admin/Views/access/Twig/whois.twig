@@ -1,1 +1,37 @@
+<style type="text/css">
+</style>
+<div id="whois_controls-{{ window_id }}" style="padding: 5px 2px">
+    <button class="whois-action-button perma-ban"> Perma Ban </button>
+    <button class="whois-action-button 7-day-ban"> 7 Day Ban </button>    
+</div>
+<textarea name="whois_output" id="whois_output-{{ window_id }}" style="width: 100%; box-style: border-box; background-color: lightcyan; font-family: monospace; padding: 2px; border: 1px solid #333; border-radius: 2px" >
+{{ log.whois() }}
+</textarea>
+<script>
+    (()=>{
+        let win = Desktop.window.list['{{ window_id }}'];
+        let host = '{{ log.getHost() }}';
+        let f = ((win) => {
+            return () => {
+                $('#whois_output-'+win.id).height(win.content.height() - $('#whois_controls-'+win.id).height()-20);
+            }
+        })(win)
+        win.resize(f)._resize();
+        $('.perma-ban').on('click',() => {
+            if (confirm('Permanently Ban This Host ['+host+']?')) {
+                (new EasyAjax('/admin/access/permaban')).add('host',host).then((response) => {
+                    alert(response);
+                }).post();
+            }
+        });
+        $('.perma-ban').on('click',() => {
+            if (confirm('Ban This Host For 7 Days ['+host+']?')) {
+                (new EasyAjax('/admin/access/tempban')).add('host',host).then((response) => {
+                    alert(response);
+                }).post();                
+            }
+        });
+    })();
+</script>
 
+    

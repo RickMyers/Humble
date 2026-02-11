@@ -27,8 +27,6 @@
         let f   = ((win,win_id) => {
             return function () {
                 $('#dir_text-'+win_id).width(win.content.width() - $('#dir_list-'+win_id).width() -$('#dir_label-'+win_id).width()-40);
-                console.log(win.content.height());
-                console.log(win.content.height() - $('#analyzer-'+win_id).height());
                 $('#access_log_summary-'+win_id).height(win.content.height() - $('#analyzer-'+win_id).height());
                 $('#access_log_list-'+win_id).height(win.content.height() - $('#analyzer-'+win_id).height());
             }

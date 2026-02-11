@@ -224,6 +224,25 @@ class Log extends Helper
     }
     
     /**
+     * Summarizes some report stats
+     * 
+     * @param array $report
+     * @return array
+     */
+    protected function summarizeTheSummaryReport(&$report=[]) {
+        $encounters = 0;
+        $resources  = 0;
+        $transfered = 0;
+        foreach ($report as $host => $entry) {
+            $encounters += $entry['encounters'];
+            $resources  += count($entry['resources']);
+            $transfered += $entry['transfered'];
+        }
+        $this->setEncounters($encounters)->setResources($resources)->setTransfered($transfered);
+        return $report;
+    }
+    
+    /**
      * "%h %l %u %t \"%r\" %>s %b"
      * 
 45.148.10.247 - - [09/Feb/2026:00:04:30 +0000] "GET /api/graphql HTTP/1.1" 404 1558 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
@@ -244,26 +263,12 @@ class Log extends Helper
                 fclose($fp);
             }            
         }
-        return $this->report;
+        return $this->summarizeTheSummaryReport($this->report);
     }
     
     /**
+     * List logs in a particular directory
      * 
-            if ($dh = dir($dir)) {
-                while (($entry = $dh->read()) != false) {
-                    if (($entry == '.') || ($entry == '..')) {
-                        continue;
-                    }
-                    $t = $dir.'/'.$entry;
-                    if (!is_dir($t)) {
-                        print("Getting data for ".$t."\n");
-                        $results[$entry] = pathinfo($t);
-                        print("Done\n");
-                    }
-                }
-            } else {
-                print("No Dir\n");
-            }
      * @param string $dir
      * @return array
      */    
@@ -277,5 +282,13 @@ class Log extends Helper
             }
         }
         return $files;
+    }
+    
+    public function whois($host=false) {
+        $result = '';
+        if ($host = ($host) ? $host : $this->getHost()) {
+            $result = shell_exec('whois '.$host);
+        }
+        return $result;
     }
 }

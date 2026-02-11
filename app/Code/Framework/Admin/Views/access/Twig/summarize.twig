@@ -5,12 +5,22 @@
     .access-cell-data {
         font-size: .95em; font-family: sans-serif; padding-left: 15px
     }
+    .host-summarize-field {
+        cursor: pointer; color: blue; font-weight: bolder
+    }
 </style>
+<div style="font-weight: bold; font-size: 1.4em">{{ log.getLog() }} </div>
+<div style="font-family: monospace; letter-spacing: 2px">
+      Encounters: {{ log.getEncounters() }} -  Resources: {{ log.getResources() }} - Transfered: {{ log.getTransfered() }}
+      {% for i in log.fetch() %}
+          {{ i }}
+      {% endfor %}
+</div>
 {% for host,entry in log.summarize() %}
     <div style="background-color: {{ cycle(['rgba(140,140,140,.1)', 'rgba(140,140,140,.3)'], loop.index0) }}; padding: 4px">
         <div><div style="display: inline-block; width: 20%; whitespace: no-wrap">
                 <div class="access-cell-title">Host</div>
-                <div class="access-cell-data">{{ host }}</div>
+                <div class="access-cell-data host-summarize-field" host="{{ host }}">{{ host }}</div>
             </div><div
                 style="display: inline-block; width: 20%; whitespace: no-wrap">
                 <div class="access-cell-title">Encounters</div>
@@ -44,6 +54,14 @@
                     {% endfor %}                    
                 </div>
             </div></div>    
- 
 {% endfor %}
-<h1>Done</h1>
+<script>
+    $('.host-summarize-field').on('click',(evt)=>{
+       let win  = Desktop.semaphore.checkout(true);
+       let host = $(evt.target).attr('host');
+       win._title(host+' Whois')._open();
+       (new EasyAjax('/admin/access/whois')).add('window_id',win.id).add('host',host).then((response) => {
+           win.set(response);
+       }).post();
+    });
+</script>
