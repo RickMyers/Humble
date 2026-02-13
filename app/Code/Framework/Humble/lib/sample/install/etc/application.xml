@@ -17,7 +17,12 @@
         <DEVELOPMENT order="1" />
         <TEST        order="2" />
         <PRODUCTION  order="3" />
-    </stages>    
+    </stages>  
+    <proxy comment="Port at which the command proxy (running with root permission) is running to execute a few whitelisted commands">
+        <host default="127.0.0.1">0.0.0.0</host>
+        <util options="ufw,iptables,firewalld"></util>        
+        <port>0</port>
+    </proxy>  
     <msa>
         <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application (NOT FULLY IMPLEMENTED!)-->
         <strategy>

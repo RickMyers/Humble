@@ -40,5 +40,32 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             </helper>
         </action>
         
+        <!-- ############################################################### -->
+        
+        <action name="whoishost" passalong="window_id">
+            <description>Runs a "whois" on an IP address and presents the results</description>
+            <helper namespace="admin" class="log" id="log">
+                <parameter name="host" source="request" required="true" />
+            </helper>
+        </action>        
+        
+        <!-- ############################################################### -->
+        
+        <action name="permaban" response="true">
+            <description>Will permanently ban a host IP</description>
+            <helper namespace="admin" class="log" method="permaban">
+                <parameter name="host" source="post" required="true" />
+            </helper>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="7dayban" response="true">
+            <description>Will permanently ban a host IP</description>
+            <helper namespace="admin" class="log" method="sevendayban">
+                <parameter name="host" source="post" required="true" />
+            </helper>
+        </action>
+                
     </actions>
 </controller>

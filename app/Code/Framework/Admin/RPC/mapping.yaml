@@ -27,4 +27,12 @@ socketStatus:
     blocking        : off
     arguments       : 
     method          : POST  
+whoisHost:
+    url             : /admin/access/whoishost
+    blocking        : off
+    arguments       : host
+    method          : GET
+    cache           :
+      expires       : 0
+      engine        : REDIS
     

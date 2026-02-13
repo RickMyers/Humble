@@ -14,6 +14,11 @@
         <PRODUCTION order="5"/>        
         <TEST order="2"/>
     </stages>
+    <proxy>
+        <host>127.0.0.1</host>
+        <util options="ufw,iptables,firewalld">ufw</util>
+        <port>16016</port>
+    </proxy>
     <msa>
         <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application -->
         <strategy>
