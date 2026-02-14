@@ -26,41 +26,88 @@ require_once 'Environment.php';
            Use of this program in the above way is not required but
            is recommended to get full framework functionality
  */
+function initializeSocket() {
+    global $socket, $proxy;
+    $socket = socket_create(AF_INET, SOCK_STREAM, 0);
+    socket_bind($socket, $proxy->host, $proxy->port);
+}
+/* ----------------------------------------------------------------------------- */
+function finalizeSocket() {
+    global $client, $socket;
+    socket_close($client);
+    socket_close($socket);      
+}
+/* ----------------------------------------------------------------------------- */
+function killTask($pid=0) {
+    $result = '';
+    if ($pid) {
+       $result = shell_exec('kill '.$pid);
+    }
+    return $result;     
+}
+/* ----------------------------------------------------------------------------- */
+function saveFile($filename=false,$data='') {
+    $result = 'File Not Saved';
+    if ($filename && is_file($filename)) {
+       $result = (file_put_contents($filename,$data)) ? 'File Saved' : 'Error';
+    }
+    return $result;   
+}
+/* ----------------------------------------------------------------------------- */
+function banHost($host=false,$util=false) {
+    $result = '';
+    if ($host && $util) {
+        switch ($util) {
+            case 'ufw'  :
+                $result = shell_exec('');
+                break;
+            case ''     :
+                $result = shell_exec('');
+                break;
+            case ''     :
+                $result = shell_exec('');
+                break;
+            default     :
+                break;
+        }
+    }
+    return $result;
+}
+/* ----------------------------------------------------------------------------- */
 Main:
-    $proxy = Environment::application('proxy');
+    $proxy  = Environment::application('proxy');
     if (!$proxy->port) {
         die("\nCommand Proxy is not configured\n");
     }
-    $port  = $proxy->port;
-    $host  = $proxy->host;
-    $util  = $proxy->util;
+    Environment::storePID('proxy.pid');    
+    $socket = null;
+    $client = null;
+   
+    while (true) {
+        initializeSocket();        
+        socket_listen($socket);
+        $client = socket_accept($socket);
+        $data   = json_decode(socket_read($client, 1024),true);
+        if (isset($data['command'])) {
+            switch ($data['command']) {
+                case 'kill' : 
+                    $result = killTask($data['PID']);
+                    break;
+                case 'save' :
+                    $result = saveFile($data['filename'],$data['data']);
+                    break;
+                case 'ban' :
+                    $result = banHost($data['host'],$data['util']);
+                    break;
+                default :
+                    break;
+                    
+            }
+        }
+        finalizeSocket();
+    }
+    Environment::removePID('proxy.pid');
+
+ 
     
-    print($host.', '.$port.', '.$util."\n");
-
-    print("Creating...\n");
-    // Fabricate a new socket
-    $socket = socket_create(AF_INET, SOCK_STREAM, 0);
-
-    print("Binding...\n");
-    // Deploy the socket to a specific address and port
-    socket_bind($socket, $host, $port);
-
-    print("Listening...\n");
-    // Standby for incoming connections
-    socket_listen($socket);
-
-    print("Incoming Connection...\n");
-    // Embrace an incoming connection
-    $client = socket_accept($socket);
-
-    print("Reading Data...\n");
-    // Digest data from the connected client
-    $data = socket_read($client, 1024);
-
-    print("Writing Response...\n");
-    // Respond to the client
-    socket_write($client, 'Server: ' . $data);
-
-    // Seal the connection
-    socket_close($client);
-    socket_close($socket);    
+    

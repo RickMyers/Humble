@@ -22,6 +22,8 @@ class Environment {
     private static $status      = false;
     private static $application = false;
     private static $project     = false;
+    private static $socket      = false;
+    private static $client      = false;
 
     /**
      * Constructor
@@ -48,6 +50,76 @@ class Environment {
         return (isset($_SESSION['uid']) ? $_SESSION['uid'] : false);
     }
 
+    /**
+     * Stores the PID in a file in the PIDs directory
+     * 
+     * @param string $file
+     * @return int
+     */
+    public static function storePID($file=false) {
+        $pid = -1;
+        if ($file) {
+            file_put_contents('PIDS/'.str_replace('.pid','',$file).'.pid',$pid = getmypid());
+        };
+        return $pid;
+    }
+    
+    /**
+     * Removes the file that contains a recorded process IDs
+     * 
+     * @param string $file
+     * @return bool
+     */
+    public static function removePID($file=false) {
+        $result = false;
+        $PIDFile = 'PIDS/'.str_replace('.pid','',$file).'.pid';
+        if (file_exists($PIDFile)) {
+            $result = @unlink($PIDFile);
+        }
+        return $result;
+    }
+        
+    /**
+     * Connects to the Command Proxy (running at root level) to do an elevated task
+     * 
+     * @param type $data
+     * @return type
+     */
+    public static function killTask($pid = 0) {
+        $result = 'Error';
+        if (($proxy = self::application('proxy')) && $proxy->port && $pid) {            
+            self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+            socket_bind(self::$socket, $proxy->host, $proxy->port);        
+            socket_listen(self::socket);
+            self::$client = socket_accept(self::$socket);
+            socket_write(self::$client,json_encode(['command' => 'kill', 'PID' => $pid]));
+            $result = socket_read(self::$client,1024);
+            socket_close(self::$client);
+            socket_close(self::$socket);
+        }
+        return $result;
+    }
+    
+    /**
+     * Saves off a file, this is meant to be called from the Command Proxy running as root
+     * 
+     * @param type $data
+     * @return type
+     */
+    public static function saveFile($filename='',$source='') {
+        $result = 'Error';
+        if (($proxy = self::application('proxy')) && $proxy->port && $filename) {           
+            self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+            socket_bind(self::$socket, $proxy->host, $proxy->port);        
+            socket_listen(self::socket);
+            self::$client = socket_accept(self::$socket);
+            socket_write(self::$client,json_encode(['command' => 'save', 'filename' => $filename, 'data' => $source]));
+            $result = socket_read(self::$client,1024);
+            socket_close(self::$client);
+            socket_close(self::$socket);
+    }
+    
+    
     /**
      * Try to get the public facing route list from cache, but fall back to reading from file if not found in cache
      * 
