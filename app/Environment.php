@@ -89,17 +89,30 @@ class Environment {
         $result = 'Error';
         if (($proxy = self::application('proxy')) && $proxy->port && $pid) {            
             self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
-            socket_bind(self::$socket, $proxy->host, $proxy->port);        
-            socket_listen(self::socket);
-            self::$client = socket_accept(self::$socket);
-            socket_write(self::$client,json_encode(['command' => 'kill', 'PID' => $pid]));
-            $result = socket_read(self::$client,1024);
-            socket_close(self::$client);
+     //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
+            socket_connect(self::$socket,$proxy->host,$proxy->port);
+            socket_write(self::$socket,json_encode(['command' => 'kill', 'PID' => $pid]));
+            $result = socket_read(self::$socket,1024);
             socket_close(self::$socket);
         }
         return $result;
     }
     
+    /**
+     * Passes the command proxy the command to shut down
+     * 
+     * @return bool
+     */
+    public static function stopCommandProxy() {
+        if (($proxy = self::application('proxy')) && $proxy->port) {            
+            self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+     //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
+            socket_connect(self::$socket,$proxy->host,$proxy->port);
+            socket_write(self::$socket,json_encode(['command' => 'end']));
+            socket_close(self::$socket);
+        }
+        return true;
+    }    
     /**
      * Saves off a file, this is meant to be called from the Command Proxy running as root
      * 
@@ -117,6 +130,7 @@ class Environment {
             $result = socket_read(self::$client,1024);
             socket_close(self::$client);
             socket_close(self::$socket);
+        }
     }
     
     

@@ -82,9 +82,9 @@ Main:
     Environment::storePID('proxy.pid');    
     $socket = null;
     $client = null;
-   
-    while (true) {
-        initializeSocket();        
+    $run    = true;
+   initializeSocket(); 
+    while ($run) {
         socket_listen($socket);
         $client = socket_accept($socket);
         $data   = json_decode(socket_read($client, 1024),true);
@@ -92,6 +92,8 @@ Main:
             switch ($data['command']) {
                 case 'kill' : 
                     $result = killTask($data['PID']);
+                    socket_write($client,$result);
+                    socket_close($client);
                     break;
                 case 'save' :
                     $result = saveFile($data['filename'],$data['data']);
@@ -99,13 +101,19 @@ Main:
                 case 'ban' :
                     $result = banHost($data['host'],$data['util']);
                     break;
+                case 'end' :
+                case 'stop':
+                case 'terminate':
+                case 'shutdown' :
+                    $run = false;
+                    break;
                 default :
                     break;
                     
             }
         }
-        finalizeSocket();
     }
+    finalizeSocket();
     Environment::removePID('proxy.pid');
 
  
