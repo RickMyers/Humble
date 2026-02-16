@@ -147,20 +147,6 @@ class Model implements HumbleComponent
     }
 
     /**
-     * Can set the Initialization Vector for SSL encryption/decryption or just return the current value for that vector
-     * 
-     * @param mixed $vector
-     * @return string
-     */
-    public function iv($vector=false) {
-        if ($vector) {
-            $this->_iv = $vector;
-            return $this;
-        }
-        return $this->_iv;
-    }
-    
-    /**
      * For use with template substitution
      * 
      * @param string $text

@@ -78,7 +78,11 @@ class Environment {
         }
         return $result;
     }
-        
+
+    public static function securityToken() {
+        return Humble::helper('humble/tool')->encrypt(true)->setToken(self::application('serial_number'))->getToken();
+    }
+    
     /**
      * Connects to the Command Proxy (running at root level) to do an elevated task
      * 
@@ -91,7 +95,7 @@ class Environment {
             self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
      //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
             socket_connect(self::$socket,$proxy->host,$proxy->port);
-            socket_write(self::$socket,json_encode(['command' => 'kill', 'PID' => $pid]));
+            socket_write(self::$socket,json_encode(['command' => 'kill','token'=>self::securityToken(), 'PID' => $pid]));
             $result = socket_read(self::$socket,1024);
             socket_close(self::$socket);
         }
@@ -108,7 +112,7 @@ class Environment {
             self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
      //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
             socket_connect(self::$socket,$proxy->host,$proxy->port);
-            socket_write(self::$socket,json_encode(['command' => 'end']));
+            socket_write(self::$socket,json_encode(['command' => 'end','token'=>self::securityToken()]));
             socket_close(self::$socket);
         }
         return true;
@@ -126,7 +130,7 @@ class Environment {
             socket_bind(self::$socket, $proxy->host, $proxy->port);        
             socket_listen(self::socket);
             self::$client = socket_accept(self::$socket);
-            socket_write(self::$client,json_encode(['command' => 'save', 'filename' => $filename, 'data' => $source]));
+            socket_write(self::$client,json_encode(['command' => 'save','token'=>self::securityToken(), 'filename' => $filename, 'data' => $source]));
             $result = socket_read(self::$client,1024);
             socket_close(self::$client);
             socket_close(self::$socket);

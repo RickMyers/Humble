@@ -89,27 +89,35 @@ Main:
         $client = socket_accept($socket);
         $data   = json_decode(socket_read($client, 1024),true);
         if (isset($data['command'])) {
-            switch ($data['command']) {
-                case 'kill' : 
-                    $result = killTask($data['PID']);
-                    socket_write($client,$result);
-                    socket_close($client);
-                    break;
-                case 'save' :
-                    $result = saveFile($data['filename'],$data['data']);
-                    break;
-                case 'ban' :
-                    $result = banHost($data['host'],$data['util']);
-                    break;
-                case 'end' :
-                case 'stop':
-                case 'terminate':
-                case 'shutdown' :
-                    $run = false;
-                    break;
-                default :
-                    break;
-                    
+            if (isset($data['token'])) {
+                if ($data['token'] === \Environment::securityToken()) {
+                    switch ($data['command']) {
+                        case 'kill' : 
+                            $result = killTask($data['PID']);
+                            socket_write($client,$result);
+                            socket_close($client);
+                            break;
+                        case 'save' :
+                            $result = saveFile($data['filename'],$data['data']);
+                            break;
+                        case 'ban' :
+                            $result = banHost($data['host'],$data['util']);
+                            break;
+                        case 'end' :
+                        case 'stop':
+                        case 'terminate':
+                        case 'shutdown' :
+                            $run = false;
+                            break;
+                        default :
+                            break;
+
+                    }
+                } else {
+                    print("Invalid Security Token\n");
+                }
+            } else {
+                print("Unsecured Operations Are Not Permitted\n");
             }
         }
     }

@@ -8,10 +8,11 @@ trait Base {
     protected $_namespace   = false;
     protected $_timestamp   = false;
     protected $_isVirtual   = false;
-    protected $_isWindows     = false;
-    protected $_isLinux       = false;
-    protected $_decrypt       = false;
-    protected $_encrypt       = false;   
+    protected $_isWindows   = false;
+    protected $_isLinux     = false;
+    protected $_decrypt     = false;
+    protected $_encrypt     = false;   
+    protected $_iv          = 'Humble Framework';                             //encryption initialization vector      
     
     function underscoreToCamelCase( $string, $first_char_caps = false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
@@ -85,6 +86,19 @@ trait Base {
         return $this;
     }
     
+    /**
+     * Can set the Initialization Vector for SSL encryption/decryption or just return the current value for that vector
+     * 
+     * @param mixed $vector
+     * @return string
+     */
+    public function iv($vector=false) {
+        if ($vector) {
+            $this->_iv = $vector;
+            return $this;
+        }
+        return $this->_iv;
+    }
     
     /**
      * Returns a timestamp.  If the timestamp isn't set yet, it sets and stores it.
