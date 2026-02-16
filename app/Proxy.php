@@ -38,33 +38,36 @@ function finalizeSocket() {
     socket_close($socket);      
 }
 /* ----------------------------------------------------------------------------- */
-function killTask($pid=0) {
+function killTask($data=[]) {
     $result = '';
-    if ($pid) {
+    if ($pid = isset($data['PID']) ? $data['PID'] : false) {
        $result = shell_exec('kill '.$pid);
     }
     return $result;     
 }
 /* ----------------------------------------------------------------------------- */
-function saveFile($filename=false,$data='') {
+function saveFile($data=[]) {
     $result = 'File Not Saved';
+    $filename = isset($data['filename']) ? $data['filename'] : false;
     if ($filename && is_file($filename)) {
-       $result = (file_put_contents($filename,$data)) ? 'File Saved' : 'Error';
+       $result = (file_put_contents($filename,$data['source'])) ? 'File Saved' : 'Error';
     }
     return $result;   
 }
 /* ----------------------------------------------------------------------------- */
-function banHost($host=false,$util=false) {
+function banHost($host=false) {
     $result = '';
+    $host   = isset($data['host']) ? $data['host'] : false;
+    $util   = isset($data['util']) ? $data['util'] : 'ufw';
     if ($host && $util) {
         switch ($util) {
             case 'ufw'  :
                 $result = shell_exec('');
                 break;
-            case ''     :
+            case 'iptables'     :
                 $result = shell_exec('');
                 break;
-            case ''     :
+            case 'firewalld'     :
                 $result = shell_exec('');
                 break;
             default     :
@@ -74,11 +77,57 @@ function banHost($host=false,$util=false) {
     return $result;
 }
 /* ----------------------------------------------------------------------------- */
+function endProxy($data=[]) {
+    global $run;
+    $run = false;
+    return false;
+}
+/* ----------------------------------------------------------------------------- */
+function setupOperations() {
+    return [
+        'kill' => [
+            'help' => '',
+            'handler' => 'killTask',
+            'response' => true,
+            'arguments' => [
+                'PID' => 'Integer process ID'
+            ]
+        ],
+        'save' => [
+            'help' => 'An elevated (root) level service to save data over an existing file.  Useful for saving files not on the web root',
+            'handler' => 'saveFile',
+            'response' => false,
+            'arguments' => [
+                'filename' => 'Full path inluding name of file',
+                'source' => 'Data to overwrite the file'
+            ]
+        ],
+        'ban' => [
+            'help' => 'Permanently ban a host (IP Address)',
+            'handler' => 'banHost',
+            'response' => true,
+            'arguments' => [
+                'host' => 'IP Address to ban'
+            ]
+        ],
+        'end' => [
+            'help' => 'Quiesces the Command Proxy',
+            'handler' => 'endProxy',
+            'response' => false,
+            'arguments' => [
+                
+            ]
+        ]
+    ];
+}
+/* ----------------------------------------------------------------------------- */
 Main:
+    $operations = [];
     $proxy  = Environment::application('proxy');
     if (!$proxy->port) {
         die("\nCommand Proxy is not configured\n");
     }
+    $operations = setupOperations();
     Environment::storePID('proxy.pid');    
     $socket = null;
     $client = null;
@@ -91,6 +140,29 @@ Main:
         if (isset($data['command'])) {
             if (isset($data['token'])) {
                 if ($data['token'] === \Environment::securityToken()) {
+                    if (isset($operations[$data['command']])) {
+                        $method = $operations[$data['command']]['handler'];
+                        $result = $method($data);
+                        if ($operations[$data['command']]['response']) {
+                            socket_write($client,$result);
+                            socket_close($client);                            
+                        }
+                    } else {
+                        print($data['command']." is not supported\n");
+                    }
+                } else {
+                    print("Invalid Security Token\n");
+                }
+            } else {
+                print("Unsecured Operations Are Not Permitted\n");
+            }
+        }
+    }
+    finalizeSocket();
+    Environment::removePID('proxy.pid');
+    
+    
+    /*
                     switch ($data['command']) {
                         case 'kill' : 
                             $result = killTask($data['PID']);
@@ -113,16 +185,8 @@ Main:
                             break;
 
                     }
-                } else {
-                    print("Invalid Security Token\n");
-                }
-            } else {
-                print("Unsecured Operations Are Not Permitted\n");
-            }
-        }
-    }
-    finalizeSocket();
-    Environment::removePID('proxy.pid');
+
+     */
 
  
     
