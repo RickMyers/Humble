@@ -62,13 +62,15 @@ function banHost($host=false) {
     if ($host && $util) {
         switch ($util) {
             case 'ufw'  :
-                $result = shell_exec('');
+                $result = shell_exec('ufw deny from xxx.xxx.xxx.xxx to any');
                 break;
             case 'iptables'     :
-                $result = shell_exec('');
+                $result = shell_exec('iptables -I INPUT -s xxx.xxx.xxx.xxx -j DROP');
+                shell_exec("service iptables save");
                 break;
             case 'firewalld'     :
-                $result = shell_exec('');
+                $result = shell_exec("firewall-cmd --permanent --add-rich-rule=\"rule family='ipv4' source address='xxx.xxx.xxx.xxx' reject\"");
+                shell_exec("firewall-cmd --reload");
                 break;
             default     :
                 break;
@@ -79,41 +81,40 @@ function banHost($host=false) {
 /* ----------------------------------------------------------------------------- */
 function endProxy($data=[]) {
     global $run;
-    $run = false;
-    return false;
+    return $run = false;
 }
 /* ----------------------------------------------------------------------------- */
 function setupOperations() {
     return [
         'kill' => [
-            'help' => '',
-            'handler' => 'killTask',
-            'response' => true,
+            'help'      => 'Terminate a process running in the background',
+            'handler'   => 'killTask',
+            'response'  => true,
             'arguments' => [
-                'PID' => 'Integer process ID'
+                'PID'   => 'Integer process ID'
             ]
         ],
         'save' => [
-            'help' => 'An elevated (root) level service to save data over an existing file.  Useful for saving files not on the web root',
-            'handler' => 'saveFile',
-            'response' => false,
+            'help'      => 'An elevated (root) level service to save data over an existing file.  Useful for saving files not on the web root',
+            'handler'   => 'saveFile',
+            'response'  => false,
             'arguments' => [
-                'filename' => 'Full path inluding name of file',
-                'source' => 'Data to overwrite the file'
+                'filename'  => 'Full path inluding name of file',
+                'source'    => 'Data to overwrite the file'
             ]
         ],
         'ban' => [
-            'help' => 'Permanently ban a host (IP Address)',
-            'handler' => 'banHost',
-            'response' => true,
+            'help'      => 'Permanently ban a host (IP Address)',
+            'handler'   => 'banHost',
+            'response'  => true,
             'arguments' => [
-                'host' => 'IP Address to ban'
+                'host'  => 'IP Address to ban'
             ]
         ],
         'end' => [
-            'help' => 'Quiesces the Command Proxy',
-            'handler' => 'endProxy',
-            'response' => false,
+            'help'      => 'Quiesces the Command Proxy',
+            'handler'   => 'endProxy',
+            'response'  => false,
             'arguments' => [
                 
             ]
@@ -121,18 +122,24 @@ function setupOperations() {
     ];
 }
 /* ----------------------------------------------------------------------------- */
+function showHelp() {
+    global $operations;
+}
+/* ----------------------------------------------------------------------------- */
 Main:
-    $operations = [];
     $proxy  = Environment::application('proxy');
     if (!$proxy->port) {
         die("\nCommand Proxy is not configured\n");
     }
     $operations = setupOperations();
+    if (count($argv)>1) {
+        showHelp();
+    }    
     Environment::storePID('proxy.pid');    
     $socket = null;
     $client = null;
     $run    = true;
-   initializeSocket(); 
+    initializeSocket(); 
     while ($run) {
         socket_listen($socket);
         $client = socket_accept($socket);
@@ -158,6 +165,7 @@ Main:
             }
         }
     }
+End:
     finalizeSocket();
     Environment::removePID('proxy.pid');
     

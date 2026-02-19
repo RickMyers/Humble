@@ -80,6 +80,9 @@ function aggregateModuleCommands() {
     }
     return $available_commands;
 }
+//--------------------------------------------------------------------------
+// Returns the actual path for a module identified by the namespace
+//--------------------------------------------------------------------------
 function modulePath($namespace=false) {
     $path = '';
     if ($module = \Humble::entity('humble/modules')->setNamespace(strtolower($namespace))->load(true)) {
