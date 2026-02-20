@@ -79,6 +79,11 @@ class Environment {
         return $result;
     }
 
+    /**
+     * A security verification mechanism used from the Command Proxy... basic, but it works
+     * 
+     * @return string
+     */
     public static function securityToken() {
         return Humble::helper('humble/tool')->encrypt(true)->setToken(self::application('serial_number'))->getToken();
     }

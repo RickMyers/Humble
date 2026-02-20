@@ -1,7 +1,7 @@
 /*  --------------------------------------------------------------------
  *  The debug and test console controls are here
  *  --------------------------------------------------------------------*/
-Paradigm.console = (function () {
+Paradigm.console = (() => {
     let console_app     = false;
     let commands        = [];
     let messages        = [];
@@ -16,6 +16,7 @@ Paradigm.console = (function () {
     let console_cmd     = false;
     let console_element = false;
     let console_test    = false;
+    let speed           = 8;
     function updateResponse(response) {
         return ((console_command) ? console_command+'\n' : '')+response;
     }
@@ -126,7 +127,7 @@ Paradigm.console = (function () {
                     break;
                 case 13     :   
                     console_command = commands[commands.length] = $(console_input).val();
-                    console.log($(console_input).val());
+ //                   console.log($(console_input).val());
                     Paradigm.console.process($(console_input).val());
                     console_input.value = '';
                     console_input.focus();                    
@@ -251,6 +252,9 @@ Paradigm.console = (function () {
                     Paradigm.console.service.arguments[text.substr(0,sep)]=text.substr(sep+1);
                     Paradigm.console.reply('v=['+text.substr(0,sep)+'='+text.substr(sep+1)+']','',1);
                     break;
+                case "speed"        :
+                    speed = text;
+                    break;
                 case "show"         :  
                     switch (text.toLowerCase()) {
                         case "target"   :
@@ -372,13 +376,13 @@ Paradigm.console = (function () {
             if (Paradigm.console.active) {
                 var m = {
                     message: message,
-                    speed: 8,
+                    speed: speed,
                     cursor: cursor
                 }
                 messages.push(m);
             } else {
                 Paradigm.console.active = true;
-                Paradigm.console.type(message,8,cursor);
+                Paradigm.console.type(message,speed,cursor);
             }
             return token;
         },
