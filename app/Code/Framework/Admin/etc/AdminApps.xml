@@ -105,5 +105,19 @@
         <start>
             <uri>/admin/access/home</uri>
         </start>
+    </app>  
+    <app>
+        <name>Services Explorer</name>
+        <description>List and interact with background services </description>
+        <icon>
+            <text>Service Explorer</text>
+            <image>
+                <desktop>/images/admin/service_explorer_icon.png</desktop>
+                <minimized>/images/admin/service_explorer_icon.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/admin/services/home</uri>
+        </start>
     </app>       
 </apps>
