@@ -17,20 +17,21 @@ Paradigm.console = (() => {
     let console_element = false;
     let console_test    = false;
     let speed           = 8;
+    let namespace       = '';
     function updateResponse(response) {
         return ((console_command) ? console_command+'\n' : '')+response;
     }
     return {
-        app: function () {
+        app: () => {
             return console_app;
         },
-        ref: function () {
+        ref: () => {
             return console_ref;
         },
-        heading: function (){
+        heading: () =>{
             return console_heading;
         },
-        resize: function () {
+        resize: () => {
             console_app._resize();
         },
         select: function (candidate) {
@@ -48,7 +49,7 @@ Paradigm.console = (() => {
             console_input  = $E('paradigm_console_input');
             console_cmd    = $E('paradigm_console_cmd');
             app._scroll(false);
-            app.resize = function () {
+            app.resize = () => {
                 if (app.content.offsetHeight) {
                     $(console_output).height(app.content.offsetHeight - console_prompt.offsetHeight - console_input.offsetHeight-2);
                     $(console_output).width(app.content.offsetWidth);
@@ -61,18 +62,18 @@ Paradigm.console = (() => {
             url:    '',
             format: '',
             method: 'get',
-            init:       function () {
+            init:       () => {
                 Paradigm.console.service.arguments = [];
                 Paradigm.console.service.format;
                 Paradigm.console.service.url = '';
                 Paradigm.console.service.method = 'get';
             }
         },
-        initialize:       function () {
+        initialize:       () => {
             if (!console_app) {
                 console_app = Desktop.semaphore.checkout(true);
                 console_app._title('Console')._scroll(false).close = (function (app) {
-                    return function () {
+                    return () => {
                         app.lastState           = app.state;
                         app.state               = 0;
                         app.frame.style.display = "none";
@@ -88,7 +89,7 @@ Paradigm.console = (() => {
                 }).get();
             }
         },
-        view:       function () {
+        view:       () => {
             console_app._reopen();
         },
         active:     false,
@@ -128,7 +129,9 @@ Paradigm.console = (() => {
                 case 13     :   
                     console_command = commands[commands.length] = $(console_input).val();
  //                   console.log($(console_input).val());
-                    Paradigm.console.process($(console_input).val());
+                    if ($(console_input).val()) {
+                        Paradigm.console.process($(console_input).val());
+                    }
                     console_input.value = '';
                     console_input.focus();                    
                     break;
@@ -142,14 +145,18 @@ Paradigm.console = (() => {
         },
         process: function (command) {
             if (!command) {
+                console.trace();
                 console.log('I got junk');
                 return;
             }
             
-            var text    = command.substr(command.indexOf(' ')+1);
+            var text    = (command.indexOf(' ') != -1) ? command.substr(command.indexOf(' ')+1) : false;
+            
             if (command.indexOf(' ') != -1) {
                 command = command.substr(0,command.indexOf(' '));
             }
+            console.log('Command: '+command);
+            console.log('Text: '+text);
             switch (command.toLowerCase()) {
                 case "begin"  :
                     switch (text.toLowerCase()) {
@@ -253,7 +260,12 @@ Paradigm.console = (() => {
                     Paradigm.console.reply('v=['+text.substr(0,sep)+'='+text.substr(sep+1)+']','',1);
                     break;
                 case "speed"        :
-                    speed = text;
+                    if (!text) {
+                        Paradigm.console.reply('Speed is '+speed,'',1);
+                    } else if (!isNaN(text)) {
+                        speed = text;
+                        Paradigm.console.reply('Speed set to '+speed,'',1);
+                    }
                     break;
                 case "show"         :  
                     switch (text.toLowerCase()) {
@@ -350,12 +362,12 @@ Paradigm.console = (() => {
             }
             console_ref.scrollTo(0,console_ref.scrollHeight);
         },
-        capture: function () {
+        capture: () => {
             Desktop.off(console_input,'keydown',Paradigm.remove);
             Desktop.on(console_input,'keydown',Paradigm.console.update);
             return true;
         },
-        release: function () {
+        release: () => {
             Desktop.off(console_input,'keydown',Paradigm.console.update);
             Desktop.on(console_input,'keydown',Paradigm.remove);
             return true;
@@ -364,7 +376,7 @@ Paradigm.console = (() => {
             text: ["READY",">Working...",">Loading...",">Saving...",">Printing...",">Generating...",">Initializing..."],
             image: "<img src='/images/paradigm/clipart/blinking_cursor.gif' />"
         },
-        clear:  function () {
+        clear:  () => {
             console_command = '';            
             $(console_prompt).html(Paradigm.console.cursor.text[0]);
             $(console_ref).html(console_heading+'\n'+Paradigm.console.cursor.image);
@@ -392,13 +404,13 @@ Paradigm.console = (() => {
             if (Paradigm.console.active) {
                 var m = {
                     message: message,
-                    speed: 8,
+                    speed: speed,
                     cursor: cursor
                 }
                 messages.push(m);
             } else {
                 Paradigm.console.active = true;
-                Paradigm.console.type(message,8,cursor);
+                Paradigm.console.type(message,speed,cursor);
             }
             return token;
         },
@@ -450,7 +462,7 @@ Paradigm.console = (() => {
             $(console_prompt).html(Paradigm.console.cursor.text[cursor]);
             $(console_ref).html(console_text+Paradigm.console.cursor.image+'\n');
             if (message) {
-                var fun = function () {
+                var fun = () => {
                     Paradigm.console.type(message,speed,cursor);
                 };
                 window.setTimeout(fun,delay);

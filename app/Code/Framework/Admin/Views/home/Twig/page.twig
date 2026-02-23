@@ -207,7 +207,7 @@
         <div id="page" class="box-border flex flex-col bg-white">
             <div id="navigation-bar" class="relative flex-row bg-gray-100 " style="z-index: 5">
                 <div id='admin-clock' class="float-right text-3xl text-white"></div>
-                <div style='z-index: 7' class='float-right text-white mr-8 pt-2'>
+                <div class='float-right text-white mr-8 pt-2'>
                     <b>STATE </b>
                     {% set state = system.state() %}
                     <select name="state" id="state" onchange="Administration.change.state(this)" style="padding: 2px 30px 2px 5px; background-color: #cc4444; color: ghostwhite; font-size: 1.1em; height: 28px; letter-spacing: 1px; font-family: monospace; font-weight: bold; border-radius: 4px">
@@ -216,7 +216,7 @@
                         {% endfor %}
                     </select>
                 </div>                    
-                <ul class='relative cursor-pointer'>
+                <ul class='relative cursor-pointer' style="display: inline-block">
                 <li style='padding-top: 6px'><img src='/images/humble/djikstra_light.png' style='height: 30px; position: relative; top: 3px; left: 5px' /></li>
                 <li class='active'><a href='#'>Start...</a>
                     <ul>

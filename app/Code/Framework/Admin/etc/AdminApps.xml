@@ -82,14 +82,14 @@
         <name>Database Explorer</name>
         <description>Manage and Explore Polyglot Entities </description>
         <icon>
-            <text>DB Explorer</text>
+            <text>Entity Explorer</text>
             <image>
                 <desktop>/images/admin/polyglot_db.png</desktop>
                 <minimized>/images/admin/polyglot_db.png</minimized>
             </image>
         </icon>
         <start>
-            <uri>/admin/db/home</uri>
+            <uri>/admin/entity/home</uri>
         </start>
     </app>      
     <app>

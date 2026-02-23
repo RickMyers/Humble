@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+Database tool controller
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="entity" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="home">
+            <description>The main page</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
