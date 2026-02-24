@@ -293,10 +293,6 @@
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Error
                     </div>
-                    <div class='text-sm mb-1 cursor-pointer' title='Access Log Viewer' onclick="Administration.logs.open('Access')">
-                        <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
-                        Access
-                    </div>                      
                     <div class='text-sm mb-1 cursor-pointer' title='Users Log Viewer' onclick="Administration.logs.open('User')">
                         <i class="glyphicons glyphicons-blog" style="margin-left: 2px; font-size: 30px"></i><br />
                         Users
@@ -361,6 +357,8 @@
                     <div id='dashboard-container'>
                     <div style="float: right; padding: 5px; white-space: nowrap;">
                         <div id='admin-indicators' class='text-black inline-block font-bold rounded-md pt-1 pb-1 pr-2 pl-2 whitespace-nowrap grid rid-rows-1 grid-flow-col gap 4' >
+                            <div class="pr-2 pt-1 text-sm"><img src="/images/humble/green_status.png" title="Proxy is Running" class="hidden h-4 float-left mt-1.5 mr-2" id="proxy_running" />
+                                <img src="/images/humble/red_status.png" title="Proxy is Stopped" class="block h-4 float-left mt-1.5 mr-2" id="proxy_stopped" /><div class="pt-1 inline-block">Proxy</div></div> 
                             <div class="pr-2 pt-1 text-sm"><img src="/images/humble/green_status.png" title="Cadence is Running" class="hidden h-4 float-left mt-1.5 mr-2" id="cadence_running" />
                                 <img src="/images/humble/red_status.png" title="Cadence is Stopped" class="block h-4 float-left mt-1.5 mr-2" id="cadence_stopped" /><div class="pt-1 inline-block">Cadence</div></div>
                             <div class="pr-2 pt-1 text-sm"><img src="/images/humble/green_status.png" title="Message Hub Running" class="hidden h-4 float-left mt-1.5 mr-2" id="message_hub_running" />
