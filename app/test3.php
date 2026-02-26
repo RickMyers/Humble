@@ -10,7 +10,7 @@ try {
     
     print("Attempting kill\n");
    print(Environment::killTask(1234)."\n");
- //   print(Environment::stopCommandProxy());
+    print(Environment::stopCommandProxy());
     print("Back...\n");
     
 } catch (Exception $ex) {

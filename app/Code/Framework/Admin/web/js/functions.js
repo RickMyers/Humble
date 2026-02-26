@@ -597,12 +597,12 @@ var Functions = (() => {
                                     }
                                 },2000);
                             });
-                            socketio.on('testEvent',function (data) {
+                            socketio.on('testEvent',(data) => {
                                 console.log(data);
                                 alert('testEvent');
                             });
                         }
-                        var f = (() => {
+                        let f = (() => {
                             return function (server) {
                                 server = JSON.parse(server);
                                 $('#server-memory-load').html(server.memory.used+'/'+server.memory.total+' ['+server.memory.percentage+'%]');
@@ -610,31 +610,39 @@ var Functions = (() => {
                                 $('#server-tasks').html(server.apache.thread_count+'/'+server.tasks.count);
                             }
                         })();
-                        var g = (() => {
-                            return function (data) {
+                        let g = (() => {
+                            return (data) => {
                                 var cadence = JSON.parse(data);
                                 $('#cadence_stopped').css('display',(cadence.running ? 'none' : 'block'));
                                 $('#cadence_running').css('display',(cadence.running ? 'block' : 'none'));
                             }
                         })();                        
-                        var h = (() => {
-                            return function (data) {
+                        let h = (() => {
+                            return (data) => {
                                 var caching = JSON.parse(data);
                                 $('#cache_server_stopped').css('display',(caching.running ? 'none' : 'block'));
                                 $('#cache_server_running').css('display',(caching.running ? 'block' : 'none'));
                             }
                         })();  
-                        var i = (() => {
-                            return function (data) {
+                        let i = (() => {
+                            return (data) => {
                                 var socket = JSON.parse(data);
                                 $('#message_hub_stopped').css('display',(socket.status=="Ok" ? 'none' : 'block'));
                                 $('#message_hub_running').css('display',(socket.status=="Ok" ? 'block' : 'none'));
                             }
                         })();                          
+                        let j = (() => {
+                            return (data) => {
+                                var proxy = JSON.parse(data);
+                                $('#proxy_stopped').css('display',(proxy.running ? 'none' : 'block'));
+                                $('#proxy_running').css('display',(proxy.running ? 'block' : 'none'));
+                            }
+                        })();                                                  
                         Heartbeat.register('admin',true,'systemStatus',f,2,{});
                         Heartbeat.register('admin',true,'cadenceStatus',g,2,{});
                         Heartbeat.register('admin',true,'cachingStatus',h,2,{});
                         Heartbeat.register('admin',true,'socketStatus',i,2,{});
+                        Heartbeat.register('admin',true,'proxyStatus',j,2,{});
                         Heartbeat.init();
                         Humble.init();
                     },

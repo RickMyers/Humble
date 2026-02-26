@@ -66,6 +66,7 @@ class Cadence extends Model
         }
         return $this;
     }
+    
     /**
      * Will check to see if Cadence is currently running
      * 

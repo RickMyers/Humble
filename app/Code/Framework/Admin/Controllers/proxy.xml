@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+
+Command Proxy actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="proxy" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+
+        <action name="status" output="JSON">
+            <description>Returns whether cadence is running</description>
+            <model namespace="admin" class="proxy" id="proxy">
+                
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

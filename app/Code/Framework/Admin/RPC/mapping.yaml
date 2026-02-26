@@ -13,6 +13,13 @@ cadenceStatus :
     blocking        : off
     arguments       : 
     method          : POST  
+proxyStatus:
+    url             : /admin/proxy/status
+    api-key         :
+    api-var         : 
+    blocking        : off
+    arguments       : 
+    method          : POST    
 cachingStatus:
     url             : /admin/caching/status
     api-key         :

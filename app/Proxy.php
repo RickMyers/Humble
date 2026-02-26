@@ -43,6 +43,7 @@ function killTask($data=[]) {
     if ($pid = isset($data['PID']) ? $data['PID'] : false) {
        $result = shell_exec('kill '.$pid);
     }
+    print('Attempting to kill process '.$pid.'. Result='.$result."\n");
     return $result;     
 }
 /* ----------------------------------------------------------------------------- */
@@ -52,24 +53,30 @@ function saveFile($data=[]) {
     if ($filename && is_file($filename)) {
        $result = (file_put_contents($filename,$data['source'])) ? 'File Saved' : 'Error';
     }
+    print('Attempting to save file '.$filename.'. Result='.$result."\n");
     return $result;   
+}
+/* ----------------------------------------------------------------------------- */
+function restartService($data=[]) {
+    
 }
 /* ----------------------------------------------------------------------------- */
 function banHost($host=false) {
     $result = '';
     $host   = isset($data['host']) ? $data['host'] : false;
     $util   = isset($data['util']) ? $data['util'] : 'ufw';
+    print('Banning '.$host.' using '.$util.".\n");
     if ($host && $util) {
         switch ($util) {
             case 'ufw'  :
-                $result = shell_exec('ufw deny from xxx.xxx.xxx.xxx to any');
+                $result = shell_exec('ufw deny from '.$host.' to any');
                 break;
             case 'iptables'     :
-                $result = shell_exec('iptables -I INPUT -s xxx.xxx.xxx.xxx -j DROP');
+                $result = shell_exec('iptables -I INPUT -s '.$host.' -j DROP');
                 shell_exec("service iptables save");
                 break;
             case 'firewalld'     :
-                $result = shell_exec("firewall-cmd --permanent --add-rich-rule=\"rule family='ipv4' source address='xxx.xxx.xxx.xxx' reject\"");
+                $result = shell_exec("firewall-cmd --permanent --add-rich-rule=\"rule family='ipv4' source address=\''.$host.'\' reject\"");
                 shell_exec("firewall-cmd --reload");
                 break;
             default     :
@@ -81,6 +88,7 @@ function banHost($host=false) {
 /* ----------------------------------------------------------------------------- */
 function endProxy($data=[]) {
     global $run;
+    print('Quiescing Command Proxy...'."\n");
     return $run = false;
 }
 /* ----------------------------------------------------------------------------- */
@@ -112,7 +120,7 @@ function setupOperations() {
             ]
         ],
         'end' => [
-            'help'      => 'Quiesces the Command Proxy',
+            'help'      => 'Quiesces [Shutdowns] the Command Proxy',
             'handler'   => 'endProxy',
             'response'  => false,
             'arguments' => [
@@ -124,6 +132,9 @@ function setupOperations() {
 /* ----------------------------------------------------------------------------- */
 function showHelp() {
     global $operations;
+    foreach ($operations as $cmd => $operation) {
+        
+    }
 }
 /* ----------------------------------------------------------------------------- */
 Main:
@@ -168,34 +179,4 @@ Main:
 End:
     finalizeSocket();
     Environment::removePID('proxy.pid');
-    
-    
-    /*
-                    switch ($data['command']) {
-                        case 'kill' : 
-                            $result = killTask($data['PID']);
-                            socket_write($client,$result);
-                            socket_close($client);
-                            break;
-                        case 'save' :
-                            $result = saveFile($data['filename'],$data['data']);
-                            break;
-                        case 'ban' :
-                            $result = banHost($data['host'],$data['util']);
-                            break;
-                        case 'end' :
-                        case 'stop':
-                        case 'terminate':
-                        case 'shutdown' :
-                            $run = false;
-                            break;
-                        default :
-                            break;
-
-                    }
-
-     */
-
- 
-    
     
