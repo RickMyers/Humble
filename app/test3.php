@@ -8,10 +8,11 @@ require "Code/Framework/Humble/includes/Custom.php";
 
 try {
     
-    print("Attempting kill\n");
+    print_r($x = Humble::model('admin/services')->list());
+  /*  print("Attempting kill\n");
    print(Environment::killTask(1234)."\n");
     print(Environment::stopCommandProxy());
-    print("Back...\n");
+    print("Back...\n");*/
     
 } catch (Exception $ex) {
     print("Exception Ocurred\n");
