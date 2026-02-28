@@ -136,9 +136,17 @@ function setupOperations() {
 /* ----------------------------------------------------------------------------- */
 function showHelp() {
     global $operations;
+    print("The following commands are supported: \n\n");
     foreach ($operations as $cmd => $operation) {
-        
+        print("Command: ".$cmd."\n\n");
+        print("\t".$operation['help']."\n\n");
+        print("\tArguments:\n");
+        foreach ($operation['arguments'] as $op => $desc) {
+            print("\t\t".$op." => ".$desc."\n");
+        }
+        print("\n-----------------------------------------------------------------\n\n");
     }
+    die();
 }
 /* ----------------------------------------------------------------------------- */
 Main:

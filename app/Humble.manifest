@@ -36,7 +36,6 @@ app/filelaunch.php
 app/autoload.php
 app/launch.php
 app/AuthorizationEngine.php
-app/Compatibility.php
 app/Cadence.php
 app/CLI.php
 app/Environment.php
