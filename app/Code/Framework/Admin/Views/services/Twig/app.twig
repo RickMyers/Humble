@@ -1,0 +1,33 @@
+<div id="services_app_{{ window_id }}">
+</div>
+<script type="text/javascript"> 
+    //This is for handling "multiplicity", as in multiple explorer apps open at one time
+    Humble.admin['services'] = (!Humble.admin['services']) ? {} : Humble.admin['services'];
+    Humble.admin['services']['{{ window_id }}'] = Vue.createApp({
+        template: Humble.template('admin','services/app'),
+        app: "#services_app_{{ window_id }}",
+        data() {
+                return {
+                    window_id: "{{ window_id }}",
+                    files: [
+                        
+                    ]
+                }
+            },
+        mounted() {
+
+        },
+        methods: {
+        }
+    });
+    var win = Desktop.window.list['{{ window_id }}'];
+    Humble.admin['services']['{{ window_id }}'].mount('#'+win.content.id);
+/*    win.resize(() => {
+        $('#explorer_file_list').height(win.content.height() - $E('explorer_path_area').offsetHeight - $E('explorer_footer').offsetHeight - 2);
+    });*/
+    win.close(((app) => {
+        return function () {
+            app.unmount();
+        };
+    })(Humble.admin['services']['{{ window_id }}']));
+</script>

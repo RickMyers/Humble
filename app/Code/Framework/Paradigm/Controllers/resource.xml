@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!--
 
-Background Services tool
+External resource workflow components and configuration
 
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="services" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
-    <actions blocking="Off" response="true">
-        <action name="app" passalong="window_id">
-            <description>The home page for the app</description>
+<controller name="resource" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="details">
+            <description>Details what/where the resource is</description>
             <!-- Entity, Helper, Model, Conditional declarations begin here -->
         </action>
 

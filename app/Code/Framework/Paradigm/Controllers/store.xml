@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!--
 
-Background Services tool
+Store actions, where you can acquire modules and workflows
 
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="services" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
-    <actions blocking="Off" response="true">
-        <action name="app" passalong="window_id">
-            <description>The home page for the app</description>
+<controller name="store" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="home">
+            <description>The home page for the store</description>
             <!-- Entity, Helper, Model, Conditional declarations begin here -->
         </action>
 

@@ -117,7 +117,7 @@
             </image>
         </icon>
         <start>
-            <uri>/admin/services/home</uri>
+            <uri>/admin/services/app</uri>
         </start>
     </app>       
 </apps>

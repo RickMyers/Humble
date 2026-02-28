@@ -58,7 +58,11 @@ function saveFile($data=[]) {
 }
 /* ----------------------------------------------------------------------------- */
 function restartService($data=[]) {
-    
+    $result = 'Service not restarted';
+    if ($service = isset($data['service']) ? $data['service'] : false) {
+        $result = shell_exec('service '.$service.' restart');
+    }
+    return $service;
 }
 /* ----------------------------------------------------------------------------- */
 function banHost($host=false) {
