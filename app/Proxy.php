@@ -146,7 +146,6 @@ function showHelp() {
         }
         print("\n-----------------------------------------------------------------\n\n");
     }
-    die();
 }
 /* ----------------------------------------------------------------------------- */
 Main:
@@ -156,7 +155,19 @@ Main:
     }
     $operations = setupOperations();
     if (count($argv)>1) {
-        showHelp();
+        switch (strtolower($argv[1])) {
+            
+            case 'command' :
+            case 'cmd' : {
+                print("\nThe following command is the recommended way to run the Command Proxy;\n\n");
+                print('sudo nohup php Proxy.php > /dev/null 2>&1 &'."\n\n");
+                break;
+            }
+            default     :
+                showHelp();
+                break;
+        }
+        die();
     }    
     Environment::storePID('proxy.pid');    
     $socket = null;
