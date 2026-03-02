@@ -7,7 +7,7 @@ require "Code/Framework/Humble/includes/Constants.php";
 require "Code/Framework/Humble/includes/Custom.php";
 
 try {
-    
+    Environment::stopCommandProxy();
     print_r($x = Humble::model('admin/services')->list());
   /*  print("Attempting kill\n");
    print(Environment::killTask(1234)."\n");

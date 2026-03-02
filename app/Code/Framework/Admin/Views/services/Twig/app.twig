@@ -9,15 +9,22 @@
         data() {
                 return {
                     window_id: "{{ window_id }}",
-                    files: [
-                        
-                    ]
+                    poll_timer: false
                 }
             },
         mounted() {
-
+            this.poll();
+            console.log(this);
         },
         methods: {
+            poll() {
+            },
+            start() {
+            },
+            stop() {
+            },
+            restart() {
+            }
         }
     });
     var win = Desktop.window.list['{{ window_id }}'];

@@ -592,7 +592,7 @@ var Functions = (() => {
                                 window.setTimeout(function () {
                                     for (var i in Humble) {
                                         if (Humble[i].RTC) {
-                                            Humble[i].RTC();
+                                            Humble[i].RTC(socketio);
                                         }
                                     }
                                 },2000);
