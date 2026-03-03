@@ -3,14 +3,14 @@
  */
 var ParadigmConfig = {
     desktop: {
-        layer: "desktop-container",
-        windows: "desktop-window-container",
-        apps: true,
-        appurl: '/admin/apps/list',
+        layer:      "desktop-container",
+        windows:    "desktop-window-container",
+        apps:       true,
+        appurl:     '/admin/apps/list',
         default: {
             window: {
                 icon: "/images/paradigm/icons/humble_icon.png",
-                name: "Admin"
+                name: "Administration"
             }
         },
         window: {
