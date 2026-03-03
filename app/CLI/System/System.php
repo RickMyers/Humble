@@ -38,6 +38,17 @@ class System extends CLI
             print("Not enough data was passed to create a user.  user_name and password are minimum required fields.\n");
         }
     }
+    
+    /**
+     * Connects to the command proxy and initiates the quiescing process
+     * 
+     * @return bool
+     */
+    public static function endProxy() {
+        \Environment::stopCommandProxy();
+        return true;
+    }
+    
     /**
      * Toggles whether we are going to use local authentication or some form of SSO token
      */

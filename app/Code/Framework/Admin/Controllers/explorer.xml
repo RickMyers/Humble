@@ -7,6 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 -->
 <controller name="explorer" use="Twig" author="Rick Myers" email="rickmyers1969@gmail.com">
     <actions blocking="off" response="false">
+        
         <action name="app" passalong="window_id">
             <description>Initial setup</description>
         </action>

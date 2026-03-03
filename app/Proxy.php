@@ -163,12 +163,17 @@ Main:
                 print('sudo nohup php Proxy.php > /dev/null 2>&1 &'."\n\n");
                 break;
             }
+            case 'end'  : {
+                Environment::stopCommandProxy();
+                break;
+            }
             default     :
                 showHelp();
                 break;
         }
         die();
-    }    
+    }
+    print('Starting the Command Proxy... ['.getmypid()."]\n");
     Environment::storePID('proxy.pid');    
     $socket = null;
     $client = null;

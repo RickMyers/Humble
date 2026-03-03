@@ -3,7 +3,10 @@
 <script>
     (() => {
         var win = Desktop.window.list['{{ window_id }}'];
-        win._title('File Explorer').inject('<button class="bg-gray-300 border-2 rounded-md pr-1 pl-1 text-black" onclick="Administration.code.save(\'{{ window_id }}\'); ">Save</button>');
+        win._title('{{ directory }}/{{ file }}').inject(
+                '<input type="checkbox" class="mr-4" title="Use elevated permissions on save" value="Y" id="elevated_save-{{ window_id }}" />'+
+                '<button class="bg-gray-300 border-2 rounded-md pr-1 pl-1 text-black" onclick="Administration.code.save(\'{{ window_id }}\'); ">Save</button>'
+                );
         $('#explorer_ace_editor_{{ window_id }}').height(win.content.height() - 4);
         ace_editors['{{ window_id }}'] = ace.edit("explorer_ace_editor_{{ window_id }}");
         ace_editors['{{ window_id }}'].setTheme("ace/theme/monokai");

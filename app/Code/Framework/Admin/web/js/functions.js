@@ -40,8 +40,8 @@ var Functions = (() => {
                         save: (window_id) => {
                             let editor = ace_editors[window_id];
                             alert(editor.fileSource);
-                            (new EasyAjax('/admin/explorer/save').add('file',editor.fileSource).add('content',editor.getValue())).then((response) => {
-                                alert('Saved?');
+                            (new EasyAjax('/admin/explorer/save').add('elevated_save',$('#elevated_save-'+window_id).val()).add('file',editor.fileSource).add('content',editor.getValue())).then((response) => {
+                                alert(response);
                                 console.log(response);
                             })
                         }

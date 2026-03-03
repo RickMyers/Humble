@@ -132,4 +132,14 @@ sync :
     directive: true
     parameters:
         required:
-        optional:               
+        optional:     
+endproxy : 
+    description: Connects to the Command Proxy and initiates the quiescing process
+    usage:
+        linux:   sudo sh ./humble.sh --endproxy
+        windows: humble --endproxy
+    function : endProxy
+    directive: true
+    parameters:
+        required:
+        optional:            

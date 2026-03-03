@@ -2,7 +2,7 @@ Humble.admin = {
         apps: {},
         init: () => {
         },
-        RTC: () => {
-            
+        RTC: (socketio) => {
+            alert('Socket Connected Genius...');
         }
     };
