@@ -485,10 +485,9 @@ class Updater extends Installer
                     $this->updateServiceDirectory($namespace);  
                 }
             } else {
-                foreach ($helper->getErrors() as $error) {
+                foreach ($helper->errors() as $error) {
                     $this->output('ERRORS',$error);
                 }
-              //  \Log::console($helper->getErrors());
             }
         } else {
             $this->output('','');

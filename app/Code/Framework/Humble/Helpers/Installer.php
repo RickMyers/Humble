@@ -919,7 +919,7 @@ SQL;
                 }
                 
             } else {
-                foreach ($helper->getErrors() as $error) {
+                foreach ($helper->errors() as $error) {
                     $this->output('ERRORS',$error);
                 }
             }

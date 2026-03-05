@@ -43,7 +43,7 @@ class Helper {
      * @TODO:  Refactor all of the XML routines out of here and into their own XML helper!!!!!!!!
      */
     public function isValidXML($xml=false)    {
-	$this->xml = ($xml!==false) ? $xml : $this->getXML();
+	$this->xml = ($xml!==false) ? $xml : $this->XML();
         if ($this->xml !== null) {
             libxml_use_internal_errors(true);
             @$doc = new \DOMDocument('1.0', 'utf-8');
@@ -82,7 +82,7 @@ class Helper {
      */
     public function toArray($xml=null)
     {
-        $xml = ($xml) ? $xml : $this->getXML();
+        $xml = ($xml) ? $xml : $this->XML();
         return json_decode(json_encode((array) simplexml_load_string($xml)),1);
     }
 
@@ -93,7 +93,7 @@ class Helper {
      */
     public function toJSON($xml=null)
     {
-        $xml = ($xml) ? $xml : $this->getXML();
+        $xml = ($xml) ? $xml : $this->XML();
         return json_encode((array) simplexml_load_string($xml));
     }
 
@@ -160,7 +160,7 @@ class Helper {
      * @return type
      */
     public function toSimpleXML($xml=null)    {
-    	$xml = ($xml) ? $xml : $this->getXML();
+    	$xml = ($xml) ? $xml : $this->XML();
 	return simplexml_load_string($xml);
     }
 
@@ -372,9 +372,20 @@ class Helper {
     //--------------------------------------------------------------------------------------------------
     // Getters/Setters
     //--------------------------------------------------------------------------------------------------
-    public function getErrors()         {   return $this->errors;               }
-    public function getXML()            {   return $this->xml;                  }
-    public function setXML($arg)        {   $this->xml                  = $arg; }
+    public function errors($errors=null) {   
+        if ($errors===null) {
+            return $this->errors;
+        }
+        $this->errors = $errors;
+        return $this;
+    }
+    public function XML($args=null) {
+        if ($args===null) {
+            return $this->xml;
+        }
+        $this->xml = $args;
+        return $this;
+    }
 
 }
 ?>
