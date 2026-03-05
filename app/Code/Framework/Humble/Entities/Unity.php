@@ -113,7 +113,7 @@ class Unity
      * 
      * @return system
      */
-    public function getClassName()  {
+    public function className()  {
         return __CLASS__;
     }
     
@@ -1811,7 +1811,7 @@ SQL;
             return $this;
         }
         //method couldn't be handled
-        throw new \Exceptions\MethodNotFound("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->getClassName(),16);
+        throw new \Exceptions\MethodNotFound("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->className(),16);
         return null;
     }
 

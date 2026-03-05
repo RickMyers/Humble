@@ -14,7 +14,7 @@ class Image extends Helper
     //--------------------------------------------------------------------------
     //
     //--------------------------------------------------------------------------
-    public function getClassName()
+    public function className()
     {
         return __CLASS__;
     }

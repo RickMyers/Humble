@@ -39,7 +39,7 @@ class Iterator extends Model implements \Iterator, \Countable
      *
      * @return class name
      */
-    public function getClassName() {
+    public function className() {
         return __CLASS__;
     }
 

@@ -30,7 +30,7 @@ class Explorer extends \Code\Framework\Admin\Helpers\Helper
      *
      * @return system
      */
-    public function getClassName():string {
+    public function className():string {
         return __CLASS__;
     }
 
@@ -83,6 +83,11 @@ class Explorer extends \Code\Framework\Admin\Helpers\Helper
         return $deleted;
     }
 
+    /**
+     * Sets up for an Ace editor editing session
+     * 
+     * @return string
+     */
     public function edit():string {
         if (($dir = $this->getDirectory()) && ($file = $this->getFile())) {
             $parts = explode('.',$file);
@@ -92,4 +97,28 @@ class Explorer extends \Code\Framework\Admin\Helpers\Helper
         }
         return '';
     }
+    
+    /**
+     * Attempts to save off a file, possibly using the elevated command proxy to do so
+     * 
+     * @return bool
+     */
+    public function save($filename=false,$source=''):bool {
+        $result   = false;
+        $f = $this->getFilename();
+        $filename = ($filename) ? $filename : ($this->getFilename() ? $this->getFilename() : false);
+        $source   = ($source)   ? $source   : ($this->getSource()   ? $this->getSource() : false);
+        $elevated = $this->getElevated() ? $this->getElevated() : false;
+        if ($filename && $source) {
+            if (file_exists($filename)) {
+                if ($elevated === 'Y') {
+                    $result = \Environment::saveFile($filename,$source);
+                } else {
+                    $result = file_put_contents($filename,$source);
+                }
+            }
+        }
+        return $result;
+    }
+    
 }

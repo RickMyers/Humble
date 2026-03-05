@@ -67,7 +67,7 @@ class Installer extends Directory
      *
      * @return system
      */
-    public function getClassName()   {
+    public function className()   {
         return __CLASS__;
     }
 
@@ -483,11 +483,11 @@ SQL;
             $workflowComponent->setNamespace($namespace);
             $workflowComponent->setComponent($model);
             $class          = Humble::model($namespace.'/'.$model);
-            if (!method_exists($class, 'getClassName')) {
+            if (!method_exists($class, 'className')) {
                 //$this->output("",$model);
                 continue;
             }
-            $name           = $class->getClassName();
+            $name           = $class->className();
             $reflection     = new \ReflectionClass($name);
             $methods        = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
             foreach ($methods as $idx => $method) {

@@ -53,6 +53,17 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
                 <parameter name="file"      source="post" required="true" />
             </helper>
         </action>
-                
+        
+        <!-- ############################################################### -->
+        
+        <action name="save">
+            <description>Attempts to save a file on the server</description>
+            <helper namespace="admin" class="file/explorer" id="explorer" method="save" response="true">
+                <parameter name="filename" source="post" required="true" />
+                <parameter name="source"   source="post" required="true" />
+                <parameter name="elevated_save" source="request" default="N" />
+            </helper>
+        </action>  
+              
     </actions>
 </controller>

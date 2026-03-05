@@ -48,7 +48,7 @@ class Faker extends Model
      *
      * @return system
      */
-    public function getClassName() {
+    public function className() {
         return __CLASS__;
     }
 

@@ -37,7 +37,7 @@ class Trigger  {
      *
      * @return classname
      */
-    public function getClassName() {
+    public function className() {
         return __CLASS__;
     }
 
@@ -281,7 +281,7 @@ class Trigger  {
             $result = $this->__get($token);
             return $result;
         } else {
-            \Log::console("Undefined Method: ".$name." invoked from ".$this->getClassName().".");
+            \Log::console("Undefined Method: ".$name." invoked from ".$this->className().".");
         }
     }
 

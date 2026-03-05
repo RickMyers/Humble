@@ -29,7 +29,7 @@ class HumbleException {
      *
      * @return system
      */
-    public static function getClassName() {
+    public static function className() {
         return __CLASS__;
     }
 
@@ -64,7 +64,7 @@ JSON;
                 $rain->assign('ex',$e);
                 $rain->assign('title',$type);
                 $rain->assign('dump',htmlentities($e->getTraceAsString()));
-                $rain->assign('filename',($filename  = (method_exists($e,'getFileName')) ? $e->getFileName() : "N/A"));
+                $rain->assign('filename',($filename  = (method_exists($e,'getFileName')) ? $e->fileName() : "N/A"));
                 $rain->draw($template);
             }
             $exception = <<<ERRORTEXT

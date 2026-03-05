@@ -24,7 +24,7 @@ class Updater extends Installer
      *
      * @return system
      */
-    public function getClassName()
+    public function className()
     {
         return __CLASS__;
     }
@@ -182,7 +182,7 @@ class Updater extends Installer
             chdir($namespace);
             $classBase      = str_replace('.php','',$classFile);
             $class          = new $classBase();
-            $name           = $class->getClassName() ?? $classBase;
+            $name           = $class->className() ?? $classBase;
             chdir($here);
             $reflection      = new \ReflectionClass($name);
             $methods        = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);

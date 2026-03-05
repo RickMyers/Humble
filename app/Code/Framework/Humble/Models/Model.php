@@ -6,11 +6,11 @@ use Log;
 /*use Symfony\Component\Yaml\Yaml;*/                                            ///not any more
 /**
  *
- * At a minimum, your custom classes should override the getClassName method...
+ * At a minimum, your custom classes should override the className method...
  *
  */
 interface HumbleComponent {
-    public function getClassName();
+    public function className();
     public function load($field=false);
     public function fetch();
 }

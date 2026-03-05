@@ -30,14 +30,14 @@ class CredentialsIncorrectException extends \Exception {
     }
 
 
-    public function getClassName() {
+    public function className() {
         return __CLASS__;
     }
 
     public function __toString() {
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
-    public function getFileName() {
+    public function fileName() {
         return "";
     }
 

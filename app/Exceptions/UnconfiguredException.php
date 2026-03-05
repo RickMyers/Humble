@@ -29,7 +29,7 @@ class UnconfiguredException extends \Exception {
         parent::__construct($message, $code, $previous);
     }
 
-    public function getClassName() {
+    public function className() {
         return __CLASS__;
     }
 
@@ -37,7 +37,7 @@ class UnconfiguredException extends \Exception {
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
     
-    public function getFileName() {
+    public function fileName() {
         return "";
     }
     

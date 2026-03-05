@@ -31,7 +31,7 @@ class Helper {
      *
      * @return system
      */
-    public function getClassName()    {
+    public function className()    {
         return __CLASS__;
     }
     
@@ -273,9 +273,9 @@ class Helper {
      * @param type $name
      * @return type
      */
-    public function getExtension($name)    {
+    public function extension($name)    {
         $extension = '';
-        $name = $this->getFileName($name);
+        $name = $this->fileName($name);
         if (strpos($name,'.') !== -1) {
             $extension = substr($name,strrpos($name,'.')+1);
         }
@@ -288,7 +288,7 @@ class Helper {
      * @param type $name
      * @return type
      */
-    public function getFileName($name)    {
+    public function fileName($name)    {
         $filename = '';
         if (strpos($name,'/') !== false) {
             $filename = substr($name,strrpos($name,'/')+1);
@@ -369,7 +369,6 @@ class Helper {
         return $files;
     }
 
-    
     //--------------------------------------------------------------------------------------------------
     // Getters/Setters
     //--------------------------------------------------------------------------------------------------

@@ -52,7 +52,7 @@ trait Base {
      *
      * @return string The name of the current class
      */
-    public function getClassName() {
+    public function className() {
         return __CLASS__;
     }
     
@@ -216,11 +216,11 @@ trait Base {
             } else {
                 if ($this->is()==='model') {
                     if (($retval = $this->_remoteProcedureCall($name)) === null) {
-                        \Log::console("Undefined Method: ".$name." invoked from ".$this->getClassName().".");
+                        \Log::console("Undefined Method: ".$name." invoked from ".$this->className().".");
                     }
                     return $retval;
                 } else {
-                    throw new \Exceptions\MethodNotFound("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->getClassName(),16);                    
+                    throw new \Exceptions\MethodNotFound("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->className(),16);                    
                 }
             }
         }

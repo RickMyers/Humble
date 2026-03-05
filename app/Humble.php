@@ -56,7 +56,7 @@
          *
          * @return system
          */
-        public static function getClassName() {
+        public static function className() {
             return __CLASS__;
         }
 
@@ -158,6 +158,7 @@
             }
             return $HTML;
         }
+        
         /**
          * A singleton to return our faker fake data generator
          * 
@@ -230,7 +231,7 @@
                         parent::__construct();
                         $this->anon_class = $a;
                     }
-                    public function getClassName() {  return $this->anon_class; }
+                    public function className() {  return $this->anon_class; }
                 };
             } else {
                 $class      = str_replace('/','\\','\\'.$str);
@@ -264,7 +265,7 @@
                             $this->_isVirtual(true);
                             parent::__construct();
                         }
-                        public function getClassName() {   return $this->anon_class; }
+                        public function className() {   return $this->anon_class; }
                     };
                 } else {
                     $class      = str_replace('/','\\','\\'.$class);
@@ -296,7 +297,7 @@
                             $this->anon_class = $a;
                             parent::__construct();
                         }
-                        public function getClassName() {  return $this->anon_class; }
+                        public function className() {  return $this->anon_class; }
                     };
                 } else {
                     $class      = str_replace('/','\\','\\'.$class);
@@ -610,9 +611,9 @@
         public static function connection($callingClass=false)        {
             if (!($conn = ($callingClass instanceof \Code\Framework\Humble\Entities\Unity))) {
                 if ($callingClass) {
-                    $name = $callingClass->getClassName();
+                    $name = $callingClass->className();
                 } else {
-                    $name = self::getclassName();
+                    $name = self::className();
                 }
                 $shortList  = array('Humble','Code\Framework\Humble\Helpers\Installer','Code\Framework\Humble\Helpers\Updater','Code\Framework\Humble\Helpers\Compiler'); //These classes are allowed to specifically request a connection to the DB
                 $conn       = in_array($name,$shortList);

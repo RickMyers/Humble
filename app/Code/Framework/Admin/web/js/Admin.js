@@ -3,6 +3,6 @@ Humble.admin = {
         init: () => {
         },
         RTC: (socketio) => {
-            alert('Socket Connected Genius...');
+            console.log('Socket Connected, Genius...');
         }
     };
