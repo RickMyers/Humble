@@ -36,6 +36,14 @@
     <api comment="Know the risks before enabling.  There is a section in the documentation on this">
         <enabled>1</enabled>
     </api>
+    <admin>
+        <apps>
+            <File_Explorer>1</File_Explorer>
+            <Entity_Explorer>1</Entity_Explorer>
+            <Access_Log_Explorer>1</Access_Log_Explorer>
+            <Services_Explorer>1</Services_Explorer>
+        </apps>
+    </admin>    
     <exceptions options="JSON,HTML" comment="Choose whether you want a JSON formatted exception or one that is a templated HTML response">HTML</exceptions>
     <documentation_comment>
         The next section outlines the choices for creating automated documentation.   Choose either PHPDoc2 or APIGen(PHP 8.2+).  Select the option for each from the options

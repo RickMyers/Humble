@@ -79,7 +79,7 @@
         </start>
     </app>         
     <app>
-        <name>Database Explorer</name>
+        <name>Entity Explorer</name>
         <description>Manage and Explore Polyglot Entities </description>
         <icon>
             <text>Entity Explorer</text>

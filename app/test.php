@@ -4,16 +4,25 @@ require "Humble.php";
 require "Environment.php";
 require "Code/Framework/Humble/includes/Constants.php";
 require "Code/Framework/Humble/includes/Custom.php";
-//require "cli/Component/Component.php";
-//$x = new Component();
-//print_r($x);
-
-//$x::check('humble','user');
 $s = microtime(true);
-print('<pre>');
-$x = Humble::entity('humble/user/identification');
-print("In: ".microtime(true)-$s."\n");
 
+$a = Humble::model('admin/apps');
+print_r($a->list());
+die();
+/*require "cli/Component/Component.php";
+$x = new Component();
+print($x->check('humble','user','JSON')."\n");
+print($x->check('humble','fake','JSON')."\n");
+ * 
+ */
+
+/*
+//$x::check('humble','user');
+
+print('<pre>');
+$x = Humble::entity('humble/user/identification');*/
+
+/*
 //$x->_rows(5)->_page(1)->fetch();
 print_r($x->rows(5)->page(1)->fetch()->toArray());
 print("In: ".microtime(true)-$s."\n");
@@ -23,7 +32,7 @@ print_r($x->rows(5)->page(3)->fetch()->toArray());
 print("In: ".microtime(true)-$s."\n");
 print_r($x->rows(5)->page(4)->fetch()->toArray());
 //$y =  $x->setId(1)->load();
-
+*/
 //print_r($y->getArrayCopy());
 /*
 for ($i=0; $i<100; $i++) {
@@ -31,6 +40,9 @@ for ($i=0; $i<100; $i++) {
 }
  */
 
+
+//$out = shell_exec('php CLI.php --sc ns=humble cn=user out=json');
+//print($out);
 print("In: ".microtime(true)-$s."\n");
 die();
 /*$h = getcwd();

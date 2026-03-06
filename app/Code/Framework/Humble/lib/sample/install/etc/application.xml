@@ -30,6 +30,14 @@
             <redirect>0</redirect>
         </strategy>      
     </msa>
+    <admin>
+        <apps>
+            <File_Explorer>1</File_Explorer>
+            <Entity_Explorer>1</Entity_Explorer>
+            <Access_Log_Explorer>1</Access_Log_Explorer>
+            <Services_Explorer>1</Services_Explorer>
+        </apps>
+    </admin>
     <default>
         <inline_templater options="Rain,Latte">Rain</inline_templater>
         <templater options="Smarty,Twig,Latte,Savant,TBS,Rain,Blade,PHPTal,PHP">Twig</templater>

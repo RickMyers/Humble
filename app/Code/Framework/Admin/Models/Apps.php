@@ -43,10 +43,16 @@ class Apps extends Model
      */
     public function list() {
         $admin_apps = [];
+        $permitted = json_decode(json_encode(Environment::application(['admin'=>'apps'])),true);
         foreach (Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             if (file_exists($apps_file = 'Code/'.$module['package'].'/'.$module['module'].'/etc/AdminApps.xml')) {
                 $ctr = 0;
                 foreach ($apps = simplexml_load_file($apps_file) as $app) {
+                    if (isset($permitted[str_replace(' ','_',(string)$app->name)])) {
+                        if (!$permitted[str_replace(' ','_',(string)$app->name)]) {
+                            continue;
+                        }
+                    }
                     $admin_apps[] = [
                         'id'   => $module['namespace'].'_'.++$ctr,
                         'name' => (string)$app->name,
