@@ -5,6 +5,7 @@
 #        linux:   sudo sh ./humble.sh --version
 #        windows: humble --version
 #    function : version
+#    global : true   # whether this is 'global' to all apps or just to the Framework
 #    parameters:
 #        required:
 #        optional: 

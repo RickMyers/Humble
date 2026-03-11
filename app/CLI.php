@@ -51,36 +51,6 @@ function printTopicHelp($topic,$commands=[]) {
     print("\nFor detailed help, type 'humble --command help'\n\n");
 }
 //--------------------------------------------------------------------------
-// Iterates through directories accumulating the various commands
-//--------------------------------------------------------------------------
-function aggregateDirectories($dh) {
-    $available_commands = [];    
-    while ($entry = $dh->read()) {
-        if (($entry == '.') || ($entry == '..')) {
-            continue;
-        }
-        if (is_dir('CLI/'.$entry)) {
-            if (file_exists('CLI/'.$entry.'/directory.yaml')) {
-                $available_commands[$entry] = yaml_parse_file('CLI/'.$entry.'/directory.yaml');
-            }
-        }
-    }
-    return $available_commands;
-}
-//--------------------------------------------------------------------------
-// Iterates through available modules accumulating the various commands
-//--------------------------------------------------------------------------
-function aggregateModuleCommands() {
-    $available_commands = [];        
-    foreach ($modules = \Humble::entity('humble/modules')->setEnabled('Y')->setCli('Y')->fetch() as $module) {
-        $commands = 'Code/'.$module['package'].'/'.$module['module'].'/CLI/directory.yaml';
-        if (file_exists($commands)) {
-            $available_commands[ucfirst($module['namespace'])] = yaml_parse_file($commands);
-        }
-    }
-    return $available_commands;
-}
-//--------------------------------------------------------------------------
 // Returns the actual path for a module identified by the namespace
 //--------------------------------------------------------------------------
 function modulePath($namespace=false) {
@@ -101,12 +71,13 @@ function helpRequest($first_parm,$details) {
 
 //==========================================================================
 
-$help_cmd = ['help'=>true,'?'=>true];
+$cli                = Humble::model('humble/CLI');
+$help_cmd           = ['help'=>true,'?'=>true];
 if (!count($argv ?? []) && (count($args ?? []))) {
     $argv = $args;  //not called from command line but included by another program so we are faking it
 }
 $args               = [];                                                       //declaring global variable
-$available_commands = array_merge_recursive(aggregateDirectories(dir('CLI')),aggregateModuleCommands());   
+$available_commands = array_merge_recursive($cli->aggregateDirectories(dir('CLI')),$cli->aggregateModuleCommands());  
 if ((array_shift($argv)) && ($entered_command = parseCommand($argv))) {         //pop program name and grab the command they entered
     if (isset($help_cmd[strtolower($entered_command)])) {
         if (isset($argv[1])) {

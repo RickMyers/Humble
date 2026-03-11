@@ -90,6 +90,10 @@ function banHost($host=false) {
     return $result;
 }
 /* ----------------------------------------------------------------------------- */
+function tailwind($data=[]) {
+    
+}
+/* ----------------------------------------------------------------------------- */
 function endProxy($data=[]) {
     global $run;
     print('Quiescing Command Proxy...'."\n");
@@ -121,6 +125,14 @@ function setupOperations() {
             'response'  => true,
             'arguments' => [
                 'host'  => 'IP Address to ban'
+            ]
+        ],
+        'tailwind' => [
+            'help'      => 'Starts the tailwindcss build environment within a specified module',
+            'handler'   => 'tailwind',
+            'response'  => true,
+            'arguments' => [
+                'namespace' => 'Namespace of module to enable/start the tailwind monitor process'
             ]
         ],
         'end' => [

@@ -19,6 +19,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                     <model namespace="admin" class="system" id="system" />
                     <project var="hub_host" assign="hub_host" />
                     <project var="hub_port" assign="hub_port" />
+                    <model namespace="humble" class="CLI" assign="command_menus" method="commands"/>
                     <entity namespace='humble' class='modules'      id='available_modules' orderby='package=ASC,namespace=ASC' />
                     <model  namespace='admin'  class='menus'        id="menus" />
                     <model  namespace='admin' class='tailwind'      id="tailwind" />

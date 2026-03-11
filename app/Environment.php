@@ -24,6 +24,7 @@ class Environment {
     private static $project     = false;
     private static $socket      = false;
     private static $client      = false;
+    private static $contexts    = [];
 
     /**
      * Constructor
@@ -142,6 +143,21 @@ class Environment {
         }
     }
     
+    /**
+     * 
+     * @param type $context
+     */
+    public static function context($context=false) {
+        if (!self::$context) {
+            //load contexts
+        }
+        if (isset(self::$contexts[$context])) {
+            //chdir to app root
+            foreach (explode(',',self::$contexts[$context]['requires']) as $require) {
+                require_once $require;
+            }
+        }
+    }
     
     /**
      * Try to get the public facing route list from cache, but fall back to reading from file if not found in cache

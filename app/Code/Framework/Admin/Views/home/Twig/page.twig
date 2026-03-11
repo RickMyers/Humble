@@ -227,26 +227,32 @@
                 </li> 
                 <li class='active'><a href='#'>CLI</a>
                     <ul>
-                        <li><a href='#' onclick="Administration.menu.management.open(); return false">Menu Management</a></li>
-                        <li><a href='#' onclick="Administration.password.change.open(); return false">Change Password</a></li>
-                        <li style="border-top: 1px solid silver; "><a href='/admin/user/logout'>Logout</a>
+                    {% for category,commands in command_menus %}
+                        <li><a href="#" onclick="return false" >{{ category }}</a>
+                            <ul>
+                            {% for cmd,options in commands %}
+                                <li><a title="{{ options.description }}" href="#" onclick="Administration.cli.open('{{ category }}','{{ cmd }}'); return false">--{{ cmd }} {{ options.function }}</a></li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
                     </ul>
                 </li>                   
                 {% for category,options in menus.sort() %}
-                    <li class='active'><a href='#'>{{ category }}</a>
-                        <ul>
-                        {% for option in options %}
-                            <li><a {% if option.target %}target="{{ option.target }}"{% endif %} {% if option.href %}href='{{ option.href }}'{% endif %} {% if option.function %}onclick='{{ option.function }}; return false' {% endif %}>{{ option.menu }}</a>
-                            {% if option.children %}
-                                <ul>
-                                {% for child in option.children %}
-                                    <li><a {% if child.target %}target="{{ child.target }}"{% endif %} {% if child.href %}href='{{ child.href }}'{% endif %} {% if child.function %}onclick='{{ child.function }}; return false'{% endif %}>{{ child.menu }}</a></li>
-                                {% endfor %}
-                                </ul>
-                            {% endif %}
-                            </li>
-                        {% endfor %}
-                        </ul>
+                <li class='active'><a href='#'>{{ category }}</a>
+                    <ul>
+                    {% for option in options %}
+                        <li><a {% if option.target %}target="{{ option.target }}"{% endif %} {% if option.href %}href='{{ option.href }}'{% endif %} {% if option.function %}onclick='{{ option.function }}; return false' {% endif %}>{{ option.menu }}</a>
+                        {% if option.children %}
+                            <ul>
+                            {% for child in option.children %}
+                                <li><a {% if child.target %}target="{{ child.target }}"{% endif %} {% if child.href %}href='{{ child.href }}'{% endif %} {% if child.function %}onclick='{{ child.function }}; return false'{% endif %}>{{ child.menu }}</a></li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
                 {% endfor %}
                 </ul>
              

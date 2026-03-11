@@ -37,13 +37,13 @@ class Apps extends Model
     }
 
     /**
-     * Gets all the available administration apps that will be represented in the admin desktop area
+     * Gets all the available administration apps that will be represented in the admin desktop area, cross checked to see if any are being suppressed
      * 
      * @return array
      */
     public function list() {
         $admin_apps = [];
-        $permitted = json_decode(json_encode(Environment::application(['admin'=>'apps'])),true);
+        $permitted  = json_decode(json_encode(Environment::application(['admin'=>'apps'])),true);
         foreach (Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             if (file_exists($apps_file = 'Code/'.$module['package'].'/'.$module['module'].'/etc/AdminApps.xml')) {
                 $ctr = 0;
@@ -54,13 +54,13 @@ class Apps extends Model
                         }
                     }
                     $admin_apps[] = [
-                        'id'   => $module['namespace'].'_'.++$ctr,
-                        'name' => (string)$app->name,
-                        'description' => (string)$app->description,
-                        'title' => (string)$app->icon->text,
-                        'image' => (string)$app->icon->image->desktop,
+                        'id'             => $module['namespace'].'_'.++$ctr,
+                        'name'           => (string)$app->name,
+                        'description'    => (string)$app->description,
+                        'title'          => (string)$app->icon->text,
+                        'image'          => (string)$app->icon->image->desktop,
                         'minimized_icon' => (string)$app->icon->image->minimized,
-                        'url' => (string)$app->start->uri
+                        'url'            => (string)$app->start->uri
                     ];
                 }
             }

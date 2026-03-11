@@ -5,9 +5,9 @@ require "Environment.php";
 require "Code/Framework/Humble/includes/Constants.php";
 require "Code/Framework/Humble/includes/Custom.php";
 $s = microtime(true);
+$cli = Humble::model('humble/CLI');
 
-$a = Humble::model('admin/apps');
-print_r($a->list());
+print_r($cli->commands());
 die();
 /*require "cli/Component/Component.php";
 $x = new Component();
