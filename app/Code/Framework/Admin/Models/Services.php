@@ -35,9 +35,22 @@ class Services extends Model
         return __CLASS__;
     }
 
+    /**
+     * Gets the list of installed services, whether running or not
+     * 
+     * @return array
+     */
     public function list() {
+        $list     = [];
         $services = shell_exec('service --status-all');
-        
-        return $services;
+        foreach (explode("\n",$services) as $idx => $service) {
+            if ($service) {
+                $list[] = [
+                    'running' => substr($service,3,1)==='+',
+                    'service' => substr($service,8)
+                ];
+            }
+        }
+        return $list;
     }
 }

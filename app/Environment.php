@@ -122,7 +122,27 @@ class Environment {
             socket_close(self::$socket);
         }
         return true;
-    }    
+    }   
+
+    /**
+     * Lists all installed services, whether running or not
+     * 
+     * @return array
+     */
+    public static function listServices() {
+        $list     = [];
+        $services = shell_exec('service --status-all');
+        foreach (explode("\n",$services) as $idx => $service) {
+            if ($service) {
+                $list[] = [
+                    'running' => substr($service,3,1)==='+',
+                    'service' => substr($service,8)
+                ];
+            }
+        }
+        return $list; 
+    }
+    
     /**
      * Saves off a file, this is meant to be called from the Command Proxy running as root
      * 
