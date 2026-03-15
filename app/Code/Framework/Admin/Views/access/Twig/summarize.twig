@@ -47,8 +47,9 @@
                 <div class="access-cell-data">{{ entry.transfered }}</div>
             </div></div><div
                 style="display: inline-block; width: 100%; whitespace: no-wrap">
-                <div class="access-cell-title">Resources</div>
-                <div class="access-cell-data">
+                {% set token = log._uniqueid() %}
+                <div class="access-cell-title"><a href="#" onclick="$('#{{ token }}').slideToggle(); return false">Resources</a></div>
+                <div class="access-cell-data" id="{{ token }}" style="display: none">
                     {% for i,status in entry.resources %}
                         {{ i }}[{{ status }}]
                     {% endfor %}                    
