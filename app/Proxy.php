@@ -39,8 +39,9 @@ function finalizeSocket() {
 }
 /* ----------------------------------------------------------------------------- */
 function killTask($data=[]) {
+    global $TEST_MODE;
     $result = '';
-    if ($pid = isset($data['PID']) ? $data['PID'] : false) {
+    if (!$TEST_MODE && ($pid = isset($data['PID']) ? $data['PID'] : false)) {
        $result = shell_exec('kill '.$pid);
     }
     print('Attempting to kill process '.$pid.'. Result='.$result."\n");
@@ -48,9 +49,10 @@ function killTask($data=[]) {
 }
 /* ----------------------------------------------------------------------------- */
 function saveFile($data=[]) {
+    global $TEST_MODE;
     $result = 'File Not Saved';
     $filename = isset($data['filename']) ? $data['filename'] : false;
-    if ($filename && is_file($filename)) {
+    if ($filename && is_file($filename) && !$TEST_MODE) {
        $result = (file_put_contents($filename,$data['source'])) ? 'File Saved' : 'Error';
     }
     print('Attempting to save file '.$filename.'. Result='.$result."\n");
@@ -58,19 +60,21 @@ function saveFile($data=[]) {
 }
 /* ----------------------------------------------------------------------------- */
 function restartService($data=[]) {
+    global $TEST_MODE;
     $result = 'Service not restarted';
-    if ($service = isset($data['service']) ? $data['service'] : false) {
+    if (!$TEST_MODE && ($service = isset($data['service']) ? $data['service'] : false)) {
         $result = shell_exec('service '.$service.' restart');
     }
     return $service;
 }
 /* ----------------------------------------------------------------------------- */
 function banHost($host=false) {
+    global $TEST_MODE;
     $result = '';
     $host   = isset($data['host']) ? $data['host'] : false;
     $util   = isset($data['util']) ? $data['util'] : 'ufw';
     print('Banning '.$host.' using '.$util.".\n");
-    if ($host && $util) {
+    if ($host && $util && !$TEST_MODE) {
         switch ($util) {
             case 'ufw'  :
                 $result = shell_exec('ufw deny from '.$host.' to any');
@@ -97,9 +101,9 @@ function tailwind($data=[]) {
 }
 /* ----------------------------------------------------------------------------- */
 function endProxy($data=[]) {
-    global $run;
+    global $run, $TEST_MODE;
     print('Quiescing Command Proxy...'."\n");
-    return $run = false;
+    return ($TEST_MODE) ? $run = true : $run = false;
 }
 /* ----------------------------------------------------------------------------- */
 function setupOperations() {
@@ -163,6 +167,7 @@ function showHelp() {
 }
 /* ----------------------------------------------------------------------------- */
 Main:
+    $TEST_MODE = false;
     $proxy  = Environment::application('proxy');
     if (!$proxy->port) {
         die("\nCommand Proxy is not configured\n");
@@ -175,17 +180,22 @@ Main:
             case 'cmd' : {
                 print("\nThe following command is the recommended way to run the Command Proxy;\n\n");
                 print('sudo nohup php Proxy.php > /dev/null 2>&1 &'."\n\n");
+                die();
                 break;
             }
             case 'end'  : {
                 Environment::stopCommandProxy();
+                die();
                 break;
+            }
+            case 'test' : {
+                $TEST_MODE = true;
             }
             default     :
                 showHelp();
                 break;
         }
-        die();
+        
     }
     print('Starting the Command Proxy... ['.getmypid()."]\n");
     Environment::storePID('proxy.pid');    
