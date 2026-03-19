@@ -4,12 +4,15 @@
     //This is for handling "multiplicity", as in multiple explorer apps open at one time
     Humble.admin['services'] = (!Humble.admin['services']) ? {} : Humble.admin['services'];
     Humble.admin['services']['{{ window_id }}'] = Vue.createApp({
-        template: Humble.template('admin','services/app'),
+        template: Humble.template('admin','services/list'),
         app: "#services_app_{{ window_id }}",
         data() {
                 return {
                     window_id: "{{ window_id }}",
-                    poll_timer: false
+                    poll_timer: false,
+                    services: [
+                
+                    ]
                 }
             },
         mounted() {
@@ -18,6 +21,13 @@
         },
         methods: {
             poll() {
+                let me = this;
+                this.poll_timer = window.setTimeout(() => {
+                    (new EasyAjax('/admin/services/list').then((response) => {
+                        console.log(response);
+                        me.services = JSON.parse(response);
+                    }).get());
+                },5000);
             },
             start() {
             },
