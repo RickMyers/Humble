@@ -53,7 +53,6 @@ class CLI extends Model
             if (is_dir('CLI/'.$entry)) {
                 if (file_exists('CLI/'.$entry.'/directory.yaml')) {
                     $available_commands[$entry] = yaml_parse_file('CLI/'.$entry.'/directory.yaml');
-                    
                 }
             }
         }
@@ -69,9 +68,7 @@ class CLI extends Model
         $available_commands = [];        
         foreach ($modules = \Humble::entity('humble/modules')->setEnabled('Y')->setCli('Y')->fetch() as $module) {
             $commands = 'Code/'.$module['package'].'/'.$module['module'].'/CLI/directory.yaml';
-            print($commands."\n");
             if (file_exists($commands)) {
-                print("found\n");
                 $available_commands[ucfirst($module['namespace'])] = yaml_parse_file($commands);
             }
         }

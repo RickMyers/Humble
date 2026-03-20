@@ -17,7 +17,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="list" blocking="Off" output="JSON">
             <description>Generates a list of installed services, whether they are running or not</description>
-            <model namespace="admin" class="services" method="list" wrapper="json_encode" />
+            <model namespace="admin" class="services" method="list" wrapper="json_encode" id="services" />
         </action>
 
     </actions>

@@ -192,7 +192,6 @@ class Component extends CLI
                     $tag[$tagName]['children']    = ($node->hasChildNodes()) ? self::recurseControllerNodes($node)     : [];
                     $struct[]                     = $tag;
                 }
-
             }
         }
         return $struct;

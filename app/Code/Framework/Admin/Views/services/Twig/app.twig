@@ -1,11 +1,18 @@
-<div id="services_app_{{ window_id }}">
+<div id="services_app_header-{{ window_id }}" class="p-2">
+</div>
+<div id="sevices_app_body-{{ window_id }}" class="">
+    <div id="services_app-{{ window_id }}">
+    </div>
+</div>
+<div id="services_app_footer-{{ window_id }}" class="" style="background-color: #333; color: ghostwhite; font-family: sans-serif; text-align: right; padding-right: 10px">
+    Services Explorer
 </div>
 <script type="text/javascript"> 
     //This is for handling "multiplicity", as in multiple explorer apps open at one time
     Humble.admin['services'] = (!Humble.admin['services']) ? {} : Humble.admin['services'];
     Humble.admin['services']['{{ window_id }}'] = Vue.createApp({
         template: Humble.template('admin','services/list'),
-        app: "#services_app_{{ window_id }}",
+        app: "#services_app-{{ window_id }}",
         data() {
                 return {
                     window_id: "{{ window_id }}",
@@ -37,14 +44,16 @@
             }
         }
     });
-    var win = Desktop.window.list['{{ window_id }}'];
-    Humble.admin['services']['{{ window_id }}'].mount('#'+win.content.id);
-/*    win.resize(() => {
-        $('#explorer_file_list').height(win.content.height() - $E('explorer_path_area').offsetHeight - $E('explorer_footer').offsetHeight - 2);
-    });*/
-    win.close(((app) => {
-        return function () {
-            app.unmount();
-        };
-    })(Humble.admin['services']['{{ window_id }}']));
+    (() => () {
+        var win = Desktop.window.list['{{ window_id }}'];
+        Humble.admin['services']['{{ window_id }}'].mount('#'+win.content.id);
+        win._title('Services Explorer').resize(() => {
+            $('#explorer_file_list').height(win.content.height() - $E('explorer_path_area').offsetHeight - $E('explorer_footer').offsetHeight - 2);
+        });
+        win.close(((app) => {
+            return function () {
+                app.unmount();
+            };
+        })(Humble.admin['services']['{{ window_id }}']));
+    })();
 </script>
