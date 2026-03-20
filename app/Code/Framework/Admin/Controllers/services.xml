@@ -10,9 +10,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="app" passalong="window_id">
             <description>The home page for the app</description>
-            <model namespace="admin" id="services" class="services" />
+            
         </action>
-
+   
         <!-- ############################################################### -->
         
         <action name="list" blocking="Off" output="JSON">

@@ -32,6 +32,7 @@ class Component extends CLI
      */
     public static function create() {
         $args       = self::arguments();
+        //@TODO: This...
     }
     
     /**
@@ -242,9 +243,9 @@ class Component extends CLI
     public static function check($namespace=false,$controller=false,$output='') {
         if ($namespace && $controller) {
             self::arguments([
-                'ns' => $namespace,
-                'cn' => $controller,
-                'out' => $output
+                'ns'    => $namespace,
+                'cn'    => $controller,
+                'out'   => $output
             ]);
             return self::syntaxCheck();
         }
