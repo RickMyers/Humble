@@ -1699,6 +1699,7 @@ SQL;
             throw new \Exceptions\MissingControllerXMLException("The Controller XML [".$source."] was not found.",20);
             print("Could not find source file: ".$source);
         }
+        return true;
     } 
 
     /**

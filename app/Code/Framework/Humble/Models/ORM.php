@@ -50,6 +50,17 @@ class ORM
      */
     public function unity($unity=false) {
         if ($unity === false) {
+            if (!$this->_unity) {
+                //This is a bit of a hack... a few helper tools need direct access to the DB, this gets them that without actually being an entity
+                $this->_unity = new class('\\Humble\\Helper') extends \Code\Framework\Humble\Entities\Unity {
+                    private $anon_class = null;
+                    public function __construct($a) {
+                        parent::__construct();
+                        $this->anon_class = $a;
+                    }
+                    public function className() {  return $this->anon_class; }
+                };
+            }
             return $this->_unity;
         }
         $this->_unity = $unity;
