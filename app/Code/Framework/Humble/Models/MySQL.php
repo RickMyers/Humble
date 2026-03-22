@@ -141,7 +141,7 @@ class MySQL extends ORM implements ORMEngine  {
                   $this->unity()->fromRow($pre = (($page-1) * $this->unity()->rows()));
                   $this->unity()->toRow($page * $this->unity()->rows());
                   $query .= ' limit '.$pre.','.$this->unity()->rows();
-             } else if ($this->cursor()) {
+             } else if ($this->unity()->cursor()) {
                  $query .= ' limit '.$this->unity()->rows();
              }
         }

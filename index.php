@@ -310,6 +310,6 @@ if (!$request_handled) {
     } catch (Exception $e) {
         \HumbleException::standard($e,"Error Encountered");
     } finally {
-        die();
+       // die();
     }
 }

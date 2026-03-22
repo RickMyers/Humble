@@ -14,7 +14,7 @@ $help = <<<HELP
  *      --restore     Restores the Humble framework into an existing (Humble based) project
  *      --contribute  Sets up your local environment (through docker) to be able to contribute to the Humble project
  *      --config      Writes apache config, needs servername= passed in
- *      --dockerme    Fetches a docker configuration, partially tailored
+ *      --dockerme    Creates a docker configuration, partially tailored (tailoring done remotely)
  *      --install     Retrieves a Humble.project file from the project hub by Serial Number
  *      --reregister  Gets a serial number for you application
  *      --driver      Download the Linux driver
@@ -26,6 +26,7 @@ function scrub($str) {
     $repl = ["","",""];
     return str_replace($srch,$repl,$str);
 }
+/* ----------------------------------------------------------------------------- */
 function humbleHeader() {
     $header = <<<HDR
 
@@ -37,6 +38,7 @@ function humbleHeader() {
 HDR;
     print($header);
 }
+
 /**
  * Randomly adds some spaces to the end of a word to help with the justify process
  * 
@@ -62,9 +64,9 @@ function HURL($URL,$args)	{
     switch ($protocol) {
             case "ssl"  :   
                 $opts['ssl'] = [
-                    "verify_peer"=>false,
-                    "verify_peer_name"=>false,
-                    "crypto_method" => STREAM_CRYPTO_METHOD_ANY_SERVER
+                    "verify_peer"       =>false,
+                    "verify_peer_name"  =>false,
+                    "crypto_method"     => STREAM_CRYPTO_METHOD_ANY_SERVER
                 ];
             //Note, no break here, so we are going to continue and add the HTTP options below to the array
             case "http" :   
@@ -211,7 +213,7 @@ function initializeProject() {
         $create_project = true;
         if (file_exists('Humble.project')) {
             print(justify('A Humble project exists already, do you wish to over write? [yes/no]:',100));
-           $create_project = (strtolower(scrub(fgets(STDIN))) === 'yes');
+            $create_project = (strtolower(scrub(fgets(STDIN))) === 'yes');
         }
         if ($create_project) {
             humbleHeader();
@@ -305,8 +307,8 @@ FACTORY;
     if (!file_exists('Humble.project')) {
         die("\n\n".'Project file not found.  Run "humble --init" to create the project file'."\n\n");
     }
-    $project    = json_decode(file_get_contents('Humble.project'));
-    if (!$remote     = json_decode(file_get_contents($project->framework_url.'/distro/version'))) {
+    $project        = json_decode(file_get_contents('Humble.project'));
+    if (!$remote    = json_decode(file_get_contents($project->framework_url.'/distro/version'))) {
         die('Could not get current version number of the framework, check connectivity issues'."\n");
     }
 
@@ -509,6 +511,7 @@ function dockerMe() {
         }
         $project['engine']  = $options[$engine] ?? 'MOD_PHP';                    //Attach selected engine or MOD_PHP by default
         $project['purpose'] = ($project['namespace'] === 'humble') ? 'Contribute' : 'Development';
+        $project['docker']  = 'Y';
         if ($package = HURL($project['framework_url'].'/distro/docker',$project)) {
             file_put_contents('docker_temp.zip',$package);
             $zip = new ZipArchive();

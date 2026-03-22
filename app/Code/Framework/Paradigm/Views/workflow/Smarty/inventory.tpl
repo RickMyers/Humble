@@ -1,12 +1,12 @@
 {assign var=inventory value=$workflows->inventory()}
 {
     "data": {
-        "rows":     "{$workflows->_rows()}",
-        "rowCount": "{$workflows->_rowCount()}",
-        "page":     "{$workflows->_page()}",
-        "pages":    "{$workflows->_pages()}",
-        "fromRow":  "{$workflows->_fromRow()}",
-        "toRow":    "{$workflows->_toRow()}"
+        "rows":     "{$workflows->rows()}",
+        "rowCount": "{$workflows->rowCount()}",
+        "page":     "{$workflows->page()}",
+        "pages":    "{$workflows->pages()}",
+        "fromRow":  "{$workflows->fromRow()}",
+        "toRow":    "{$workflows->toRow()}"
     },
     "diagrams": {$inventory}
 }

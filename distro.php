@@ -27,7 +27,10 @@
         $bind       = ((int)$port===80) ? '' : ' *:'.$port;
         $server     = $args['SERVER_NAME'] ?? ($parts[1] ?? 'localhost');
         $cont       = explode('/',$args['landing_page'])[2];
-        $basedir    = $args['current_dir']  ?? '';
+        $basedir    = '/var/www/html';
+        if (!isset($args['docker']) || ($args['docker'] !=='Y')) {
+            $basedir    = $args['current_dir']  ?? $args['destination_folder'];
+        }
         $path       = str_replace('\\','/',$basedir);
         if (strpos($path,':')!==false) { 
             $parts  = explode(':',$path);
