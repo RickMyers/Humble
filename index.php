@@ -243,7 +243,7 @@ if (!$request_handled) {
         } catch (Exception $e) {
             \HumbleException::standard($e, "Compilation Error");
         } finally {
-            die();
+           
         }
     }
 
@@ -310,6 +310,6 @@ if (!$request_handled) {
     } catch (Exception $e) {
         \HumbleException::standard($e,"Error Encountered");
     } finally {
-       // die();
+
     }
 }
