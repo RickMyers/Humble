@@ -1,0 +1,16 @@
+<div id="admin_live-{{ window_id }}" style="position: relative; background-color: #333; font-family: monospace; color: ghostwhite; font-size: .85em; overflow: auto">
+    {{ window_id }} hello world
+</div>
+<script>
+    (() => {
+        let win = Desktop.window.list['{{ window_id }}'];
+        win._title('Admin Live!');
+        alert(win.content.height());
+        win._resize(() => {
+            return function () {
+                $('#admin_live-{{ window_id }}').css('height',win.content.height()-4);
+            }      
+         }).resize();
+         
+    })();
+</script>

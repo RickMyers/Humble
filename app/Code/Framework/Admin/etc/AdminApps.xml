@@ -119,5 +119,19 @@
         <start>
             <uri>/admin/services/app</uri>
         </start>
-    </app>       
+    </app>    
+    <app>
+        <name>Admin Live!</name>
+        <description>Real-time updates of what is going on in the system (requires Node.js Message Hub to be running)</description>
+        <icon>
+            <text>Admin Live!</text>
+            <image>
+                <desktop>/images/admin/admin_live_icon.png</desktop>
+                <minimized>/images/admin/admin_live_icon.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/admin/live/app</uri>
+        </start>
+    </app>         
 </apps>

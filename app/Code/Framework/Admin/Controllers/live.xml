@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+Live-stream reporting on what is going on in the framework
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="live" use="Twig" author="Myers Rick" email="rick@humbleprogramming.com">
+    <actions blocking="OFF" response="true">
+        <action name="app" passalong="window_id">
+            <description>Main page</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>
+    
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
