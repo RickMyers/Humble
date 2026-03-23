@@ -152,6 +152,9 @@ var Paradigm = (function () {
             process: {
                 label: 'Process'
             },
+            joiner: {
+                label: ''
+            },
             begin: {
                 label: 'Start',
                 x: 74,
