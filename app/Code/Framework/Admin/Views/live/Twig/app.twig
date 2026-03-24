@@ -5,12 +5,15 @@
     (() => {
         let win = Desktop.window.list['{{ window_id }}'];
         win._title('Admin Live!');
-        alert(win.content.height());
         win._resize(() => {
             return function () {
                 $('#admin_live-{{ window_id }}').css('height',win.content.height()-4);
             }      
          }).resize();
+         win.close( () => {
+            alert('closing');
+            return true;
+         });
          
     })();
 </script>

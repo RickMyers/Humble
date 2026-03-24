@@ -14,6 +14,9 @@ var Functions = (() => {
                     return text.replace(/[A-Za-z0-9]/g, translate)
                 }
                 return {
+                    socketIO: () => {
+                        return socketio;
+                    },
                     menu: {
                         management: {
                             open: () => {
