@@ -1,7 +1,7 @@
 <div id="services_app_header-{{ window_id }}" class="p-2" style="background-color: #333; color: ghostwhite; font-family: sans-serif; text-align: right; padding-right: 10px">
     This is the header
 </div>
-<div id="sevices_app_body-{{ window_id }}" class="">
+<div id="services_app_body-{{ window_id }}" class="">
     <div id="services_app-{{ window_id }}">
     </div>
 </div>
@@ -9,59 +9,19 @@
     Services Explorer
 </div>
 <script type="text/javascript"> 
-    //This is for handling "multiplicity", as in multiple explorer apps open at one time
-    Humble.admin['services'] = (!Humble.admin['services']) ? {} : Humble.admin['services'];
-    Humble.admin['services']['{{ window_id }}'] = Vue.createApp({
-        template: Humble.template('admin','services/list'),
-        app: "#services_app-{{ window_id }}",
-        data() {
-                return {
-                    window_id: "{{ window_id }}",
-                    poll_timer: false,
-                    services: [
-                
-                    ]
-                }
-            },
-        mounted() {
-            alert('mounted');
-            this.poll();
-            console.log(this);
-        },
-        unmounted() {
-            this.stop();
-        },
-        methods: {
-            poll() {
-                let me = this;
-                this.start(me);
 
-            },
-            start(ref) {
-                this.poll_timer = window.setTimeout(() => {
-                    (new EasyAjax('/admin/services/list').then((response) => {
-                        console.log(response);
-                        ref.services = JSON.parse(response);
-                    }).get());
-                },5000);                
-            },
-            stop() {
-                window.clearTimeout(this.poll_timer);
-            },
-            restart() {
-            }
-        }
-    });
     (function () {
+        
         var win = Desktop.window.list['{{ window_id }}'];
-        Humble.admin['services']['{{ window_id }}'].mount('#'+win.content.id);
-     /*   win._title('Services Explorer').resize(() => {
-            $('#evices_app_body-{{ window_id }}').height(win.content.height() - $E('services_app_header-{{ window_id }}').offsetHeight - $E('services_app_footer-{{ window_id }}').offsetHeight - 2);
+       // Humble.admin['services']['{{ window_id }}'].mount('#'+win.content.id);
+        win._title('Services Explorer').resize(() => {
+            console.log('resizing');
+            $('#services_app_body-{{ window_id }}').height(win.content.height() - $E('services_app_header-{{ window_id }}').offsetHeight - $E('services_app_footer-{{ window_id }}').offsetHeight - 2);
         }).resize();
-        win.close((app) => {
+   /*     win.close(() => {  //app
             return function () {
-                app.unmount();
+              //  app.unmount();
             };
-        })(Humble.admin['services']['{{ window_id }}']);*/
+        })(); //Humble.admin['services']['{{ window_id }}']*/
     })();
 </script>
