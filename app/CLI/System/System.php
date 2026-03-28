@@ -50,6 +50,18 @@ class System extends CLI
     }
     
     /**
+     * Starts or stops the message hub
+     * 
+     * 
+     */
+    public static function messageHub() {
+        
+        shell_exec('ps -aux | grep "node main.js"');
+        
+        
+        return true;
+    }
+    /**
      * Toggles whether we are going to use local authentication or some form of SSO token
      */
     public static function toggleAuthentication() {

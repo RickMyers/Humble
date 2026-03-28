@@ -142,4 +142,14 @@ endproxy :
     directive: true
     parameters:
         required:
-        optional:            
+        optional:  
+hub : 
+    description: Starts or stops the Node.js socket based message hub
+    usage:
+        linux:   sudo sh ./humble.sh --hub
+        windows: humble --hub
+    function : messageHub
+    directive: true
+    parameters:
+        required:
+        optional:           

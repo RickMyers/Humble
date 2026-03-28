@@ -3,25 +3,84 @@
 </div>
 <div id="services_app_body-{{ window_id }}" class="">
     <div id="services_app-{{ window_id }}">
+        here
     </div>
 </div>
 <div id="services_app_footer-{{ window_id }}" class="" style="background-color: #333; color: ghostwhite; font-family: sans-serif; text-align: right; padding-right: 10px">
     Services Explorer
 </div>
+<div id="services_app_tool-{{ window_id }}"></div>
 <script type="text/javascript"> 
 
     (function () {
         
         var win = Desktop.window.list['{{ window_id }}'];
-       // Humble.admin['services']['{{ window_id }}'].mount('#'+win.content.id);
         win._title('Services Explorer').resize(() => {
-            console.log('resizing');
             $('#services_app_body-{{ window_id }}').height(win.content.height() - $E('services_app_header-{{ window_id }}').offsetHeight - $E('services_app_footer-{{ window_id }}').offsetHeight - 2);
         }).resize();
-   /*     win.close(() => {  //app
+        /*(new EasyAjax('/admin/services/tool')).add('window_id','{{ window_id }}').then((response) => {
+            $('#services_app_tool-{{ window_id }}').html(response);
+        }).get();*/
+    
+        Humble.admin['services'] = (!Humble.admin['services']) ? {} : Humble.admin['services'];
+        Humble.admin['services']['{{ window_id }}'] = Vue.createApp({
+            template: Humble.template('admin','services/list'),
+            app: "#services_app-{{ window_id }}",
+            data() {
+                    return {
+                        window_id: "{{ window_id }}",
+                        poll_timer: false,
+                        services: {
+
+                        }
+                    }
+                },
+            mounted() {
+                this.run();
+     /*           var f = ((me) => {
+                    return function () {
+                        console.log(me.services)
+                        me.services = { "service": "something", "running": 1};
+                        console.log(me.services);
+                    }
+                })(this);
+                window.setTimeout(f,5000);*/
+            },
+            unmounted() {
+                this.stop();
+            },
+            methods: {
+                poll() {
+                    this.poll_timer = window.setTimeout(this.run,3000);
+                },
+                update(data) {
+                    this.services = data;
+                },
+                run() {
+                    var me = this;
+                    (new EasyAjax('/admin/services/list').add('window_id','{{ window_id }}').then((response) => {
+                        if (response) {
+                            me.update(JSON.parse(response));
+                            console.log(me.services);
+                        }
+                       // me.poll();
+                    }).get());
+
+                },
+                stop() {
+                    window.clearTimeout(this.poll_timer);
+                },
+                restart() {
+                }
+            }
+        });
+        var win = Desktop.window.list['{{ window_id }}'];
+        console.log(win.close);
+        win.close( ((app) => {  
             return function () {
-              //  app.unmount();
-            };
-        })(); //Humble.admin['services']['{{ window_id }}']*/
+               app.unmount();
+            }
+        })(Humble.admin['services']['{{ window_id }}'])); 
+        Humble.admin['services']['{{ window_id }}'].mount('#services_app-{{ window_id }}');    
     })();
 </script>
