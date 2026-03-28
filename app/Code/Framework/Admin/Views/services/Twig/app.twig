@@ -11,17 +11,12 @@
 </div>
 <div id="services_app_tool-{{ window_id }}"></div>
 <script type="text/javascript"> 
-
     (function () {
         
         var win = Desktop.window.list['{{ window_id }}'];
         win._title('Services Explorer').resize(() => {
             $('#services_app_body-{{ window_id }}').height(win.content.height() - $E('services_app_header-{{ window_id }}').offsetHeight - $E('services_app_footer-{{ window_id }}').offsetHeight - 2);
         }).resize();
-        /*(new EasyAjax('/admin/services/tool')).add('window_id','{{ window_id }}').then((response) => {
-            $('#services_app_tool-{{ window_id }}').html(response);
-        }).get();*/
-    
         Humble.admin['services'] = (!Humble.admin['services']) ? {} : Humble.admin['services'];
         Humble.admin['services']['{{ window_id }}'] = Vue.createApp({
             template: Humble.template('admin','services/list'),
@@ -37,14 +32,7 @@
                 },
             mounted() {
                 this.run();
-     /*           var f = ((me) => {
-                    return function () {
-                        console.log(me.services)
-                        me.services = { "service": "something", "running": 1};
-                        console.log(me.services);
-                    }
-                })(this);
-                window.setTimeout(f,5000);*/
+                window.setTimeout(f,5000);
             },
             unmounted() {
                 this.stop();
@@ -61,7 +49,6 @@
                     (new EasyAjax('/admin/services/list').add('window_id','{{ window_id }}').then((response) => {
                         if (response) {
                             me.update(JSON.parse(response));
-                            console.log(me.services);
                         }
                        // me.poll();
                     }).get());
@@ -75,7 +62,6 @@
             }
         });
         var win = Desktop.window.list['{{ window_id }}'];
-        console.log(win.close);
         win.close( ((app) => {  
             return function () {
                app.unmount();
