@@ -55,8 +55,17 @@ class System extends CLI
      * @return bool
      */
     public static function messageHub() {
-        exec('ps -aux | grep "node main.js"',$output);
-        
+        if ($pid = \Environment::isRunning('node','main.js')) {
+            print("PID: ".$pid."\n");
+            if (file_exists('PIDS/sockets.pid')) {
+                @unlink('PIDS/sockets.pid');
+            }
+            if (!\Environment::isRunning('php','Proxy.php')) {
+                
+            }
+        } else {
+            exec('nohup node main.js > /dev/null 2>&1 &',$results);
+        }
         
         return true;
     }

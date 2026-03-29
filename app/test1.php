@@ -7,7 +7,17 @@ require "Code/Framework/Humble/includes/Constants.php";
 require "Code/Framework/Humble/includes/Custom.php";
 
 try {
-
+    if (Environment::isRunning('php','Cadence.php')) {
+        print('Cadence is running'."\n");
+    } else {
+        print('Cadence is NOT running'."\n");
+    }
+    if (Environment::isRunning('','main.js')) {
+        print('HUB is running'."\n");
+    } else {
+        print('HUB is NOT running'."\n");
+    }
+    
     ///print_r($x = Humble::model('admin/services')->list());
     //Environment::stopCommandProxy();
 } catch (Exception $ex) {

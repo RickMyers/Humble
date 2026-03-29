@@ -79,6 +79,30 @@ class Environment {
         }
         return $result;
     }
+    
+    /**
+     * Will tell you if a certain program is running in the background
+     * 
+     * @param string $driver
+     * @param string $program
+     * @return bool
+     */
+    public static function isRunning($driver=false,$program=false) {
+        $running    = false;
+        if ($program) {
+            $search     = ($driver) ? $driver.' '.$program : $program;
+            exec('ps -aux | grep "'.$search.'"',$results);
+            foreach ($results as $row) {
+                $row     = preg_replace('/\s+/', ' ', $row);
+                $section = explode(" ",$row);
+                if ($running = ((($driver) ? ($section[10]===$driver) : true) && ($section[11]===$program))) {
+                    $running = $section[1];
+                    break;
+                }
+            }
+        }
+        return $running;
+    }
 
     /**
      * A security verification mechanism used from the Command Proxy... basic, but it works
@@ -96,14 +120,17 @@ class Environment {
      * @return type
      */
     public static function killTask($pid = 0) {
-        $result = 'Error';
-        if (($proxy = self::application('proxy')) && $proxy->port && $pid) {            
-            self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
-     //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
-            socket_connect(self::$socket,$proxy->host,$proxy->port);
-            socket_write(self::$socket,json_encode(['command' => 'kill','token'=>self::securityToken(), 'PID' => $pid]));
-            $result = socket_read(self::$socket,1024);
-            socket_close(self::$socket);
+        $result = 'Error, unable to kill task'."\n";
+        if (self::isRunning('php','Proxy.php')) {
+            if (($proxy = self::application('proxy')) && $proxy->port && $pid) {            
+                self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+         //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
+                socket_connect(self::$socket,$proxy->host,$proxy->port);
+                socket_write(self::$socket,json_encode(['command' => 'kill','token'=>self::securityToken(), 'PID' => $pid]));
+                $result = socket_read(self::$socket,1024);
+                socket_close(self::$socket);
+            }
+        } else {
         }
         return $result;
     }
