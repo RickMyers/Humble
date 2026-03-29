@@ -52,11 +52,10 @@ class System extends CLI
     /**
      * Starts or stops the message hub
      * 
-     * 
+     * @return bool
      */
     public static function messageHub() {
-        
-        shell_exec('ps -aux | grep "node main.js"');
+        exec('ps -aux | grep "node main.js"',$output);
         
         
         return true;

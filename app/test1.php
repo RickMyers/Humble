@@ -8,8 +8,8 @@ require "Code/Framework/Humble/includes/Custom.php";
 
 try {
 
-    print_r($x = Humble::model('admin/services')->list());
-    
+    ///print_r($x = Humble::model('admin/services')->list());
+    //Environment::stopCommandProxy();
 } catch (Exception $ex) {
     print("Exception Ocurred\n");
     print_r($ex);
