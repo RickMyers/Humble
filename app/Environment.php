@@ -141,12 +141,14 @@ class Environment {
      * @return bool
      */
     public static function stopCommandProxy() {
-        if (($proxy = self::application('proxy')) && $proxy->port) {            
-            self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
-     //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
-            socket_connect(self::$socket,$proxy->host,$proxy->port);
-            socket_write(self::$socket,json_encode(['command' => 'end','token'=>self::securityToken()]));
-            socket_close(self::$socket);
+        if (self::isRunning('php','Proxy.php')) { 
+            if (($proxy = self::application('proxy')) && $proxy->port) {            
+                self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+         //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
+                socket_connect(self::$socket,$proxy->host,$proxy->port);
+                socket_write(self::$socket,json_encode(['command' => 'end','token'=>self::securityToken()]));
+                socket_close(self::$socket);
+            }
         }
         return true;
     }   
@@ -178,20 +180,22 @@ class Environment {
      */
     public static function saveFile($filename='',$source='') {
         $result = 'Error';
-        if (($proxy = self::application('proxy')) && $proxy->port && $filename) {           
-            self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
-            socket_bind(self::$socket, $proxy->host, $proxy->port);        
-            socket_listen(self::socket);
-            self::$client = socket_accept(self::$socket);
-            socket_write(self::$client,json_encode(['command' => 'save','token'=>self::securityToken(), 'filename' => $filename, 'data' => $source]));
-            $result = socket_read(self::$client,1024);
-            socket_close(self::$client);
-            socket_close(self::$socket);
+        if (self::isRunning('php','Proxy.php')) {
+            if (($proxy = self::application('proxy')) && $proxy->port && $filename) {           
+                self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+                socket_bind(self::$socket, $proxy->host, $proxy->port);        
+                socket_listen(self::socket);
+                self::$client = socket_accept(self::$socket);
+                socket_write(self::$client,json_encode(['command' => 'save','token'=>self::securityToken(), 'filename' => $filename, 'data' => $source]));
+                $result = socket_read(self::$client,1024);
+                socket_close(self::$client);
+                socket_close(self::$socket);
+            }
         }
     }
     
     /**
-     * 
+     * Switch "context", as in switch back and forth between something like laravel or wordpress, and humble
      * @param type $context
      */
     public static function context($context=false) {
@@ -450,7 +454,7 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return (!isset(self::$application->state) || (isset(self::$application->state) && (self::$application->state==='DEVELOPMENT')));
+        return (!isset(self::$application->state) || (isset(self::$application->state) && (self::$application->state === 'DEVELOPMENT')));
     }
 
     /**
@@ -474,7 +478,7 @@ class Environment {
         if (!self::$application) {
             self::loadApplicationMetaData();
         }
-        return (isset(self::$application->state) && (self::$application->state==='DEBUG'));
+        return (isset(self::$application->state) && (self::$application->state === 'DEBUG'));
     }
     
     /**
@@ -588,7 +592,6 @@ class Environment {
             case "0":
             case "":
                 $t_o_f = false;
-            
             default:
                 break;
         }

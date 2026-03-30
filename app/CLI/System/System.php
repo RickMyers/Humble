@@ -61,7 +61,7 @@ class System extends CLI
                 @unlink('PIDS/sockets.pid');
             }
             if (!\Environment::isRunning('php','Proxy.php')) {
-                
+                exec('kill '.$pid,$result);
             }
         } else {
             exec('nohup node main.js > /dev/null 2>&1 &',$results);
