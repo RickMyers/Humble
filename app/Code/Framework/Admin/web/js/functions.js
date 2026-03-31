@@ -589,7 +589,7 @@ var Functions = (() => {
                         Desktop.init(Desktop.enable);
                         Desktop.semaphore.init();
                         if (window.message_hub.host) {
-                            socketio = io(window.message_hub.host+':'+window.message_hub.port);
+                         /*   socketio = io(window.message_hub.host+':'+window.message_hub.port);
                             socketio.on('connect',function () {
                                 console.log('Connected to socket server');
                                 window.setTimeout(function () {
@@ -603,7 +603,7 @@ var Functions = (() => {
                             socketio.on('testEvent',(data) => {
                                 console.log(data);
                                 alert('testEvent');
-                            });
+                            });*/
                         }
                         let f = (() => {
                             return function (server) {
