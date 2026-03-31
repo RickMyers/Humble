@@ -95,6 +95,9 @@ class Environment {
             foreach ($results as $row) {
                 $row     = preg_replace('/\s+/', ' ', $row);
                 $section = explode(" ",$row);
+                if (strtolower($section[10]) === 'grep') {
+                    continue;
+                }
                 if ($running = ((($driver) ? ($section[10]===$driver) : true) && ($section[11]===$program))) {
                     $running = $section[1];
                     break;
@@ -131,6 +134,7 @@ class Environment {
                 socket_close(self::$socket);
             }
         } else {
+            exec('kill '.$pid,$result);
         }
         return $result;
     }

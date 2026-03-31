@@ -12,7 +12,7 @@ try {
     } else {
         print('Cadence is NOT running'."\n");
     }
-    if (Environment::isRunning('','main.js')) {
+    if (Environment::isRunning('node','main.js')) {
         print('HUB is running'."\n");
     } else {
         print('HUB is NOT running'."\n");

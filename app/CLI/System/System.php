@@ -56,7 +56,7 @@ class System extends CLI
      */
     public static function messageHub() {
         if ($pid = \Environment::isRunning('node','main.js')) {
-            print("PID: ".$pid."\n");
+            print('Attempting to stop HUB['.$pid.']'."\n");
             if (file_exists('PIDS/sockets.pid')) {
                 @unlink('PIDS/sockets.pid');
             }
@@ -64,9 +64,11 @@ class System extends CLI
                 exec('kill '.$pid,$result);
             }
         } else {
+            print('Attempting to start HUB'."\n");
+            chdir('../Hub');
             exec('nohup node main.js > /dev/null 2>&1 &',$results);
+            chdir('../app');
         }
-        
         return true;
     }
     /**
