@@ -17,7 +17,11 @@ try {
     } else {
         print('HUB is NOT running'."\n");
     }
-    
+    if (Environment::isRunning('php','Proxy.php')) {
+        print('Proxy is running'."\n");
+    } else {
+        print('Proxy is NOT running'."\n");
+    }    
     ///print_r($x = Humble::model('admin/services')->list());
     //Environment::stopCommandProxy();
 } catch (Exception $ex) {

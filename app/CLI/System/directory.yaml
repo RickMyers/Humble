@@ -132,21 +132,21 @@ sync :
     directive: true
     parameters:
         required:
-        optional:     
-endproxy : 
-    description: Connects to the Command Proxy and initiates the quiescing process
+        optional: 
+proxy : 
+    description: Toggles on/off the Command Proxy, must run at Super User [sudo] level
     usage:
-        linux:   sudo sh ./humble.sh --endproxy
-        windows: humble --endproxy
-    function : endProxy
+        linux:   sudo ./humble.sh --proxy
+        windows: humble --proxy
+    function : proxy
     directive: true
     parameters:
         required:
-        optional:  
+        optional:          
 hub : 
     description: Starts or stops the Node.js socket based message hub
     usage:
-        linux:   sudo sh ./humble.sh --hub
+        linux:   sh ./humble.sh --hub
         windows: humble --hub
     function : messageHub
     directive: true

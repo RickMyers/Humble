@@ -40,16 +40,6 @@ class System extends CLI
     }
     
     /**
-     * Connects to the command proxy and initiates the quiescing process
-     * 
-     * @return bool
-     */
-    public static function endProxy() {
-        \Environment::stopCommandProxy();
-        return true;
-    }
-    
-    /**
      * Starts or stops the message hub
      * 
      * @return bool
@@ -71,6 +61,29 @@ class System extends CLI
         }
         return true;
     }
+    
+    /**
+     * Attempts to start or stop the Command Proxy
+     * 
+     * @return bool
+     */
+    public static function proxy() {
+        if ($pid = \Environment::isRunning('php','Proxy.php')) {
+            print('Attempting to stop the Command Proxy['.$pid.']'."\n");
+            if (file_exists('PIDS/proxy.pid')) {
+                @unlink('PIDS/proxy.pid');
+            }
+            if ($pid = \Environment::isRunning('php','Proxy.php')) {
+                Environment::stopCommandProxy();
+            } 
+        } else {
+            print('Attempting to start the Command Proxy'."\n");
+            $result = shell_exec('nohup php Proxy.php > /dev/null 2>&1 &');
+            print($result."\n");
+        }
+        return true;        
+    }
+    
     /**
      * Toggles whether we are going to use local authentication or some form of SSO token
      */
