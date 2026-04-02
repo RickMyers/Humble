@@ -133,6 +133,16 @@ sync :
     parameters:
         required:
         optional: 
+watch|cadence : 
+    description: Starts or stops the system watch program [Cadence.php]
+    usage:
+        linux:   ./humble.sh --cadence
+        windows: humble --cadence
+    function : cadence
+    directive: true
+    parameters:
+        required:
+        optional:              
 proxy : 
     description: Toggles on/off the Command Proxy, must run at Super User [sudo] level
     usage:

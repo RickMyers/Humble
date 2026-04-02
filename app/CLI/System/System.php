@@ -38,6 +38,29 @@ class System extends CLI
             print("Not enough data was passed to create a user.  user_name and password are minimum required fields.\n");
         }
     }
+  
+    /**
+     * Starts or stops the system watch program [Cadence.php]
+     * 
+     * @return bool
+     */
+    public static function cadence() {
+        if ($pid = \Environment::isRunning('php','Cadence.php')) {
+            print('Attempting to stop Watch program ['.$pid.']'."\n");
+            if (file_exists('PIDS/cadence.pid')) {
+                @unlink('PIDS/cadence.pid');
+            }
+            if (!\Environment::isRunning('php','Proxy.php')) {
+                exec('kill '.$pid,$result);
+            } else {
+                \Environment::killTask($pid);
+            }
+        } else {
+            print('Attempting to start Watch program'."\n");
+            exec('nohup php Cadence.php > /dev/null 2>&1 &',$results);
+         }
+        return true;
+    }
     
     /**
      * Starts or stops the message hub
@@ -52,6 +75,8 @@ class System extends CLI
             }
             if (!\Environment::isRunning('php','Proxy.php')) {
                 exec('kill '.$pid,$result);
+            } else {
+                \Environment::killTask($pid);
             }
         } else {
             print('Attempting to start HUB'."\n");

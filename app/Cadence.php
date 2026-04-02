@@ -12,7 +12,7 @@ Let's just do something every so often...
 
 require_once "Humble.php";
 require_once('Code/Framework/Humble/includes/Constants.php');
-require_once("cli/Component/Component.php");
+require_once("CLI/Component/Component.php");
 
 $queryFlag                  = false;
 $controller                 = new Component();                                  //Used to syntax check a controller

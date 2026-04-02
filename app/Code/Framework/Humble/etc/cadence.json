@@ -9,7 +9,8 @@
             },
             "housekeeping": {
                 "callbacks": {
-                    "clearSystemStats": true
+                    "clearSystemStats": true,
+                    "cleanSDSFQueue": false
                 },
                 "multiple": 20 
             },
