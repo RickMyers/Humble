@@ -8,15 +8,21 @@
     .host-summarize-field {
         cursor: pointer; color: blue; font-weight: bolder
     }
+    .clear-action-button {
+        padding: 2px 10px; background-color: #cecece; border: 1px solid #bbb; border-radius: 2px
+    }    
 </style>
-<div style="font-weight: bold; font-size: 1.4em">{{ log.getLog() }} </div>
+{%  set summary = log.summarize() %}
+<button class="whois-action-button float-right clear-action-button mr-2"> Clear </button>
+<div style="font-weight: bold; font-size: 1.4em"> {{ log.getLog() }} </div>
+<div style="clear: both"></div>
 <div style="font-family: monospace; letter-spacing: 2px">
       Encounters: {{ log.getEncounters() }} -  Resources: {{ log.getResources() }} - Transfered: {{ log.getTransfered() }}
       {% for i in log.fetch() %}
           {{ i }}
       {% endfor %}
 </div>
-{% for host,entry in log.summarize() %}
+{% for host,entry in summary %}
     <div style="background-color: {{ cycle(['rgba(140,140,140,.1)', 'rgba(140,140,140,.3)'], loop.index0) }}; padding: 4px">
         <div><div style="display: inline-block; width: 20%; whitespace: no-wrap">
                 <div class="access-cell-title">Host</div>
@@ -57,12 +63,21 @@
             </div></div>    
 {% endfor %}
 <script>
-    $('.host-summarize-field').on('click',(evt)=>{
-       let win  = Desktop.semaphore.checkout(true);
-       let host = $(evt.target).attr('host');
-       win._title(host+' Whois')._open();
-       (new EasyAjax('/admin/access/whois')).add('window_id',win.id).add('host',host).then((response) => {
-           win.set(response);
-       }).post();
-    });
+    (()=>{ 
+        $('.clear-action-button').on('click',() => {
+            if (confirm('Clear the log?')) {
+                (new EasyAjax('/admin/access/clear')).add('log','{{ log.getLog() }}').then((response) => {
+                    alert(response);
+                }).post();                
+            }
+        });
+        $('.host-summarize-field').on('click',(evt)=>{
+           let win  = Desktop.semaphore.checkout(true);
+           let host = $(evt.target).attr('host');
+           win._title(host+' Whois')._open();
+           (new EasyAjax('/admin/access/whois')).add('window_id',win.id).add('host',host).then((response) => {
+               win.set(response);
+           }).post();
+        });
+    })();
 </script>
