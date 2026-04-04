@@ -6,6 +6,7 @@ namespace Code\Framework\Humble\Models;
  */
 interface ORMEngine {
     public function connect();
+    public function listEntities();
     public function query($query);
     public function buildWhereClause($useKeys);
     public function calculateStats($noLimitQuery,&$results);

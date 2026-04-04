@@ -168,8 +168,8 @@ class Environment {
         foreach (explode("\n",$services) as $idx => $service) {
             if ($service) {
                 $list[] = [
-                    'running' => substr($service,3,1)==='+',
-                    'service' => substr($service,8)
+                    'running'   => substr($service,3,1)==='+',
+                    'name'      => substr($service,8)
                 ];
             }
         }

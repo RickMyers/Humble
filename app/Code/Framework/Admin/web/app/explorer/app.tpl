@@ -7,7 +7,7 @@
       <table class="table table-striped">
       <thead>
         <tr>
-            <th scope="row"><button v-on:click="upDirectory">&lt;&lt;</button></th>
+          <th scope="row"><button v-on:click="upDirectory">&lt;&lt;</button></th>
           <th>Permissions</th>
           <th>Name</th>
           <th>Filesize</th>

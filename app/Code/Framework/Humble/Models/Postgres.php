@@ -28,9 +28,20 @@ class Postgres extends ORM implements ORMEngine
     public function connect() {
         
     }
+
     
     public function query($query='') {
         
+    }
+
+    /**
+     * Returns information, per DB engine, about the entities within
+     * 
+     * @return array
+     */
+    public function listEntities() {
+        $entities = [];
+        return $entities;
     }
     
     public function addLimit($page=1) {

@@ -47,10 +47,52 @@ class Services extends Model
             if ($service) {
                 $list[] = [
                     'running' => substr($service,3,1)==='+',
-                    'service' => substr($service,8)
+                    'name' => substr($service,8)
                 ];
             }
         }
         return $list;
     }
+    
+    /**
+     * Attempts to start a background service
+     * 
+     * @param string $service
+     * @return string
+     */
+    public function start($service=false) {
+        $result = '';
+        if ($service = ($service) ? $service : ($this->getService() ? $this->getService() : false)) {
+            \Log::console(shell_exec('service '.$service.' start'));
+        };
+        return $result;
+    }
+    
+    /**
+     * Attempts to stop a background service
+     * 
+     * @param string $service
+     * @return string
+     */
+    public function stop($service=false) {
+        $result = '';
+        if ($service = ($service) ? $service : ($this->getService() ? $this->getService() : false)) {
+            \Log::console(shell_exec('service '.$service.' stop'));
+        };
+        return $result;
+    }  
+    
+    /**
+     * Attempts to restart a background service
+     * 
+     * @param string $service
+     * @return string
+     */
+    public function restart($service=false) {
+        if ($service = ($service) ? $service : ($this->getService() ? $this->getService() : false)) {
+            \Log::console(shell_exec('service '.$service.' restart'));
+        };
+        return '';
+    }
+    
 }

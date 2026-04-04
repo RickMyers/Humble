@@ -28,6 +28,16 @@ class SQLServer extends ORM implements ORMEngine
     public function connect() {
         
     }
+
+    /**
+     * Returns information, per DB engine, about the entities within
+     * 
+     * @return array
+     */
+    public function listEntities() {
+        $entities = [];
+        return $entities;
+    }
     
     public function query($query='') {
         

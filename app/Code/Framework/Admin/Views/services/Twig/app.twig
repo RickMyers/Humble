@@ -32,14 +32,14 @@
                 },
             mounted() {
                 this.run();
-                window.setTimeout(f,5000);
             },
             unmounted() {
                 this.stop();
             },
             methods: {
                 poll() {
-                    this.poll_timer = window.setTimeout(this.run,3000);
+                    console.log('Polling services');
+                    this.poll_timer = window.setTimeout(this.run,5000);
                 },
                 update(data) {
                     this.services = data;
@@ -58,6 +58,37 @@
                     window.clearTimeout(this.poll_timer);
                 },
                 restart() {
+
+                },
+                startService(service) {
+                    if (confirm('Start service '+service+'?')) {
+                        var me = this;
+                        (new EasyAjax('/admin/services/start')).add('service',service).then((response) => {
+                            if (response) {
+                                me.update(JSON.parse(response));
+                            }                            
+                        }).post();
+                    }                    
+                },
+                stopService(service) {
+                    if (confirm('Stop service '+service+'?')) {
+                        var me = this;
+                        (new EasyAjax('/admin/services/stop')).add('service',service).then((response) => {
+                            if (response) {
+                                me.update(JSON.parse(response));
+                            }                            
+                        }).post();
+                    }                    
+                },
+                restartService(service) {
+                    if (confirm('Restart service '+service+'?')) {
+                        var me = this;
+                        (new EasyAjax('/admin/services/restart')).add('service',service).then((response) => {
+                            if (response) {
+                                me.update(JSON.parse(response));
+                            }                            
+                        }).post();
+                    }                    
                 }
             }
         });
