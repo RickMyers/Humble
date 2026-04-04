@@ -63,7 +63,7 @@ class Services extends Model
     public function start($service=false) {
         $result = '';
         if ($service = ($service) ? $service : ($this->getService() ? $this->getService() : false)) {
-            \Log::console(shell_exec('service '.$service.' start'));
+            \Log::console(\Environment::backgroundService('start',$service));
         };
         return $result;
     }
@@ -77,7 +77,7 @@ class Services extends Model
     public function stop($service=false) {
         $result = '';
         if ($service = ($service) ? $service : ($this->getService() ? $this->getService() : false)) {
-            \Log::console(shell_exec('service '.$service.' stop'));
+            \Log::console(\Environment::backgroundService('stop',$service));
         };
         return $result;
     }  
@@ -90,7 +90,7 @@ class Services extends Model
      */
     public function restart($service=false) {
         if ($service = ($service) ? $service : ($this->getService() ? $this->getService() : false)) {
-            \Log::console(shell_exec('service '.$service.' restart'));
+            \Log::console(\Environment::backgroundService('restart',$service));
         };
         return '';
     }

@@ -94,6 +94,16 @@ function banHost($host=false) {
     return $result;
 }
 /* ----------------------------------------------------------------------------- */
+function service($data=[]) {
+    $result   = 'Error';
+    $action   = isset($data['action'])  ? $data['action']  : false;
+    $service  = isset($data['service']) ? $data['service'] : false;
+    if ($action && $service) {
+        $result = shell_exec('service '.$service.' '.$action);
+    }
+    return $result;
+}
+/* ----------------------------------------------------------------------------- */
 function tailwind($data=[]) {
     $data = Humble::module($data['namespace']);
     print_r($data);
@@ -141,6 +151,15 @@ function setupOperations() {
                 'namespace' => 'Namespace of module to enable/start the tailwind monitor process'
             ]
         ],
+        'service' => [
+            'help'      => 'Performs an action [Start, Stop, Restart] on a background service',
+            'handler'   => 'service',
+            'response'  => true,
+            'arguments' => [
+                'action'  => 'Start, Stop, Restart',
+                'service' => 'The name of the service to perform the action on'
+            ]
+        ],        
         'end' => [
             'help'      => 'Quiesces [Shutdowns] the Command Proxy',
             'handler'   => 'endProxy',

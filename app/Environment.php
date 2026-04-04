@@ -139,6 +139,23 @@ class Environment {
         return $result;
     }
     
+    public static function backgroundService($action=false,$service=false) {
+        $result = 'Error';
+        if (self::isRunning('php','Proxy.php')) {
+            if (($proxy = self::application('proxy')) && $proxy->port && $action && $service) {            
+                self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+         //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
+                socket_connect(self::$socket,$proxy->host,$proxy->port);
+                socket_write(self::$socket,json_encode(['command' => 'service','token'=>self::securityToken(), 'service' => $service, 'action' => $action]));
+                $result = socket_read(self::$socket,1024);
+                socket_close(self::$socket);
+            }
+        } else {
+            $result = shell_exec('service '.$service.' '.$action);
+        }
+        return $result;        
+    }
+    
     /**
      * Passes the command proxy the command to shut down
      * 
