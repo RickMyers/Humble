@@ -48,8 +48,7 @@ var Humble = (() => {
             if (live) {
                 (new EasyAjax('/humble/template/fetch')).add('namespace',namespace).add('identifier',identifier).then((response) => {
                     template = response;
-                }).post(true);
-                alert(template);
+                }).post(false);
             } else {
                 let template = templates[namespace] ? (templates[namespace][identifier] ? templates[namespace][identifier] : '')  : '';
                 if (!template) {
