@@ -236,12 +236,20 @@ class MySQL extends ORM implements ORMEngine  {
         return $this->_dbref->query($qry);
     }
 
-    public function listEntities($namespace=false) {
-        $project = \Environment::project();
-        print_r($project);
-        $results = $this->_dbref('show table status from '.$project->namespace);
-        print_r($results);
-        die();
+    /**
+     * Lists 
+     * 
+     * @param string $namespace
+     * @return iterator
+     */
+    public function entities($namespace=false) {
+        $query = <<<QRY
+            SELECT * 
+            FROM information_schema.tables 
+            WHERE table_schema = '{$namespace}' 
+QRY;
+        $results = $this->unity()->query($query);
+        return $results;
     }
     
     /**

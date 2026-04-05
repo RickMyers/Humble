@@ -19,6 +19,10 @@ require_once 'Environment.php';
 
            CMD: sudo nohup php Proxy.php > /dev/null 2>&1 &
 
+           You can also start this utility using the CLI as shown here:
+  
+           CMD: sudo ./humble --proxy
+  
            This program supports only a few commands (like 'kill')
            and should never be modified or allowed to run arbitrary
            commands at the Command Line.
@@ -26,6 +30,10 @@ require_once 'Environment.php';
            Use of this program in the above way is not required but
            is recommended to get full framework functionality
  */
+require_once "Humble.php";
+require_once "Environment.php";
+require_once "Log.php";
+
 function initializeSocket() {
     global $socket, $proxy;
     $socket = socket_create(AF_INET, SOCK_STREAM, 0);
@@ -104,6 +112,16 @@ function service($data=[]) {
     return $result;
 }
 /* ----------------------------------------------------------------------------- */
+function entities($data=[]) {
+    $rows   = isset($data['rows']) ? $data['rows'] : false;
+    $page   = isset($data['page']) ? $data['page'] : false;
+    $entity = Humble::entity('humble/users'); 
+    if ($rows && $page) {
+        $entity->rows($rows)->page($page);
+    }
+    return $entity->listEntities();
+}
+/* ----------------------------------------------------------------------------- */
 function tailwind($data=[]) {
     $data = Humble::module($data['namespace']);
     print_r($data);
@@ -159,7 +177,16 @@ function setupOperations() {
                 'action'  => 'Start, Stop, Restart',
                 'service' => 'The name of the service to perform the action on'
             ]
-        ],        
+        ], 
+        'entities' => [
+            'help'      => 'Returns data about the entities on this system',
+            'handler'   => 'entities',
+            'response'  => true,
+            'arguments' => [
+                'page' => 'Page number if pagination is employed',
+                'rows' => 'Rows to return if pagination is employed'
+            ]
+        ],          
         'end' => [
             'help'      => 'Quiesces [Shutdowns] the Command Proxy',
             'handler'   => 'endProxy',
