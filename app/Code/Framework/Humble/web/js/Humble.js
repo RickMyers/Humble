@@ -50,7 +50,7 @@ var Humble = (() => {
                     template = response;
                 }).post(false);
             } else {
-                let template = templates[namespace] ? (templates[namespace][identifier] ? templates[namespace][identifier] : '')  : '';
+                template = templates[namespace] ? (templates[namespace][identifier] ? templates[namespace][identifier] : '')  : '';
                 if (!template) {
                     console.log('Attempt to fetch template ['+namespace+','+identifier+'] failed, the template was not found');
                 }
