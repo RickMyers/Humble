@@ -295,7 +295,7 @@ class Utility extends Model
         //need to look for other custom controller template as well...
         $project        = \Environment::project();
         $application    = \Environment::application();
-        $engine         = $this->getEngine() ? $this->getEngine() : ($application['default']['templater'] ?? "Smarty"); //check for what the default templating engine is and if not found, default to Smarty
+        $engine         = $this->getEngine() ? $this->getEngine() : ($application->default->templater ?? "Smarty"); //check for what the default templating engine is and if not found, default to Smarty
         $templates      = [];
         $main           = Humble::module($project->namespace);
         $current        = Humble::module($this->_namespace());

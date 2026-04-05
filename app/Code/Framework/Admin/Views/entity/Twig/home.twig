@@ -11,7 +11,7 @@
     <div class="entity_list_{{ window_id }} overflow-auto">
         List
     </div>
-    <div class="entity_footer_{{ window_id }} p1 bg-[#333333]">
+    <div class="entity_footer_{{ window_id }} p1 bg-[#333333] text-white">
         Row <span v-bind:id="fromRow"></span> to <span v-bind:id="toRow"></span> 
     </div>
 </form>
@@ -28,9 +28,8 @@
         ).resize();
         Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
         Humble.admin['entity']['{{ window_id }}'] = Vue.createApp({
-            template: Humble.template('admin',"entity/list"),
+            template: Humble.template('admin',"entity/list",true),
             app: $('.entity_list_{{ window_id }}').get()[0],
-           
             form: $('#entity_explorer_form_{{ window_id }}').get(),
             data() {
                 return {
@@ -48,7 +47,7 @@
                     list:       list,
                     window_id:  '{{ window_id }}',
                     entities:   [],
-                    headerGenerated: false,                    
+                    headers:    false,                    
                 }
             },
             mounted() {
@@ -64,6 +63,10 @@
                     ao.add('page',app.page).add('rows',app.rows).add('window_id',this.window_id).then((response)=>{
                         if (response) {
                             app.entities = JSON.parse(response);
+                            app.headers  = [];
+                            for (var i in app.entities[0].length) {
+                                app.headers[app.headers.length] = i;
+                            }
                             let p = ao.getPagination();
                             app.pages       = p.pages.total;
                             app.fromRow     = p.rows.from;

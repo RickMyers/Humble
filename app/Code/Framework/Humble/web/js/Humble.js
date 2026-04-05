@@ -3,7 +3,7 @@ var Humble = (() => {
     var templates   = [];
     var vars        = [];    
     return {
-        init:(callback) => {
+        init: (callback) => {
             var me = this;
             (new EasyAjax('/paradigm/templates/fetch')).then((response) => {
                 var tpls = JSON.parse(response);
@@ -43,10 +43,18 @@ var Humble = (() => {
                 console.log(vars);
             }
         },        
-        template:  (namespace,identifier) => {
-            let template = templates[namespace] ? (templates[namespace][identifier] ? templates[namespace][identifier] : '')  : '';
-            if (!template) {
-                console.log('Attempt to fetch template ['+namespace+','+identifier+'] failed, the template was not found');
+        template:  (namespace,identifier,live) => {
+            let template = '';
+            if (live) {
+                (new EasyAjax('/humble/template/fetch')).add('namespace',namespace).add('identifier',identifier).then((response) => {
+                    template = response;
+                }).post(true);
+                alert(template);
+            } else {
+                let template = templates[namespace] ? (templates[namespace][identifier] ? templates[namespace][identifier] : '')  : '';
+                if (!template) {
+                    console.log('Attempt to fetch template ['+namespace+','+identifier+'] failed, the template was not found');
+                }
             }
             return template;
         }

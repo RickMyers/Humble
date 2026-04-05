@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+
+Live fetches a template
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="template" use="Twig" author=" " email="">
+    <actions>
+        
+        <action name="fetch" response="true" blocking="false">
+            <description>Fetches a template in real time</description>
+            <helper class="template" method="fetchTemplate">
+                <parameter name="namespace" source="request" required="true" />
+                <parameter name="identifier" source="request" required="true" />
+            </helper>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
