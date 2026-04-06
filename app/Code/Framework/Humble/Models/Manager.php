@@ -123,5 +123,6 @@ class Manager extends Model
             $util->setDescription($this->getDescription())->setActionDescription($this->getActionDescription())->setNamespace($parts[1])->setEngine('Smarty')->setName($parts[2])->setAction($parts[3])->createController(true,true);
         }
         return $this;
-    }    
+    } 
+    
 }

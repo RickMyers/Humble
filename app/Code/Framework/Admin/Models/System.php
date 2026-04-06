@@ -359,4 +359,19 @@ class System extends Model
         return $stats;    
     }
     
+    /**
+     * Cross references an entity list to the individual entity (useful for some admin tools);
+     * 
+     * @return array
+     */
+    public function listEntities() {
+        $entities   = [];
+        $source     = Humble::entity('humble/users');   //Can  be any table
+        $source->page($this->getPage());
+        $source->rows($this->getRows());
+        foreach ($source->listEntities() as $entity) {
+            $entities[$entity['TABLE_NAME']] = $entity;
+        }
+        return json_encode($entities,JSON_PRETTY_PRINT);
+    }    
 }

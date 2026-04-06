@@ -15,10 +15,11 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         <!-- ############################################################### -->
 
         <action name="list" output="JSON" response="true" passalong="window_id">
-            <description>The main page</description>
-            <entity class="users" method="listEntities" id="something" rows="rows" page="page">
-                
-            </entity>
+            <description>Lists the entities in our database</description>
+            <model namespace='admin' class="system" method="listEntities" id="something">
+                <parameter name="rows" optional="true" source="request" />
+                <parameter name="page" optional="true" source="request" />
+            </model>
         </action>
         
     </actions>

@@ -1,3 +1,11 @@
+<style type="text/css">
+    .zebra-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }  
+    .text-cell:hover {
+        border: 1px solid #777
+    }
+</style>
 <form nohref onsubmit="return false" id="entity_explorer_form_{{ window_id }}">
     <div class="entity_header_{{ window_id }} text-white align-right bg-[#333333] p-1">
         Header
@@ -5,14 +13,26 @@
     <div class="entity_query_{{ window_id }} p-1">
         <textarea class="p1" style="width: 100%; height: 300px; font-family: monospace; background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
     </div>
-    <div class="entity_query_controls_{{ window_id }} p1 text-white bg-[#333333]">
+    <div class="entity_query_controls_{{ window_id }} p-1 text-white bg-[#333333]">
         Controls
     </div>
     <div class="entity_list_{{ window_id }} overflow-auto">
         List
     </div>
-    <div class="entity_footer_{{ window_id }} p1 bg-[#333333] text-white">
-        Row <span v-bind:id="fromRow"></span> to <span v-bind:id="toRow"></span> 
+    <div class="entity_footer_{{ window_id }} p-1 bg-[#333333] text-white">
+        <div class="float-left">
+            Row <span v-bind:id="fromRow">1</span> to <span v-bind:id="toRow">2</span> of <span v-bind:id="rows">100</span>
+        </div> 
+        <div class="float-right">
+            Page <span v-bind:id="page">1</span> of <span v-bind:id="pages">10</span> 
+        </div>         
+        <div class="text-center">
+            <button> << </button>
+            <button> < </button>
+            <input type="text" class="w-12" style="background-color: lightcyan" v-bind:id="page" />
+            <button> > </button>
+            <button> >> </button>
+        </div>
     </div>
 </form>
 <script type="text/javascript">
@@ -62,12 +82,16 @@
                     var ao = new EasyAjax('/admin/entity/list') 
                     ao.add('page',app.page).add('rows',app.rows).add('window_id',this.window_id).then((response)=>{
                         if (response) {
-                            app.entities = JSON.parse(response);
-                            app.headers  = [];
-                            for (var i in app.entities[0].length) {
-                                app.headers[app.headers.length] = i;
+                            let entities = JSON.parse(response);
+                            app.entities = entities;
+                            let headers  = [];
+                            for (var i in entities[0]) {
+                                headers[headers.length] = i;
                             }
+                            
+                            app.headers = headers;
                             let p = ao.getPagination();
+                            console.log(p);
                             app.pages       = p.pages.total;
                             app.fromRow     = p.rows.from;
                             app.toRow       = p.rows.to;
