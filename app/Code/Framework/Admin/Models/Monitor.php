@@ -184,8 +184,8 @@ class Monitor extends Model
         $results    = $this->scrunchResults($results);
         $processes  = $this->scrunchResults($processes);
         $search     = $this->getProcessName();
-        $xref    = [];
-        $pids = count($processes);
+        $xref       = [];
+        $pids       = count($processes);
         for ($j=1; $j<$pids; $j++) {
             $pid    = (int)$processes[$j][1];
             $cmd    = '';
@@ -198,5 +198,20 @@ class Monitor extends Model
             'system'    =>$this->parseStatus($results),
             'processes' =>$this->parseProcesses($results,$xref,$search)
         ],JSON_PRETTY_PRINT);
+    }
+    
+    /**
+     * Attempts to kill a task
+     * 
+     * @param int $pid
+     * @return string
+     */
+    public function taskKill($pid=false) {
+        $result  = '';
+        if ($pid = ($pid) ? $pid : ($this->getPid() ? $this->getPid() : false)) {
+            $result = \Environment::killTask($pid);
+            \Log::console($result);
+        }
+        return $result;
     }
 }

@@ -7,6 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 -->
 <controller name="monitor" use="Twig" author="rmyers Rick" email="rick@humbleprogramming.com">
     <actions>
+        
         <action name="app" passalong="window_id">
             <description>The App Home Page</description>
             <!-- Entity, Helper, Model, Conditional declarations begin here -->
@@ -20,5 +21,15 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
                 <parameter name="process_name" optional="true" source="request" />
             </model>
         </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="kill" blocking="off">
+            <description>Kills a task</description>
+            <model namespace="admin" class="monitor" method="taskKill">
+                <parameter name="pid" source="request" required="true" />
+            </model>
+        </action>
+        
     </actions>
 </controller>

@@ -47,8 +47,10 @@
                 window.clearTimeout(this.monitor_timer);
             },
             kill(pid) {
+                let me = this;
+                window.clearTimeout(this.monitor_timer);
                 (new EasyAjax('/admin/monitor/kill')).add('pid',pid).then((response) => {
-                    
+                    me.poll();
                 }).post();
                 //Kill a process
             }

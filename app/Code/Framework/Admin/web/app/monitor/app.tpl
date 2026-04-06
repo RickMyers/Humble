@@ -177,7 +177,7 @@
             </thead>
             <tbody>
                 <tr v-for="(process,i) in processes" :key="i" class='p-2'>
-                    <td class='text-center p-2'> <button class="bg-red-500 text-white rounded pt-1 pr-2 pl-2 pb-1"> X </button> </td>
+                    <td class='text-center p-2'> <button v-on:click="kill(process.PID)" class="bg-red-500 text-white rounded pt-1 pr-2 pl-2 pb-1"> X </button> </td>
                     <td class='text-center p-2'>{{ process.PID }} </td>
                     <td class='text-center p-2'>{{ process.owner }} </td>
                     <td class='text-center p-2'>{{ process.priority }} </td>

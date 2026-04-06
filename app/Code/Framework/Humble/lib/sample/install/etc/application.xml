@@ -33,7 +33,17 @@
     <admin>
         <apps>
             <File_Explorer>1</File_Explorer>
-            <Entity_Explorer>1</Entity_Explorer>
+            <Entity_Explorer>
+                <enabled>1</enabled>
+                <commands>
+                    <select>1</select>
+                    <update>1</update>
+                    <delete>0</delete>
+                    <drop>0</drop>
+                    <truncate>0</truncate>
+                    <create>1</create>
+                </commands>
+            </Entity_Explorer>
             <Access_Log_Explorer>1</Access_Log_Explorer>
             <Services_Explorer>1</Services_Explorer>
         </apps>
