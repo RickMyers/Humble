@@ -142,18 +142,16 @@ class Log extends Helper
      * @return iterator
      */
     public function availableUserLogs() {
-        $logs = [];
+        $logs    = [];
         $project = \Environment::project();
-        $users = '../../logs/'.$project->namespace.'/users';
-
-        $dh = dir($users);
+        $dh      = dir('../../logs/'.$project->namespace.'/users');
         while ($entry = $dh->read()) {
             if (($entry=='.') || ($entry=='..') || ($entry=='anonymous.log')) {
                 continue;
             }
             $logs[] = str_replace('.log','',$entry);
         }
-        return \Humble::entity('default/users')->usersById($logs);
+        return \Humble::entity('users')->usersById($logs);
     }
 
     /**
@@ -217,10 +215,10 @@ class Log extends Helper
             $this->report[$host] = $this->initializeReportEntry();
         }
         $this->report[$host]['encounters']++;
-        $this->report[$host]['statuses'][$entry['status']]  = isset($this->report[$host]['statuses'][$entry['status']]) ? $this->report[$host]['statuses'][$entry['status']]+1 : 1;
-        $this->report[$host]['methods'][$entry['method']]   = isset($this->report[$host]['methods'][$entry['method']])  ? $this->report[$host]['methods'][$entry['method']]+1 : 1;
+        $this->report[$host]['statuses'][$entry['status']]    = isset($this->report[$host]['statuses'][$entry['status']]) ? $this->report[$host]['statuses'][$entry['status']]+1 : 1;
+        $this->report[$host]['methods'][$entry['method']]     = isset($this->report[$host]['methods'][$entry['method']])  ? $this->report[$host]['methods'][$entry['method']]+1 : 1;
         $this->report[$host]['resources'][$entry['resource']] = $entry['status'];
-        $this->report[$host]['transfered']                  += (int)$entry['size'];
+        $this->report[$host]['transfered']                    += (int)$entry['size'];
     }
     
     /**
@@ -285,11 +283,50 @@ class Log extends Helper
         return $files;
     }
     
+    public function clearAccessLog() {
+        $log    = $this->log();
+        $host   = $this->host();
+    }
+    /**
+     * Runs the 'whois' command to get information about a host/ip
+     * 
+     * @param string $host
+     * @return string
+     */
     public function whois($host=false) {
         $result = '';
         if ($host = ($host) ? $host : $this->getHost()) {
             $result = shell_exec('whois '.$host);
         }
         return $result;
+    }
+    
+    /**
+     * 
+     * 
+     * @param string $host
+     * @return string
+     */
+    public function permaban($host=false) {
+        $result = '';
+        if ($host = ($host) ? $host : $this->getHost()) {
+            $result = shell_exec('whois '.$host);
+        }
+        return $result;
+    }
+    
+    /**
+     * 
+     * 
+     * @param string $host
+     * @return string
+     */    
+    public function sevendayban() {
+        $result = '';
+        if ($host = ($host) ? $host : $this->getHost()) {
+            $result = shell_exec('whois '.$host);
+        }
+        return $result;
+        
     }
 }
