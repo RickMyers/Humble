@@ -84,11 +84,11 @@
     No Services
 {/foreach}
 <script type="text/javascript">
-    Services.rows = {$services->_rowCount()};
-    Services.fromRow = {$services->_fromRow()};
-    Services.toRow = {$services->_toRow()};
-    Services.pages = {$services->_pages()};
-    Services.currentPage = {$services->_page()};
+    Services.rows = {$services->rowCount()};
+    Services.fromRow = {$services->fromRow()};
+    Services.toRow = {$services->toRow()};
+    Services.pages = {$services->pages()};
+    Services.currentPage = {$services->page()};
     $('#current-page').html(Services.currentPage);
     $('#from-row').html(Services.fromRow);
     $('#to-row').html(Services.toRow);

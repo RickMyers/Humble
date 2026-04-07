@@ -10,14 +10,14 @@ function manageView($controller,$templater,$tpl) {
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
-    $template = $smarty->template_dir[0].'/'.$tpl.'.tpl';
+    $template = $smarty->getTemplateDir()[0].'/'.$tpl.'.tpl';
     if (file_exists($template))  {
         foreach ($models as $handle => $modelVar) {
             $smarty->assign($handle,$modelVar);
         }
         $smarty->display($tpl.'.tpl');
     }
-    $smarty->template_dir = $original_template_directory;
+    $smarty->setTemplateDir($original_template_directory);
 }
 //------------------------------------------------------------------------------
 //If there are multiple requested views, process those, else look to see if 

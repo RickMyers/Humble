@@ -126,7 +126,7 @@ class System extends CLI
      * 
      * @return string
      */
-    public static function clear() {
+    public static function clearControllers() {
         $ctr = 0;
         foreach($modules = \Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             $cache_dir = 'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module['controller_cache'];
@@ -141,8 +141,33 @@ class System extends CLI
                 }
             } 
         }
-        return "Cached Items Cleared: ".$ctr;
+        return "Cached Controllers Cleared: ".$ctr;
     }
+
+    /**
+     * Clears the controller cache for all active modules
+     * 
+     * @return string
+     */
+    public static function clearViews() {
+        $ctr    = 0;
+        $dirs   = 0;
+        $dir    = Humble::helper('humble/directory');        
+        foreach($modules = \Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
+            $cache_dir = 'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module['views_cache'];
+            if (is_dir($cache_dir)) {
+                foreach ($dir->contents($cache_dir,true) as $entry) {
+                    unlink($entry);
+                    $ctr++;
+                }
+                foreach($dir->listSubDirectories($cache_dir,true) as $entry) {
+                    rmdir($entry);
+                    $dirs++;
+                }
+            } 
+        }
+        return "$ctr Views Cleared and $dirs Directories Removed";
+    } 
     
     /**
      * Toggles the application status

@@ -30,17 +30,28 @@ s :
     parameters:
         required:
         optional:
-ccc:
+ccc|controllers:
     description: Clear Controller Cache
-    extended: This action deletes all of the compile controllers forcing recompilation next time they are invoked
+    extended: This action deletes all of the compiled controllers forcing recompilation next time they are invoked
     usage:
         linux:   sudo sh ./humble.sh --ccc
         windows: humble --ccc 
-    function : clear
+    function : clearControllers
     directive: true
     parameters:
         required:
         optional:
+cvc|views:
+    description: Clear Views Cache
+    extended: This action deletes all of the generated views forcing regeneration next time they are viewed
+    usage:
+        linux:   sudo sh ./humble.sh --cvc
+        windows: humble --cvc 
+    function : clearViews
+    directive: true
+    parameters:
+        required:
+        optional:          
 adduser : 
     description: Create a user in the humble user directory
     usage: 

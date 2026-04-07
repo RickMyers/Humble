@@ -1,15 +1,23 @@
 <?php
 require_once('vendor/smarty/smarty/libs/Smarty.class.php');
-$smarty 	= new Smarty();
+use Smarty\Smarty;
+$smarty = new Smarty();
 
-$original_template_directory = $smarty->template_dir = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$controller.'/'.$templater;
-$smarty->compile_dir  = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views_cache']);
-$smarty->config_dir   = 'lib/templaters/Smarty/config';
-$smarty->cache_dir    = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views_cache']);
-if (!is_dir($smarty->cache_dir)) {
-    @mkdir($smarty->cache_dir);
+$smarty->setTemplateDir($original_template_directory = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$controller.'/'.$templater);
+$smarty->setCompileDir('Code/'.$module['package'].'/'.str_replace('_','/',$module['views_cache']));
+$smarty->setConfigDir('lib/templaters/Smarty/config');
+$smarty->setCacheDir($cache_dir = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views_cache']));
+
+if (!is_dir($cache_dir)) {
+    @mkdir($cache_dir);
 }
-$smarty->registerPlugin("modifier","ucfirst", "ucfirst");
-$smarty->registerPlugin("modifier","json_encode", "json_encode");
-$smarty->registerPlugin("modifier","json_decode", "json_decode");
+
+if (is_dir('lib/Smarty')) {
+    if (file_exists('lib/Smarty/Config.php')) {
+        require_once('lib/Smarty/Config.php');
+    }
+    if (file_exists('lib/Smarty/Plugins.php')) {
+        require_once('lib/Smarty/Plugins.php');
+    } 
+}
 ?>

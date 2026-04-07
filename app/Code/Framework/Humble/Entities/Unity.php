@@ -551,7 +551,7 @@ SQL;
          select FOUND_ROWS()
 SQL;
         $rows = $this->engine()->query($query);
-        $this->_rowCount($rows[0]['FOUND_ROWS()']);
+        $this->rowCount($rows[0]['FOUND_ROWS()']);
         return $results;
     }
 
@@ -1434,21 +1434,21 @@ SQL;
             $data       = $revisions->reset()->setId($id)->_polyglot(true)->load();
             $history    = (isset($data['revision_history'])) ? $data['revision_history'] : [];
             if ($this->page()) {
-                $this->_rowCount(count($history));
+                $this->rowCount(count($history));
                 $this->addLimit($this->page());
-                if ($this->toRow() > $this->_rowCount()) {
-                    $this->toRow($this->_rowCount());
+                if ($this->toRow() > $this->rowCount()) {
+                    $this->toRow($this->rowCount());
                 }
                 $this->fromRow($this->rows() * ($this->page()-1)+1);
                 $this->_headers(['pagination' => json_encode([
                     'rows' => [
                         'from'  => $this->fromRow(),
                         'to'    => $this->toRow(),
-                        'total' => $this->_rowCount()
+                        'total' => $this->rowCount()
                     ],
                     'pages' => [
                         'current' => $this->page(),
-                        'total'   => $this->_pages()
+                        'total'   => $this->pages()
                     ]
                 ])]);
             }
