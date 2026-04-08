@@ -8,6 +8,14 @@
         <div class='text-sm'>
             <div class='w-1/2 inline-block p-0 m-0'>
                 <div class='text-center bg-gray-400'>
+                    
+                        <div style="display: none" class="cursor-pointer float-left display-none" v-on:click="startPolling" v-bind:id="start_icon">
+                            <img src="/images/admin/service_start_icon.png" title="Start Polling" alt="Start Polling" class="w-5" />
+                        </div>
+                        <div class="cursor-pointer float-left" v-on:click="stopPolling" v-bind:id="stop_icon">
+                            <img src="/images/admin/service_stop_icon.png" title="Stop Polling" alt="Stop Polling"  class="w-5" />
+                        </div >
+                    
                     Basic Status
                 </div>
                 <div class='inline-block w-1/4'>
@@ -177,7 +185,7 @@
             </thead>
             <tbody>
                 <tr v-for="(process,i) in processes" :key="i" class='p-2'>
-                    <td class='text-center p-2'> <button v-on:click="kill(process.PID)" class="bg-red-500 text-white rounded pt-1 pr-2 pl-2 pb-1"> X </button> </td>
+                    <td class='text-center p-2'> <button v-on:click="kill(process.PID)" class="bg-red-500 text-white text-sm rounded pt-1 pr-2 pl-2 pb-1"> X </button> </td>
                     <td class='text-center p-2'>{{ process.PID }} </td>
                     <td class='text-center p-2'>{{ process.owner }} </td>
                     <td class='text-center p-2'>{{ process.priority }} </td>

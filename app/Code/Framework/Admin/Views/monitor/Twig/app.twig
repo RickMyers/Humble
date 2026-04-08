@@ -2,13 +2,15 @@
     //This is for handling "multiplicity", as in multiple monitor apps open at one time
     Humble.admin['monitor'] = (!Humble.admin['monitor']) ? {} : Humble.admin['monitor'];
     Humble.admin['monitor']['{{ window_id }}'] = Vue.createApp({
-        template: Humble.template('admin','monitor/app'),
+        template: Humble.template('admin','monitor/app',true),
         app: "#system_monitor",
         data() {
                 return {
                     window_id: "{{ window_id }}",
                     monitor_timer: null,
                     process_name: '',
+                    start_icon: "{{ window_id }}-start-icon",
+                    stop_icon:  "{{ window_id }}-stop-icon",
                     system: [
                 
                     ],
@@ -20,6 +22,8 @@
         mounted() {
             this.poll();
             let me = this;
+            this.start_icon = document.getElementById('{{ window_id }}-start-icon');
+            this.stop_icon  = document.getElementById('{{ window_id }}-stop-icon');
             $('#process-search-field').on("keydown",function (evt) {
                 if (evt.keyCode == 13) {
                     me.process_name = evt.target.value;
@@ -34,6 +38,7 @@
         methods: {
             poll() {
                 let me = this;
+                console.log('Polling...');
                 (new EasyAjax('/admin/monitor/status')).add('process_name',this.process_name).then((response) => {
                     let results = JSON.parse(response);
                     if (results) {
@@ -43,18 +48,23 @@
                     }
                 }).post();
             },
-            stop() {
+            stopPolling() {
+                $(this.stop_icon).css('display','none');
+                $(this.start_icon).css('display','block');
                 window.clearTimeout(this.monitor_timer);
             },
+            startPolling() {
+                $(this.start_icon).css('display','none');
+                $(this.stop_icon).css('display','block');
+                this.poll();
+            },
             kill(pid) {
-                let me = this;
-                window.clearTimeout(this.monitor_timer);
+                let app = this;
+                this.stopPolling();
                 (new EasyAjax('/admin/monitor/kill')).add('pid',pid).then((response) => {
-                    me.poll();
+                    app.startPolling();
                 }).post();
-                //Kill a process
             }
-            
         }
     });
     var win = Desktop.window.list['{{ window_id }}'];
