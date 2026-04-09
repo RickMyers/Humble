@@ -22,6 +22,7 @@
         <host default="127.0.0.1">0.0.0.0</host>
         <util options="ufw,iptables,firewalld"></util>        
         <port>0</port>
+        <services options="service,systemctl"></services>
     </proxy>  
     <msa>
         <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application (NOT FULLY IMPLEMENTED!)-->

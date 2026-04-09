@@ -213,12 +213,13 @@ function showHelp() {
 }
 /* ----------------------------------------------------------------------------- */
 Main:
-    $TEST_MODE = false;
-    $proxy  = Environment::application('proxy');
+    $TEST_MODE      = false;
+    $proxy          = Environment::application('proxy');
+    $service        = $proxy->services;
     if (!$proxy->port) {
         die("\nCommand Proxy is not configured\n");
     }
-    $operations = setupOperations();
+    $operations     = setupOperations();
     if (count($argv)>1) {
         switch (strtolower($argv[1])) {
             

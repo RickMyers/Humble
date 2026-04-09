@@ -139,6 +139,12 @@ class Environment {
         return $result;
     }
     
+    /**
+     * 
+     * @param string $action
+     * @param string $service
+     * @return string
+     */
     public static function backgroundService($action=false,$service=false) {
         $result = 'Error';
         if (self::isRunning('php','Proxy.php')) {
@@ -151,6 +157,7 @@ class Environment {
                 socket_close(self::$socket);
             }
         } else {
+            //get service mechanism
             $result = shell_exec('service '.$service.' '.$action);
         }
         return $result;        

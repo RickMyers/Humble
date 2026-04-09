@@ -19,7 +19,7 @@
         }).resize();
         Humble.admin['services'] = (!Humble.admin['services']) ? {} : Humble.admin['services'];
         Humble.admin['services']['{{ window_id }}'] = Vue.createApp({
-            template: Humble.template('admin','services/list'),
+            template: Humble.template('admin','services/list',true),
             app: "#services_app-{{ window_id }}",
             data() {
                     return {
