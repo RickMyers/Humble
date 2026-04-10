@@ -533,6 +533,8 @@ var Paradigm = (function () {
                                     break;
                 case "alerts"   :   return  function () { return false; };
                                     break;
+                case "joiner"   :   return  function () { return false; };
+                                    break;
                 case "sensor"   :
                 case "system"   :
                 case "webservice" :
@@ -569,6 +571,7 @@ var Paradigm = (function () {
             var elements = [];
             var element  = false;
             var arrows   = [];
+            var joiners  = [];
             for (var i=0; i<Paradigm.elements.list.length; i++) {
                 elements[+Paradigm.elements.list[i].Z-1] = Paradigm.elements.list[i] ;   //arrange according to z-index levels
             }
@@ -637,6 +640,8 @@ var Paradigm = (function () {
                                                     break;
                         case    "arrow"         :   arrows[arrows.length] = element;
                                                     break;
+                        case    "arrow"         :   joiners[joiners.length] = element;
+                                                    break;                                                    
                         case    "image"         :   var image   = Paradigm.images[element.element].ref;
                                                     Paradigm.draw.drawImage(image,element.X,element.Y,element.W,element.H);
                                                     Paradigm.applyLabel(element,element.X-2,element.Y);
@@ -762,6 +767,9 @@ var Paradigm = (function () {
                 Paradigm.draw.lineTo(r_arrow.X, r_arrow.Y);
                 Paradigm.draw.closePath();
                 Paradigm.draw.stroke();
+            }
+            for (i=0; i<joiners.length; i++) {
+                
             }
             if (Paradigm.elements.list[Paradigm.lastElement]) {
                 Paradigm.hilite(Paradigm.elements.list[Paradigm.lastElement]);
