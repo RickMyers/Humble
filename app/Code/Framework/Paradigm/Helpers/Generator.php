@@ -44,7 +44,6 @@ class Generator extends Helper
 
 &&DESCRIPTION&&
 
-Copyright Humble Project, 2014-Present, all rights reserved
 ##################################################################################### */
 HDR;
 
@@ -144,7 +143,7 @@ HDR;
                 break;
             case "file" :
                 //do i really need to do anything?
-                //yes, log the filename
+                //yes, log the filename, and create the unique file id used for tracking
                 $this->workflow .= $tabs.'Humble::model("workflow/fileManager")->logFile(Event::set($EVENT,"'.$node['id'].'"));'."\n";
                 foreach ($node['connectors'] as $direction) {
                     if (isset($direction['begin']) && (isset($direction['begin']['from'])) && (isset($direction['begin']['from']['id']))) {
@@ -191,6 +190,7 @@ HDR;
             case "trigger"      :
             case "system"       :
                 $this->trigger = $cnf;
+            case "joiner"       :                
             case "begin"        :
                 //do variable substitution stuff and print the header
                 $tabs .= "\t";   //lets indent it!
