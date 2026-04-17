@@ -359,7 +359,7 @@ switch ($method) {
                                 <input type="hidden" name="method" id="method" value="INSTALL" />
                                 <input type="hidden" name="serial_number" id="serial_number" value="<?=$project->serial_number?>" />
 
-                                <fieldset style="float: left; width: 250px; margin: 0px 4px 0px 0px" id="div_1"><legend>Administrator Information</legend>
+                                <fieldset style="float: left; width: 225px; margin: 0px 4px 0px 0px" id="div_1"><legend>Administrator Information</legend>
                                     <div class='installer-field-description'>Serial Number: <b><?=$project->serial_number?></b></div>
                                     <input type='text' class='installer-form-field' id='email' name='email' value="<?=$info['User']['Email']?>" />
                                     <div class='installer-field-description'>E-Mail</div>
@@ -381,7 +381,7 @@ switch ($method) {
                                     <input type="button" id="install-submit" name="install-submit" value=" Install " />
                                 </fieldset>
 
-                                <fieldset style="display: inline-block; width: 350px; margin: 0px" id="div_2"><legend>Database Information</legend>
+                                <fieldset style="display: inline-block; width: 340px; margin: 0px" id="div_2"><legend>Database Information</legend>
                                     <input type='text' placeholder="127.0.0.1:3306" class='installer-form-field' id='dbhost' name='dbhost'  value="<?=$info['MySQL']['Host']?>" />
                                     
                                     

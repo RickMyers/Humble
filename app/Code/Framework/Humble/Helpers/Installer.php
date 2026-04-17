@@ -871,6 +871,8 @@ SQL;
                     $this->weight       =  (isset($contents->weight)) ? $contents->weight : 99;
                     $this->package      = $contents->module->package;
                     $base               = 'Code/'.$this->package.'/';
+                    $this->mongodb      = isset($contents->orm->mongodb) ? $contents->orm->mongodb : "";
+                    $this->prefix       = $contents->orm->prefix;                    
                     foreach ($contents->structure as $what => $data) {
                         foreach ($data as $file) {
                             if (isset($file->source)) {
@@ -881,20 +883,19 @@ SQL;
                             }
                         }
                     }
-                    if (isset($contents->structure->schema) && (isset($contents->structure->schema->update))) {
-                        $this->installSchema($contents->structure->schema->install,$contents->module);
-                    }
-                    if (isset($contents->orm)){
-                        $this->mongodb      = isset($contents->orm->mongodb) ? $contents->orm->mongodb : "";
-                        $this->prefix       = $contents->orm->prefix;
-                        $this->storeEntities($contents->orm,$this->prefix);
-                    }
                     if (isset($contents->structure)) {
                         $this->storeStructure($this->prefix,$contents->structure,$contents->module);
                         if (isset($contents->module->workflow) && ($contents->module->workflow==='Y')) {
                             $this->registerWorkflowComponents($this->namespace,$contents->module);
                         }
+                    }                    
+                    if (isset($contents->structure->schema) && (isset($contents->structure->schema->update))) {
+                        $this->installSchema($contents->structure->schema->install,$contents->module);
                     }
+                    if (isset($contents->orm)){
+                        $this->storeEntities($contents->orm,$this->prefix);
+                    }
+
                     if (isset($contents->structure->schema) && (isset($contents->structure->schema->layout))) {
                       //  $this->generateLayoutSchema($this->package,$this->namespace,$contents->structure->schema->layout,$contents->orm->entities,$contents->module);
                     }
