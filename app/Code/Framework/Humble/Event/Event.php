@@ -97,6 +97,20 @@ class Event  {
     }
 
     /**
+     * Rebuilds the data portion of the event
+     * 
+     * @param array $data
+     * @return $this
+     */
+    protected function set($data=false) {
+        if ($data) {
+            $method = 'set'.$this->underscoreToCamelCase($this->_name,true);
+            $this->$method($data);            
+        }
+        return $this;
+    }
+    
+    /**
      * Returns the configuration for the current stage
      *
      * @return type
@@ -105,6 +119,32 @@ class Event  {
         return $this->_configurations[$this->_target()];
     }
 
+    /**
+     * 
+     * 
+     * @return type
+     */
+    public function serialize() {
+        return json_encode([
+            "data"   => $this->load(),
+            "config" => $this->fetch() 
+        ]);
+    }
+    
+    /**
+     * Rebuilds the data portion and configuration portion of an event
+     * 
+     * @param type $data
+     * @return $this
+     */
+    public function deserialize($event=false) {
+        if ($event) {
+            $this->set($data['data']);
+            $this->_configurations[$this->_target()] = $data['config'];
+        }
+        return $this;
+    }
+    
     /**
      * Builds the event header and serializes the magic method data
      *
