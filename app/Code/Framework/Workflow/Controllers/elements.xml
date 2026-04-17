@@ -82,7 +82,6 @@
                 <parameter name='enabled' source='post' default='Y' />
             </entity>
             <entity assign="externals" resource="externalnamespaces" namespace="paradigm" class="workflow/components">
-                
             </entity>                 
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />
@@ -136,6 +135,21 @@
             </model>
         </action>
 
+
+        <!-- ################################################################################################# -->
+
+        <action name="joiner" passalong="window_id">
+            <description>Workflow joiner configuration</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="false" />
+            </mongo>              
+            <model namespace="workflow" class='manager' id='manager'>
+                <parameter name='namespace' source='post' required='false' default='' />
+                <parameter name='window_id' source='post' default='' />
+                <parameter name='id' source='post' required='false' default='' />
+            </model>
+        </action>
+        
         <!-- ################################################################################################# -->
 
         <action name="operation" passalong="window_id">

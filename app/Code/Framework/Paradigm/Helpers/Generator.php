@@ -184,13 +184,15 @@ HDR;
                 $this->workflow .= $tabs."goto label_".$this->_workflowId()."_THE_END;\n";
                 $this->workflow .= $tabs."//END OF WORKFLOW BRANCH\n";
                 break;
+            case "joiner"       :
+                //put stuff here
             case "actor"        :
             case "sensor"       :
             case "webservice"   :
             case "trigger"      :
             case "system"       :
                 $this->trigger = $cnf;
-            case "joiner"       :                
+                        
             case "begin"        :
                 //do variable substitution stuff and print the header
                 $tabs .= "\t";   //lets indent it!

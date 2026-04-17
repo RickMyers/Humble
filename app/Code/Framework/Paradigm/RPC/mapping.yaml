@@ -47,6 +47,14 @@ fileConfiguration  :
   method          : POST
   blocking        : false
   arguments       : [namespace,id,window_id,data,component,method]  
+joinerConfiguration  :
+  url             : /workflow/elements/joiner
+  api-key         :
+  api-var         :
+  secure          : true
+  method          : POST
+  blocking        : false
+  arguments       : [namespace,id,window_id,data,component,method]    
 externalConfiguration  :
   url             : /workflow/elements/external
   api-key         :
