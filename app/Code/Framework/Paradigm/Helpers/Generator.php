@@ -186,6 +186,9 @@ HDR;
                 break;
             case "joiner"       :
                 //put stuff here
+                $this->workflow .= $tabs.'Humble::model("paradigm/workflow")->manage();'."\n";
+                //Just the 'begin''to' connectors need to be drawn
+                break;
             case "actor"        :
             case "sensor"       :
             case "webservice"   :
