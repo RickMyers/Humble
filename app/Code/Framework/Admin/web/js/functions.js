@@ -607,6 +607,7 @@ var Functions = (() => {
                         }
                         let f = (() => {
                             let observations = [];
+                            
                             return function (server) {
                                 observations[observations.length] = server = JSON.parse(server);
                                 if (observations.length > 10) {
