@@ -26,8 +26,8 @@
                 layer.style.display='block';                
                 document.getElementById('current-screenshot').src = evt.target.src;
                 document.getElementById('current-screenshot').title = evt.target.getAttribute('title');
-                $('#current-screenshot').css('max-height','60%');
-                $('#current-screenshot').css('height',Math.floor(screen.height*.6)+"px");
+                $('#current-screenshot').css('max-height','40%');
+                $('#current-screenshot').css('height',Math.floor(screen.height*.45)+"px");
                 layer.style.width = Math.floor(screen.width*.55)+'px';
                 layer.style.top = Math.floor((screen.height - layer.offsetHeight)/2)+'px';
                 layer.style.left = Math.floor((screen.width - layer.offsetWidth)/2)+'px';
