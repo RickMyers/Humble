@@ -714,7 +714,7 @@ class Compiler extends Directory
             if (isset($node['assign'])) {
                 $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
             }
-            if (isset($node['normalize']) && ($this->truish($node['normalize']))) {
+            if (isset($node['normalize']) && ($this->trueish($node['normalize']))) {
                 print($this->tabs().'$'.$node['id'].'->_normalize(true)'.";\n");
             }            
             if (isset($node['wrapper'])) {
