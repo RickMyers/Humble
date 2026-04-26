@@ -1,8 +1,13 @@
 ---
-currentWeather  :
-  url             : http://weather.yahooapis.com/forecastrss #this is a sample
-  api-key         : 1234
-  api-var         : api_key
-  arguments       : [p]
-  method          : GET
+geocodeLookup   :
+  url             : https://maps.googleapis.com/maps/api/geocode/json
+  secure          : true
+  api-key         : SM://geocodeApiKey
+  api-var         : key
+  cache           :
+    engine          : redis
+    expire          : 0
+  method          : GET 
+  arguments       : 
+      address     :  
   

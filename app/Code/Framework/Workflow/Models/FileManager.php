@@ -189,6 +189,23 @@ class FileManager extends Model
         }
         return $copied;
     }    
+        
+    /**
+     * Counts the number of lines in a file and then attaches it to an event
+     * 
+     * @workflow use(process) configuration(/workflow/file/count)
+     * @param type $EVENT
+     */
+    public function countLines($EVENT=false) {
+        if ($EVENT) {
+            $data = $EVENT->load();
+            $cnf  = $EVENT->fetch();
+            if (isset($cnf['field']) && $cnf['field']) {
+                $EVENT->update([$cnf['field']=>100]);
+            }
+            
+        }
+    }
     
     /**
      * Uses a filename in an event field to copy to another file

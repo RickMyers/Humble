@@ -606,8 +606,17 @@ var Functions = (() => {
                             });*/
                         }
                         let f = (() => {
+                            let observations = [];
+                            
                             return function (server) {
-                                server = JSON.parse(server);
+                                observations[observations.length] = server = JSON.parse(server);
+                                if (observations.length > 10) {
+                                    for (let i=0; i < observations.length-1; i++) {
+                                        observations[i] = observations[i+1];
+                                    }
+                                    delete observations[observations.length];
+                                }
+                                console.log(observations);
                                 $('#server-memory-load').html(server.memory.used+'/'+server.memory.total+' ['+server.memory.percentage+'%]');
                                 $('#server-cpu-load').html((Math.round(server.cpu.load*1000)/1000)+'%');
                                 $('#server-tasks').html(server.apache.thread_count+'/'+server.tasks.count);
@@ -721,7 +730,6 @@ var Functions = (() => {
                         created: false,
                         users: {
                             open: function (win,win_id) {
-
                                 (new EasyAjax('/admin/actions/users')).add('viewing',win).add('window_id',win_id).then((response) => {
                                     $('#log-viewer-body-'+win_id).html(response);
                                 }).get();

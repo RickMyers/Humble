@@ -153,7 +153,7 @@ var Paradigm = (function () {
                 label: 'Process'
             },
             joiner: {
-                label: ''
+                label: 'Joiner'
             },
             begin: {
                 label: 'Start',
@@ -640,14 +640,13 @@ var Paradigm = (function () {
                                                     break;
                         case    "arrow"         :   arrows[arrows.length] = element;
                                                     break;
-                        case    "arrow"         :   joiners[joiners.length] = element;
-                                                    break;                                                    
                         case    "image"         :   var image   = Paradigm.images[element.element].ref;
                                                     Paradigm.draw.drawImage(image,element.X,element.Y,element.W,element.H);
                                                     Paradigm.applyLabel(element,element.X-2,element.Y);
                                                     Paradigm.placeText(element);
                                                     break;
-                        case    "circle"        :   Paradigm.draw.fillStyle = Paradigm.gradient(element.X,element.Y,element.W,element.H)|| 'rgb(9,9,9)';
+                        case    "circle"        :   Paradigm.draw.fillStyle = Paradigm.gradient(element.X,element.Y,element.W,element.H) || 'rgb(9,9,9)';
+                                                    Paradigm.draw.strokeStyle = element.strokeStyle || 'black';
                                                     Paradigm.draw.beginPath();
                                                     Paradigm.draw.arc(element.X, element.Y, element.rad, 0, 2*Math.PI, false);
                                                     Paradigm.draw.closePath();
@@ -902,7 +901,6 @@ var Paradigm = (function () {
          *  --------------------------------------------------------------------*/
         hilite:     function (element) {
             Paradigm.draw.fillStyle = 'rgb(0,0,0)';
-           // console.log(element);
             if (Paradigm.target.type === "arrow") {
                 var t = Paradigm.target;
                 Paradigm.draw.beginPath();
@@ -1275,7 +1273,13 @@ var Paradigm = (function () {
                                                 break;
                         case    "circle"    :   for (var i in element.connectors) {
                                                     switch (i) {
+                                                        case 'N'    :   element.connectors[i].X = element.X;
+                                                                        element.connectors[i].Y = element.Y - element.rad;
+                                                                        break;
                                                         case 'E'    :   element.connectors[i].X = element.X + element.rad;
+                                                                        element.connectors[i].Y = element.Y;
+                                                                        break;
+                                                        case 'W'    :   element.connectors[i].X = element.X - element.rad;
                                                                         element.connectors[i].Y = element.Y;
                                                                         break;
                                                         case 'S'    :   element.connectors[i].X = element.X;
@@ -2466,7 +2470,7 @@ var Paradigm = (function () {
                         Paradigm.redraw();
                     }).post();
                 }
-            },
+            }, 
             label:  {
                 add: function (after) {
                     if (Paradigm.elements.creating) {
@@ -2504,6 +2508,58 @@ var Paradigm = (function () {
                             Z:  z+1,
                             isClosed: function () {
                                 return true;
+                            },
+                            win: null
+                        };
+                        Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
+                        Paradigm.redraw();
+                        if (after) {
+                            after();
+                        }
+                    }).post();
+                }
+            },            
+            joiner:  {
+                add: function (after) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
+                    (new EasyAjax('/paradigm/element/create')).add('shape','circle').add('type','joiner').then((response) => {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
+                        if (!response) {
+                            alert('Please try again, failed to create element');
+                            return;
+                        }
+                        var z = Paradigm.elements.list.length;
+                        Paradigm.objects[response] = Paradigm.label =  Paradigm.elements.list[z] = {
+                            id: response,
+                            type: 'circle',
+                            active: true,
+                            element: 'joiner',
+                            label: 'Joiner',
+                            text: '',
+                            color: 'rgb(202,202,202)',
+                            fillStyle: 'grey',
+                            strokeStyle: 'black',
+                            lines: {
+                                text: [],
+                                font: false,
+                                size: false
+                            },
+                            connectors: {
+                                'N': { X: '', Y:'', begin: false, end: false},
+                                'E': { X: '', Y:'', begin: false, end: false},
+                                'W': { X: '', Y:'', begin: false, end: false},
+                                'S': { X: '', Y:'', begin: false, end: false}
+                            },
+                            X:  Paradigm.default.start.x+20,
+                            Y:  Paradigm.default.start.y+25,
+                            rad: 16,
+                            W:  16,
+                            Z:  z+1,
+                            isClosed: function () {
+                                return false;
                             },
                             win: null
                         };

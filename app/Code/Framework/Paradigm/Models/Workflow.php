@@ -23,8 +23,10 @@ use Environment;
 class Workflow extends Model
 {
 
-    private $exporter = false;
     use \Code\Framework\Humble\Traits\EventHandler;
+    
+    private $exporter = false;
+    private $joiners  = [];
 
 	/**
      * Constructor
@@ -52,11 +54,12 @@ class Workflow extends Model
             $this->exporter              = Environment::project();
             $this->_namespace($this->exporter->namespace);
         }
-        $target = false; $file = false;
+        $target = false;
+        $file   = false;
         if ($file = $this->getFile()) {
 
         }
-            $target                      = Humble::entity('paradigm/export/targets')->setId($this->getDestinationId())->load();
+        $target                          = Humble::entity('paradigm/export/targets')->setId($this->getDestinationId())->load();
         
         $results                         = [];
         $results[]                       = '#########################################################';
@@ -243,6 +246,7 @@ class Workflow extends Model
             $method = $cfg['method'] ?? false;
         }
     }
+    
     /**
      * Will enable a workflow
      *

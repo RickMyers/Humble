@@ -113,6 +113,20 @@ class Log {
     }
 
     /**
+     * Sends data to the general message log
+     *
+     * @param mixed $message
+     */
+    public static function critical($message,$rc=16) {
+        $project = self::getProject();
+        $file    = '../../logs/'.$project->namespace.'/critical.log';
+        if ($message) {
+            //format the message so it can be counted
+            self::prependFile($message, $file);
+        }
+    }
+    
+    /**
      * Sends current query to the query log
      *
      * @param mixed $message
@@ -154,6 +168,15 @@ class Log {
         }
     }
 
+    /**
+     * Just a relay... 
+     * 
+     * @param type $message
+     */
+    public static function warn($message) {
+        self::warning($message);
+    }
+    
     /**
      * Send data to the error log
      *

@@ -34,6 +34,7 @@ class Log extends Helper
                     'cadence'   => '../../logs/&&NAMESPACE&&/cadence.log'
                   );
     private $project = null;
+    
     /**
      * Constructor
      */

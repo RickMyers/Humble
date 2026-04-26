@@ -299,6 +299,9 @@ Copyright humbleprogramming.com, all rights reserved
                         case    "rule"  :
                             Paradigm.elements.rule.add($('#new-element-text').val());
                             break;
+                        case    "joiner"  :
+                            Paradigm.elements.joiner.add($('#new-element-text').val());
+                            break;                            
                         default     :
                             alert("WTF?: "+$('#new-element-type').val())
                             break;
@@ -581,6 +584,10 @@ Copyright humbleprogramming.com, all rights reserved
                                 <img class='flowchartGlyph' src='/images/paradigm/clipart/external.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('external')"/><br />
                                 External
                         </div>
+                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 10px; margin-left: 12px">
+                                <img class='flowchartGlyph' src='/images/paradigm/clipart/joiner.png' style='height: 36px; cursor: pointer' onclick="Paradigm.elements.joiner.add()"/><br />
+                                Joiner
+                        </div>                        
                     </fieldset>
 
                     <fieldset style="display: inline-block; white-space: nowrap;  position: relative; top: 2px; margin-left: 20px; padding: 0px 40px 0px 20px; border-radius: 4px; font-family: sans-serif; font-size: .8em">

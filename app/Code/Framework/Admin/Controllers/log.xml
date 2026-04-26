@@ -24,7 +24,7 @@
                 <parameter name='log'    source='request' default='' />
             </helper>            
         </action>
-
+     
         <!-- ################################################################### -->
         
         <action name="users" blocking="off" passalong="window_id">

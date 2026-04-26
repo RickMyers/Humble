@@ -5,16 +5,54 @@
 		padding: 0px; margin: 0px
 	}
 </style>
-<script src="/js/common"></script>
 <script src="/js/humble-jquery"></script>
-<script>
-$(document).ready( () => {
+<script src="/js/common"></script>
 
+<script>
+function draw() {
+  let canvas = document.getElementById("canvas");
+  let ctx    = canvas.getContext("2d");
+
+  //const circle = new Path2D();
+  //ctx.arc(100, 100, 120, 120, 2 * Math.PI);
+  //ctx.stroke();
+  ctx.beginPath();
+  ctx.fillStyle = 'gray';
+  ctx.strokeStyle = 'black';
+  
+  //X,Y,radius,?,degrees
+  ctx.arc(100, 100, 10, 0, 2*Math.PI, false);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();  
+/*  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 3; j++) {
+      ctx.beginPath();
+      const x = 25 + j * 50; // x coordinate
+      const y = 25 + i * 50; // y coordinate
+      const radius = 20; // Arc radius
+      const startAngle = 0; // Starting point on circle
+      const endAngle = Math.PI + (Math.PI * j) / 2; // End point on circle
+      const counterclockwise = i % 2 !== 0; // clockwise or counterclockwise
+
+      ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
+
+      if (i > 1) {
+        ctx.fill();
+      } else {
+        ctx.stroke();
+      }
+    }
+  }*/
+}    
+$(document).ready( () => {
+    draw();
 });	
 </script>
 </head>
 <body>
-	<canvas id="" style="width: 100%; height: 100%;  background-image: url(/images/paradigm/bg_graph.png); display: block">
+    <br /><br />
+	<canvas id="canvas" width="300" height="300" style="background-image: url(/images/paradigm/bg_graph.png)">
 	</canvas>
 </body>
 </html>
