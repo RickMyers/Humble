@@ -730,7 +730,6 @@ var Functions = (() => {
                         created: false,
                         users: {
                             open: function (win,win_id) {
-
                                 (new EasyAjax('/admin/actions/users')).add('viewing',win).add('window_id',win_id).then((response) => {
                                     $('#log-viewer-body-'+win_id).html(response);
                                 }).get();

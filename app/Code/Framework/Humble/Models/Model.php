@@ -839,7 +839,7 @@ class Model implements HumbleComponent
                         }
                         $retval = (isset($call['CURL']) && ($call['CURL'])) ? $this->_curl($call,$args,$secure,$userid,$passwd) : $this->_hurl($call['url'],$args,$call,$secure,$userid,$passwd);
                         if (isset($call['cache'])) {
-                            $this->pushToCache($this->_namespace(),$name,$args,$call['cache'],$retval);
+                            $this->pushToCache($this->_namespace(),$name,$args,$expire,$retval);
                         }
                         $retval = ($retval === null) ? false : $retval;         //Only return null when the call wasn't found in the mapping file, otherwise return false
                     } else {

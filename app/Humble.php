@@ -516,7 +516,7 @@
             if ($engine===null) {
                 return self::$cacheEngine;
             }
-            self::$cacheEngine = $engine;
+            self::$cacheEngine = strtoupper($engine);
         }
         
         /**

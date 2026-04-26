@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+
+Google Geocode API
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="geocode" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="off" response="true">
+        
+        <action name="lookup" output="JSON">
+            <description>Looksup an address</description>
+            <model namespace="google" class="anything" method="geocodeLookup">
+                <parameter name="address" required="true" source="request" />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

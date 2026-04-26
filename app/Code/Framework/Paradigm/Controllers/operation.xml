@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="operation" use="Twig" author=" " email="">
+    <actions blocking="ON" response="false">
+        <action name="update">
+            <description></description>
+            <model namespace="paradigm" class="operation" id="manager" method="updateElement">
+                <parameter name='data'      source='post' required='true' default='' />
+            </model>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
