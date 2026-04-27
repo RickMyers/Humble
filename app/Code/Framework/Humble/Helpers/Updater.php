@@ -114,6 +114,302 @@ class Updater extends Installer
         }
         return $elements;
     }
+
+    /**
+     * Removes all named events related to the namespace being installed
+     */
+    protected function deRegisterEvents() {
+        $query = <<<SQL
+            delete from paradigm_events
+             where namespace = '{$this->namespace}'
+SQL;
+        $this->_db->query($query);
+        return $this;
+    }
+
+    /**
+     * Registers all of events, and their comments, from the events section of the configuration file
+     */
+    protected function registerEvents($event_node = false) {
+        $this->deRegisterEvents();
+        if ($event_node) {
+            foreach ($event_node as $events) {
+                foreach ($events as $event => $data) {
+                    $event_comment = addslashes($data->attributes()->comment);
+                    $query = <<<SQL
+                        insert into paradigm_events
+                            (namespace,event,comment)
+                        values
+                            ('{$this->namespace}','{$event}','{$event_comment}')
+SQL;
+                    $this->_db->query($query);
+                }
+            }
+        }
+        return $this;
+    }
+
+    //What exactly am i doing here?
+    protected function deRegisterWebHooks() {
+        $query = <<<SQL
+            delete from paradigm_webhooks
+             where namespace = '{$this->namespace}'
+SQL;
+        $this->_db->query($query);
+        return $this;
+    }
+    
+    protected function registerWebHooks($hook_node = false) {
+        $this->deRegisterWebHooks();
+        if ($hook_node) {
+            
+        }
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param type $namespace
+     * @return $this
+     */
+    protected function deRegisterListeners($namespace) {
+        $namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
+        $listeners = Humble::entity('paradigm/method/listeners');
+        $listeners->setNamespace($namespace);
+        $listeners->delete(true);
+        return $this;
+    }
+    
+    /**
+     * Will delete the current crop of workflow components/comments associated to a module
+     * 
+     * @param string $namespace
+     * @return $this
+     */
+    protected function deRegisterWorkflowComponents($namespace=false) {
+        if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
+            Humble::entity('paradigm/workflow/components')->setNamespace($namespace)->delete(true);
+            Humble::entity('paradigm/workflow/comments')->setNamespace($namespace)->delete(true);
+        }
+        return $this;
+    }
+
+    public function generateWorkflows($namespace=false) {
+        @mkdir('Workflows',0775);
+        $this->output('WORKFLOWS','Generating workflows for Namespace '.$namespace);
+        if ($namespace) {
+            $generator = \Humble::helper('paradigm/generator');
+            foreach (\Humble::entity('paradigm/workflows')->setNamespace($namespace)->setActive('Y')->fetch() as $workflow) {
+                $this->output('WORKFLOWS',"     Generating: ".$workflow['title']);
+                $generator->setId($workflow['id'])->setWorkflow($workflow['workflow'])->generate();
+            }
+        }
+        $this->output('WORKFLOWS','Done Generating workflows');
+        return $this;
+    }
+    
+    /**
+     * Find just the comment portion of the doc comment
+     *
+     * @param ReflectionClass $md
+     * @param Object $method
+     * @return string
+     */
+    protected function processDocComments($md=false,$method=false) {
+        $skip = array('/**'=>true, '/'=>true, '*/'=>true, ''=>true, '/**/'=>true);
+        $comments = [];
+        try {
+            $docComments = explode("\n",$md->getDocComment());
+            foreach ($docComments as $comment) {
+                $comment = trim($comment);                                                      //left align
+                $comment = (substr($comment,0,1)=='*') ? trim(substr($comment,1)) : $comment;   //remove the * if there
+                if (substr($comment,0,1)=='@') {
+                    continue;                                                                   //we got an annotation, not looking for that...
+                }
+                if (!isset($skip[$comment])) {
+                    $comments[] = $comment;
+                }
+            }
+        } catch (\ReflectionException $ex) {
+         //  \Log::console($ex);
+        }
+        return implode("\n",$comments);
+    }
+    
+    /**
+     * Fetches the document comment (if any) and looks for any of our custom annotations, saving those into an array, and returning that array to the calling routine
+     *
+     * @param ReflectionClass $md
+     * @param Object $method
+     * @return array
+     */
+    protected function processDocAnnotations($md=false,$method=false) {
+        $components = [];
+        try {
+            $comments = explode("\n",$md->getDocComment());
+            foreach ($comments as $comment) {
+            if ((strpos($comment,'@workflow')!==false) || (strpos($comment,'@listen')!==false))  {
+                    $components[] = substr($comment,strpos($comment,'@')+1);
+                }
+            }
+        } catch (\ReflectionException $ex) {
+         //  \Log::console($ex);
+        }
+        return $components;
+    }
+    
+    public function registerMethodListeners($namespace,$class,$listener,$events) {
+        $method_listener = Humble::entity('paradigm/method/listeners');
+        foreach (explode(',',$events) as $event) {
+            $this->output("WORKFLOW","     Registering Method Trigger ".$event." on ".$listener);
+            $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
+        }
+        return $this;
+    } 
+
+    /**
+     * Checks to see if the configuration page exists, and if not, creates the page using a template
+     * 
+     * @param string $uri
+     */
+    public function configurationInitializationCheck($uri=false) {
+        if ($uri) {
+            if (count($parts  = explode('/',$uri))==3) {
+                if ($module   = Humble::module($parts[0])) {
+                    $mod_path = 'Code/'.$module['package'].'/'.$module['views'].'/'.$parts[1].'/Smarty/'.$parts[2].'.tpl';
+                    if (!file_exists($mod_path)) {
+                        $base       = Humble::module(\Environment::namespace());
+                        $tpl_path   = file_exists('Code/'.$base['package'].'/'.$base['module'].'/etc/template.tpl') ? 'Code/'.$base['package'].'/'.$base['module'].'/etc/template.tpl' : 'Code/Framework/Humble/etc/template.tpl';
+                        copy($tpl_path,$mod_path);
+                        $this->output("WORKFLOW","Creating configuration template ".$mod_path);
+                    }
+                }
+            }
+        }
+    }
+    
+   /**
+     * Will search through a modules PHP components and record any that are
+     * listed as being workflow components
+     *
+     */
+    public function registerWorkflowComponents($namespace=false) {
+        $skip = ['MySQL'     => true,
+                 'ORM'       => true,
+                 'Postgres'  => true,
+                 'SQLLite'   => true,
+                 'SQLServer' => true];
+        $namespace  = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
+        if ($namespace) {
+            $this->deRegisterWorkflowComponents($namespace);            
+            $this->deRegisterListeners($namespace);
+        }
+        $models             = Humble::getModels($namespace);
+        $workflowComponent  = Humble::entity('paradigm/workflow/components');
+        $workflowComment    = Humble::entity('paradigm/workflow/comments');
+        $this->output("WORKFLOW","Processing Namespace [".$namespace."]...");
+        foreach ($models as $model) { 
+            if ($namespace === 'humble') {
+                if (isset($skip[$model])) {
+                    $this->output('WORKFLOW','Skipping '.$model);
+                    continue;
+                }
+            }
+            $this->output("WORKFLOW","");
+            $this->output("WORKFLOW","Scanning Model Class ".ucfirst($model)."...");
+            $workflowComponent->setNamespace($namespace);
+            $workflowComponent->setComponent($model);
+            $class          = Humble::model($namespace.'/'.$model);
+            if (!method_exists($class, 'className')) {
+                //$this->output("",$model);
+                continue;
+            }
+            $name           = $class->className();
+            $reflection     = new \ReflectionClass($name);
+            $methods        = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+            foreach ($methods as $idx => $method) {
+                $workflowComponent->reset();
+                $workflowComponent->setNamespace($namespace);
+                $workflowComponent->setComponent($model);
+                $workflowComponent->setMethod($method->name);
+                $m = new \ReflectionMethod($class,$method->name);
+                $c = $m->getDeclaringClass();
+                if ($c->name !== $name) {
+                    //this skips any methods belonging to the parent class
+                    continue;
+                }
+                $comments               = trim($this->processDocComments($reflection->getMethod($method->name),$method));
+                if ($comments) {
+                    $workflowComment->reset();
+                    $workflowComment->setNamespace($namespace);
+                    $workflowComment->setClass($model);
+                    $workflowComment->setMethod($method->name);
+                    $workflowComment->setComment($comments);
+                    $workflowComment->save();
+                }
+                $customAnnotations      = $this->processDocAnnotations($reflection->getMethod($method->name),$method);
+                $authorization          = false;
+                $listener               = false;
+                foreach ($customAnnotations as $annotation) {
+                    $clauses   = explode(' ',$annotation);
+                    //print_r($clauses);die();
+                    foreach ($clauses as $clause) {
+                        //print($clause."\n");
+                        $value = '';
+                        if (strpos($clause,'(') && (strpos($clause,')'))) {
+                            $data  = explode('(',$clause);
+                            $token = $data[0];
+                            $data  = explode(')',$data[1]);
+                            $value = $data[0];
+                        } else {
+                            $token = $clause;
+                        }
+                        //print($token."\n");
+                        switch ($token) {
+                            case "workflow"         :   //nop
+                                                        break;
+                            case "use"              :   $uses = explode(',',$value);
+                                                        $this->output("WORKFLOW","     Registering Workflow Element ".$method->name);
+                                                        foreach ($uses as $use) {
+                                                            $use = 'set'.ucfirst(strtolower($use));
+                                                            $workflowComponent->$use('Y');
+                                                        }
+                                                        break;
+                            case "tags"             :
+                                                        break;
+                            case "listen"           :
+                            case "listener"         :   $listener = true;
+                                                        break;  
+                            case "event"            :   if ($listener) {
+                                                            $this->registerMethodListeners($namespace,$model,$method->name,$value);
+                                                        }
+                                                        break 2;              //this is different from a component so just skip to the next one
+                            case "auth"             :
+                            case "authorization"    :   if (strtolower($value) == 'true') {
+                                                            $authorization = true;
+                                                        } else if (strtolower($value) == 'false') {
+                                                            $authorization = false;
+                                                        } else {
+                                                            //throw an exception and stop processing
+                                                        }
+                                                        $workflowComponent->setAuthorization((($authorization) ? 'Y' : 'N'));
+                                                        break;
+                            case "conf"             :
+                            case "config"           :
+                            case "cfg"              :
+                            case "configuration"    :   $workflowComponent->setConfiguration($value);
+                                                        $this->configurationInitializationCheck($value);
+                                                        break;
+                            default                 :   break;
+                        }
+                    }
+                    $workflowComponent->save();
+                }
+            }
+            $this->output("WORKFLOW","Finished Scanning ".ucfirst($model)."...");
+        }
+        return $this;
+    }
     
     /**
      * Since everything is a service, we should register them for easy lookup
@@ -165,6 +461,9 @@ class Updater extends Installer
      */
     private function deregisterExternalComponents() {
         print("Deregistering\n");
+        Humble::entity('paradigm/workflow/components')->namespaceLike('/')->delete();
+        Humble::entity('paradigm/workflow/comments')->namespaceLike('/')->delete();
+        return $this;
     }
     
     /**
@@ -209,10 +508,9 @@ class Updater extends Installer
                             $token = $clause;
                         }
                         if (isset($this->customAnnotations[$token])) {
-                            if ($comments = trim($this->processDocComments($reflection->getMethod($method->name),$method))) {
-                                $comment->reset()->setNamespace($namespace)->setClass($classBase)->setMethod($method->name)->setComment($comments)->save();
-                            }                            
+                                                    
                             $component->reset()->setNamespace($namespace)->setComponent($classBase)->setMethod($method->name);
+                            $processed = false;
                             switch ($token) {
                                 case "workflow"         :   //nop
                                                             break;
@@ -222,15 +520,18 @@ class Updater extends Installer
                                                                 $use = 'set'.ucfirst(strtolower($use));
                                                                 $component->$use('Y');
                                                             }
+                                                            $processed = true;
                                                             break;
                                 case "tags"             :
                                                             break;
                                 case "listen"           :
                                 case "listener"         :   $listener = true;
+                                                            $processed = true;
                                                             break;  
                                 case "event"            :   if ($listener) {
                                                                 $this->registerMethodListeners($namespace,$model,$method->name,$value);
                                                             }
+                                                            $processed = true;
                                                             break 2;              //this is different from a component so just skip to the next one
                                 case "auth"             :
                                 case "authorization"    :   if ($value == 'true') {
@@ -241,16 +542,23 @@ class Updater extends Installer
                                                                 //throw an exception and stop processing
                                                             }
                                                             $component->setAuthorization((($authorization) ? 'Y' : 'N'));
+                                                            $processed = true;
                                                             break;
                                 case "conf"             :
                                 case "config"           :
                                 case "cfg"              :
                                 case "configuration"    :   $component->setConfiguration($value);
                                                             $this->configurationInitializationCheck($value);
+                                                            $processed = true;
                                                             break;
                                 default                 :   break;
                             }
                             $component->save();
+                            if ($processed) {
+                                if ($comments = trim($this->processDocComments($reflection->getMethod($method->name),$method))) {
+                                    $comment->reset()->setNamespace($namespace)->setClass($classBase)->setMethod($method->name)->setComment($comments)->save();
+                                }                                    
+                            }
                         }
                     }
                 }
@@ -262,6 +570,11 @@ class Updater extends Installer
         }
     }
     
+    /**
+     * We will now register components located in directories not part of the framework or application
+     * 
+     * @return $this
+     */
     public function scanExternalDirectories() {
         $this->deregisterExternalComponents();
         if ($externals = \Environment::application('external')) {
@@ -277,7 +590,7 @@ class Updater extends Installer
                 }
             }        
         }
-    
+        return $this;
     }
     
     /**

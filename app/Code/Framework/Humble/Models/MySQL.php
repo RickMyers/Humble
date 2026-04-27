@@ -92,7 +92,6 @@ class MySQL extends ORM implements ORMEngine  {
                 $results[$idx] = $this->unity()->$method();
             }
         }
-
         foreach ($this->unity()->_fields() as $idx => $key) {
             $method = 'get'.$this->underscoreToCamelCase($idx,true);
             $results[$idx] = $this->unity()->$method();
@@ -112,6 +111,13 @@ class MySQL extends ORM implements ORMEngine  {
             $query .= "`".$this->unity()->inField()."` in ('".implode("','",$this->unity()->in())."') ";
             $andFlag = true;
         }
+        if (count($this->unity()->likeField())) {
+            foreach ($this->unity()->likeField() as $idx => $field) {
+                $query  .= ($andFlag) ? " and " : ' where ';
+                $query  .= "`".$field."` like '".$this->unity()->like()[$idx]."%' ";
+                $andFlag = true;
+            }
+        }        
         if ($this->unity()->between()) {  //THERES A PROBLEM HERE!
             $query .= ($andFlag) ? " and " : ' where ';
             $query .= "`".$this->unity()->betweenField()."` between '".$this->unity()->_between[0]."' and '".$this->unity()->_between[1]."' ";

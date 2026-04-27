@@ -46,6 +46,8 @@ class Unity
     protected $_resource      = false;
     protected $_inField       = '';
     protected $_in            = [];
+    protected $_like          = [];
+    protected $_likeField     = [];
     protected $_betweenField  = '';
     protected $_between       = '';
     protected $_noLimitQuery  = '';                                             //Current query before pagination is added
@@ -606,6 +608,34 @@ SQL;
     }
     
     /**
+     * Collects fields/ids to build a like clause later
+     * 
+     * @param type $args
+     * @return $this
+     */
+    public function like($args=false) {
+        if ($args === false) {
+            return $this->_like;
+        }
+        $this->_like[] = addslashes($args);
+        return $this;
+    }
+
+    /**
+     * Collects fields/ids to build a like clause later
+     * 
+     * @param type $args
+     * @return $this
+     */    
+    public function likeField($args=false) {
+        if ($args === false) {
+            return $this->_likeField;
+        }
+        $this->_likeField[] = addslashes($args);
+        return $this;
+    }
+    
+    /**
      * Creates a between condition for the query
      * 
      * @param array $args
@@ -1015,16 +1045,15 @@ SQL;
                 $results[$idx] = $this->$method();
             }
         }
-        $andFlag = false;
-        $table = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
-        $query   = "delete from ".$table;
-        $conditionFound = false;
-        if ($useFields) {
+        $andFlag        = false;
+        $table          = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
+        $query          = "delete from ".$table;
+        $conditionFound = false;                                                //We are not going to perform a delete if no condition is found or we could delete the whole table...
+        if ($useFields || count($this->like()) || count($this->in())) {
             if ($whereClause = $this->engine()->buildWhereClause(true)) {
                 $conditionFound = true;
                 $query .= $whereClause;
             }
-            
         } else {
             foreach ($results as $field => $value) {
                 if ($results[$field]!="") {
@@ -1038,11 +1067,12 @@ SQL;
             }
         }
         if ($conditionFound) {
+            $a = $query;
             $this->engine()->query($query);
             //POLYGLOT check here
             //@TODO: Implement a check to see if this is a polyglot table, and remove corresponding row in MongoDB
         } else {
-            Log::console('Ignoring delete ['.$query.'] since no condition for the delete was found');
+            \Log::console('Ignoring delete ['.$query.'] since no condition for the delete was found');
         }
         return $this->rowsAffected();
     }
@@ -1819,8 +1849,8 @@ SQL;
             $this->between($arguments);
             return $this;
         } elseif (substr($name,-4,4)==="Like") {
-            $this->_likeField = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-4)));
-            $this->likeAndSubscribe($arguments);
+            $this->_likeField[] = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2',substr($name,0,strlen($name)-4)));
+            $this->like($arguments[0]);
             return $this;
         }
         //method couldn't be handled
