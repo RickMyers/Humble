@@ -35,6 +35,7 @@ class Installer extends Directory
     protected $lastTime           = 0;
     protected $init               = 0;
     protected $lastStage          = '';
+    protected $engine             = '';
 
     /**
      *

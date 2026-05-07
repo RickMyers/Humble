@@ -309,7 +309,8 @@ switch ($method) {
                     'Email' => $project->author ?? '',
                     'ID'    => strtolower((substr($name[0],0,1).$name[1]))
                 ],
-                'MySQL' => [
+                'DB' => [
+                    'Engine'    => 'MySQL',
                     'Host'      => $settings['services'][$ns.'_mysql']['container_name'] ?? '',
                     'User'      => $settings['services'][$ns.'_mysql']['environment']['MYSQL_USER'] ?? '',
                     'Password'  => $settings['services'][$ns.'_mysql']['environment']['MYSQL_PASSWORD'] ?? '',
@@ -382,25 +383,25 @@ switch ($method) {
                                 </fieldset>
 
                                 <fieldset style="display: inline-block; width: 340px; margin: 0px" id="div_2"><legend>Database Information</legend>
-                                    <input type='text' placeholder="127.0.0.1:3306" class='installer-form-field' id='dbhost' name='dbhost'  value="<?=$info['MySQL']['Host']?>" />
+                                    <!--input type='text' placeholder="127.0.0.1:3306" class='installer-form-field' id='dbhost' name='dbhost'  value="<?=$info['DB']['Host']?>" /-->
                                     
                                     
-                                    <!--select name="dbhost" id="dbhost" class="installer-form-field">
+                                    <select name="dbhost" id="dbhost" class="installer-form-field">
                                         <option value=""> </option>
-                                        <option value="127.0.0.1:3306"> MySQL [127.0.0.1:3306]</option>
-                                        <option value="127.0.0.1:1433" disabled="true"> MS SQL Server [127.0.0.1:1433]</option>
-                                        <option value="127.0.0.1:5432" disabled="true"> PostGres [127.0.0.1:5432]</option>                                        
+                                        <option value="<?=$info['DB']['Host']?>"> MySQL [127.0.0.1:3306]</option>
+                                        <option value="MS SQL Server" disabled="true"> MS SQL Server [127.0.0.1:1433]</option>
+                                        <option value="PostGres" disabled="true"> PostGres [127.0.0.1:5432]</option>                                        
                                         <option value="SQLLite" disabled="true"> SQLLite </option>                                        
-                                    </select--><!--input type="text" name="dbhost_combo" id="dbhost_combo" /--><input type='button' value=' Test ' id='install-test' name='install-test' />
+                                    </select><input type='button' value=' Test ' id='install-test' name='install-test' />
                                     <div class='installer-field-description'>DB Host (localhost:port or leave out port for default)</div>
                                     
-                                    <input type='text' class='installer-form-field' id='db' name='db'  value="<?=$info['MySQL']['Database']?>"/>
+                                    <input type='text' class='installer-form-field' id='db' name='db'  value="<?=$info['DB']['Database']?>"/>
                                     <div class='installer-field-description'>Database Name</div>
 
-                                    <input type='text' class='installer-form-field' id='userid' name='userid' value="<?=$info['MySQL']['User']?>" />
+                                    <input type='text' class='installer-form-field' id='userid' name='userid' value="<?=$info['DB']['User']?>" />
                                     <div class='installer-field-description'>Database User Id</div>
 
-                                    <input type='password' class='installer-form-field' id='password' name='password' value="<?=$info['MySQL']['Password']?>" />
+                                    <input type='password' class='installer-form-field' id='password' name='password' value="<?=$info['DB']['Password']?>" />
                                     <div class='installer-field-description'>Database Password</div>
 
                                     <input type='text' placeholder="127.0.0.1:27017" class='installer-form-field' id='mongo' name='mongo' value="<?=$info['MongoDB']['Host']?>"/><input type="button" value=" Test " id='mongo-test' name='mongo-test' />

@@ -1,0 +1,53 @@
+
+#####################################
+#SERVICES
+#####################################
+services:
+  &&NAMESPACE&&_environment:
+    container_name: &&NAMESPACE&&
+    image: &&NAMESPACE&&
+    volumes:
+      - "&&NAMESPACE&&_settings:/var/www/Settings"
+      - "&&DIR&&:/var/www/html"
+      - &&NAMESPACE&&_web_cfg:/etc
+    ports:
+      - &&PORT&&:80
+    expose:
+      - 9003
+    networks:
+      - &&NAMESPACE&&_network  
+
+  &&NAMESPACE&&_postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: password123
+      PGDATA: /data/postgres
+      POSTGRES_DB: bank
+    volumes:
+      - &&NAMESPACE&&_postgres:/data/postgres
+      - &&NAMESPACE&&_postgres_cfg:/etc
+    ports:
+      - "5432:5432"
+    networks:
+      - &&NAMESPACE&&-net
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  &&NAMESPACE&&_network:
+   name: &&NAMESPACE&&-net      
+
+volumes:
+  &&NAMESPACE&&_postgres:
+  &&NAMESPACE&&_mongodb_data:
+  &&NAMESPACE&&_postgres_cfg:  
+  &&NAMESPACE&&_mongodb_cfg:
+  &&NAMESPACE&&_web_cfg:
+  &&NAMESPACE&&_logs:
+  &&NAMESPACE&&_settings:

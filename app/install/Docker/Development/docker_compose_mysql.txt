@@ -36,7 +36,7 @@ services:
       MYSQL_PASSWORD: password123
     networks:
       - &&NAMESPACE&&_network  
-    
+
   &&NAMESPACE&&_mongodb:
     image: mongo:latest
     container_name: &&NAMESPACE&&_mongodb

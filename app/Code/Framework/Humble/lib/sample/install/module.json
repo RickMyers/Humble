@@ -38,6 +38,10 @@
         "main_module": [
             "Views/user",                
             "Views/user/Smarty",
+            "Schema/Install/MySQL",
+            "Schema/Install/SQLLite",
+            "Schema/Install/PostGRES",
+            "Schema/Install/SQLSrvr",            
             "includes"
         ]
     },
