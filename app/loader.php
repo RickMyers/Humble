@@ -68,6 +68,9 @@ function secureCheck($file=[]) {
                 $file   = $_GET['file'];
                 $source = 'Code/'.$module['package'].'/'.$module['module'].'/web/js/'.$file;
                 if (file_exists($source)) {
+                    if (!$production) {
+                        print("\n\n// ***************** $source *************\n//\n\n");
+                    }                    
                     print(file_get_contents($source));
                 }
             }
@@ -79,6 +82,9 @@ function secureCheck($file=[]) {
                 $file   = $_GET['file'];
                 $source = 'Code/'.$module['package'].'/'.$module['module'].'/web/components/'.$file;
                 if (file_exists($source)) {
+                    if (!$production) {
+                        print("\n\n// ***************** $source *************\n//\n\n");
+                    }                    
                     print(file_get_contents($source));
                 }
             }
@@ -120,6 +126,9 @@ function secureCheck($file=[]) {
             if ($module && secureCheck($data)) {
                 $file = 'Code/'.$module['package'].'/'.$orm->getSource();
                 if (file_exists($file)) {
+                    if (!$production) {
+                        print("\n\n// ***************** $file *************\n//\n\n");
+                    }                    
                     print(file_get_contents($file));
                 } else {
                     if (!$production) {
