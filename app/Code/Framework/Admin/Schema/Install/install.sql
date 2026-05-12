@@ -51,6 +51,8 @@ CREATE TABLE `admin_user_identification` (
   `first_name` char(96) DEFAULT NULL,
   `last_name` char(96) DEFAULT NULL,
   `middle_name` char(96) DEFAULT NULL,
+  `first_name_metaphone` char(32) default null,
+  `last_name_metaphone` char(32) default null,
   `name_suffix` char(36) DEFAULT NULL,
   `gender` char(3) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,

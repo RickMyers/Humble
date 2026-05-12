@@ -55,7 +55,7 @@ class Users extends Entity
      * @param type $first_name
      * @return type
      */
-    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='',$email='',$id='') {
+    public function newUser($user_name='',$md5_password='',$first_name='',$last_name='',$email='',$id='') {
         $uname  = $user_name ? $user_name       : ($this->getUserName()  ? $this->getUserName()  : false);
         $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
         $fname  = $first_name ? $first_name     : ($this->getFirstName() ? $this->getFirstName() : '');
@@ -67,7 +67,7 @@ class Users extends Entity
                 $this->setId($id);
             }
             if ($id = $this->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setEmail($email ?? '')->setUserName($uname)->save()) {
-                Humble::entity('admin/user/identification')->setId($id)->setFirstName($fname ?? '')->setLastName($lname ?? '')->save();
+                Humble::entity('admin/user/identification')->setId($id)->setFirstName($fname ?? '')->setLastName($lname ?? '')->setFirstNameMetaphone(metaphone($fname))->setLastNameMetaphone(metaphone($lname))->save();
             }
         }
         return $id;

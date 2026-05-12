@@ -188,7 +188,7 @@ class MySQL extends ORM implements ORMEngine  {
     public function calculateStats($query,&$results) {
         $rows = $this->query($query);
         $this->unity()->rowCount($rows[0]['FOUND_ROWS']);
-        if ($this->unity()->rowCount()) {
+        if ($this->unity()->rows()) {
             if ($this->unity()->page()) {
                 if ($this->unity()->toRow() > $this->unity()->rowCount()) {
                     $this->unity()->toRow($this->unity()->rowCount());
