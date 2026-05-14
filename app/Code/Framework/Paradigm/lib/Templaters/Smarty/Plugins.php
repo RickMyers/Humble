@@ -25,3 +25,5 @@
 $smarty->registerPlugin("modifier","ucfirst", "ucfirst");
 $smarty->registerPlugin("modifier","json_encode", "json_encode");
 $smarty->registerPlugin("modifier","json_decode", "json_decode");
+$smarty->registerPlugin("modifier","strtoupper", "strtoupper");
+$smarty->registerPlugin("modifier","strtolower", "strtolower");

@@ -26,7 +26,7 @@
                     <img src='/images/paradigm/clipart/decision.png' style='float: right' />
                     <select name='namespace' id='humble-paradigm-config-internal-decision-form-namespace-{$id}'>
                         <option value=''>Please choose from this list</option>
-                        {foreach from=$modules->fetch() item="module"}
+                        {foreach from=$modules item="module"}
                             <option value='{$module.namespace}'>{$module.namespace|ucfirst}</option>
                         {/foreach}
                     </select>

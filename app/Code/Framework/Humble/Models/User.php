@@ -81,6 +81,7 @@ class User extends Model {
         }
         return "Passwords were reset (sure)";
     }
+    
     /**
      * Allows you to set a message that will be displayed on the page after a login attempt
      *
@@ -180,17 +181,17 @@ class User extends Model {
     /**
      * Returns false if the login event was not successful
      *
-     * @workflow use(decision)
+     * @workflow use(decision) config(/workflow/user/login)
      * @param type $EVENT
      * @return boolean
      */
-    public function loginFailed($EVENT=false) {
-        $failed = false;
+    public function userLoggedInSuccessfully($EVENT=false) {
+        $success = false;
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             //work this out later
         }
-        return $failed;
+        return $success;
     }
 
     /**
@@ -210,21 +211,43 @@ class User extends Model {
         }
         return true;
     }
-
+    
+    /**
+     * Retrieves user data from an input
+     *
+     * @workflow use(process) config(/workflow/user/data)
+     * @param type $EVENT
+     */
+    public function information($EVENT=false) {
+        if ($EVENT!==false) {
+            $data = $EVENT->load();
+            $cfg  = $EVENT->fetch();
+            if (isset($data[$cfg['source']]) && $data[$cfg['source']]) {
+                $method = 'set'.$this->underscoreToCamelCase($cfg['source'],true);
+                if ($user   = Humble::entity('users')->$method($data[$cfg['source']])->load(true)) {
+                    $EVENT->update([$cfg['field']=> $user]);
+                }
+            }
+        }
+    }
+    
     /**
      * Adds one to the number of times you've tried to login without success
      *
      * @param type $EVENT
-     * @workflow use(process)
+     * @workflow use(process) config(/workflow/user/increment)
      */
     public function incrementTries($EVENT=false) {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
-            if (Environment::whoAmI()) {
-                $user   = Humble::entity('default/users')->setId(Environment::whoAmI());
-                if (count($user->load())) {
+            $cnfg   = $EVENT->fetch();
+            if (isset($data[$cnfg['field']]) && ($data[$cnfg['field']])) {
+                $field = $data[$cnfg['field']];
+                $method= 'set'.$this->underscoreToCamelCase($cnfg['field'],true);
+                $user   = Humble::entity('users')->$method($data[$cnfg['field']]);
+                if (count($x = $user->load(true))) {
                     $user->setLoginAttempts($user->getLoginAttempts()+1)->save();
-                }
+                }                
             } else {
                 //throw an exception for insufficient data
             }

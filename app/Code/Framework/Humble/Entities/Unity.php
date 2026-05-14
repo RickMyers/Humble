@@ -1067,7 +1067,6 @@ SQL;
             }
         }
         if ($conditionFound) {
-            $a = $query;
             $this->engine()->query($query);
             //POLYGLOT check here
             //@TODO: Implement a check to see if this is a polyglot table, and remove corresponding row in MongoDB

@@ -16,6 +16,15 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         </action>
 
         <!-- ############################################################### -->
+        
+        <action name="increment" passalong="window_id">
+            <description>Set number of tries before locking account</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>
+        
+        <!-- ############################################################### -->
 
         <action name="is" passalong="window_id">
             <description>Sets who a user ought to be</description>
@@ -67,10 +76,19 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <!-- ############################################################### -->
 
         <action name="information" passalong="window_id">
-            <description>Identifies which event field contains the userid you wish to load data from, and which event node to attach the information to</description>
+            <description>Gets user information from various sources, including session. Don't confuse with /workflow/user/data</description>
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
         </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="data" passalong="window_id">
+            <description>Identifies which event field contains the userid you wish to load data from, and which event node to attach the information to</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>        
     </actions>
 </controller>

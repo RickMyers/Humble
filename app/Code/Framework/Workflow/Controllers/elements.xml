@@ -190,20 +190,20 @@
 
         <action name="decision" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
-            <entity namespace='humble' class='modules' id='modules'>
-                <parameter name='enabled' source='post' default='Y' />
+            <entity namespace='humble' class='modules' assign='modules' method="fetch">
+                <parameter name='enabled' source='request' default='Y' />
             </entity>
             <entity assign="externals" resource="externalnamespaces" namespace="paradigm" class="workflow/components">
                 
             </entity>            
             <model namespace="workflow" class='manager' id='manager'>
-                <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='window_id' source='post' required='true' default='' />
-                <parameter name='id' source='post' required='true' default='' />
+                <parameter name='namespace' source='request' required='true' />
+                <parameter name='window_id' source='request' required='true' />
+                <parameter name='id'        source='request' required='true' />
             </model>
             <entity namespace="humble" class="workflow/components" id="components">
-                <parameter name='decision' source='request' default='Y' />
-                <parameter name='namespace' source='post' required='true' default='' />
+                <parameter name='decision'  source='request' default='Y' />
+                <parameter name='namespace' source='request' required='true' />
             </entity>
         </action>
 

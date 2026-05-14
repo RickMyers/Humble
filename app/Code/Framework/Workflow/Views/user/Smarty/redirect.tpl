@@ -33,7 +33,7 @@
                     <table style="cellspacing: 5px; cellpadding: 5px">
                         <tr>
                             <td style="text-align: right">URL: </td>
-                            <td><input type="text" style="background-color: lightcyan; width: 450px; padding: 5px; border-radius: 5px; border: solid 1px #333" name="url" id="config_redirect_{$data.id}" value="{if (isset($data.url))}{$data.url}{/if}" /></td>
+                            <td><input type="text" style="background-color: lightcyan; width: 450px; padding: 5px; border-radius: 5px; border: solid 1px #333" name="url" id="config_po_{$data.id}" value="{if (isset($data.url))}{$data.url}{/if}" /></td>
                         </tr>
                         <tr>
                             <td style="text-align: right; white-space: nowrap">URL Encode:</td>

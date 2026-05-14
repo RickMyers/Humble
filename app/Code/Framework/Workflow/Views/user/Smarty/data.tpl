@@ -24,21 +24,32 @@
     <tr>
         <td colspan="3" align="center" valign="middle">
             <div style='margin-left: auto; margin-right: auto; width: 500px; padding: 20px'>
-                <form name="config-tries-form" id="config-tries-form-{$data.id}" onsubmit="return false">
+                <form name="config-userdata-form" id="form-{$data.id}" onsubmit="return false">
                     <fieldset><legend>Instructions</legend>
                         <div style='padding-top: 20px; padding-bottom: 20px; text-align: justify; background-color: rgba(55,55,55,.2)'>
-                            Please specify the maximum number of attempts a person can make before potentially locking their account
+                            Please specify the field on the event that contains the user name or user id to get the data for, and then identify the name of event field to attach the data to
                         </div>
                         <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
                         <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />
                         <table style='width: 100%'>
                             <tr>
                                 <td>
-                                    How many tries should we allow: <input style='padding: 5px; border-radius: 5px; background-color: lightcyan; border: 1px solid #333' type="text" name="tries" id="config-tries-{$data.id}" value="{if (isset($data.tries))}{$data.tries}{/if}" />
+                                    Source Field:
+                                </td>
+                                <td>
+                                    <input style='padding: 5px; border-radius: 5px; background-color: lightcyan; border: 1px solid #333' type="text" name="source" id="data-source-{$data.id}" value="{if (isset($data.source))}{$data.source}{/if}" />
                                 </td>
                             </tr>
                             <tr>
-                                <td style='padding-top: 20px'>
+                                <td>
+                                    Attach To:
+                                </td>
+                                <td>
+                                    <input style='padding: 5px; border-radius: 5px; background-color: lightcyan; border: 1px solid #333' type="text" name="field" id="attach-field-{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan='2' style='padding-top: 20px'>
                                     <input type="submit" value=" Save " />
                                 </td>
                             </tr>
@@ -50,5 +61,6 @@
     </tr>
 </table>
 <script type="text/javascript">
-    Form.intercept($('#config-tries-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+    Form.intercept($('#form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>
+

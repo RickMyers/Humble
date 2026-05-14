@@ -300,10 +300,6 @@ SQL;
                  'SQLLite'   => true,
                  'SQLServer' => true];
         $namespace  = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
-        if ($namespace) {
-            $this->deRegisterWorkflowComponents($namespace);            
-            $this->deRegisterListeners($namespace);
-        }
         $models             = Humble::getModels($namespace);
         $workflowComponent  = Humble::entity('paradigm/workflow/components');
         $workflowComment    = Humble::entity('paradigm/workflow/comments');
