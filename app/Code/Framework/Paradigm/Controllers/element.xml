@@ -2,7 +2,7 @@
 <controller name="element" use="Twig">
     <actions>
 
-        <action name="create">
+        <action name="create" passalong="window_id">
             <description>Registers a workflow object and returns the id to use to save its information</description>
             <model namespace='paradigm' class='element' id='element'>
                 <parameter name='namespace'     source='post' />
@@ -14,7 +14,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="configure">
+        <action name="configure" passalong="window_id">
             <description>Generates the configuration screen for a component</description>
             <model namespace='paradigm' class='manager' id='manager'>
                 <parameter name='id'        source='post' required='true' default='' />
@@ -35,11 +35,12 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="remove">
+        <action name="remove" passalong="window_id">
             <description>Removes a workflow element... this includes deleting the MongoDB element and any additional behavior depending on type of element</description>
             <model namespace='paradigm' class='manager' method='removeElement' response='true'>
                 <parameter name='id' source='post' required='true' />
             </model>
         </action>
     </actions>
+    
 </controller>

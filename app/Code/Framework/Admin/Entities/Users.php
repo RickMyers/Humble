@@ -67,7 +67,7 @@ class Users extends Entity
                 $this->setId($id);
             }
             if ($id = $this->setSalt($this->salt())->setPassword(crypt($pwd,$this->getSalt()))->setEmail($email ?? '')->setUserName($uname)->save()) {
-                Humble::entity('admin/user/identification')->setId($id)->setFirstName($fname ?? '')->setLastName($lname ?? '')->setFirstNameMetaphone(metaphone($fname))->setLastNameMetaphone(metaphone($lname))->save();
+                Humble::entity('admin/user/identification')->setId($id)->setFirstName($fname ?? '')->setLastName($lname ?? '')->setFirstNameMetaphone(metaphone($fname,16))->setLastNameMetaphone(metaphone($lname,16))->save();
             }
         }
         return $id;

@@ -173,4 +173,29 @@ hub :
     directive: true
     parameters:
         required:
-        optional:           
+        optional:   
+aws :
+    description: Configures the AWS Secret Manager class for storing credentials
+    usage:
+        linux:   sh ./humble --aws region=East secret=mySecretCred value="{'userid':'someuid','password':'mypassword'}" 
+        windows: humble --aws region=East secret=mySecretCred value="{'userid':'someuid','password':'mypassword'}"
+    function : AWSSetup
+    parameters:
+        required:
+          region : The AWS region for storage of the secret
+          secret : Name of secret to store
+          value  : JSON encoded secret containing userid and password
+        optional:   
+local-cred :
+    description: Configures the AWS Secret Manager class for storing credentials
+    usage:
+        linux:   sh ./humble --aws region=East secret=mySecretCred value="{'userid':'someuid','password':'mypassword'}" 
+        windows: humble --aws region=East secret=mySecretCred value="{'userid':'someuid','password':'mypassword'}"
+    function : localCredentials
+    parameters:
+        required:
+          region : The AWS region for storage of the secret
+          secret : Name of secret to store
+          value  : JSON encoded secret containing userid and password
+        optional:   
+  

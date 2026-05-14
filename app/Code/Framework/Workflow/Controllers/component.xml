@@ -29,7 +29,7 @@
         
         <!-- ################################################################################################# -->
 
-        <action name="methods">
+        <action name="methods" output="JSON">
             <description>Gets a list of events attached to an object</description>
             <entity namespace='paradigm' class='workflow/components' id='methods' distinct='true' fields='method'>
                 <parameter name='namespace' source='request' default='humble' />

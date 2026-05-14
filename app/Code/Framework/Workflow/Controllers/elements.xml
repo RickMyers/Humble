@@ -76,7 +76,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="process">
+        <action name="process" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />
@@ -92,7 +92,18 @@
         
         <!-- ################################################################################################# -->
 
-        <action name="adapter">
+        <action name="rule" passalong="window_id">
+            <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
+            <model namespace="workflow" class='manager' id='manager'>
+                <parameter name='namespace' source='post' required='true' default='' />
+                <parameter name='window_id' source='post' required='true' default='' />
+                <parameter name='id' source='post' required='true' default='' />
+            </model>
+        </action>
+                
+        <!-- ################################################################################################# -->
+
+        <action name="adapter" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />
@@ -177,7 +188,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="decision">
+        <action name="decision" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />
@@ -198,7 +209,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="actor">
+        <action name="actor" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />
@@ -216,7 +227,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="system">
+        <action name="system" passalong="window_id">
             <description>Bring up the CRON style event trigger</description>
             <entity namespace='humble' class='modules' id='modules'>
                 <parameter name='enabled' source='post' default='Y' />
@@ -308,7 +319,7 @@
 
         <!-- ################################################################################################# -->
 
-        <action name="terminus">
+        <action name="terminus" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <model namespace="workflow" class='manager' id='manager'>
                 <parameter name='namespace' source='post' required='true' default='' />

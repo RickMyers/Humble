@@ -20,6 +20,7 @@
             <div id="process-internal-tab-{$id}" style='margin-left: auto; margin-right: auto; width: 545px'>
                 <form name='process-form' id='humble-paradigm-config-process-internal-form-{$manager->getId()}' onsubmit='return false'>
                     <input type="hidden" name="id" id="element-id-{$manager->getId()}" value="{$manager->getId()}" />
+                    <input type="hidden" name="window_id" value="{$window_id}" />   
                     <input type="hidden" name="process" value="Y" />   
                     <img src='/images/paradigm/clipart/process.png' style='float: right' />
                     <div>
@@ -68,7 +69,7 @@
                     <img src='/images/paradigm/clipart/process.png' style='float: right' />
                     
                     <form name='process-form' id='humble-paradigm-config-process-external-form-{$id}' onsubmit='return false'>
-                    <input type="hidden" name="window_id" id="window-id-external-{$manager->getId()}" value="{$manager->getWindowId()}" />
+                    <input type="hidden" name="window_id" id="window-id-external-{$manager->getId()}" value="{$window_id}" />
                     <input type="hidden" name="id" id="humble-paradigm-config-process-external-id-{$id}" value="{$manager->getId()}" />                      
                     <input type="hidden" name="process" value="Y" />   
                     <select name='namespace' id='humble-paradigm-config-process-external-namespace-{$id}'>

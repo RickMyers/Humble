@@ -30,6 +30,7 @@ class Generator extends Helper
     private $version            = '';
     private $trigger            = false;
     private $workflow           = "";
+    private $generated          = [];
     private $header             = <<<HDR
 <?php
 /* ###################################################################################
@@ -83,6 +84,12 @@ HDR;
         // o $obj->$method(Event::get(EVENT,this_element_id);   This will load the configuration data stored in mongo into the event object as it's own node,
         //   and then passed-in/returned to the element method after having set what the current id is in the event.  The event ID will change as we progress down the workflow
         global $tabs;
+        /*---------------------------------------------------------------------- */
+        if (isset($this->generated[$node['id']]) && $this->generated[$node['id']]) {
+            return true;
+        }
+        $this->generated[$node['id']] = true;                                   // infinite loop protection
+        /*---------------------------------------------------------------------- */
         $debug          = false;
         $includeBranch  = true;  //Do I include the "goto" or "branch" to next statement
         if (!$node) {
@@ -174,6 +181,19 @@ HDR;
                 $tabs = substr($tabs,0,strlen($tabs)-1);
                 $this->workflow .= $tabs."}\n";
                 break;
+            case "rule"     :
+                $this->workflow .= $tabs.'if (Humble::model("workflow/manager")->runRule(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";
+                $tabs .= "\t";
+                $this->workflow .= $tabs."goto label_".$node['connectors']['E']['begin']['to']['id'].";\n";
+                $this->traverse($this->components[$node['connectors']['E']['begin']['to']['id']]);
+                $tabs = substr($tabs,0,strlen($tabs)-1);
+                $this->workflow .= $tabs."} else {\n";
+                $tabs .= "\t";
+                $this->workflow .= $tabs."goto label_".$node['connectors']['S']['begin']['to']['id'].";\n";
+                $this->traverse($this->components[$node['connectors']['S']['begin']['to']['id']]);
+                $tabs = substr($tabs,0,strlen($tabs)-1);
+                $this->workflow .= $tabs."}\n";
+                break;                
             case "terminus"     :
                 if (isset($cnf['cancel']) && ($cnf['cancel']=='Y')) {
                     $this->workflow .= $tabs.'$cancelBubble = true;'."\n";
@@ -188,6 +208,8 @@ HDR;
                 //put stuff here
                 $this->workflow .= $tabs.'Humble::model("paradigm/workflow")->manage();'."\n";
                 //Just the 'begin''to' connectors need to be drawn
+                //Find the outbound 'to' node, and plug it in below:
+                //$this->traverse($this->components[$node['connectors']['S']['begin']['to']['id']]);
                 break;
             case "actor"        :
             case "sensor"       :
@@ -195,7 +217,6 @@ HDR;
             case "trigger"      :
             case "system"       :
                 $this->trigger = $cnf;
-                        
             case "begin"        :
                 //do variable substitution stuff and print the header
                 $tabs .= "\t";   //lets indent it!
