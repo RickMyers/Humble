@@ -322,12 +322,12 @@
         <action name="terminus" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <model namespace="workflow" class='manager' id='manager'>
-                <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='window_id' source='post' required='true' default='' />
-                <parameter name='id' source='post' required='true' default='' />
+                <parameter name='namespace' source='request' required='true' default='' />
+                <parameter name='window_id' source='request' required='true' default='' />
+                <parameter name='id' source='request' required='true' default='' />
             </model>
             <mongo namespace="paradigm" class="elements" id="component">
-                <parameter name='id' source='post' required='true' default='' />
+                <parameter name='id' source='request' required='true' default='' />
             </mongo>
         </action>
 

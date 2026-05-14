@@ -25,7 +25,7 @@
                     <img src='/images/paradigm/clipart/process.png' style='float: right' />
                     <div>
                         <div>
-                            <select name='namespace' id='humble-paradigm-config-process-internal-namespace-{$manager->getId()}'>
+                            <select name='namespace' id='humble-paradigm-config-process-internal-namespace-{$manager->getId()}' style="padding: 5px">
                                 <option value=''>Please choose from this list</option>
                                 {foreach from=$modules->fetch() item="module"}
                                     <option value='{$module.namespace}'>{$module.namespace|ucfirst}</option>
@@ -34,13 +34,13 @@
                         </div>
                         <div class='form-field-description'>Available Object Collections</div>
                         <div>
-                        <select name='component' id='humble-paradigm-config-process-internal-component-{$manager->getId()}'>
+                        <select name='component' id='humble-paradigm-config-process-internal-component-{$manager->getId()}' style="padding: 5px">
                             <option value=''>Please choose from this list</option>
                         </select>
                         </div>
                         <div class='form-field-description'>Available Process Objects</div>
                         <div style='white-space: nowrap; position: relative'>
-                            <select name='method' id='humble-paradigm-config-process-internal-method-{$manager->getId()}'>
+                            <select name='method' id='humble-paradigm-config-process-internal-method-{$manager->getId()}' style="padding: 5px">
                                 <option value=''>Please choose from this list</option>
                             </select><input type="text" placeholder='Select from below or create a new method' name="method" id="humble-paradigm-config-process-internal-method-{$manager->getId()}_combo" value="" />
                                   <img id='view_code-{$manager->getId()}' src='/images/workflow/view_code.png' title='View Code' style='height: 22px; position: relative; top:6px; margin-right: 4px; cursor: pointer; visibility: hidden' />
@@ -48,7 +48,7 @@
                         <div class='form-field-description'>Available Process Methods</div>
                     </div>
                     <input type='button' name='save' id='humble-paradigm-config-process-internal-save-{$manager->getId()}' style='display: inline-block' />
-                    <div style='display: inline-block; width: 450px; min-height: 20px; border: 1px solid #aaf; padding: 5px; background-color: #F0F0D0; border-radius: 5px ' id='config-component-comment-{$manager->getId()}'></div>
+                    <div style='margin-top: 25px; width: 450px; height: 60px; overflow: auto; border: 1px solid #aaf; padding: 5px; background-color: #F0F0D0; border-radius: 5px ' id='config-component-comment-{$manager->getId()}'></div>
                     <script type='text/javascript'>
                         var ee = new EasyEdits(null,'process_internal-{$manager->getId()}');
                         ee.fetch('/edits/workflow/internalprocess');

@@ -29,7 +29,7 @@
             required:		true,
             force:		true,
             classname:		"",
-            style:		"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+            style:		"border-radius: 3px; padding: 6px; width: 400px; border: 1px solid #aaf"
         },
         {
             active:         true,
@@ -47,7 +47,7 @@
             required:       true,
             force:          true,
             classname:      "",
-            style:          "border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+            style:          "border-radius: 3px; padding: 6px; width: 400px; border: 1px solid #aaf"
         },
         {
             active:		true,
@@ -74,7 +74,7 @@
                 }
             },
             classname:		"",
-            style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+            style:			"border-radius: 3px; padding: 6px; width: 400px; border: 1px solid #aaf"
         },
             {
                 active:			true,

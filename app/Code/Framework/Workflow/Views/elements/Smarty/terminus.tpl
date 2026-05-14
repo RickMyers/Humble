@@ -28,20 +28,33 @@
     {/if}
     <tr>
         <td colspan="3" valign="middle" align="center">
-            <form name="terminus-form" id="config-terminus-form-{$id}">
-                <input type="hidden" name="id" id="element-id-{$id}" value="{$id}" />
-                <input type="hidden" name="window_id" id="window-id-{$id}" value="{$window_id}" />
-                <table>
-                    <tr>
-                        <td>Return:&nbsp;&nbsp;&nbsp;<input type="radio" name="returns" checked="checked" id="terminus-value-true-{$id}" value='1' /> True &nbsp;&nbsp; <input type="radio" name="returns" id="terminus-value-false-{$id}" id="" value="0" /> False<br />
-                           <br /> Cancel Bubble:&nbsp;&nbsp;&nbsp;<input type="checkbox" value="Y" name="cancel" id="terminus-cancel-bubble-{$id}" /><br /><br />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="submit" value=" Save "></td>
-                    </tr>
-                </table>
-            </form>
+            <div style="margin-left: auto; margin-right: auto; width: 550px; padding: 20px">
+                <form name="terminus-form" id="config-terminus-form-{$id}">
+                    <fieldset><legend>Instructions</legend>
+                        <div style="text-align: justify; margin-top: 20px; margin-bottom: 20px">
+                        Below specify whether this part of the workflow returns "True", for a good outcome, or "False" for a negative outcome.
+                        If the negative outcome is bad enough, select whether to cancel bubbling (stop further workflow processing)
+                        </div>
+                        
+                        <input type="hidden" name="id" id="element-id-{$id}" value="{$id}" />
+                        <input type="hidden" name="window_id" id="window-id-{$id}" value="{$window_id}" />
+                        <table style="cellpadding: 5px; cellspacing: 5px">
+                            <tr>
+                                <td style="text-align: right; padding-right: 10px">Return Value: </td><td><input type="radio" name="returns" {if (isset($data['returns']))}{if ($data['returns']=='1')} checked="checked"{/if}{/if} id="terminus-value-true-{$id}-true" value='1' /> True &nbsp;&nbsp; 
+                                    <input type="radio" name="returns" id="terminus-value-false-{$id}-false" value="0" {if (isset($data['returns']))}{if ($data['returns']=='0')} checked="checked"{/if} {/if}/> False
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; padding-right: 10px">Cancel Bubble: </td>
+                                <td><input type="checkbox" value="Y" name="cancel" id="terminus-cancel-bubble-{$id}-cancel" {if (isset($data['cancel']))}{if ($data['cancel']=='Y')} checked="checked"{/if}{/if} /></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="padding-top: 25px"><input type="submit" value=" Save "></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </form>
+            </div>
         </td>
     </tr>
 </table>

@@ -41,8 +41,9 @@
                     </select>
                     <div class='form-field-description'>Available Decision Methods</div>
                     <br />
-                    <div style='float: right; display: none; width: 470px; border: 1px solid #aaf; padding: 5px 10px; background-color: #F0F0D0; border-radius: 10px ' id='config-component-comment-{$manager->getId()}'></div>
                     <input type='button' name='decision-form-save' id='humble-paradigm-config-internal-decision-form-save-{$id}' />
+                    <div style='margin-top: 25px; width: 450px; height: 60px; overflow: auto; border: 1px solid #aaf; padding: 5px; background-color: #F0F0D0; border-radius: 5px' id='config-component-comment-{$manager->getId()}'></div>
+                    
                     </form>
                     <script>
                         var ee = new EasyEdits(null,'decision_internal_{$manager->getId()}');
