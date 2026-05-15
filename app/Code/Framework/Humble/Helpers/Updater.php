@@ -150,17 +150,21 @@ SQL;
     }
 
     //What exactly am i doing here?
-    protected function deRegisterWebHooks() {
-        $query = <<<SQL
-            delete from paradigm_webhooks
-             where namespace = '{$this->namespace}'
-SQL;
-        $this->_db->query($query);
+    protected function deRegisterWebHooks($namespace=false) {
+        if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
+            Humble::entity('paradigm/webhooks')->setNamespace($namespace)->delete(true);
+        }
         return $this;
     }
     
+    /**
+     * Something something dark-side
+     * 
+     * @param type $hook_node
+     * @return $this
+     */
     protected function registerWebHooks($hook_node = false) {
-        $this->deRegisterWebHooks();
+        $this->deRegisterWebHooks(); //maybe do this elsewhere
         if ($hook_node) {
             
         }
@@ -168,15 +172,17 @@ SQL;
     }
     
     /**
+     * Removes information about a namespace's components and component comments so that they can be re-retistered
      * 
      * @param type $namespace
      * @return $this
      */
-    protected function deRegisterListeners($namespace) {
-        $namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
-        $listeners = Humble::entity('paradigm/method/listeners');
-        $listeners->setNamespace($namespace);
-        $listeners->delete(true);
+    protected function deRegisterListeners($namespace=false) {
+        if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
+            $listeners = Humble::entity('paradigm/method/listeners');
+            $listeners->setNamespace($namespace);
+            $listeners->delete(true);
+        }
         return $this;
     }
     
@@ -348,9 +354,7 @@ SQL;
                 $listener               = false;
                 foreach ($customAnnotations as $annotation) {
                     $clauses   = explode(' ',$annotation);
-                    //print_r($clauses);die();
                     foreach ($clauses as $clause) {
-                        //print($clause."\n");
                         $value = '';
                         if (strpos($clause,'(') && (strpos($clause,')'))) {
                             $data  = explode('(',$clause);
@@ -360,7 +364,6 @@ SQL;
                         } else {
                             $token = $clause;
                         }
-                        //print($token."\n");
                         switch ($token) {
                             case "workflow"         :   //nop
                                                         break;
@@ -699,6 +702,7 @@ SQL;
         Humble::cache('application',\Environment::application());
         Humble::cache('api_policy',json_decode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json')));
         Humble::cache('project',json_decode(file_get_contents('../Humble.project')));
+        return $this;
     }
     
     /**
@@ -712,7 +716,6 @@ SQL;
         $helper = Humble::helper('humble/data');
         $xml = '';
         if (file_exists($source)) {
-          //  \Log::console('Starting Update Of: '.$source);
             if ($helper->isValidXML($xml = file_get_contents($source))) {
                 $xml    = new SimpleXMLElement($xml);
                 foreach ($xml as $namespace => $contents) {

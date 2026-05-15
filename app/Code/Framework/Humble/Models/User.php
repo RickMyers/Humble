@@ -186,11 +186,22 @@ class User extends Model {
      * @return boolean
      */
     public function userLoggedInSuccessfully($EVENT=false) {
-        $success = false;
+        $success    = false;
         if ($EVENT!==false) {
             $data   = $EVENT->load();
-            //work this out later
+            $cnfg   = $EVENT->fetch();
+            if ($password = (isset($data[$cnfg['password_field']])) ? $data[$cnfg['password_field']] : false) {
+                if ($node = (isset($data[$cnfg['data_node']]))? $cnfg['data_node']: false) {
+                    $valid_password = $data[$node][$cnfg['password_field']] ?? false;
+                    $salt           = $data[$node][$cnfg['salt_field']] ?? false;
+                    if ($valid_password && $salt) {
+                        $x = crypt($valid_password,$salt);
+                        $success = ($valid_password === crypt($password,$salt));
+                    }
+                }
+            }
         }
+        $EVENT->update(["logged_in"=>$success]);
         return $success;
     }
 
@@ -204,7 +215,7 @@ class User extends Model {
         if ($EVENT!==false) {
             $data   = $EVENT->load();
             if (Environment::whoAmI()) {
-                Humble::entity('default/users')->setId(Environment::whoAmI())->setLoginAttempts(0)->save();
+                Humble::entity('users')->setId(Environment::whoAmI())->setLoginAttempts(0)->save();
             } else {
                 //throw an exception for insufficient data
             }
@@ -417,6 +428,7 @@ class User extends Model {
     public function logout() {
        session_unset();
        session_destroy();
+       return $this;
     }
     
     /**

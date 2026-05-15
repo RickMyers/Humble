@@ -89,6 +89,16 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <mongo namespace='paradigm' class='elements' id='element'>
                 <parameter name="id" source="post" default="" required="true" />
             </mongo>
-        </action>        
+        </action>      
+        
+        <!-- ############################################################### -->
+
+        <action name="login" passalong="window_id">
+            <description>Configuration screen for where to retrieve information to validate if a user logged in</description>
+            <mongo namespace='paradigm' class='elements' id='element'>
+                <parameter name="id" source="post" default="" required="true" />
+            </mongo>
+        </action>   
+                    
     </actions>
 </controller>

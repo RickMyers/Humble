@@ -1,6 +1,6 @@
 <table style='width: 100%; height: 100%'>
     <tr>
-        <td style='background-color: #aaf; height: 20px; border-bottom: 1px solid #999'>
+        <td style='background-color: #333; border-bottom: 1px solid #999; color: ghostwhite; font-size: 1em; padding-top: 10px; height: 20px'>
             <b>Save Workflow Diagram</b>
         </td>
     </tr>
@@ -26,8 +26,8 @@
         </td>
     </tr>
     <tr>
-        <td style='font-family: sans-serif;border-top: 1px solid #999; background-color: #aaf;  font-size: 1em; height: 20px; padding-bottom: 12px'>
-            <div>&copy; 2014 Humble Project, all rights reserved</div>
+        <td style='font-family: sans-serif; border-top: 1px solid #999; background-color: #333;  font-size: 1em;  padding-bottom: 10px; height: 20px'>
+            <div style="color: ghostwhite; text-align: right; padding-right: 10px">&copy; 2014 Humble Project, all rights reserved</div>
         </td>
     </tr>
 </table>
