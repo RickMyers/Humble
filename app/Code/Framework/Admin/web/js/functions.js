@@ -589,7 +589,7 @@ var Functions = (() => {
                         Desktop.init(Desktop.enable);
                         Desktop.semaphore.init();
                         if (window.message_hub.host) {
-                         /*   socketio = io(window.message_hub.host+':'+window.message_hub.port);
+                            socketio = io(window.message_hub.host+':'+window.message_hub.port);
                             socketio.on('connect',function () {
                                 console.log('Connected to socket server');
                                 window.setTimeout(function () {
@@ -600,14 +600,13 @@ var Functions = (() => {
                                     }
                                 },2000);
                             });
-                            socketio.on('testEvent',(data) => {
+/*                            socketio.on('testEvent',(data) => {
                                 console.log(data);
                                 alert('testEvent');
                             });*/
                         }
                         let f = (() => {
                             let observations = [];
-                            
                             return function (server) {
                                 observations[observations.length] = server = JSON.parse(server);
                                 if (observations.length > 10) {
@@ -616,7 +615,6 @@ var Functions = (() => {
                                     }
                                     delete observations[observations.length];
                                 }
-                                console.log(observations);
                                 $('#server-memory-load').html(server.memory.used+'/'+server.memory.total+' ['+server.memory.percentage+'%]');
                                 $('#server-cpu-load').html((Math.round(server.cpu.load*1000)/1000)+'%');
                                 $('#server-tasks').html(server.apache.thread_count+'/'+server.tasks.count);

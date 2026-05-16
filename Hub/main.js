@@ -63,7 +63,10 @@ app.get('/', function (req,res) {
 app.post('/emit', function (req,res) {
     console.log('Received data via EMIT @ '+(new Date()).toLocaleString());
     console.log(req.body);
-    var data = req.body;
+    var event_name = req.body.event;
+    var data = req.body.data;
+    var uid  = req.body.uid;
+    console.log(event_name,data,uid);
     if (data && data.event && (data.event == 'RTCUserMessage')) {
         if (data.user_id && users[data.user_id]) {
             console.log(users[data.user_id]);
@@ -72,21 +75,19 @@ app.post('/emit', function (req,res) {
                 io.to(socket).emit(data.message,data);
             }
         }		
-    } else if (data && data.event) {
-        var e = data.event;
-        delete data.event;
-        if (data.uid) {
+    } else if (event_name && data) { //(data && data.event)
+        if (uid) {
             for (var user_id in users) {
                 if (data.uid == user_id) {
                     for (var socket_id in users[user_id]) {
                         console.log('Sending '+user_id+' on socket '+socket_id+' the message '+e+' @ '+(new Date()).toLocaleString());
-                        io.to(socket_id).emit(e,data);                          //Sends the event and data to a specific person
+                        io.to(socket_id).emit(event_name,data);                          //Sends the event and data to a specific person
                     }
                 }
             }
         } else {
             console.log('Emitting data to client @ '+(new Date()).toLocaleString());
-            io.emit(e,data);                                                    //Global broadcast
+            io.emit(event_name,data);                                                    //Global broadcast
         }
     } else {
         console.log('I did not emit the event');

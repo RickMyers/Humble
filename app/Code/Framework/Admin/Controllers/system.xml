@@ -28,7 +28,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                 <parameter name="user_id"         source="session" value="uid"    default="" />
                 <parameter name="arguments"       source="post"  default="" />
             </model>
-        </action>        
+        </action>           
                
         <!-- ########################################################################################## -->
 

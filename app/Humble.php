@@ -565,14 +565,15 @@
         public static function push($eventName,$data=[]) {
             $success = false;
             $project = Environment::project();
-           
+            $event   = [];
             if ($project->hub_host && $project->hub_port) {
                 //change to read from Humble.project file
-                $data['event'] = $eventName;
+                $event['event'] = $eventName;
+                $event['data']  = json_encode($data);
                 $server = $project->hub_host.':'.$project->hub_port;
                 $ch = curl_init($server.'/emit');
                 curl_setopt($ch, CURLOPT_POST,1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data,'','&'));
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($event,'','&'));
                 curl_setopt($ch, CURLOPT_HEADER, 1);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 3);

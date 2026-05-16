@@ -1,19 +1,23 @@
-<div id="admin_live-{{ window_id }}" style="position: relative; background-color: #333; font-family: monospace; color: ghostwhite; font-size: .85em; overflow: auto">
+<div id="admin_live-{{ window_id }}" style="position: relative; background-color: #333; font-family: monospace; color: ghostwhite; font-size: .85em; overflow: scroll">
     {{ window_id }} hello world
 </div>
 <script>
     (() => {
-        let win = Desktop.window.list['{{ window_id }}'];
-        win._title('Admin Live!');
-        win._resize(() => {
-            return function () {
-                $('#admin_live-{{ window_id }}').css('height',win.content.height()-4);
-            }      
-         }).resize();
-         win.close( () => {
-            alert('closing');
+        let win = Humble.admin.live = (Humble.admin.live) ? Humble.admin.live : Desktop.window.list['{{ window_id }}'];
+        let socketIO = Administration.socketIO();
+        socketIO.on('adminLive',function (data) {
+            console.log(data);
             return true;
-         });
+        });
+        
+        win._static(true)._title('Admin Live!')._scroll(true);
+        win.resize(function () {
+                $('#admin_live-{{ window_id }}').height(win.content.height()-2);
+         })._resize();
+         win.close(() => {
+            console.log('De-attaching event...');
+            socketIO.off('adminLive');
+        });
          
     })();
 </script>
