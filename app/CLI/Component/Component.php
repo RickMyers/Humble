@@ -45,6 +45,8 @@ class Component extends CLI
      * @return string
      */
     private static function tagAttributeCheck($parent,$node,$attributes,$validator,$lineNumber,$errors) {
+        //when is toggle, then dump data
+        print($node."\n");
         if (isset($validator->$node)) {                                         //We need to find the correct syntax scheme to compare the attribute to, since some have multiple schemes depending on parent
             foreach ($validator->$node->attributes as $idx => $schema) {
                 $attr = $schema->attributes();
@@ -127,9 +129,14 @@ class Component extends CLI
      * @return type
      */
     private static function checkControllerNodes($parent,$nodes,$structure,$validator,$errors) {
+       // file_put_contents('attrib.txt',print_r($validator,true),FILE_APPEND);
+        print_r($nodes);
         foreach ($nodes as $index1 => $children) {
+            print($index1."\n");
             foreach ($children as $node => $child) {
+                print_r($child);
                 if (isset($child['attributes']) && count($child['attributes'])) {
+                    
                     $errors = self::tagAttributeCheck($parent,$node,$child['attributes'],$validator,$child['lineNumber'],$errors);
                 }
                 if (isset($child['children']) && count($child['children'])) {
@@ -217,6 +224,7 @@ class Component extends CLI
                     }
                 } else {
                     $struct     = self::recurseControllerNodes($dom->firstChild);
+                    print_r($struct); die();
                     $source     = simplexml_load_file($file);
                     $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
                     $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');

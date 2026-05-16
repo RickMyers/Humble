@@ -21,7 +21,14 @@
     </controller>
     <actions taxonomy="control">
         <attributes>
-            <throttle   required="false"  purpose="" default="" />
+            <throttle   required="false"  purpose="Globally Limits the number of concurrent threads for every action in this controller" default="" >
+                <values>
+                    <ip alias="ip_address" />
+                    <ip_address />
+                    <uid />
+                    <userid alias="user_id" />
+                </values>
+            </throttle>    
             <blocking   required="false"  purpose="" default="TRUE" >
                 <values>
                     <off />
@@ -57,6 +64,14 @@
                     <json />
                 </values>
             </request>
+            <throttle   required="false"  purpose="Limit the number of concurrent threads" default="" >
+                <values>
+                    <ip alias="ip_address" />
+                    <ip_address />
+                    <uid />
+                    <userid alias="user_id" />
+                </values>
+            </throttle>            
             <audit      required="false"  purpose="" default="" />
             <name       required="true"   purpose="" default="" />
             <blocking   required="false"  purpose="" default="" >
@@ -87,14 +102,6 @@
                     <text />
                 </values>
             </output>
-            <throttle   required="false"  purpose="" default="" >
-                <values>
-                    <ip alias="ip_address" />
-                    <ip_address />
-                    <uid />
-                    <userid alias="user_id" />
-                </values>
-            </throttle>            
             <disposition required="false"  purpose="" default="" />
             <filename    required="false"  purpose="" default="" />
             <input       required="false"  purpose="" default="">
