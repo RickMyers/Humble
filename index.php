@@ -223,6 +223,9 @@ if (!$request_handled) {
             $identifier = $ns.'/'.$controller;
             $compiler   = \Environment::getCompiler();
             $compiler->setController($controller);
+            if (\Environment::isRunning(false,'main.js')) {
+                \Humble::push('adminLive',['source'=>'Front Controller', 'action'=>'Compilation', 'controller' => $identifier]);
+            }
             if ($ns === $core['namespace']) {
                 $core   = \Humble::module($ns);
                 $compiler->setInfo(\Humble::module($core['namespace']));
