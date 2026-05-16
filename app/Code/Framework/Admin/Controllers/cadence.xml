@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-
+   
 Manages the cadence periodic poller
 
 For Controller reference, please see "Anatomy of a Controller" at https://www.adminprogramming.com/pages/Controllers.htmls
@@ -14,10 +14,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.ad
                 
             </model>
         </action>
-
+    
         <!-- ############################################################### -->
 
-        <action name="status" output="JSON">
+        <action name="status" output="JSON" throttle="ip=9">
             <description>Returns whether cadence is running</description>
             <model namespace="admin" class="cadence" id="cadence">
                 

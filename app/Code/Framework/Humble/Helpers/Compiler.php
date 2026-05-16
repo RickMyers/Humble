@@ -1298,14 +1298,96 @@ class Compiler extends Directory
         }
     }
     
+    /**
+     * Punches out the code that limits execution to a set number of threads, stored in the cache
+     * 
+     * @param string $options
+     * @return bool
+     */
     private function manageThrottle($options=false) {
-        
+        $throttle = false;
+        if (\Environment::cachingEnabled()) {                                   //might need to add this to the punched out code as well
+            $opts = explode('=',$options);
+            print($this->tabs().'$tCtr = 0; $execution = false; $throttle='.$opts[1].";\n");
+            switch ($opts[0]) {
+                case 'uid'          :
+                case 'userid'       :
+                case 'user_id'      :
+                    //now punch the cache management code based on uid
+                    $throttle = true;
+                    print($this->tabs().'while ($tCtr++ < 10 && !$execution) {'."\n");
+                    print($this->tabs(1).'$obs = (int)Humble::cache("throttle-uid-".$uid);'."\n");
+                    print($this->tabs().'if ($obs >= $throttle) {'."\n");
+                    print($this->tabs(1)."usleep(333);\n");
+                    print($this->tabs().'$obs = (int)Humble::cache("throttle-uid-".$uid);'."\n");
+                    print($this->tabs(-1)."} else {\n");
+                    print($this->tabs(1).'$execution = true;'."\n");
+                    print($this->tabs(-1)."}\n");
+                    print($this->tabs(-1)."}\n");
+                    print($this->tabs().'Humble::cache("throttle-uid-".$uid,$obs+1);'."\n");                    
+                    break;
+                case 'ip'           :
+                case 'ipaddress'    :
+                case 'ip_address'   :
+                    $throttle = true;
+                    print($this->tabs().'while ($tCtr++ < 10 && !$execution) {'."\n");
+                    print($this->tabs(1).'$obs = (int)Humble::cache("throttle-ip-".$ip_address);'."\n");
+                    print($this->tabs().'if ($obs >= $throttle) {'."\n");
+                    print($this->tabs(1)."usleep(333);\n");
+                    print($this->tabs().'$obs = (int)Humble::cache("throttle-ip-".$ip_address);'."\n");
+                    print($this->tabs(-1)."} else {\n");
+                    print($this->tabs(1).'$execution = true;'."\n");
+                    print($this->tabs(-1)."}\n");
+                    print($this->tabs(-1)."}\n");
+                    print($this->tabs().'Humble::cache("throttle-ip-".$ip_address,$obs+1);'."\n");                    
+                    break;
+                default :
+                    print($this->tabs().'//NO VALID THROTTLE OPTION WAS FOUND OR ABLE TO BE HANDLED'."\n");
+                    break;
+            }
+        }
+        return $throttle;
+    }
+
+    /**
+     * Punches out the cleanup throttling code... reducing the number of active thread count in cache by 1
+     * 
+     * @param string $options
+     * @return $this
+     */
+    private function cleanupThrottle($options=false) {
+        if (\Environment::cachingEnabled()) {                                   //might need to add this to the punched out code as well
+            $opts = explode('=',$options);
+            switch ($opts[0]) {
+                case 'uid'          :
+                case 'userid'       :
+                case 'user_id'      :
+                    //now punch the cache management code based on uid
+                    print($this->tabs().'$obs = (int)Humble::cache("throttle-uid-".$uid);'."\n");
+                    print($this->tabs().'if ($obs > 0) {'."\n");
+                    print($this->tabs(1).'Humble::cache("throttle-uid-".$uid,--$obs);'."\n");
+                    print($this->tabs(-1)."}\n");
+                    break;
+                case 'ip'           :
+                case 'ipaddress'    :
+                case 'ip_address'   :
+                    $throttle = true;
+                    //now punch the cache management code based on uid
+                    print($this->tabs().'$obs = (int)Humble::cache("throttle-ip-".$ip_address);'."\n");
+                    print($this->tabs().'if ($obs > 0) {'."\n");
+                    print($this->tabs(1).'Humble::cache("throttle-ip-".$ip_address,--$obs);'."\n");
+                    print($this->tabs(-1)."}\n");
+                    break;
+                default :
+                    print($this->tabs().'//NO VALID THROTTLE OPTION WAS FOUND OR ABLE TO BE HANDLED'."\n");
+                    break;
+            }
+        }
+        return $this;
     }
     
     private function processActionNode($tag2,$action,$init) {
-        if (isset($action['throttle'])) {
-            $this->manageThrottle($action['throttle']);
-        }        
+        $throttle = false;
         if (isset($action['response'])) {
             $this->response($this->trueish($action['response']));
         }
@@ -1321,6 +1403,9 @@ class Compiler extends Directory
             print($this->tabs(1).'case "'.$action['name'].'":'."\n");
         }
         $this->tabs(1);
+        if (isset($action['throttle'])) {
+            $throttle = $this->manageThrottle($action['throttle']);
+        }        
         if (isset($action['CSRF_PROTECTION'])) {
             $this->processCSRFProtection((string)$action['CSRF_PROTECTION']);
         }
@@ -1527,6 +1612,10 @@ class Compiler extends Directory
             $line = '$TRIGGER_'.$id.'->emit("'.$action['event'].'")';
             print($this->tabs().($this->response() ? 'Humble::response('.$line.')' : $line).";\n"); 
         }
+        //-----------------------------------------------------------------------
+        if ($throttle) {
+            $this->cleanupThrottle($action['throttle']);
+        }
         print($this->tabs(-1)."break;\n");
         $this->tabs(-1);
         $this->blocking($init['blocking']);                             //Set blocking and response back to global value if it was overriden at the action level
@@ -1540,7 +1629,7 @@ class Compiler extends Directory
      */
     private function generateController($xml)    {
         $this->controller = $xml['name'];
-        $attrs = $xml->attributes();
+        $attrs            = $xml->attributes();
         $info             = \Humble::module($this->namespace);
         $templater        = (isset($attrs['use']) ? $attrs['use'] : $info['templater']);
         $this->verifyIncludesExist($templater);
@@ -1555,7 +1644,6 @@ class Compiler extends Directory
         $defaultAction    = false;
         foreach ($controller as $tag3 => $actions) {
             print("<?php\n");
-            /*print($this->tabs(1).'$models["firePHP"] = \Log::getConsole();'."\n");*/
             print($this->tabs().'function processMethod($method) {'."\n");
             print($this->tabs(1).'global $models;'."\n");
             print($this->tabs().'global $mappings;'."\n");
@@ -1564,6 +1652,8 @@ class Compiler extends Directory
             print($this->tabs().'global $chainActions;'."\n");
             print($this->tabs().'global $chainControllers;'."\n");
             print($this->tabs().'global $abort;'."\n");
+            print($this->tabs().'global $uid;'."\n");
+            print($this->tabs().'global $ip_address;'."\n");
             print($this->tabs()."ob_start();\n");
             print($this->tabs().'switch ($method) {'."\n");
             $attr = $actions->attributes();
