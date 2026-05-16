@@ -23,6 +23,18 @@ function badRequestError() {
     die();        
 }
 //------------------------------------------------------------------------------
+function getRealIpAddress() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // Can be a comma-separated list; take the first one
+        $ip = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return filter_var($ip, FILTER_VALIDATE_IP) ? $ip : 'Unknown';
+}
+//------------------------------------------------------------------------------
 ob_start();                                                                     //Must do this to capture all headers before passing to client
 chdir('app');                                                                   //This is the root directory of the application
 require_once('Humble.php');                                                     //This is the engine of the whole system
@@ -31,6 +43,7 @@ $namespace              = ($_GET['humble_framework_namespace']  ?? false);
 $namespace              = (!$namespace || ($namespace==='default')) ? \Environment::namespace() : $namespace;
 $controller             = $_GET['humble_framework_controller']  ?? false;
 $action                 = $_GET['humble_framework_action']      ?? false;
+
 if (!($namespace && $controller && $action)) {
     die();
 }
@@ -46,6 +59,8 @@ if (strpos($action,'/')!==false) {
     $action   = array_shift($mappings);
 }
 $origin                 = 'front_controller';
+$uid                    = false;
+$ip_address             = getRealIpAddress();
 $method                 = $action;                                              //Because REASONS!!!
 $bypass                 = false;                                                //Be wary of setting to true, will make everything public
 $home                   = '/index.html';
