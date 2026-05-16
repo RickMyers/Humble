@@ -49,7 +49,6 @@
             <name       required="true"   purpose="" default="" />
             <map        required="false"  purpose="" default="" /> 
             <controller required="false"  purpose="" default="" />
-            <throttle   required="false"  purpose="" default="" />
         </attributes>        
         <attributes parent="actions">
             <method     required="false"  purpose="" default="" />
@@ -88,9 +87,17 @@
                     <text />
                 </values>
             </output>
+            <throttle   required="false"  purpose="" default="" >
+                <values>
+                    <ip alias="ip_address" />
+                    <ip_address />
+                    <uid />
+                    <userid alias="user_id" />
+                </values>
+            </throttle>            
             <disposition required="false"  purpose="" default="" />
-            <filename   required="false"  purpose="" default="" />
-            <input      required="false"  purpose="" default="">
+            <filename    required="false"  purpose="" default="" />
+            <input       required="false"  purpose="" default="">
                 <values>
                     <json />
                     <xml />
@@ -139,9 +146,9 @@
             <fields     required="false"  purpose="" default="" /> 
             <condition  required="false"  purpose="" default="" />
             <conditionvar required="false"  purpose="" default="" />
-            <retain     required="false"  purpose="" default="" />
-            <argument   required="false"  purpose="" default="" />
-            <transformer required="false"  purpose="" default="" >
+            <retain       required="false"  purpose="" default="" />
+            <argument     required="false"  purpose="" default="" />
+            <transformer  required="false"  purpose="" default="" >
                 <values>
                     <csv />
                     <pdf />

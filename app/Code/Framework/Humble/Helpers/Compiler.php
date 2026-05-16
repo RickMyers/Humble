@@ -1298,7 +1298,14 @@ class Compiler extends Directory
         }
     }
     
+    private function manageThrottle($options=false) {
+        
+    }
+    
     private function processActionNode($tag2,$action,$init) {
+        if (isset($action['throttle'])) {
+            $this->manageThrottle($action['throttle']);
+        }        
         if (isset($action['response'])) {
             $this->response($this->trueish($action['response']));
         }
