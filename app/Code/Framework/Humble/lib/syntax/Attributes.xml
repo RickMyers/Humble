@@ -23,10 +23,10 @@
         <attributes>
             <throttle   required="false"  purpose="Globally Limits the number of concurrent threads for every action in this controller" default="" >
                 <values>
-                    <ip alias="ip_address" />
-                    <ip_address />
-                    <uid />
-                    <userid alias="user_id" />
+                    <ip alias="ipaddress" format='#' />
+                    <ip_address format='#' />
+                    <uid format='#'/>
+                    <userid alias="user_id" format='#' />
                 </values>
             </throttle>    
             <blocking   required="false"  purpose="" default="TRUE" >

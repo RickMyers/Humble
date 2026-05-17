@@ -45,8 +45,6 @@ class Component extends CLI
      * @return string
      */
     private static function tagAttributeCheck($parent,$node,$attributes,$validator,$lineNumber,$errors) {
-        //when is toggle, then dump data
-       // print($node."\n");
         if (isset($validator->$node)) {                                         //We need to find the correct syntax scheme to compare the attribute to, since some have multiple schemes depending on parent
             foreach ($validator->$node->attributes as $idx => $schema) {
                 $attr = $schema->attributes();
@@ -55,7 +53,7 @@ class Component extends CLI
                 }
             }
             foreach ($attributes as $attribute => $value) {
-                $value = strtolower($value);
+                $value = strtolower(explode('=',$value)[0]);
                 if (!isset($schema->$attribute)) {
                     $errors[] = $attribute." is not a valid attribute of ".$node." on line number ".$lineNumber;
                     continue;
@@ -132,7 +130,7 @@ class Component extends CLI
        // file_put_contents('attrib.txt',print_r($validator,true),FILE_APPEND);
       //  print_r($nodes);
         foreach ($nodes as $index1 => $children) {
-            print($index1."\n");
+
             foreach ($children as $node => $child) {
                 //print_r($child);
                 if (isset($child['attributes']) && count($child['attributes'])) {
@@ -223,12 +221,22 @@ class Component extends CLI
                         $errors[] = $error->message. " on line ". $error->line;
                     }
                 } else {
-                    $struct     = self::recurseControllerNodes($dom->firstChild);
-                   // print_r($struct); die();
-                    $source     = simplexml_load_file($file);
-                    $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
-                    $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
-                    $errors     = self::checkControllerNodes('controller',$struct,$structure,$validator,$errors);
+                    $found = false;
+                    foreach ($dom->childNodes as $idx => $node) {
+                        if (isset($node->tagName) && ($node->tagName == 'controller')) {
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if (!$found) {
+                        $errors[] = 'Controller node not found, possibly malformed.  Controller must begine with "controller" tag';
+                    } else {
+                        $struct     = self::recurseControllerNodes($node);
+                        //$source     = simplexml_load_file($file);
+                        $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
+                        $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
+                        $errors     = self::checkControllerNodes('controller',$struct,$structure,$validator,$errors);
+                    }
                 }
             } else {
                 $errors[]   = "Controller not found";
