@@ -17,7 +17,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.ad
        
         <!-- ############################################################### -->
 
-        <action name="status" output="JSON" throttle="ip=9">
+        <action name="status" output="JSON" throttle="ipaddress=9">
             <description>Returns whether cadence is running</description>
             <model namespace="admin" class="cadence" id="cadence">
                 

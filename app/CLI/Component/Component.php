@@ -215,27 +215,18 @@ class Component extends CLI
             if (file_exists($file = 'Code/'.$module['package'].'/'.$module['controllers'].'/'.str_replace('.xml','',$args['cn']).'.xml')) {
                 $dom        = new DOMDocument();
                 libxml_use_internal_errors(true);
-                if (($xml = @$dom->loadXML(file_get_contents($file)))===false) {
+                if ($xml = @$dom->loadXML(file_get_contents($file))===false) {
                     $err = libxml_get_errors();
                     foreach ($err as $error) {
                         $errors[] = $error->message. " on line ". $error->line;
                     }
                 } else {
-                    $found = false;
+                    $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
+                    $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
                     foreach ($dom->childNodes as $idx => $node) {
                         if (isset($node->tagName) && ($node->tagName == 'controller')) {
-                            $found = true;
-                            break;
+                            $errors     = self::checkControllerNodes($node->tagName,self::recurseControllerNodes($node),$structure,$validator,$errors);
                         }
-                    }
-                    if (!$found) {
-                        $errors[] = 'Controller node not found, possibly malformed.  Controller must begine with "controller" tag';
-                    } else {
-                        $struct     = self::recurseControllerNodes($node);
-                        //$source     = simplexml_load_file($file);
-                        $structure  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Structure.xml');
-                        $validator  = simplexml_load_file('Code/Framework/Humble/lib/syntax/Attributes.xml');
-                        $errors     = self::checkControllerNodes('controller',$struct,$structure,$validator,$errors);
                     }
                 }
             } else {
