@@ -220,13 +220,14 @@
             $vopttpl  = ['PHP_FPM' => 'app/install/Docker/Development/FPM/vhost.conf','MOD_PHP'=>'app/install/Docker/Development/MODPHP/vhost.conf'];
             $copttpl  = ['PHP_FPM' => 'app/install/Docker/Development/FPM/docker_image.txt','MOD_PHP'=>'app/install/Docker/Development/MODPHP/docker_image.txt'];
             $zip      = new ZipArchive();
+            $engine_dir = ($entine == 'MOD_PHP') ? 'MODPHP' : 'FPM';            //directory for contributing vhost configuration
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
                 $parts  = explode(':',$_REQUEST['project_url']??'');    
                 $zip->addFromString('.gitignore','*');
                 if ($purpose === 'Development') {
                     $zip->addFromString('vhost.conf',processVhost($vopttpl[$engine],array_merge($_REQUEST,['SERVER_NAME'=>$name])));
                 } else {
-                    $zip->addFromString('vhost.conf',processVhost('app/install/Docker/Contribute/vhost.conf',array_merge($_REQUEST,['SERVER_NAME'=>$name])));
+                    $zip->addFromString('vhost.conf',processVhost('app/install/Docker/Contribute/'.$engine_dir.'/vhost.conf',array_merge($_REQUEST,['SERVER_NAME'=>$name])));
                 }
                 $zip->addFromString('DockerFile',str_replace(['&&NAMESPACE&&','&&DIR&&','&&BASEDIR&&','&&NAME&&'],[$ns,$dir,$base,substr($parts[1] ?? '//localhost',2)],file_get_contents($copttpl[$engine])));
                 $zip->addFromString('docker-compose.yaml',str_replace($srch,$repl,file_get_contents('app/install/Docker/Development/docker_compose_mysql.txt')));
