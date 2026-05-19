@@ -160,8 +160,6 @@ SQL;
         return $this;
     }
 
-
-
     /**
      * Will store the file structure of the module that we are installing
      *
@@ -266,7 +264,6 @@ SQL;
         }
         return $this;
     }
-
 
     /**
      * 
@@ -584,16 +581,15 @@ SQL;
                             }
                         }
                     }
+                    if (isset($contents->structure->schema) && (isset($contents->structure->schema->install))) {
+                        $this->installSchema($contents->structure->schema->install,$contents->module);
+                    }                    
                     if (isset($contents->structure)) {
                         $this->storeStructure($this->prefix,$contents->structure,$contents->module);
-                    }                    
-                    if (isset($contents->structure->schema) && (isset($contents->structure->schema->update))) {
-                        $this->installSchema($contents->structure->schema->install,$contents->module);
-                    }
+                    }  
                     if (isset($contents->orm)){
                         $this->storeEntities($contents->orm,$this->prefix);
                     }
-
                     if (isset($contents->structure->schema) && (isset($contents->structure->schema->layout))) {
                       //  $this->generateLayoutSchema($this->package,$this->namespace,$contents->structure->schema->layout,$contents->orm->entities,$contents->module);
                     }

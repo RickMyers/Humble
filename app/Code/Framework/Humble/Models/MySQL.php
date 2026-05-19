@@ -34,6 +34,15 @@ class MySQL extends ORM implements ORMEngine  {
     }
     
     /**
+     * Returns a direct link to the DB connection
+     * 
+     * @return connection
+     */
+    public function get() {
+        return $this->_dbref;
+    }
+    
+    /**
      * Connects to a DB source
      */
     public function connect() {

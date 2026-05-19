@@ -42,16 +42,18 @@ class Users extends Entity
     
     /**
      * Creates the core user tables, for contributors only
+     * 
+     * @return $this
      */
     public function createUserEntities() {
         $SQL = <<<SQL
     create table humble_users like admin_users            
 SQL;
-        $this->_db->query($SQL);
+        $this->query($SQL);
         $SQL = <<<SQL
     create table humble_user_identification like admin_user_identification            
 SQL;
-        $this->_db->query($SQL);      
+        $this->query($SQL);      
         return $this;
     }
     
@@ -64,7 +66,7 @@ SQL;
      * @param type $first_name
      * @return type
      */
-    public function newUser($user_name='',$md5_password='',$last_name='',$first_name='',$email='',$gender='',$dob='',$id='') {
+    public function newUser($user_name='',$md5_password='',$first_name='',$last_name='',$email='',$gender='',$dob='',$id='') {
         $uname  = $user_name ? $user_name       : ($this->getUserName()  ? $this->getUserName()  : false);
         $pwd    = $md5_password ? $md5_password : ($this->getPassword()  ? $this->getPassword()  : false);
         $fname  = $first_name ? $first_name     : ($this->getFirstName() ? $this->getFirstName() : '');

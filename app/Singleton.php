@@ -16,7 +16,7 @@
  */
 class Singleton
 {
-    private static $DBEngine     = null;
+    private static $DBEngine         = null;
     private static $mongoAdapter     = null;
     private static $settings         = null;
     private static $environment      = null;
@@ -29,10 +29,10 @@ class Singleton
     private static $translationTable = null;
     private static $mappings         = [];
     private static $things           = [];
-    private static $messages = [];
-    private static $errors   = [];
-    private static $warnings = [];
-    private static $alerts   = [];
+    private static $messages         = [];
+    private static $errors           = [];
+    private static $warnings         = [];
+    private static $alerts           = [];
 
     /**
      *

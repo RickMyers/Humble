@@ -221,7 +221,7 @@
             $identifier = self::parseResource($resource_identifier);
             $instance   = null;
             if (!$module = self::module($identifier['namespace'])) {
-                die("MODULE NOT FOUND!\n");  //TODO: Change to throw
+                die($identifier['namespace']." MODULE NOT FOUND!\n");  //TODO: Change to throw
             }
             $str  = "Code/{$module['package']}/".str_replace("_","/",$module['entities'])."/".implode('/',array_map(function($word) { return ucfirst($word); }, explode('/',$identifier['resource'])));
             if (!$class = file_exists($str.".php") ? $str : false) {
