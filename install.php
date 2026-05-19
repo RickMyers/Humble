@@ -456,13 +456,13 @@ switch ($method) {
                                 <form name="new-db-form" id="new-db-form" onsubmit="return false">
                                     <fieldset style="padding: 10px 10px; font-family: sans-serif; font-size: .9em"><legend>New MySQL DB</legend>
                                         If you haven't already created a DB (required), you can do that here.<br /><br />
-                                        <input type='text' name='host' id='rdms-host' class='installer-form-field' value="<?=$info['MySQL']['Host']?>" /><br />
+                                        <input type='text' name='host' id='rdms-host' class='installer-form-field' value="<?=$info['DB']['Host']?>" /><br />
                                         <div class='installer-field-description'>Host:Port</div>
-                                        <input type='text' name='userid' id='rdms-userid' class='installer-form-field' value="<?=$info['MySQL']['User']?>" /><br />
+                                        <input type='text' name='userid' id='rdms-userid' class='installer-form-field' value="<?=$info['DB']['User']?>" /><br />
                                         <div class='installer-field-description'>User ID</div>
-                                        <input type='password' name='rdms-password' id='rdms-password' class='installer-form-field' value="<?=$info['MySQL']['Password']?>" /><br />
+                                        <input type='password' name='rdms-password' id='rdms-password' class='installer-form-field' value="<?=$info['DB']['Password']?>" /><br />
                                         <div class='installer-field-description'>Password</div>
-                                        <input type='text' name='db' id='rdms-db' class='installer-form-field' value="<?=$info['MySQL']['Database']?>" /><br />
+                                        <input type='text' name='db' id='rdms-db' class='installer-form-field' value="<?=$info['DB']['Database']?>" /><br />
                                         <div class='installer-field-description'>New Database</div>
                                         <input type='button' name='create-db-button' id='create-db-button' value=' Create Database ' /><br />
                                     </fieldset>
@@ -541,7 +541,6 @@ switch ($method) {
         $app    = isset($_POST['app_name'])         ? $_POST['app_name']        : 'app';
         $srch   = array('&&USERID&&','&&PASSWORD&&','&&DATABASE&&','&&HOST&&','&&MONGO&&','&&CACHE&&','&&MONGOUSER&&','&&MONGOPWD&&');
         $repl   = array($uid,$pwd,$db,$host,$mongo,$cache,$mongou,$mongop);
-        
 
         $registration_data = [
             'serial_number' => $serial,
@@ -566,7 +565,7 @@ switch ($method) {
         $modules         = \Environment::getRequiredModuleConfigurations();
         $percent         = 100/((count($modules)+1)*2);                         //2 steps per module, plus we will be creating a new module in this process
         postUpdate('Starting','Building Application Module',(++$step*$percent));
-        print('<pre>');
+        print('<pre style="text-align: left">');
         foreach ($modules as $idx => $etc) {
             postUpdate('Installing','Installing '.$etc,(++$step*$percent));
             print('###########################################'."\n");
@@ -612,10 +611,9 @@ switch ($method) {
         postUpdate('Finalizing','Registering Administrator',(++$step*$percent));
         $user_id = false;
         if ($purpose === 'Contribute') {
-            $humble  = \Humble::entity('humble/users');
-            $humble->createUserEntities();
-            $util->update('Code/Framework/Humble/etc/config.xml');
-            $user_id = $humble->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
+            \Humble::entity('humble/users')->createUserEntities();              //Clone user tables from admin table
+            $util->update('Code/Framework/Humble/etc/config.xml');              //Register new tables
+            $user_id = \Humble::entity('humble/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);
         } else {
             $user_id = \Humble::entity('default/users')->newUser($_POST['username'],MD5($upwd),$fname,$lname,$email);        
         }
@@ -659,6 +657,7 @@ switch ($method) {
         postUpdate('Creating Admin App');
         exec($cmd,$results,$rc);
         print('Admin App Results: '.$rc."\n");
+        
         print_r($results);
         ?>
         <script>
