@@ -220,7 +220,7 @@
             $vopttpl  = ['PHP_FPM' => 'app/install/Docker/Development/FPM/vhost.conf','MOD_PHP'=>'app/install/Docker/Development/MODPHP/vhost.conf'];
             $copttpl  = ['PHP_FPM' => 'app/install/Docker/Development/FPM/docker_image.txt','MOD_PHP'=>'app/install/Docker/Development/MODPHP/docker_image.txt'];
             $zip      = new ZipArchive();
-            $engine_dir = ($entine == 'MOD_PHP') ? 'MODPHP' : 'FPM';            //directory for contributing vhost configuration
+            $engine_dir = ($engine == 'MOD_PHP') ? 'MODPHP' : 'FPM';            //directory for contributing vhost configuration
             if ($zip->open('temp.zip',ZipArchive::CREATE)) {
                 $parts  = explode(':',$_REQUEST['project_url']??'');    
                 $zip->addFromString('.gitignore','*');

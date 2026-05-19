@@ -127,14 +127,10 @@ class Component extends CLI
      * @return type
      */
     private static function checkControllerNodes($parent,$nodes,$structure,$validator,$errors) {
-       // file_put_contents('attrib.txt',print_r($validator,true),FILE_APPEND);
-      //  print_r($nodes);
         foreach ($nodes as $index1 => $children) {
 
             foreach ($children as $node => $child) {
-                //print_r($child);
                 if (isset($child['attributes']) && count($child['attributes'])) {
-                    
                     $errors = self::tagAttributeCheck($parent,$node,$child['attributes'],$validator,$child['lineNumber'],$errors);
                 }
                 if (isset($child['children']) && count($child['children'])) {
