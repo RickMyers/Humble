@@ -76,6 +76,10 @@ function restartService($data=[]) {
     return $service;
 }
 /* ----------------------------------------------------------------------------- */
+function startCacheServer() {
+    return shell_exec("service memcached start");
+}
+/* ----------------------------------------------------------------------------- */
 function banHost($host=false) {
     global $TEST_MODE;
     $result = '';
@@ -187,6 +191,14 @@ function setupOperations() {
                 'rows' => 'Rows to return if pagination is employed'
             ]
         ],          
+        'cache' => [
+            'help'      => 'Starts the Memcached Caching Server',
+            'handler'   => 'startCacheServer',
+            'response'  => true,
+            'arguments' => [
+            ]
+        ], 
+        
         'end' => [
             'help'      => 'Quiesces [Shutdowns] the Command Proxy',
             'handler'   => 'endProxy',

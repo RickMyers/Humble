@@ -106,7 +106,8 @@ HDR;
             'trigger'   => true,
             'external'  => true,
             'file'      => true,
-            'input'     => true
+            'input'     => true,
+            'joiner'    => true
         ];
         if (!isset($exclude[$node['element']])) {
             if ( !($node['configuration'] ?? false) || !($node['configuration']['namespace'] ?? false) || !($node['configuration']['method'] ?? false) || !($node['configuration']['component'] ?? false)) {
@@ -206,9 +207,20 @@ HDR;
                 break;
             case "joiner"       :
                 //put stuff here
-                $this->workflow .= $tabs.'Humble::model("paradigm/workflow")->manage();'."\n";
+                $this->workflow .= $tabs.'Humble::model("paradigm/workflow")->manage(Event::set($EVENT,"'.$node['id'].'"));'."\n";
                 //Just the 'begin''to' connectors need to be drawn
                 //Find the outbound 'to' node, and plug it in below:
+                foreach ($node['connectors'] as $direction => $connector) {
+//                    if (isset($connector['begin']) && is_array($node['connectors'][$direction]['begin'])) {
+  //                      $this->traverse($this->components[$node['connectors'][$direction]['begin']['to']['id']]);
+   //                 }
+                    if (isset($node['connectors'][$direction]['begin']) && is_array($node['connectors'][$direction]['begin'])) {
+                         $this->workflow .= $tabs."goto label_".$connector['begin']['to']['id'].";\n";
+                        $this->traverse($this->components[$connector['begin']['to']['id']]);
+                    }
+                    
+                }
+//                file_put_contents('connectors.txt',print_r($node,true));
                 //$this->traverse($this->components[$node['connectors']['S']['begin']['to']['id']]);
                 break;
             case "actor"        :

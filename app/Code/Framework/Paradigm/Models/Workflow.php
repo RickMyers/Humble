@@ -316,4 +316,12 @@ class Workflow extends Model
     public function dumpTimeStamp($EVENT=false) {
        file_put_contents('workflow_timestamp.txt',date('Y-m-d H:i:s')) ;
     }
+    
+    public function manage($EVENT=false) {
+        if ($EVENT) {
+            $data = $EVENT->load();
+            $cnfg = $EVENT->fetch();
+            $id = $EVENT->getId();
+        }
+    }
 }

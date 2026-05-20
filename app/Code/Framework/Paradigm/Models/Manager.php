@@ -32,7 +32,8 @@ class Manager extends Model
         'terminus'  => true,
         'operation' => true,
         'trigger'   => true,
-        'begin'     => true
+        'begin'     => true,
+        'joiner'    => true
     ];
     
     public function __construct()    {

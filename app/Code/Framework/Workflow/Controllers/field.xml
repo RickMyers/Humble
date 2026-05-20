@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+
+Event Field related actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="field" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="Off" response="true">
+        <action name="addamount" passalong="window_id">
+            <description>Adds a certain amount to an indicated field</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+            <mongo namespace="paradigm" class="elements" id='element'>
+                <parameter name='id' source='post' default='' />
+            </mongo>                   
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

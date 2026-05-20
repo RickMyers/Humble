@@ -43,6 +43,7 @@ class Workflows extends \Code\Framework\Paradigm\Entities\Entity
              WHERE b.active = 'Y'
                and uri = '{$this->getUri()}'
 SQL;
-        return $this->query($query);
+        $x = $this->query($query);
+        return $x;
     }
 }

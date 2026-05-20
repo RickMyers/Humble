@@ -139,7 +139,7 @@ try {
         if ($webservice) {
             if ($webservice['active']==='Y') {
                 $criteria        = Humble::collection('paradigm/elements')->setId($webservice['webservice_id'])->load();
-                $workflows       = Humble::entity('paradigm/webservice_workflows');
+                $workflows       = Humble::entity('paradigm/webservice/workflows');
                 $workflows->setWebserviceId($webservice['id']);
                 $workflows->setUri($URI);
                 $security_scheme = isset($criteria['choose-security-scheme']) ? $criteria['choose-security-scheme'] : $criteria['security-scheme'];  //@TODO: remove in the future... just use security-scheme
