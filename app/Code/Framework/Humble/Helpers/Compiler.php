@@ -135,9 +135,9 @@ class Compiler extends Directory
         $includeErrors                  = [];
         $includes['banner']             = 'Code/Framework/Humble/lib/Common/banner.php';
         $includes['common_header']      = 'Code/Framework/Humble/lib/Common/header.php';
-        $includes['templater_header']   = 'Code/Framework/Humble/lib/templaters/'.$templater.'/header.php';
+        $includes['templater_header']   = 'Code/Framework/Humble/lib/Templaters/'.$templater.'/header.php';
         $includes['common_body']        = 'Code/Framework/Humble/lib/Common/body.php';
-        $includes['templater_footer']   = 'Code/Framework/Humble/lib/templaters/'.$templater.'/footer.php';
+        $includes['templater_footer']   = 'Code/Framework/Humble/lib/Templaters/'.$templater.'/footer.php';
         $includes['common_footer']      = 'Code/Framework/Humble/lib/Common/footer.php';
         foreach ($includes as $type => $include) {
             if (file_exists($include)) {
