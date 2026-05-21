@@ -9,7 +9,6 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
     <actions blocking="Off" response="true">
         <action name="addamount" passalong="window_id">
             <description>Adds a certain amount to an indicated field</description>
-            <!-- Entity, Helper, Model, Conditional declarations begin here -->
             <mongo namespace="paradigm" class="elements" id='element'>
                 <parameter name='id' source='post' default='' />
             </mongo>                   
