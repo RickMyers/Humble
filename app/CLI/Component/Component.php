@@ -53,17 +53,33 @@ class Component extends CLI
                 }
             }
             foreach ($attributes as $attribute => $value) {
-                $value = strtolower(explode('=',$value)[0]);
+                $attribute = strtolower((string)$attribute);
                 if (!isset($schema->$attribute)) {
                     $errors[] = $attribute." is not a valid attribute of ".$node." on line number ".$lineNumber;
                     continue;
                 }
                 if (isset($schema->$attribute->values)) {
-                    if (!isset($schema->$attribute->values->$value)) {
+                    $parsed_value = explode('=',(string)$value);
+                    $parsed       = strtolower($parsed_value[0]);
+                    if (!isset($schema->$attribute->values->$parsed)) {
                         $errors[] = $value." is not a valid value for ".$attribute." on line number ".$lineNumber;
+                    } else {
+                        $attr = $schema->$attribute->values->$parsed->attributes();
+                        if (isset($attr->format)) {
+                            switch ((string)$attr->format) {
+                                case '#' :
+                                        //$errors = $value.' is not an integer for '.$parsed.' on line number '.$lineNumber;
+                                    break;
+                                case 'A' :
+                                        //$errors = $value.' is not a character or string for '.$parsed.' on line number '.$lineNumber;
+                                    break;
+                                default  : 
+                                    break;
+                            }
+                        }
                     }
                 }
-                $attr = $schema->$attribute->attributes();
+                $attr = $schema->$attribute->values->attributes();
                 if (isset($attr->conflicts)) {
                     foreach (explode(',',$attr->conflicts) as $conflict) {
                         if (isset($vars->$conflict)) {                          //Queue twilight zone music...
@@ -198,6 +214,66 @@ class Component extends CLI
         }
         return $struct;
     }    
+/*
+ <tags>
+    <controller taxonomy="control">
+        <attributes>
+            <name required="true"   purpose="" default="" />
+            <use  required="false"  purpose="Default templater found in Application.xml file" default="">
+                <values>
+                    <twig />
+                    <smarty />
+                    <latte />
+                    <blade />
+                    <savant />
+                    <mustache />
+                    <phptal />
+                    <tbs />
+                    <php />
+                    <rain />
+                </values>
+            </use>
+        </attributes>
+    </controller>
+ */    
+    public static function expandAliases($validator) {
+        //print_r($validator);
+        print("\n\n=======================================================\n\n");
+        foreach ($validator as $base_node => $parameters) {
+            print($base_node."\n");
+            if (isset($parameters->attributes)) {
+                foreach ($parameters as $parm => $options) {
+                    print('parms '. $parm."\n");
+                    foreach ($options as $value => $opts) {
+                        print('value '.$value."\n");
+                        foreach ($opts as $val => $parms) {
+                            print('val '.$val."\n");
+                            foreach ($parms as $parm => $attr) {
+                                print('parm '.$parm."\n");
+                                if ($attrs = $attr->attributes()) {
+                                    if (isset($attrs->alias) || isset($attrs->aliases)) {
+                                        $aliases = isset($attrs->alias) ? (string)$attrs->alias : (string)$attrs->aliases;
+                                        print($aliases."\n");
+                                        
+                                        foreach (explode(',',$aliases) as $alias) {
+                                            if ($alias) {
+                                                //print_r($validator->$base_node->$parm->attributes->$value);print("\n");
+                                                //$validator->$base_node->attributes->$parm->$value->$val->$alias = true;
+                                            }
+                                        }
+                                        die('aliases'."\n");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        print_r($validator);
+        die();
+        return $validator;
+    }
     
     /**
      * Will validate a controller against a structural XML specification and an attribute value XML specification

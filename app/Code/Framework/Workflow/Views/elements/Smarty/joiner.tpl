@@ -67,6 +67,7 @@
                             <td>Threshold: </td>
                             <td><input class='paradigm-config-form-field' type="text" name="threshold" id="threshold_{$data.id}" value="{if (isset($data.threshold))}{$data.threshold}{else}100{/if}" /></td>
                         </tr>
+                        <tr><td colspan="2">&nbsp;</td></tr>
                         <tr>
                             <td colspan="2">Threshold is the number of iterations before terminating the workflow and signaling a critical error.  A threshold of zero (0) means there is no limit to the number of iterations allowed.  Default is 100.</td>
                         </tr>
@@ -80,6 +81,6 @@
         <script type="text/javascript">
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    Form.intercept($('#form-{$data.id}').get(),'{$data.id}','/workflow/file/update',"{$window_id}");
+    Form.intercept($('#form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
     $('#workflow_id_{$data.id}').val(Workflows.activeDiagram());
 </script>

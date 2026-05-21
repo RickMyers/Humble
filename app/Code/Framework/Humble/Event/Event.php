@@ -84,6 +84,7 @@ class Event  {
     public function getId() {
         return $this->id();
     }
+    
     /**
      * Ensures that the event information is persisted
      */
