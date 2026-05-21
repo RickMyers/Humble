@@ -63,6 +63,28 @@ class Event  {
     } 
     
     /**
+     * Polymorphic accessor/mutator for the mongo ID
+     * 
+     * @param type $mongoID
+     * @return $this
+     */
+    public function id($mongoId=false) {
+        if ($mongoId) {
+            $this->_id = $mongoId;
+            return $this;
+        }
+        return $this->_id;
+    }
+    
+    /**
+     * Just a relay
+     * 
+     * @return string
+     */
+    public function getId() {
+        return $this->id();
+    }
+    /**
      * Ensures that the event information is persisted
      */
     public function __destruct() {
@@ -189,15 +211,26 @@ class Event  {
      *
      * @param type $newData
      */
-    public function update($newData=[],$persist=false) {
+    public function update($newData=[],$allowOverride=false,$persist=false) {
+        $updated = false;
         if (is_array($newData)) {
             $getter  = 'get'.$this->underscoreToCamelCase($this->_name(),true);
             $setter  = 'set'.$this->underscoreToCamelCase($this->_name(),true);
-            $this->$setter(array_merge_recursive($this->$getter(),$newData));
+            $data       = $this->$getter();
+            foreach ($newData as $field => $values) {
+                if (!isset($data[$field]) || (isset($data[$field]) && $allowOverride)) {
+                    $data[$field] = $values;
+                }
+            }
+            $this->$setter($data);
+            //$this->$setter(array_merge_recursive($this->$getter(),$newData));
+            $updated = true;
+        } else if ($allowOverride) {
+            $updated = true;
         } else {
             $this->error('An attempt was made to update the core event attributes rather than creating a node off of the core event attributes');
         }
-        if ($persist) {
+        if ($updated && $persist) {
             $this->save();
         }
         return $this;

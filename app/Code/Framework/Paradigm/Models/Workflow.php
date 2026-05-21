@@ -317,11 +317,25 @@ class Workflow extends Model
        file_put_contents('workflow_timestamp.txt',date('Y-m-d H:i:s')) ;
     }
     
+    
+    /**
+     * For managing iteration, will limit the number of times through a loop if infinite loop protection is turned on
+     * 
+     * @param event $EVENT
+     */
     public function manage($EVENT=false) {
         if ($EVENT) {
-            $data = $EVENT->load();
-            $cnfg = $EVENT->fetch();
-            $id = $EVENT->getId();
+            $mongoId = $EVENT->id();
+            $data    = $EVENT->load();
+            $cnfg    = $EVENT->fetch();
+            $this->joiners[$mongoId] = isset($this->joiners[$mongoId]) ? $this->joiners[$mongoId]+1 : 1;
+            //if (isset($cnfg['protection']) && ($cnfg['protection'] == 'Y') {
+            //      if ($joiners[$mongoId] > $cnfg['threshold']) {
+            //          \Log::critical();
+            //          die();
+            //      }
+            //}
+            //Something like that
         }
     }
 }

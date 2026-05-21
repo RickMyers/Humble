@@ -16,6 +16,7 @@
  */
 class Event {
 
+    protected static $id = null;
     /**
      * Constructor
      */
@@ -35,6 +36,7 @@ class Event {
         $exclude = array('shape'=>true,'type'=>'true','configured'=>true,'_id'=>true,'id'=>true); //this is unnecessary stuff to save
         $mongo   = Humble::collection('paradigm/elements');
         $mongo->setId($mongoId);
+        
         $data    = $mongo->load();
         $cnf     = [];
         foreach ($data as $var => $val) {
@@ -60,7 +62,7 @@ class Event {
      */
     public static function get($identifier,$data=[]) {
         $event = new \Code\Framework\Humble\Event\Event($identifier);
-        $name  = 'set'.ucfirst($identifier);
+        $name  = 'set'. underscoreToCamelCase($identifier,true);
         $event->$name($data);
         //DO I NEED THIS BELOW?
 /*        foreach ($data as $key => $val) {
