@@ -48,7 +48,7 @@ class Field extends Model
             $cnfg = $EVENT->fetch();
             if (isset($data[$cnfg['field']])) {
                 $amount = ($cnfg['amount']) ? (int)$cnfg['amount'] : 0;
-                $EVENT->update([$data[$cnfg['field']] => ((int)$data[$cnfg['field']]+$amount)]);
+                $EVENT->update([$cnfg['field'] => ((int)$data[$cnfg['field']]+$amount)],true);
             }
         }
     }
