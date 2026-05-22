@@ -256,10 +256,13 @@ if (!$request_handled) {
             }
         } catch (ControllerParameterException $e) {
             \HumbleException::standard($e,'Parameter Configuration Error','custom');
+            die();
         } catch (MissingControllerXMLException $e) {
             \HumbleException::standard($e,'File Name Or Location Error','custom');
+            die();
         } catch (Exception $e) {
             \HumbleException::standard($e, "Compilation Error");
+            die();
         } finally {
            
         }
