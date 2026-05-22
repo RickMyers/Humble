@@ -51,12 +51,12 @@ class HumbleException {
             $filename = '';
             if (\Environment::application('exceptions')=='JSON') {
                 header('Content-Type: application/json');
-                $message = strip_tags($e->getMessage());
+                $message = str_replace(["\n","\r","\t"],[' ',' ',' '],strip_tags($e->getMessage()));
                 $JSON = <<<JSON
-                {
-                    "message": "{$message}",
-                    "rc":      "{$e->getCode()}"
-                }   
+{
+    "message": "{$message}",
+    "rc":      "{$e->getCode()}"
+}   
 JSON;
                 print($JSON);
             } else {

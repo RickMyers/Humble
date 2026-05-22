@@ -66,15 +66,23 @@ class Component extends CLI
                     } else {
                         $attr = $schema->$attribute->values->$parsed->attributes();
                         if (isset($attr->format)) {
-                            switch ((string)$attr->format) {
-                                case '#' :
-                                        //$errors = $value.' is not an integer for '.$parsed.' on line number '.$lineNumber;
-                                    break;
-                                case 'A' :
-                                        //$errors = $value.' is not a character or string for '.$parsed.' on line number '.$lineNumber;
-                                    break;
-                                default  : 
-                                    break;
+                            if (!isset($parsed_value[1])) {
+                                $errors[] =  "A value is required for ".$attribute." on line number ".$lineNumber;                                
+                            } else {
+                                switch ((string)$attr->format) {
+                                    case '#' :
+                                            if (!is_numeric($parsed_value[1])) {
+                                                $errors[] = $parsed_value[1].' is not valid numeric datatype for '.$parsed_value[0].' on line number '.$lineNumber;
+                                            }
+                                        break;
+                                    case 'A' :
+                                            if (is_numeric) {
+                                                $errors[] = $parsed_value[1].' is not valid string datatype for '.$parsed_value[0].' on line number '.$lineNumber;
+                                            }
+                                        break;
+                                    default  : 
+                                        break;
+                                }
                             }
                         }
                     }
