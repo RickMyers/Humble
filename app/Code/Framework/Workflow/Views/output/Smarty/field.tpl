@@ -31,9 +31,10 @@
                 <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />
                 <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
+                Below identify the field name to output and what the desired output format should be:<br /><br />
                 Field: <input class='paradigm-config-form-field' type="text" name="field" id="config_field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" /><br /><br >
-                Format: <input type="radio" id="format_{$data.id}_text" name="format" value="TEXT" selected="selected" />
-                        <input type="radio" id="format_{$data.id}_json" name="format" value="JSON" {if (isset($data.format) && ($data.format=="JSON"))}selected="selected"{/if}/> JSON 
+                Format: <input type="radio" id="format_{$data.id}_text" name="format" value="TEXT" {if (isset($data.format) && ($data.format=="TEXT"))}checked="checked"{/if}/> TEXT 
+                        <input type="radio" id="format_{$data.id}_json" name="format" value="JSON" {if (isset($data.format) && ($data.format=="JSON"))}checked="checked"{/if}/> JSON 
                 <br />
                 <br /><input type="submit" value=" Save " />
                 </fieldset>
