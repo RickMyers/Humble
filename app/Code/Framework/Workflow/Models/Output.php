@@ -52,6 +52,9 @@ class Output extends Model
             if (isset($cfg['field']) && $cfg['field']) {
                 $field = isset($data[$cfg['field']]) ? $data[$cfg['field']] : '';
                 if (isset($cfg['format']) && $cfg['format']) {
+                    if ($cfg['format']=='JSON') {
+                        header('Content-Type: application/json');
+                    }
                     $field = ($cfg['format']=='JSON') ? json_encode($field) : $field;
                 }
                 print($field);

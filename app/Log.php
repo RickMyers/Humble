@@ -189,7 +189,7 @@ class Log {
             self::prependFile($message, $file);
         }
     }
-
+    
     /**
      * Send data to the sql error log
      *

@@ -26,7 +26,6 @@ class Workflow extends Model
     use \Code\Framework\Humble\Traits\EventHandler;
     
     private $exporter = false;
-    private $joiners  = [];
 
 	/**
      * Constructor
@@ -317,7 +316,6 @@ class Workflow extends Model
        file_put_contents('workflow_timestamp.txt',date('Y-m-d H:i:s')) ;
     }
     
-    
     /**
      * For managing iteration, will limit the number of times through a loop if infinite loop protection is turned on
      * 
@@ -326,16 +324,17 @@ class Workflow extends Model
     public function manage($EVENT=false) {
         if ($EVENT) {
             $mongoId = $EVENT->id();
+            $mId     = $EVENT->_target();
             $data    = $EVENT->load();
             $cnfg    = $EVENT->fetch();
-            $this->joiners[$mongoId] = isset($this->joiners[$mongoId]) ? $this->joiners[$mongoId]+1 : 1;
-            //if (isset($cnfg['protection']) && ($cnfg['protection'] == 'Y') {
-            //      if ($joiners[$mongoId] > $cnfg['threshold']) {
-            //          \Log::critical();
-            //          die();
-            //      }
-            //}
-            //Something like that
+            \Singleton::$joiners[$mId] = (int)(isset(\Singleton::$joiners[$mId]) ? \Singleton::$joiners[$mId] + 1 : 1);
+            $x = \Singleton::$joiners[$mId];
+            if (isset($cnfg['protection']) && ($cnfg['protection'] == 'Y')) {
+                if (\Singleton::$joiners[$mId] > (int)$cnfg['threshold']) {
+                    \Log::critical('Maximum number of iterations exceeded ['.$mongoId.':'.$mId.'/'.(int)$cnfg['threshold'].']');
+                    die('Critical error occurred.  Maximum number of iterations exceeded');
+                }
+            }
         }
     }
 }
