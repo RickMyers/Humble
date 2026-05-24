@@ -609,7 +609,7 @@ var Functions = (() => {
                             let observations = [];
                             return function (server) {
                                 observations[observations.length] = server = JSON.parse(server);
-                                if (observations.length > 10) {
+                                if (observations.length > 30) {
                                     for (let i=0; i < observations.length-1; i++) {
                                         observations[i] = observations[i+1];
                                     }
@@ -618,6 +618,7 @@ var Functions = (() => {
                                 $('#server-memory-load').html(server.memory.used+'/'+server.memory.total+' ['+server.memory.percentage+'%]');
                                 $('#server-cpu-load').html((Math.round(server.cpu.load*1000)/1000)+'%');
                                 $('#server-tasks').html(server.apache.thread_count+'/'+server.tasks.count);
+                                console.log(observations);
                             }
                         })();
                         let g = (() => {
