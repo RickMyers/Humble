@@ -80,6 +80,10 @@ function startCacheServer() {
     return shell_exec("service memcached start");
 }
 /* ----------------------------------------------------------------------------- */
+function rebootServer() {
+    shell_exec('reboot');
+}
+/* ----------------------------------------------------------------------------- */
 function banHost($host=false) {
     global $TEST_MODE;
     $result = '';
@@ -198,7 +202,13 @@ function setupOperations() {
             'arguments' => [
             ]
         ], 
-        
+        'reboot' => [
+            'help'      => 'Reboots the entire server',
+            'handler'   => 'rebootServer',
+            'response'  => false,
+            'arguments' => [
+            ]
+        ],         
         'end' => [
             'help'      => 'Quiesces [Shutdowns] the Command Proxy',
             'handler'   => 'endProxy',
