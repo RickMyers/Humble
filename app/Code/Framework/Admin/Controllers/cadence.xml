@@ -7,8 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.ad
 -->
 <controller name="cadence" use="Smarty" author="Rick Myers" email="rick@adminprogramming.com">
     <actions blocking="off" response="true">
-        <foo />
-        <action foo='bar' name="start" output="JSON">
+        <action name="start" output="JSON">
             <description>Attempts to start the cadence poller in the background</description>
             <model namespace="admin" class="cadence" id="cadence">
                 
