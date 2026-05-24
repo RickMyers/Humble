@@ -170,7 +170,9 @@
                 </values>
             </transformer>
             <defaultRows required="false"  purpose="" default="" />
+            <defaultrows required="false"  purpose="" default="" />
             <defaultPage required="false"  purpose="" default="" />
+            <defaultpage required="false"  purpose="" default="" />
             <class      required="true"   purpose="" default="" alias="resource" />
             <assign     required="false"  purpose="" default="" />
             <use        required="false"  purpose="" default="" />

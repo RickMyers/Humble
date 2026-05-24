@@ -31,6 +31,7 @@ class Unity
     protected $_mongodb       = null;
     protected $_mongocollection = null;
     protected $_mongoJoin     = 'id';
+    protected $_mongoFields   = [];
     protected $_polyglot      = null;
     protected $_module        = null;
     protected $_headersSent   = false;
@@ -119,10 +120,23 @@ class Unity
         return __CLASS__;
     }
     
+    /**
+     * Converts underscores to upper case next letters
+     * 
+     * @param type $string
+     * @param type $first_char_caps
+     * @return type
+     */
     protected function underscoreToCamelCase($string, $first_char_caps=false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }
     
+    /**
+     * Keeps track of table keys
+     * 
+     * @param type $keys
+     * @return $this
+     */
     public function _keys($keys=false) {
         if ($keys === false) {
             return $this->_keys;
@@ -131,6 +145,12 @@ class Unity
         return $this;
     }
 
+    /**
+     * Keeps track of non-key fields
+     * 
+     * @param type $fields
+     * @return $this
+     */
     public function _fields($fields=false) {
         if ($fields === false) {
             return $this->_fields;
@@ -157,6 +177,7 @@ class Unity
     }
     
     /**
+     * As much as possible, reset the ORM to its "clean" state
      * 
      * @return $this
      */
@@ -207,6 +228,7 @@ class Unity
     }
     
     /**
+     * Preps a response set of headers from a passed in array
      * 
      * @param type $headers
      * @return $this
@@ -222,6 +244,7 @@ class Unity
         }
         return $this;
     }
+    
     /**
      * Because of the variable columns per row, we need to get a list of all columns across our dataset
      * 
@@ -259,7 +282,10 @@ class Unity
     }
     
     /**
-     *
+     * Will add a "distinct" clause to a select statement
+     * 
+     * @param type $field
+     * @return type
      */
     public function distinct($field=false) {
         $retval  = [];
@@ -437,7 +463,9 @@ SQL;
     }
     
     /**
-     *
+     * Engine specific "describe" table statement
+     * 
+     * @return type
      */
     public function describe() {
         $table   = $this->_actual() ? $this->_actual() : $this->_prefix().$this->_entity();
@@ -463,7 +491,7 @@ SQL;
     }
 
     /**
-     * 
+     * Sets or returns a set of fields to select from a table
      * 
      * @param string $list
      * @return array
@@ -474,6 +502,7 @@ SQL;
         } else {
             $this->_fieldList = $list;
         }
+        return $this;
     }
 
     /**

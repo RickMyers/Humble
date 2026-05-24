@@ -14,10 +14,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.ad
                 
             </model>
         </action>
-       
+           
         <!-- ############################################################### -->
 
-        <action name="status" output="JSON" throttle="ipaddress=9">
+        <action name="status" throttle="ipaddress=5">
             <description>Returns whether cadence is running</description>
             <model namespace="admin" class="cadence" id="cadence">
                 
