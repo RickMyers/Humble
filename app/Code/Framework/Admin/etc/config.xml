@@ -112,7 +112,8 @@
                     <source weight="10">Admin/web/js/Paradigm.config.js</source>
                     <source weight="10">Admin/web/js/Heartbeat.js</source>
                     <source weight="10">Admin/web/js/Pagination.js</source>
-                    <source weight="15">Admin/web/js/Chart.js</source>
+                    <!--source weight="15">Admin/web/js/Chart.js</source-->
+                    <source weight="15">Admin/web/js/chart.2.0.8.js</source>
                     <source weight="20">Admin/web/js/cssmenu.js</source>
                     <source weight="20">Admin/web/js/tailwindcss.js</source>
                 </js>

@@ -605,20 +605,31 @@ var Functions = (() => {
                                 alert('testEvent');
                             });*/
                         }
+                        function CPUGraph(obs) {
+                            (new EasyAjax('/admin/graphs/dashboard')).add('data',(JSON.stringify(obs)).replace(/ GiB/g,"")).then((response) => {
+                                $('#data_load_area').html(response);
+                            }).post();
+                        }
                         let f = (() => {
                             let observations = [];
+                            let obs_max = 12;
+                            for (let i=0; i<obs_max; i++) {
+                                observations[observations.length] = {
+                                    "cpu": { "load": 0}, "memory": { "total": 0, "free": 0, "used": 0 }, "tasks": { "count": 0}, "apache": { "threads": 0 }
+                                };
+                            }
                             return function (server) {
-                                observations[observations.length] = server = JSON.parse(server);
-                                if (observations.length > 30) {
-                                    for (let i=0; i < observations.length-1; i++) {
-                                        observations[i] = observations[i+1];
+                                if (observations.length >= obs_max) {
+                                    for (let i=observations.length; i >= 1; i--) {
+                                        observations[i] = observations[i-1];
                                     }
-                                    delete observations[observations.length];
-                                }
+                                    observations.splice(observations.length-1,1);
+                                }                                
+                                observations[0] = server = JSON.parse(server);
+                                CPUGraph(observations);
                                 $('#server-memory-load').html(server.memory.used+'/'+server.memory.total+' ['+server.memory.percentage+'%]');
                                 $('#server-cpu-load').html((Math.round(server.cpu.load*1000)/1000)+'%');
                                 $('#server-tasks').html(server.apache.thread_count+'/'+server.tasks.count);
-                                console.log(observations);
                             }
                         })();
                         let g = (() => {
@@ -649,7 +660,7 @@ var Functions = (() => {
                                 $('#proxy_running').css('display',(proxy.running ? 'block' : 'none'));
                             }
                         })();                                                  
-                        Heartbeat.register('admin',true,'systemStatus',f,2,{});
+                        Heartbeat.register('admin',true,'systemStatus',f,1,{});
                         Heartbeat.register('admin',true,'cadenceStatus',g,2,{});
                         Heartbeat.register('admin',true,'cachingStatus',h,2,{});
                         Heartbeat.register('admin',true,'socketStatus',i,2,{});

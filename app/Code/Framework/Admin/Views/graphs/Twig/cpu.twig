@@ -1,0 +1,71 @@
+{% set first = true %}
+{% set data  = source.getData() %}
+<script type="text/javascript">
+    (() => {
+        Chart.defaults.global.animation.duration = 0;
+        var data = {
+            datasets: [
+                {
+                    label: 'CPU Load',
+                    data: [
+                        {% for obs in data %}{% if not first %},{% endif %}{{ obs.cpu.load }}{% set first = false %}{% endfor %}        
+                    ]
+                }
+           ],
+           labels: ['0','1','2','3','4','5','6','7','8','9']
+        }
+        var options = {
+                        showLines: true,
+                        pointLabelFontColor: "red",
+                        scaleFontColor: "red"
+                    };
+        var myLineChart = new Chart(document.getElementById('cpu_graph').getContext('2d'), {
+            type: 'line',
+            data: data,
+            options: options
+        });  
+    })();
+</script>
+{#
+                        title: {
+                            display: true,
+                            text: 'CPU Load'
+                        },
+                    labels: [
+                                "1","2","3","4","5","6","7","8","9","10",
+                                "11","12","13","14","15","16","17","18","19","20",
+                                "21","22","23","24","25","26","27","28","29","30"
+                            ], 
+
+        var data = [
+{% for obs in data %}{% if not first %},{% endif %}"{{ obs.cpu.load }}"{% set first = false %}{% endfor %}        
+        ];
+        //console.log(data);
+        var options = {
+            label: 'CPU Load',
+            showLine: true,
+            color: [
+                'red', 'blue', 'green', 'black'
+            ]
+
+        }    
+        var myLineChart = new Chart(document.getElementById('cpu_graph').getContext('2d'), {
+            type: 'line',
+            data: data,
+            options: options
+        });   
+{% set first = true %}
+{% set data  = source.getData() %}
+    (() => {
+        console.log('rendering';)
+        const CPUChart = new Chart(document.getElementById('cpu_graph').getContext('2d'), {
+            type: 'line',
+            data: [
+{% for obs in data %}{% if not first %},{% endif %}"{{ obs.cpu.load }}"{% set first = false %}{% endfor %}
+            ],
+            options: {
+            }
+        });
+    })();
+
+#}

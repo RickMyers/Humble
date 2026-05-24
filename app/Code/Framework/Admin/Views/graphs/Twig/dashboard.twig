@@ -1,0 +1,98 @@
+{% set data  = source.getData() %}
+<script type="text/javascript">
+    Chart.defaults.global.animation.duration = 0;
+    (() => {
+        var data = {
+            datasets: [
+                {
+                    label: 'CPU Load',
+                    data: [
+                        {% set first = true %}
+                        {% for obs in data %}{% if not first %},{% endif %}{{ obs.cpu.load }}{% set first = false %}{% endfor %}        
+                    ]
+                }
+           ],
+           labels: ['0','1','2','3','4','5','6','7','8','9','10','11']
+        }
+        var options = {
+                        showLines: true,
+                        pointLabelFontColor: "red",
+                        scaleFontColor: "red"
+                    };
+        var myLineChart = new Chart(document.getElementById('cpu_graph').getContext('2d'), {
+            type: 'line',
+            data: data,
+            options: options
+        });  
+    })();
+    (() => {
+        var data = {
+            datasets: [
+                {
+                    label: 'Total',
+                    data: [
+                        {% set first = true %}
+                        {% for obs in data %}{% if not first %},{% endif %}{{ obs.memory.total }}{% set first = false %}{% endfor %}        
+                    ]
+                },
+                {
+                    label: 'Free',
+                    data: [
+                        {% set first = true %}
+                        {% for obs in data %}{% if not first %},{% endif %}{{ obs.memory.free }}{% set first = false %}{% endfor %}        
+                    ]
+                },
+                {
+                    label: 'Used',
+                    data: [
+                        {% set first = true %}
+                        {% for obs in data %}{% if not first %},{% endif %}{{ obs.memory.used }}{% set first = false %}{% endfor %}        
+                    ]
+                }
+           ],
+           labels: ['0','1','2','3','4','5','6','7','8','9','10','11']
+        }
+        var options = {
+                        color: ['red','white','blue'],
+                        showLines: true,
+                        pointLabelFontColor: "red",
+                        scaleFontColor: "red"
+                    };
+        var myLineChart = new Chart(document.getElementById('memory_graph').getContext('2d'), {
+            type: 'line',
+            data: data,
+            options: options
+        });      
+    })();    
+    (() => {
+        var data = {
+            datasets: [
+                {
+                    label: 'Apache Threads',
+                    data: [
+                        {% set first = true %}
+                        {% for obs in data %}{% if not first %},{% endif %}{{ obs.apache.thread_count }}{% set first = false %}{% endfor %}        
+                    ]
+                },
+                {
+                    label: 'Task Count',
+                    data: [
+                        {% set first = true %}
+                        {% for obs in data %}{% if not first %},{% endif %}{{ obs.tasks.count }}{% set first = false %}{% endfor %}        
+                    ]
+                }                
+           ],
+           labels: ['0','1','2','3','4','5','6','7','8','9','10','11']
+        }
+        var options = {
+                        showLines: true,
+                        pointLabelFontColor: "red",
+                        scaleFontColor: "red"
+                    };
+        var myLineChart = new Chart(document.getElementById('apache_graph').getContext('2d'), {
+            type: 'line',
+            data: data,
+            options: options
+        });  
+    })();    
+</script>
