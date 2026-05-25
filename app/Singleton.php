@@ -33,7 +33,6 @@ class Singleton
     private static $errors           = [];
     private static $warnings         = [];
     private static $alerts           = [];
-    
     public  static $joiners          = [];
 
     /**

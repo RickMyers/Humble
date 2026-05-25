@@ -142,6 +142,15 @@
                         </tr>
                     </table>
                 </div>
+                <div id='humble-paradigm-config-webservice-security-bearer-token-{$manager->getId()}' style='display: none; padding: 30px'>
+                    <table cellspacing='1'>
+                        <tr>
+                            <td colspan='2'>
+                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='bearer'))}checked="checked"{/if} name='security-scheme' value='bearer' id='humble-paradigm-config-webservice-security-bearer-token-scheme-{$manager->getId()}' /><br /><br />
+                            </td>
+                        </tr>
+                    </table>
+                </div>                        
                 <div id='humble-paradigm-config-webservice-security-token-{$manager->getId()}' style='display: none; padding: 30px'>
                     <table cellspacing='1'>
                         <tr>
@@ -180,6 +189,7 @@
     tabs.add('Session', null,'humble-paradigm-config-webservice-security-session-{$manager->getId()}');
     tabs.add('Standard', null,'humble-paradigm-config-webservice-security-standard-{$manager->getId()}');
     tabs.add('API Token',null,'humble-paradigm-config-webservice-security-token-{$manager->getId()}');
+    tabs.add('Bearer Token',null,'humble-paradigm-config-webservice-security-bearer-token-{$manager->getId()}');
     tabs.add('Whitelist',null,'humble-paradigm-config-webservice-security-whitelist-tab-{$manager->getId()}');
     tabs.tabClick(0);
     $('#workflow-id-{$manager->getId()}').val(Paradigm.actions.get.mongoWorkflowId());

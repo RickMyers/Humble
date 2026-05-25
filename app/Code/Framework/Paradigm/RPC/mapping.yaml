@@ -143,6 +143,14 @@ beginConfiguration  :
   method          : POST
   blocking        : false
   arguments       : [namespace,id,window_id,data,component,method]
+ruleConfiguration  :
+  url             : /workflow/elements/rule
+  api-key         :
+  api-var         :
+  secure          : true
+  method          : POST
+  blocking        : false
+  arguments       : [namespace,id,window_id,data,component,method]  
 terminusConfiguration  :
   url             : /workflow/elements/terminus
   api-key         :

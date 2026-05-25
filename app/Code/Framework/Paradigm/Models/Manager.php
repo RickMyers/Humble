@@ -33,7 +33,8 @@ class Manager extends Model
         'operation' => true,
         'trigger'   => true,
         'begin'     => true,
-        'joiner'    => true
+        'joiner'    => true,
+        'rule'      => true
     ];
     
     public function __construct()    {
