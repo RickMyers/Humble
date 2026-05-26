@@ -18,6 +18,7 @@
             "Resources/sql",
             "Resources/templates",
             "lib/Templaters/Smarty",
+            "lib/Templaters/Twig",
             "Models",
             "Helpers",
             "Schema",
@@ -89,6 +90,22 @@
         {
             "source": "/lib/sample/module/Tests/index.xml" ,
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/Tests/index.xml" 
+        },
+        {
+            "source": "/lib/sample/module/lib/Templaters/Smarty/Config.php" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/lib/Templaters/Smarty/Config.php" 
+        },
+        {
+            "source": "/lib/sample/module/lib/Templaters/Smarty/Plugins.php" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/lib/Templaters/Smarty/Plugins.php" 
+        },
+        {
+            "source": "/lib/sample/module/lib/Templaters/Twig/Config.php" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/lib/Templaters/Twig/Config.php" 
+        },
+        {
+            "source": "/lib/sample/module/lib/Templaters/Twig/Plugins.php" ,
+            "destination": "Code/&&PACKAGE&&/&&MODULE&&/lib/Templaters/Twig/Plugins.php" 
         }
 
     ],
