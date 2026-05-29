@@ -64,8 +64,10 @@
         return {
             init: () => {
                 initialized = true;
-                //(new EasyAjax('/edits/paradigm/newrule')).add('window_id','{$window_id}').then((response)=> {
-                //}).get();
+                console.log('Initing');
+                var ao = new EasyEdits('/edits/paradigm/newrule','newrule-{$window_id}');
+                ao.fetch('/edits/paradigm/newrule');
+                ao.process(ee.getJSON().replace(/&window_id&/g,'{$window_id }'));                
             },
             add: () => {
                 rules[rules.length] = {
