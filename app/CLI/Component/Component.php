@@ -4,7 +4,9 @@ class Component extends CLI
 {
  
     /**
-     * Compiles a controller 
+     * Compiles a controller
+     * 
+     * @return type
      */
     public static function compile() {
         $args       = self::arguments();
@@ -12,10 +14,13 @@ class Component extends CLI
         print($file."\n");
         $compiler   = \Environment::getCompiler();
         $compiler->compileFile($file);
+        return self;
     }
 
     /**
      * Builds a controller
+     * 
+     * @return type
      */
     public static function build() {
         $util = Humble::model('admin/utility',true);
@@ -25,6 +30,7 @@ class Component extends CLI
         }
         $use_landing = $util->getLanding() ? true : false;
         $util->createController($use_landing,true);
+        return self;
     }
     
     /**

@@ -13,7 +13,8 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             <helper class="template" method="fetchTemplate">
                 <parameter name="namespace" source="request" required="true" />
                 <parameter name="identifier" source="request" required="true" />
-            </helper>
+            </helper>            
+
         </action>
 
         <!-- ############################################################### -->

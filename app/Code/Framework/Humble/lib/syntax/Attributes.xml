@@ -36,7 +36,11 @@
                     <off />
                     <on />
                     <true />
-                    <false />                     
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                   
                 </values>
             </blocking>
             <response  required="false"  purpose="" default="FALSE" >
@@ -82,6 +86,12 @@
                 <values>
                     <off />
                     <on />
+                    <true />
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />  
                 </values>                
             </blocking>
             <response   required="false"  purpose="" default="" >
@@ -89,7 +99,11 @@
                     <off />
                     <on />
                     <true />
-                    <false />                    
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                     
                 </values>
             </response>                
             <csrf_protection     required="false"  purpose="" default="" />
@@ -136,7 +150,11 @@
                     <off />
                     <on />
                     <true />
-                    <false />                    
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                     
                 </values>
             </response>     
             <wrapper    required="false"  purpose="" default="" />
@@ -182,7 +200,11 @@
                     <off />
                     <on />
                     <true />
-                    <false />                    
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                     
                 </values>
             </response>     
             <wrapper    required="false"  purpose="" default="" />
@@ -204,7 +226,11 @@
                     <off />
                     <on />
                     <true />
-                    <false />                    
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                     
                 </values>
             </response>     
         </attributes>
@@ -221,7 +247,11 @@
                     <off />
                     <on />
                     <true />
-                    <false />                    
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                     
                 </values>
             </response>     
             <wrapper    required="false"  purpose="" default="" />  
@@ -245,7 +275,11 @@
                     <off />
                     <on />
                     <true />
-                    <false />                    
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                     
                 </values>
             </response>     
             <wrapper    required="false"  purpose="" default="" />     
@@ -375,8 +409,14 @@
             </format>
             <required required="false" purpose="" default="" conflicts="optional" >
                 <values>
+                    <off />
+                    <on />
                     <true />
                     <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />  
                 </values>
             </required>
             <optional required="false" purpose="" default="" conflicts="required" />
@@ -423,6 +463,12 @@
                 <values>
                     <off />
                     <on />
+                    <true />
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />  
                 </values>                
             </blocking>
             <response   required="false"  purpose="" default="" >
@@ -430,7 +476,11 @@
                     <off />
                     <on />
                     <true />
-                    <false />                    
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                    
                 </values>
             </response>                
             <csrf_protection     required="false"  purpose="" default="" />

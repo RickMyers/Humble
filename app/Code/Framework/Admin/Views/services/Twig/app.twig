@@ -1,5 +1,5 @@
 <div id="services_app_header-{{ window_id }}" class="p-2" style="background-color: #333; color: ghostwhite; font-family: sans-serif; text-align: right; padding-right: 10px">
-    This is the header
+    Services Explorer
 </div>
 <div id="services_app_body-{{ window_id }}" class="">
     <div id="services_app-{{ window_id }}">
@@ -7,7 +7,7 @@
     </div>
 </div>
 <div id="services_app_footer-{{ window_id }}" class="" style="background-color: #333; color: ghostwhite; font-family: sans-serif; text-align: right; padding-right: 10px">
-    Services Explorer
+    &copy; Humbleprogramming.com, 2008 - Present
 </div>
 <div id="services_app_tool-{{ window_id }}"></div>
 <script type="text/javascript"> 
@@ -16,7 +16,7 @@
         var win = Desktop.window.list['{{ window_id }}'];
         win._title('Services Explorer').resize(() => {
             $('#services_app_body-{{ window_id }}').height(win.content.height() - $E('services_app_header-{{ window_id }}').offsetHeight - $E('services_app_footer-{{ window_id }}').offsetHeight - 2);
-        }).resize();
+        })._scroll(true).resize();
         Humble.admin['services'] = (!Humble.admin['services']) ? {} : Humble.admin['services'];
         Humble.admin['services']['{{ window_id }}'] = Vue.createApp({
             template: Humble.template('admin','services/list',true),

@@ -229,11 +229,26 @@ EasyEdits.execute	= function (easy){
     //form field level processing
     var defaultBackgroundColor = (easy.edits.form.fieldcolor) ? easy.edits.form.fieldcolor : "lightcyan";
     var formField	= null;
+    var formXref        = {};
+    var key             = null;
+    for (var i=0; i<form.elements.length; i++) {
+        key = (form.elements[i].name) ? form.elements[i].name : form.elements[i].id;
+        formXref[key] = form.elements[i];
+    }
+    console.log(formXref);
     for (var i=0; i<easy.edits.fields.length; i++) {
-        var whereAt		= "";
+        var whereAt	= "";
         var isCombo 	= false;
         if ($E(easy.edits.fields[i].id) && easy.edits.fields[i].active)		{
-            formField			= $E(easy.edits.fields[i].id);
+            //Here, switch to using the form element and name
+            if (!(easy.edits.fields[i].name || easy.edits.fields[i].id)) {
+                alert('An EasyEdit field definition is missing a name or id attribute, see console');
+                console.log(easy.edits.fields[i]); 
+                continue;
+            }
+            key                         = (easy.edits.fields[i].name) ? easy.edits.fields[i].name : easy.edits.fields[i].id;
+            formField                   = formXref[key];
+            //formField			= $E(easy.edits.fields[i].id);
             easy.edits.fields[i].ref    = formField;
             var easyField		= easy.edits.fields[i];
             easyField.jId               = '#'+easyField.id;
@@ -695,6 +710,7 @@ EasyEdits.execute	= function (easy){
             console.log(easyField.id+": "+whereAt+":  "+ ex);
 	}
     } else {
+        //Here as well, switch to using form and name
         var field = $E(easy.edits.fields[i].id);
         if (!easy.edits.fields[i].active) {
             if (field) {
