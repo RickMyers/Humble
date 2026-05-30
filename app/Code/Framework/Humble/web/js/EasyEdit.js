@@ -10,7 +10,7 @@
 //
 //---------------------------------------------------------------------------------------
 var Edits	= []; //manages multiple instances of edits on a single page
-function EasyEdits(source, ref)
+function EasyEdits(source, ref, overrides)
 {
     var me		= this;
     this.hasContent	= false;
@@ -35,6 +35,7 @@ function EasyEdits(source, ref)
     this.isCombo	= [];
     this.sendHandler	= null;
     this.sent		= false;
+    this.overrides      = (overrides) ? overrides : [];
     if (document.addEventListener) {
         document.addEventListener("keydown", EasyEdits.storeKey, false);
     } else {
@@ -126,12 +127,16 @@ EasyEdits.process = function (easy,json) {
     }
 }
 /* ------------------------------------------------ */
-EasyEdits.load = function (JSONsource,easy){
+EasyEdits.load = (JSONsource,easy) => {
     if (JSONsource)	{
         easy.source	= JSONsource;
         (new EasyAjax(JSONsource)).then(function(response)	{
             if (response)	{
-                    easy.editsJSON	= response;
+                for (var i in easy.overrides) {
+                    let f = new RegExp(i,'gi');
+                    response = response.replace(f,easy.overrides[i]);
+                }                
+                easy.editsJSON	= response;
                 try {
                     easy.edits	= eval("("+ easy.editsJSON +")");
                 } catch (ex) {
@@ -669,16 +674,16 @@ EasyEdits.execute	= function (easy){
                 EasyEdits.setCombo(formField, $E(easyField.id+"_combo"));
             }
             if ((easyField.onfocus) || (easy.edits.form.onfocus)) {
-                Desktop.on(formField,"focus",((easyField.onfocus) ? easyField.onfocus : easy.edits.form.onfocus));
+                EasyEdits.on(formField,"focus",((easyField.onfocus) ? easyField.onfocus : easy.edits.form.onfocus));
             }
             if ((easyField.onblur) || (easy.edits.form.onblur))	{
-                Desktop.on(formField,"blur", ((easyField.onblur) ? easyField.onblur : easy.edits.form.onblur));
+                EasyEdits.on(formField,"blur", ((easyField.onblur) ? easyField.onblur : easy.edits.form.onblur));
             }
             if ((easyField.onkeyup) || (easy.edits.form.onkeyup))	{
-                Desktop.on(formField,"keyup",((easyField.onkeyup) ? easyField.onkeyup : easy.edits.form.onkeyup));
+                EasyEdits.on(formField,"keyup",((easyField.onkeyup) ? easyField.onkeyup : easy.edits.form.onkeyup));
             }
             if ((easyField.onkeydown) || (easy.edits.form.onkeydown))	{
-                Desktop.on(formField,"keydown", ((easyField.onkeydown) ? easyField.onkeydown : easy.edits.form.onkeydown));
+                EasyEdits.on(formField,"keydown", ((easyField.onkeydown) ? easyField.onkeydown : easy.edits.form.onkeydown));
             }
             easyField.baseX		= formField.offsetLeft;
             easyField.baseY		= formField.offsetTop;
@@ -762,17 +767,29 @@ EasyEdits.setCombo = function (formField,combo) {
         combo.style.width	= (parseInt($E(formField.id).offsetWidth)-ow)+"px";
         combo.style.height	= (parseInt($E(formField.id).offsetHeight)-oh)+"px";
     }
-}
+};
+EasyEdits.on = (obj,event,handler) => {
+    if (typeof obj === 'string') {
+        obj = document.getElementById(obj);
+    }
+    $(obj).on(event,handler);
+};
+EasyEdits.off = (obj,event,handler) => {
+    if (typeof obj === 'string') {
+        obj = document.getElementById(obj);
+    }
+    $(obj).off(event,handler);
+};
 /* ------------------------------------------------ */
 EasyEdits.resetCombos = function (easy) {
     if (easy.edits && easy.edits.fields) {
         for (var i=0; i<easy.edits.fields.length; i++)	{
-            if (easy.edits.fields[i].type == "combo") {
+            if (easy.edits.fields[i].type === "combo") {
                 EasyEdits.setCombo($E(easy.edits.fields[i].id),$E(easy.edits.fields[i].id+"_combo"));
             }
         }
     }
-}
+};
 /* ------------------------------------------------ */
 EasyEdits.resetErrors = function (easy) {
     easy.errors			= 0;
