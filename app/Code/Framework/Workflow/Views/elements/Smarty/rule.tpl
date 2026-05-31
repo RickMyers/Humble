@@ -65,9 +65,8 @@
             init: () => {
                 initialized = true;
                 console.log('Initing');
-                var ao = new EasyEdits('/edits/paradigm/newrule','newrule-{$window_id}');
-                ao.fetch('/edits/paradigm/newrule');
-                ao.process(ee.getJSON().replace(/&window_id&/g,'{$window_id }'));                
+                new EasyEdits('/edits/paradigm/newrule','newrule-{$window_id}',{ '&&FORM&&': "form-{$data.id}" });
+             
             },
             add: () => {
                 rules[rules.length] = {

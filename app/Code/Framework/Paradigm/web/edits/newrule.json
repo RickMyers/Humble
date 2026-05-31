@@ -1,0 +1,75 @@
+({
+    form:
+    {
+        id: 		"&&FORM&&",
+        drawme:		false,
+        action:		"",
+        onload:     function () {
+            //when form is loaded, do something
+        },
+        method:		"post",
+        style:		"",
+        onenterkey:	"send"
+    },
+    fields:
+    [
+        {
+            active:         true,
+            name:             "field_name",
+            longname:       "Field Name",
+            title:          "The name of the field on the event to compare",
+            type:           "text",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border: 1px solid #333; background-color: lightcyan; padding: 2px"
+        },
+        {
+            active:         true,
+            name:           "field_comparison",
+            longname:       "Comparison operator",
+            title:          "What you want to do with the field",
+            type:           "select",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border: 1px solid #333; background-color: light-cyan; padding 2px"
+        },
+        {
+            active:         true,
+            name:             "field_value",
+            longname:       "Field Value",
+            title:          "Value to compare field against",
+            type:           "text",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          "border: 1px solid #333; background-color: lightcyan; padding: 2px"
+        },
+        {
+            active:         true,
+            name:           "form_create_button",
+            longname:       "Form Create",
+            title:          "Click to create the form",
+            type:           "button",
+            required:       false,
+            force:          false,
+            onclick:        function () {
+                if (Edits['designer-create-form'].validate()) {
+                    (new EasyAjax('/paradigm/designer/new')).packageForm('designer-create-form').then((response) => {
+                        var form = JSON.parse(response);
+                        if (form && form.id) {
+                            Designer.form.load(form);
+                            Designer.windows.create._close();
+                        } else {
+                            console.log(form);
+                            alert("Error creating form, please try again, or go play parcheesi");
+                        }
+                    }).post();
+                }
+            },
+            classname:      "",
+            style:          ""
+        }
+    ]
+})
