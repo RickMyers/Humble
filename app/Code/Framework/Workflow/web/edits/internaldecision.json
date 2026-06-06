@@ -9,17 +9,17 @@
             style:		"",
             onenterkey:         "send"
 	},
-	fields:
+	fields:  //#form1 [name='sub']
 	[
             {
                 active:			true,
-                id: 			"humble-paradigm-config-internal-decision-form-namespace-&id&",
+                name:                   "namespace",
                 longname:		"Namespace",
                 title:			"Choose a client or core for namespace",
                 onchange:       function (evt) {
                         if (evt.target.value) {
                             (new EasyAjax('/workflow/component/objects')).add('namespace',evt.target.value).then((response) => {
-                                EasyEdits.populateSelectBox($E('humble-paradigm-config-internal-decision-form-component-&id&'),eval(response));
+                                EasyEdits.populateSelectBox($("#humble-paradigm-config-internal-decision-form-&id& [name='component']").get()[0],eval(response));
                             }).post();
                         }
                     },
@@ -31,13 +31,13 @@
 		},
 		{
                     active:		true,
-                    id: 		"humble-paradigm-config-internal-decision-form-component-&id&",
+                    name:               "component",
                     longname:		"Component to use",
                     title:		"The object component",
                     onchange:       function (evt) {
                         if (evt.target.value) {
                             (new EasyAjax('/workflow/component/methods')).add('decision','Y').add('namespace',$('#humble-paradigm-config-internal-decision-form-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
-                                EasyEdits.populateSelectBox($E('humble-paradigm-config-internal-decision-form-method-&id&'),eval(response));
+                                EasyEdits.populateSelectBox($("#humble-paradigm-config-internal-decision-form-&id& [name='method']").get()[0],eval(response));
                             }).post();
                         }
                     },
@@ -49,7 +49,7 @@
 		},
 		{
                     active:		true,
-                    id: 		"humble-paradigm-config-internal-decision-form-method-&id&",
+                    name: 		"method",
                     longname:		"Function/Method",
                     title:		"The function to execute",
                     type:               "select",
@@ -73,7 +73,7 @@
 		},
 		{
                     active:		true,
-                    id: 		"humble-paradigm-config-internal-decision-form-id-&id&",
+                    name: 		"id",
                     longname:		"Decision ID",
                     title:		"",
                     type:               "hidden",
@@ -84,7 +84,7 @@
 		},
 		{
                     active:		true,
-                    id: 		"humble-paradigm-config-internal-decision-form-save-&id&",
+                    name: 		"decision-form-save",
                     longname:		"Configure Save",
                     title:		"Press to initially establish this workflow component",
                     type:               "button",

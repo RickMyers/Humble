@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<controller name="edits" use="Twig">
+    <actions>
+        
+        <!-- ######################################################################## -->
+                            
+        <action name="test">
+            <description>Generic action just used for testing various stuff</description>
+            <entity namespace="humble" class="modules" orderby="namespace=ASC" id="modules">
+                <parameter name="enabled" source="request" default="Y" />
+            </entity>
+        </action>                    
+    </actions>
+</controller>

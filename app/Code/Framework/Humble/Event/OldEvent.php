@@ -1,31 +1,47 @@
 <?php
+namespace Code\Framework\Humble\Event;
+use Humble;
+/**
+ *
+ * Maintains state for workflow events
+ *
+ * This is the event that gets passed around workflows
+ *
+ *
+ * PHP version 7.2+
+ *
+ * @category   Logical Model
+ * @package    Event
+ * @author     Rick Myers <rick@humbleprogramming.com>
+ * @copyright  2007-Present, Rick Myers <rick@humbleprogramming.com>
+ * @license    https://humbleprogramming.com/license.txt
+ * @version    1.0
+ * @since      File available since Version 1.0.1
+ */
+class Event  {
 
+    private     $_configurations = [];     //Custom configurations for stages (if applicable)
+    private     $_initiated      = null;   //Time the event was triggered
+    private     $_completed      = false;  //The time the event was finished
+    private     $_stages         = [];     //A list of the methods that were traversed
+    private     $_ref            = null;   //reference to the mongo collection
+    private     $_id             = null;   //mongo ID
+    private     $_data           = [];     //magic methods data collector
+    private     $_component      = null;   //holds a reference to the classname that spawned the event
+    private     $_method         = null;   //holds a reference to the method that triggered the event
+    private     $_status         = false;  //Was the result of the workflow a positive or negative outcome
+    private     $_name           = null;   //Name of the event
+    private     $_namespace      = null;   //Namespace the event was triggered under
+    private     $_bubble         = true;   //To bubble or not to bubble, that's the question this answers
+    private     $_target         = false;  //The current stage in the workflow being processed
+    private     $_eventErrors    = [];     //A list of all errors encountered with respect to the event itself
+    private     $_errors         = [];     //Errors encountered when stages interracted with the event or during a workflow
+    private     $_alerts         = [];
+    private     $_files          = [];
+    private     $_reports        = [];
 
-class MyEvent extends \ArrayIterator {
-    
-    private     array  $configurations  = [];     //Custom configurations for stages (if applicable)
-    private     string $initiated       = '';     //Time the event was triggered
-    private     string $completed       = '';     //The time the event was finished
-    private     array  $stages          = [];     //A list of the methods that were traversed
-    private     mixed  $ref             = null;   //reference to the mongo collection
-    private     string $id              = '';     //mongo ID
-    private     array  $data            = [];     //magic methods data collector
-    private     int    $data_idx        = 0;    
-    private     string $component       = '';     //holds a reference to the classname that spawned the event
-    private     string $method          = '';     //holds a reference to the method that triggered the event
-    private     bool   $status          = false;  //Was the result of the workflow a positive or negative outcome
-    private     string $name            = '';     //Name of the event
-    private     string $namespace       = '';     //Namespace the event was triggered under
-    private     bool   $bubble          = true;   //To bubble or not to bubble, that's the question this answers
-    private     string $target          = '';     //The current stage in the workflow being processed
-    private     array  $eventErrors     = [];     //A list of all errors encountered with respect to the event itself
-    private     array  $errors          = [];     //Errors encountered when stages interracted with the event or during a workflow
-    private     array  $alerts          = [];
-    private     array  $files           = [];
-    private     array  $reports         = [];
-
-    private     mixed  $instance        = '';      //Every time you clone this object, the instance counter will get incremented
-    static private $instances           = 0;       //For the original object, the empty string leaves the MongoID intact
+    private     $instance        = '';      //Every time you clone this object, the instance counter will get incremented
+    static private $instances    = 0;       //For the original object, the empty string leaves the MongoID intact
 
     /**
      * Not sure about this.  It might be more than necessary.
@@ -34,22 +50,15 @@ class MyEvent extends \ArrayIterator {
      *
      * @param type $identifier
      */
-    public function __construct($identifier='') : void {
-        $this->ref(Humble::collection('paradigm/events'));
-        $this->name($identifier);                                               //what is my event name
-        $this->initiated(['date'=>date('Y-m-d H:i:s'),'timestamp'=>time()]);    //the event and the workflow are related, this records essentially when the workflow was kicked off
-        $doc = $this->save();                                                   //initial save to get an ID
-        $this->id($doc['_id'].$this->instance);                                 //assign generated id to Event ID
+    public function __construct($identifier='') {
+        $this->_ref(Humble::collection('paradigm/events'));
+        $this->_name($identifier);                          //what is my event name
+        $this->_initiated(array('date'=>date('Y-m-d H:i:s'),'timestamp'=>time()));             //the event and the workflow are related, this records essentially when the workflow was kicked off
+        $doc = $this->save();                               //initial save to get an ID
+        $this->_id($doc['_id'].$this->instance);            //assign generated id to Event ID
     }
 
-    /**
-     * Converts underscore characters to the next uppercase character in the string
-     * 
-     * @param type $string
-     * @param type $first_char_caps
-     * @return type
-     */
-    protected function underscoreToCamelCase($string, $first_char_caps=false) : string {
+    protected function underscoreToCamelCase($string, $first_char_caps=false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     } 
     
@@ -59,12 +68,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $mongoID
      * @return $this
      */
-    public function id($mongoId=false) : mixed {
+    public function id($mongoId=false) {
         if ($mongoId) {
-            $this->id = $mongoId;
+            $this->_id = $mongoId;
             return $this;
         }
-        return $this->id;
+        return $this->_id;
     }
     
     /**
@@ -72,17 +81,17 @@ class MyEvent extends \ArrayIterator {
      * 
      * @return string
      */
-    public function getId() : string {
+    public function getId() {
         return $this->id();
     }
     
     /**
      * Ensures that the event information is persisted
      */
-    public function __destruct() : void {
+    public function __destruct() {
         if (!(php_sapi_name() === 'cli')) {
-            if (count($this->alerts)) {
-                header('Alerts: '.json_encode($this->alerts));
+            if (count($this->_alerts)) {
+                header('Alerts: '.json_encode($this->_alerts));
             }
         }
         $this->close();
@@ -95,105 +104,18 @@ class MyEvent extends \ArrayIterator {
      *
      * @return classname
      */
-    public function className() : string {
+    public function className() {
         return __CLASS__;
     }
 
-    /**
-     * Returns the number of elements in our array
-     * 
-     * @return int
-     */
-    public function count() : int {
-        return count($this->data);
-    }
 
-    /**
-     * If  you are able to iterate to the next element of the array, then move the data_idx up by 1
-     * 
-     * @return void
-     */
-    public function next() : void {
-        if ($this->valid()) {
-            $this->data_idx = $this->data_idx + 1;
-        }
-    }
-    
-    /**
-     * Moves the current element array index to a specified offset if that offset exists
-     * 
-     * @param int $offset
-     * @return void
-     */
-    public function seek(int $offset) : void {
-        if ($this->offsetExists($offset)) {
-            $this->data_idx = $offset;
-        }
-    }
-    
-    /**
-     * Returns whether a particular offset exists in our array
-     * 
-     * @param mixed $key
-     * @return bool
-     */
-    public function offsetExists(mixed $key) : bool {
-        return (isset($this->data[$key]));
-    }
-    
-    /**
-     * Returns the current key location, which is held in the data_idx variable
-     * 
-     * @return int|null
-     */
-    public function key() : int|null {
-        return $this->data_idx;
-    }
-
-    /**
-     * Returns the value at the current index location, or null if there is no value at that location
-     * 
-     * @return mixed
-     */
-    public function current() : mixed {
-        return isset($this->data[$this->data_idx]) ? $this->data[$this->data_idx] : null;
-    }
-    
-    /**
-     * Just sets the array index back to 0
-     * 
-     * @return void
-     */
-    public function rewind() : void {
-        $this->data_idx = 0;
-    }
-    
-    /**
-     * Adds an element to the end of the array
-     * 
-     * @param mixed $value
-     * @return void
-     */
-    public function append(mixed $value) : void {
-        $this->data[$this->count()] = $value;
-    }
-    
-    /**
-     * Returns whether there are more elements in the array to iterate over
-     * 
-     * @return bool
-     */
-    public function valid() : bool {
-        return $this->data_idx < ($this->count() - 1);
-    }
-    
     /**
      * Returns the data attached to the original event
      *
      * @return array
      */
-    public function load() : array {
-        $method = 'get'.$this->underscoreToCamelCase($this->name,true);
+    public function load() {
+        $method = 'get'.$this->underscoreToCamelCase($this->_name,true);
         return $this->$method();
     }
 
@@ -203,9 +125,9 @@ class MyEvent extends \ArrayIterator {
      * @param array $data
      * @return $this
      */
-    protected function set($data=false) : mixed {
+    protected function set($data=false) {
         if ($data) {
-            $method = 'set'.$this->underscoreToCamelCase($this->name,true);
+            $method = 'set'.$this->underscoreToCamelCase($this->_name,true);
             $this->$method($data);            
         }
         return $this;
@@ -217,15 +139,15 @@ class MyEvent extends \ArrayIterator {
      * @return type
      */
     public function fetch() {
-        return $this->configurations[$this->target()];
+        return $this->_configurations[$this->_target()];
     }
 
     /**
-     * Converts the data and configuration parts of the event to a JSON string
+     * 
      * 
      * @return type
      */
-    public function serialize() : string {
+    public function serialize() {
         return json_encode([
             "data"   => $this->load(),
             "config" => $this->fetch() 
@@ -241,7 +163,7 @@ class MyEvent extends \ArrayIterator {
     public function deserialize($event=false) {
         if ($event) {
             $this->set($data['data']);
-            $this->configurations[$this->target()] = $data['config'];
+            $this->_configurations[$this->_target()] = $data['config'];
         }
         return $this;
     }
@@ -252,34 +174,34 @@ class MyEvent extends \ArrayIterator {
      * @return \Code\Framework\Humble\Models\Mongo
      */
      public function save() {
-        $ref = $this->ref();
-        $ref->setName($this->name());
-        $ref->setStatus($this->workflowStatus());
-        $ref->setBubble($this->bubble());
+        $ref = $this->_ref();
+        $ref->setName($this->_name());
+        $ref->setStatus($this->_workflowStatus());
+        $ref->setBubble($this->_bubble());
         $ref->setEvent([
-            'namespace' => $this->namespace(),
-            'component' => $this->component(),
-            'method'    => $this->method(),
-            'initiated' => $this->initiated(),
-            'completed' => $this->completed()
+            'namespace' => $this->_namespace(),
+            'component' => $this->_component(),
+            'method'    => $this->_method(),
+            'initiated' => $this->_initiated(),
+            'completed' => $this->_completed()
         ]);
-        $ref->setFiles($this->files());
-        $ref->setErrors($this->errors);
-        $ref->setEventErrors($this->eventErrors);
-        $ref->setStages($this->stages);                                         //STAGES AND CONFIGURATIONS SHOULD ME BE COMBINED
-        $ref->setReports($this->reports);
-        $ref->setConfigurations($this->configurations);
-        foreach ($this->data as $var => $val) {
+        $ref->setFiles($this->_files());
+        $ref->setErrors($this->_errors);
+        $ref->setEventErrors($this->_eventErrors);
+        $ref->setStages($this->_stages);
+        $ref->setReports($this->_reports);
+        $ref->setConfigurations($this->_configurations);
+        foreach ($this->_data as $var => $val) {
             $method = 'set'.$this->underscoreToCamelCase($var,true);
             $ref->$method($val);
         }
-        if ($this->id()) {
-            $ref->set_id($this->id());
+        if ($this->_id()) {
+            $ref->set_id($this->_id());
             $document = $ref->save();
         } else {
             $document = $ref->add();
             if ($document['_id']) {
-                $this->id($document['_id']);
+                $this->_id($document['_id']);
             }
         }
         return $document;
@@ -287,17 +209,14 @@ class MyEvent extends \ArrayIterator {
 
     /**
      * This appends to the original event data some new information, if there's already a node of the same name and the node is not an array, then the node is converted to an array with an initial value of the original value
-     * 
+     *
      * @param type $newData
-     * @param type $allowOverride
-     * @param type $persist
-     * @return $this
      */
     public function update($newData=[],$allowOverride=false,$persist=false) {
         $updated = false;
         if (is_array($newData)) {
-            $getter  = 'get'.$this->underscoreToCamelCase($this->name(),true);
-            $setter  = 'set'.$this->underscoreToCamelCase($this->name(),true);
+            $getter  = 'get'.$this->underscoreToCamelCase($this->_name(),true);
+            $setter  = 'set'.$this->underscoreToCamelCase($this->_name(),true);
             $data       = $this->$getter();
             foreach ($newData as $field => $values) {
                 if (!isset($data[$field]) || (isset($data[$field]) && $allowOverride)) {
@@ -336,8 +255,8 @@ class MyEvent extends \ArrayIterator {
      * @param type $newData
      */
     public function replace($newData) {
-        $getter     = 'get'.$this->underscoreToCamelCase($this->name(),true);
-        $setter     = 'set'.$this->underscoreToCamelCase($this->name(),true);
+        $getter     = 'get'.$this->underscoreToCamelCase($this->_name(),true);
+        $setter     = 'set'.$this->underscoreToCamelCase($this->_name(),true);
         $eventData  = $this->$getter();
         foreach ($newData as $field => $val) {
             if (isset($eventData[$field])) {
@@ -352,11 +271,11 @@ class MyEvent extends \ArrayIterator {
      */
     public function close() {
         $flow = [];
-        foreach ($this->stages as $idx => $stage) {
+        foreach ($this->_stages as $idx => $stage) {
             if (isset($stage['component'])) {
-                $stage['component'] = $this->configurations[$idx];
-                if (isset($this->configurations[$stage['id']])) {
-                    foreach ($this->configurations[$stage['id']] as $name => $value) {
+                $stage['component'] = $this->_configurations[$idx];
+                if (isset($this->_configurations[$stage['id']])) {
+                    foreach ($this->_configurations[$stage['id']] as $name => $value) {
                         $stage[$name] = $value;
                     }
                 }
@@ -364,11 +283,11 @@ class MyEvent extends \ArrayIterator {
             $flow[$idx] = $stage;
         }
         $this->setFlow($flow);        
-        $x = count($this->stages);
+        $x = count($this->_stages);
         if ($x) {
-            $this->stages[$x-1]['finished'] = time();
+            $this->_stages[$x-1]['finished'] = time();
         }
-        $this->completed(true);
+        $this->_completed(true);
         return $this;
     }
 
@@ -381,9 +300,23 @@ class MyEvent extends \ArrayIterator {
     public function data($name=false) {
         $retVal = null;
         if ($name) {
-            $retVal = isset($this->data[$this->name()][$name]) ? $this->data[$this->name()][$name] : false;
+            $retVal = isset($this->_data[$this->_name()][$name]) ? $this->_data[$this->_name()][$name] : false;
         }
         return $retVal;
+    }
+
+    /**
+     * The unique ID (_id) of the Mongo object we are using to persist the state of the event
+     *
+     * @param type $arg
+     * @return type
+     */
+    public function _id($arg=false) {
+        if ($arg !== false) {
+            $this->_id = $arg;
+            return $this;
+        }
+        return $this->_id;
     }
 
     /**
@@ -392,12 +325,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $obj
      * @return type
      */
-    public function ref($obj=false) {
+    public function _ref($obj=false) {
         if ($obj !== false) {
-            $this->ref = $obj;
+            $this->_ref = $obj;
             return $this;
         }
-        return $this->ref;
+        return $this->_ref;
     }
 
     /**
@@ -406,12 +339,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $data
      * @return type
      */
-    public function configurations($data=false) {
+    public function _configurations($data=false) {
         if ($data!==false) {
-            $this->configurations[$this->target()] = $data;
+            $this->_configurations[$this->_target()] = $data;
             return $this;
         }
-        return $this->configurations;
+        return $this->_configurations;
     }
 
     /**
@@ -420,12 +353,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $id
      * @return type
      */
-    public function target($id=false) {
+    public function _target($id=false) {
         if ($id) {
-            $this->target = $id;
+            $this->_target = $id;
             return $this;
         }
-        return $this->target;
+        return $this->_target;
     }
 
     /**
@@ -433,15 +366,15 @@ class MyEvent extends \ArrayIterator {
      *
      * @param type $id
      */
-    public function stages($id=false) {
+    public function _stages($id=false) {
         if ($id!==false) {
-            if ($x = count($this->stages)) {
-                $this->stages[$x-1]['finished'] = time();
+            if ($x = count($this->_stages)) {
+                $this->_stages[$x-1]['finished'] = time();
             }
-            $this->stages[] = ['id'=>$id,'started'=>time(),'finished'=>null];
+            $this->_stages[] = ['id'=>$id,'started'=>time(),'finished'=>null];
             return $this;
         }
-        return $this->stages;
+        return $this->_stages;
     }
 
 
@@ -451,12 +384,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $arg
      * @return type
      */
-    public function name($arg=false) {
+    public function _name($arg=false) {
         if ($arg !== false) {
-            $this->name = $arg;
+            $this->_name = $arg;
             return $this;
         }
-        return $this->name;
+        return $this->_name;
     }
 
     /**
@@ -465,12 +398,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $arg
      * @return type
      */
-    public function namespace($arg=false) {
+    public function _namespace($arg=false) {
         if ($arg !== false) {
-            $this->namespace = $arg;
+            $this->_namespace = $arg;
             return $this;
         }
-        return $this->namespace;
+        return $this->_namespace;
     }
 
     /**
@@ -479,12 +412,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $class
      * @return string
      */
-    public function component($class=false) {
+    public function _component($class=false) {
         if ($class!==false) {
-            $this->component = $class;
+            $this->_component = $class;
             return $this;
         } 
-        return $this->component;
+        return $this->_component;
     }
 
     /**
@@ -493,12 +426,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $method
      * @return string
      */
-    public function method($method=false) {
+    public function _method($method=false) {
         if ($method) {
-            $this->method = $method;
+            $this->_method = $method;
             return $this;
         }
-        return $this->method;
+        return $this->_method;
     }
 
     /**
@@ -507,12 +440,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $arg
      * @return type
      */
-    private function initiated($arg=false) {
+    private function _initiated($arg=false) {
         if ($arg !== false) {
-            $this->initiated = $arg;
+            $this->_initiated = $arg;
             return $this;
         }
-        return $this->initiated;
+        return $this->_initiated;
     }
 
     /**
@@ -521,11 +454,11 @@ class MyEvent extends \ArrayIterator {
      * @param type $bubble
      * @return type
      */
-    public function bubble($bubble=null) {
+    public function _bubble($bubble=null) {
         if ($bubble===null) {
-            return $this->bubble;
+            return $this->_bubble;
         } else {
-            $this->bubble = $bubble;
+            $this->_bubble = $bubble;
             return $this;
         }
     }
@@ -536,12 +469,12 @@ class MyEvent extends \ArrayIterator {
      * @param type $now
      * @return unix timestamp
      */
-    public function completed($now=false) {
+    public function _completed($now=false) {
         if ($now) {
-            $this->completed = array('date'=>date('Y-m-d H:i:s'),'timestamp'=>time());
+            $this->_completed = array('date'=>date('Y-m-d H:i:s'),'timestamp'=>time());
             return $this;
         }
-        return $this->completed;
+        return $this->_completed;
      }
 
     /**
@@ -550,11 +483,11 @@ class MyEvent extends \ArrayIterator {
      * @param type $status
      * @return boolean
      */
-    public function workflowStatus($status=null) {
+    public function _workflowStatus($status=null) {
         if ($status === null) {
-            return $this->status;
+            return $this->_status;
         } else {
-            $this->status = $status;
+            $this->_status = $status;
             return $this;
         }
     }
@@ -565,16 +498,16 @@ class MyEvent extends \ArrayIterator {
      * @param type $filename
      * @param type $attach
      */
-    public function files($filename=false,$attach=false) {
+    public function _files($filename=false,$attach=false) {
         if ($filename) {
             if ($attach) {
-                $this->files[$filename] = file_exists($filename) ? file_get_contents($filename) : false;
+                $this->_files[$filename] = file_exists($filename) ? file_get_contents($filename) : false;
             } else {
-                $this->files[] = $filename;
+                $this->_files[] = $filename;
             }
             return $this;
         } else {
-            return $this->files;
+            return $this->_files;
         }
     }
 
@@ -584,16 +517,16 @@ class MyEvent extends \ArrayIterator {
      * @param type $filename
      * @param type $attach
      */
-    public function reports($filename=false,$attach=false) {
+    public function _reports($filename=false,$attach=false) {
         if ($filename) {
             if ($attach) {
-                $this->reports[$filename] = file_exists($filename) ? file_get_contents($filename) : false;
+                $this->_reports[$filename] = file_exists($filename) ? file_get_contents($filename) : false;
             } else {
-                $this->reports[] = $filename;
+                $this->_reports[] = $filename;
             }
             return $this;
         } else {
-            return $this->reports;
+            return $this->_reports;
         }
     }
 
@@ -605,10 +538,10 @@ class MyEvent extends \ArrayIterator {
      */
     public function error($message=false) {
         if ($message) {
-            $this->errors[] = $message;
+            $this->_errors[] = $message;
             return $this;
         }
-        return count($this->errors) ? $this->errors[count($this->errors)-1] : false;
+        return count($this->_errors) ? $this->_errors[count($this->_errors)-1] : false;
     }
 
     /**
@@ -617,7 +550,7 @@ class MyEvent extends \ArrayIterator {
      * @return string
      */
     public function lastError() {
-        return (($this->errors) ? $this->errors[count($this->errors)-1] : null);
+        return (($this->_errors) ? $this->_errors[count($this->_errors)-1] : null);
     }
 
     /**
@@ -628,9 +561,9 @@ class MyEvent extends \ArrayIterator {
      */
     public function alert($message=false) {
         if ($message) {
-            $this->alerts[] = $message;
+            $this->_alerts[] = $message;
         }
-        return count($this->alerts) ? $this->alerts[count($this->alerts)-1] : false;
+        return count($this->_alerts) ? $this->_alerts[count($this->_alerts)-1] : false;
     }
 
     /**
@@ -639,12 +572,12 @@ class MyEvent extends \ArrayIterator {
      * @param string $msg
      * @return string
      */
-    public function eventError($msg=null) {
+    public function _eventError($msg=null) {
         if ($msg!==null) {
-            $this->eventErrors[] = $msg;
+            $this->_eventErrors[] = $msg;
             return $this;
         }
-        return count($this->eventErrors) ? $this->eventErrors[count($this->eventErrors)-1] : false;
+        return count($this->_eventErrors) ? $this->_eventErrors[count($this->_eventErrors)-1] : false;
     }
 
     /**
@@ -658,8 +591,8 @@ class MyEvent extends \ArrayIterator {
     public function __get($name)  {
         $retval = null;
         if (!is_array($name)) {
-            if (isset($this->data[$name])) {
-                $retval = $this->data[$name];
+            if (isset($this->_data[$name])) {
+                $retval = $this->_data[$name];
             }
         }
         return $retval;
@@ -675,7 +608,7 @@ class MyEvent extends \ArrayIterator {
      * @param string $value Value of variable in the name/value pair
      */
     public function __set($name,$value) {
-        $this->data[$name] = $value;
+        $this->_data[$name] = $value;
         return $this;
     }
 
@@ -691,9 +624,9 @@ class MyEvent extends \ArrayIterator {
     public function __call($name, $arguments)    {
         $token = lcfirst(substr($name,3));
         if (substr($name,0,3)==='set') {
-            return $this->_set($token,$arguments[0]);
+            return $this->__set($token,$arguments[0]);
         } else if (substr($name,0,3)==='get') {
-            $result = $this->_get($token);
+            $result = $this->__get($token);
             return $result;
         } else {
             \Log::console("Undefined Method: ".$name." invoked from ".$this->className().".");
@@ -706,5 +639,4 @@ class MyEvent extends \ArrayIterator {
     public function __clone() {
         $this->instance = ++self::$instances;
     }
-    
 }

@@ -1,0 +1,111 @@
+({
+    form:
+    {
+        id: 		"test_form_&&id&&",
+        drawme:		false,
+        action:		"",
+        onload:     function () {
+            //when form is loaded, do something
+        },
+        method:		"post",
+        style:		"",
+        onenterkey:	"send"
+    },
+    fields:
+    [
+        {
+            active:         true,
+            name:           "namespace",
+            longname:       "Module Namespace",
+            title:          "The namespace of the module",
+            type:           "select",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border: 1px solid #333; padding: 2px; width: 350px"
+        },
+        {
+            active:         true,
+            name:           "component",
+            longname:       "Module Component",
+            title:          "A list of module components",
+            type:           "select",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border: 1px solid #333; padding: 2px; width: 350px"
+        },
+        {
+            active:         true,
+            name:           "method",
+            longname:       "Component Methods",
+            title:          "Methods you can select from the component",
+            type:           "select",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border: 1px solid #333; padding: 2px; width: 350px"
+        },
+        {
+            active:         true,
+            name:           "combo_demo",
+            longname:       "Combo Box",
+            title:          "Demo of a combination select/write box",
+            type:           "combo",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border: 1px solid #333; padding: 16px; width: 350px; border-radius: 16px"
+        },        
+        {
+            active:         true,
+            name:           "combo_demo_combo",
+            longname:       "A long name",
+            title:          "Is this working?",
+            type:           "text",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },     
+        {
+            active:         true,
+            name:           "date_demo",
+            placeholder:    "##/##/####",
+            mask:           "#^/#^/####",
+            longname:       "Date Format",
+            title:          "Should be Y2K compatible date format",
+            type:           "text",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },             
+        {
+            active:         false,
+            name:           "form_create_button",
+            longname:       "Form Create",
+            title:          "Click to create the form",
+            type:           "button",
+            required:       false,
+            force:          false,
+            onclick:        function () {
+                if (Edits['designer-create-form'].validate()) {
+                    (new EasyAjax('/paradigm/designer/new')).packageForm('designer-create-form').then((response) => {
+                        var form = JSON.parse(response);
+                        if (form && form.id) {
+                            Designer.form.load(form);
+                            Designer.windows.create._close();
+                        } else {
+                            console.log(form);
+                            alert("Error creating form, please try again, or go play parcheesi");
+                        }
+                    }).post();
+                }
+            },
+            classname:      "",
+            style:          ""
+        }
+    ]
+})
+

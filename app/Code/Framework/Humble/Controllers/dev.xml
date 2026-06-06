@@ -33,9 +33,6 @@
                 <parameter name='uid' source='session' value='uid' default='' />
             </model>
         </action>
-
-        <!-- ######################################################################## -->
-                            
-                            
+               
     </actions>
 </controller>

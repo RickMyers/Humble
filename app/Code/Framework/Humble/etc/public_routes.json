@@ -6,6 +6,10 @@
         "humble/labs": true
     },
     "routes": {
+        "/humble/edits/test": {
+           "reason":   "Just a generic test area",
+           "description": "Just for S&Gs"
+        },        
         "/humble/home/index": {
            "reason":   "This is the default index.html page",
            "description": "The user login page"

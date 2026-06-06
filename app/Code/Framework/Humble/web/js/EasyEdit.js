@@ -31,7 +31,7 @@ function EasyEdits(source, ref, overrides)
     this.executed       = false;
     this.ratio		= 5
     this.currentZoom	= 100;
-    this.changeHandlers	= [];
+    this.changeHandlers	= {};
     this.isCombo	= [];
     this.sendHandler	= null;
     this.sent		= false;
@@ -156,10 +156,10 @@ EasyEdits.storeKey = function (evt){
 }
 /* ------------------------------------------------ */
 EasyEdits.getCSSValue = function (field,name) {
-	return (window.getComputedStyle) ? document.defaultView.getComputedStyle($E(field),null)[name] : $E(field).currentStyle[name];
+    return (window.getComputedStyle) ? document.defaultView.getComputedStyle(field,null)[name] : field.currentStyle[name];
 }
 /* ------------------------------------------------ */
-EasyEdits.execute	= function (easy){
+EasyEdits.execute	= (easy) => {
     //draw if necessary
     if ((easy.edits.form.drawme)&&(!$E(easy.edits.form.id)))	{
         var formHTML = '<form id="'+ easy.edits.form.id +'" name="'+ easy.edits.form.id +'" method="'+ easy.edits.form.method +'" action="'+ easy.edits.form.action +'" style="'+ easy.edits.form.style +'">';
@@ -213,7 +213,7 @@ EasyEdits.execute	= function (easy){
         }
     }
     //form specific processing
-    var form		= $E(easy.edits.form.id);
+    var form		= document.getElementById(easy.edits.form.id);
     if (!form) {
         alert('Edits: '+easy.edits.form.id+' Not Found');
         return false;
@@ -225,7 +225,7 @@ EasyEdits.execute	= function (easy){
         form.method = easy.edits.form.method
     }
     if (easy.edits.form.onchange) {
-        form.onchange = easy.edits.form.onchange;
+        form.onchange = easy.edits.form.onchange;                               //event delegation onchange handler
     }
     if (easy.edits.form.sumclass && easy.edits.form.sumfield) {
         form.setAttribute("sumclass",easy.edits.form.sumclass);
@@ -235,31 +235,36 @@ EasyEdits.execute	= function (easy){
     var defaultBackgroundColor = (easy.edits.form.fieldcolor) ? easy.edits.form.fieldcolor : "lightcyan";
     var formField	= null;
     var formXref        = {};
-    var key             = null;
+    var easyKey         = "";    
     for (var i=0; i<form.elements.length; i++) {
-        key = (form.elements[i].name) ? form.elements[i].name : form.elements[i].id;
-        formXref[key] = form.elements[i];
+        formXref[((form.elements[i].id) ? form.elements[i].id : form.elements[i].name)] = form.elements[i];
     }
-    console.log(formXref);
     for (var i=0; i<easy.edits.fields.length; i++) {
         var whereAt	= "";
         var isCombo 	= false;
-        if ($E(easy.edits.fields[i].id) && easy.edits.fields[i].active)		{
+
+        if (easy.edits.fields[i].active)		{
             //Here, switch to using the form element and name
-            if (!(easy.edits.fields[i].name || easy.edits.fields[i].id)) {
+            easyKey                     = easy.edits.fields[i].name || easy.edits.fields[i].id;
+            if (!easyKey) {
                 alert('An EasyEdit field definition is missing a name or id attribute, see console');
                 console.log(easy.edits.fields[i]); 
                 continue;
             }
-            key                         = (easy.edits.fields[i].name) ? easy.edits.fields[i].name : easy.edits.fields[i].id;
-            formField                   = formXref[key];
-            //formField			= $E(easy.edits.fields[i].id);
-            easy.edits.fields[i].ref    = formField;
-            var easyField		= easy.edits.fields[i];
-            easyField.jId               = '#'+easyField.id;
-            easy.changeHandlers[easyField.id] = [];
+            formField                   = formXref[easyKey];
+            if (!formField) {
+                alert('Edit field not found in form, see console')
+                console.log('Missing formfield');
+                console.log(easy.edits.fields[i]);
+                continue;
+            }
+            formField.easyKey            = easyKey;
+            formField.form               = easy.edits.form.id;
+            easy.edits.fields[i].ref     = formField;                           //reference to the actual field in the form
+            var easyField		 = easy.edits.fields[i];                //shorthand reference to the edits json definition
+            easy.changeHandlers[easyKey] = [];
             if (formField.onchange) {
-                easy.changeHandlers[easyField.id][easy.changeHandlers[easyField.id].length] = formField.onchange;
+                easy.changeHandlers[easyKey][easy.changeHandlers[easyKey].length] = formField.onchange; //if there is already an onchange event, add it to the list of handlers
             } try {
                 easyField.ref		= formField;
                 easyField.inerror	= false;
@@ -279,7 +284,7 @@ EasyEdits.execute	= function (easy){
                     var styles = easyField.style.split(";");
                     for (var ii=0; ii<styles.length; ii++) {
                         var pair = styles[ii].split(":");
-                        if (pair[0]) {
+                        if (pair[0].trim()) {
                             if (pair[0].indexOf("-")!=-1) {
                                 var pre 	= pair[0].substr(0,pair[0].indexOf("-"));
                                 var cap		= pair[0].substr(pair[0].indexOf("-")+1,1).toUpperCase();
@@ -296,12 +301,13 @@ EasyEdits.execute	= function (easy){
                     formField.className	= easyField.classname ? easyField.classname : easy.edits.form.classname;
                 }
                 if (easyField.type === "combo") {
-                    isCombo = true;
+                    let currentField  = formField;                              //Scoping hack
+                    isCombo           = true;
                     formField.onclick = EasyEdits.resetLastKey;
                     formField.onfocus = EasyEdits.throwFocusAway;
-                    var combo = $E(formField.id+"_combo");
-                    if (!combo) {
-                        alert('Combination Field not found... looking for '+formField.id+"_combo");
+                    formField.combo   = $("#"+easy.edits.form.id+" [name='"+formField.easyKey+"_combo']").get()[0];
+                    if (!formField.combo) {
+                        alert('Combination Field not found... looking for '+formField.easyKey+"_combo");
                     }
                     formField.tabIndex = 99;
                     formField.setAttribute("combo","yes");
@@ -310,20 +316,28 @@ EasyEdits.execute	= function (easy){
                     } else {
                         formField.setAttribute("removeMask","no");
                     }
-                    $(formField).on("change",(function (formField,combo) {
-                        return function () {
-                            formField.setAttribute('comboValue',$(formField).val());
-                            combo.setAttribute('comboValue',$(formField).val());
-                            console.log('i am setting both boxes to '+$(formField).val());
-                            console.log(combo.getAttribute('comboValue'));
+                    $(formField).on("change",( (field,combo) => {
+                        //watch out, this is a closure...
+                        return () => {
+                            field.setAttribute('comboValue',$(field).val());
+                            combo.setAttribute('comboValue',$(field).val());
+                            $(combo).val($(field).val());
                         }
-                    })(formField,combo));
-                    combo.style.backgroundColor = EasyEdits.getCSSValue(easyField.id, "backgroundColor");
-                    combo.style.margin = EasyEdits.getCSSValue(easyField.id, "margin");
-                    combo.style.padding = EasyEdits.getCSSValue(easyField.id, "padding");
-                    combo.style.display = "none";
-                    combo.setAttribute("comboPair",easyField.id);
-                    combo.onchange = function (evt,calledFromComboPair) {	
+                    })(formField,formField.combo));
+                    formField.combo.style.backgroundColor = EasyEdits.getCSSValue(formField, "backgroundColor");
+                    formField.combo.style.margin          = EasyEdits.getCSSValue(formField, "margin");
+                    formField.combo.style.padding         = EasyEdits.getCSSValue(formField, "padding");
+                    formField.combo.style.display         = "none";
+                    formField.combo.setAttribute("comboPair",easyKey);
+                    $(formField.combo).on("change",((field,combo)=> {
+                        return () => {
+                            $(field).val($(combo).val());
+                            combo.setAttribute('comboValue',$(combo).val());
+                        }
+                    })(formField,formField.combo))
+/*                    formField.combo.onchange = (evt,calledFromComboPair) => {	
+                        console.log('combo change handler');
+                        console.log(currentField);
                         evt = (evt) ? evt : ((window.event) ? event : null);
                         if (!calledFromComboPair) {
                             let cp = evt.target.getAttribute("comboPair");
@@ -335,23 +349,55 @@ EasyEdits.execute	= function (easy){
                             $E(cp).setAttribute('comboValue',$(evt.target).val());
                         }
                         evt.target.setAttribute("comboValue",$(evt.target).val());
-                    }
+                    }*/
                 }
-                formField.isCombo = isCombo;
-                formField.onchange = function (evt,calledFromComboPair)	{
+                formField.isCombo  = isCombo;
+                let tt = formField;
+                $(formField).on('change',((field,combo,easy) => {
+                    return () => {
+                        let easyKey = field.easyKey;
+                        var isCombo = (field.getAttribute && (field.getAttribute("combo")=="yes"));
+                        if (isCombo) {
+                            alert('is combo! '+field.easyKey);
+                            if (!calledFromComboPair){
+                                //FIX THIS!
+                                if (target.selectedIndex >= 0) {
+                                    value = $E(easyKey)[$E(easyKey).selectedIndex].text;
+                                    combo.setAttribute("comboValue", $E(easyKey)[$E(easyKey).selectedIndex].value);
+                                    combo.onchange(evt,calledFromComboPair);
+                                }
+                            }
+                            if (window.addEventListener) {
+                                //evt.stopPropagation();
+                            } else {
+                                //evt.cancelBubble = true;
+                            }
+                            
+                        }
+                        for (var jj = 0; jj<easy.changeHandlers[target.easyKey].length; jj++) {
+                            easy.changeHandlers[target.easyKey][jj](evt);
+                        }
+                        
+                    }
+                }))(formField,formField.combo,easy);
+/*                formField.onchange = (evt,calledFromComboPair) => {
                     evt = (evt) ? evt : ((window.event) ? event : null);
+                    var target = evt.target;
+                    var easyKey = this.id || this.name;
                     var isCombo = (this.getAttribute && (this.getAttribute("combo")=="yes"));
-                    if (isCombo){
+                    if (isCombo) {
+                        alert('is combo! '+tt.name);
                         if (!calledFromComboPair){
-                            if ($E(this.id).selectedIndex >= 0) {
-                                $E(this.id + "_combo").value = $E(this.id)[$E(this.id).selectedIndex].text;
-                                $E(this.id + "_combo").setAttribute("comboValue", $E(this.id)[$E(this.id).selectedIndex].value);
-                                $E(this.id + "_combo").onchange(evt,calledFromComboPair);
+                            //FIX THIS!
+                            if (target.selectedIndex >= 0) {
+                                formField.combo.value = $E(easyKey)[$E(easyKey).selectedIndex].text;
+                                formField.combo.setAttribute("comboValue", $E(easyKey)[$E(easyKey).selectedIndex].value);
+                                formField.combo.onchange(evt,calledFromComboPair);
                             }
                         }
                     }
-                    for (var jj = 0; jj<easy.changeHandlers[this.id].length; jj++) {
-                        easy.changeHandlers[this.id][jj](evt);
+                    for (var jj = 0; jj<easy.changeHandlers[target.easyKey].length; jj++) {
+                        easy.changeHandlers[target.easyKey][jj](evt);
                     }
                     //this stops a potentially devastating cyclic reference between the drop down box and the combo text box, becareful about removing it...
                     if (isCombo) {
@@ -361,12 +407,12 @@ EasyEdits.execute	= function (easy){
                             //evt.cancelBubble = true;
                         }
                     }
-                }
+                }*/
                 if (easyField.onchange)	{
-                    if (!easy.changeHandlers[easyField.id]) {
-                        easy.changeHandlers[easyField.id] = [];
+                    if (!easy.changeHandlers[formField.easyKey]) {
+                        easy.changeHandlers[formField.easyKey] = [];
                     }
-                    easy.changeHandlers[easyField.id][easy.changeHandlers[easyField.id].length] = easyField.onchange;
+                    easy.changeHandlers[formField.easyKey][easy.changeHandlers[formField.easyKey].length] = easyField.onchange;
                 }
                 if (easyField.sumfield && easyField.sumclass){
                     formField.setAttribute("sumclass",easyField.sumclass);
@@ -384,17 +430,17 @@ EasyEdits.execute	= function (easy){
                     }
 		}
                 if (easyField.onmouseover) {
-                    $(easyField.jId).on("mouseover",easyField.onmouseover)
+                    $(easyField.ref).on("mouseover",easyField.onmouseover)
                 }
                 if (easyField.onmouseout) {
-                    $(easyField.jId).on("mouseout",easyField.onmouseout);
+                    $(easyField.ref).on("mouseout",easyField.onmouseout);
                 }
                 if (easyField.onmousedown) {
-                    $(easyField.jId).on("mousedown",easyField.onmousedown);
+                    $(easyField.ref).on("mousedown",easyField.onmousedown);
                 }
                 /* -- Template Matching 			-- */
                 if (easyField.onclick) {
-                    $(easyField.jId).on("click",easyField.onclick);
+                    $(easyField.ref).on("click",easyField.onclick);
                 }
                 if (easyField.spellcheck){
                     formField.setAttribute("spellcheck","true");
@@ -427,12 +473,12 @@ EasyEdits.execute	= function (easy){
                     }
                 }
                 if (easyField.activate) {
-                        $(easyField.jId).on("keydown",easyField.activate);
+                    $(easyField.ref).on("keydown",easyField.activate);
                 }
                 if (easyField.mask)	{
-                    $(easyField.jId).on("keyup", function (evt) {
+                    $(easyField.ref).on("keydown", function (evt) {
                         evt = (evt) ? evt : ((window.event) ? event : null);
-                        if ((evt==null) ||  ((evt.keyCode != 39) && (evt.keyCode != 37) && (evt.keyCode!=46) && (evt.keyCode!=8))) {
+                        if ((evt==null) ||  ((evt.keyCode != 39) && (evt.keyCode != 37) && (evt.keyCode != 46) && (evt.keyCode != 8))) {
                             var template    = this.getAttribute("template").split('');
                             var fieldVal    = this.value.split('');
                             var results     = [];
@@ -512,9 +558,9 @@ EasyEdits.execute	= function (easy){
                     formField.setAttribute("template",easyField.mask);
                 }
                 if (easyField.readonly === true) {
-                   // if (isCombo) {
-                   //     $E(this.id + "_combo").readOnly = true;
-                  //  }
+                    if (isCombo) {
+                        formField.combo.readOnly = true;
+                    }
                     formField.readOnly = true;
                 }
                 if (easyField.widget) {
@@ -530,15 +576,14 @@ EasyEdits.execute	= function (easy){
                     formField.setAttribute('placeholder',easyField.placeholder);
                 }
                 if (easyField.disabled === true) {
-                   // if (isCombo) {
-                    //    alert(this.id);
-                    //    $E(this.id + "_combo").disabled = true;
-                    //}                    
+                    if (isCombo) {
+                        formField.combo.disabled = true;
+                    }                    
                     formField.disabled = true
                 } else {
-                   // if (isCombo) {
-                   //     $E(this.id + "_combo").disabled = false;
-                   // }                        
+                    if (isCombo) {
+                        formField.combo.disabled = false;
+                    }                        
                     formField.disabled = false;
                 }
                 /* -- Creating a rollover title			-- */
@@ -546,12 +591,12 @@ EasyEdits.execute	= function (easy){
                     if (easyField.title) {
                         formField.title	= easyField.title;
                         if (isCombo) {
-                            $E(formField.id+"_combo").title = easyField.title;
+                            formField.combo.title = easyField.title;
                         }
                     } else {
                         formField.title	= easyField.longname;
                         if (isCombo) {
-                            $E(formField.id+"_combo").title = easyField.longname;
+                            formField.combo.title = easyField.longname;
                         }
                     }
                 }
@@ -592,9 +637,10 @@ EasyEdits.execute	= function (easy){
                     }
                 }
                 if (easyField.dependencies)	{
+                    //FIX THIS!
                     whereAt = "dependencies";
                     formField.setAttribute("dependencies",easyField.dependencies);
-                    var status = !$E(easyField.id).checked;
+                    var status = !$E(easyKey).checked;
                     var dependencies = easyField.dependencies.split(",");
                     for (var j=0; j<dependencies.length; j++) {
                     if (status) {
@@ -606,10 +652,11 @@ EasyEdits.execute	= function (easy){
                 }
 
                 if (easyField.type == "radio")	{
+                    //FIX THIS!
                     var rbset = form.elements[easyField.group];
                     for (var i=0; i<rbset.length; i++) {
-                        var rb = rbset[i]; var depElem = easyField.id; var dependencies = easyField.dependencies.split(",");
-                        $E(rb.id).onclick = function (evt) {
+                        var rb = rbset[i]; var depElem = easyKey; var dependencies = easyField.dependencies.split(",");
+                        $E(rb.id).onclick = (evt) => {
                         evt = (evt) ? evt : event ? event : null;
                         var status = !$E(depElem).checked;
                             for (var k=0; k<rbset.length; k++) {
@@ -649,7 +696,7 @@ EasyEdits.execute	= function (easy){
                 whereAt = "maxchars";
                 formField.setAttribute("maxchars",easyField.maxchars);
                 formField.setAttribute("maxlines",((easyField.maxlines) ? easyField.maxlines : null));
-                $(formField).on('keyup',function ()	{
+                $(formField).on('keyup',(evt) => {
                     var maxchars	= this.getAttribute("maxchars");
                     var maxlines	= this.getAttribute("maxlines");
                     if ((this.value.length >= maxchars)) {
@@ -670,8 +717,8 @@ EasyEdits.execute	= function (easy){
                 });
             }
             if (isCombo) {
-                $(window).on("resize", function () { EasyEdits.resetCombos(easy); });
-                EasyEdits.setCombo(formField, $E(easyField.id+"_combo"));
+                $(window).on("resize", () => { EasyEdits.resetCombos(easy); });
+                EasyEdits.setCombo(formField, formField.combo);
             }
             if ((easyField.onfocus) || (easy.edits.form.onfocus)) {
                 EasyEdits.on(formField,"focus",((easyField.onfocus) ? easyField.onfocus : easy.edits.form.onfocus));
@@ -712,17 +759,21 @@ EasyEdits.execute	= function (easy){
                 }
             }
         } catch (ex) {
-            console.log(easyField.id+": "+whereAt+":  "+ ex);
+            console.log(easyKey+": "+whereAt+":  "+ ex);
 	}
     } else {
         //Here as well, switch to using form and name
-        var field = $E(easy.edits.fields[i].id);
+        //var field = $E(easy.edits.fields[i].id);
+        var field   = formXref[((easy.edits.fields[i].id) ? easy.edits.fields[i].id : easy.edits.fields[i].name)];
         if (!easy.edits.fields[i].active) {
             if (field) {
                 field.parentNode.removeChild(field);
             }
 	} else {
             if (!field) {
+                console.log('Missing field follows:');
+                console.log(easy.edits.fields[i]);
+                
                 if (easy.edits.fields[i].optional === true) {
                         //nop
                 } else {
@@ -746,7 +797,7 @@ EasyEdits.execute	= function (easy){
 EasyEdits.setCombo = function (formField,combo) {
     if (combo) {
         combo.style.display		= "none";
-        var ref = (window.getComputedStyle) ? document.defaultView.getComputedStyle(formField,null) : $E(formField.id).currentStyle;
+        var ref = (window.getComputedStyle) ? document.defaultView.getComputedStyle(formField,null) : formField.currentStyle;
 
         for (var i=0; i<ref.length; i++) {
             if (ref[ref[i]] !== undefined) {
@@ -761,19 +812,22 @@ EasyEdits.setCombo = function (formField,combo) {
         combo.style.left	= (parseInt(EasyEdits.getAbsoluteX(formField))+1)+"px";
         combo.style.top		= (parseInt(EasyEdits.getAbsoluteY(formField))+1)+"px";
         combo.style.display	= "block";
+        //23 : 19
         var ow	= (document.addEventListener) ? 23 : 19;
         var oh	= 2;
         combo.style.padding	= "0px";
-        combo.style.width	= (parseInt($E(formField.id).offsetWidth)-ow)+"px";
-        combo.style.height	= (parseInt($E(formField.id).offsetHeight)-oh)+"px";
+        combo.style.width	= (parseInt(formField.offsetWidth)-ow)+"px";
+        combo.style.height	= (parseInt(formField.offsetHeight)-oh)+"px";
     }
 };
+/* ------------------------------------------------ */
 EasyEdits.on = (obj,event,handler) => {
     if (typeof obj === 'string') {
         obj = document.getElementById(obj);
     }
     $(obj).on(event,handler);
 };
+/* ------------------------------------------------ */
 EasyEdits.off = (obj,event,handler) => {
     if (typeof obj === 'string') {
         obj = document.getElementById(obj);
@@ -1045,7 +1099,7 @@ EasyEdits.validate 	= function (easy)
                 }
                 var action 		= easyField.force;
                 easy.flagged	= false;
-                easyFields[easyField.id] = easyField;
+                easyFields[easyKey] = easyField;
                 if (easyField.required)	{
                     if ((fieldVal=="") || (fieldVal == null))	{
                         var inerror = true;
@@ -1154,14 +1208,14 @@ EasyEdits.validate 	= function (easy)
         for (var i=0; i<easy.edits.fields.length; i++) {
             var easyField = easy.edits.fields[i];
             if (easyField.inerror) {
-                $E(easyField.id).style.backgroundColor = (easy.edits.fields[i].required) ? easy.requiredColor : defaultBackgroundColor;
+                $E(easyKey).style.backgroundColor = (easy.edits.fields[i].required) ? easy.requiredColor : defaultBackgroundColor;
                 easyField.inerror = false;
                 if (!resetFocus) {
-                    $E(easyField.id).focus();
+                    $E(easyKey).focus();
                     resetFocus = true;
                 }
                 if (easyField.type == "combo") {
-                    $E(easyField.id+"_combo").style.backgroundColor = defaultBackgroundColor;
+                    $E(easyKey+"_combo").style.backgroundColor = defaultBackgroundColor;
                 }
             }
         }
@@ -1214,6 +1268,7 @@ EasyEdits.setFormNode	= function (easy,node) {
 }
 /* ------------------------------------------------ */
 EasyEdits.populateSelectBox = function (selectBox, contents, map, leaveCombo) {
+    console.log(selectBox);
     map       = (map) ? map : false;
     leaveCombo = (leaveCombo) ? true : true; //Override for now... fixes a problem with some highly dynamic forms
     contents  = (typeof(contents)==='string') ? JSON.parse(contents) : contents;
@@ -1420,6 +1475,7 @@ EasyEdits.copies	= function (orig,pad,len) {
 /* ------------------------------------------------ */
 EasyEdits.monthsList	= function (evt) {
     var month = "January,February,March,April,May,June,July,August,September,October,November,December".split(",");
+    //FIX THIS!
     var sb    = $E(this.id);
     for (var m = 0; m < month.length; m++)	{
         var mm = +m+1; //this makes it sequenced from 01, but might want it to be 00 indexed...
@@ -1429,6 +1485,7 @@ EasyEdits.monthsList	= function (evt) {
 }
 /* ------------------------------------------------ */
 EasyEdits.stateList	= function (evt) {
+    //FIX THIS!
     var sr = $E(this.id);
     var stateCodes	= new Array("AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","PR","VI","MP","GU","AS","PW");
     sr.length = stateCodes.length+1;

@@ -92,7 +92,7 @@
         </webhooks>        
         <web>
             <edits>
-
+                <test>Humble/web/edits/testedits.json</test>
             </edits>
             <common>
                 <js>
@@ -113,6 +113,16 @@
                     <source>Humble/web/css/Normalize.css</source>
                 </css>
             </common>
+            <ajax>
+                <js>
+                    <source weight="12">Humble/web/js/EasyAjax.js</source>
+                </js>
+            </ajax>            
+            <edittest>
+                <js>
+                    <source weight="12">Humble/web/js/EasyEdit.js</source>
+                </js>
+            </edittest>
             <widgets>
                 <js>
                     <source weight="28">Humble/web/js/jquery-ui.1.12.min.js</source>

@@ -31,6 +31,11 @@
             <redirect>0</redirect>
         </strategy>      
     </msa>
+    <paradigm>
+        <iteration>
+            <protection comment="Max iterations before loop is killed. This is to protect against infinite loops.  Zero (0) means no protection">75000</protection>
+        </iteration>
+    </paradigm>
     <admin>
         <apps>
             <File_Explorer>1</File_Explorer>

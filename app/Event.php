@@ -45,9 +45,9 @@ class Event {
             }
             $cnf[$var] = $val;
         }
-        $EVENT->_target($mongoId);
-        $EVENT->_configurations($cnf);
-        $EVENT->_stages($mongoId);
+        $EVENT->target($mongoId);
+        $EVENT->configurations($cnf);
+        $EVENT->stages($mongoId);
         return $EVENT;
     }
 

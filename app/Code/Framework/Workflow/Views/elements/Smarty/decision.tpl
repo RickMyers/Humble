@@ -20,11 +20,11 @@
             <div id="decision-internal-{$id}">
                 <div style='margin-left: auto; margin-right: auto; width: 545px'>
                     <form name='decision-form' id='humble-paradigm-config-internal-decision-form-{$id}' onsubmit='return false'>
-                    <input type="hidden" name="window_id" id="window-id-internal-{$manager->getId()}" value="{$window_id}" />
-                    <input type="hidden" name="id" id="humble-paradigm-config-internal-decision-form-id-{$id}" value="{$manager->getId()}" />      
+                    <input type="hidden" name="window_id" value="{$window_id}" />
+                    <input type="hidden" name="id"  value="{$manager->getId()}" />      
                     <input type="hidden" name="decision" value="Y" />   
                     <img src='/images/paradigm/clipart/decision.png' style='float: right' />
-                    <select name='namespace' id='humble-paradigm-config-internal-decision-form-namespace-{$id}'>
+                    <select name='namespace'>
                         <option value=''>Please choose from this list</option>
                         {foreach from=$modules item="module"}
                             <option value='{$module.namespace}'>{$module.namespace|ucfirst}</option>
@@ -32,23 +32,21 @@
                     </select>
                     <div class='form-field-description'>Available Object Collections</div>
                     <br />
-                    <select name='component' id='humble-paradigm-config-internal-decision-form-component-{$id}'>
+                    <select name='component'>
                         <option value=''>Please choose from this list</option>
                     </select>
                     <div class='form-field-description'>Available Decision Objects</div><br />
-                    <select name='method' id='humble-paradigm-config-internal-decision-form-method-{$id}'>
+                    <select name='method'>
                         <option value=''>Please choose from this list</option>
                     </select>
                     <div class='form-field-description'>Available Decision Methods</div>
                     <br />
-                    <input type='button' name='decision-form-save' id='humble-paradigm-config-internal-decision-form-save-{$id}' />
+                    <input type='button' name='decision-form-save' />
                     <div style='margin-top: 25px; width: 450px; height: 60px; overflow: auto; border: 1px solid #aaf; padding: 5px; background-color: #F0F0D0; border-radius: 5px' id='config-component-comment-{$manager->getId()}'></div>
                     
                     </form>
                     <script>
-                        var ee = new EasyEdits(null,'decision_internal_{$manager->getId()}');
-                        ee.fetch('/edits/workflow/internaldecision');
-                        ee.process(ee.getJSON().replace(/&id&/g,'{$manager->getId()}').replace(/&window_id&/g,'{$manager->getWindowId()}'));
+                        (new EasyEdits('/edits/workflow/internaldecision','decision_internal_{$manager->getId()}',{ '&id&': '{$manager->getId()}','&window_id&': '{$manager->getWindowId()}' }));
                         Form.intercept($('#humble-paradigm-config-internal-decision-form-{$manager->getId()}').get(),'{$manager->getId()}',false,'{$manager->getWindowId()}');                        
                     </script>
                 </div>
@@ -82,10 +80,10 @@
                     <input type='button' name='decision-form-save' id='humble-paradigm-config-external-decision-form-save-{$id}' />
                     </form>
                     <script>
-                        var ee = new EasyEdits(null,'decision_external_{$manager->getId()}');
+               /*         var ee = new EasyEdits(null,'decision_external_{$manager->getId()}');
                         ee.fetch('/edits/workflow/externaldecision');
                         ee.process(ee.getJSON().replace(/&id&/g,'{$manager->getId()}').replace(/&window_id&/g,'{$manager->getWindowId()}'));
-                        Form.intercept($('#humble-paradigm-config-external-decision-form-{$manager->getId()}').get(),'{$manager->getId()}',false,'{$manager->getWindowId()}');                          
+                        Form.intercept($('#humble-paradigm-config-external-decision-form-{$manager->getId()}').get(),'{$manager->getId()}',false,'{$manager->getWindowId()}');*/
                     </script>
                 </div>
                 
