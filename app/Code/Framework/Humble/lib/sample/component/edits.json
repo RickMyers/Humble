@@ -1,0 +1,56 @@
+{
+    "form":
+    {
+        "id": 		"&&form_name&&",
+        "drawme":	false,
+        "action":	"",
+        "onload":       null,
+        "method":	"post",
+        "style":	"",
+        "onenterkey":	"send",
+        "defaults": {
+            "fields": {
+                "required": {
+                    "background-color": "",
+                    "classname":        "",
+                    "style":            ""
+                },
+                "optional": {
+                    "background-color": "",
+                    "classname":        "",
+                    "style":            ""
+                }
+            }
+        }
+    },
+    "fields":
+    [
+        {
+            "active":         true,
+            "name":           "field_1",
+            "longname":       "Long name of field",
+            "title":          "A description of the field",
+            "type":           "select|text|hidden|checkbox|radio|combo",
+            "required":       true,
+            "force":          true,
+            "classname":      "",
+            "style":          ""
+        },
+        {
+            "active":         false,
+            "name":           "form_submit_button",
+            "longname":       "Form Submit",
+            "title":          "Click to submit form data",
+            "type":           "button",
+            "required":       false,
+            "force":          false,
+            "onclick":        function () {
+                if (Edits['&&alias&&'].validate()) {
+                    //do stuff here
+                }
+            },
+            "classname":      "",
+            "style":          ""
+        }
+    ]
+}

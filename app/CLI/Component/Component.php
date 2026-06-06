@@ -342,4 +342,40 @@ class Component extends CLI
             return self::syntaxCheck();
         }
     }
+    
+    /**
+     * Creates the basic form edits JSON template
+     */
+    public static function createEdits() {
+        $tmpl       = 'Code/Framework/Humble/lib/sample/component/edits.json';
+        if (file_exists($tmpl)) {
+            $args       = self::arguments();
+            $errors     = [];
+            $form_name  = $args['fm'];
+            $namespace  = $args['ns'];
+            $alias      = $args['al'];
+            $output     = str_replace(['.json','.JSON'],['',''],$args['fi']);
+            if ($module = \Humble::module($namespace)) {
+                $cfg    = 'Code/'.$module['package'].'/'.$module['module'].'/etc/config.xml';
+                $source = str_replace(['&&form_name&&','&&alias&&'],[$form_name,$alias],file_get_contents($tmpl));
+                $config = simplexml_load_file($cfg);
+                $dest   = $module['module'].'/web/edits/'.$output.'.json';
+                $out    = 'Code/'.$module['package'].'/'.$dest;
+                if (file_exists($out)) {
+                    die('Aborting, the edits file ['.$out.'] already exists!'."\n");
+                }
+                file_put_contents($out,$source);
+                print('Edit   file created at '.$out."\n");
+                $config->$namespace->web->edits->addChild($alias,$dest);
+                $dom = new DOMDocument("1.0");
+                $dom->preserveWhiteSpace = false;
+                $dom->formatOutput = true;
+                $dom->loadXML($config->asXML());
+                file_put_contents($cfg,$dom->saveXML());
+                print('Config file updated at '.$cfg."\n");
+            }
+        } else {
+            die('Source template ['.$tmpl.'] Not found, aborting'."\n");
+        }
+    }
 }

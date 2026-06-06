@@ -62,3 +62,17 @@ sc|syntax  :
             cn|controller: Controller name
         optional:            
             out: out=JSON will return the errors as a JSON string
+ed|edit|edits  : 
+    description: Create a form edits file
+    usage:
+        linux:   sudo sh ./humble.sh --ed ns=namespace fi=output_file_name fm=form_name al=edit_alias
+        windows: humble --ed ns=namespace fi=output_file_name fm=form_name al=edit_alias
+    function : createEdits
+    parameters:
+        required:
+            ns|namespace: Namespace of module which owns the edits
+            fi|file: Output JSON file name
+            fm|form: Form name that the edits applies to
+            al|alias: Alias of the output JSON file
+        optional:            
+            
