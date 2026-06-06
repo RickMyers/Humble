@@ -44,7 +44,7 @@
             "type":           "button",
             "required":       false,
             "force":          false,
-            "onclick":        function () {
+            "onclick":        () => {
                 if (Edits['&&alias&&'].validate()) {
                     //do stuff here
                 }
