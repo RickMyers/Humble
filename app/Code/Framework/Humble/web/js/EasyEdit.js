@@ -14,8 +14,8 @@ function EasyEdits(source, ref, overrides)
 {
     var me		= this;
     this.hasContent	= false;
-//	this.requiredColor	= "#ee3333";
-    this.requiredColor	= "#ffebc9";
+//    this.requiredColor	= "#ee3333";
+//    this.requiredColor	= "#ffebc9";
     this.edits		= [];
     this.values         = [];
     this.editsJSON	= "";
@@ -36,22 +36,35 @@ function EasyEdits(source, ref, overrides)
     this.sendHandler	= null;
     this.sent		= false;
     this.overrides      = (overrides) ? overrides : [];
+    this.formXref      = {};
+    this.defaults = {
+        "required": {
+            "background-color": "#ffebc9",
+            "classes":          false,
+            "style":            false
+        },
+        "optional": {
+            "background-color": "lightcyan",
+            "classes":          false,
+            "style":            false
+        }
+    };
     if (document.addEventListener) {
-        document.addEventListener("keydown", EasyEdits.storeKey, false);
+        document.addEventListener("keypress", EasyEdits.storeKey, false);
     } else {
-        document.onkeydown	= EasyEdits.storeKey;
+        document.onkeypress	= EasyEdits.storeKey;
     }
     this.process	= function (json)    {
-        EasyEdits.process(me,json);
-        EasyEdits.execute(me);
+        this.process(me,json);
+        EasyEdits.execute.call(this,me);
     }
     this.reload	=	function (source)    {
         if (source) {
-            EasyEdits.load(source,me);
+            EasyEdits.load.call(this,source,me);
         }
     }
     this.execute	= function ()  {
-        EasyEdits.execute(me);
+        EasyEdits.execute.call(this,me);
     }
     this.clear	= function ()    {
         if (this.formNode) {
@@ -110,7 +123,7 @@ function EasyEdits(source, ref, overrides)
         }
     }
     if (source) {
-        EasyEdits.load(source,me);
+        EasyEdits.load(source,this);
     }
     if (ref) {
         Edits[ref] = me;
@@ -130,7 +143,7 @@ EasyEdits.process = function (easy,json) {
 EasyEdits.load = (JSONsource,easy) => {
     if (JSONsource)	{
         easy.source	= JSONsource;
-        (new EasyAjax(JSONsource)).then(function(response)	{
+        (new EasyAjax(JSONsource)).then((response) => {
             if (response)	{
                 for (var i in easy.overrides) {
                     let f = new RegExp(i,'gi');
@@ -161,6 +174,14 @@ EasyEdits.getCSSValue = function (field,name) {
 /* ------------------------------------------------ */
 EasyEdits.execute	= (easy) => {
     //draw if necessary
+    if (easy.edits.form.defaults) {
+        easy.defaults.required["background-color"] = easy.edits.form.defaults.required['background-color'] || easy.defaults.required['background-color'];
+        easy.defaults.required.classname           = easy.edits.form.defaults.required.classname           || easy.defaults.required.classname;
+        easy.defaults.required.style               = easy.edits.form.defaults.required.style               || easy.defaults.required.style;
+        easy.defaults.optional["background-color"] = easy.edits.form.defaults.optional['background-color'] || easy.defaults.optional['background-color'];
+        easy.defaults.optional.classname           = easy.edits.form.defaults.optional.classname           || easy.defaults.optional.classname;
+        easy.defaults.optional.style               = easy.edits.form.defaults.optional.style               || easy.defaults.optional.style;
+    }
     if ((easy.edits.form.drawme)&&(!$E(easy.edits.form.id)))	{
         var formHTML = '<form id="'+ easy.edits.form.id +'" name="'+ easy.edits.form.id +'" method="'+ easy.edits.form.method +'" action="'+ easy.edits.form.action +'" style="'+ easy.edits.form.style +'">';
         for (var i=0; i<easy.edits.fields.length; i++) {
@@ -232,12 +253,10 @@ EasyEdits.execute	= (easy) => {
         form.setAttribute("sumfield",easy.edits.form.sumfield);
     }
     //form field level processing
-    var defaultBackgroundColor = (easy.edits.form.fieldcolor) ? easy.edits.form.fieldcolor : "lightcyan";
     var formField	= null;
-    var formXref        = {};
     var easyKey         = "";    
     for (var i=0; i<form.elements.length; i++) {
-        formXref[((form.elements[i].id) ? form.elements[i].id : form.elements[i].name)] = form.elements[i];
+        easy.formXref[((form.elements[i].id) ? form.elements[i].id : form.elements[i].name)] = form.elements[i];
     }
     for (var i=0; i<easy.edits.fields.length; i++) {
         var whereAt	= "";
@@ -251,7 +270,7 @@ EasyEdits.execute	= (easy) => {
                 console.log(easy.edits.fields[i]); 
                 continue;
             }
-            formField                   = formXref[easyKey];
+            formField                   = easy.formXref[easyKey];
             if (!formField) {
                 alert('Edit field not found in form, see console')
                 console.log('Missing formfield');
@@ -269,13 +288,13 @@ EasyEdits.execute	= (easy) => {
                 easyField.ref		= formField;
                 easyField.inerror	= false;
                 if ((!formField.disabled) && (easyField.type!="button") ) {
-                    formField.style.backgroundColor = defaultBackgroundColor;
+                    formField.style.backgroundColor = easy.defaults.optional['background-color'];
                 }
                 if (easyField.required)	{
                     whereAt = "required";
                     //#a10f0a
                     //formField.style.border	= "1px solid "+easy.requiredColor;
-                    formField.style.backgroundColor	= easy.requiredColor;
+                    formField.style.backgroundColor	= easy.defaults.required['background-color'];
                     formField.setAttribute("required","Y");
                 }
                 /* -- mask Overriding Style			-- */
@@ -301,6 +320,7 @@ EasyEdits.execute	= (easy) => {
                     formField.className	= easyField.classname ? easyField.classname : easy.edits.form.classname;
                 }
                 if (easyField.type === "combo") {
+                    whereAt = 'combo';
                     let currentField  = formField;                              //Scoping hack
                     isCombo           = true;
                     formField.onclick = EasyEdits.resetLastKey;
@@ -335,24 +355,8 @@ EasyEdits.execute	= (easy) => {
                             combo.setAttribute('comboValue',$(combo).val());
                         }
                     })(formField,formField.combo))
-/*                    formField.combo.onchange = (evt,calledFromComboPair) => {	
-                        console.log('combo change handler');
-                        console.log(currentField);
-                        evt = (evt) ? evt : ((window.event) ? event : null);
-                        if (!calledFromComboPair) {
-                            let cp = evt.target.getAttribute("comboPair");
-                            if (!cp) {
-                                console.log(evt.target.id+'_combo');
-                                cp = $E(evt.target.id+'_combo');
-                            }
-                            //$E(cp).onchange(evt,true);
-                            $E(cp).setAttribute('comboValue',$(evt.target).val());
-                        }
-                        evt.target.setAttribute("comboValue",$(evt.target).val());
-                    }*/
                 }
                 formField.isCombo  = isCombo;
-                let tt = formField;
                 $(formField).on('change',((field,combo,easy) => {
                     return () => {
                         let easyKey = field.easyKey;
@@ -361,7 +365,7 @@ EasyEdits.execute	= (easy) => {
                             alert('is combo! '+field.easyKey);
                             if (!calledFromComboPair){
                                 //FIX THIS!
-                                if (target.selectedIndex >= 0) {
+                                if (formField.selectedIndex >= 0) {
                                     value = $E(easyKey)[$E(easyKey).selectedIndex].text;
                                     combo.setAttribute("comboValue", $E(easyKey)[$E(easyKey).selectedIndex].value);
                                     combo.onchange(evt,calledFromComboPair);
@@ -374,12 +378,12 @@ EasyEdits.execute	= (easy) => {
                             }
                             
                         }
-                        for (var jj = 0; jj<easy.changeHandlers[target.easyKey].length; jj++) {
-                            easy.changeHandlers[target.easyKey][jj](evt);
+                        for (var jj = 0; jj<easy.changeHandlers[formField.easyKey].length; jj++) {
+                            easy.changeHandlers[formField.easyKey][jj](evt);
                         }
                         
                     }
-                }))(formField,formField.combo,easy);
+                })(formField,formField.combo,easy));
 /*                formField.onchange = (evt,calledFromComboPair) => {
                     evt = (evt) ? evt : ((window.event) ? event : null);
                     var target = evt.target;
@@ -473,10 +477,10 @@ EasyEdits.execute	= (easy) => {
                     }
                 }
                 if (easyField.activate) {
-                    $(easyField.ref).on("keydown",easyField.activate);
+                    $(easyField.ref).on("keyup",easyField.activate);
                 }
                 if (easyField.mask)	{
-                    $(easyField.ref).on("keydown", function (evt) {
+                    $(easyField.ref).on("keyup", function (evt) {
                         evt = (evt) ? evt : ((window.event) ? event : null);
                         if ((evt==null) ||  ((evt.keyCode != 39) && (evt.keyCode != 37) && (evt.keyCode != 46) && (evt.keyCode != 8))) {
                             var template    = this.getAttribute("template").split('');
@@ -703,7 +707,7 @@ EasyEdits.execute	= (easy) => {
                         this.style.backgroundColor = "#ffeeee";
                         this.value = this.value.substr(0,maxchars);
                     } else {
-                        this.style.backgroundColor = defaultBackgroundColor;
+                        this.style.backgroundColor = easy.defaults.optional['background-color'];
                     }
                     this.title = (maxchars - this.value.length) + " letters left"
                     if (maxlines) {
@@ -759,12 +763,12 @@ EasyEdits.execute	= (easy) => {
                 }
             }
         } catch (ex) {
-            console.log(easyKey+": "+whereAt+":  "+ ex);
+            console.log(easyKey+": "+whereAt+":  "+ ex+ " ["+ex.lineNumber+"]");
 	}
     } else {
         //Here as well, switch to using form and name
         //var field = $E(easy.edits.fields[i].id);
-        var field   = formXref[((easy.edits.fields[i].id) ? easy.edits.fields[i].id : easy.edits.fields[i].name)];
+        var field   = easy.formXref[((easy.edits.fields[i].id) ? easy.edits.fields[i].id : easy.edits.fields[i].name)];
         if (!easy.edits.fields[i].active) {
             if (field) {
                 field.parentNode.removeChild(field);
@@ -883,7 +887,7 @@ EasyEdits.manageDependencies = function (easy,disable) {
             if ($E(easy.edits.fields[i].id).checked) {
                 for (var k=0; k<dependencies.length; k++) {
                     $E(dependencies[k]).disabled = disable;
-                    $E(dependencies[k]).style.backgroundColor = (disable) ? "ghostwhite" : defaultBackgroundColor;
+                    $E(dependencies[k]).style.backgroundColor = (disable) ? "ghostwhite" : easy.defaults.optional['background-color'];
                     if ($E(dependencies[k]).getAttribute("combo")) {
                         $E($E(dependencies[k]).id+"_combo").disabled = disable;
                         $E($E(dependencies[k]).id+"_combo").style.backgroundColor = $E(dependencies[k]).style.backgroundColor;
@@ -911,11 +915,11 @@ EasyEdits.enable	= function (easy) {
         } else {
             formField.disabled = false;
         }
-        formField.style.backgroundColor = defaultBackgroundColor;
+        formField.style.backgroundColor = easy.defaults.optional['background-color'];
         if (easy.edits.fields[i].type.toLowerCase() == "combo")	{
             var comboField	= $E(easy.edits.fields[i].id+"_combo");
             comboField.readOnly = false;
-            comboField.style.backgroundColor = defaultBackgroundColor;
+            comboField.style.backgroundColor = easy.defaults.optional['background-color'];
         }
     }
     EasyEdits.manageDependencies(easy,false);
@@ -1075,7 +1079,7 @@ EasyEdits.validate 	= function (easy)
     for (var i=0; i<easy.edits.fields.length; i++) {
         easyFields[easy.edits.fields[i].id] = easy.edits.fields[i];  //pre-load hash table
     }
-    var defaultBackgroundColor = (easy.edits.form.fieldcolor) ? easy.edits.form.fieldcolor : "lightcyan";
+    var defaultBackgroundColor = easy.defaults.optional['background-color'];
     for (var i=0; i<easy.edits.fields.length; i++) {
         if (easy.edits.fields[i].active) {
             try {
@@ -1208,7 +1212,7 @@ EasyEdits.validate 	= function (easy)
         for (var i=0; i<easy.edits.fields.length; i++) {
             var easyField = easy.edits.fields[i];
             if (easyField.inerror) {
-                $E(easyKey).style.backgroundColor = (easy.edits.fields[i].required) ? easy.requiredColor : defaultBackgroundColor;
+                $E(easyKey).style.backgroundColor = (easy.edits.fields[i].required) ? easy.defaults.required['background-color'] : easy.defaults.optional['background-color'];
                 easyField.inerror = false;
                 if (!resetFocus) {
                     $E(easyKey).focus();

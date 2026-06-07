@@ -37,6 +37,7 @@ app/autoload.php
 app/launch.php
 app/AuthorizationEngine.php
 app/Cadence.php
+app/Curator.php
 app/CLI.php
 app/Environment.php
 app/Event.php

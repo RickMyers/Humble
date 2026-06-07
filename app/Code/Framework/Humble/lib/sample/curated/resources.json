@@ -1,0 +1,11 @@
+{
+    "tailwind": {
+        "package.json":     "",
+        "tailwind.conf.js": ""
+    },
+    "sockets": {
+        "main.js":          "Hub/main.js",
+        ".gitignore":       "Hub/.gitignore",
+        "package.json":     "Hub/package.json"
+    }
+}

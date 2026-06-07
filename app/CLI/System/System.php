@@ -57,7 +57,13 @@ class System extends CLI
             }
         } else {
             print('Attempting to start Watch program'."\n");
+            @unlink('PIDS/cadence.pid');
             exec('nohup php Cadence.php > /dev/null 2>&1 &',$results);
+            if ($pid = \Environment::isRunning('php','Cadence.php')) {
+                print("\tWatch Program has started\n");
+            } else {
+                print("\tFailed to start Watch program\n");
+            }
          }
         return true;
     }
