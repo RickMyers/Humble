@@ -253,15 +253,16 @@
         case "socket":
         case "sockets":
         case "socketserver":
-            $zip        = new ZipArchive();
-            if ($zip->open('tempsocket.zip',ZipArchive::CREATE)) {
-                $zip->addFromString('main.js',file_get_contents('Hub/main.js'));
-                $zip->addFromString('.gitignore',file_get_contents('Hub/.gitignore'));
-                $zip->addFromString('package.json',file_get_contents('Hub/package.json'));
-                $zip->close();
-                print(file_get_contents('tempsocket.zip'));
-                @unlink('tempsocket.zip');
+            chdir('app');
+            //Move to curator
+            require 'Curator.php';
+            if ($result = \Curator::prepare('hub')) {
+                print($result);
+            } else {
+                header("Content-Type: application/json");
+                print('{ "error": "An error was encountered while preparing the Hub download" }');
             }
+            chdir('..');
             break;
         case "config":
             print(file_get_contents('app/install/config.xml'));

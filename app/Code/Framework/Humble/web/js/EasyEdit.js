@@ -36,7 +36,8 @@ function EasyEdits(source, ref, overrides)
     this.sendHandler	= null;
     this.sent		= false;
     this.overrides      = (overrides) ? overrides : [];
-    this.formXref      = {};
+    this.formXref       = {};
+    this.form           = null;
     this.defaults = {
         "required": {
             "background-color": "#ffebc9",
@@ -54,51 +55,344 @@ function EasyEdits(source, ref, overrides)
     } else {
         document.onkeypress	= EasyEdits.storeKey;
     }
-    this.process	= function (json)    {
-        this.process(me,json);
-        EasyEdits.execute.call(this,me);
-    }
+    /* ------------------------------------------------------------------------- */
+    this.process = function (easy,json) {
+        if (json)	{
+            this.editsJSON  = json;
+            this.edits      = eval("("+ easy.editsJSON +")");
+        }
+    }    
+    /* ------------------------------------------------------------------------- */    
     this.reload	=	function (source)    {
         if (source) {
-            EasyEdits.load.call(this,source,me);
+            this.load(source);
         }
     }
-    this.execute	= function ()  {
-        EasyEdits.execute.call(this,me);
-    }
-    this.clear	= function ()    {
+    /* ------------------------------------------------------------------------- */    
+    this.load = (JSONsource) => {
+        if (JSONsource)	{
+            let me          = this;
+            this.source	= JSONsource;
+            (new EasyAjax(JSONsource)).then((response) => {
+                if (response)	{
+                    for (var i in me.overrides) {
+                        let f = new RegExp(i,'gi');
+                        response = response.replace(f,me.overrides[i]);
+                    }                
+                    this.editsJSON	= response;
+                    try {
+                        me.edits	= eval("("+ me.editsJSON +")");
+                    } catch (ex) {
+                        console.error(ex);
+                        console.error(JSONsource);
+                        console.error(me.editsJSON);
+                    }
+                    me.execute();
+                }
+            }).get();
+        }
+    }    
+    /* ------------------------------------------------------------------------- */        
+    this.clear	= () => {
         if (this.formNode) {
             this.formNode.innerHTML = "";
         }
         this.currentZoom = 100;
     }
-    this.validate	= function ()    {
-        return EasyEdits.validate(me);
-    }
+    /* ------------------------------------------------------------------------- */    
+    this.validate 	= () =>  {
+        this.hasContent = false;
+        var easyFields  = {};
+        var formField,easyField,fieldVal   = null;
+        var defaultBackgroundColor = this.defaults.optional['background-color'];
+        for (var i=0; i<this.edits.fields.length; i++) {
+            easyFields[this.edits.fields[i].easyKey] = this.edits.fields[i];    //Reverse caching the edit fields by name instead of index for later lookup
+        }
+        for (var i=0; i<this.edits.fields.length; i++) {
+            formField = this.formXref[this.edits.fields[i].easyKey];
+            easyField   = this.edits.fields[i];            
+            if (this.edits.fields[i].active) {
+                try {
+                    if (formField.disabled) {
+                        continue;
+                    }
+                } catch (ex) {
+                    alert('disabled field');
+                }
+                if (formField)	{
+                    fieldVal = $(formField).val();
+                    if (fieldVal) {
+                        this.hasContent = true;
+                    }
+                    var action 		= easyField.force;
+                    this.flagged	= false;
+                    if (easyField.required)	{
+                        if ((fieldVal=="") || (fieldVal == null))	{
+                            var inerror = true;
+                            if (easyField.eitheror) {
+                                //FIX THESE!
+                                var fields = easyField.eitheror.split(",");
+                                inerror = (!(EasyEdits.getValue(form,this.formXref[fields[0]]) || EasyEdits.getValue(form,this.formXref[fields[1]])));
+                            }
+                            if (inerror) {
+                                if (easyField.force) {
+                                    EasyEdits.registerError(this,formField,easyField,(easyField.message ? easyField.message : easyField.longname+" is Required"),action);
+                                } else {
+                                    EasyEdits.registerError(this,formField,easyField,(easyField.message ? easyField.message : easyField.longname+" is Recommended"),action);
+                                }
+                            }
+                        }
+                    }
+                    if (easyField.nozero) {
+                        if (fieldVal === "0") {
+                            EasyEdits.registerError(this,formField,easyField,easyField.longname+" is not allowed to be zero (0)",action);
+                        }
+                    }
+                    if (easyField.verify) {
+                        if (fieldVal !== $(this.formXref[verify]).val()) {
+                            EasyEdits.registerError(this,formField,easyField,easyField.longname+" did not match",action);
+                        }
+                    }
+                    if ((fieldVal === "") && (easyField.defaultvalue) && (!this.flagged)) {
+                        formField.value = easyField.defaultvalue;
+                    }
+                    if ((easyField.range) && (!this.flagged)) {
+                        var range	= easyField.range.split("..");
+                        if ((+parseFloat(fieldVal) < +parseFloat(range[0]) || (+parseFloat(fieldVal) > +parseFloat(range[1])))) {
+                            EasyEdits.registerError(this,formField,easyField,easyField.longname+" not within allowable Range ("+ range[0] +","+ range[1] +")",action);
+                        }
+                    }
+                    if ((easyField.values) && (!this.flagged)) {
+                        var values	= (easyField.values.split(","));
+                        if (values.indexOf(fieldVal) === -1) {
+                            EasyEdits.registerError(this,formField,easyField,easyField.longname+" Contains an Invalid Value, valid values are "+ easyField.values,action);
+                        }
+                    }
+                    if (easyField.minlength) {
+                        if ((fieldVal.length < easyField.minlength) && (fieldVal.length !== 0))	{
+                            EasyEdits.registerError(this,formField,easyField,easyField.longname +" is only "+ fieldVal.length +" characters long.  A minimum of "+ easyField.minlength +" characters are Required",action);
+                        }
+                    }
+                    if (easyField.maxlength) {
+                        if (fieldVal.length > easyField.maxlength) {
+                            formField.value = fieldVal.substr(0,easyField.maxlength);
+                        }
+                    }
+                    if (easyField.eitheror)	{
+                        var fields = easyField.eitheror.split(",");
+                        if (EasyEdits.getValue(form,this.formXref[fields[0]]) && EasyEdits.getValue(form,this.formXref[fields[1]])) {
+                            EasyEdits.registerError(this,formField,easyField,easyFields[fields[0]].longname+" and "+easyFields[fields[1]].longname +" are mutually exclusive, both can not be chosen",action);
+                        }
+                    }
+                    if (easyField.anyof) {
+                        var fields = easyField.anyof.split(",");
+                    }
+                    if (easyField.atleastone) {
+                        var fields = []; var checked = false;
+                        if (typeof(easyField.atleastone)=="object") {
+                            fields = easyField.atleastone;
+                        } else {
+                            fields = easyField.atleastone.split(',');
+                        }
+                        for (var x in fields) {
+                           checked = checked || this.formXref[fields[x]].checked;
+                        }
+                        if (!checked) {
+                            var msg = "You must select one of the following: ";
+                            for (var x in fields) {
+                                msg += easyFields[fields[x]].longname+', '
+                            }
+                            EasyEdits.registerError(this,formField,easyField,msg.substr(0,msg.length-2),action);
+                        }
+                    }
+                    if ((easyField.format) && (!this.flagged)) {
+                        if (formField.value) {
+                            var regEx = new RegExp(easyField.format)
+                            if (!regEx.test(fieldVal)) {
+                                EasyEdits.registerError(this,formField,easyField,easyField.longname +" Format Error. "+ easyField.formaterr,action);
+                            }
+                        }
+                    }
+                    if ((easyField.swap) && (!this.flagged)) {
+                    }
+                    if ((typeof(easyField.onsubmit)=="function")) {
+                    }
+                } else {
+                    alert("Form is missing a field: "+easyField.field);
+                }
+            }
+        }
+        var doitAnyway	= false;
+        if (this.errors !== 0) {
+            if (this.criticals > 0)	{
+                alert("The following Critical Errors have occurred:\n\n"+this.message);
+            } else if (this.warnings > 0)	{
+                doitAnyway	= confirm("Warning!\n\n" + this.message);
+            } else if (this.failures > 0) {
+                alert("Warning, some non-critical warning messages were encountered:\n\n"+this.message);
+            }
+            var resetFocus = false;
+            for (var i=0; i<this.edits.fields.length; i++) {
+                var easyField = this.edits.fields[i];
+                if (easyField.inerror) {
+                    this.formXref[easyField.easyKey].style.backgroundColor = (this.edits.fields[i].required) ? this.defaults.required['background-color'] : this.defaults.optional['background-color'];
+                    easyField.inerror = false;
+                    if (!resetFocus) {
+                        this.formXref[easyField.easyKey].focus();
+                        resetFocus = true;
+                    }
+                    if (easyField.type == "combo") {
+                        this.formXref[easyField.easyKey+'_combo'].style.backgroundColor = defaultBackgroundColor;
+                    }
+                }
+            }
+        }
+        var doit	= true;
+        if (this.criticals != 0) {
+            doit = false;
+        } else {
+            if (this.warnings > 0) {
+                doit	= doitAnyway;
+            }
+        }
+        this.reset();
+        this.resetCombos();
+        return doit;
+    }    
+    /* ------------------------------------------------------------------------- */        
     this.reset		= function ()    {
-        EasyEdits.resetErrors(me);
+        this.resetErrors();
     }
+    /* ------------------------------------------------------------------------- */    
+    this.packageEdits = (ao) => {
+        var field   = null;
+        for (var i=0; i<this.edits.fields.length; i++) {
+            if (this.edits.fields[i].active) {
+                field = this.formXref[this.edits.fields[i].easyKey];
+                ao.add(field.name,EasyEdits.getValue(this.form,field,easy.edits.fields[i]));
+            }
+        }
+    }    
+    /* ------------------------------------------------------------------------- */    
+    this.resetErrors = () => {
+        this.errors		= 0;
+        this.criticals		= 0;
+        this.warnings		= 0;
+        this.failures		= 0;
+        this.message		= "";
+        this.messages		= [];
+        this.flagged		= false;
+    }    
+    /* ------------------------------------------------------------------------- */    
+    this.resetCombos = function () {
+        if (this.edits && this.edits.fields) {
+            for (var i=0; i<this.edits.fields.length; i++)	{
+                if (this.edits.fields[i].type === "combo") {
+                    EasyEdits.setCombo(this.formXref[this.edits.fields[i].easyKey],this.formXref[this.edits.fields[i].easyKey+"_combo"]);
+                }
+            }
+        }
+    };    
+    /* ------------------------------------------------------------------------- */        
     this.setFormNode	= function (node)    {
         this.formNode = node;
     }
+    /* ------------------------------------------------------------------------- */        
     this.enable	= function ()    {
-        EasyEdits.enable(me);
+        for (var i=0; i<this.edits.fields.length; i++)	{
+            var formField = this.formXref[this.edits.fields[i].easyKey];
+            //var formField = $E(this.edits.fields[i].id); //FIX THIS!!!
+            if ((this.edits.fields[i].type == "text") || (this.edits.fields[i].type == "textarea")) {
+                formField.readOnly = false;
+            } else {
+                formField.disabled = false;
+            }
+            formField.style.backgroundColor = this.defaults.optional['background-color'];
+            if (easy.edits.fields[i].type.toLowerCase() == "combo")	{
+                var comboField	= $E(this.edits.fields[i].id+"_combo");
+                comboField.readOnly = false;
+                comboField.style.backgroundColor = this.defaults.optional['background-color'];
+            }
+        }
+        this.manageDependencies(false);
     }
-    this.disable	= function ()    {
-        EasyEdits.disable(me);
+    /* ------------------------------------------------------------------------- */    
+    this.manageDependencies = (disable) => {
+        for (var i=0; i<this.edits.fields.length; i++)	{
+            if (this.edits.fields[i].dependencies) {
+                var dependencies = this.edits.fields[i].dependencies.split(",");
+                if (this.formXref[this.edits.fields[i].easyKey].checked) {
+                    for (var k=0; k<dependencies.length; k++) {
+                        this.formXref[dependencies[k]].disabled = disable;
+                        this.formXref[dependencies[k]].style.backgroundColor = (disable) ? "ghostwhite" : this.defaults.optional['background-color'];
+                        if (this.formXref[dependencies[k]].getAttribute("combo")) {
+                            this.formXref[dependencies[k]+'_combo'].disabled = disable;
+                            this.formXref[dependencies[k]+'_combo'].style.backgroundColor = $E(dependencies[k]).style.backgroundColor;
+                        }
+                    }
+                } else {
+                    for (var k=0; k<dependencies.length; k++) {
+                        this.formXref[dependencies[k]].disabled = true;
+                        this.formXref[dependencies[k]].style.backgroundColor = "ghostwhite";
+                        if (this.formXref[dependencies[k]].getAttribute("combo")) {
+                            this.formXref[dependencies[k]+'_combo'].disabled= true;
+                            this.formXref[dependencies[k]+'_combo'].style.backgroundColor = "ghostwhite";
+                        }
+                    }
+                }
+            }
+        }
+    }    
+    /* ------------------------------------------------------------------------- */        
+    this.disable	= ()  =>  {
+        for (var i=0; i<this.edits.fields.length; i++)	{
+            var formField = this.formXref[this.edits.fields[i].easyKey];
+            if ((this.edits.fields[i].type == "text") || (this.edits.fields[i].type == "textarea")) {
+                formField.readOnly = true;
+            } else {
+                formField.disabled = true;
+            }
+            formField.style.backgroundColor = "ghostwhite";
+            if (this.edits.fields[i].type.toLowerCase() == "combo")	{
+                var comboField	= this.formXref[this.edits.fields[i].easyKey+"_combo"];
+                comboField.readOnly = true;
+                comboField.style.backgroundColor = "ghostwhite";
+            }
+        }
+        this.manageDependencies(true); //true = disable=true?
     }
+    /* ------------------------------------------------------------------------- */        
     this.zoomUp		= function ()    {
         EasyEdits.zoom(me,this.ratio)
     }
+    /* ------------------------------------------------------------------------- */        
     this.zoomDown		= function ()    {
         EasyEdits.zoom(me,this.ratio*-1)
     }
+    /* ------------------------------------------------------------------------- */        
     this.getJSON = function()    {
         return this.editsJSON;
     }
+    /* ------------------------------------------------------------------------- */        
     this.send	= function (targetURL)    {
-        EasyEdits.send(me,targetURL);
+        var target      = (targetURL) ? targetURL : this.edits.form.action;
+        var getMethod   = (this.edits.form.method.toLowerCase() == "get");
+        var response    = '';
+        if (target)	{
+            var ao = new EasyAjax(target);
+            ao.setQueryString(this.packageEdits(ao));
+            if (this.sendHandler) {
+                ao.then = this.sendHandler;
+            } else {
+                ao.then(function (response) {  });
+            }
+            response = (getMethod) ? ao.get() : ao.post();
+        } else	{
+            alert("No target action");
+        }
+        return response;        
     }
+    /* ------------------------------------------------------------------------- */        
     this.setValue = function (variable,value) {
         if (this.executed) {
             $('#variable').val(value);
@@ -106,10 +400,12 @@ function EasyEdits(source, ref, overrides)
             this.values[variable] = value;
         }
     }
+    /* ------------------------------------------------------------------------- */        
     this.submit	= function (targetURL)    {
         me.form.action = (targetURL) ? targetURL : me.form.action;
         $E(me.form.id).submit();
     }
+    /* ------------------------------------------------------------------------- */        
     this.fetch	= function (JSONsource,callback)	{
         var async = callback ? true : false;
         var me    = this;
@@ -122,683 +418,629 @@ function EasyEdits(source, ref, overrides)
             }).post(async);
         }
     }
-    if (source) {
-        EasyEdits.load(source,this);
-    }
-    if (ref) {
-        Edits[ref] = me;
-    }
-    return me;
-}
-/* ------------------------------------------------ */
-EasyEdits.lastKey = null; //last key they pressed.
-/* ------------------------------------------------ */
-EasyEdits.process = function (easy,json) {
-    if (json)	{
-        easy.editsJSON	= json;
-        easy.edits      = eval("("+ easy.editsJSON +")");
-    }
-}
-/* ------------------------------------------------ */
-EasyEdits.load = (JSONsource,easy) => {
-    if (JSONsource)	{
-        easy.source	= JSONsource;
-        (new EasyAjax(JSONsource)).then((response) => {
-            if (response)	{
-                for (var i in easy.overrides) {
-                    let f = new RegExp(i,'gi');
-                    response = response.replace(f,easy.overrides[i]);
-                }                
-                easy.editsJSON	= response;
-                try {
-                    easy.edits	= eval("("+ easy.editsJSON +")");
-                } catch (ex) {
-                    console.error(ex);
-                    console.error(JSONsource);
-                    console.error(easy.editsJSON);
+    /* ------------------------------------------------------------------------- */        
+    this.execute	= () => {
+        let easy = this;
+        //draw if necessary
+        if (this.edits.form.defaults) {
+            this.defaults.required["background-color"] = this.edits.form.defaults.required['background-color'] || this.defaults.required['background-color'];
+            this.defaults.required.classname           = this.edits.form.defaults.required.classname           || this.defaults.required.classname;
+            this.defaults.required.style               = this.edits.form.defaults.required.style               || this.defaults.required.style;
+            this.defaults.optional["background-color"] = this.edits.form.defaults.optional['background-color'] || this.defaults.optional['background-color'];
+            this.defaults.optional.classname           = this.edits.form.defaults.optional.classname           || this.defaults.optional.classname;
+            this.defaults.optional.style               = this.edits.form.defaults.optional.style               || this.defaults.optional.style;
+        }
+        if ((this.edits.form.drawme) && (!$E(this.edits.form.id)))	{
+            var formHTML = '<form id="'+ this.edits.form.id +'" name="'+ this.edits.form.id +'" method="'+ this.edits.form.method +'" action="'+ this.edits.form.action +'" style="'+ this.edits.form.style +'">';
+            for (var i=0; i<this.edits.fields.length; i++) {
+                formHTML += EasyEdits.generateFormElementHTML(this.edits.fields[i]);
+            }
+            formHTML += '</form>';
+            if (this.formNode) {
+                $E(this.formNode).innerHTML = formHTML;
+            } else {
+                document.body.innerHTML += formHTML;
+            }
+        }
+        if (this.edits.form.onenter) {
+            switch (this.edits.form.onenter.toLowerCase()) {
+                case 'send' :
+                    break;
+                case 'submit' :
+                    break;
+                default:
+                    break;
+            }
+        }
+        //setup widgets (if any)
+        if (this.edits.form.widgets){
+            for (var widget in this.edits.form.widgets)	{
+                switch (widget)  {
+                    case	"calendar" 	:   
+                        widget = this.edits.form.widgets[widget];
+                        EasyEdits.calendar = new DynamicCalendar();
+                        $E(widget.layer).style.position = "absolute";
+                        EasyEdits.calendar.setNode(widget.layer);
+                        EasyEdits.calendar.setArrows(widget.arrows.left,widget.arrows.right,widget.arrows.height);
+                        EasyEdits.calendar.weekend 		= widget.weekend;
+                        EasyEdits.calendar.weekday 		= widget.weekday;
+                        EasyEdits.calendar.monthname 	= widget.month;
+                        EasyEdits.calendar.build();
+                        EasyEdits.calendar.set(new Date().getMonth(),new Date().getFullYear());
+                        EasyEdits.calendar.hide();
+                        break;
+                    case	"timepicker"	:   
+                        widget = this.edits.form.widgets[widget];
+                        EasyEdits.timepicker = new TimePicker(widget.layer);
+                        $E(widget.layer).style.position = "absolute";
+                        $E(widget.layer).style.width = "120px";
+                        EasyEdits.timepicker.hide();
+                        break;
+                    default			:   
+                        break;
                 }
-                EasyEdits.execute(easy);
-            }
-        }).get();
-    }
-}
-/* ------------------------------------------------ */
-EasyEdits.storeKey = function (evt){
-    evt = (evt) ? evt : ((window.event) ? event : null);
-    EasyEdits.lastKey = evt.keyCode;
-}
-/* ------------------------------------------------ */
-EasyEdits.getCSSValue = function (field,name) {
-    return (window.getComputedStyle) ? document.defaultView.getComputedStyle(field,null)[name] : field.currentStyle[name];
-}
-/* ------------------------------------------------ */
-EasyEdits.execute	= (easy) => {
-    //draw if necessary
-    if (easy.edits.form.defaults) {
-        easy.defaults.required["background-color"] = easy.edits.form.defaults.required['background-color'] || easy.defaults.required['background-color'];
-        easy.defaults.required.classname           = easy.edits.form.defaults.required.classname           || easy.defaults.required.classname;
-        easy.defaults.required.style               = easy.edits.form.defaults.required.style               || easy.defaults.required.style;
-        easy.defaults.optional["background-color"] = easy.edits.form.defaults.optional['background-color'] || easy.defaults.optional['background-color'];
-        easy.defaults.optional.classname           = easy.edits.form.defaults.optional.classname           || easy.defaults.optional.classname;
-        easy.defaults.optional.style               = easy.edits.form.defaults.optional.style               || easy.defaults.optional.style;
-    }
-    if ((easy.edits.form.drawme)&&(!$E(easy.edits.form.id)))	{
-        var formHTML = '<form id="'+ easy.edits.form.id +'" name="'+ easy.edits.form.id +'" method="'+ easy.edits.form.method +'" action="'+ easy.edits.form.action +'" style="'+ easy.edits.form.style +'">';
-        for (var i=0; i<easy.edits.fields.length; i++) {
-            formHTML += EasyEdits.generateFormElementHTML(easy.edits.fields[i]);
-        }
-        formHTML += '</form>';
-        if (easy.formNode) {
-            $E(easy.formNode).innerHTML = formHTML;
-        } else {
-            document.body.innerHTML += formHTML;
-        }
-    }
-    if (easy.edits.form.onenter) {
-        switch (easy.edits.form.onenter.toLowerCase()) {
-            case 'send' :
-                break;
-            case 'submit' :
-                break;
-            default:
-                break;
-        }
-    }
-    //setup widgets (if any)
-    if (easy.edits.form.widgets){
-        for (var widget in easy.edits.form.widgets)	{
-            switch (widget)  {
-                case	"calendar" 	:   
-                    widget = easy.edits.form.widgets[widget];
-                    EasyEdits.calendar = new DynamicCalendar();
-                    $E(widget.layer).style.position = "absolute";
-                    EasyEdits.calendar.setNode(widget.layer);
-                    EasyEdits.calendar.setArrows(widget.arrows.left,widget.arrows.right,widget.arrows.height);
-                    EasyEdits.calendar.weekend 		= widget.weekend;
-                    EasyEdits.calendar.weekday 		= widget.weekday;
-                    EasyEdits.calendar.monthname 	= widget.month;
-                    EasyEdits.calendar.build();
-                    EasyEdits.calendar.set(new Date().getMonth(),new Date().getFullYear());
-                    EasyEdits.calendar.hide();
-                    break;
-                case	"timepicker"	:   
-                    widget = easy.edits.form.widgets[widget];
-                    EasyEdits.timepicker = new TimePicker(widget.layer);
-                    $E(widget.layer).style.position = "absolute";
-                    $E(widget.layer).style.width = "120px";
-                    EasyEdits.timepicker.hide();
-                    break;
-                default			:   
-                    break;
             }
         }
-    }
-    //form specific processing
-    var form		= document.getElementById(easy.edits.form.id);
-    if (!form) {
-        alert('Edits: '+easy.edits.form.id+' Not Found');
-        return false;
-    }
-    if (easy.edits.form.action) {
-        form.action = easy.edits.form.action;
-    }
-    if (easy.edits.form.method) {
-        form.method = easy.edits.form.method
-    }
-    if (easy.edits.form.onchange) {
-        form.onchange = easy.edits.form.onchange;                               //event delegation onchange handler
-    }
-    if (easy.edits.form.sumclass && easy.edits.form.sumfield) {
-        form.setAttribute("sumclass",easy.edits.form.sumclass);
-        form.setAttribute("sumfield",easy.edits.form.sumfield);
-    }
-    //form field level processing
-    var formField	= null;
-    var easyKey         = "";    
-    for (var i=0; i<form.elements.length; i++) {
-        easy.formXref[((form.elements[i].id) ? form.elements[i].id : form.elements[i].name)] = form.elements[i];
-    }
-    for (var i=0; i<easy.edits.fields.length; i++) {
+        //form specific processing
+        this.form = this.edits.form.ref     = document.getElementById(this.edits.form.id);
+        
+        if (!this.form) {
+            alert('Edits: '+this.edits.form.id+' Not Found');
+            return false;
+        }
+        if (this.edits.form.action) {
+            this.form.action = this.edits.form.action;
+        }
+        if (this.edits.form.method) {
+            this.form.method = this.edits.form.method;
+        }
+        if (this.edits.form.onchange) {
+            this.form.onchange = this.edits.form.onchange;                               //event delegation onchange handler
+        }
+        if (this.edits.form.sumclass && this.edits.form.sumfield) {
+            this.form.setAttribute("sumclass",this.edits.form.sumclass);
+            this.form.setAttribute("sumfield",this.edits.form.sumfield);
+        }
+        //form field level processing
+        var formField	= null;
+        var easyField   = null;
+        var easyKey     = "";    
         var whereAt	= "";
-        var isCombo 	= false;
+        var isCombo	= false;
+        
+        for (var i=0; i<this.form.elements.length; i++) {
+            this.formXref[((this.form.elements[i].id) ? this.form.elements[i].id : this.form.elements[i].name)] = this.form.elements[i];
+        }
+        for (var i=0; i<this.edits.fields.length; i++) {
+            whereAt	= "";
+            isCombo	= false;
+            if (this.edits.fields[i].active)		{
+                //Here, switch to using the form element and name
+                easyKey                     = this.edits.fields[i].name || this.edits.fields[i].id;
+                if (!easyKey) {
+                    alert('An EasyEdit field definition is missing a name or id attribute, see console');
+                    console.log(this.edits.fields[i]); 
+                    continue;
+                }
+                formField                   = this.formXref[easyKey];
+                if (!formField) {
+                    alert('Edit field not found in form, see console')
+                    console.log('Missing formfield');
+                    console.log(this.edits.fields[i]);
+                    continue;
+                }
+                easyField                    = this.edits.fields[i];                //shorthand reference to the edits json definition
+                easyField.easyKey            = easyKey;                
+                formField.easyKey            = easyKey;
+                formField.form               = this.edits.form.id;
+                this.edits.fields[i].ref     = formField;                           //reference to the actual field in the form
 
-        if (easy.edits.fields[i].active)		{
-            //Here, switch to using the form element and name
-            easyKey                     = easy.edits.fields[i].name || easy.edits.fields[i].id;
-            if (!easyKey) {
-                alert('An EasyEdit field definition is missing a name or id attribute, see console');
-                console.log(easy.edits.fields[i]); 
-                continue;
-            }
-            formField                   = easy.formXref[easyKey];
-            if (!formField) {
-                alert('Edit field not found in form, see console')
-                console.log('Missing formfield');
-                console.log(easy.edits.fields[i]);
-                continue;
-            }
-            formField.easyKey            = easyKey;
-            formField.form               = easy.edits.form.id;
-            easy.edits.fields[i].ref     = formField;                           //reference to the actual field in the form
-            var easyField		 = easy.edits.fields[i];                //shorthand reference to the edits json definition
-            easy.changeHandlers[easyKey] = [];
-            if (formField.onchange) {
-                easy.changeHandlers[easyKey][easy.changeHandlers[easyKey].length] = formField.onchange; //if there is already an onchange event, add it to the list of handlers
-            } try {
-                easyField.ref		= formField;
-                easyField.inerror	= false;
-                if ((!formField.disabled) && (easyField.type!="button") ) {
-                    formField.style.backgroundColor = easy.defaults.optional['background-color'];
-                }
-                if (easyField.required)	{
-                    whereAt = "required";
-                    //#a10f0a
-                    //formField.style.border	= "1px solid "+easy.requiredColor;
-                    formField.style.backgroundColor	= easy.defaults.required['background-color'];
-                    formField.setAttribute("required","Y");
-                }
-                /* -- mask Overriding Style			-- */
-                if (easyField.style && easyField.style.trim())	{
-                    whereAt = "style";
-                    var styles = easyField.style.split(";");
-                    for (var ii=0; ii<styles.length; ii++) {
-                        var pair = styles[ii].split(":");
-                        if (pair[0].trim()) {
-                            if (pair[0].indexOf("-")!=-1) {
-                                var pre 	= pair[0].substr(0,pair[0].indexOf("-"));
-                                var cap		= pair[0].substr(pair[0].indexOf("-")+1,1).toUpperCase();
-                                var post 	= pair[0].substr(pair[0].indexOf("-")+2);
-                                pair[0]		= pre+cap+post;
+                this.changeHandlers[easyKey] = [];
+                if (formField.onchange) {
+                    this.changeHandlers[easyKey][this.changeHandlers[easyKey].length] = formField.onchange; //if there is already an onchange event, add it to the list of handlers
+                } try {
+                    easyField.ref		= formField;
+                    easyField.inerror	= false;
+                    if ((!formField.disabled) && (easyField.type!="button") ) {
+                        formField.style.backgroundColor = this.defaults.optional['background-color'];
+                    }
+                    if (easyField.required)	{
+                        whereAt = "required";
+                        //#a10f0a
+                        //formField.style.border	= "1px solid "+this.requiredColor;
+                        formField.style.backgroundColor	= this.defaults.required['background-color'];
+                        formField.setAttribute("required","Y");
+                    }
+                    /* -- mask Overriding Style			-- */
+                    if (easyField.style && easyField.style.trim())	{
+                        whereAt = "style";
+                        var styles = easyField.style.split(";");
+                        for (var ii=0; ii<styles.length; ii++) {
+                            var pair = styles[ii].split(":");
+                            if (pair[0].trim()) {
+                                if (pair[0].indexOf("-")!=-1) {
+                                    var pre 	= pair[0].substr(0,pair[0].indexOf("-"));
+                                    var cap		= pair[0].substr(pair[0].indexOf("-")+1,1).toUpperCase();
+                                    var post 	= pair[0].substr(pair[0].indexOf("-")+2);
+                                    pair[0]		= pre+cap+post;
+                                }
+                                formField.style[pair[0].trim()] = pair[1].trim();
                             }
-                            formField.style[pair[0].trim()] = pair[1].trim();
                         }
                     }
-                }
-                /* -- Setting Class						-- */
-                if ((easyField.classname) || (easy.edits.form.classname)) {
-                    whereAt = "className";
-                    formField.className	= easyField.classname ? easyField.classname : easy.edits.form.classname;
-                }
-                if (easyField.type === "combo") {
-                    whereAt = 'combo';
-                    let currentField  = formField;                              //Scoping hack
-                    isCombo           = true;
-                    formField.onclick = EasyEdits.resetLastKey;
-                    formField.onfocus = EasyEdits.throwFocusAway;
-                    formField.combo   = $("#"+easy.edits.form.id+" [name='"+formField.easyKey+"_combo']").get()[0];
-                    if (!formField.combo) {
-                        alert('Combination Field not found... looking for '+formField.easyKey+"_combo");
+                    /* -- Setting Class						-- */
+                    if ((easyField.classname) || (this.edits.form.classname)) {
+                        whereAt = "className";
+                        formField.className	= easyField.classname ? easyField.classname : this.edits.form.classname;
                     }
-                    formField.tabIndex = 99;
-                    formField.setAttribute("combo","yes");
-                    if (easyField.removemask) {
-                        formField.setAttribute("removeMask","yes");
-                    } else {
-                        formField.setAttribute("removeMask","no");
+                    if (easyField.type === "combo") {
+                        whereAt           = 'combo';
+                        isCombo           = true;
+                        formField.onclick = EasyEdits.resetLastKey;
+                        formField.onfocus = EasyEdits.throwFocusAway;
+                        formField.combo   = $("#"+this.edits.form.id+" [name='"+formField.easyKey+"_combo']").get()[0];
+                        if (!formField.combo) {
+                            alert('Combination Field not found... looking for '+formField.easyKey+"_combo");
+                        }
+                        formField.tabIndex = 99;
+                        formField.setAttribute("combo","yes");
+                        if (easyField.removemask) {
+                            formField.setAttribute("removeMask","yes");
+                        } else {
+                            formField.setAttribute("removeMask","no");
+                        }
+                        $(formField).on("change",( (field,combo) => {
+                            //watch out, this is a closure...
+                            return () => {
+                                field.setAttribute('comboValue',$(field).val());
+                                combo.setAttribute('comboValue',$(field).val());
+                                $(combo).val($(field).val());
+                            }
+                        })(formField,formField.combo));
+                        formField.combo.style.backgroundColor = EasyEdits.getCSSValue(formField, "backgroundColor");
+                        formField.combo.style.margin          = EasyEdits.getCSSValue(formField, "margin");
+                        formField.combo.style.padding         = EasyEdits.getCSSValue(formField, "padding");
+                        formField.combo.style.display         = "none";
+                        formField.combo.setAttribute("comboPair",easyKey);
+                        $(formField.combo).on("change",((field,combo)=> {
+                            return () => {
+                                $(field).val($(combo).val());
+                                combo.setAttribute('comboValue',$(combo).val());
+                            }
+                        })(formField,formField.combo))
                     }
-                    $(formField).on("change",( (field,combo) => {
-                        //watch out, this is a closure...
-                        return () => {
-                            field.setAttribute('comboValue',$(field).val());
-                            combo.setAttribute('comboValue',$(field).val());
-                            $(combo).val($(field).val());
+                    formField.isCombo  = isCombo;
+                    $(formField).on('change',((field,combo) => {
+                        return (evt) => {
+                            if (field.isCombo) {
+                                if (field.selectedIndex >= 0) {
+                                    value = field[field.selectedIndex].text;
+                                    combo.setAttribute("comboValue", field[field.selectedIndex].value);
+                                    $(combo).val(field[field.selectedIndex].value)
+                                    //combo.onchange(evt,true);               //calledFromComboPair=true
+                                }
+                                
+/*                              if (window.addEventListener) {
+                                    //evt.stopPropagation();
+                                } else {
+                                    //evt.cancelBubble = true;
+                                }*/
+
+                            }
+                            for (var jj = 0; jj<this.changeHandlers[formField.easyKey].length; jj++) {
+                                this.changeHandlers[formField.easyKey][jj](evt);
+                            }
+
                         }
                     })(formField,formField.combo));
-                    formField.combo.style.backgroundColor = EasyEdits.getCSSValue(formField, "backgroundColor");
-                    formField.combo.style.margin          = EasyEdits.getCSSValue(formField, "margin");
-                    formField.combo.style.padding         = EasyEdits.getCSSValue(formField, "padding");
-                    formField.combo.style.display         = "none";
-                    formField.combo.setAttribute("comboPair",easyKey);
-                    $(formField.combo).on("change",((field,combo)=> {
-                        return () => {
-                            $(field).val($(combo).val());
-                            combo.setAttribute('comboValue',$(combo).val());
+                    if (easyField.onchange)	{
+                        if (!this.changeHandlers[formField.easyKey]) {
+                            this.changeHandlers[formField.easyKey] = [];
                         }
-                    })(formField,formField.combo))
-                }
-                formField.isCombo  = isCombo;
-                $(formField).on('change',((field,combo,easy) => {
-                    return () => {
-                        let easyKey = field.easyKey;
-                        var isCombo = (field.getAttribute && (field.getAttribute("combo")=="yes"));
-                        if (isCombo) {
-                            alert('is combo! '+field.easyKey);
-                            if (!calledFromComboPair){
-                                //FIX THIS!
-                                if (formField.selectedIndex >= 0) {
-                                    value = $E(easyKey)[$E(easyKey).selectedIndex].text;
-                                    combo.setAttribute("comboValue", $E(easyKey)[$E(easyKey).selectedIndex].value);
-                                    combo.onchange(evt,calledFromComboPair);
+                        this.changeHandlers[formField.easyKey][this.changeHandlers[formField.easyKey].length] = easyField.onchange;
+                    }
+                    if (easyField.sumfield && easyField.sumclass){
+                        formField.setAttribute("sumclass",easyField.sumclass);
+                        formField.setAttribute("sumfield",easyField.sumfield);
+                    }
+                    if (easyField.valuerange) {
+                        var range = easyField.valuerange.split("..");
+                        formField.length = 0;
+                        formField[formField.length] = new Option('','');
+                        for (var rCtr= +range[0]; rCtr<= +range[1]; rCtr++)	{
+                            if (easyField.rangewidth) {
+                                rCtr = EasyEdits.copies(rCtr,"0",easyField.rangewidth);
+                            }   
+                            formField[formField.length] = new Option(rCtr,rCtr);
+                        }
+                    }
+                    if (easyField.onmouseover) {
+                        $(formField).on("mouseover",easyField.onmouseover)
+                    }
+                    if (easyField.onmouseout) {
+                        $(formField).on("mouseout",easyField.onmouseout);
+                    }
+                    if (easyField.onmousedown) {
+                        $(formField).on("mousedown",easyField.onmousedown);
+                    }
+                    /* -- Template Matching 			-- */
+                    if (easyField.onclick) {
+                        $(formField).on("click",easyField.onclick);
+                    }
+                    if (easyField.spellcheck){
+                        formField.setAttribute("spellcheck","true");
+                    }
+                    if (easyField.maxlength) {
+                        formField.maxLength	= easyField.maxlength;
+                    }
+                    if (easyField.remove) {
+                        formField.setAttribute("remove",easyField.remove);
+                    }
+                    if (easyField.onenterkey) {
+                        var f = ((callback) => {
+                            return (evt) => {
+                                if (evt.keyCode === 13) {
+                                    callback(evt);
+                                    evt.stopPropagation();
                                 }
                             }
-                            if (window.addEventListener) {
-                                //evt.stopPropagation();
-                            } else {
-                                //evt.cancelBubble = true;
+                        })(easyField.onenterkey);
+                        (isCombo) ? (combo.onkeypress = f) : (formField.onkeypress = f);
+                    }
+                    if (easyField.onfill) {
+                        if (typeof(easyField.onfill)=="string")	{
+                            formField.setAttribute("nextField",easyField.onfill);                            
+                            let nextField = this.formXref[formField.getAttribute("nextField")];
+                            formField.onfill = function () {
+                                nextField.focus();
                             }
-                            
-                        }
-                        for (var jj = 0; jj<easy.changeHandlers[formField.easyKey].length; jj++) {
-                            easy.changeHandlers[formField.easyKey][jj](evt);
-                        }
-                        
-                    }
-                })(formField,formField.combo,easy));
-/*                formField.onchange = (evt,calledFromComboPair) => {
-                    evt = (evt) ? evt : ((window.event) ? event : null);
-                    var target = evt.target;
-                    var easyKey = this.id || this.name;
-                    var isCombo = (this.getAttribute && (this.getAttribute("combo")=="yes"));
-                    if (isCombo) {
-                        alert('is combo! '+tt.name);
-                        if (!calledFromComboPair){
-                            //FIX THIS!
-                            if (target.selectedIndex >= 0) {
-                                formField.combo.value = $E(easyKey)[$E(easyKey).selectedIndex].text;
-                                formField.combo.setAttribute("comboValue", $E(easyKey)[$E(easyKey).selectedIndex].value);
-                                formField.combo.onchange(evt,calledFromComboPair);
-                            }
-                        }
-                    }
-                    for (var jj = 0; jj<easy.changeHandlers[target.easyKey].length; jj++) {
-                        easy.changeHandlers[target.easyKey][jj](evt);
-                    }
-                    //this stops a potentially devastating cyclic reference between the drop down box and the combo text box, becareful about removing it...
-                    if (isCombo) {
-                        if (window.addEventListener) {
-                            //evt.stopPropagation();
                         } else {
-                            //evt.cancelBubble = true;
+                            formField.onfill = easyField.onfill;
                         }
                     }
-                }*/
-                if (easyField.onchange)	{
-                    if (!easy.changeHandlers[formField.easyKey]) {
-                        easy.changeHandlers[formField.easyKey] = [];
+                    if (easyField.activate) {
+                        $(easyField.ref).on("keyup",easyField.activate);
                     }
-                    easy.changeHandlers[formField.easyKey][easy.changeHandlers[formField.easyKey].length] = easyField.onchange;
-                }
-                if (easyField.sumfield && easyField.sumclass){
-                    formField.setAttribute("sumclass",easyField.sumclass);
-                    formField.setAttribute("sumfield",easyField.sumfield);
-                }
-                if (easyField.valuerange) {
-                    var range = easyField.valuerange.split("..");
-                    formField.length = 0;
-                    formField[formField.length] = new Option('','');
-                    for (var rCtr= +range[0]; rCtr<= +range[1]; rCtr++)	{
-                        if (easyField.rangewidth) {
-                            rCtr = EasyEdits.copies(rCtr,"0",easyField.rangewidth);
-                        }   
-                        formField[formField.length] = new Option(rCtr,rCtr);
-                    }
-		}
-                if (easyField.onmouseover) {
-                    $(easyField.ref).on("mouseover",easyField.onmouseover)
-                }
-                if (easyField.onmouseout) {
-                    $(easyField.ref).on("mouseout",easyField.onmouseout);
-                }
-                if (easyField.onmousedown) {
-                    $(easyField.ref).on("mousedown",easyField.onmousedown);
-                }
-                /* -- Template Matching 			-- */
-                if (easyField.onclick) {
-                    $(easyField.ref).on("click",easyField.onclick);
-                }
-                if (easyField.spellcheck){
-                    formField.setAttribute("spellcheck","true");
-                }
-                if (easyField.maxlength) {
-                    formField.maxLength	= easyField.maxlength;
-                }
-                if (easyField.remove) {
-                    formField.setAttribute("remove",easyField.remove);
-                }
-                if (easyField.onenterkey) {
-                    var f = ((callback) => {
-                        return (evt) => {
-                            if (evt.keyCode === 13) {
-                                callback(evt);
-                                evt.stopPropagation();
-                            }
-                        }
-                    })(easyField.onenterkey);
-                    (isCombo) ? (combo.onkeypress = f) : (formField.onkeypress = f);
-                }
-                if (easyField.onfill) {
-                    if (typeof(easyField.onfill)=="string")	{
-                        formField.onfill = function () {
-                            $E(this.getAttribute("nextField")).focus();
-                        }
-                        formField.setAttribute("nextField",easyField.onfill);
-                    } else {
-                        formField.onfill = easyField.onfill;
-                    }
-                }
-                if (easyField.activate) {
-                    $(easyField.ref).on("keyup",easyField.activate);
-                }
-                if (easyField.mask)	{
-                    $(easyField.ref).on("keyup", function (evt) {
-                        evt = (evt) ? evt : ((window.event) ? event : null);
-                        if ((evt==null) ||  ((evt.keyCode != 39) && (evt.keyCode != 37) && (evt.keyCode != 46) && (evt.keyCode != 8))) {
-                            var template    = this.getAttribute("template").split('');
-                            var fieldVal    = this.value.split('');
-                            var results     = [];
-                            var tokens      = "*#A^H";
-                            var hex         = "0123456789ABCDEF";
-                            var tCtr        =  0;
-                            var fCtr        =  0;
-                            var lCtr        =  0;
-                            while (fCtr<fieldVal.length) {
-                                lCtr++;
-                                if (lCtr>150) {
-                                    fCtr = fieldVal.length;
-                                }
-                                if (tokens.indexOf(template[tCtr])!=-1)	{
-                                    var cc = fieldVal[fCtr];
-                                    switch (template[tCtr])	{
-                                        case "#" :
-                                            if (!(isNaN(parseInt(cc)) && (cc != ".") && (cc != "-"))) {
-                                                results[results.length] = cc;
-                                            }
-                                            break;
-                                        case "A" :
-                                            if (!(!isNaN(parseInt(cc)))) {
-                                                results[results.length] = cc;
-                                            }
-                                            break;
-                                        case "^" :
-                                            if (isNaN(parseInt(cc))) {
-                                                var token	= template[tCtr+1];
-                                                var pre = results[results.length-1];
-                                                results[results.length-1] = 0;
-                                                results[results.length] = pre;
-                                                results[results.length] = token;
-                                                tCtr = tCtr + 1;
-                                            } else {
-                                                results[results.length] = cc;
-                                            }
-                                            break;
-                                        case "9" :	//go back and make sure up to last mask that it is zero prefixed
-                                            break;
-                                        case "H" :
-                                            cc=(cc+'').toUpperCase();
-                                            if (hex.indexOf(cc)!=-1) {
-                                                results[results.length] = cc;
-                                            }
-                                            break;
-                                        case "*" :
-                                            results[results.length] = cc;
-                                            break;
-                                        default  :
-                                            break;
+                    if (easyField.mask)	{
+                        $(easyField.ref).on("keyup", function (evt) {
+                            evt = (evt) ? evt : ((window.event) ? event : null);
+                            if ((evt==null) ||  ((evt.keyCode != 39) && (evt.keyCode != 37) && (evt.keyCode != 46) && (evt.keyCode != 8))) {
+                                var template    = this.getAttribute("template").split('');
+                                var fieldVal    = this.value.split('');
+                                var results     = [];
+                                var tokens      = "*#A^H";
+                                var hex         = "0123456789ABCDEF";
+                                var tCtr        =  0;
+                                var fCtr        =  0;
+                                var lCtr        =  0;
+                                while (fCtr<fieldVal.length) {
+                                    lCtr++;
+                                    if (lCtr>150) {
+                                        fCtr = fieldVal.length;
                                     }
-                                    fCtr = fCtr+1;
-                                    tCtr = tCtr+1;
-                                } else {
-                                    if (template[tCtr] == fieldVal[fCtr]) {
-                                        results[results.length] = fieldVal[fCtr];
-                                        fCtr = fCtr + 1;
+                                    if (tokens.indexOf(template[tCtr])!=-1)	{
+                                        var cc = fieldVal[fCtr];
+                                        switch (template[tCtr])	{
+                                            case "#" :
+                                                if (!(isNaN(parseInt(cc)) && (cc != ".") && (cc != "-"))) {
+                                                    results[results.length] = cc;
+                                                }
+                                                break;
+                                            case "A" :
+                                                if (!(!isNaN(parseInt(cc)))) {
+                                                    results[results.length] = cc;
+                                                }
+                                                break;
+                                            case "^" :
+                                                if (isNaN(parseInt(cc))) {
+                                                    var token	= template[tCtr+1];
+                                                    var pre = results[results.length-1];
+                                                    results[results.length-1] = 0;
+                                                    results[results.length] = pre;
+                                                    results[results.length] = token;
+                                                    tCtr = tCtr + 1;
+                                                } else {
+                                                    results[results.length] = cc;
+                                                }
+                                                break;
+                                            case "9" :	//go back and make sure up to last mask that it is zero prefixed
+                                                break;
+                                            case "H" :
+                                                cc=(cc+'').toUpperCase();
+                                                if (hex.indexOf(cc)!=-1) {
+                                                    results[results.length] = cc;
+                                                }
+                                                break;
+                                            case "*" :
+                                                results[results.length] = cc;
+                                                break;
+                                            default  :
+                                                break;
+                                        }
+                                        fCtr = fCtr+1;
+                                        tCtr = tCtr+1;
                                     } else {
-                                        results[results.length] = template[tCtr];
+                                        if (template[tCtr] == fieldVal[fCtr]) {
+                                            results[results.length] = fieldVal[fCtr];
+                                            fCtr = fCtr + 1;
+                                        } else {
+                                            results[results.length] = template[tCtr];
+                                        }
+                                        tCtr = tCtr + 1;
                                     }
-                                    tCtr = tCtr + 1;
+                                }
+                                this.value = results.join('');
+                            }
+                            results = [];
+                            if (this.maxLength && this.onfill) {
+                                if (this.value.length == this.maxLength) {
+                                    if ((evt.keyCode != 9) && (evt.keyCode != 16)) {
+                                        this.onfill();
+                                    }
                                 }
                             }
-                            this.value = results.join('');
-                        }
-                        results = [];
-                        if (this.maxLength && this.onfill) {
-                            if (this.value.length == this.maxLength) {
-                                if ((evt.keyCode != 9) && (evt.keyCode != 16)) {
-                                    this.onfill();
-                                }
-                            }
-                        }
-                        return false;
-                    });
-                    formField.setAttribute("template",easyField.mask);
-                }
-                if (easyField.readonly === true) {
-                    if (isCombo) {
-                        formField.combo.readOnly = true;
+                            return false;
+                        });
+                        formField.setAttribute("template",easyField.mask);
                     }
-                    formField.readOnly = true;
-                }
-                if (easyField.widget) {
-                    switch (easyField.widget) {
-                        case "datepicker" :
-                            $(formField).datepicker()
-                            break;
-                        default :
-                            break;
-                    }
-                }
-                if (easyField.placeholder) {
-                    formField.setAttribute('placeholder',easyField.placeholder);
-                }
-                if (easyField.disabled === true) {
-                    if (isCombo) {
-                        formField.combo.disabled = true;
-                    }                    
-                    formField.disabled = true
-                } else {
-                    if (isCombo) {
-                        formField.combo.disabled = false;
-                    }                        
-                    formField.disabled = false;
-                }
-                /* -- Creating a rollover title			-- */
-                if (!formField.title) {
-                    if (easyField.title) {
-                        formField.title	= easyField.title;
+                    if (easyField.readonly === true) {
                         if (isCombo) {
-                            formField.combo.title = easyField.title;
+                            formField.combo.readOnly = true;
                         }
-                    } else {
-                        formField.title	= easyField.longname;
+                        formField.readOnly = true;
+                    }
+                    if (easyField.widget) {
+                        switch (easyField.widget) {
+                            case "datepicker" :
+                                $(formField).datepicker()
+                                break;
+                            default :
+                                break;
+                        }
+                    }
+                    if (easyField.placeholder) {
+                        formField.setAttribute('placeholder',easyField.placeholder);
+                    }
+                    if (easyField.disabled === true) {
                         if (isCombo) {
-                            formField.combo.title = easyField.longname;
-                        }
-                    }
-                }
-                /* -- Population of field				-- */
-                if ((typeof(easyField.populator) !== "undefined") && (easyField.populator)) {
-                    if (typeof(easyField.populator) === "string") {
-                        let ef = easyField;
-                        (new EasyAjax(easyField.populator)).then(function(response) {
-                            if (response) {
-                                EasyEdits.populateSelectBox(ef.id, JSON.parse(response),false);
-                            }
-                        }).get();
-                    } else if (typeof(easyField.populator) === "object") {
-                        let ef = easyField;
-                        (new EasyAjax(easyField.populator.url)).then(function(response) {
-                            if (response) {
-                                EasyEdits.populateSelectBox(ef.id, JSON.parse(response),ef.populator.fieldmap);
-                            }
-                        }).get();
+                            formField.combo.disabled = true;
+                        }                    
+                        formField.disabled = true
                     } else {
-                        easyField.populator();
+                        if (isCombo) {
+                            formField.combo.disabled = false;
+                        }                        
+                        formField.disabled = false;
                     }
-		}
-                /* -- Validation of field				-- */
-                if ((typeof(easyField.validator) != "undefined") && (easyField.validator)) {
-                    if (typeof(easyField.validator)=="function") {
-                        formField.onblur	= easyField.validator;
-                    } else if (typeof(easyField.validator)=="string")	{
-                        formField.onblur = function (evt) {
-                            (new EasyAjax(easyField.validator)).then(function(response) {
-                                var enteredValue = JSON.parse(response);
-                                if (!enteredValue.isValid) {
-                                    evt.target.focus();
-                                    alert("The value entered is not valid, please try again");
-                                }
-                            }).get(false);
+                    /* -- Creating a rollover title			-- */
+                    if (!formField.title) {
+                        if (easyField.title) {
+                            formField.title	= easyField.title;
+                            if (isCombo) {
+                                formField.combo.title = easyField.title;
+                            }
+                        } else {
+                            formField.title	= easyField.longname;
+                            if (isCombo) {
+                                formField.combo.title = easyField.longname;
+                            }
                         }
                     }
-                }
-                if (easyField.dependencies)	{
-                    //FIX THIS!
-                    whereAt = "dependencies";
-                    formField.setAttribute("dependencies",easyField.dependencies);
-                    var status = !$E(easyKey).checked;
-                    var dependencies = easyField.dependencies.split(",");
-                    for (var j=0; j<dependencies.length; j++) {
-                    if (status) {
-                        $('#'+dependencies[j]).attr('disabled',true);
+                    /* -- Population of field				-- */
+                    if ((typeof(easyField.populator) !== "undefined") && (easyField.populator)) {
+                        if (typeof(easyField.populator) === "string") {
+                            let ef = easyField;
+                            (new EasyAjax(easyField.populator)).then(function(response) {
+                                if (response) {
+                                    EasyEdits.populateSelectBox(ef.id, JSON.parse(response),false);
+                                }
+                            }).get();
+                        } else if (typeof(easyField.populator) === "object") {
+                            let ef = easyField;
+                            (new EasyAjax(easyField.populator.url)).then(function(response) {
+                                if (response) {
+                                    EasyEdits.populateSelectBox(ef.id, JSON.parse(response),ef.populator.fieldmap);
+                                }
+                            }).get();
+                        } else {
+                            easyField.populator();
+                        }
                     }
-                    if ($E(dependencies[j]).getAttribute("combo")) {
-                        $E(dependencies[j]+"_combo").disabled = status;
+                    /* -- Validation of field				-- */
+                    if ((typeof(easyField.validator) != "undefined") && (easyField.validator)) {
+                        if (typeof(easyField.validator)=="function") {
+                            formField.onblur	= easyField.validator;
+                        } else if (typeof(easyField.validator)=="string")	{
+                            formField.onblur = function (evt) {
+                                (new EasyAjax(easyField.validator)).then(function(response) {
+                                    var enteredValue = JSON.parse(response);
+                                    if (!enteredValue.isValid) {
+                                        evt.target.focus();
+                                        alert("The value entered is not valid, please try again");
+                                    }
+                                }).get(false);
+                            }
+                        }
                     }
-                }
+                    if (easyField.dependencies)	{
+                        //FIX THIS!
+                        whereAt          = "dependencies";
+                        formField.setAttribute("dependencies",easyField.dependencies);
+                        var status       = !this.formXref[formField.easyKey].checked;
+                        var dependencies = easyField.dependencies.split(",");
+                        for (var j=0; j<dependencies.length; j++) {
+                            $(this.formXref[dependencies[j]]).attr('disabled',status);
+                            if (this.formXref[dependencies[j]].getAttribute("combo")) {
+                                this.formXref[dependencies[j]+'_combo'].disabled = status;
+                            }
+                        }
 
-                if (easyField.type == "radio")	{
-                    //FIX THIS!
-                    var rbset = form.elements[easyField.group];
-                    for (var i=0; i<rbset.length; i++) {
-                        var rb = rbset[i]; var depElem = easyKey; var dependencies = easyField.dependencies.split(",");
-                        $E(rb.id).onclick = (evt) => {
-                        evt = (evt) ? evt : event ? event : null;
-                        var status = !$E(depElem).checked;
-                            for (var k=0; k<rbset.length; k++) {
-                                var rbi = rbset[k];
-                                if (rbi.id == depElem) {
+                        if (easyField.type == "radio")	{
+                            //FIX THIS!
+                            var rbset = this.form.elements[easyField.group];
+                            for (var i=0; i<rbset.length; i++) {
+                                var rb            = rbset[i];
+                                var depElem       = formField.easyKey; 
+                                var dependencies  = easyField.dependencies.split(",");
+                                formField.onclick = (evt) => {
+                                    evt = (evt) ? evt : event ? event : null;
+                                    var status = !$E(depElem).checked;
+                                    for (var k=0; k<rbset.length; k++) {
+                                        var rbi = rbset[k];
+                                        if (rbi.id == depElem) {
+                                            for (var j=0; j<dependencies.length; j++) {
+                                                this.formXref[dependencies[j]].disabled = status;
+                                                if (this.formXref[dependencies[j]].getAttribute("combo")) {
+                                                    this.formXref[dependencies[j]+'_combo'].disabled = status;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            formField.tt = formField.onclick;                   //convert this to some kind of event handler array... this is super cheesey
+                            formField.onclick =  (evt) => {
+                                evt = (evt) ? evt : window.event ? window.event : null;                                
+                                var field = easy.formXref[evt.target.easyKey];
+                                if (this.tt) {
+                                    this.tt(evt);
+                                }
+                                if (evt) {
+                                    var dependencies = field.getAttribute("dependencies").split(",");
+                                    var status = !field.checked;
                                     for (var j=0; j<dependencies.length; j++) {
-                                        $E(dependencies[j]).disabled = status;
-                                        if ($E(dependencies[j]).getAttribute("combo")) {
-                                                $E(dependencies[j]+"_combo").disabled = status;
+                                        easy.formXref[dependencies[j]].disabled = status;
+                                        if (easy.formXref[dependencies[j]].getAttribute("combo")) {
+                                            easy.formXref[dependencies[j]+'_combo'].disabled = status;
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                } else {
-                    formField.tt = formField.onclick;
-                    formField.onclick = function (evt)	{
-                        evt = (evt) ? evt : window.event ? window.event : null;
-                        if (this.tt) {
-                                this.tt(evt);
+                if (easyField.maxchars) {
+                    whereAt = "maxchars";
+                    formField.setAttribute("maxchars",easyField.maxchars);
+                    formField.setAttribute("maxlines",((easyField.maxlines) ? easyField.maxlines : null));
+                    $(formField).on('keyup',(evt) => {
+                        var maxchars	= this.getAttribute("maxchars");
+                        var maxlines	= this.getAttribute("maxlines");
+                        if ((this.value.length >= maxchars)) {
+                            this.style.backgroundColor = "#ffeeee";
+                            this.value = this.value.substr(0,maxchars);
+                        } else {
+                            this.style.backgroundColor = this.defaults.optional['background-color'];
                         }
-                        if (evt) {
-                            var dependencies = this.getAttribute("dependencies").split(",");
-                            var status = !this.checked;
-                            for (var j=0; j<dependencies.length; j++) {
-                                $E(dependencies[j]).disabled = status;
-                                if ($E(dependencies[j]).getAttribute("combo")) {
-                                        $E(dependencies[j]+"_combo").disabled = status;
-                                }
+                        this.title = (maxchars - this.value.length) + " letters left"
+                        if (maxlines) {
+                            var lines = this.value.split("\n");
+                            if (lines.length > maxlines) {
+                                lines = lines.slice(0,maxlines)
+                                this.value = lines.join('\n');
+                                this.style.backgroundColor = "#ffeeee";
                             }
                         }
+                    });
+                }
+                if (isCombo) {
+                    $(window).on("resize", () => { easy.resetCombos(); });
+                    EasyEdits.setCombo(formField, formField.combo);
+                }
+                if ((easyField.onfocus) || (this.edits.form.onfocus)) {
+                    EasyEdits.on(formField,"focus",((easyField.onfocus) ? easyField.onfocus : this.edits.form.onfocus));
+                }
+                if ((easyField.onblur) || (this.edits.form.onblur))	{
+                    EasyEdits.on(formField,"blur", ((easyField.onblur) ? easyField.onblur : this.edits.form.onblur));
+                }
+                if ((easyField.onkeyup) || (this.edits.form.onkeyup))	{
+                    EasyEdits.on(formField,"keyup",((easyField.onkeyup) ? easyField.onkeyup : this.edits.form.onkeyup));
+                }
+                if ((easyField.onkeydown) || (this.edits.form.onkeydown))	{
+                    EasyEdits.on(formField,"keydown", ((easyField.onkeydown) ? easyField.onkeydown : this.edits.form.onkeydown));
+                }
+                easyField.baseX		= formField.offsetLeft;
+                easyField.baseY		= formField.offsetTop;
+                easyField.baseW		= formField.offsetWidth;
+                easyField.baseH		= formField.offsetHeight;
+                if (window.getComputedStyle) {
+                    var ref = document.defaultView.getComputedStyle(formField,null);
+                    easyField.baseFS		= ref["fontSize"];
+                    easyField.baseFF		= ref["fontFamily"];
+                } else {
+                    easyField.baseFS		= $E(formField.id).currentStyle["fontSize"];
+                    easyField.baseFF		= $E(formField.id).currentStyle["fontFamily"];
+                }
+                if (easyField.value) {
+                    if ((easyField.type === "select") || (this.isCombo)) {
+                        if (typeof(easyField.value) === "object") {
+                            formField.length = 0;
+                            for (var ij = 0; ij < easyField.value.length; ij++) {
+                                formField[formField.length] = new Option(easyField.value[ij].text, easyField.value[ij].value);
+                            }
+                        } else {
+                            alert("Was expecting an object, got " + typeof(easyField.value));
+                        }
+                    } else {
+                        formField.value = easyField.value;
                     }
                 }
+            } catch (ex) {
+                console.log(easyKey+": "+whereAt+":  "+ ex+ " ["+ex.lineNumber+"]");
             }
-            if (easyField.maxchars) {
-                whereAt = "maxchars";
-                formField.setAttribute("maxchars",easyField.maxchars);
-                formField.setAttribute("maxlines",((easyField.maxlines) ? easyField.maxlines : null));
-                $(formField).on('keyup',(evt) => {
-                    var maxchars	= this.getAttribute("maxchars");
-                    var maxlines	= this.getAttribute("maxlines");
-                    if ((this.value.length >= maxchars)) {
-                        this.style.backgroundColor = "#ffeeee";
-                        this.value = this.value.substr(0,maxchars);
-                    } else {
-                        this.style.backgroundColor = easy.defaults.optional['background-color'];
-                    }
-                    this.title = (maxchars - this.value.length) + " letters left"
-                    if (maxlines) {
-                        var lines = this.value.split("\n");
-                        if (lines.length > maxlines) {
-                            lines = lines.slice(0,maxlines)
-                            this.value = lines.join('\n');
-                            this.style.backgroundColor = "#ffeeee";
-                        }
-                    }
-                });
-            }
-            if (isCombo) {
-                $(window).on("resize", () => { EasyEdits.resetCombos(easy); });
-                EasyEdits.setCombo(formField, formField.combo);
-            }
-            if ((easyField.onfocus) || (easy.edits.form.onfocus)) {
-                EasyEdits.on(formField,"focus",((easyField.onfocus) ? easyField.onfocus : easy.edits.form.onfocus));
-            }
-            if ((easyField.onblur) || (easy.edits.form.onblur))	{
-                EasyEdits.on(formField,"blur", ((easyField.onblur) ? easyField.onblur : easy.edits.form.onblur));
-            }
-            if ((easyField.onkeyup) || (easy.edits.form.onkeyup))	{
-                EasyEdits.on(formField,"keyup",((easyField.onkeyup) ? easyField.onkeyup : easy.edits.form.onkeyup));
-            }
-            if ((easyField.onkeydown) || (easy.edits.form.onkeydown))	{
-                EasyEdits.on(formField,"keydown", ((easyField.onkeydown) ? easyField.onkeydown : easy.edits.form.onkeydown));
-            }
-            easyField.baseX		= formField.offsetLeft;
-            easyField.baseY		= formField.offsetTop;
-            easyField.baseW		= formField.offsetWidth;
-            easyField.baseH		= formField.offsetHeight;
-            if (window.getComputedStyle) {
-                var ref = document.defaultView.getComputedStyle(formField,null);
-                easyField.baseFS		= ref["fontSize"];
-                easyField.baseFF		= ref["fontFamily"];
+        } else {
+            //Here as well, switch to using form and name
+            //var field = $E(this.edits.fields[i].id);
+            var field   = this.formXref[((this.edits.fields[i].id) ? this.edits.fields[i].id : this.edits.fields[i].name)];
+            if (!this.edits.fields[i].active) {
+                if (field) {
+                    field.parentNode.removeChild(field);
+                }
             } else {
-                easyField.baseFS		= $E(formField.id).currentStyle["fontSize"];
-                easyField.baseFF		= $E(formField.id).currentStyle["fontFamily"];
-            }
-            if (easyField.value) {
-                if ((easyField.type === "select") || (this.isCombo)) {
-                    if (typeof(easyField.value) === "object") {
-                        formField.length = 0;
-                        for (var ij = 0; ij < easyField.value.length; ij++) {
-                            formField[formField.length] = new Option(easyField.value[ij].text, easyField.value[ij].value);
-                        }
+                if (!field) {
+                    console.log('Missing field follows:');
+                    console.log(this.edits.fields[i]);
+
+                    if (this.edits.fields[i].optional === true) {
+                            //nop
                     } else {
-                        alert("Was expecting an object, got " + typeof(easyField.value));
+                        alert("A Field is missing: "+this.edits.fields[i].id);
                     }
-                } else {
-                    formField.value = easyField.value;
-                }
-            }
-        } catch (ex) {
-            console.log(easyKey+": "+whereAt+":  "+ ex+ " ["+ex.lineNumber+"]");
-	}
-    } else {
-        //Here as well, switch to using form and name
-        //var field = $E(easy.edits.fields[i].id);
-        var field   = easy.formXref[((easy.edits.fields[i].id) ? easy.edits.fields[i].id : easy.edits.fields[i].name)];
-        if (!easy.edits.fields[i].active) {
-            if (field) {
-                field.parentNode.removeChild(field);
-            }
-	} else {
-            if (!field) {
-                console.log('Missing field follows:');
-                console.log(easy.edits.fields[i]);
-                
-                if (easy.edits.fields[i].optional === true) {
-                        //nop
-                } else {
-                    alert("A Field is missing: "+easy.edits.fields[i].id);
                 }
             }
         }
     }
-}
-    if (easy.edits.form.onload) {
-	easy.edits.form.onload();
+        if (this.edits.form.onload) {
+            this.edits.form.onload();
+        }
+        this.resetCombos();
+        this.executed = true;
+        for (var i in this.values) {
+            $('#'+i).val(this.values[i]);
+        }
     }
-    EasyEdits.resetCombos(easy);
-    easy.executed = true;
-    for (var i in easy.values) {
-        $('#'+i).val(easy.values[i]);
+    
+    if (source) {
+        this.load(source);
     }
-
+    if (ref) {
+        Edits[ref] = me;
+    }
+    return me;
 }
-/* ------------------------------------------------ */
-EasyEdits.setCombo = function (formField,combo) {
+    /* ------------------------------------------------------------------------- */    
+EasyEdits.lastKey = null; //last key they pressed.
+    /* ------------------------------------------------------------------------- */    
+EasyEdits.storeKey = function (evt){
+    evt = (evt) ? evt : ((window.event) ? event : null);
+    EasyEdits.lastKey = evt.keyCode;
+}
+    /* ------------------------------------------------------------------------- */    
+EasyEdits.getCSSValue = function (field,name) {
+    return (window.getComputedStyle) ? document.defaultView.getComputedStyle(field,null)[name] : field.currentStyle[name];
+}
+    /* ------------------------------------------------------------------------- */    
+EasyEdits.setCombo = (formField,combo) => {
     if (combo) {
         combo.style.display		= "none";
         var ref = (window.getComputedStyle) ? document.defaultView.getComputedStyle(formField,null) : formField.currentStyle;
@@ -824,41 +1066,21 @@ EasyEdits.setCombo = function (formField,combo) {
         combo.style.height	= (parseInt(formField.offsetHeight)-oh)+"px";
     }
 };
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.on = (obj,event,handler) => {
     if (typeof obj === 'string') {
         obj = document.getElementById(obj);
     }
     $(obj).on(event,handler);
 };
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.off = (obj,event,handler) => {
     if (typeof obj === 'string') {
         obj = document.getElementById(obj);
     }
     $(obj).off(event,handler);
 };
-/* ------------------------------------------------ */
-EasyEdits.resetCombos = function (easy) {
-    if (easy.edits && easy.edits.fields) {
-        for (var i=0; i<easy.edits.fields.length; i++)	{
-            if (easy.edits.fields[i].type === "combo") {
-                EasyEdits.setCombo($E(easy.edits.fields[i].id),$E(easy.edits.fields[i].id+"_combo"));
-            }
-        }
-    }
-};
-/* ------------------------------------------------ */
-EasyEdits.resetErrors = function (easy) {
-    easy.errors			= 0;
-    easy.criticals		= 0;
-    easy.warnings		= 0;
-    easy.failures		= 0;
-    easy.message		= "";
-    easy.messages		= [];
-    easy.flagged		= false;
-}
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.getAbsoluteX	= function (element,maxNode) {
     maxNode = (maxNode) ? maxNode : "DIV";
     var aX = element.offsetLeft;
@@ -868,7 +1090,7 @@ EasyEdits.getAbsoluteX	= function (element,maxNode) {
     }
     return aX;
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.getAbsoluteY	= function (element,maxNode)
 {
     maxNode = (maxNode) ? maxNode : "DIV";
@@ -879,70 +1101,8 @@ EasyEdits.getAbsoluteY	= function (element,maxNode)
     }
     return aY;
 }
-/* ------------------------------------------------ */
-EasyEdits.manageDependencies = function (easy,disable) {
-    for (var i=0; i<easy.edits.fields.length; i++)	{
-        if (easy.edits.fields[i].dependencies) {
-            var dependencies = easy.edits.fields[i].dependencies.split(",");
-            if ($E(easy.edits.fields[i].id).checked) {
-                for (var k=0; k<dependencies.length; k++) {
-                    $E(dependencies[k]).disabled = disable;
-                    $E(dependencies[k]).style.backgroundColor = (disable) ? "ghostwhite" : easy.defaults.optional['background-color'];
-                    if ($E(dependencies[k]).getAttribute("combo")) {
-                        $E($E(dependencies[k]).id+"_combo").disabled = disable;
-                        $E($E(dependencies[k]).id+"_combo").style.backgroundColor = $E(dependencies[k]).style.backgroundColor;
-                    }
-                }
-            } else {
-                for (var k=0; k<dependencies.length; k++) {
-                    $E(dependencies[k]).disabled = true;
-                    $E(dependencies[k]).style.backgroundColor = "ghostwhite";
-                    if ($E(dependencies[k]).getAttribute("combo")) {
-                        $E($E(dependencies[k]).id+"_combo").disabled= true;
-                        $E($E(dependencies[k]).id+"_combo").style.backgroundColor = "ghostwhite";
-                    }
-                }
-            }
-        }
-    }
-}
-/* ------------------------------------------------ */
-EasyEdits.enable	= function (easy) {
-    for (var i=0; i<easy.edits.fields.length; i++)	{
-        var formField = $E(easy.edits.fields[i].id)
-        if ((easy.edits.fields[i].type == "text") || (easy.edits.fields[i].type == "textarea")) {
-            formField.readOnly = false;
-        } else {
-            formField.disabled = false;
-        }
-        formField.style.backgroundColor = easy.defaults.optional['background-color'];
-        if (easy.edits.fields[i].type.toLowerCase() == "combo")	{
-            var comboField	= $E(easy.edits.fields[i].id+"_combo");
-            comboField.readOnly = false;
-            comboField.style.backgroundColor = easy.defaults.optional['background-color'];
-        }
-    }
-    EasyEdits.manageDependencies(easy,false);
-}
-/* ------------------------------------------------ */
-EasyEdits.disable	= function (easy) {
-    for (var i=0; i<easy.edits.fields.length; i++)	{
-        var formField = $E(easy.edits.fields[i].id)
-        if ((easy.edits.fields[i].type == "text") || (easy.edits.fields[i].type == "textarea")) {
-            formField.readOnly = true;
-        } else {
-            formField.disabled = true;
-        }
-        formField.style.backgroundColor = "ghostwhite";
-        if (easy.edits.fields[i].type.toLowerCase() == "combo")	{
-            var comboField	= $E(easy.edits.fields[i].id+"_combo");
-            comboField.readOnly = true;
-            comboField.style.backgroundColor = "ghostwhite";
-        }
-    }
-    EasyEdits.manageDependencies(easy,true);
-}
-/* ------------------------------------------------ */
+
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.getValue = function (form,field,easyField) {
     var val	= "";
     //if (!field.type) {
@@ -1019,7 +1179,7 @@ EasyEdits.getValue = function (form,field,easyField) {
     }
     return val;
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.registerError = function (easy,field,edit,message,force) {
     if (easy.messages.indexOf(message) == -1) {
         easy.messages[easy.messages.length] = message;
@@ -1039,204 +1199,7 @@ EasyEdits.registerError = function (easy,field,edit,message,force) {
        // field.value = "";
     }
 }
-/* ------------------------------------------------ */
-EasyEdits.packageEdits = function (ao,easy) {
-    var form    = $E(easy.form.id);
-    var field   = null;
-    for (var i=0; i<easy.fields.length; i++) {
-        if (easy.fields[i].active) {
-            field = (easy.fields[i].name) ? easy.fields[i].name : easy.fields[i].id;
-            ao.add(field,EasyEdits.getValue(form,$E(easy.fields[i].id),easy.fields[i]));
-        }
-    }
-}
-/* ------------------------------------------------ */
-EasyEdits.send	= function (easy,URL) {
-    var target      = (URL) ? URL : easy.edits.form.action;
-    var getMethod   = (easy.edits.form.method.toLowerCase() == "get");
-    var response    = '';
-    if (target)	{
-        var ao = new EasyAjax(target);
-        ao.setQueryString(EasyEdits.packageEdits(easy,ao));
-        if (easy.sendHandler) {
-            ao.SCF = (typeof(easy.sendHandler) == "string") ? eval(easy.sendHandler) : easy.sendHandler;
-        } else {
-            ao.then(function () {  });
-        }
-        response = (getMethod) ? ao.get() : ao.post();
-    } else	{
-        alert("No target action");
-    }
-    return response;
-}
-/* ------------------------------------------------ */
-EasyEdits.validate 	= function (easy)
-{
-    var form        = $E(easy.edits.form.id);
-    var fieldValues = [];
-    var easyFields  = [];
-    easy.hasContent = false;
-    for (var i=0; i<easy.edits.fields.length; i++) {
-        easyFields[easy.edits.fields[i].id] = easy.edits.fields[i];  //pre-load hash table
-    }
-    var defaultBackgroundColor = easy.defaults.optional['background-color'];
-    for (var i=0; i<easy.edits.fields.length; i++) {
-        if (easy.edits.fields[i].active) {
-            try {
-                if ($E(easy.edits.fields[i].id).disabled) {
-                    continue;
-                }
-            } catch (ex) {
-                alert('disabled field');
-            }
-            var formField   = $E(easy.edits.fields[i].id);
-            var easyField   = easy.edits.fields[i];
-            if (formField)	{
-                var fieldVal = "";
-                if (fieldValues[formField.name]) {
-                    fieldVal 	= fieldValues[formField.name];
-                } else {
-                    fieldVal	= fieldValues[formField.name] = EasyEdits.getValue(form,formField,easyField);
-                }
-                if (fieldVal) {
-                    easy.hasContent = true;
-                }
-                var action 		= easyField.force;
-                easy.flagged	= false;
-                easyFields[easyKey] = easyField;
-                if (easyField.required)	{
-                    if ((fieldVal=="") || (fieldVal == null))	{
-                        var inerror = true;
-                        if (easyField.eitheror) {
-                            var fields = easyField.eitheror.split(",");
-                            inerror = (!(EasyEdits.getValue(form,$E(fields[0])) || EasyEdits.getValue(form,$E(fields[1]))));
-                        }
-                        if (inerror) {
-                            if (easyField.force) {
-                                EasyEdits.registerError(easy,formField,easyField,(easyField.message ? easyField.message : easyField.longname+" is Required"),action);
-                            } else {
-                                EasyEdits.registerError(easy,formField,easyField,(easyField.message ? easyField.message : easyField.longname+" is Recommended"),action);
-                            }
-                        }
-                    }
-                }
-                if (easyField.nozero) {
-                    if (fieldVal === "0") {
-                        EasyEdits.registerError(easy,formField,easyField,easyField.longname+" is not allowed to be zero (0)",action);
-                    }
-                }
-                if (easyField.verify) {
-                    if (fieldVal !== $E(easyField.verify).value) {
-                        EasyEdits.registerError(easy,formField,easyField,easyField.longname+" did not match",action);
-                    }
-                }
-                if ((fieldVal === "") && (easyField.defaultvalue) && (!easy.flagged)) {
-                    formField.value = easyField.defaultvalue;
-                }
-                if ((easyField.range) && (!easy.flagged)) {
-                    var range	= easyField.range.split("..");
-                    if ((+parseFloat(fieldVal) < +parseFloat(range[0]) || (+parseFloat(fieldVal) > +parseFloat(range[1])))) {
-                        EasyEdits.registerError(easy,formField,easyField,easyField.longname+" not within allowable Range ("+ range[0] +","+ range[1] +")",action);
-                    }
-                }
-                if ((easyField.values) && (!easy.flagged)) {
-                    var values	= (easyField.values.split(","));
-                    if (values.indexOf(fieldVal) === -1) {
-                        EasyEdits.registerError(easy,formField,easyField,easyField.longname+" Contains an Invalid Value, valid values are "+ easyField.values,action);
-                    }
-                }
-                if (easyField.minlength) {
-                    if ((fieldVal.length < easyField.minlength) && (fieldVal.length !== 0))	{
-                        EasyEdits.registerError(easy,formField,easyField,easyField.longname +" is only "+ fieldVal.length +" characters long.  A minimum of "+ easyField.minlength +" characters are Required",action);
-                    }
-                }
-                if (easyField.maxlength) {
-                    if (fieldVal.length > easyField.maxlength) {
-                        formField.value = fieldVal.substr(0,easyField.maxlength);
-                    }
-                }
-                if (easyField.eitheror)	{
-                    var fields = easyField.eitheror.split(",");
-                    if (EasyEdits.getValue(form,$E(fields[0])) && EasyEdits.getValue(form,$E(fields[1]))) {
-                        EasyEdits.registerError(easy,formField,easyField,easyFields[fields[0]].longname+" and "+easyFields[fields[1]].longname +" are mutually exclusive, both can not be chosen",action);
-                    }
-                }
-                if (easyField.anyof) {
-                    var fields = easyField.anyof.split(",");
-                }
-                if (easyField.atleastone) {
-                    var fields = []; var checked = false;
-                    if (typeof(easyField.atleastone)=="object") {
-                        fields = easyField.atleastone;
-                    } else {
-                        fields = easyField.atleastone.split(',');
-                    }
-                    for (var x in fields) {
-                       checked = checked || $E(fields[x]).checked;
-                    }
-                    if (!checked) {
-                        var msg = "You must select one of the following: ";
-                        for (var x in fields) {
-                            msg += easyFields[fields[x]].longname+', '
-                        }
-                        EasyEdits.registerError(easy,formField,easyField,msg.substr(0,msg.length-2),action);
-                    }
-                }
-                if ((easyField.format) && (!easy.flagged)) {
-                    if (formField.value) {
-                        var regEx = new RegExp(easyField.format)
-                        if (!regEx.test(fieldVal)) {
-                                EasyEdits.registerError(easy,formField,easyField,easyField.longname +" Format Error. "+ easyField.formaterr,action);
-                        }
-                    }
-                }
-                if ((easyField.swap) && (!easy.flagged)) {
-                }
-                if ((typeof(easyField.onsubmit)=="function")) {
-                }
-            } else {
-                alert("Form is missing a field: "+easyField.field);
-            }
-	}
-    }
-    var doitAnyway	= false;
-    if (easy.errors !== 0) {
-        if (easy.criticals > 0)	{
-            alert("The following Critical Errors have occurred:\n\n"+easy.message);
-        } else if (easy.warnings > 0)	{
-            doitAnyway	= confirm("Warning!\n\n" + easy.message);
-        } else if (easy.failures > 0) {
-            alert("Warning, some non-critical warning messages were encountered:\n\n"+easy.message);
-        }
-        var resetFocus = false;
-        for (var i=0; i<easy.edits.fields.length; i++) {
-            var easyField = easy.edits.fields[i];
-            if (easyField.inerror) {
-                $E(easyKey).style.backgroundColor = (easy.edits.fields[i].required) ? easy.defaults.required['background-color'] : easy.defaults.optional['background-color'];
-                easyField.inerror = false;
-                if (!resetFocus) {
-                    $E(easyKey).focus();
-                    resetFocus = true;
-                }
-                if (easyField.type == "combo") {
-                    $E(easyKey+"_combo").style.backgroundColor = defaultBackgroundColor;
-                }
-            }
-        }
-    }
-    var doit	= true;
-    if (easy.criticals != 0) {
-        doit = false;
-    } else {
-        if (easy.warnings > 0) {
-            doit	= doitAnyway;
-        }
-    }
-    easy.reset();
-    EasyEdits.resetCombos(easy);
-    return doit;
-}
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.zoom = function (easy,ratio) {
     if (easy.currentZoom >= 10)
         easy.currentZoom += ratio;
@@ -1266,11 +1229,11 @@ EasyEdits.zoom = function (easy,ratio) {
         }
     }
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.setFormNode	= function (easy,node) {
     easy.formNode = node;
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.populateSelectBox = function (selectBox, contents, map, leaveCombo) {
     console.log(selectBox);
     map       = (map) ? map : false;
@@ -1369,7 +1332,7 @@ EasyEdits.populateSelectBox = function (selectBox, contents, map, leaveCombo) {
         alert("I was supposed to populate a drop down box, but I didnt find it");
     }
 }
-/* ------------------------------- */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.getElementId	= function (evt) {
     var objectID = "";
 
@@ -1386,7 +1349,7 @@ EasyEdits.getElementId	= function (evt) {
     }
     return objectID;
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.throwFocusAway = function (evt) {
     if (EasyEdits.lastKey == 9) 	{
         evt = (evt) ? evt : ((window.event) ? event : null);
@@ -1394,11 +1357,11 @@ EasyEdits.throwFocusAway = function (evt) {
         $E(evtId+"_combo").focus();
     }
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.resetLastKey = function (evt){
     EasyEdits.lastKey = 0;
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.generateFormElementHTML	= function (edit) {
 	var elementHTML = "";
 	edit.value = (edit.value) ? edit.value : "";
@@ -1432,7 +1395,7 @@ EasyEdits.generateFormElementHTML	= function (edit) {
 	}
 	return elementHTML;
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.validDOB = function (evt) {
 	evt = (evt) ? evt : ((window.event) ? event : null);
 	if (this.value.trim() !== "") {
@@ -1466,7 +1429,7 @@ EasyEdits.validDOB = function (evt) {
 	}
 	return true;
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.copies	= function (orig,pad,len) {
     orig = ''+orig;  //render a string;
     if (orig.length < len) {
@@ -1476,7 +1439,7 @@ EasyEdits.copies	= function (orig,pad,len) {
     }
     return orig;
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.monthsList	= function (evt) {
     var month = "January,February,March,April,May,June,July,August,September,October,November,December".split(",");
     //FIX THIS!
@@ -1487,7 +1450,7 @@ EasyEdits.monthsList	= function (evt) {
         sb[sb.length] = new Option(month[m],mm);
     }
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.stateList	= function (evt) {
     //FIX THIS!
     var sr = $E(this.id);
@@ -1501,7 +1464,7 @@ EasyEdits.stateList	= function (evt) {
         sr[i+1].value 	= stateCodes[i];
     }
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.setSelectBoxByText	= function (selectBox,txt) {
 	if (typeof(selectBox)=="string") {
 		selectBox = $E(selectBox);
@@ -1512,7 +1475,7 @@ EasyEdits.setSelectBoxByText	= function (selectBox,txt) {
 		ctr++;
 	}
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.getChildNodes	= function (nodes){
 	var nodeList = [];
 	for (var i=0; i<nodes.childNodes.length; i++)	{
@@ -1525,7 +1488,7 @@ EasyEdits.getChildNodes	= function (nodes){
 	}
 	return nodeList;
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.sum		= function (evt) {
 	evt = (evt) ? evt : ((window.event) ? event : null);
 	var sumClass = this.getAttribute("sumclass");
@@ -1546,7 +1509,7 @@ EasyEdits.sum		= function (evt) {
 }
 EasyEdits.timepicker	= null;
 EasyEdits.calendar		= null;
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.showTimePicker	= function (field,evt)
 {
 	var node = EasyEdits.timepicker.getNode();
@@ -1557,7 +1520,7 @@ EasyEdits.showTimePicker	= function (field,evt)
 	node.show();
 }
 EasyEdits.calendar		= null;
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.showCalendar	= function (field,evt)
 {
 	var node = EasyEdits.calendar.getNode();
@@ -1570,13 +1533,13 @@ EasyEdits.showCalendar	= function (field,evt)
 	handler.setField(field);
 	EasyEdits.calendar.setDayHandler(handler.fire);
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.hideCalendar = function ()
 {
     if (EasyEdits.calendar)
         EasyEdits.calendar.getNode().style.display = "none";
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.dayHandler = function () {
     var fld = null;
     this.setField = function (field) {
@@ -1590,7 +1553,7 @@ EasyEdits.dayHandler = function () {
         EasyEdits.hideCalendar();
     }
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.timeHandler = function () {
     var fld = null;
     this.setField = function (field) {
@@ -1604,7 +1567,7 @@ EasyEdits.timeHandler = function () {
         EasyEdits.hideCalendar();
     }
 }
-/* ------------------------------------------------ */
+    /* ------------------------------------------------------------------------- */    
 EasyEdits.validDate = function (evt) {
     if (this.value.trim() !== "") 	{
         var token       = this.value.substr(2,1);

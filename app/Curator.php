@@ -30,10 +30,11 @@ class Curator {
      * This routine accepts a resource identifier and then gets the list of files associated to that resource packing them into a single zip file for download
      * 
      * @param type $resource
-     * @return void
+     * @return string
      */
-    public static function prepare($resource=false) : void {
-        if ($resources = json_decode('Code/Framework/Humble/lib/sample/curated/resources.json',true)) {
+    public static function prepare($resource=false) : mixed {
+        $result = '';
+        if ($resources = json_decode(file_get_contents('Code/Framework/Humble/lib/sample/curated/resources.json'),true)) {
             if (isset($resources[$resource])) {
                 $zip = new ZipArchive();
                 if ($zip->open('tempresource.zip',ZipArchive::CREATE)) {
@@ -41,12 +42,13 @@ class Curator {
                         $zip->addFromString($file,file_get_contents($source));
                     }
                     $zip->close();
-                    print(file_get_contents('tempresource.zip'));
+                    $result = file_get_contents('tempresource.zip');
                     @unlink('tempresource.zip');                    
                 }
             } else {
                 die("Resource ".$resource." was not found on the curated list\n");
             }
         }
+        return $result;
     }
 }

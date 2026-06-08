@@ -28,70 +28,111 @@
         <table style="width: 100%; height: 100%">
             <tr>
                 <td>
-                    <div style="width: 600px; background-color: ghostwhite; margin-left: auto; margin-right: auto; padding: 20px; border: 1px solid #333; border-radius: 20px; font-family: sans-serif; font-size: .95em ">
-                        <form name="test_form" id="test_form_myid1" onsubmit="return false">
-                            <fieldset><legend>Instructions</legend>
-                                <div style="padding: 10px 0px">
-                                    This is a simple test form for refactoring the EasyEdit utility    
-                                </div>
-                                <div class="group_class">
-                                    <div class="field_class">
-                                        <select name="namespace">
-                                            <option value=""> </option>
-                                            {% for module in modules.fetch() %}
-                                                <option value="{{ module.namespace }}"> {{ module.namespace }} </option>
-                                            {% endfor %}
-                                        </select>
+                    <form name="test_form" id="test_form_myid1" onsubmit="return false">                    
+                        <div style="width: 1200px; margin-right: auto; margin-left: auto; box-sizing: content-box; background-color: navy"
+                             ><div style="width: 600px; box-sizing: border-box; margin: 0px; background-color: ghostwhite; display: inline-block; padding: 20px; border: 1px solid #333; font-family: sans-serif; font-size: .95em ">
+                                <fieldset><legend>Instructions</legend>
+                                    <div style="padding: 10px 0px">
+                                        This is a simple test form for refactoring the EasyEdit utility    
                                     </div>
-                                    <div class="label_class">
-                                        Namespace
+                                    <div class="group_class">
+                                        <div class="field_class">
+                                            <select name="namespace">
+                                                <option value=""> </option>
+                                                {% for module in modules.fetch() %}
+                                                    <option value="{{ module.namespace }}"> {{ module.namespace }} </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="label_class">
+                                            Namespace
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="group_class">
-                                    <div class="field_class">
-                                        <select name="component">
-                                            <option value=""> </option>
-                                        </select>
+                                    <div class="group_class">
+                                        <div class="field_class">
+                                            <select name="component">
+                                                <option value=""> </option>
+                                            </select>
+                                        </div>
+                                        <div class="label_class">
+                                            Components
+                                        </div>
                                     </div>
-                                    <div class="label_class">
-                                        Components
+                                    <div class="group_class">
+                                        <div class="field_class">
+                                            <select name="method">
+                                                <option value=""> </option>
+                                            </select>
+                                        </div>
+                                        <div class="label_class">
+                                            Methods
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="group_class">
-                                    <div class="field_class">
-                                        <select name="method">
-                                            <option value=""> </option>
-                                        </select>
+                                    <div class="group_class">
+                                        <div class="field_class" style="position: relative">
+                                            <select name="combo_demo">
+                                                <option value=""> </option>
+                                                <option value="1"> 1 </option>
+                                                <option value="2"> 2 </option>
+                                                <option value="3"> 3 </option>
+                                            </select><input type="text" name="combo_demo_combo" value="" />
+                                        </div>
+                                        <div class="label_class">
+                                            Combo Demo
+                                        </div>
                                     </div>
-                                    <div class="label_class">
-                                        Methods
-                                    </div>
-                                </div>
-                                <div class="group_class">
-                                    <div class="field_class" style="position: relative">
-                                        <select name="combo_demo">
-                                            <option value=""> </option>
-                                            <option value="1"> 1 </option>
-                                            <option value="2"> 2 </option>
-                                            <option value="3"> 3 </option>
-                                        </select><input type="text" name="combo_demo_combo" value="" />
-                                    </div>
-                                    <div class="label_class">
-                                        Combo Demo
-                                    </div>
-                                </div>
-                                <div class="group_class">
-                                    <div class="field_class">
-                                        <input type="text" name="date_demo" value="" />
+                                    <div class="group_class">
+                                        <div class="field_class" style="position: relative">
+                                            <input type="text" name="area_code" value="" />
+                                            <input type="text" name="npi" value ="" />
+                                            <input type="text" name="nxx" value="" />
+                                        </div>
+                                        <div class="label_class">
+                                            Phone Number (Area-NPI-NXX)
+                                        </div>
+                                    </div>                                        
+                                    <div class="group_class">
+                                        <div class="field_class">
+                                            <input type="text" name="date_demo" value="" />
 
+                                        </div>
+                                        <div class="label_class">
+                                            Date Mask Demo
+                                        </div>
                                     </div>
-                                    <div class="label_class">
-                                        Date Mask Demo
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </form>
-                    </div>
+                                    <div class="group_class">
+                                        <div class="field_class">
+                                          <input type="checkbox" name="cb_enable" value="Y"/> Click to enable checkboxes below<br /><br />
+                                          <input type="checkbox" name="cb_one"    value="1" disabled="disabled" /> 1 <br />
+                                          <input type="checkbox" name="cb_two"    value="2" disabled="disabled" /> 2 <br />
+                                          <input type="checkbox" name="cb_three"  value="3" disabled="disabled" /> 3 <br />
+                                          <input type="checkbox" name="cb_four"   value="4" disabled="disabled" /> 4 <br />
+                                        </div>
+                                        <div class="label_class">
+                                            Checkbox Demo
+                                        </div>
+                                    </div>     
+                                    <div class="group_class">
+                                        <div class="field_class">
+                                          <input type="checkbox" name="rb_enable" value="Y"/> Click to enable radio buttons below<br /><br />
+                                          <input type="radio" name="rb_demo" id="rb_demo_1" value="1" disabled="disabled" /> 1 <br />
+                                          <input type="radio" name="rb_demo" id="rb_demo_2" value="2" disabled="disabled" /> 2 <br />
+                                          <input type="radio" name="rb_demo" id="rb_demo_3" value="3" disabled="disabled" /> 3 <br />
+                                          <input type="radio" name="rb_demo" id="rb_demo_4" value="4" disabled="disabled" /> 4 <br />
+                                        </div>
+                                        <div class="label_class">
+                                            Radio Button Demo
+                                        </div>
+                                    </div>                                         
+                                </fieldset>
+
+                            </div><div style="width: 600px; box-sizing: border-box; margin: 0px; background-color: ghostwhite; display: inline-block; padding: 20px; border: 1px solid #333; font-family: sans-serif; font-size: .95em ">                                        
+                                Ok
+                            </div><div style="width: 1200px; box-sizing: border-box; background-color: ghostwhite; text-align: center; padding: 20px; border: 1px solid #333; clear: both">
+                                                <button name="test_form_submit"> Validate </button>
+                                            </div>
+                        </div>
+                    </form>
                 </td>
             </tr>
         </table>

@@ -67,12 +67,57 @@
             force:          false,
             classname:      "",
             style:          ""
-        },     
+        },  
+        {
+            active:         true,
+            name:           "area_code",
+            longname:       "Phone Area Code",
+            title:          "Area Code",
+            type:           "text",
+            maxlength:      3,
+            minlength:      3,
+            mask:           "####",
+            onfill:         "npi",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          "width: 60px; boreder: 1px solid #333; padding: 2px;"
+        },           
+        {
+            active:         true,
+            name:           "npi",
+            longname:       "Phone Number NPI",
+            title:          "NPI Number",
+            type:           "text",
+            maxlength:      3,
+            minlength:      3,
+            mask:           "####",
+            onfill:         "nxx",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          "width: 60px; boreder: 1px solid #333; padding: 2px;"
+        },                   
+        {
+            active:         true,
+            name:           "nxx",
+            longname:       "Phone Number NXX",
+            title:          "NXX Number",
+            type:           "text",
+            maxlength:      4,
+            minlength:      4,
+            mask:           "####",
+            onfill:         "date_demo",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          "width: 60px; border: 1px solid #333; padding: 2px;"
+        },                           
         {
             active:         true,
             name:           "date_demo",
             placeholder:    "##/##/####",
-            mask:           "#^/#^/####",
+            mask:           "#^/#^/##",
             longname:       "Date Format",
             title:          "Should be Y2K compatible date format",
             type:           "text",
@@ -80,27 +125,44 @@
             force:          false,
             classname:      "",
             style:          ""
+        },   
+        {
+            active:         true,
+            name:           "cb_enable",
+            longname:       "Checkbox Enable",
+            title:          "Click to enable the checkboxes below",
+            type:           "checkbox",
+            dependencies:   "cb_one,cb_two,cb_three,cb_four",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
         },             
         {
-            active:         false,
-            name:           "form_create_button",
-            longname:       "Form Create",
-            title:          "Click to create the form",
+            active:         true,
+            name:           "rb_enable",
+            longname:       "Radio Button Enable",
+            title:          "Click to enable the radio buttons below",
+            type:           "checkbox",
+            dependencies:   "rb_demo_1,rb_demo_2,rb_demo_3,rb_demo_4",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },                     
+        {
+            active:         true,
+            name:           "test_form_submit",
+            longname:       "Form Submit",
+            title:          "Click to validate the form",
             type:           "button",
             required:       false,
             force:          false,
             onclick:        function () {
-                if (Edits['designer-create-form'].validate()) {
-                    (new EasyAjax('/paradigm/designer/new')).packageForm('designer-create-form').then((response) => {
-                        var form = JSON.parse(response);
-                        if (form && form.id) {
-                            Designer.form.load(form);
-                            Designer.windows.create._close();
-                        } else {
-                            console.log(form);
-                            alert("Error creating form, please try again, or go play parcheesi");
-                        }
-                    }).post();
+                if (Edits['my_edits_test'].validate()) {
+                    alert('Validated :-D');
+                } else {
+                    alert('Failed to Validate :-(');
                 }
             },
             classname:      "",
