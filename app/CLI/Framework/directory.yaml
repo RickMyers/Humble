@@ -69,3 +69,18 @@ api|policy|update-policy :
     parameters:
         required:
         optional:              
+man|manual : 
+    description: Displays help manual information depending on topic
+    extended: see https://humbleprogramming.com/pages/Manual.htmls for more information
+    usage:
+        linux:   sudo sh ./humble.sh --man parameter:*
+        windows: humble --man parameter:*
+    function : manual
+    directive: false
+    parameters:
+        required:
+          tag: Name of tag to perform a manual look for
+        optional:
+          attr: Tag attribute to return information from the manual for
+           
+          

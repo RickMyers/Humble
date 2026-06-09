@@ -33,6 +33,9 @@ class Framework extends CLI
         }
     }
     
+    /**
+     * 
+     */
     public static function preserve() {
         $args       = self::arguments();
         $directory  = $args['directory'];
@@ -51,6 +54,10 @@ class Framework extends CLI
         }
     }
     
+    /**
+     * 
+     * @param type $args
+     */
     public static function restore($args) {
         $args       = self::arguments();
         $directory  = $args['directory'];
@@ -114,7 +121,7 @@ class Framework extends CLI
     public static function apiPolicy() {
         $message = "API Policy File Not Found";
         $project = Environment::project();
-        if (file_exists($file    = 'Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json')) {
+        if (file_exists($file   = 'Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json')) {
             $current_policy     = json_decode(file_get_contents($file),true);
             $comments           = $current_policy['comments'] ?? 'Read more about the API policy at https://humbleprogramming.com/pages/APIPolicy.htmls';
             $defaults           = (isset($current_policy['default'])) ? $current_policy['default'] : ['authenticated'=>['read'=>false,'write'=>false]] ;
@@ -131,6 +138,12 @@ class Framework extends CLI
             $message = "API Policy has been updated at ".$file."\n";
         } 
         print("\n".$message."\n");
+    }
+    
+    public static function manual($args) {
+        $tag    = $args['tag'];
+        $attr   = $args['attr'] ?? false;
+        //TODO!
     }
 }
 
