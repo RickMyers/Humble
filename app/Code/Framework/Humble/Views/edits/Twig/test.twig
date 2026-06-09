@@ -19,16 +19,34 @@
         <script type="text/javascript">
         $(document).ready(()=>{
             console.log('ready')
-            new EasyEdits('/edits/humble/test','my_edits_test',{ "&&id&&": "myid1" });
-            
+            let edits = new EasyEdits('/edits/humble/test','my_edits_test',{ "&&id&&": "myid1" });
+            let tabs  = new EasyTab('edits_nav',120);
+            tabs.add('Edits Demo',null,'edits_demo');
+            let f = () => {
+                $('#edits_json').height($('#edits_demo').height());
+            }
+            tabs.add('Edits JSON',f,'edits_json');
+            tabs.tabClick(0);
+            $('#enable_form_demo').on('click',edits.enable);
+            $('#disable_form_demo').on('click',edits.disable);
         })    
         </script>
     </head>
     <body style="background-color: #bfbfbf">
+
+        
         <table style="width: 100%; height: 100%">
             <tr>
                 <td>
-                    <form name="test_form" id="test_form_myid1" onsubmit="return false">                    
+                    <form name="test_form" id="test_form_myid1" onsubmit="return false">
+                        <div id="edits_nav" style="width: 1200px; margin-right: auto; margin-left: auto;">
+                        </div>
+                        <div id="edits_demo">        
+                        <div style="width: 1200px; box-sizing: border-box; background-color: ghostwhite; margin: auto; text-align: center; padding: 20px; border: 1px solid #333; clear: both">
+                            <button id="enable_form_demo" style="float: left"> Enable </button>
+                            <button id="disable_form_demo" style="float: right"> Disable </button>
+                            Easy Edits Demo
+                        </div>                            
                         <div style="width: 1200px; margin-right: auto; margin-left: auto; box-sizing: content-box; background-color: navy"
                              ><div style="width: 600px; box-sizing: border-box; margin: 0px; background-color: ghostwhite; display: inline-block; padding: 20px; border: 1px solid #333; font-family: sans-serif; font-size: .95em ">
                                 <fieldset><legend>Instructions</legend>
@@ -126,16 +144,79 @@
                                     </div>                                         
                                 </fieldset>
 
-                            </div><div style="width: 600px; box-sizing: border-box; margin: 0px; background-color: ghostwhite; display: inline-block; padding: 20px; border: 1px solid #333; font-family: sans-serif; font-size: .95em ">                                        
-                                Ok
-                            </div><div style="width: 1200px; box-sizing: border-box; background-color: ghostwhite; text-align: center; padding: 20px; border: 1px solid #333; clear: both">
-                                                <button name="test_form_submit"> Validate </button>
+                                </div><div style="width: 600px; box-sizing: border-box; margin: 0px; background-color: ghostwhite; display: inline-block; padding: 20px; border: 1px solid #333; font-family: sans-serif; font-size: .95em ">                                        
+                                    <fieldset><legend>Continued</legend>
+                                        <div class="group_class">
+                                            <div class="field_class">
+                                              <input type="checkbox" name="cb_rb_enable" value="Y"/> Click to enable checkboxes below<br /><br />
+                                              <input type="checkbox" name="cb_rb_one"    value="1" disabled="disabled" /> 1 <br />
+                                              <input type="checkbox" name="cb_rb_two"    value="2" disabled="disabled" /> 2 <br />
+                                              <input type="checkbox" name="cb_rb_three"  value="3" disabled="disabled" /> 3 <br />
+                                              <input type="checkbox" name="cb_rb_four"   value="4" disabled="disabled" /> 4 <br />
                                             </div>
+                                            <div class="label_class">
+                                                Checkboxes like Radio Buttons
+                                            </div>
+                                        </div>   
+                                        <div class="group_class">
+                                            <div class="field_class">
+                                              <input type="checkbox" name="eo_enable" value="Y"/> Click to enable checkboxes below<br /><br />
+                                              <input type="checkbox" name="eo_one"    value="1" disabled="disabled" /> 1 <br />
+                                              <input type="checkbox" name="eo_two"    value="2" disabled="disabled" /> 2 <br />
+                                            </div>
+                                            <div class="label_class">
+                                                Either/Or Demo
+                                            </div>
+                                        </div>   
+                                        <div class="group_class">
+                                            <div class="field_class">
+                                              <input type="checkbox" name="alo_enable" value="Y"/> Click to enable checkboxes below<br /><br />
+                                              <input type="checkbox" name="alo_one"    value="1" disabled="disabled" /> 1 <br />
+                                              <input type="checkbox" name="alo_two"    value="2" disabled="disabled" /> 2 <br />
+                                              <input type="checkbox" name="alo_three"  value="3" disabled="disabled" /> 3 <br />
+                                              <input type="checkbox" name="alo_four"   value="4" disabled="disabled" /> 4 <br />
+                                            </div>
+                                            <div class="label_class">
+                                                Choose at least one
+                                            </div>
+                                        </div> 
+                                        <div class="group_class">
+                                            <div class="field_class">
+                                              <input type="checkbox" name="verify_enable" value="Y"/> Click to enable verify text below<br /><br />
+                                              <div>
+                                                <input type="text" name="data_field" value="" disabled />
+                                              </div>
+                                              <div style="font-family: monospace; letter-spacing: 2px; font-size: .75em; padding-bottom: 10px">
+                                                  Data Field
+                                              </div>
+                                              <div>
+                                                  <input type="text" name="verify_field" value="" disabled="true" />
+                                              </div>
+                                              <div style="font-family: monospace; letter-spacing: 2px; font-size: .75em; padding-bottom: 10px">
+                                                  Verify Field
+                                              </div>
+                                            </div>
+                                            <div class="label_class">
+                                                Field verification, similar to Password/Confirm
+                                            </div>
+                                        </div>                                       
+
+                                    </fieldset>
+                                </div><div style="width: 1200px; box-sizing: border-box; background-color: ghostwhite; text-align: center; padding: 20px; border: 1px solid #333; clear: both">
+                                    <button name="test_form_submit"> Validate </button>
+                                </div>
+                            </div>
                         </div>
+                    <div id="edits_json" style="width: 1200px; margin-right: auto; margin-left: auto; background-color: ghostwhite; overflow: auto">
+                        The Source Code
+                    </div>
+                                            
                     </form>
+                                                
                 </td>
             </tr>
         </table>
+        
     </body>
 </html>
    

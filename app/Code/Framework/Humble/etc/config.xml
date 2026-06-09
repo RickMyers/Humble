@@ -121,6 +121,7 @@
             <edittest>
                 <js>
                     <source weight="12">Humble/web/js/EasyEdit.js</source>
+                    <source weight="12">Humble/web/js/EasyTabs.js</source>
                 </js>
             </edittest>
             <widgets>

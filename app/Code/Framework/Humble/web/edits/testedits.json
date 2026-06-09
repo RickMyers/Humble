@@ -49,7 +49,7 @@
         {
             active:         true,
             name:           "combo_demo",
-            longname:       "Combo Box",
+            longname:       "Demo Combo Box",
             title:          "Demo of a combination select/write box",
             type:           "combo",
             required:       true,
@@ -60,7 +60,7 @@
         {
             active:         true,
             name:           "combo_demo_combo",
-            longname:       "A long name",
+            longname:       "Combo field combo",
             title:          "Is this working?",
             type:           "text",
             required:       false,
@@ -149,7 +149,154 @@
             force:          false,
             classname:      "",
             style:          ""
-        },                     
+        },
+        {
+            active:         true,
+            name:           "cb_rb_enable",
+            longname:       "Radio Button Enable",
+            title:          "Click to enable the checkboxes like radio buttons below",
+            type:           "checkbox",
+            dependencies:   "cb_rb_one,cb_rb_two,cb_rb_three,cb_rb_four",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            name:           "eo_enable",
+            longname:       "Radio Button Enable",
+            title:          "Click to enable the either/or checkboxes below",
+            type:           "checkbox",
+            dependencies:   "eo_one,eo_two",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            name:           "eo_one",
+            longname:       "Either Or First Option",
+            title:          "Select Either This option of the Next option, not both",
+            type:           "checkbox",
+            eiteror:        "eo_one,eo_two",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            name:           "eo_two",
+            longname:       "Either Or Second Option",
+            title:          "Select Either This option of the Previous option, not both",
+            type:           "checkbox",
+            eitheror:       "eo_one,eo_two",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+        
+        {
+            active:         true,
+            name:           "alo_enable",
+            longname:       "Radio Button Enable",
+            title:          "Click to enable the radio buttons below",
+            type:           "checkbox",
+            dependencies:   "alo_one,alo_two,alo_three,alo_four",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            name:           "alo_one",
+            longname:       "At least one,First Option",
+            title:          "Select at least one from this list",
+            type:           "checkbox",
+            atleastone:     "alo_one,alo_two,alo_three,alo_four",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            name:           "alo_two",
+            longname:       "At least one, Second Option",
+            title:          "Select at least one from this list",
+            type:           "checkbox",
+            atleastone:     "alo_one,alo_two,alo_three,alo_four",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            name:           "alo_three",
+            longname:       "At least one, Third Option",
+            title:          "Select at least one from this list",
+            type:           "checkbox",
+            atleastone:     "alo_one,alo_two,alo_three,alo_four",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            name:           "alo_four",
+            longname:       "At least one, Fourth Option",
+            title:          "Select at least one from this list",
+            type:           "checkbox",
+            atleastone:     "alo_one,alo_two,alo_three,alo_four",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+
+        
+        {
+            active:         true,
+            name:           "verify_enable",
+            longname:       "Verify/Confirm Text Enable",
+            title:          "Click to enable the verify fields below",
+            type:           "checkbox",
+            dependencies:   "data_field,verify_field",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            name:           "data_field",
+            longname:       "Data Field",
+            title:          "Enter data here that should match the verify feild",
+            type:           "text",
+            verify:         "verify_field",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          ""
+        },
+        {
+            active:         true,
+            name:           "verify_field",
+            longname:       "Verify Field",
+            title:          "This field should verify agains the data field",
+            type:           "text",
+            verify:         "data_field",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          ""
+        },
         {
             active:         true,
             name:           "test_form_submit",
