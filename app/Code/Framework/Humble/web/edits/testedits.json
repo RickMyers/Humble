@@ -125,7 +125,32 @@
             force:          false,
             classname:      "",
             style:          ""
-        },   
+        },  
+        {
+            active:         true,
+            name:           "range_enable",
+            longname:       "Checkbox Enable Range Test",
+            title:          "Click to enable the range test",
+            type:           "checkbox",
+            dependencies:   "range_field",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },          
+        {
+            active:         true,
+            name:           "range_field",
+            longname:       "Range Field",
+            title:          "Value should not be zero, but between 1 and 99",
+            type:           "text",
+            nozero:        true,
+            range:          "1..99",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          ""
+        },                  
         {
             active:         true,
             name:           "cb_enable",

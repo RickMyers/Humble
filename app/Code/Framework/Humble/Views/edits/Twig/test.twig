@@ -200,7 +200,16 @@
                                                 Field verification, similar to Password/Confirm
                                             </div>
                                         </div>                                       
-
+                                        <div class="group_class">
+                                            <div class="field_class">
+                                              <input type="checkbox" name="range_enable" value="Y"/> Click to enable verify text below<br /><br />
+                                              <div>
+                                                <input type="text" name="range_field" value="" disabled />
+                                              </div>
+                                              <div style="font-family: monospace; letter-spacing: 2px; font-size: .75em; padding-bottom: 10px">
+                                                  Value must not be 0, and be between 1 and 99
+                                              </div>
+                                        </div>   
                                     </fieldset>
                                 </div><div style="width: 1200px; box-sizing: border-box; background-color: ghostwhite; text-align: center; padding: 20px; border: 1px solid #333; clear: both">
                                     <button name="test_form_submit"> Validate </button>
