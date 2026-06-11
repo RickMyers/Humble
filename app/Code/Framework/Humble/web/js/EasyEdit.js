@@ -504,7 +504,7 @@ function EasyEdits(source, ref, overrides)
         }
         //form specific processing
         this.form = this.edits.form.ref     = document.getElementById(this.edits.form.id);
-        
+
         if (!this.form) {
             alert('Edits: '+this.edits.form.id+' Not Found');
             return false;
@@ -559,10 +559,11 @@ function EasyEdits(source, ref, overrides)
                 this.changeHandlers[easyKey] = [];
                 if (formField.onchange) {
                     this.changeHandlers[easyKey][this.changeHandlers[easyKey].length] = formField.onchange; //if there is already an onchange event, add it to the list of handlers
+                    formField.onchange                                                = null;  
                 } try {
-                    easyField.ref		= formField;
+                    easyField.ref	= formField;
                     easyField.inerror	= false;
-                    if ((!formField.disabled) && (easyField.type!="button") ) {
+                    if ((!formField.disabled) && (easyField.type !== "button") ) {
                         formField.style.backgroundColor = this.defaults.optional['background-color'];
                     }
                     if (easyField.required)	{
@@ -579,7 +580,7 @@ function EasyEdits(source, ref, overrides)
                         for (var ii=0; ii<styles.length; ii++) {
                             var pair = styles[ii].split(":");
                             if (pair[0].trim()) {
-                                if (pair[0].indexOf("-")!=-1) {
+                                if (pair[0].indexOf("-") !== -1) {
                                     var pre 	= pair[0].substr(0,pair[0].indexOf("-"));
                                     var cap		= pair[0].substr(pair[0].indexOf("-")+1,1).toUpperCase();
                                     var post 	= pair[0].substr(pair[0].indexOf("-")+2);
@@ -655,10 +656,16 @@ function EasyEdits(source, ref, overrides)
                         }
                     })(formField,formField.combo));
                     if (easyField.onchange)	{
+                        let me = formField;
                         if (!this.changeHandlers[formField.easyKey]) {
                             this.changeHandlers[formField.easyKey] = [];
                         }
                         this.changeHandlers[formField.easyKey][this.changeHandlers[formField.easyKey].length] = easyField.onchange;
+                        $(formField).on('change',(evt) => {
+                            for (let i in easy.changeHandlers[me.easyKey]) {
+                                this.changeHandlers[me.easyKey][i](evt);
+                            }
+                        });
                     }
                     if (easyField.sumfield && easyField.sumclass){
                         formField.setAttribute("sumclass",easyField.sumclass);
@@ -851,9 +858,10 @@ function EasyEdits(source, ref, overrides)
                     if ((typeof(easyField.populator) !== "undefined") && (easyField.populator)) {
                         if (typeof(easyField.populator) === "string") {
                             let ef = easyField;
+                            let ff = formField;
                             (new EasyAjax(easyField.populator)).then(function(response) {
                                 if (response) {
-                                    EasyEdits.populateSelectBox(ef.id, JSON.parse(response),false);
+                                    EasyEdits.populateSelectBox(ff, JSON.parse(response),false);
                                 }
                             }).get();
                         } else if (typeof(easyField.populator) === "object") {

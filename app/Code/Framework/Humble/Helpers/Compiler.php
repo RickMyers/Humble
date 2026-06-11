@@ -88,7 +88,7 @@ class Compiler extends Directory
      * @return type
      */
     private function response($value=null) {
-        if ($value===null) {
+        if ($value === null) {
             return $this->response;
         } else {
             $this->response = $value;

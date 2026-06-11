@@ -1,0 +1,12 @@
+[
+    {
+        "text": "",
+        "value": ""
+    }
+    {% for module in modules.fetch() %}
+    ,{
+        "text": "{{ module.namespace|capitalize }}",
+        "value": "{{ module.namespace }}"
+    }
+    {% endfor %}
+]

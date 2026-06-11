@@ -19,6 +19,15 @@
         </action>
 
         <!-- ################################################################################################# -->
+        
+        <action name="list" output="JSON">
+            <description> Lists all components associated to a namespace</description>
+            <entity namespace="paradigm" class="workflow/components" id="components" distinct="true" fields="namespace,component">
+                <parameter name="namespace" source="request" required="true" />
+            </entity>
+        </action>
+        
+        <!-- ################################################################################################# -->
 
         <action name="events" output="JSON">
             <description>Returns a list of events associated to an optional namespace, these are custom events</description>

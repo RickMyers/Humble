@@ -57,9 +57,6 @@
                                         <div class="field_class">
                                             <select name="namespace">
                                                 <option value=""> </option>
-                                                {% for module in modules.fetch() %}
-                                                    <option value="{{ module.namespace }}"> {{ module.namespace }} </option>
-                                                {% endfor %}
                                             </select>
                                         </div>
                                         <div class="label_class">
@@ -144,7 +141,7 @@
                                     </div>                                         
                                 </fieldset>
 
-                                </div><div style="width: 600px; box-sizing: border-box; margin: 0px; background-color: ghostwhite; display: inline-block; padding: 20px; border: 1px solid #333; font-family: sans-serif; font-size: .95em ">                                        
+                                </div><div style="width: 600px; vertical-align: top; box-sizing: border-box; margin: 0px; background-color: ghostwhite; display: inline-block; padding: 20px; border: 1px solid #333; font-family: sans-serif; font-size: .95em ">                                        
                                     <fieldset><legend>Continued</legend>
                                         <div class="group_class">
                                             <div class="field_class">
@@ -202,13 +199,14 @@
                                         </div>                                       
                                         <div class="group_class">
                                             <div class="field_class">
-                                              <input type="checkbox" name="range_enable" value="Y"/> Click to enable verify text below<br /><br />
-                                              <div>
-                                                <input type="text" name="range_field" value="" disabled />
-                                              </div>
-                                              <div style="font-family: monospace; letter-spacing: 2px; font-size: .75em; padding-bottom: 10px">
-                                                  Value must not be 0, and be between 1 and 99
-                                              </div>
+                                                <input type="checkbox" name="range_enable" value="Y"/> Click to enable verify text below<br /><br />
+                                                <div>
+                                                  <input type="text" name="range_field" value="" disabled />
+                                                </div>
+                                                <div style="font-family: monospace; letter-spacing: 2px; font-size: .75em; padding-bottom: 10px">
+                                                    Value must not be 0, and be between 1 and 99
+                                                </div>
+                                            </div>
                                         </div>   
                                     </fieldset>
                                 </div><div style="width: 1200px; box-sizing: border-box; background-color: ghostwhite; text-align: center; padding: 20px; border: 1px solid #333; clear: both">

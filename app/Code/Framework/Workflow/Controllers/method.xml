@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+
+Workflow component methods actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="method" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="Off" response="true">
+        
+        <action name="list" output="JSON">
+            <description>List the methods of a particular component</description>
+            <entity namespace="paradigm" class="workflow/components" distinct="true" fields="component,method" id="methods" orderby="method=ASC">
+                <parameter name="namespace" source="request" required="true" />
+                <parameter name="component" source="request" required="true" />
+            </entity>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

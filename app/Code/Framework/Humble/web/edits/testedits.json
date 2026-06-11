@@ -19,9 +19,18 @@
             longname:       "Module Namespace",
             title:          "The namespace of the module",
             type:           "select",
+            populator:      "/paradigm/namespace/list",
             required:       true,
             force:          true,
             classname:      "",
+            onchange:       (evt) => {
+                let val = $(evt.target).val();
+                if (val) {
+                    (new EasyAjax('/workflow/component/list')).add('namespace',val).then((response) => {
+                        EasyEdits.populateSelectBox($('#test_form_&&id&& [name="component"]').get()[0],JSON.parse(response));
+                    }).post();
+                }
+            },
             style:          "border: 1px solid #333; padding: 2px; width: 350px"
         },
         {
@@ -32,6 +41,15 @@
             type:           "select",
             required:       true,
             force:          true,
+            onchange:       (evt) => {
+                let component = $(evt.target).val();
+                let namespace = $($('#test_form_&&id&& [name="namespace"]').get()[0]).val();
+                if (component && namespace) {
+                    (new EasyAjax('/workflow/method/list')).add('namespace',namespace).add('component',component).then((response) => {
+                        EasyEdits.populateSelectBox($('#test_form_&&id&& [name="method"]').get()[0],JSON.parse(response));
+                    }).post();
+                }
+            },
             classname:      "",
             style:          "border: 1px solid #333; padding: 2px; width: 350px"
         },
@@ -316,7 +334,6 @@
             longname:       "Verify Field",
             title:          "This field should verify agains the data field",
             type:           "text",
-            verify:         "data_field",
             required:       true,
             force:          true,
             classname:      "",

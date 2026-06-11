@@ -1,0 +1,12 @@
+[
+    {
+        "text": "",
+        "value": ""
+    }
+{% for method in methods.fetch() %}
+    ,{
+        "text": "{{ method.method|capitalize }}",
+        "value": "{{ method.method }}"
+    }
+{% endfor %}
+]

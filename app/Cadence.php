@@ -570,32 +570,39 @@ if ($cadence) {
     logMessage("Starting Cadence...");
     while (file_exists('PIDS/cadence.pid') && ((int)file_get_contents('PIDS/cadence.pid')===$pid)) {
         logMessage('Waking...');
-        $duration       = time();
-        if (file_exists('cadence.cmd') && ($cmds = json_decode(file_get_contents('cadence.cmd')))) {
-            unlink('cadence.cmd');            
-            processCadenceCommand($cmds);
-        }
-        $handlers = array_merge($cadence['handlers']['framework'],$cadence['handlers']['application']);
-        foreach ($handlers as $component => $handler) {
-            if (($cadence_ctr % $cadence['period']) == 0) {
-                $start  = time();
-                foreach ($handler['callbacks'] as $callback => $status) {
-                    if ($status === true) {
-                        logMessage("Processing ".ucfirst($component)." Now...");
-                        //print("Callback:  ".$callback."\n");
-                        $callback();
-                        logMessage(ucfirst($component)." Processing took ".($start - time())." seconds");
+        try {            
+            $duration       = time();
+            if (file_exists('cadence.cmd') && ($cmds = json_decode(file_get_contents('cadence.cmd')))) {
+                unlink('cadence.cmd');            
+                processCadenceCommand($cmds);
+            }
+            $handlers = array_merge($cadence['handlers']['framework'],$cadence['handlers']['application']);
+            foreach ($handlers as $component => $handler) {
+                if (($cadence_ctr % $cadence['period']) == 0) {
+                    $start  = time();
+                    foreach ($handler['callbacks'] as $callback => $status) {
+                        if ($status === true) {
+                            logMessage("Processing ".ucfirst($component)." Now...");
+                            //print("Callback:  ".$callback."\n");
+                            $callback();
+                            logMessage(ucfirst($component)." Processing took ".($start - time())." seconds");
+                        }
                     }
                 }
             }
+            if ((++$cadence_ctr > 500)) {
+                logMessage("Reseting Cadence...");                              //Due to "fuzziness" caused by sleep/awake timer, we need to periodically reset counters
+                $started        = time();
+                $cadence_ctr    = 0;
+            }
+            logMessage('This run took '.date('s',time()-$duration).' seconds');
+            logMessage('Sleeping for '.$cadence['period'].' seconds');
+        } catch (Exception $ex) {
+            //Log::critical('some error');
+            logmessage('Exception has occurred: '.$ex->getMessage().', Shutting down...');
+            @unlink('PIDS/cadence.pid');                                        //clear PID so can restart after debugging
+            die();
         }
-        if ((++$cadence_ctr > 500)) {
-            logMessage("Reseting Cadence...");                                     //Due to "fuzziness" caused by sleep/awake timer, we need to periodically reset counters
-            $started        = time();
-            $cadence_ctr    = 0;
-        }
-        logMessage('This run took '.date('s',time()-$duration).' seconds');
-        logMessage('Sleeping for '.$cadence['period'].' seconds');
         sleep($cadence['period']);        
     }
     @unlink('PIDS/cadence.pid');
