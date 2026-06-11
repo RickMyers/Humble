@@ -274,19 +274,25 @@ QRY;
      * @return array
      */
     public function query($qry)	{
+        global $test_mode;
+        $test_mode  = $test_mode ?? false;
         $this->unity()->lastQuery($qry);
-        $resultSet  = null;
+        $resultSet  = [];
         $status     = \Humble::cache('queryLogging');
         $logQuery   = ($status==='On');
         if ($this->_connected) {
             if ($logQuery) {
                 $st = microtime(true);
             }
-            $resultSet = $this->_dbref->query($qry);
-//            print('State: '.$this->_dbref->sqlstate."\n");
-            $this->_state = $this->_dbref->sqlstate;
-            if ($logQuery) {
-                \Log::query($qry."\n\nELAPSED TIME: ".(microtime(true)-$st)."\nSQL STATE: ".$this->_state."\nERROR: ".$this->_dbref->error."\n");
+            if ($test_mode) {
+                \Log::query("Test Mode Enabled.\n\nQuery I Would Have Executed:\n\n".$qry);
+                return $resultSet;
+            } else {
+                $resultSet    = $this->_dbref->query($qry);
+                    $this->_state = $this->_dbref->sqlstate; 
+                if ($logQuery) {
+                    \Log::query($qry."\n\nELAPSED TIME: ".(microtime(true)-$st)."\nSQL STATE: ".$this->_state."\nERROR: ".$this->_dbref->error."\n");
+                }
             }
             if (($this->_dbref->sqlstate != '00000')) {
                 if ($this->_dbref->errno!=1062) {

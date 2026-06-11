@@ -32,6 +32,7 @@ function secureCheck($file=[]) {
             header('Content-Type: application/javascript');
             $orm->setPackage(str_replace('.js','',$_GET['package']))->orderBy('weight');
             $packageFiles = $orm->fetchEnabled(str_replace('.js','',$_GET['package']));
+            //implement a caching mechanism here... or relay on some kind of "varnish" like feature...
             foreach ($packageFiles as $idx => $file) {
                 if (secureCheck($file)) {
                     if (!isset($packages[$file['namespace']])) {

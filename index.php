@@ -12,6 +12,7 @@ This software is licensed under GNU GPL.
 For more information, see the file LICENSE.txt
 
  ###############################################################################*/
+$request_start      = microtime(true);                                          //If profile is enabled, then we need the time of the start of the request recorded
 //------------------------------------------------------------------------------
 function badRequestError() {
     $sapi_type = php_sapi_name();
@@ -43,6 +44,8 @@ $namespace              = ($_GET['humble_framework_namespace']  ?? false);
 $namespace              = (!$namespace || ($namespace==='default')) ? \Environment::namespace() : $namespace;
 $controller             = $_GET['humble_framework_controller']  ?? false;
 $action                 = $_GET['humble_framework_action']      ?? false;
+$profile                = false;
+$test_mode              = false;
 
 if (!($namespace && $controller && $action)) {
     die();
@@ -169,7 +172,6 @@ $info            = [];                                                          
 
 //###########################################################################
 //Primes the Humble Engine
-$ns              = $namespace;                                                  //save a copy, since this might change if there's no specific action but there is a default action
 \Humble::_namespace($namespace);                                                //this will become the inherited namespace if necessary
 \Humble::_controller($controller);
 \Humble::_action($action);
@@ -195,7 +197,6 @@ if ($mobile_support && $is_mobile) {
 //If the request wasn't handled by the previous step, then drop into the
 //  normal handling for a request
 if (!$request_handled) {
-    $core            = \Humble::module(\Environment::namespace());             //A reference to the core functionality held in the applications primary module
     $include         = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controller_cache']).'/'.$controller.'Controller.php';
     $source          = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$controller.'.xml';
 
@@ -205,27 +206,16 @@ if (!$request_handled) {
     //If we don't find the controller, we go check in the module that is identified as the base module for the application.
     //If we find a controller in our base module, with an action that matches the URL, we use that.
     if (!$is_production) {
+        $profile         = (isset($_GET['profile'])     && (strtolower($_GET['profile'])    === 'yes'));
+        $test_mode       = (isset($_GET['test_mode'])   && (strtolower($_GET['test_mode'])  === 'yes'));
         if (file_exists($include)) {
             $info        = \Humble::controller($namespace.'/'.$controller);
             $recompile   = (!$info) || (!isset($info['compiled'])) || ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
         } else if (file_exists($source)) {
             $recompile   = true;                                                //The controller source code exists but it is not currently compiled so flag it for compiling
         } else {
-            //No specific controller exists to match request, so let's go look for it in the base application module
-            $include         = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/Cache/'.$controller.'Controller.php';
-            $source          = 'Code/'.$core['package'].'/'.$core['module'].'/Controllers/'.$controller.'.xml';
-            if (file_exists($include)) {
-                $ns          = $core['namespace'];                              //we mark that we are in fact using the default namespace action without specifically changing the official namespace
-                $info        = \Humble::controller($ns.'/'.$controller);
-                $recompile   = ($info['compiled'] != date("Y-m-d, H:i:s", filemtime($source)));
-            } else if (file_exists($source)) {
-                $ns          = $core['namespace'];
-                $info        = \Humble::controller($ns.'/'.$controller);
-                $recompile   = true;
-            } else {
-                \HumbleException::standard(new Exception("Can Not Route Request, Resource Does Not Exist",12),"Request Error",'routing');
-                badRequestError();
-            }
+            \HumbleException::standard(new Exception("Can Not Route Request, Resource Does Not Exist",12),"Request Error",'routing');
+            badRequestError();
         }
     }
 
@@ -234,23 +224,16 @@ if (!$request_handled) {
     //directory from the module and compile and place the new controller there
     if ($recompile) {
         try {
-            //\Log::console('Recompiling: '.$source.' into '.$include);
-            $identifier = $ns.'/'.$controller;
+            \Log::console('Recompiling: '.$source.' into '.$include);
+            $identifier = $namespace.'/'.$controller;
             $compiler   = \Environment::getCompiler();
             $compiler->setController($controller);
             if (\Environment::isRunning(false,'main.js')) {
                 \Humble::push('adminLive',['source'=>'Front Controller', 'action'=>'Compilation', 'controller' => $identifier]);
             }
-            if ($ns === $core['namespace']) {
-                $core   = \Humble::module($ns);
-                $compiler->setInfo(\Humble::module($core['namespace']));
-                $compiler->setSource($core['package'].'/'.str_replace('_','/',$core['controllers']));
-                $compiler->setDestination($core['package'].'/'.str_replace('_','/',$core['controller_cache']));
-            } else {
-                $compiler->setInfo($module);
-                $compiler->setSource($module['package'].'/'.str_replace('_','/',$module['controllers']));
-                $compiler->setDestination($module['package'].'/'.str_replace('_','/',$module['controller_cache']));
-            }
+            $compiler->setInfo($module);
+            $compiler->setSource($module['package'].'/'.str_replace('_','/',$module['controllers']));
+            $compiler->setDestination($module['package'].'/'.str_replace('_','/',$module['controller_cache']));
             if ($compiler->syntaxCheck($identifier)) {
                 $compiler->compile($identifier);
             }
@@ -332,5 +315,8 @@ if (!$request_handled) {
         \HumbleException::standard($e,"Error Encountered");
     } finally {
 
+    }
+    if ($profile) {
+        \Log::console('Request processed in '.((microtime(true) - $request_start)*1000).' Microseconds');
     }
 }
