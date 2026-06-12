@@ -19,9 +19,9 @@
             </div>
             <div id="decision-internal-{$id}">
                 <div style='margin-left: auto; margin-right: auto; width: 545px'>
-                    <form name='decision-form' id='humble-paradigm-config-internal-decision-form-{$id}' onsubmit='return false'>
+                    <form name='decision-form' id='internal-form-{$id}' onsubmit='return false'>
                     <input type="hidden" name="window_id" value="{$window_id}" />
-                    <input type="hidden" name="id"  value="{$manager->getId()}" />      
+                    <input type="hidden" name="id"  value="{$id}" />      
                     <input type="hidden" name="decision" value="Y" />   
                     <img src='/images/paradigm/clipart/decision.png' style='float: right' />
                     <select name='namespace'>
@@ -41,13 +41,13 @@
                     </select>
                     <div class='form-field-description'>Available Decision Methods</div>
                     <br />
-                    <input type='button' name='decision-form-save' />
-                    <div style='margin-top: 25px; width: 450px; height: 60px; overflow: auto; border: 1px solid #aaf; padding: 5px; background-color: #F0F0D0; border-radius: 5px' id='config-component-comment-{$manager->getId()}'></div>
+                    <input type='button' name='internal-form-save' />
+                    <div style='margin-top: 25px; width: 450px; height: 60px; overflow: auto; border: 1px solid #aaf; padding: 5px; background-color: #F0F0D0; border-radius: 5px' id='config-component-comment-{$id}'></div>
                     
                     </form>
                     <script>
-                        (new EasyEdits('/edits/workflow/internaldecision','decision_internal_{$manager->getId()}',{ '&id&': '{$manager->getId()}','&window_id&': '{$manager->getWindowId()}' }));
-                        Form.intercept($('#humble-paradigm-config-internal-decision-form-{$manager->getId()}').get(),'{$manager->getId()}',false,'{$manager->getWindowId()}');                        
+                        (new EasyEdits('/edits/workflow/internaldecision','decision_internal_{$id}',{ '&id&': '{$id}','&window_id&': '{$manager->getWindowId()}' }));
+                        Form.intercept($('#internal-form-{$id}').get(),'{$id}',false,'{$window_id}');                        
                     </script>
                 </div>
                 
@@ -55,11 +55,11 @@
             <div id="decision-external-{$id}">
                 <div style='margin-left: auto; margin-right: auto; width: 545px'>
                     <img src='/images/paradigm/clipart/decision.png' style='float: right' />
-                    <form name='decision-form' id='humble-paradigm-config-external-decision-form-{$id}' onsubmit='return false'>
-                    <input type="hidden" name="window_id" id="window-id-external-{$manager->getId()}" value="{$window_id}" />
-                    <input type="hidden" name="id" id="humble-paradigm-config-external-decision-form-id-{$id}" value="{$manager->getId()}" />    
-                    <input type="hidden" name="decision" value="Y" />   
-                    <select name='namespace' id='humble-paradigm-config-external-decision-form-namespace-{$id}'>
+                    <form name='decision-form' id=external-form-{$id}' onsubmit='return false'>
+                    <input type="hidden" name="window_id"   value="{$window_id}" />
+                    <input type="hidden" name="id"          value="{$id}" />    
+                    <input type="hidden" name="decision"    value="Y" />   
+                    <select name='namespace'>
                         <option value=''>Please choose from this list</option>
                         {foreach from=$externals item="dirs"}
                             <option value='{$dirs.namespace}'>{$dirs.namespace}</option>
@@ -67,23 +67,23 @@
                     </select>
                     <div class='form-field-description'>Available External Sources</div>
                     <br />
-                    <select name='component' id='humble-paradigm-config-external-decision-form-component-{$id}'>
+                    <select name='component'>
                         <option value=''>Please choose from this list</option>
                     </select>
                     <div class='form-field-description'>Available External Decision Objects</div><br />
-                    <select name='method' id='humble-paradigm-config-external-decision-form-method-{$id}'>
+                    <select name='method'>
                         <option value=''>Please choose from this list</option>
                     </select>
                     <div class='form-field-description'>Available External Decision Methods</div>
                     <br />
-                    <div style='float: right; display: none; width: 470px; border: 1px solid #aaf; padding: 5px 10px; background-color: #F0F0D0; border-radius: 10px ' id='config-component-comment-{$manager->getId()}'></div>
-                    <input type='button' name='decision-form-save' id='humble-paradigm-config-external-decision-form-save-{$id}' />
+                    <div style='float: right; display: none; width: 470px; border: 1px solid #aaf; padding: 5px 10px; background-color: #F0F0D0; border-radius: 10px ' id='config-component-comment-{$id}'></div>
+                    <input type='button' name='external-form-save' />
                     </form>
                     <script>
-               /*         var ee = new EasyEdits(null,'decision_external_{$manager->getId()}');
+               /*         var ee = new EasyEdits(null,'decision_external_{$id}');
                         ee.fetch('/edits/workflow/externaldecision');
-                        ee.process(ee.getJSON().replace(/&id&/g,'{$manager->getId()}').replace(/&window_id&/g,'{$manager->getWindowId()}'));
-                        Form.intercept($('#humble-paradigm-config-external-decision-form-{$manager->getId()}').get(),'{$manager->getId()}',false,'{$manager->getWindowId()}');*/
+                        ee.process(ee.getJSON().replace(/&id&/g,'{$id}').replace(/&window_id&/g,'{$window_id}'));
+                        Form.intercept($('#external-form-{$id}').get(),'{$id}',false,'{$window_id}');*/
                     </script>
                 </div>
                 
