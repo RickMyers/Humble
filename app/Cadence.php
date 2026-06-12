@@ -599,7 +599,7 @@ if ($cadence) {
             logMessage('Sleeping for '.$cadence['period'].' seconds');
         } catch (Exception $ex) {
             //Log::critical('some error');
-            logmessage('Exception has occurred: '.$ex->getMessage().', Shutting down...');
+            logmessage('Cadence Exception has occurred: '.$ex->getMessage().', Shutting down...');
             @unlink('PIDS/cadence.pid');                                        //clear PID so can restart after debugging
             die();
         }

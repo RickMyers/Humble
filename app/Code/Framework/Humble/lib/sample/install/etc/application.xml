@@ -12,13 +12,16 @@
         <framework>{$version}</framework>
         <app>0.0.0.1</app>
     </version>    
-    <state>DEVELOPMENT</state>
+    <state comment="You can define your own set of SDLC stages below">DEVELOPMENT</state>
     <stages>
         <DEVELOPMENT order="1" />
         <TEST        order="2" />
         <PRODUCTION  order="3" />
     </stages>  
     <proxy comment="Port at which the command proxy (running with root permission) is running to execute a few whitelisted commands">
+        <comment>
+             Please read the documentation at https://humbleprogramming.com/pages/Proxy.htmls for how/why you should use the eleveated command proxy
+        </comment>
         <host default="127.0.0.1">0.0.0.0</host>
         <util options="ufw,iptables,firewalld"></util>        
         <port>0</port>
@@ -39,11 +42,11 @@
     <admin>
         <apps>
             <File_Explorer>1</File_Explorer>
-            <Entity_Explorer>
+            <Entity_Explorer comment="You can enable/disable certain entity functions below...">
                 <enabled>1</enabled>
                 <commands>
                     <select>1</select>
-                    <update>1</update>
+                    <update>0</update>
                     <delete>0</delete>
                     <drop>0</drop>
                     <truncate>0</truncate>
@@ -60,6 +63,7 @@
         <date_format>Y-m-d</date_format>
         <time_format>H:i:s</time_format>
         <timestamp_format>Y-m-d H:i:s</timestamp_format>        
+        <local_cache_port>23113</local_cache_port>
     </default>
     <api>
         <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/API.htmls for more information first -->

@@ -31,7 +31,8 @@ class Log extends Helper
                     'mongodb'   => '../../logs/&&NAMESPACE&&/mongo.log',
                     'query'     => '../../logs/&&NAMESPACE&&/query.log',
                     'user'      => '../../logs/&&NAMESPACE&&/users/&&USERID&&.log',
-                    'cadence'   => '../../logs/&&NAMESPACE&&/cadence.log'
+                    'cadence'   => '../../logs/&&NAMESPACE&&/cadence.log',
+                    'critical'  => '../../logs/&&NAMESPACE&&/critical.log'
                   );
     private $project = null;
     
@@ -44,18 +45,12 @@ class Log extends Helper
         $source                 = ($this->project->namespace === 'humble') ? 'application.json' : 'cadence.json';
         $config                 = json_decode(file_get_contents('Code/'.$this->project->package.'/'.$this->project->module.'/etc/'.$source));
         $this->logs['cadence']  = $config->log->location;
-    }
-
-    /**
-     * 
-     */
-    public function processLogs() {
-        $user_id = $this->getUserId();
+        $user_id                = $this->getUserId();
         foreach ($this->logs as $log => $location) {
             $this->logs[$log] = str_replace(['&&NAMESPACE&&','&&USERID&&'],[$this->project->namespace,$user_id],$location);
-        }
+        }        
     }
-    
+
     /**
      * Required for Helpers, Models, and Events, but not Entities
      *
@@ -71,7 +66,6 @@ class Log extends Helper
      * @return string
      */
     public function fetchLogData() {
-        $this->processLogs();
         $data   = '';
         $log    = $this->getLog();
         $size   = $this->getSize();
@@ -101,7 +95,7 @@ class Log extends Helper
                 $data     = fread($fh,$size);
             }
         } else {
-            if ($log==='access') {
+            if ($log === 'access') {
                 $data = 'Viewing the access log is unavailable at this time';
             } else if ($log==='system') {
                 $this->logs[$log] = ini_get('error_log');
@@ -124,7 +118,6 @@ class Log extends Helper
      * Writes over the log that was passed in
      */
     public function clearLog() {
-        $this->processLogs();        
         $log = $this->getLog();
         if (isset($this->logs[$log])) {
             file_put_contents($this->logs[$log],'');   //blows away the log
@@ -135,6 +128,7 @@ class Log extends Helper
             }
             file_put_contents($this->logs[$log],'');
         }
+        return $this;
     }
 
     /**
@@ -284,10 +278,29 @@ class Log extends Helper
         return $files;
     }
     
+    
+    /**
+     * If the critical log exists, counts unique entries and returns that number
+     * 
+     * @return mixed
+     */
+    public function countCriticalErrors() {
+        $errors = 'N/A';
+        if (isset($this->logs['critical']) && file_exists($this->logs['critical'])) {
+            $errors = str_replace(["\n","\r","\t"],['','',''],shell_exec('cat '.$this->logs['critical'].' | grep User_id: | wc -l'));
+        }
+        return $errors;
+    }
+    
+    /**
+     * Resets the Apache access log
+     */
     public function clearAccessLog() {
         $log    = $this->log();
         $host   = $this->host();
+        //@TODO: this, of course...
     }
+    
     /**
      * Runs the 'whois' command to get information about a host/ip
      * 

@@ -24,7 +24,13 @@
                 <parameter name='log'    source='request' default='' />
             </helper>            
         </action>
-     
+        <!-- ################################################################### -->
+        
+        <action name="criticalerrors" blocking="off">
+            <description>Counts the number of errors in the critical log</description>
+            <helper namespace="admin" class="log" id="log" />
+        </action>
+        
         <!-- ################################################################### -->
         
         <action name="users" blocking="off" passalong="window_id">

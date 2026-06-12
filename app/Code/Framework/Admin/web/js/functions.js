@@ -659,12 +659,21 @@ var Functions = (() => {
                                 $('#proxy_stopped').css('display',(proxy.running ? 'none' : 'block'));
                                 $('#proxy_running').css('display',(proxy.running ? 'block' : 'none'));
                             }
-                        })();                                                  
+                        })();
+                        let k = (() => {
+                            return (data) => {
+                                let errors = JSON.parse(data);
+                                if (errors) {
+                                    $('#critical_error_count').html((parseInt(errors.count) > 9) ? '9+' : errors.count);
+                                }
+                            }
+                        })();
                         Heartbeat.register('admin',true,'systemStatus',f,1,{});
                         Heartbeat.register('admin',true,'cadenceStatus',g,2,{});
                         Heartbeat.register('admin',true,'cachingStatus',h,2,{});
                         Heartbeat.register('admin',true,'socketStatus',i,2,{});
                         Heartbeat.register('admin',true,'proxyStatus',j,2,{});
+                        Heartbeat.register('admin',true,'criticalErrors',k,2,{});
                         Heartbeat.init();
                         Humble.init();
                     },

@@ -1,0 +1,3 @@
+{
+    "count": "<?=$log->countCriticalErrors()?>"
+}

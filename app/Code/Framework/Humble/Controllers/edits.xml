@@ -9,6 +9,7 @@
             <entity namespace="humble" class="modules" orderby="namespace=ASC" id="modules">
                 <parameter name="enabled" source="request" default="Y" />
             </entity>
-        </action>                    
+        </action>   
+                         
     </actions>
 </controller>

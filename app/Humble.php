@@ -535,20 +535,24 @@
             $retval = null; 
             $args   = func_num_args(); 
             $key    = trim($key);
-            if (\Environment::cachingEnabled()) {
-                if (!self::$cache && !self::$cacheFailed) {
-                    if ($cache_server = ($REDIS ? 'localhost:6379' : Environment::settings()->getCacheHost())) {
-                        if (self::$cache = (($REDIS) ? new \Redis() : new \Memcache())) {
-                            $cache_server = explode(':',$cache_server);
-                            if (!@self::$cacheConn = self::$cache->connect($cache_server[0],$cache_server[1])) {
-                                self::$cacheFailed = true;
+            if (strtolower($engine)==='local') {
+                //@TODO: Implement a local caching solution for a similar function to "varnish"
+            } else {
+                if (\Environment::cachingEnabled()) {
+                    if (!self::$cache && !self::$cacheFailed) {
+                        if ($cache_server = ($REDIS ? 'localhost:6379' : Environment::settings()->getCacheHost())) {
+                            if (self::$cache = (($REDIS) ? new \Redis() : new \Memcache())) {
+                                $cache_server = explode(':',$cache_server);
+                                if (!@self::$cacheConn = self::$cache->connect($cache_server[0],$cache_server[1])) {
+                                    self::$cacheFailed = true;
+                                }
                             }
                         }
                     }
-                }
-                $serialNumber = Environment::serialNumber();
-                if (!self::$cacheFailed) {
-                    $retval = ($value !== null) ? (($REDIS) ? self::$cache->set($serialNumber.'-'.$key,$value) : self::$cache->set($serialNumber.'-'.$key,$value,false,$expire)) : (($value === null) && ($args > 1) ? self::$cache->delete($serialNumber.'-'.$key) : self::$cache->get($serialNumber.'-'.$key) );
+                    $serialNumber = Environment::serialNumber();
+                    if (!self::$cacheFailed) {
+                        $retval = ($value !== null) ? (($REDIS) ? self::$cache->set($serialNumber.'-'.$key,$value) : self::$cache->set($serialNumber.'-'.$key,$value,false,$expire)) : (($value === null) && ($args > 1) ? self::$cache->delete($serialNumber.'-'.$key) : self::$cache->get($serialNumber.'-'.$key) );
+                    }
                 }
             }
             return $retval;

@@ -19,6 +19,13 @@ proxyStatus:
     api-var         : 
     blocking        : off
     arguments       : 
+    method          : POST 
+criticalErrors:
+    url             : /admin/log/criticalerrors
+    api-key         :
+    api-var         : 
+    blocking        : off
+    arguments       : 
     method          : POST    
 cachingStatus:
     url             : /admin/caching/status

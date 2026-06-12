@@ -14,7 +14,10 @@
         <PRODUCTION order="5"/>        
         <TEST order="2"/>
     </stages>
-    <proxy>
+    <proxy comment="Port at which the command proxy (running with root permission) is running to execute a few whitelisted commands">
+        <comment>
+             Please read the documentation at https://humbleprogramming.com/pages/Proxy.htmls for how/why you should use the eleveated command proxy
+        </comment>
         <host>127.0.0.1</host>
         <util options="ufw,iptables,firewalld">ufw</util>
         <port>16016</port>
@@ -27,12 +30,18 @@
             <redirect>0</redirect>
         </strategy>
     </msa>
+    <paradigm>
+        <iteration>
+            <protection comment="Max iterations before loop is killed. This is to protect against infinite loops.  Zero (0) means no protection">75000</protection>
+        </iteration>
+    </paradigm>    
     <default>
         <inline_templater>Rain</inline_templater>
         <templater>Twig</templater>
         <date_format>Y-m-d</date_format>
         <time_format>H:i:s</time_format>
         <timestamp_format>Y-m-d H:i:s</timestamp_format>
+        <local_cache_port>23113</local_cache_port>
     </default>
     <api comment="Know the risks before enabling.  There is a section in the documentation on this">
         <enabled>1</enabled>
@@ -60,8 +69,10 @@
         <email>rick@humbleprogramming.com</email>
     </support>
     <external comment="List of directories outside of the framework that are to be scanned for workflow components">
-        <directory>/var/www/tools</directory>
-        <directory>/var/www/files</directory>
+        <directory alias="tools">/var/www/tools</directory>
+        <directory alias="files">/var/www/files</directory>
+        <directory alias="laravel">/var/www/laravel</directory>
+        <directory alias="WordPress">/var/www/wordpress</directory>
     </external>     
     <flags>
         <display_mysql_errors>0</display_mysql_errors>
