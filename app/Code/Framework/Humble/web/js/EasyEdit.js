@@ -33,6 +33,7 @@ function EasyEdits(source, ref, overrides)
     this.currentZoom	= 100;
     this.changeHandlers	= {};
     this.isCombo	= [];
+    this.cbradios       = {};
     this.sendHandler	= null;
     this.sent		= false;
     this.overrides      = (overrides) ? overrides : [];
@@ -681,6 +682,23 @@ function EasyEdits(source, ref, overrides)
                             }   
                             formField[formField.length] = new Option(rCtr,rCtr);
                         }
+                    }
+                    if ((easyField.type === 'checkbox') && (easyField.cbradio)) {
+                        formField.setAttribute('cbradio',easyField.cbradio);
+                        console.log('setting radio group '+easyField.cbradio);
+                        console.log(this.cbradios);
+                        if (!this.cbradios[easyField.cbradio]) {
+                            this.cbradios[easyField.cbradio] = {};
+                        }
+                        this.cbradios[easyField.cbradio][easyField.easyKey] = formField;
+                        let cbgroup = this.cbradios[easyField.cbradio];
+                        $(formField).on('click',(evt) => {
+                            for (var i in cbgroup) {
+                                if (cbgroup[i] !== evt.target) {
+                                    cbgroup[i].checked = false;
+                                } 
+                            }
+                        });
                     }
                     if (easyField.onmouseover) {
                         $(formField).on("mouseover",easyField.onmouseover)
