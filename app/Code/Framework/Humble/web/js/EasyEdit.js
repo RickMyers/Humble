@@ -564,6 +564,9 @@ function EasyEdits(source, ref, overrides)
                 } try {
                     easyField.ref	= formField;
                     easyField.inerror	= false;
+                    if (easyField.learning && easyField.learning === true) {
+                        easyField.type = (easyField.type === 'select') ? 'combo' : easyField.type;
+                    }
                     if ((!formField.disabled) && (easyField.type !== "button") ) {
                         formField.style.backgroundColor = this.defaults.optional['background-color'];
                     }
@@ -601,7 +604,15 @@ function EasyEdits(source, ref, overrides)
                         isCombo           = true;
                         formField.onclick = EasyEdits.resetLastKey;
                         formField.onfocus = EasyEdits.throwFocusAway;
-                        formField.combo   = $("#"+this.edits.form.id+" [name='"+formField.easyKey+"_combo']").get()[0];
+                        let combo = $("#"+this.edits.form.id+" [name='"+formField.easyKey+"_combo']").get()[0];
+                        if (!combo) {
+                            let c = document.createElement('input');
+                            c.name = formField.easyKey+'_combo';
+                            c.type = 'text';
+                            c.value = '';
+                            formField.after(c);
+                        }
+                        formField.combo   = $("#"+this.edits.form.id+" [name='"+formField.easyKey+"_combo']").get()[0]
                         if (!formField.combo) {
                             alert('Combination Field not found... looking for '+formField.easyKey+"_combo");
                         }

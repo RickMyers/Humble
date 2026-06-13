@@ -77,17 +77,6 @@
         },        
         {
             active:         true,
-            name:           "combo_demo_combo",
-            longname:       "Combo field combo",
-            title:          "Is this working?",
-            type:           "text",
-            required:       false,
-            force:          false,
-            classname:      "",
-            style:          ""
-        },  
-        {
-            active:         true,
             name:           "area_code",
             longname:       "Phone Area Code",
             title:          "Area Code",
