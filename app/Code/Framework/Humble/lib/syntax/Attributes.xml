@@ -2,7 +2,7 @@
 <tags>
     <controller taxonomy="control">
         <attributes>
-            <name required="true"   purpose="" default="" />
+            <name required="true"   purpose="Name this controller compiles to" default="" />
             <use  required="false"  purpose="Default templater found in Application.xml file" default="">
                 <values>
                     <twig />

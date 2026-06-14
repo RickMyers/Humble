@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <tags>
-    <controller>
+    <controller description="">
         <comment />
         <actions />
     </controller>
-    <actions>
+    <actions description="">
         <comment />
         <action />
         <default />
     </actions>        
-    <action required="description">
+    <action required="description" parent="actions" description="">
         <comment />
         <description required="true" />
         <model />
@@ -32,56 +32,54 @@
         <abort />
         <header />
     </action>
-    <chain>
+    <chain description="">
         <comment />
-        <action />
+        <action parent="chain" />
         <if />
         <switch />
     </chain>
-    <description />
-    <comment />
-    <model>
+    <comment  description=""/>
+    <model description="">
         <comment />
         <parameter/>
         <if />
         <switch />        
     </model>
-    <helper>
+    <helper description="">
         <comment />
         <parameter/>
         <if />
         <switch />         
     </helper>
-    <entity>
+    <entity description="">
         <comment />                
         <parameter/>
         <if />
         <switch />        
     </entity>
-    <access>
+    <access description="">
         <comment/>                
         <parameter/>
     </access>
-    <mongo>
+    <mongo description="">
         <comment />
         <parameter/>
         <if />
         <switch />        
     </mongo>
-    <resource>
+    <resource description="">
         <comment />
         <parameter/>
         <if />
         <switch />        
     </resource>
-    <if>
+    <if description="">
         <comment />
         <then />
         <else />
     </if>
-    <then>
+    <then parent="if" description="">
         <comment />
-        <description />
         <model />
         <helper />
         <entity />
@@ -102,9 +100,8 @@
         <header />        
         <parameter />
     </then>
-    <else>
+    <else parent="if" description="">
         <comment />
-        <description />
         <model />
         <helper />
         <entity />
@@ -125,12 +122,12 @@
         <header />
         <parameter />     
     </else>
-    <switch>
+    <switch description="">
         <comment />
         <case />
         <default />        
     </switch>
-    <case>
+    <case parent="switch" description="">
         <comment />
         <description />
         <model />
@@ -153,7 +150,7 @@
         <header />  
         <assign />      
     </case>
-    <default>
+    <default parent="switch,actions" description="">
         <comment />
         <description />
         <model />
@@ -176,5 +173,5 @@
         <header />
         <assign />        
     </default>
-    <parameter />
+    <parameter parent="entity,model,helper,mongo" />
 </tags>
