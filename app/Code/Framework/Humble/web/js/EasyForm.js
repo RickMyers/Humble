@@ -70,6 +70,9 @@ var Form = (function ($) {
             $.each(document.forms,function (f) {
                 Form.intercept(document.forms[f]);
             });
+        },
+        render: (fields) => {
+            
         }
     }
 })($);
