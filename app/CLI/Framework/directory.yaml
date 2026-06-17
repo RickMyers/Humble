@@ -71,7 +71,7 @@ api|policy|update-policy :
         optional:              
 man|manual : 
     description: Displays help manual information depending on topic
-    extended: see https://humbleprogramming.com/pages/Manual.htmls for more information
+    documentation: https://humbleprogramming.com/pages/Manual.htmls 
     usage:
         linux:   sudo sh ./humble.sh --man parameter:*
         windows: humble --man parameter:*

@@ -30,7 +30,18 @@ var Functions = (() => {
                             }
                         }
                     },
-                
+                    cli: {
+                        windows: {},
+                        open: (category,topic) => {
+                            let win = Administration.cli.windows[category] = (Administration.cli.windows[category]) ? Administration.cli.windows[category] : Desktop.semaphore.checkout(true); 
+                            (new EasyAjax('/admin/cli/topic')).add('window_id',win.id).add('category',category).add('topic',topic).then((response) => {
+                                win._title('CLI UI: '+topic)._static(true)._open(response);
+                            }).post();
+                        },
+                        run: (data) => {
+                            
+                        }
+                    },
                     code: {
                         explore: (namespace, type, resource) => {
                             let win = Desktop.semaphore.checkout(true);

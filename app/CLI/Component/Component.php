@@ -378,4 +378,8 @@ class Component extends CLI
             die('Source template ['.$tmpl.'] Not found, aborting'."\n");
         }
     }
+    
+    public static function yamlCheck() {
+        $args = self::arguments();
+    }
 }

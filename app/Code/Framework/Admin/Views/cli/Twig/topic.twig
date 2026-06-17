@@ -1,0 +1,87 @@
+{% set structure = cli.parseCommandStructure(cli.commandStructure(command_menus)) %}
+<style type="text/css">
+    
+</style>
+<div id="cli_header_{{ category }}" style="background-color: #333; color: ghostwhite">
+    Header
+</div>
+<div id="cli_body_{{ category }}" class="text-2xl">
+    
+<br /><br />    
+    <div class="w-1/2 inline-block">
+        <div class="p-2 bg-gray-200">
+            Category: {{ category }}
+            
+        </div>
+    </div><div class="w-1/2 inline-block">
+        <div class="p-2 bg-gray-200">
+            Topic: {{ cli.parseTopic }}
+        </div>
+    </div><div class="w-full">
+        <div class="p-2 bg-gray-200">
+            {{ cli.getDescription() }}
+        </div>
+        <div class="border-t-2 pb-4 font-mono text-sm">
+            Description
+        </div>
+    </div><div class="w-full">
+        <div class="p-2 bg-gray-200">
+            {{ cli.getExtendedDescription() }}
+        </div>
+        <div class="border-t-2 pb-4 font-mono text-sm">
+            Extended Description
+        </div>
+    </div><div class="w-1/2 inline-block">
+        <div class="p-2 bg-gray-200">
+            {{ cli.getFunction() }}
+        </div>
+        <div class="border-t-2 pb-4 font-mono text-sm">
+            Called Function
+        </div>
+    </div><div class="w-1/2 inline-block">
+        <div class="p-2 bg-gray-200">
+            {{ cli.getDirective() }}
+        </div>
+        <div class="border-t-2 pb-4 font-mono text-sm">
+            Directive
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    <form name="system_cli_form" id="system_cli_form_{{ window_id }}" onsubmit="return false">
+        <input type="hidden" name="category" value="{{ cli.getCategory() }}" />
+        <input type="hidden" name="topic"    value="{{ cli.getTopic() }}" />
+        <div class="w-1/2 inline-block">
+            <div class="p-2 bg-gray-200">
+                Required Parameters
+            </div>
+            <div>
+                {% for param in cli.getRequiredParameters() %}
+                    {{ param }}
+                {% endfor %}
+            </div>
+        </div><div class="w-1/2 inline-block">
+            <div class="p-2 bg-gray-200">
+                Optional Parameters
+            </div>
+            <div>
+                {% for param in cli.getOptionalParameters() %}
+                    {{ param }}
+                {% endfor %}
+            </div>
+        </div>        
+    </form>
+</div>
+<div id="cli_footer_{{ category }}" style="background-color: #333; color: ghostwhite">
+    Footer
+</div>
+<script type="text/javascript">
+    (() => {
+        let win = Desktop.window.list['{{ window_id }}'];
+        win.resize(((win) => {
+            return (evt) => {
+                $('#cli_body_{{ category }}').height(win.content.height() - $E('cli_header_{{ category }}').offsetHeight - $E('cli_footer_{{ category }}').offsetHeight - 2);
+            }
+        })(win));
+    })();
+    //Form.intercept();
+</script>

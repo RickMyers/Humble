@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<attributes>
+    <url />
+    <api-key />
+    <api-var />
+    <wsdl />
+    <version /> 
+    <operation /> 
+    <ws-addressing>
+        <Namespace />
+        <Action />
+        <ReplyTo />
+        <To />
+    </ws-addressing>
+    <transform values="XML2JSON,JSON2XML" />
+    <arguments />
+    <method value="GET,POST,PUT,DELETE,HISTORY,SOAP" />
+    <blocking />
+    <secure />
+    <cache>
+        <expires />
+        <engine />
+    </cache>
+    <suppress comment="Don't pass these arguments on to server, likely used to populate the template" />
+    <templates>
+        <xml />
+    </templates>
+</attributes>

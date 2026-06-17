@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+
+Command Line Interface functions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="cli" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="Off" response="false">
+        
+        <action name="topic" passalong="category,topic,window_id">
+            <description>Brings up the dynamically generated CLI UI for this topic</description>
+            <helper namespace="admin" class="cli" id="cli">
+                <parameter name="category"  source="request" required="true" />
+                <parameter name="topic"     source="request" required="true" />
+            </helper>
+            <model namespace="humble" class="CLI" method="commands" assign="command_menus" />
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

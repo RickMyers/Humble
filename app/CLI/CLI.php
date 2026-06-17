@@ -86,7 +86,7 @@ class CLI
             'xref' => []
         ];
         if (file_exists('Humble.manifest')) {
-            $content['manifest'] = explode("\n",file_get_contents('Humble.manifest'));
+            $content['manifest']  = explode("\n",file_get_contents('Humble.manifest'));
         } else {
             die('Manifest file not found');
         }
@@ -99,11 +99,11 @@ class CLI
                 $content['exclude'][trim(substr($file,1))] = $file;
                 continue;
             }
-            $file            = trim($file);
-            $parts           = explode(' ',$file);
+            $file                = trim($file);
+            $parts               = explode(' ',$file);
             $content['xref'][$parts[0]] = (isset($parts[1]) ? $parts[1] : $parts[0]);
             if (substr($file,strlen($file)-1,1)=='*') {
-                $content['files'] = array_merge($content['files'],self::recurseDirectory(substr($file,0,strlen($file)-2)));
+                $content['files']   = array_merge($content['files'],self::recurseDirectory(substr($file,0,strlen($file)-2)));
             } else {
                 $content['files'][] = $file;
             }

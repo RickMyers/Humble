@@ -9,21 +9,20 @@ var EasyTabs = [];
      #EscrollContainer	{ width: 580px;  height: 50px; position: relative; overflow: hidden;}
      #EcontrolScroll	{ position: relative;  width: 100%; height: 50px; overflow: hidden; white-space: nowrap; }
 */
-
-
 function EasyTab(id,tabWidth)
 {
     var me             	= this;
     this.sideWidth    	= 18;
-    this.node       	= $E(id);
+    this.node       	= document.getElementById(id);
     this.node.style.overflow= "hidden";
     this.lastTab     	= null;
     this.refId        	= "_"+id;
-    this.height       	 = "25px";
+    this.height       	= "25px";
     this.fontSize    	= "9pt";
     this.color        	= "inherit";
     this.font        	= "sans-serif";
     this.currentTab 	= null;
+    this.reference      = null;                                                 //Tab id or object reference to scale other tabs to
     this.tabCtr        	= 0;
     this.selectedClass  = "";
     this.unselectedClass = "";
@@ -45,16 +44,29 @@ function EasyTab(id,tabWidth)
     this.tabWidth    	= tabWidth;
     this.midWidth    	= tabWidth-(this.sideWidth*2);
     this.tabXref    	= [];
-	this.divXref		= [];
-    this.add    		= function (text,handler,tabId,tabWidth)
-    {
-        var width = (tabWidth) ? (tabWidth+(me.sideWidth*2)) : me.tabWidth;
-        var tabWidth = (tabWidth) ? tabWidth : me.midWidth;
-        me.tabXref[text] = me.tabs.length;
-		me.divXref[tabId] = me.tabs.length;
+    this.setReference   = (ref) => {
+        this.reference           = (typeof ref === "string") ? document.getElementById(ref) : ref;
+        return this;
+    }
+    this.scaleTo        = (ref) => {
+        if (ref) {
+            this.reference           = (typeof ref === "string") ? document.getElementById(ref) : ref;
+        }
+        for (let i=0; i<this.tabs.length; i++) {
+            $(this.tabs[i].ref).height($(this.reference).height());
+        }        
+    }
+    this.add    	= (text,handler,tabId,tabWidth) =>  {
+        var width         = (tabWidth) ? (tabWidth+(me.sideWidth*2)) : me.tabWidth;
+        var tabWidth      = (tabWidth) ? tabWidth : me.midWidth;
+        let createTab     = !tabId;
+        let tab           = (!tabId ? document.createElement('div') : ((typeof tabId === "string") ? document.getElementById(tabId) : tabId));
+        if (createTab) {
+            me.node.after(tab);
+        }
+        me.tabXref[text]  = me.tabs.length;
         var html = "<div onclick='EasyTabs[\""+me.refId+"\"].tabClick("+ me.tabs.length +")' style='cursor: pointer; float: left; overflow: hidden; height: "+me.height+"; width: "+ width +"px'>";
-        html += '<table cellspacing="0" cellpadding="0">';
-        html += '<tr>';
+        html += '<table cellspacing="0" cellpadding="0"><tr>';
         if (this.images.unselected) {
             html += '<td><img src="'+me.imageHost+'/'+me.images.unselected.left+'"/></td>';
             html += '<td style="font-size: '+me.fontSize+'; font-family: '+me.font+'; color: '+me.color+'; text-align: center; white-space: nowrap; overflow: hidden; background-image: url('+me.imageHost+'/'+me.images.unselected.middle+')" width="'+tabWidth+'">'+text+'</td>';
@@ -62,38 +74,29 @@ function EasyTab(id,tabWidth)
         } else {
             html += '<td class="'+this.unselectedClass+'" style="font-size: '+me.fontSize+'; font-family: '+me.font+'; color: '+me.color+'; text-align: center; white-space: nowrap; overflow: hidden;" width="'+tabWidth+'">'+text+'</td>';
         }
-        html += '</tr>';
-        html += '</table>';
-        html+= "</div>";
+        html += '</tr></table></div>';
         me.node.innerHTML += html;
-
         me.tabs[me.tabs.length] = {
-            "text" : text,
-            "width" : width,
-            "tabWidth" : tabWidth,
-            "handler"    : handler,
-            "panelId"    : tabId
+            "ref"       : tab,
+            "text"      : text,
+            "width"     : width,
+            "tabWidth"  : tabWidth,
+            "handler"   : handler
         };
-        $E(tabId).style.display = "none";
-        $E(tabId).style.overflow = "visible";
+        tab.style.display  = "none";
+        tab.style.overflow = "visible";
         return me;
     }
-    this.click    = function (tabName)
-    {
-        if (typeof(tabName)=="string") {
+    this.click    =  (tabName) => {
+        if (typeof tabName === "string") {
             me.tabClick(me.tabXref[tabName]);
         }
         return me;
     }
-    this.show    = function    (whichOne) {
-    }
-    this.tabClick = function (whichOne)
-    {
+    this.tabClick = (whichOne) => {
         var html = '';
-        for (var i=0; i<me.tabs.length; i++)
-        {
-            if (whichOne == i)
-            {
+        for (var i=0; i<me.tabs.length; i++) {
+            if (whichOne == i) {
                 html += "<div onclick='EasyTabs[\""+me.refId+"\"].tabClick("+ i +")' style='cursor: pointer; float: left; overflow: hidden; height: "+me.height+"; width: "+ me.tabs[i].width +"px'>"
                 html += '<table cellspacing="0" cellpadding="0">';
                 html += '<tr>';
@@ -107,9 +110,7 @@ function EasyTab(id,tabWidth)
                 html += '</tr>';
                 html += '</table>';
                 html+= "</div>";
-            }
-            else
-            {
+            } else {
                 html += "<div onclick='EasyTabs[\""+me.refId+"\"].tabClick("+ i +")' style='cursor: pointer; float: left; overflow: hidden; height: "+me.height+"; width: "+ me.tabs[i].width +"px'>"
                 html += '<table cellspacing="0" cellpadding="0">';
                 html += '<tr>';
@@ -125,18 +126,14 @@ function EasyTab(id,tabWidth)
                 html += "</div>";
             }
         }
-        $E(me.node.id).innerHTML = html;
-        if (me.tabs[whichOne].panelId && $E(me.tabs[whichOne].panelId))        {
-            for (var j=0; j<me.tabs.length; j++){
-                if ($E(me.tabs[j].panelId)) {
-                    $E(me.tabs[j].panelId).style.display = "none";
-                }
+        me.node.innerHTML = html;
+        for (var j=0; j<me.tabs.length; j++){
+            if (me.tabs[j].ref) {
+                me.tabs[j].ref.style.display = "none";
             }
-            $E(me.tabs[whichOne].panelId).style.display = "block";
-            $E(me.tabs[whichOne].panelId).style.visibility = "visible";
-        } else {
-            console.log('EasyTabs: '+me.tabs[whichOne].panelId+" Missing Layer");
         }
+        me.tabs[whichOne].ref.style.display = "block";
+        me.tabs[whichOne].ref.style.visibility = "visible";
         if (me.tabs[whichOne].handler) {
             me.tabs[whichOne].handler(me.tabs[whichOne]);
         }
@@ -144,10 +141,4 @@ function EasyTab(id,tabWidth)
     }
     return EasyTabs[this.refId] = me;
 }
-EasyTab.prototype.activate	= function (divId)
-{
-    if (typeof(divId)=="string") {
-		this.tabClick(this.divXref[divId]);
-    }
-	return this;
-}
+

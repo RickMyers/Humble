@@ -62,6 +62,16 @@ sc|syntax  :
             cn|controller: Controller name
         optional:            
             out: out=JSON will return the errors as a JSON string
+yc|yaml  : 
+    description: Syntax check an RPC Mapping.yaml file controller
+    usage:
+        linux:   sudo sh ./humble.sh --yc ns=desired_namespace
+        windows: humble --sc  --yc ns=desired_namespac
+    function : yamlCheck
+    parameters:
+        required:
+            ns|namespace: Namespace of module where controller resides
+        optional:            
 ed|edit|edits  : 
     description: Create a form edits file
     usage:
