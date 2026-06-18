@@ -38,7 +38,6 @@
         methods: {
             poll() {
                 let me = this;
-                console.log('Polling...');
                 (new EasyAjax('/admin/monitor/status')).add('process_name',this.process_name).then((response) => {
                     let results = JSON.parse(response);
                     if (results) {

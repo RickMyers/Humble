@@ -23,5 +23,11 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             </model>
         </action>
         
+        <!-- ############################################################### -->        
+        
+        <action name="app" blocking="Off" passalong='window_id,tab_id'>
+            <description>Individual instance of entity explorer app</description>
+            
+        </action>
     </actions>
 </controller>

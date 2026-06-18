@@ -9,7 +9,7 @@ var EasyTabs = [];
      #EscrollContainer	{ width: 580px;  height: 50px; position: relative; overflow: hidden;}
      #EcontrolScroll	{ position: relative;  width: 100%; height: 50px; overflow: hidden; white-space: nowrap; }
 */
-function EasyTab(id,tabWidth)
+function EasyTab(id,tabWidth,refreshTab)
 {
     var me             	= this;
     this.sideWidth    	= 18;
@@ -21,10 +21,11 @@ function EasyTab(id,tabWidth)
     this.fontSize    	= "9pt";
     this.color        	= "inherit";
     this.font        	= "sans-serif";
-    this.currentTab 	= null;
+    this.currentTab 	= 0;
     this.reference      = null;                                                 //Tab id or object reference to scale other tabs to
     this.tabCtr        	= 0;
     this.selectedClass  = "";
+    this.refreshTab     = (typeof refreshTab === "undefined") ? true : refreshTab;
     this.unselectedClass = "";
     this.imageHost   	= "/web/images/tabs/"; // "/" or "http://mysite.com/images"
     this.tabs        	= [];
@@ -78,6 +79,7 @@ function EasyTab(id,tabWidth)
         me.node.innerHTML += html;
         me.tabs[me.tabs.length] = {
             "ref"       : tab,
+            "loaded"    : false,
             "text"      : text,
             "width"     : width,
             "tabWidth"  : tabWidth,
@@ -129,14 +131,19 @@ function EasyTab(id,tabWidth)
         me.node.innerHTML = html;
         for (var j=0; j<me.tabs.length; j++){
             if (me.tabs[j].ref) {
-                me.tabs[j].ref.style.display = "none";
+                if (j !== whichOne) {
+                    me.tabs[j].ref.style.display = "none";
+                }
             }
         }
-        me.tabs[whichOne].ref.style.display = "block";
-        me.tabs[whichOne].ref.style.visibility = "visible";
+        me.tabs[whichOne].ref.style.display     = "block";
+        me.tabs[whichOne].ref.style.visibility  = "visible";
         if (me.tabs[whichOne].handler) {
-            me.tabs[whichOne].handler(me.tabs[whichOne]);
+            if ((me.refreshTab) || (!me.tabs[whichOne].loaded)) {
+                me.tabs[whichOne].handler(me.tabs[whichOne]);
+            }
         }
+        me.currentTab = whichOne;
         return me;
     }
     return EasyTabs[this.refId] = me;

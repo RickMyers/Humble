@@ -1,9 +1,13 @@
 <div id="services_app_header-{{ window_id }}" class="p-2" style="background-color: #333; color: ghostwhite; font-family: sans-serif; text-align: right; padding-right: 10px">
     Services Explorer
 </div>
-<div id="services_app_body-{{ window_id }}" class="">
-    <div id="services_app-{{ window_id }}">
-        here
+<div id="services_app_body-{{ window_id }}">
+    <div style="background-color: #333; color: ghostwhite" id="services_app_column_titles-{{ window_id }}">
+        <div style="width: 125px; float: left; text-align: center">Status</div>
+        <div style="text-align: center">Service Name</div>
+    </div>
+    <div id="services_app-{{ window_id }}" class="overflow-auto" style="overflow: auto">
+
     </div>
 </div>
 <div id="services_app_footer-{{ window_id }}" class="" style="background-color: #333; color: ghostwhite; font-family: sans-serif; text-align: right; padding-right: 10px">
@@ -11,21 +15,22 @@
 </div>
 <div id="services_app_tool-{{ window_id }}"></div>
 <script type="text/javascript"> 
-    (function () {
+    ( () => {
         
         var win = Desktop.window.list['{{ window_id }}'];
-        win._title('Services Explorer').resize(() => {
-            $('#services_app_body-{{ window_id }}').height(win.content.height() - $E('services_app_header-{{ window_id }}').offsetHeight - $E('services_app_footer-{{ window_id }}').offsetHeight - 2);
-        })._scroll(true).resize();
+        win._title('Services Explorer');
+        win.resize(() => {
+            $('#services_app-{{ window_id }}').height(win.content.height() - $E('services_app_column_titles-{{ window_id }}').offsetHeight - $E('services_app_header-{{ window_id }}').offsetHeight - $E('services_app_footer-{{ window_id }}').offsetHeight - 2);
+        }).resize();
         Humble.admin['services'] = (!Humble.admin['services']) ? {} : Humble.admin['services'];
         Humble.admin['services']['{{ window_id }}'] = Vue.createApp({
             template: Humble.template('admin','services/list',true),
             app: "#services_app-{{ window_id }}",
             data() {
                     return {
-                        window_id: "{{ window_id }}",
+                        window_id:  "{{ window_id }}",
                         poll_timer: false,
-                        services: {
+                        services:   {
 
                         }
                     }
@@ -38,7 +43,6 @@
             },
             methods: {
                 poll() {
-                    console.log('Polling services');
                     this.poll_timer = window.setTimeout(this.run,5000);
                 },
                 update(data) {

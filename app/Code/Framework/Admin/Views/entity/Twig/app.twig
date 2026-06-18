@@ -1,0 +1,113 @@
+<style type="text/css">
+    .zebra-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }  
+    .text-cell:hover {
+        border: 1px solid #777
+    }
+</style>
+<form nohref onsubmit="return false">
+    <div class="entity_header_{{ window_id }}_{{ tab_id }} text-white align-right bg-[#333333] p-1">
+        Context: <select name="context">
+                    <option value=""> </option>
+                </select>
+    </div>
+    <div class="entity_query_{{ window_id }}_{{ tab_id }} p-1">
+        <textarea class="p1" style="width: 100%; height: 300px; font-family: monospace; background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
+    </div>
+    <div class="entity_query_controls_{{ window_id }}_{{ tab_id }} p-1 text-white bg-[#333333]">
+        Controls
+    </div>
+    <div class="entity_list_{{ window_id }}_{{ tab_id }} overflow-auto">
+        List
+    </div>
+    <div class="entity_footer_{{ window_id }}_{{ tab_id }} p-1 bg-[#333333] text-white">
+        <div class="float-left">
+            Row <span v-bind:id="fromRow">1</span> to <span v-bind:id="toRow">2</span> of <span v-bind:id="rows">100</span>
+        </div> 
+        <div class="float-right">
+            Page <span v-bind:id="page">1</span> of <span v-bind:id="pages">10</span> 
+        </div>         
+        <div class="text-center">
+            <button> << </button>
+            <button> < </button>
+            <input type="text" class="w-12" style="background-color: lightcyan" v-bind:id="page" />
+            <button> > </button>
+            <button> >> </button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    ((win)=> {
+        let header      = $('.entity_header_{{ window_id }}_{{ tab_id }}').get()[0];
+        let query       = $('.entity_query_{{ window_id }}_{{ tab_id }}').get()[0];
+        let controls    = $('.entity_query_controls_{{ window_id }}_{{ tab_id }}').get()[0];
+        let list        = $('.entity_list_{{ window_id }}_{{ tab_id }}').get()[0];
+        let footer      = $('.entity_footer_{{ window_id }}_{{ tab_id }}').get()[0];        
+        win._title('Entity Explorer').resize(()=> {
+                $(list).height(win.content.height() - header.offsetHeight - controls.offsetHeight - query.offsetHeight - footer.offsetHeight - $('#entity_explorer_nav_{{ window_id }}').height()-2);
+            }
+        ).resize();
+        Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
+        Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
+            template:   Humble.template('admin',"entity/list"),
+            app:        $('.entity_list_{{ window_id }}_{{ tab_id }}').get()[0],
+            form:       $('#entity_explorer_form_{{ window_id }}_{{ tab_id }}').get(),
+            data() {
+                return {
+                    win:        Desktop.window.list['{{ window_id }}'],
+                    page:       1,
+                    rows:       20,
+                    pages:      0,
+                    fromRow:    1,
+                    toRow:      1,
+                    totalRows:  1,
+                    context:    [],
+                    query:      query,
+                    footer:     footer,
+                    header:     header,
+                    controls:   controls,
+                    list:       list,
+                    window_id:  '{{ window_id }}',
+                    tab_id:     '{{ tab_id }}',
+                    entities:   [],
+                    headers:    false,                    
+                }
+            },
+            mounted() {
+                this.listEntities();
+            },
+            unmounted() {
+                this.cleanup();
+            },
+            methods: {
+                listEntities() {
+                    let app = this;
+                    var ao = new EasyAjax('/admin/entity/list') 
+                    ao.add('page',app.page).add('rows',app.rows).add('window_id',this.window_id).then((response)=>{
+                        if (response) {
+                            let entities = JSON.parse(response);
+                            app.entities = entities;
+                            let headers  = [];
+                            for (var i in entities[0]) {
+                                headers[headers.length] = i;
+                            }
+                            
+                            app.headers = headers;
+                            let p = ao.getPagination();
+                            //console.log(p);
+                            app.pages       = p.pages.total;
+                            app.fromRow     = p.rows.from;
+                            app.toRow       = p.rows.to;
+                            app.totalRows   = p.rows.total;
+                        }
+                    }).post();
+                },
+                cleanup() {
+                    //maybe do something?
+                }
+            }          
+        });
+    })(Desktop.window.list['{{ window_id }}']);
+    Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount($('.entity_list_{{ window_id }}_{{ tab_id }}').get()[0]);  
+</script>
