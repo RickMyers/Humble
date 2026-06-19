@@ -16,7 +16,7 @@
     </stages>
     <proxy comment="Port at which the command proxy (running with root permission) is running to execute a few whitelisted commands">
         <comment>
-             Please read the documentation at https://humbleprogramming.com/pages/Proxy.htmls for how/why you should use the eleveated command proxy
+             Please read the documentation at https://humbleprogramming.com/pages/Proxy.htmls for how/why you should use the elevated command proxy
         </comment>
         <host>127.0.0.1</host>
         <util options="ufw,iptables,firewalld">ufw</util>

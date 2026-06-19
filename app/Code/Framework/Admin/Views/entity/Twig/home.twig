@@ -5,27 +5,33 @@
         let tabs = new EasyTab('entity_explorer_nav_{{ window_id }}',100,false);
         let f = ((tabs) => {
             console.log(tabs);
-            return () => {
+            return (tab) => {
+                alert(tab.seq);
                 let curTab = tabs.tabs[tabs.currentTab];
                 console.log('curtab');
                 console.log(tabs);
                 if (!curTab.loaded) {
+                    if (tabs.currentTab) {
+                        curTab.loaded = true;
+                    }
+                    let ref = curTab.ref;
                     (new EasyAjax('/admin/entity/app')).add('tab_id',tabs.currentTab).add('window_id','{{ window_id }}').then((response) => {
-                        $(curTab.ref).html(response);
-                        curTab.ref.style.display = 'block';
-                        curTab.loaded            = true;
+                        $(ref).html(response);
+                        ref.style.display = 'block';
                     }).get();
                 }
             }
         })(tabs);
-        let g = (tab) => {
-            tabs.add('Explorer',f,false);
-            tabs.scaleTo(0);
-            //tabs.tabClick(tabs.tabs.length-1);
-        }
+        let g = ((tabs) => {
+            return (tab) => {
+                alert('adding');
+                tabs.add('Explorer '+tabs.tabs.length,f,false);
+                tabs.scaleTo(1);
+                tab.loaded = false;
+                //tabs.tabClick(tabs.tabs.length-1);
+            }
+        })(tabs);
         tabs.add('<b>+</b> ',g,false,35);          
-        tabs.add('Explorer',f,false);
-      
-        tabs.tabClick(0);
+        //tabs.tabClick(0);
     })();
 </script>

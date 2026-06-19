@@ -51,6 +51,7 @@ class Services extends Model
                 ];
             }
         }
+    //    file_put_contents('services_status.txt',print_r($list,true));
         return $list;
     }
     

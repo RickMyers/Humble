@@ -244,7 +244,6 @@ Main:
     $operations     = setupOperations();
     if (count($argv)>1) {
         switch (strtolower($argv[1])) {
-            
             case 'command' :
             case 'cmd' : {
                 print("\nThe following command is the recommended way to run the Command Proxy;\n\n");
@@ -275,6 +274,8 @@ Main:
     while ($run) {
         socket_listen($socket);
         $client = socket_accept($socket);
+        $linger = ['l_linger' => 0, 'l_onoff' => 1];
+        socket_set_option($client, SOL_SOCKET, SO_LINGER, $linger);        
         $data   = json_decode(socket_read($client, 1024),true);
         if (isset($data['command'])) {
             if (isset($data['token'])) {

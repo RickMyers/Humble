@@ -77,7 +77,9 @@ function EasyTab(id,tabWidth,refreshTab)
         }
         html += '</tr></table></div>';
         me.node.innerHTML += html;
-        me.tabs[me.tabs.length] = {
+        let seq = me.tabs.length;
+        me.tabs[seq] = {
+            "seq"       : seq, 
             "ref"       : tab,
             "loaded"    : false,
             "text"      : text,
@@ -131,16 +133,19 @@ function EasyTab(id,tabWidth,refreshTab)
         me.node.innerHTML = html;
         for (var j=0; j<me.tabs.length; j++){
             if (me.tabs[j].ref) {
-                if (j !== whichOne) {
+//                if (j !== whichOne) {
                     me.tabs[j].ref.style.display = "none";
-                }
+  //              }
             }
         }
         me.tabs[whichOne].ref.style.display     = "block";
         me.tabs[whichOne].ref.style.visibility  = "visible";
         if (me.tabs[whichOne].handler) {
+            console.log(whichOne,me.tabs[whichOne].loaded);
             if ((me.refreshTab) || (!me.tabs[whichOne].loaded)) {
                 me.tabs[whichOne].handler(me.tabs[whichOne]);
+            } else {
+                alert('skipping reload of tab '+whichOne);
             }
         }
         me.currentTab = whichOne;
