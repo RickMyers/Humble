@@ -10,6 +10,9 @@
     <div class="entity_header_{{ window_id }}_{{ tab_id }} text-white align-right bg-[#333333] p-1">
         Context: <select name="context">
                     <option value=""> </option>
+                    {% for entity in entities %}
+                        <option value="{{ entity }}"> {{ entity }} </option>
+                    {% /endfor %}
                 </select>
     </div>
     <div class="entity_query_{{ window_id }}_{{ tab_id }} p-1">

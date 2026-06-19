@@ -269,6 +269,19 @@ QRY;
     }
     
     /**
+     * Normalizes the output from the entities function...
+     * 
+     * @return array
+     */
+    public function listEntities() : array {
+        $entitiesd = [];
+        foreach ($this->entities() as $entity) {
+            $entities[] = $entity['TABLE_NAME'];
+        }
+        return $entities;
+    }
+    
+    /**
      * Executes a query and records any issues with it
      *
      * @param type $query

@@ -27,6 +27,8 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="app" blocking="Off" passalong='window_id,tab_id'>
             <description>Individual instance of entity explorer app</description>
+            <entity namespace="admin" class="users" assign="entities" method="listEntities">
+            </entity>
             
         </action>
     </actions>

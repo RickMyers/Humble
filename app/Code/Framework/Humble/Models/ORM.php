@@ -5,10 +5,11 @@ namespace Code\Framework\Humble\Models;
  * Any ORM Engine (MySQL, Postgres, etc) must implement these methods
  */
 interface ORMEngine {
-    public function connect();
-    public function entities();
-    public function query($query);
-    public function buildWhereClause($useKeys);
+    public function connect();                                                  //DB connect logic relative to platform
+    public function entities();                                                 //List of entities relative to platform
+    public function listEntities();                                             //normalized list of entities regardless of platform
+    public function query($query);                                              //Performs a query
+    public function buildWhereClause($useKeys);                                 //Constructs a "where" clause while respecting platform differences
     public function calculateStats($noLimitQuery,&$results);
     public function buildOrderByClause();
     public function addLimit($page);
