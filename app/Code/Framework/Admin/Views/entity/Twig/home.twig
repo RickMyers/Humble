@@ -8,7 +8,7 @@
                 let curTab = tabs.tabs[tabs.currentTab];
                 if (!curTab.loaded) {
                     if (tabs.currentTab) {
-                        curTab.loaded = true;
+                        tabs.tabs[tabs.currentTab].loaded = true;
                     }
                     let ref = curTab.ref;
                     (new EasyAjax('/admin/entity/app')).add('tab_id',tabs.currentTab).add('window_id','{{ window_id }}').then((response) => {

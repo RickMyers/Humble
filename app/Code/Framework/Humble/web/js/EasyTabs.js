@@ -11,7 +11,6 @@ var EasyTabs = [];
 */
 function EasyTab(id,tabWidth,refreshTab)
 {
-    var me             	= this;
     this.sideWidth    	= 18;
     this.node       	= document.getElementById(id);
     this.node.style.overflow= "hidden";
@@ -51,34 +50,34 @@ function EasyTab(id,tabWidth,refreshTab)
     }
     this.scaleTo        = (ref) => {
         if (ref) {
-            this.reference           = (typeof ref === "string") ? document.getElementById(ref) : ref;
+            this.reference           = (typeof ref === "string") ? document.getElementById(ref) : this.tabs[ref].ref;
         }
         for (let i=0; i<this.tabs.length; i++) {
             $(this.tabs[i].ref).height($(this.reference).height());
         }        
     }
     this.add    	= (text,handler,tabId,tabWidth) =>  {
-        var width         = (tabWidth) ? (tabWidth+(me.sideWidth*2)) : me.tabWidth;
-        var tabWidth      = (tabWidth) ? tabWidth : me.midWidth;
+        var width         = (tabWidth) ? (tabWidth+(this.sideWidth*2)) : this.tabWidth;
+        var tabWidth      = (tabWidth) ? tabWidth : this.midWidth;
         let createTab     = !tabId;
         let tab           = (!tabId ? document.createElement('div') : ((typeof tabId === "string") ? document.getElementById(tabId) : tabId));
         if (createTab) {
-            me.node.after(tab);
+            this.node.after(tab);
         }
-        me.tabXref[text]  = me.tabs.length;
-        var html = "<div onclick='EasyTabs[\""+me.refId+"\"].tabClick("+ me.tabs.length +")' style='cursor: pointer; float: left; overflow: hidden; height: "+me.height+"; width: "+ width +"px'>";
+        this.tabXref[text]  = this.tabs.length;
+        var html = "<div onclick='EasyTabs[\""+this.refId+"\"].tabClick("+ this.tabs.length +")' style='cursor: pointer; float: left; overflow: hidden; height: "+this.height+"; width: "+ width +"px'>";
         html += '<table cellspacing="0" cellpadding="0"><tr>';
         if (this.images.unselected) {
-            html += '<td><img src="'+me.imageHost+'/'+me.images.unselected.left+'"/></td>';
-            html += '<td style="font-size: '+me.fontSize+'; font-family: '+me.font+'; color: '+me.color+'; text-align: center; white-space: nowrap; overflow: hidden; background-image: url('+me.imageHost+'/'+me.images.unselected.middle+')" width="'+tabWidth+'">'+text+'</td>';
-            html += '<td><img src="'+me.imageHost+'/'+me.images.unselected.right+'"/></td>';
+            html += '<td><img src="'+this.imageHost+'/'+this.images.unselected.left+'"/></td>';
+            html += '<td style="font-size: '+this.fontSize+'; font-family: '+this.font+'; color: '+this.color+'; text-align: center; white-space: nowrap; overflow: hidden; background-image: url('+this.imageHost+'/'+this.images.unselected.middle+')" width="'+tabWidth+'">'+text+'</td>';
+            html += '<td><img src="'+this.imageHost+'/'+this.images.unselected.right+'"/></td>';
         } else {
-            html += '<td class="'+this.unselectedClass+'" style="font-size: '+me.fontSize+'; font-family: '+me.font+'; color: '+me.color+'; text-align: center; white-space: nowrap; overflow: hidden;" width="'+tabWidth+'">'+text+'</td>';
+            html += '<td class="'+this.unselectedClass+'" style="font-size: '+this.fontSize+'; font-family: '+this.font+'; color: '+this.color+'; text-align: center; white-space: nowrap; overflow: hidden;" width="'+tabWidth+'">'+text+'</td>';
         }
         html += '</tr></table></div>';
-        me.node.innerHTML += html;
-        let seq = me.tabs.length;
-        me.tabs[seq] = {
+        this.node.innerHTML += html;
+        let seq = this.tabs.length;
+        this.tabs[seq] = {
             "seq"       : seq, 
             "ref"       : tab,
             "loaded"    : false,
@@ -89,68 +88,65 @@ function EasyTab(id,tabWidth,refreshTab)
         };
         tab.style.display  = "none";
         tab.style.overflow = "visible";
-        return me;
+        return this;
     }
     this.click    =  (tabName) => {
         if (typeof tabName === "string") {
-            me.tabClick(me.tabXref[tabName]);
+            this.tabClick(this.tabXref[tabName]);
         }
-        return me;
+        return this;
     }
     this.tabClick = (whichOne) => {
-        var html = '';
-        for (var i=0; i<me.tabs.length; i++) {
+        this.currentTab = whichOne;
+        var html = '';        
+        for (var i=0; i<this.tabs.length; i++) {
             if (whichOne == i) {
-                html += "<div onclick='EasyTabs[\""+me.refId+"\"].tabClick("+ i +")' style='cursor: pointer; float: left; overflow: hidden; height: "+me.height+"; width: "+ me.tabs[i].width +"px'>"
+                html += "<div onclick='EasyTabs[\""+this.refId+"\"].tabClick("+ i +")' style='cursor: pointer; float: left; overflow: hidden; height: "+this.height+"; width: "+ this.tabs[i].width +"px'>"
                 html += '<table cellspacing="0" cellpadding="0">';
                 html += '<tr>';
                 if (this.images.selected) {
-                    html += '<td><img src="'+me.imageHost+'/'+me.images.selected.left+'"/></td>';
-                    html += '<td style="font-size: '+me.fontSize+'; font-family: '+me.font+'; color: '+me.color+'; text-align: center; white-space: nowrap; overflow: hidden; background-image: url('+me.imageHost+'/'+me.images.selected.middle+')" width="'+me.tabs[i].tabWidth+'">'+me.tabs[i].text+'</td>';
-                    html += '<td><img src="'+me.imageHost+'/'+me.images.selected.right+'"/></td>';
+                    html += '<td><img src="'+this.imageHost+'/'+this.images.selected.left+'"/></td>';
+                    html += '<td style="font-size: '+this.fontSize+'; font-family: '+this.font+'; color: '+this.color+'; text-align: center; white-space: nowrap; overflow: hidden; background-image: url('+this.imageHost+'/'+this.images.selected.middle+')" width="'+this.tabs[i].tabWidth+'">'+this.tabs[i].text+'</td>';
+                    html += '<td><img src="'+this.imageHost+'/'+this.images.selected.right+'"/></td>';
                 } else {
-                    html += '<td class="'+this.selectedClass+'" style="font-size: '+me.fontSize+'; font-family: '+me.font+'; color: '+me.color+'; text-align: center; white-space: nowrap; overflow: hidden;" width="'+tabWidth+'">'+text+'</td>';
+                    html += '<td class="'+this.selectedClass+'" style="font-size: '+this.fontSize+'; font-family: '+this.font+'; color: '+this.color+'; text-align: center; white-space: nowrap; overflow: hidden;" width="'+tabWidth+'">'+text+'</td>';
                 }
                 html += '</tr>';
                 html += '</table>';
                 html+= "</div>";
             } else {
-                html += "<div onclick='EasyTabs[\""+me.refId+"\"].tabClick("+ i +")' style='cursor: pointer; float: left; overflow: hidden; height: "+me.height+"; width: "+ me.tabs[i].width +"px'>"
+                html += "<div onclick='EasyTabs[\""+this.refId+"\"].tabClick("+ i +")' style='cursor: pointer; float: left; overflow: hidden; height: "+this.height+"; width: "+ this.tabs[i].width +"px'>"
                 html += '<table cellspacing="0" cellpadding="0">';
                 html += '<tr>';
                 if (this.images.unselected) {
-                    html += '<td><img src="'+me.imageHost+'/'+me.images.unselected.left+'"/></td>';
-                    html += '<td style="font-size: '+me.fontSize+'; font-family: '+me.font+'; color: '+me.color+'; text-align: center; white-space: nowrap; overflow: hidden; background-image: url('+me.imageHost+'/'+me.images.unselected.middle+')" width="'+me.tabs[i].tabWidth+'">'+me.tabs[i].text+'</td>';
-                    html += '<td><img src="'+me.imageHost+'/'+me.images.unselected.right+'"/></td>';
+                    html += '<td><img src="'+this.imageHost+'/'+this.images.unselected.left+'"/></td>';
+                    html += '<td style="font-size: '+this.fontSize+'; font-family: '+this.font+'; color: '+this.color+'; text-align: center; white-space: nowrap; overflow: hidden; background-image: url('+this.imageHost+'/'+this.images.unselected.middle+')" width="'+this.tabs[i].tabWidth+'">'+this.tabs[i].text+'</td>';
+                    html += '<td><img src="'+this.imageHost+'/'+this.images.unselected.right+'"/></td>';
                 } else {
-                    html += '<td class="'+this.unselectedClass+'" style="font-size: '+me.fontSize+'; font-family: '+me.font+'; color: '+me.color+'; text-align: center; white-space: nowrap; overflow: hidden;" width="'+tabWidth+'">'+text+'</td>';
+                    html += '<td class="'+this.unselectedClass+'" style="font-size: '+this.fontSize+'; font-family: '+this.font+'; color: '+this.color+'; text-align: center; white-space: nowrap; overflow: hidden;" width="'+tabWidth+'">'+text+'</td>';
                 }
                 html += '</tr>';
                 html += '</table>';
                 html += "</div>";
             }
         }
-        me.node.innerHTML = html;
-        for (var j=0; j<me.tabs.length; j++){
-            if (me.tabs[j].ref) {
-//                if (j !== whichOne) {
-                    me.tabs[j].ref.style.display = "none";
-  //              }
+        this.node.innerHTML = html;
+        for (var j=0; j<this.tabs.length; j++){
+            if (this.tabs[j].ref) {
+                this.tabs[j].ref.style.display = "none";
             }
         }
-        me.tabs[whichOne].ref.style.display     = "block";
-        me.tabs[whichOne].ref.style.visibility  = "visible";
-        if (me.tabs[whichOne].handler) {
-            console.log(whichOne,me.tabs[whichOne].loaded);
-            if ((me.refreshTab) || (!me.tabs[whichOne].loaded)) {
-                me.tabs[whichOne].handler(me.tabs[whichOne]);
+        this.tabs[whichOne].ref.style.display     = "block";
+        this.tabs[whichOne].ref.style.visibility  = "visible";
+        if (this.tabs[whichOne].handler) {
+            if ((this.refreshTab) || (!this.tabs[whichOne].loaded)) {
+                this.tabs[whichOne].handler(this.tabs[whichOne]);
             } else {
                 console.log('skipping reload of tab '+whichOne);
             }
         }
-        me.currentTab = whichOne;
-        return me;
+        return this;
     }
-    return EasyTabs[this.refId] = me;
+    return EasyTabs[this.refId] = this;
 }
 
