@@ -194,11 +194,13 @@ class Unity
      * @return type
      */
     public function listEntities($namespace=false) {
-        $project    = \Environment::project();
-        $namespace  = ($namespace) ? $namespace : $project->namespace;
-        return $this->engine()->entities($namespace);
+        return $this->engine()->listEntities();
     }
-    
+
+    public function entities($namespace=false) {
+        $namespace = ($namespace) ? $namespace : \Environment::project('namespace');
+        return $this->engine()->entities($namespace);
+    }    
     /**
      * What is the actual table name?  Use this for when you want to use Unity on a table that doesn't follow the standard convention
      * 

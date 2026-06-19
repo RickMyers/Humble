@@ -4,12 +4,8 @@
     (()=> {
         let tabs = new EasyTab('entity_explorer_nav_{{ window_id }}',100,false);
         let f = ((tabs) => {
-            console.log(tabs);
             return (tab) => {
-                //alert(tab.seq);
                 let curTab = tabs.tabs[tabs.currentTab];
-                console.log('curtab');
-                console.log(tabs);
                 if (!curTab.loaded) {
                     if (tabs.currentTab) {
                         curTab.loaded = true;
@@ -24,10 +20,7 @@
         })(tabs);
         let g = ((tabs) => {
             return (tab) => {
-            //    alert('adding');
-                console.log(tabs.tabs.length);
                 tabs.add('Explorer '+tabs.tabs.length,f,false);
-                console.log(tabs.tabs.length);
                 tabs.scaleTo(1);
                 tab.loaded = false;
                 tabs.tabClick(tabs.tabs.length-1);

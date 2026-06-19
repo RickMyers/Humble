@@ -264,8 +264,8 @@ class MySQL extends ORM implements ORMEngine  {
             FROM information_schema.tables 
             WHERE table_schema = '{$namespace}' 
 QRY;
-        $results = $this->unity()->query($query);
-        return $results;
+   //     $query .= $this->$this->engine()->buildOrderByClause();
+        return $this->unity()->query($query);;
     }
     
     /**
@@ -274,7 +274,7 @@ QRY;
      * @return array
      */
     public function listEntities() : array {
-        $entitiesd = [];
+        $entities = [];
         foreach ($this->entities() as $entity) {
             $entities[] = $entity['TABLE_NAME'];
         }

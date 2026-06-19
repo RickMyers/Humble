@@ -8,12 +8,15 @@
 </style>
 <form nohref onsubmit="return false">
     <div class="entity_header_{{ window_id }}_{{ tab_id }} text-white align-right bg-[#333333] p-1">
-        Context: <select name="context">
+        <div class="float-right">
+        Context: <select name="context" class="text-gray-800 pt-1 pb-1">
                     <option value=""> </option>
                     {% for entity in entities %}
                         <option value="{{ entity }}"> {{ entity }} </option>
-                    {% /endfor %}
+                    {% endfor %}
                 </select>
+        </div>
+        <div style="clear: both"></div>
     </div>
     <div class="entity_query_{{ window_id }}_{{ tab_id }} p-1">
         <textarea class="p1" style="width: 100%; height: 300px; font-family: monospace; background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
