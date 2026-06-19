@@ -68,6 +68,13 @@ class ORM
         return $this;
     }
     
+    /**
+     * Converts the underscore used in variable names to camel case
+     * 
+     * @param type $string
+     * @param type $first_char_caps
+     * @return type
+     */
     protected function underscoreToCamelCase($string, $first_char_caps=false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }    

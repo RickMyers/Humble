@@ -258,6 +258,7 @@ class MySQL extends ORM implements ORMEngine  {
      * @return iterator
      */
     public function entities($namespace=false) {
+        $namespace = ($namespace) ? $namespace : \Environment::project('namespace');
         $query = <<<QRY
             SELECT * 
             FROM information_schema.tables 
