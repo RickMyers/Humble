@@ -6,7 +6,7 @@
         let f = ((tabs) => {
             console.log(tabs);
             return (tab) => {
-                alert(tab.seq);
+                //alert(tab.seq);
                 let curTab = tabs.tabs[tabs.currentTab];
                 console.log('curtab');
                 console.log(tabs);
@@ -24,11 +24,11 @@
         })(tabs);
         let g = ((tabs) => {
             return (tab) => {
-                alert('adding');
+            //    alert('adding');
                 tabs.add('Explorer '+tabs.tabs.length,f,false);
                 tabs.scaleTo(1);
                 tab.loaded = false;
-                //tabs.tabClick(tabs.tabs.length-1);
+                tabs.tabClick(tabs.tabs.length);
             }
         })(tabs);
         tabs.add('<b>+</b> ',g,false,35);          

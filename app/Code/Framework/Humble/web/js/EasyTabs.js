@@ -145,7 +145,7 @@ function EasyTab(id,tabWidth,refreshTab)
             if ((me.refreshTab) || (!me.tabs[whichOne].loaded)) {
                 me.tabs[whichOne].handler(me.tabs[whichOne]);
             } else {
-                alert('skipping reload of tab '+whichOne);
+                console.log('skipping reload of tab '+whichOne);
             }
         }
         me.currentTab = whichOne;
