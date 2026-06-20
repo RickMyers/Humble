@@ -96,7 +96,13 @@ class Component extends CLI
                     if (isset($parsed_value[1])) {
                         $option       = strtolower($parsed_value[1]);
                         if (!isset($schema->$attribute->options->$option)) {
-                            $errors[] = $option.' is not valid string value for '.$parsed_value[0].' on line number '.$lineNumber;
+                            $valid = [];
+                            foreach ($schema->$attribute->options as $valid_options) {
+                                foreach ($valid_options as $opt => $s) {
+                                    $valid[] = $opt;
+                                }
+                            }
+                            $errors[] = $option.' is not a valid value for '.$parsed_value[0].' on line number '.$lineNumber.'. Valid options are ['.implode(',',$valid).'].';
                         }
                     }
                 }
