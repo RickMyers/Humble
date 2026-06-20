@@ -141,7 +141,6 @@ class Component extends CLI
                     $req[] = (string)$val;
                 }
             }
-            
         }
         if (count($req)) {
             foreach ($req as $val) {
@@ -171,7 +170,6 @@ class Component extends CLI
      */
     private static function checkControllerNodes($parent,$nodes,$structure,$validator,$errors) {
         foreach ($nodes as $index1 => $children) {
-
             foreach ($children as $node => $child) {
                 if (isset($child['attributes']) && count($child['attributes'])) {
                     $errors = self::tagAttributeCheck($parent,$node,$child['attributes'],$validator,$child['lineNumber'],$errors);
@@ -334,7 +332,6 @@ class Component extends CLI
         } else {
             $errors[] = "Module not found";
         }
-
         return (isset($args['out']) && (strtoupper($args['out'])=='JSON')) ? str_replace("\n","",json_encode($errors)) : $errors;
     }
 
@@ -393,7 +390,13 @@ class Component extends CLI
         }
     }
     
+    /**
+     * A basic check of the RPC Yaml file per namespace
+     */
     public static function yamlCheck() {
         $args = self::arguments();
+        if ($ns = $args['namespace'] ?? false) {
+            
+        }
     }
 }
