@@ -16,13 +16,15 @@
                     {% endfor %}
                 </select>
         </div>
+        <img class="workspace_{{ window_id }}_{{ tab_id }}" src="/images/admin/workspace.png" class="cursor-pointer h-[24] inline-block" title="Save Workspace"/>  
         <div style="clear: both"></div>
     </div>
     <div class="entity_query_{{ window_id }}_{{ tab_id }} p-1">
         <textarea class="p1" style="width: 100%; height: 300px; font-family: monospace; background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
     </div>
     <div class="entity_query_controls_{{ window_id }}_{{ tab_id }} p-1 text-white bg-[#333333]">
-        Controls
+        <img class="run_query_{{ window_id }}_{{ tab_id }}" src="/images/admin/play.png" class="cursor-pointer h-[24] inline-block" title="Run Query"/> 
+        <img class="save_query_{{ window_id }}_{{ tab_id }}" src="/images/admin/save.png" class="cursor-pointer h-[24] inline-block" title="Save Query"/> 
     </div>
     <div class="entity_list_{{ window_id }}_{{ tab_id }} overflow-auto">
         List
@@ -69,6 +71,14 @@
                     toRow:      1,
                     totalRows:  1,
                     context:    [],
+                    result:     {
+                        rows:   20,
+                        fromRow: 1,
+                        toRow: 1,
+                        totalRows: 1,
+                        page:   1,
+                        pages:  1
+                    },
                     query:      query,
                     footer:     footer,
                     header:     header,
@@ -87,6 +97,18 @@
                 this.cleanup();
             },
             methods: {
+                runQuery() {
+                    (new EasyAjax('/admin/entity/run')).add().add().then((response) => {
+                    }).post();
+                },
+                saveQuery() {
+                    (new EasyAjax('/admin/entity/save')).add().add().then((response) => {
+                    }).post();                    
+                },
+                saveWorkspace() {
+                    (new EasyAjax('/admin/entity/workspace')).add().add().then((response) => {
+                    }).post();                    
+                },
                 listEntities() {
                     let app = this;
                     var ao = new EasyAjax('/admin/entity/list') 

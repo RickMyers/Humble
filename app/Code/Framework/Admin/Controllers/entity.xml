@@ -17,15 +17,16 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <action name="list" output="JSON" response="true" passalong="window_id">
             <description>Lists the entities in our database</description>
-            <entity namespace='admin' rows='rows' page='page' class="users" method="entities" id="something">
+            <entity namespace='admin' rows='rows' page='page' class="users" method="entities" id="something" orderby='TABLE_NAME=DESC'>
             </entity>
-        </action>
-        
+        </action>       
+            
         <!-- ############################################################### -->       
         
         <action name="app" blocking="Off" passalong='window_id,tab_id'>
             <description>Individual instance of entity explorer app</description>
             <entity namespace="admin" class="users" assign="entities" method="listEntities" orderby="TABLE_NAME=ASC">
+                
             </entity>
             
         </action>

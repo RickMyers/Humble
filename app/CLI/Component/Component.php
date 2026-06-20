@@ -91,6 +91,14 @@ class Component extends CLI
                             }
                         }
                     }
+                } else if (isset($schema->$attribute->options)) {
+                    $parsed_value = explode('=',(string)$value);
+                    if (isset($parsed_value[1])) {
+                        $option       = strtolower($parsed_value[1]);
+                        if (!isset($schema->$attribute->options->$option)) {
+                            $errors[] = $option.' is not valid string value for '.$parsed_value[0].' on line number '.$lineNumber;
+                        }
+                    }
                 }
                 $attr = $schema->$attribute->values->attributes();
                 if (isset($attr->conflicts)) {

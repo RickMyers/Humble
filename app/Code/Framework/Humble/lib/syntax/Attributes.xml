@@ -172,7 +172,12 @@
             <page       required="false"  purpose="" default="" />
             <rows       required="false"  purpose="" default="" />
             <polyglot   required="false"  purpose="" default="" />
-            <orderby    required="false"  purpose="" default="" />
+            <orderby    required="false"  purpose="" default="" >
+                <options>
+                    <asc />
+                    <desc />
+                </options>
+            </orderby>
             <distinct   required="false"  purpose="" default="" />
             <fields     required="false"  purpose="" default="" /> 
             <condition  required="false"  purpose="" default="" />

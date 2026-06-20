@@ -177,7 +177,7 @@ class MySQL extends ORM implements ORMEngine  {
                 if ($ctr) {
                     $query .= ', ';
                 }
-                $query .= '`'.$field.'` '.$direction;
+                $query .= '`'.$field.'` '.strtolower($direction);
                 $ctr++;
             }
         }
