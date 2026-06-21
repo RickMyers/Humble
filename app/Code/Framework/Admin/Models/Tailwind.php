@@ -89,7 +89,6 @@ class Tailwind extends Model
             $module = $this->modules[$namespace];
             $installed = (file_exists('Code/'.$module['package'].'/'.$module['module'].'/web/tailwind/package.json'));
         }
-        
         return $installed;
     }
     
@@ -116,6 +115,11 @@ class Tailwind extends Model
     public function install($namespace=false):int {
         $rc         = 16;        
         $namespace  = ($namespace ? $namespace : $this->getNamespace());
+        if (\Environment::isRunning('php','Proxy.php')) {
+            //Pass command to Proxy to install 
+            //This is recommended path
+        } else {
+        }
         if ($module = $this->modules[$namespace]) {
             $cmd    = 'php CLI.php --tailwind ns='.$namespace;
             exec($cmd,$results,$rc);

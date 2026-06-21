@@ -265,6 +265,10 @@ Main:
         }
         
     }
+    if (posix_getuid() !== 0) {
+        print('The Proxy needs to run as root'."\n");
+        die("Run with 'sudo' and try again...\n");
+    }
     print('Starting the Command Proxy... ['.getmypid()."]\n");
     Environment::storePID('proxy.pid');    
     $socket = null;

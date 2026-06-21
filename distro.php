@@ -184,6 +184,16 @@
             </html>
             <?php
             break;
+        case "validation":
+            header('Content-Type: text/xml');
+            $xml = new SimpleXMLElement('<validation></validation>');
+            $xml->addAttribute('version', '1.0');
+            $xml->addChild('proxy',md5(file_get_contents('app/Proxy.php')));
+            $xml->addChild('humble',md5(file_get_contents('app/Humble.php')));
+            $xml->addChild('environment',md5(file_get_contents('app/Environment.php')));
+            $xml->addChild('cadence',md5(file_get_contents('app/Cadence.php')));
+            print($xml->asXML());
+            break;
         case "vhost":
             if ($_REQUEST['project_name'] ?? false) {
                 $name      = str_replace(['http://','https://'],['',''],($_REQUEST['project_name'] && $_REQUEST['project_name'] ? $_REQUEST['name'] : ($_REQUEST['project_url'] ?? 'localhost')));
