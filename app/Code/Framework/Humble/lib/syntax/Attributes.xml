@@ -328,6 +328,7 @@
            <var     required="false"  purpose="Variable in the request" default="" />
            <assign  required="false"  purpose="Result from a previous assignment operation" default="" />
            <sys     required="false"  purpose="Uploaded file counter" default="" />
+           <method  required="false"  purpose="" default="" />
         </attributes>        
     </if>
     <switch taxonomy="decision">

@@ -408,5 +408,21 @@ class Utility extends Model
         }
     }
     
+    /**
+     * Attempts to send a test email to make sure the feature is still working
+     * 
+     * @return string
+     */
+    public function emailTest() {
+        $result  = 'Did not perform test';
+        $to      = $this->getTo();
+        $subject = $this->getSubject();
+        $message = $this->getMessage();
+        if ($to && $subject && $message) {
+            $test = \Humble::helper('humble/email');
+            $result = $test->sendEmail($to,$subject,$message) ? 'Message Sent' : 'Failed Sending Message';
+        }
+        return '{ "result": "'.$result.'" }';
+    }
 }
 ?>

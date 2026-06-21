@@ -83,7 +83,7 @@ class Email extends Helper
         $settings   = $this->emailSettings();
         $project    = Environment::project();
         $prj        = explode(':',(string)$project->project_url);
-        $from       = ($from ? $from : 'webmaster@'.substr($prj[1],2));
+        $from       = ($from ? $from : 'rick@humbleprogramming.com');//.substr($prj[1],2));
         $reply      = ($reply ? $reply : 'noreply@'.substr($prj[1],2));
         $mailer     = new PHPMailer;
         $mailer->isSMTP(true);

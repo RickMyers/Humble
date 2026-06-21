@@ -64,6 +64,17 @@
             <description>Just a test action</description>
         </action>
                 
+        <!-- ########################################################################################## -->
+        
+        <action name='email' blocking='off' response='true' output='JSON'>
+            <description>Sends a test email, just to make sure things are working</description>
+            <model namespace='admin' class='utility' method='emailTest'>
+                <parameter name='to'      source='request' default='rickmyers1969@gmail.com' />
+                <parameter name='subject' source='request' default='Standard email test message' />
+                <parameter name='message' source='request' default='Just a test message' />
+            </model>
+        </action>
+        
     </actions>
 
 
