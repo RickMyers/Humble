@@ -172,8 +172,8 @@
             <page       required="false"  purpose="" default="" />
             <rows       required="false"  purpose="" default="" />
             <polyglot   required="false"  purpose="" default="" />
-            <orderby    required="false"  purpose="" default="" >
-                <options>
+            <orderby    required="false"  purpose="" default="" composite=','>
+                <options ignore_case="true">
                     <asc />
                     <desc />
                 </options>

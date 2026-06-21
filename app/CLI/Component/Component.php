@@ -92,17 +92,25 @@ class Component extends CLI
                         }
                     }
                 } else if (isset($schema->$attribute->options)) {
-                    $parsed_value = explode('=',(string)$value);
-                    if (isset($parsed_value[1])) {
-                        $option       = strtolower($parsed_value[1]);
-                        if (!isset($schema->$attribute->options->$option)) {
-                            $valid = [];
-                            foreach ($schema->$attribute->options as $valid_options) {
-                                foreach ($valid_options as $opt => $s) {
-                                    $valid[] = $opt;
+                    $atrs       = $schema->$attribute->attributes();
+                    $vals       = [];
+                    $composite  = (isset($atrs->composite) ? (string)$atrs->composite : false);
+                    $vals       = ($composite) ? explode($composite,$value) : ($vals[] = $value);
+                    $a            = $schema->$attribute->options->attributes();
+                    $ignore_case  = (isset($a->ignore_case) && (strtolower($a->ignore_case)==='true'));
+                    foreach ($vals as $val) {
+                        $parsed_value = explode('=',(string)$val);
+                        if (isset($parsed_value[1])) {
+                            $option       = ($ignore_case) ? strtolower($parsed_value[1]) : $parsed_value[1];
+                            if (!isset($schema->$attribute->options->$option)) {
+                                $valid = [];
+                                foreach ($schema->$attribute->options as $valid_options) {
+                                    foreach ($valid_options as $opt => $s) {
+                                        $valid[] = $opt;
+                                    }
                                 }
+                                $errors[] = $option.' is not a valid value for '.$parsed_value[0].' on line number '.$lineNumber.'. Valid options are ['.implode(',',$valid).'].';
                             }
-                            $errors[] = $option.' is not a valid value for '.$parsed_value[0].' on line number '.$lineNumber.'. Valid options are ['.implode(',',$valid).'].';
                         }
                     }
                 }

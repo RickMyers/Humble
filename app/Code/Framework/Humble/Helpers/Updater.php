@@ -38,6 +38,17 @@ class Updater extends Installer
     }
 
     /**
+     * Validates (CRC/MD5) the key components of the framework
+     * 
+     * @return boolean
+     */
+    public function validate() {
+        require "CLI/Framework/Framework.php";
+        $framework = new Framework();
+        return $framework->validate();
+    }
+    
+    /**
      *
      * @param type $source
      */
