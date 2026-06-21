@@ -1,0 +1,14 @@
+{
+    "proxy": {
+        "path": "app/Proxy.php"
+    },
+    "cadence": {
+        "path": "app/Cadence.php"
+    },
+    "humble": {
+        "path": "app/Humble.php"
+    },
+    "environment": {
+        "path": "app/Environment.php"
+    }
+}

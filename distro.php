@@ -187,11 +187,14 @@
         case "validation":
             header('Content-Type: text/xml');
             $xml = new SimpleXMLElement('<validation></validation>');
-            $xml->addAttribute('version', '1.0');
-            $xml->addChild('proxy',md5(file_get_contents('app/Proxy.php')));
-            $xml->addChild('humble',md5(file_get_contents('app/Humble.php')));
-            $xml->addChild('environment',md5(file_get_contents('app/Environment.php')));
-            $xml->addChild('cadence',md5(file_get_contents('app/Cadence.php')));
+            if ($targets = json_decode(file_get_contents('app/validation_list.json'),true)) {
+                foreach ($targets as $target => $attr) {
+                    $child = $xml->addChild($target,md5(file_get_contents($attr['path'])));
+                    $child->addAttribute('path',$attr['path']);
+                }
+            } else {
+                $xml->addChild('error','Failed to read validation target list');
+            }
             print($xml->asXML());
             break;
         case "vhost":
