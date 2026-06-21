@@ -68,7 +68,17 @@ api|policy|update-policy :
     directive: true
     parameters:
         required:
-        optional:              
+        optional:    
+valid|validate : 
+    description: Runs a CRC (MD5) Validation check against key parts of the framework
+    usage:
+        linux:   sudo sh ./humble.sh --validate
+        windows: humble --validate
+    function : validate
+    directive: true
+    parameters:
+        required:
+        optional:           
 man|manual : 
     description: Displays help manual information depending on topic
     documentation: https://humbleprogramming.com/pages/Manual.htmls 

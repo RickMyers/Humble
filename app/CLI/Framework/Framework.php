@@ -140,6 +140,41 @@ class Framework extends CLI
         print("\n".$message."\n");
     }
     
+    /**
+     * Does a CRC (MD5) check of certain elements of the framework against a master list
+     * 
+     * @return boolean
+     */
+    public static function validate() {
+        $errors     = [];
+        if ($remote = \Environment::project('framework_url')) {
+            if ($list = file_get_contents($remote.'/distro/validation')) {
+                chdir('..');
+                foreach (simplexml_load_string($list) as $target => $opts) {
+                    $attrs = $opts->attributes();
+                    $path  = isset($attrs['path']) ? $attrs['path'] : false;
+                    $crc   = (string)$opts;
+                    if ($target && $path && $crc) {
+                        if (!($crc === md5(file_get_contents($path)))) {
+                            $errors[] = 'Error: '.ucfirst($target).' At '.$path.' Failed To Validate';
+                        }
+                    }
+                }
+                chdir('app');
+            } else {
+                $errors[] = 'Error: Unable to obtain the validation list';
+            }
+        } else {
+            $errors[] = 'Error: Unable to identify the validation list source';
+        }
+        if ($ecnt = count($errors)) {
+            foreach ($errors as $error) {
+                print($error."\n");
+            }
+        }
+        return ($ecnt === 0);
+    }
+    
     public static function manual($args) {
         $tag    = $args['tag'];
         $attr   = $args['attr'] ?? false;
