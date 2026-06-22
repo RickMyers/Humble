@@ -1,4 +1,45 @@
-<script type="text/javascript"> 
+<div id="win_{{ window_id }}_header" class="" style="background-color: #333; color: ghostwhite;text-align: right; padding: 2px 10px 2px 2px; ">
+    <div class="flex justify-stretch text-nowrap">
+        <div class="bg-slate-200 p-1  text-center w-12">ID</div>
+        <div class="bg-slate-200 p-1  text-center w-12">Event ID</div>
+        <div class="bg-slate-200 p-1  text-center w-12">Workflow ID</div>
+        <div class="bg-slate-200 p-1  text-center w-12">Queued</div>
+        <div class="bg-slate-200 p-1  text-center w-12">Started</div>
+        <div class="bg-slate-200 p-1  text-center w-12">Finished</div>
+        <div class="bg-slate-200 p-1  text-center w-12">Duration</div>
+        <div class="bg-slate-200 p-1  text-center w-12">PID</div>
+        <div class="bg-slate-200 p-1  text-center w-12">Status</div>
+        <div class="bg-slate-200 p-1  text-center w-12">Comment</div>
+        <div class="bg-slate-200 p-1  text-center w-12">Output</div>
+    </div>
+</div>
+<div id="win_{{ window_id }}_body"   class="" style="">
+<div id='jobs_list'>
+    Ths list of jobs here
+</div>
+</div>
+<div id="win_{{ window_id }}_footer" class="" style="text-align: right; padding: 2px 10px 2px 2px; background-color: #333; color: ghostwhite">
+    <div class="margin-auto flex">
+        <button class=""> &lt; </button>
+        <button class=""> &lt;&lt; </button>
+        <input type="text" name="page_number" id="jobs_page_number" class="border-black w-8 border-2 p-1  text-center w-12 text-black bg-cyan-100" />
+        <button class=""> &gt;&gt; </button>
+        <button class=""> &gt; </button>
+    </div>
+    <div class="float-right mr-2 text-white">
+    Job Monitor
+    </div>
+</div>
+<script type="text/javascript">
+    (($) => {
+        let win    = Desktop.window.list['{{ window_id }}'];
+        let header = $('#win_{{ window_id }}_header').get();
+        let body   = $('#win_{{ window_id }}_body').get();
+        let footer = $('#win_{{ window_id }}_footer').get();
+        win.resize((evt) => {
+            $(body).height(win.content.height() - $(header).height() - $(footer).height() - 4);
+        });
+    })($);
     //This is for handling "multiplicity"
     Humble.admin['job'] = (!Humble.admin['job']) ? {} : Humble.admin['job'];
     Humble.admin['job']['{{ window_id }}'] = Vue.createApp({
