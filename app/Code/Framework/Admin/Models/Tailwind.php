@@ -43,18 +43,38 @@ class Tailwind extends Model
      * 
      * @return int
      */
-    public function start($namespace=false) {
+    public function start($namespace=false):int {
         $rc         = 16;
         $namespace  = ($namespace ? $namespace : $this->getNamespace());
         if ($module = $this->modules[$namespace]) {
-            $args = [
-                'program'   => 'tailwind',
-                'root'      => $root = 'Code/'.$module['package'].'/'.$module['module'].'/web/tailwind',
-                'command'   => 'npm run watch',
-                'namespace' => $namespace
-            ];
-            $cmd = 'nohup php RunWrapper.php "'.addslashes(json_encode($args)).'" > /dev/null 2>&1 &';
-            exec($cmd,$results,$rc);
+            if (\Environment::isWindows()) {
+                
+            } else if (\Environment::isLinux()) {
+                if (false) { //(\Environment::isRunning('php','Proxy.php')) {
+                    if ($proxy = \Environment::application('proxy')) {            
+                        $socket = socket_create(AF_INET, SOCK_STREAM, 0);
+                        socket_connect($socket,$proxy->host,$proxy->port);
+                        socket_write($socket,json_encode(['command' => 'tailwind','token' => \Environment::securityToken(), 'namespace' => $namespace]));
+                        $result = socket_read($socket,1024);
+                        print('-------------------------------------------'."\n");
+                        print($result."\n");
+                        print('-------------------------------------------'."\n");
+                        socket_close($socket);
+                    }
+                } else {
+                    $args = [
+                        'program'   => 'tailwind',
+                        'root'      => $root = 'Code/'.$module['package'].'/'.$module['module'].'/web/tailwind',
+                        'command'   => 'npm run watch',
+                        'namespace' => $namespace
+                    ];
+                    $argv = [ 'RunWrapper.php',json_encode($args)];
+                    require "RunWrapper.php";
+                    //$cmd = 'php RunWrapper.php "'.addslashes(json_encode($args)).'" > /dev/null 2>&1 &';
+                    //exec($cmd,$results,$rc);
+                    //print_r($results);
+                }
+            }
         }   
         return $rc;
     }
@@ -82,14 +102,20 @@ class Tailwind extends Model
      * 
      * @return boolean
      */
-    public function check($namespace=false):bool {
+    public function check($namespace=false):array {
         $installed = false;
+        $running   = false;
         $namespace = ($namespace ? $namespace : $this->getNamespace());
         if (isset($this->modules[$namespace])) {
-            $module = $this->modules[$namespace];
-            $installed = (file_exists('Code/'.$module['package'].'/'.$module['module'].'/web/tailwind/package.json'));
+            $module     = $this->modules[$namespace];
+            if ($installed = (file_exists('Code/'.$module['package'].'/'.$module['module'].'/web/tailwind/package.json'))) {
+                $running = $this->running($namespace);
+            }
         }
-        return $installed;
+        return [
+            'installed' => $installed,
+            'running'   => $running
+        ];
     }
     
     /**
@@ -101,7 +127,13 @@ class Tailwind extends Model
         $running = false;
         if ($namespace = ($namespace ? $namespace : $this->getNamespace())) {
             if (file_exists($pid_file  = 'PIDS/tailwind_'.$namespace.'.pid')) {
-                //do a check
+                if ($pid = file_get_contents($pid_file)) {
+                    if (\Environment::isWindows()) {
+
+                    } else if (\Environment::isLinux()) {
+                        $running = file_exists('/proc/'.$pid);
+                    }
+                }
             }
         }
         return $running;
@@ -115,14 +147,12 @@ class Tailwind extends Model
     public function install($namespace=false):int {
         $rc         = 16;        
         $namespace  = ($namespace ? $namespace : $this->getNamespace());
-        if (\Environment::isRunning('php','Proxy.php')) {
-            //Pass command to Proxy to install 
-            //This is recommended path
-        } else {
-        }
         if ($module = $this->modules[$namespace]) {
+      //      require 'CLI/Module/Module.php';
+      //      $module = new Module();
             $cmd    = 'php CLI.php --tailwind ns='.$namespace;
             exec($cmd,$results,$rc);
+            print_r($results);
         }
         return $rc;
     }

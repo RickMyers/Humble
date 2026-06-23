@@ -79,6 +79,24 @@ class Environment {
         }
         return $result;
     }
+
+    /**
+     * OS Check routine
+     * 
+     * @return bool
+     */    
+    public static function isWindows():bool {
+        return (strtoupper(substr(php_uname('s'),0,3)) === 'WIN');
+    }
+    
+    /**
+     * OS Check routine
+     * 
+     * @return bool
+     */
+    public static function isLinux():bool {
+        return (php_uname('s') === 'Linux');
+    }
     
     /**
      * Will tell you if a certain program is running in the background
@@ -127,14 +145,13 @@ class Environment {
         if (self::isRunning('php','Proxy.php')) {
             if (($proxy = self::application('proxy')) && $proxy->port && $pid) {            
                 self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
-         //       socket_bind(self::$socket, $proxy->host, $proxy->port);        
                 socket_connect(self::$socket,$proxy->host,$proxy->port);
                 socket_write(self::$socket,json_encode(['command' => 'kill','token'=>self::securityToken(), 'PID' => $pid]));
                 $result = socket_read(self::$socket,1024);
                 socket_close(self::$socket);
             }
         } else {
-            exec('kill '.$pid,$result);
+            exec('kill -9 '.$pid,$result);
         }
         return $result;
     }

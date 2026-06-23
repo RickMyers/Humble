@@ -295,7 +295,7 @@ class Module extends CLI
             $css_path = $install_path.'css/input.css';
             @mkdir($install_path,0775,true);
             print("\nRetrieving Tailwindcss package from ".Environment::project('framework_url')."\n");
-            file_put_contents('tailwind.zip',file_get_contents(Environment::project('framework_url').'/dist/tailwind.zip'));
+            file_put_contents('tailwind.zip',file_get_contents(Environment::project('framework_url').'/distro/tailwind'));
             $zip = new ZipArchive;
             if ($zip->open('tailwind.zip') === TRUE) {
                 $zip->extractTo($install_path);

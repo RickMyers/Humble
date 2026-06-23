@@ -7,6 +7,6 @@ Array
 )
 
 > tailwind@1.0.0 watch
-> tailwindcss -i ../css/input.css -o ../css/admin.css --watch
+> tailwindcss -i ../css/input.css -o ../css/admin.css --watch --poll
 
 Finished

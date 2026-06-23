@@ -395,21 +395,35 @@
                         {% for package, modules in installer.getModules() %}
                             <div class='w-full bold pt-2 pb-2 text-lg clear-both font-black border-2 border-solid border-black bg-white'><img title="Add a new module" src="/images/admin/install.png" onclick='Administration.module.form("{{ package }}")' class="float-right cursor-pointer h-7 pr-2" />Package: <b> {{ package }} </b>  </div> <div class='h-1'></div>
                             {% for module in modules %}
-                                {% set data = directory.moduleInformation(module.namespace) %}
-                                {% set tw_installed = tailwind.check(module.namespace) %}   
+                                {% set data      = directory.moduleInformation(module.namespace) %}
+                                {% set tw_status = tailwind.check(module.namespace) %}   
                                 
                                 <div class='w-auto text-md inline-block mr-2 border-black border-2'>
                                     <div class='from-gray-50 pt-2 pb-2'>
                                         <div class="float-right mr-1">   
                                             <table>
                                                 <tr>
-                                                    {% if data.installed != '' %}
-                                                        {% set color = 'white' %}
-                                                        <td class="border-solid"><div style="opacity: {% if (tw_installed) %}1.0{% else %}.3{% endif %}" class="bg-white border-2 border-black p-1 rounded-full"><img src="/images/admin/tailwind.png" class="cursor-pointer w-[26px] " /></div></td>
-                                                        <td class="border-solid"><img onclick='Administration.update("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/update.png' class="cursor-pointer h-7"   title='Update...'/></td>
-                                                        <td class="border-solid"><img onclick='Administration.compile("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/compile.png' class="cursor-pointer h-6"  title='Compile Controllers...'/></td>
-                                                        <td class="border-solid"><img onclick='Administration.clearcache("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/clearcache.png' class="cursor-pointer h-8" title='Clear Cache...'/></td>
-                                                        <td class="border-solid">
+                                                    <td class="border-solid">
+                                                    {% if (tw_status.running) %}
+                                                        <div class='bg-white border-2 border-black p-1 rounded-full cursor-pointer ' onclick="Administration.tailwind.stop(this,'{{ module.namespace }}')">
+                                                            <img style='opacity: 1.0' src="/images/admin/tailwind.png" class="w-[26px]" title='Tailwind Running For This Module' />
+                                                        </div>
+                                                    {% elseif (tw_status.installed) %}
+                                                        <div class='bg-white border-2 border-black p-1 rounded-full cursor-pointer ' onclick="Administration.tailwind.start(this,'{{ module.namespace }}')">
+                                                            <img style='opacity: 0.3' src="/images/admin/tailwind.png" class="w-[26px]" title='Tailwind Is Installed But Not Running For This Module' />
+                                                        </div>
+                                                    {% else %}
+                                                        <div class='bg-red-500 border-2 border-black p-1 rounded-full cursor-pointer ' onclick="Administration.tailwind.install(this,'{{ module.namespace }}')">
+                                                            <img style='opacity: 0.3' src="/images/admin/tailwind.png" class="w-[26px]" title='Tailwind is not installed for this module'/>
+                                                        </div>
+                                                    {% endif %}
+                                                    </td>
+                                                        
+                                                    <td class="border-solid"><img onclick='Administration.update("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/update.png' class="cursor-pointer h-7"   title='Update...'/></td>
+                                                    <td class="border-solid"><img onclick='Administration.compile("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/compile.png' class="cursor-pointer h-6"  title='Compile Controllers...'/></td>
+                                                    <td class="border-solid"><img onclick='Administration.clearcache("{{ package }}","{{ module.module }}","{{ module.namespace  }}")' src='/images/humble/icons/clearcache.png' class="cursor-pointer h-8" title='Clear Cache...'/></td>
+                                                    <td class="border-solid">
+                                                    {% if (data.installed) %}
                                                         {% if data.required != 'Y' %}
                                                             <input type='checkbox' onclick='Administration.enable(this,"{{ module.namespace  }}","{{ package }}")' name='{{ module.namespace  }}' id='{{ module.namespace  }}'
                                                             {% if data.enabled == 'Y' %}

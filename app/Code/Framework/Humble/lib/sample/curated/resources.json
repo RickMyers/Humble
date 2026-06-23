@@ -1,12 +1,33 @@
 {
     "_comment": "The directory should be changed to 'app' before processing",
     "tailwind": {
-        "package.json":     "",
-        "tailwind.conf.js": ""
+        ".gitignore":       "Code/Framework/Humble/lib/tailwind/.gitignore",
+        "package.json":     "Code/Framework/Humble/lib/tailwind/package.json",
+        "tailwind.conf.js": "Code/Framework/Humble/lib/tailwind/tailwind.config.js"
     },
     "hub": {
         "main.js":          "../Hub/main.js",
         ".gitignore":       "../Hub/.gitignore",
         "package.json":     "../Hub/package.json"
+    },
+    "dockerContributePHPFPM": {
+        "vhost":            "",
+        "dockerfile":       "",
+        "docker-compose":   ""
+    },
+    "dockerContributeMODPHP": {
+        "vhost":            "",
+        "dockerfile":       "",
+        "docker-compose":   ""
+    },
+    "dockerDevelopmentPHPFPM": {
+        "vhost":            "",
+        "dockerfile":       "",
+        "docker-compose":   ""
+    },
+    "dockerDevelopmentMODPHP": {
+        "vhost":            "",
+        "dockerfile":       "",
+        "docker-compose":   ""
     }
 }

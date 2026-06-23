@@ -277,6 +277,18 @@
             }
             chdir('..');
             break;
+        case "tailwind":
+            chdir('app');
+            require 'Curator.php';
+            if ($result = \Curator::prepare('tailwind')) {
+                print($result);
+            } else {
+                header("Content-Type: application/json");
+                print('{ "error": "An error was encountered while preparing tailwind for download" }');
+            }
+            chdir('..');
+            
+            break;
         case "config":
             print(file_get_contents('app/install/config.xml'));
             break;

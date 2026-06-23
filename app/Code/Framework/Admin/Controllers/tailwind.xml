@@ -11,7 +11,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         <action name="start">
             <description>Starts the tailwind watch program</description>
             <model namespace="admin" class="tailwind" method="start" response="true" id="tailwind">
-                <parameter name="namespace" source="request" default="admin" />
+                <parameter name="namespace" source="request" required='true' />
             </model>
         </action>
 
@@ -19,8 +19,8 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <action name="stop">
             <description>Starts the tailwind watch program</description>
-            <model namespace="admin" class="tailwind" method="start" response="true" id="tailwind">
-                <parameter name="namespace" source="request" default="admin" />
+            <model namespace="admin" class="tailwind" method="stop" response="true" id="tailwind">
+                <parameter name="namespace" source="request" required='true' />
             </model>
         </action>
         
@@ -28,9 +28,10 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="install">
             <description>Starts the tailwind watch program</description>
-            <model namespace="admin" class="tailwind" method="start" response="true" id="tailwind">
-                <parameter name="namespace" source="request" default="admin" />
+            <model namespace="admin" class="tailwind" method="install" response="true" id="tailwind">
+                <parameter name="namespace" source="request" required='true' />
             </model>
-        </action>        
+        </action>  
+              
     </actions>
 </controller>

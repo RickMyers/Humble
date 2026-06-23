@@ -42,6 +42,29 @@ var Functions = (() => {
                             
                         }
                     },
+                    tailwind: {
+                        start: (icon,namespace) => {
+                            if (confirm('Start Tailwind Background Process For '+namespace+'?')) {
+                                (new EasyAjax('/admin/tailwind/start')).add('namespace',namespace).then((response) => {
+                                    console.log(response);
+                                }).post();
+                            }
+                        },
+                        stop: (icon,namespace) => {
+                            if (confirm('Stop Tailwind Process For '+namespace+'?')) {
+                                (new EasyAjax('/admin/tailwind/stop')).add('namespace',namespace).then((response) => {
+                                    console.log(response);
+                                }).post();
+                            }                            
+                        },
+                        install: (icon,namespace) => {
+                            if (confirm('Install Tailwind For '+namespace+'?')) {
+                                (new EasyAjax('/admin/tailwind/install')).add('namespace',namespace).then((response) => {
+                                    console.log(response);
+                                }).post();
+                            }                            
+                        }
+                    },
                     code: {
                         explore: (namespace, type, resource) => {
                             let win = Desktop.semaphore.checkout(true);

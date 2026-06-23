@@ -49,8 +49,9 @@ function finalizeSocket() {
 function killTask($data=[]) {
     global $TEST_MODE;
     $result = '';
+    print_r($data);
     if (!$TEST_MODE && ($pid = isset($data['PID']) ? $data['PID'] : false)) {
-       $result = shell_exec('kill '.$pid);
+       $result = shell_exec('kill -9 '.$pid);
     }
     print('Attempting to kill process '.$pid.'. Result='.$result."\n");
     return $result;     
@@ -131,9 +132,21 @@ function entities($data=[]) {
 }
 /* ----------------------------------------------------------------------------- */
 function tailwind($data=[]) {
-    $data = Humble::module($data['namespace']);
-    print_r($data);
-    
+    $data       = Humble::module($data['namespace']);
+    $dir        = getcwd();
+    //$cmd = 'npm run watch > /dev/null 2>&1 &';
+    $pidfile    = $dir.'/PIDS/tailwind/'.$data['namespace'].'.pid';
+    $sysout     = $dir.'/PIDS/tailwind/output/'.$data['namespace'].'.out';
+    @mkdir($dir.'/PIDS/tailwind/output',0775,true);
+    chdir('Code/'.$data['package'].'/'.$data['module'].'/web/tailwind');
+    //print(sprintf("%s > %s 2>&1 & echo $! > %s", $cmd, $outputfile, $pidfile));
+    //exec(sprintf("%s > %s 2>&1 & echo $! > %s", $cmd, $outputfile, $pidfile));
+    $cmd = "npm run watch > ".$sysout." 2>&1 & echo $! >".$pidfile;
+    print("Trying to run ".$cmd."\n");
+    exec($cmd,$result,$rc);
+    print_r($result);
+    print('Return Code: '.$rc."\n");
+    chdir($dir);
 }
 /* ----------------------------------------------------------------------------- */
 function endProxy($data=[]) {
