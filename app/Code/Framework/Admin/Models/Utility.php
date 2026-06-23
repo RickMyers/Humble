@@ -420,9 +420,9 @@ class Utility extends Model
         $message = $this->getMessage();
         if ($to && $subject && $message) {
             $test = \Humble::helper('humble/email');
-            $result = $test->sendEmail($to,$subject,$message) ? 'Message Sent' : 'Failed Sending Message';
+            $result = $test->sendEmail($to,$subject,$message);
         }
-        return '{ "result": "'.$result.'" }';
+        return '{ "result": "'.(!$result ? 'Message Sent' : str_replace(["\n","\r","\t"],["","",""],$result)).'" }';
     }
 }
 ?>

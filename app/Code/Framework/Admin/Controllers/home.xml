@@ -39,10 +39,6 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         </action>
 
         <!-- ############################################################### -->
-        
-        <action name="test">
-            <description>A test</description>
-        </action>
 
     </actions>
 </controller>
