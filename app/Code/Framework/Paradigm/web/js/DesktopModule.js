@@ -157,6 +157,7 @@ function DesktopWindow(icon,refId) {
         } else {
             return this.titleText;
         }
+        return this;
     };
     this._resize     = function (evt) {
         this.content.style.height = (this.frame.offsetHeight - this.bar.offsetHeight - 4)+"px";
@@ -174,6 +175,7 @@ function DesktopWindow(icon,refId) {
         if (typeof func == 'function') {
             this.handlers.minimize[this.handlers.minimize.length] = func;
         }
+        return this;
     };    
     this.maximize = (func) => {
         if (typeof func == 'function') {
@@ -193,11 +195,14 @@ function DesktopWindow(icon,refId) {
         if (typeof func == 'function') {
             this.handlers.close[this.handlers.close.length] = func;
         }
+        return this;
     };
     this.open = (func) => {
+        //change this so that if  you pass a string it replaces the innerhtml of the content window
         if (typeof func == 'function') {
             this.handlers.open[this.handlers.open.length] = func;
         }
+        return this;
     };
     this._open       = function (evt){
         this.lastState = this.state;
@@ -312,6 +317,7 @@ function DesktopWindow(icon,refId) {
         } else {
             $(splashScreen).fadeOut();
         }
+        return this;
     }    
     this._minimize  = function (evt) {
         this.left   = this.frame.offsetLeft;
@@ -395,6 +401,7 @@ function DesktopWindow(icon,refId) {
     }
     this.inject = (html) =>  {
         this.titleArea.innerHTML = html;
+        return this;
     }
     return this;
 }

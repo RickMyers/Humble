@@ -207,6 +207,14 @@ var Functions = (() => {
                         }
                     },
                     cadence: {
+                        win: false,
+                        tune: () => {
+                            let win = (Administration.cadence.win) ? Administration.cadence.win : Desktop.semaphore.checkout(true);
+                            win._title('Cadence Tuning')._static(false)._scroll(false);
+                            (new EasyAjax('/admin/cadence/tune')).add('window_id',win.id).then((response) => {
+                                win.set(response)._open();
+                            }).post();                            
+                        },
                         action: (action) => {
                             if (action) {
                                 (new EasyAjax('/admin/cadence/'+action)).then((response) => {

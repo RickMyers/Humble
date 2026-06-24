@@ -1,0 +1,9 @@
+<script type="text/javascript">
+    (() => {
+        let win = Desktop.semaphore.checkout(true);
+        win._title('Window Title')._static(false)._scroll(true);
+        (new EasyAjax('/ns/cn/ac')).add('window_id',win.id).then((response) => {
+            win.open(response);
+        }).post();
+    })();
+</script>

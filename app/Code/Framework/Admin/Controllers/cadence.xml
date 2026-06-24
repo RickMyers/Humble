@@ -60,7 +60,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.ad
         
         <!-- ############################################################### -->
         
-        <action name="tune">
+        <action name="tune" passalong='window_id:required=true'>
             <description>Brings up the app to tailor/tune the running of the cadence poller</description>
             <model namespace="admin" class="cadence" id="cadence">
                 
