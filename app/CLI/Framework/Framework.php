@@ -155,6 +155,8 @@ class Framework extends CLI
                     $path  = isset($attrs['path']) ? $attrs['path'] : false;
                     $crc   = (string)$opts;
                     if ($target && $path && $crc) {
+                        //are end of line characters throwing this off?
+                        $errors[] = md5(file_get_contents($path)).' => '.$crc;
                         if (!($crc === md5(file_get_contents($path)))) {
                             $errors[] = 'Error: '.ucfirst($target).' At '.$path.' Failed To Validate';
                         }

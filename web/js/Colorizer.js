@@ -97,7 +97,6 @@ var Colorizer = (function (languageFile) {
                     $('.'+this.id).width(this.box.scrollWidth);
                 }
                 $(this.box).on('scroll',function () {
-                    console.log('waiting');
                     me.rows.scrollTop = this.scrollTop;
                 });
 
@@ -188,7 +187,6 @@ var Colorizer = (function (languageFile) {
                     "value": codeBox
                 }
             };
-            console.log(options);
             Colorizers[options.id.value] = Object.create(Prototype,options);
             return Colorizers[options.id.value].init();
         },
