@@ -765,6 +765,23 @@ SQL;
         }
 
         /**
+         * A method to invoke a CLI handler programmatically instead of from the command line
+         * 
+         * @param type $area
+         * @param type $method
+         * @param type $arguments
+         * @return bool
+         */
+        public static function invoke($area=false,$method=false,$arguments=[]) {
+            if ($area && $method) {
+                require_once('CLI/'.ucfirst($area).'.php');
+                eval('$thing = new '.ucfirst($area).'();');
+                //move arguments over, then invoke method
+            }
+            return true;
+        }
+        
+        /**
          * Boxes a normal scalar string
          *
          * @param type $string
