@@ -47,6 +47,7 @@ function EasySlider(div,len,hgt,optId) {
     this.slide              = null;
     this.saveLocation       = null;
     this.restoreFlag        = false;
+    this.roundIt            = false;
     this.calcIntervalLength = () => {
         var inclusiveOffset = (this.getInclusive()) ? -1 : 1;
         intervalLength = Math.round(this.getSliderWidth()/(this.stops.length+inclusiveOffset));
@@ -70,13 +71,17 @@ function EasySlider(div,len,hgt,optId) {
         }
         return me;
     };
+    this.setRounding    = (val) => {
+        this.roundIt    = val;
+        return this;
+    };
     this.setScale       = (start,stop,stops) =>  {
         this.maxScale   = stop;
         var interval    = Math.round(((stop-start)/(stops))*100)/100;
         for (var i=0; i<stops; i++) {
             this.stops[this.stops.length] = {
                 id:       'stopId_'+i,
-                returns:  start,
+                returns:  (this.roundIt) ? Math.round(start) : start,
                 location: null,
                 label:    ''
             };
@@ -194,27 +199,26 @@ function EasySlider(div,len,hgt,optId) {
     };
     this.setPointer         = (whichOne,amount,triggerEvent) => {
         console.log('amount: '+amount);
-        var where = amount/100;  //if percent
-        if (this.getMaxScale() || (amount > 100)) {
-            where = (amount/this.getMaxScale()); //if not percent
-        }
-        where = Math.round(document.getElementById(this.slideId).offsetWidth * where);
+        var pointer = (typeof whichOne === "string") ? document.getElementById(whichOne) : whichOne;
+        var slide   = document.getElementById(this.slideId);
+        var where = (this.getMaxScale() || (amount > 100)) ? (amount/this.getMaxScale()) : amount/100; 
+        where     = Math.round(slide.offsetWidth * where);
         this.setAmount(where);
         if (this.slideRanges)  {
-            document.getElementById(whichOne+"_range").style.width = where+"px";
-            document.getElementById(whichOne+"_range").style.display = "block";
+            document.getElementById(pointer.id+"_range").style.width    = where+"px";
+            document.getElementById(pointer.id+"_range").style.display  = "block";
         }
-        document.getElementById(whichOne).style.left = (where - (Math.round(document.getElementById(whichOne).offsetWidth / 2)))+"px";
+        pointer.style.left = (where - (Math.round(pointer.offsetWidth / 2)))+"px";
         this.save();
         if (this.onSlideStart) {
-            this.onSlideStart(document.getElementById(whichOne), document.getElementById(this.slideId), where);
+            this.onSlideStart(pointer, slide, where);
         }
         if (this.onSlide) {
-            this.onSlide(document.getElementById(whichOne), document.getElementById(this.slideId), where);
+            this.onSlide(pointer, slide, where);
         }
         if (!(triggerEvent === false)) {
             if (this.onSlideStop) {
-                this.onSlideStop(document.getElementById(whichOne), document.getElementById(this.slideId), where);
+                this.onSlideStop(pointer, slide, where);
             }
         }
         return this;
@@ -222,16 +226,19 @@ function EasySlider(div,len,hgt,optId) {
     this.setSliderTo            = (offset,triggerEvent) => {
         var maxScale = (this.getMaxScale()) ? this.getMaxScale() : 100;
         var perc     = Math.round(((offset/this.getSliderWidth()) * maxScale));
-        this.setPointer(this.pointers[0].id,perc,triggerEvent);
+        console.log('sst: '+offset+", "+maxScale+", "+perc);
+        console.log(this.pointers);
+        this.setPointer(this.pointers[0].ref,perc,triggerEvent);
         return this;
     };
     this.setSliderToValue	= (val,triggerEvent) => {
         var setTo = 0;
-        if (typeof val ==="string") {
+//        if (typeof val === "string") {
             for (var i=0; i<this.stops.length; i++) {
                 setTo = (this.stops[i].returns === val) ? this.stops[i].location : setTo;
             };
-        }
+  //      }
+        console.log('For Val:'+val+' setTo Location: '+setTo);
         this.setSliderTo(setTo,triggerEvent);
         return this;
     };
@@ -468,7 +475,6 @@ EasySlider.Control = (() => {
             evt = (evt) ? evt : ((window.event) ? event : null);
             var slideId = (evt.target) ? evt.target.id : evt.srcElement.id;
             var offset = evt.clientX  - EasyEdits.getAbsoluteX(document.getElementById(slideId),"BODY");
-            console.log('offset: '+offset);
             EasySliders[slideId].setSliderTo(offset);
             return this;
         }        
