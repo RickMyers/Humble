@@ -1,0 +1,5 @@
+
+> tailwind@1.0.0 watch
+> tailwindcss ../css/input.css -o ../css/admin.css --watch --poll
+
+[deprecation] Running tailwindcss without -i, please provide an input file.

@@ -120,7 +120,7 @@
             </admin>
             <widgets>
                 <js>
-                    <source>Admin/web/js/Sliders.js</source>
+                    <source>Admin/web/js/EasySlider.js</source>
                 </js>
             </widgets>
         </web>

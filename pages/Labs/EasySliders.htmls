@@ -35,7 +35,7 @@
     <b>Invocation</b>:
 </div>
 <pre class='humble-code-like' style='text-align: left'>
-    var slider = new Slider("whiteboardReviewSlider",122,23,"reviewSlider");
+    var slider = new EasySlider("whiteboardReviewSlider",122,23,"reviewSlider");
     slider.setSlideClass("slideClass").setLabelClass("labelClass").setStopClass("stopClass").setStopText("");
     slider.setSlideRanges("true").setRangeDirection("left").setRangeClass("rangeClass").setMaxScale(5);
     slider.setOnSlide(function (slider, range, fromLeft) {   });
@@ -69,19 +69,19 @@
 <br /><br />
 <script>
     (()=>{
-        sliderControl.init();
-	var slider1 = new Slider("whiteboardReviewSlider",122,23,"reviewSlider");
+        EasySlider.Control.init();
+	var slider1 = new EasySlider("whiteboardReviewSlider",122,23,"reviewSlider");
 	slider1.setSlideClass("slideClass").setLabelClass("labelClass").setStopClass("stopClass").setStopText("");
 	slider1.setSlideRanges("true").setRangeDirection("left").setRangeClass("rangeClass").setMaxScale(5);
-	slider1.setOnSlide(function (slider,slide,fromleft) { $E("reviewScore").innerHTML =  (Math.floor((5 * (Sliders[slide.id].getPercent()/100))* 10)/10) + "";  });
+	slider1.setOnSlide(function (slider,slide,fromleft) { $E("reviewScore").innerHTML =  (Math.floor((5 * (EasySliders[slide.id].getPercent()/100))* 10)/10) + "";  });
         slider1.setInclusive(true).setSnap(false).setScale(0,5,10);
 	slider1.addPointer("wr_pointer","/pages/images/sliders/pointer2.gif");
 	slider1.render();            
-	var slider2 = new Slider("multipleRanges",400,23,"rangesSlider");
+	var slider2 = new EasySlider("multipleRanges",400,23,"rangesSlider");
 	slider2.setSlideClass("slide2Class").setLabelClass("label2Class").setStopClass("stop2Class").setStopText("");
 	slider2.setSlideRanges("true").setRangeDirection("left").setRangeClass("range2Class").setMaxScale(100);
         var f = (slider,range,fromLeft) => {
-            var val = Sliders[range.id].getValue();
+            var val = EasySliders[range.id].getValue();
             switch (slider.id) {
                 case 'green_pointer' :
                     $('#greenThreshold').html(val);
@@ -109,7 +109,7 @@
         slider2.setPointer('yellow_pointer',85);
         slider2.setPointer('green_pointer',75);
         
-	var slider3 = new Slider("zoomSlider",300,23,"zoomSlider");
+	var slider3 = new EasySlider("zoomSlider",300,23,"zoomSlider");
 	slider3.setSlideClass("slide3lass").setLabelClass("label3lass").setStopClass("stop3lass").setAxis(0,100,100,25);
         slider3.setInclusive(true).setSnap(true);
 	slider3.addPointer("zoom_pointer","/pages/images/sliders/slider.png",'arrowClass');
