@@ -159,14 +159,21 @@ class Cadence extends Model
         }
     }
 
+    /**
+     * Groups the
+     * 
+     * @return array
+     */
     public function coalesce() {
         $handlers   = [];
         $project    = \Environment::project();
         if ($project->namespace === 'humble') {
-           //get meta from Humble module
+           $source  = 'Code/Framework/Humble/etc/application.json';
         } else {
-            //get meta from main module
+            $module = \Humble::module($project->namespace);
+            $source = 'Code/'.$module['package'].'/'.$module['module'].'/etc/cadence.json';
         }
+        $this->setCadenceBasics(json_decode(file_get_contents($source),true));
         foreach (\Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             if (file_exists($path = 'Code/'.$module['package'].'/'.$module['module'].'/etc/cadence.json')) {
                 $handlers[$module['namespace']] = json_decode(file_get_contents($path),true);
