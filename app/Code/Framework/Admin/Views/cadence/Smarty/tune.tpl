@@ -22,15 +22,34 @@
     .cadence_toggle_pointer {  
         height: 16px;
         margin-top: -2px 
-    }        
+    }   
+    .cadence_period_pointer {  
+        height: 28px;
+        margin-top: 0px 
+    }         
     .cadence_range_slider {
         display: inherit; 
         border: 1px solid #777; 
         border-radius: 6px;
         background-color: black
             
-    }    
-
+    }   
+    .cadence_period_range {
+        display: inherit; 
+        border: 1px solid #777; 
+        border-radius: 6px;
+        background-color: black
+            
+    }       
+    .cadence_period_slider {
+        display: inline-block; 
+        width: 250px; 
+        margin-right: 10px; 
+        height: 20px; 
+        border: 1px solid #333; 
+        border-radius: 5px; 
+        vertical-align: middle        
+    }
 </style>
 <div id="win_{$window_id}_header" style="box-sizing: border-box; background-color: #333; color: ghostwhite; padding: 0px; text-align: right; font-size: 1.5em">
     <br />
@@ -49,8 +68,34 @@
                                 <div style="display: inline-block; width: 125px; height: 20px; padding: 4px">
                                 {$area|ucfirst} 
                                 </div>
-                                <div style="display: inline-block; width: 225px; margin-right: 10px; height: 20px; border: 1px solid #333; border-radius: 5px; vertical-align: middle"></div>
-                                <div style="display: inline-block; vertical-align: middle"> {$multiple} </div>
+                                <div id='slide_{$namspace}_{$area}' style="display: inline-block"></div>
+                                <div id='period_{$namspace}_{$area}' style="display: inline-block; vertical-align: middle"> {$multiple} </div>
+                                <script type='text/javascript'>
+                                    (()=> {
+                                        console.log('{$multiple}');
+                                        var multiple = {$multiple};
+                                        var slider = new EasySlider("slide_{$namspace}_{$area}",250,20,"s_{$namespace}_{$area}");
+                                        slider.setSlideClass("cadence_period_slider");
+                                        slider.setLabelClass("cadence_toggle_label");
+                                        slider.setStopClass("cadence_toggle_stop");
+                                        slider.setStopText("");
+                                        slider.setSlideRanges("true");
+                                        slider.setRangeDirection("left");
+                                        slider.setRangeClass("cadence_period_range");
+                                        slider.setMaxScale(25).setCanClick(true);;
+                                        slider.setOnSlide((slider, range, fromLeft) => {
+                                            document.getElementById('period_{$namspace}_{$area}').innerHTML = EasySliders[range.id].getValue();
+                                            //let color = (fromLeft > 20) ? '#0FFF50' : 'darkgray';
+                                            //$(range).css('background-color',color);
+                                        });
+                                        slider.setInclusive(true); 
+                                        slider.setSnap(true)
+                                        slider.setScale(1,25,25);
+                                        slider.addPointer("sl_{$area}_pointer","/images/admin/slider_3.png",null,'cadence_period_pointer');
+                                        slider.render();
+                                        slider.setSliderTo(multiple);
+                                    })();
+                                </script>                                
                             </div>
                             <div style="margin-bottom: 10px">
                                 {foreach from=$callback.callbacks item=enable key=cb}
@@ -61,17 +106,18 @@
                                     <div id='slide_{$namespace}_{$cb}' style='display: inline-block'></div>
                                     <script type='text/javascript'>
                                         (()=> {
-                                            var slider = new Slider("slide_{$namespace}_{$cb}",40,8,"s_{$namespace}_{$cb}");
+                                            var slider = new EasySlider("slide_{$namespace}_{$cb}",40,8,"s_{$namespace}_{$cb}");
                                             slider.setSlideClass("cadence_toggle_slider");
                                             slider.setLabelClass("cadence_toggle_label");
                                             slider.setStopClass("cadence_toggle_stop");
                                             slider.setStopText("");
-                                            slider.setSlideRanges("true");
-                                            slider.setRangeDirection("left");
-                                            slider.setRangeClass("cadence_range_slider");
-                                            slider.setMaxScale(1);
+                                            //slider.setSlideRanges("true");
+                                            //slider.setRangeDirection("left");
+                                            //slider.setRangeClass("cadence_range_slider");
+                                            slider.setMaxScale(1).setCanClick(true);;
                                             slider.setOnSlide((slider, range, fromLeft) => {
-                                                //do something
+                                                let color = (fromLeft > 20) ? '#0FFF50' : 'darkgray';
+                                                $(range).css('background-color',color);
                                             });
                                             slider.setInclusive(true); 
                                             slider.setSnap(true)

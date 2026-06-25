@@ -193,6 +193,7 @@ function EasySlider(div,len,hgt,optId) {
         return this;
     };
     this.setPointer         = (whichOne,amount,triggerEvent) => {
+        console.log('amount: '+amount);
         var where = amount/100;  //if percent
         if (this.getMaxScale() || (amount > 100)) {
             where = (amount/this.getMaxScale()); //if not percent
@@ -467,6 +468,7 @@ EasySlider.Control = (() => {
             evt = (evt) ? evt : ((window.event) ? event : null);
             var slideId = (evt.target) ? evt.target.id : evt.srcElement.id;
             var offset = evt.clientX  - EasyEdits.getAbsoluteX(document.getElementById(slideId),"BODY");
+            console.log('offset: '+offset);
             EasySliders[slideId].setSliderTo(offset);
             return this;
         }        
