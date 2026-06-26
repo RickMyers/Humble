@@ -222,6 +222,9 @@ var Functions = (() => {
                                     alert(response.result+' ['+response.RC+']');
                                 }).post();
                             }
+                        },
+                        explain: (namespace,callback) => {
+                            alert('Feature not yet implemented');
                         }
                     },
                     maintenance: {
@@ -716,7 +719,7 @@ var Functions = (() => {
                         Heartbeat.register('admin',true,'socketStatus',i,2,{});
                         Heartbeat.register('admin',true,'proxyStatus',j,2,{});
                         Heartbeat.register('admin',true,'criticalErrors',k,2,{});
-                        Heartbeat.init();
+                        //Heartbeat.init();
                         Humble.init();
                     },
                     action: function (action,pkg,module) {

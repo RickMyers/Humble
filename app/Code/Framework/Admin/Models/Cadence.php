@@ -173,6 +173,10 @@ class Cadence extends Model
             $module = \Humble::module($project->namespace);
             $source = 'Code/'.$module['package'].'/'.$module['module'].'/etc/cadence.json';
         }
+        $data = json_decode(file_get_contents($source),true);
+        $this->setPeriod($data['period']);
+        $this->setLogLocation($data['log']['location']);
+        $this->setLogSize($data['log']['max_size']);
         $this->setCadenceBasics(json_decode(file_get_contents($source),true));
         foreach (\Humble::entity('humble/modules')->setEnabled('Y')->fetch() as $module) {
             if (file_exists($path = 'Code/'.$module['package'].'/'.$module['module'].'/etc/cadence.json')) {
