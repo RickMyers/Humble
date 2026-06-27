@@ -89,13 +89,14 @@
                             <div style='font-family: monospace; font-size: .85em; letter-spacing: 2px'>Default Profile</div>
                             <div style='height: 15px'></div>                            
                             <div id='cadence_master_period'         style='display: inline-block'></div>
-                            <div id='cadence_master_period_display' style='display: inline-block'></div>
+                            <div id='cadence_master_period_display' style='display: inline-block'>{$cadence->getPeriod()}</div>
                             <div style='font-family: monospace; font-size: .85em; letter-spacing: 2px'>Periodic Pulse (in seconds)</div>
                         </fieldset>                    
                         <script type='text/javascript'>
                             var Cadence = {};
+                            EasySlider.Control.init();
                             (()=> {
-                                var period = {$cadence->getPeriod()};
+                                var period = +'{$cadence->getPeriod()}';
                                 var slider = new EasySlider("cadence_master_period",300,20,"s_master_period");
                                 slider.setSlideClass("cadence_period_slider");
                                 slider.setLabelClass("cadence_toggle_label");
@@ -120,6 +121,7 @@
                         </script>                                
 
                         <div style='height: 15px'></div>
+                        {assign var=cadence_data value=[]}
                     </div><div style="font-size: 1.25em; font-family: monospace; background-color: rgba(202,202,202,.1); margin-left: auto; margin-right: auto; width: 100%">
                          {foreach from=$cadence_data item=funcs key=namespace}
                             <script type='text/javascript'>Cadence['{$namespace}'] = {  };</script>
@@ -134,11 +136,12 @@
                                             };</script>
                                             <div style="padding-left: 120px; padding-bottom: 4px; background-color: rgba(200,200,200,.7); height: 35px; vertical-align: middle">
                                                 <div style="display: inline-block; width: 175px; height: 30px; padding: 4px; vertical-align: middle"><b>{$area|ucfirst}</b></div>
-                                                <div id='slide_{$namspace}_{$area}' style="display: inline-block"></div>
-                                                <div id='period_{$namspace}_{$area}' style="display: inline-block; vertical-align: middle"> {$multiple} </div>
+                                                <div id='slide_{$namespace}_{$area}'    style="display: inline-block"></div>
+                                                <div id='period_{$namespace}_{$area}'   style="display: inline-block; vertical-align: middle"> {$multiple} </div>
                                                 <script type='text/javascript'>
                                                     (()=> {
-                                                        var slider = new EasySlider("slide_{$namspace}_{$area}",250,20,"s_{$namespace}_{$area}");
+                                                        var slider = new EasySlider("slide_{$namespace}_{$area}",250,22,"s_{$namespace}_{$area}");
+                                                        var multiple = +'{$multiple}';
                                                         slider.setSlideClass("cadence_period_slider");
                                                         slider.setLabelClass("cadence_toggle_label");
                                                         slider.setStopClass("cadence_toggle_stop");
@@ -146,9 +149,10 @@
                                                         slider.setSlideRanges("true");
                                                         slider.setRangeDirection("left");
                                                         slider.setRangeClass("cadence_period_range");
-                                                        slider.setMaxScale(25).setCanClick(true);;
+                                                        slider.setMaxScale(25);
+                                                        slider.setCanClick(true);
                                                         slider.setOnSlide((slider, range, fromLeft) => {
-                                                            document.getElementById('period_{$namspace}_{$area}').innerHTML = EasySliders[range.id].getValue();
+                                                            document.getElementById('period_{$namespace}_{$area}').innerHTML = EasySliders[range.id].getValue();
                                                             //let color = (fromLeft > 20) ? '#0FFF50' : 'darkgray';
                                                             //$(range).css('background-color',color);
                                                         });
@@ -159,21 +163,25 @@
                                                         slider.setScale(1,25,25);
                                                         slider.addPointer("sl_{$area}_pointer","/images/admin/slider_3.png",null,'cadence_period_pointer');
                                                         slider.render();
-                                                        slider.setSliderToValue({$multiple});
+                                                        console.log('----------------------------------------------------');                                
+                                                        console.log('Setting: cadence_period_slider');         
+                                                        console.log('multiple: '+multiple);
+                                                        //slider.setSliderToValue(multiple);
                                                     })();
                                                 </script>                                
                                             </div>
                                             <div>
                                                 {foreach from=$callback.callbacks item=enable key=cb}
                                                 <div style="padding-left: 160px; background-color: rgba(200,200,200,.9); height: 30px; vertical-align: middle">
-                                                    <div style="display: inline-block; width: 270px">
+                                                    <div style="display: inline-block; width: 345px">
                                                         <a href="javascript:Administration.cadence.explain('{$namespace}','{$cb}'); return false" style='color: blue'>{$cb}</a>
                                                     </div>
-                                                    <div id='slide_{$namespace}_{$cb}' style='display: inline-block'></div>
+                                                    <div id='slide_{$area}_{$cb}' style='display: inline-block'></div>
                                                     <script type='text/javascript'>
                                                         Cadence['{$namespace}']['{$area}']['handlers']['{$cb}'] = '{$enable}';
                                                         (()=> {
-                                                            var slider = new EasySlider("slide_{$namespace}_{$cb}",40,8,"s_{$namespace}_{$cb}");
+                                                            var enable = ('{$enable}' === '1') ? 1 : 0;
+                                                            var slider = new EasySlider("slide_{$area}_{$cb}",40,8,"s_{$area}_{$cb}");
                                                             slider.setSlideClass("cadence_toggle_slider");
                                                             slider.setLabelClass("cadence_toggle_label");
                                                             slider.setStopClass("cadence_toggle_stop");
@@ -192,7 +200,8 @@
                                                             slider.setScale(0,1,2);
                                                             slider.addPointer("sl_{$cb}_pointer","/images/admin/circle_pointer.png",null,'cadence_toggle_pointer');
                                                             slider.render();
-                                                            slider.setSliderToValue({$enable});
+                                                            console.log('Setting slider on/off toggle');                                                            
+                                                            slider.setSliderToValue(enable);
                                                         })();
                                                     </script>
                                                 </div>

@@ -10,11 +10,10 @@ var EasySliders        = [];
 function EasySlider(div,len,hgt,optId) {
     EasySlider.Control.init();   //go set the sizer
     var me                  = this;
-    var intervalLength      = 0;  //we have to calc this...
-    var snap                = false;
-    var amount              = 0;
-    var maxScale            = 0;
-    var inclusive           = false;
+    this.intervalLength     = 0;  //we have to calc this...
+    this.snap               = false;
+    this.amount             = 0;
+    this.maxScale           = false;
     this.ref                = (typeof div === 'string') ? document.getElementById(div) : div;
     if (!this.ref) {
         alert("Slider: "+div+" Not Found");
@@ -50,15 +49,16 @@ function EasySlider(div,len,hgt,optId) {
     this.roundIt            = false;
     this.calcIntervalLength = () => {
         var inclusiveOffset = (this.getInclusive()) ? -1 : 1;
-        intervalLength = Math.round(this.getSliderWidth()/(this.stops.length+inclusiveOffset));
-        return intervalLength;
+        
+        return this.intervalLength = Math.round(this.getSliderWidth()/(this.stops.length+inclusiveOffset));
     };
     this.setAmount      = (amt) => {
-        amount = amt;
+        this.amount = amt;
         return me;
     };
     this.setMaxScale    = (max) => {
-        maxScale = max;
+      //  console.log('max scale: ' +max);
+        this.maxScale = max;
         return me;
     };
     this.setAxis        = (start,stop,maxScale,byAmt) => {
@@ -89,11 +89,11 @@ function EasySlider(div,len,hgt,optId) {
         }
         return me;
     };
-    this.getInterval    = () => { return intervalLength;   };
-    this.getAmount	= () => { return amount;			};
-    this.getMaxScale	= () => { return maxScale;			};
+    this.getInterval    = () => { return this.intervalLength;   };
+    this.getAmount	= () => { return this.amount;			};
+    this.getMaxScale	= () => { return this.maxScale;			};
     this.getPercent	= () => {
-        return Math.round((amount/this.sliderWidth)*100);
+        return Math.round((this.amount/this.sliderWidth)*100);
     };
     this.getSliderWidth = () => {
         return (parseInt(this.sliderWidth) === this.sliderWidth) ? this.sliderWidth : this.ref.offsetWidth;
@@ -105,19 +105,19 @@ function EasySlider(div,len,hgt,optId) {
                 ret = (this.getAmount() === this.stops[i].location) ? this.stops[i].returns : ret;
             }
         } else {
-            ret = Math.round((amount / this.getSliderWidth()) * maxScale);
+            ret = Math.round((this.getAmount() / this.getSliderWidth()) * this.maxScale);
         }
         return ret;
     };
-    this.setInclusive       = (bool) => { inclusive = bool; return me;    };
-    this.getInclusive       = () => { return inclusive;             };
+    this.setInclusive       = (bool) => { this.inclusive = bool; return me;    };
+    this.getInclusive       = () => { return this.inclusive;             };
     this.onSlideStart       = null;
     this.onSlide            = null;
     this.onSlideStop        = null;
     this.canClick           = false;
-    this.setSnap            = (bool) => { snap = bool; return me;        };
-    this.getIntervalLength  = () =>  { return intervalLength;        };
-    this.getSnap            = () =>  { return snap;                    };
+    this.setSnap            = (bool) => { this.snap = bool; return me; };
+    this.getIntervalLength  = () =>  { return this.intervalLength;          };
+    this.getSnap            = () =>  { return this.snap;               };
     this.setSlideRanges     = (bool) => {
         this.slideRanges         = bool;
         return this;
@@ -198,11 +198,10 @@ function EasySlider(div,len,hgt,optId) {
         return this;
     };
     this.setPointer         = (whichOne,amount,triggerEvent) => {
-        console.log('amount: '+amount);
         var pointer = (typeof whichOne === "string") ? document.getElementById(whichOne) : whichOne;
         var slide   = document.getElementById(this.slideId);
-        var where = (this.getMaxScale() || (amount > 100)) ? (amount/this.getMaxScale()) : amount/100; 
-        where     = Math.round(slide.offsetWidth * where);
+        var where   = (this.getMaxScale() || (amount > 100)) ? (amount/this.getMaxScale()) : amount/100; 
+        where       = Math.round(slide.offsetWidth * where);
         this.setAmount(where);
         if (this.slideRanges)  {
             document.getElementById(pointer.id+"_range").style.width    = where+"px";
@@ -226,19 +225,18 @@ function EasySlider(div,len,hgt,optId) {
     this.setSliderTo            = (offset,triggerEvent) => {
         var maxScale = (this.getMaxScale()) ? this.getMaxScale() : 100;
         var perc     = Math.round(((offset/this.getSliderWidth()) * maxScale));
-        console.log('sst: '+offset+", "+maxScale+", "+perc);
-        console.log(this.pointers);
         this.setPointer(this.pointers[0].ref,perc,triggerEvent);
         return this;
     };
     this.setSliderToValue	= (val,triggerEvent) => {
         var setTo = 0;
-//        if (typeof val === "string") {
-            for (var i=0; i<this.stops.length; i++) {
-                setTo = (this.stops[i].returns === val) ? this.stops[i].location : setTo;
-            };
-  //      }
-        console.log('For Val:'+val+' setTo Location: '+setTo);
+        
+        for (var i=0; i<this.stops.length; i++) {
+            if (this.stops[i].returns === val) {
+                setTo = this.stops[i].location;
+            }
+        };
+
         this.setSliderTo(setTo,triggerEvent);
         return this;
     };
@@ -277,7 +275,7 @@ function EasySlider(div,len,hgt,optId) {
         }
         for (var i=0; i<this.stops.length; i++)  {
             var inclusiveOffset = (this.getInclusive()) ? 0 : 1;
-            this.stops[i].location = (interval*(i+inclusiveOffset));
+            this.stops[i].location = (interval*(i + inclusiveOffset));
             this.stops[i].placement = this.stops[i].location - EasySlider.Control.getLabelOffset(this.stopClass,this.stopText);
             html += '<div id="'+this.stops[i].id+'" style="position: absolute; z-index: 2; padding: 0px; margin: 0px; top: 0px; left: '+this.stops[i].placement+'px"><span class="'+this.stopClass+'">'+this.stopText+'</span></div>';
             html += '<div id="'+this.stops[i].id+'_label" style="position: absolute; z-index: '+(this.pointers.length+1)+'; top: '+(this.sliderHeight+2)+'px; left: '+((interval*(i+inclusiveOffset)) - EasySlider.Control.getLabelOffset(this.labelClass,this.stops[i].label))+'px"><span class="'+this.labelClass+'">'+this.stops[i].label+'</span></div>';

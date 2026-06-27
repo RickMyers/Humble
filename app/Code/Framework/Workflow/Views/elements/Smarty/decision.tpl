@@ -80,15 +80,11 @@
                     <input type='button' name='external-form-save' />
                     </form>
                     <script>
-               /*         var ee = new EasyEdits(null,'decision_external_{$id}');
-                        ee.fetch('/edits/workflow/externaldecision');
-                        ee.process(ee.getJSON().replace(/&id&/g,'{$id}').replace(/&window_id&/g,'{$window_id}'));
-                        Form.intercept($('#external-form-{$id}').get(),'{$id}',false,'{$window_id}');*/
+                        new EasyEdits('/edits/workflow/externaldecision','decision_external_{$id}',{'&window_id&': '{$window_id}', '&id&': '$id}'});
+                        Form.intercept($('#external-form-{$id}').get(),'{$id}',false,'{$window_id}');
                     </script>
                 </div>
-                
             </div>
-            
         </td>
     </tr>
 </table>

@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">      
+      <title>Humble | Administration Log-in</title>
+        <link rel="stylesheet" type="text/css" href='/css/humble-bootstrap' />
+        <!--link rel="stylesheet" type="text/css" href='/css/humble-bootstrap-theme' /-->
+        <style type='text/css'>
+            body {
+               /* background: rgba(0, 0, 0, 1) url("/web/images/blackwav.gif") no-repeat fixed center center / cover; width: 100%; height: 100%; margin: 0px; padding: 0px*/
+               background-image: url(/images/paradigm/bg_graph.png); overflow: hidden;
+            }
+            #humble-content-area {
+            }
+            .humble-headers {
+                background: rgba(0, 0, 0, 1) url("/web/images/grad.png") no-repeat fixed center center / cover; width: 100%;
+            }
+            .nav-text {
+                float: right; margin-right: 25px; font-size: 1em; color: ghostwhite; cursor: pointer; opacity: .7; letter-spacing: 0.5px; font-weight: normal; position: relative; top: -6px; white-space: nowrap;
+                font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif
+            }
+            .nav-text:hover {
+                color: white; opacity: 1.0;
+            }
+            .humble-image {
+                display: inline-block; width: 65%; overflow: hidden; border-radius: 20px; border: 1px solid transparent;
+            }
+            .humble-emphasis {
+                font-size: 1.25em
+            }
+            .humble-topic-header {
+                font-family: sans-serif; font-size: 1.6em; color: #333; font-weight: bolder; margin-bottom: 35px; margin-top: 25px
+            }
+            .humble-section-header {
+                font-family: sans-serif; font-size: 1.4em; color: #333; font-weight: bolder; margin-top: 20px
+            }
+            .humble-code-like {
+                font-family: "Lucida Console", Monaco, monospace; font-size: .9em; background-color: #333; padding: 5px 5px; color: greenyellow
+            }
+            .login-field-desc {
+                font-family: sans-serif; font-size: 1.2em; padding-bottom: 12px
+            }
+            .header-layer {
+                width: 1280px; padding: 5px 10px; margin-left: auto; margin-right: auto;
+            }
+            .humble-separator {
+                width: 100%; clear: both; height: 10px; background-color: rgba(50,50,50,.8);
+            }
+            .humble-container {
+                padding: 5px 10px; overflow: auto; position: relative; background-color: white; width: 1248px; border-left: 1px solid rgba(190,190,190,.7); border-right: 1px solid rgba(190,190,190,.7); margin-left: auto; margin-right: auto
+            }
+            .humble-table-header {
+                padding: 2px; background-color: #333; color: ghostwhite;
+            }
+            .humble-table-cell {
+                font-size: 1em; padding: 2px; background-color: rgba(202,202,202,.3)
+            }
+            .article-title {
+                font-size: 2em; letter-spacing: 2px
+            }
+            .article-separator {
+                clear: both; margin-bottom: 30px; top: -20px; position: relative; left: -10px
+            }
+            .article-quote {
+                padding: 5px; font-style: italic; color: rgba(50,50,50,.8); background-color: rgba(202,202,202,.4)
+            }
+            .article {
+                font-size: 1em; font-family: sans-serif;
+            }
+            .humble-zebra-0 {
+                background-color: #dedede;
+            }
+            .humble-zebra-1 {
+                background-color: #bebebe;
+            }
+            .humble-monospace {
+                font-family: monospace
+            }
+            .humble-sans-serif {
+                font-family: sans-serif;
+            }
+            .humble-code {
+                width: 100%; overflow: hidden; border: 1px solid #333; box-style: border-box; margin-left: auto; margin-right: auto; font-family: monospace
+            }
+            .humble-important {
+                font-family: monospace; font-size: 1.2em; color: #d33; clear: both; margin: 10px 0px 10px 0px
+            }
+            .humble-snippet {
+                font-family: monospace; color: #003fBB
+            }
+            .humble-protip {
+                font-family: monospace; color: #000099; font-size: 1.1em; margin: 10px 0px 10px 0px
+            }
+            .humble-protip-text {
+                font-family: sans-serif;  font-size: 1em; margin: 0px 0px 10px 0px
+            }   
+            .humble-note {
+                border: 1px solid #333; padding: 6px; background-color: lightcyan; font-size: .9em; font-family: monospace
+            }
+            .humble-static-player {
+                border: 1px solid #333; background-color: #eee; padding: 5px
+            }
+            .screenshot {
+                margin-right: 2px; border: 1px solid #333; position: relative; padding-bottom: 10px; cursor: pointer
+            }
+            .famous_quote {
+                background-color: rgba(202,202,202,.2); padding: 10px; font-style: italic; color: #333; margin-bottom: 20px; border: 1px solid silver; border-radius: 5px;
+            }
+
+        </style>
+        <script type='text/javascript' src='/js/humble-jquery'></script>
+        <script type='text/javascript' src='/js/common'></script>
+        <script type="text/javascript" src='/js/bootstrap'></script>
+        <script type="text/javascript" src='/js/widgets'></script>
+        <script type="text/javascript" src='/web/js/Colorizer.js'></script>
+        <script type='text/javascript'>
+            $(document).ready(function () {
+                $(window).resize(function () {
+                    $('#humble-container').height(window.innerHeight - $('#humble-headers').height()- (3*$('.humble-separator').height()));
+                }).resize();
+                Colorizer.scan(document.body);
+            });
+
+         </script>
+    </head>
+
+    <body>
+        <div id="humble_labs" style="width: 100%; height: 100%; margin: 0px; padding: 0px">
+        <div style="display: none; position: absolute; top: 0px; width: 100%; height: 100%; overflow: hidden; background-color: rgba(50,50,50,.5); z-index: 9" id="humble_video_layer">
+            <table style="width: 100%; height: 100%">
+                <tr>
+                    <td>
+                        <div style="width: 822px; padding: 0px 10px 10px 10px; border: 1px solid #333; background-color: ghostwhite; margin-left: auto; margin-right: auto; border-radius: 10px">
+                            <div style="float: right; color: #aaa; font-weight: bold; cursor: pointer; font-size: 1.4em" onclick="$('#humble_video_layer').css('display','none'); $('#humble_video_player').attr('src','/pages/blank.html')">&times;</div>
+                            <div style="clear: both; text-align: right"></div>
+                            <iframe controls id="humble_video_player"
+                                src=""
+                                width="800" height="600" frameborder="0">
+                            </iframe>                            
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="humble-headers" id="humble-headers">
+            <div style="background-color: rgba(50,50,50,.8); padding: 10px; ">
+
+                <div class="header-layer-1"  style="margin-left: auto; margin-right: auto; width: 1248px; white-space: nowrap; ">
+                    <div style="display: inline-block; font-size: 1.7em; vertical-align: bottom; color: ghostwhite; opacity: .7; white-space: nowrap">
+                        <img src="/web/images/djikstra_light.png" alt="djikstra" style=" height: 50px; cursor: pointer; margin-right: 15px; float: left" onclick="window.location.href = '/humble.html'"/>
+                        <div style="display: inline-block; position: relative;  left: -3px"><div style="cursor: pointer" onclick="window.location.href='/pages/Presentations.htmls'"><img title="View Presentations..." src="/images/humble/presentations.png" style="height: 20px;" /></div>be humble.</div>
+                    </div>
+                    <!--div class="nav-text" onclick="window.location.href = '/pages/PipsJourney.htmls'" style="border: 1px solid transparent; border-radius: 50%; background-color: white">
+                        <img src="/web/images/Pip.png" height="60" title="Come meet Pip!"/>
+                    </div-->
+                    <div class="nav-text" onclick="window.location.href = '/pages/About.htmls'">
+                        About
+                    </div>                    
+                    <div class="nav-text" onclick="window.location.href = '/index.html'">
+                        Login
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/Blog.htmls'">
+                        Blog
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/Labs.htmls'">
+                        Labs
+                    </div>                    
+                    <div class="nav-text" onclick="window.location.href = 'https://www.github.com/RickMyers/Humble'">
+                       <img src="/web/images/git_squid.png" style="height: 22px; float: left; margin-right: 5px"/> Repository 
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/Documentation.htmls'">
+                        Documentation
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/pages/Install.htmls'">
+                        Installation
+                    </div>
+                    <div class="nav-text" onclick="window.location.href = '/blog/whatsnew/home'">
+                        <img src="/images/humble/whatsnew.png" style="height: 22px; margin-top: 4px"/>
+                    </div>                                       
+                    <div class="nav-text" onclick="window.location.href = '/pages/TheHumbleWay.htmls'">
+                        The Humble Way
+                    </div>
+                    <div class="nav-text" style="padding-left: 70px" onclick="window.location.href = '/pages/Main.htmls'">
+                        Home
+                    </div>
+                </div>
+            </div>
+
+<div style="clear: both"></div>
+</div>
+<div class="humble-separator" style=""></div>
+<div id="humble-container" style="padding: 5px 10px; overflow: auto; position: relative; background-color: white; width: 1248px; border-left: 1px solid rgba(190,190,190,.7); border-right: 1px solid rgba(190,190,190,.7); margin-left: auto; margin-right: auto">
+
+<style type="text/css">
+    .slideClass             { display:inherit;  border: 1px solid #777; background-position: 0px -4px; background-image: url(/pages/images/hollow_star.gif); background-repeat: repeat-x;border-radius: 6px;  }
+    .labelClass             { font-family: arial; font-size: 10pt; }
+    .stopClass              { font-family: arial; padding-top: 16px; font-size: 22pt; font-weight: bold }
+    .rangeClass             { display: inherit; border: 1px solid #777; background-position: 0px -4px; background-image: url(/pages/images/gold_star.gif); background-repeat: repeat-x; border-radius: 6px;  } 
+    .slide2Class            { display:inherit;  border: 1px solid #777;  border-radius: 6px; background-color: red }
+    .label2Class            { font-family: arial; font-size: 10pt; }
+    .stop2Class             { font-family: arial; padding-top: 16px; font-size: 22pt; font-weight: bold }
+    .range2Class            { display: inherit; border: 1px solid #777; border-radius: 6px;  }     
+    .slide3Class            { display:inherit;  border: 1px solid #777;  border-radius: 6px }
+    .label3Class            { font-family: arial; font-size: 10pt; }
+    .stop3Class             { font-family: arial; padding-top: 16px; background-color: red; font-size: 22pt; font-weight: bold }
+    .range3Class            { display: inherit; border: 1px solid #777; border-radius: 6px;  }      
+    .arrowClass             { height: 32px }
+    .cadence_toggle_slider {
+        border: 1px solid #555; 
+        border-radius: 12px;
+        display: inline-block;
+        background-color: rgba(202,202,202,.2);
+        width: 40px;
+        height: 6px;
+        vertical-align: middle
+    }
+    .cadence_toggle_label {
+        font-family: sans-serif; 
+        font-size: 10pt
+    }
+    .cadence_toggle_stop {
+        font-family: sans-serif; 
+        padding-top: 16px; 
+        font-size: 22pt; 
+        font-weight: bold
+    }
+    .cadence_toggle_pointer {  
+        height: 16px;
+        margin-top: -2px 
+    }   
+    .cadence_period_pointer {  
+        height: 28px;
+        margin-top: 0px 
+    }  
+    .master_period_pointer {  
+        height: 28px;
+        margin-top: 0px 
+    }     
+    .cadence_range_slider {
+        display: inherit; 
+        border: 1px solid #777; 
+        border-radius: 6px;
+        background-color: black
+            
+    }   
+    .cadence_period_range {
+        display: inherit; 
+        border: 1px solid #777; 
+        border-radius: 6px;
+        background-color: black
+            
+    }       
+    .cadence_period_slider {
+        display: inline-block; 
+        width: 250px; 
+        margin-right: 10px; 
+        height: 20px; 
+        border: 1px solid #333; 
+        border-radius: 5px; 
+        vertical-align: middle        
+    }    
+</style>
+<div id="hiddenSizingLayer" style="position: absolute; top: -200px; left: -200px"></div>
+<table style="width: 80%; margin-left: auto; margin-right: auto">
+    <tr>
+        <td><a href="#" onclick="window.history.back()">Back</a></td>
+        <td style="text-align: center"><a href="/pages/Main.htmls">Home</a></td>
+        <td style="text-align: right"><a href="/pages/Labs/EasyTime.htmls" title="Calendar and Clock" >Next</a></td>
+    </tr>
+</table>
+<div style='width: 80%; margin-left: auto; margin-right: auto; text-align: justify'>
+<div class='humble-topic-header'>Sliders!</div>
+<div>
+    <b>Reason for Creation</b>:<br /><br />
+</div><br /><br />
+<div>
+    <b>Invocation</b>:
+</div>
+<pre class='humble-code-like' style='text-align: left'>
+    var slider = new EasySlider("whiteboardReviewSlider",122,23,"reviewSlider");
+    slider.setSlideClass("slideClass").setLabelClass("labelClass").setStopClass("stopClass").setStopText("");
+    slider.setSlideRanges("true").setRangeDirection("left").setRangeClass("rangeClass").setMaxScale(5);
+    slider.setOnSlide(function (slider, range, fromLeft) {   });
+    slider.setInclusive(true).setSnap(true).setScale(0,5,10);
+    slider.addPointer("wr_pointer","/pages/images/sliders/pointer2.gif");
+    slider.render(); 
+    
+</pre>
+<div id='cadence_master_period'         style='display: inline-block'></div>
+<div id='cadence_master_period_display' style='display: inline-block'></div>
+<br /><br />
+<script>
+    (()=> {
+        EasySlider.Control.init();                                
+        var period = 8;
+        var slider = new EasySlider("cadence_master_period",300,30,"s_master_period");
+        slider.setSlideClass("cadence_period_slider");
+        slider.setLabelClass("cadence_toggle_label");
+        slider.setStopClass("cadence_toggle_stop");
+        slider.setStopText("");
+        slider.setSlideRanges("true");
+        slider.setRangeDirection("left");
+        slider.setRangeClass("cadence_period_range");
+        slider.setMaxScale(25).setCanClick(true);;
+        slider.setOnSlide((slider, range, fromLeft) => {
+            document.getElementById('cadence_master_period_display').innerHTML = EasySliders[range.id].getValue();
+        });
+        slider.setInclusive(true); 
+        slider.setSnap(true)
+        slider.setCanClick(true);
+        slider.setRounding(true);
+        slider.setScale(1,25,25);
+        slider.addPointer("sl_master_period","/images/admin/slider_3.png",null,'master_period_pointer');
+        slider.render();
+        slider.setSliderToValue(period);
+    })();    
+</script>
+
+<br /><br /><br />
+
+</div>
+
+
+        <div style="clear: both"></div>
+        </div>
+        <div class="humble-separator">
+            <div class="chunk" style="background-color: rgba(90,90,90,.1);">
+            </div>
+            <div class="chunk" style="background-color: rgba(90,90,90,.3);">
+            </div>
+            <div class="chunk" style="background-color: rgba(90,90,90,.5); ">
+            </div>
+            <div class="chunk" style="background-color: rgba(90,90,90,.7);">
+            </div>
+        </div>
+        <div style="display: none; position: absolute; top: 0px; left: 0px; text-align: center; background-color: #333; padding: 0px; margin: 0px" id="screenshot-frame">
+            <img src="" id="current-screenshot" style="  border: 3px solid #333" title="" /><br />
+            <div style="font-family: sans-serif; font-style: italic; color: ghostwhite; padding: 5px 10px; width: 100%" id="screenshot-text"></div>
+            <div style="font-family: sans-serif; font-style: italic; color: #777; padding: 5px 10px; width: 100%; text-align: center"><button onclick="$('#screenshot-frame').hide()"> Close </button>
+            </div>
+            
+        </div>
+</div>
+     
+    </body>
+
+</html>

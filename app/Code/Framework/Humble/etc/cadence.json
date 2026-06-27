@@ -20,7 +20,7 @@
                 },
                 "multiple": 6
             },
-            "application.xml": {
+            "applicationxml": {
                 "callbacks": {
                     "watchApplicationXML": true
                 },

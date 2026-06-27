@@ -1,7 +1,7 @@
 ({
     form:
     {
-        id: 		"humble-paradigm-config-process-external-form-&id&",
+        id: 		"process-external-form-&id&",
         drawme:		false,
         action:		"",
         onload:     function () {
@@ -15,7 +15,7 @@
     [
         {
             active:		true,
-            id: 		"humble-paradigm-config-process-external-namespace-&id&",
+            name: 		"namespace",
             longname:		"Namespace",
             title:		"Choose a client or core for namespace",
             onchange:       function (evt) {
@@ -33,13 +33,14 @@
         },
         {
             active:         true,
-            id:             "humble-paradigm-config-process-external-component-&id&",
+            name:           "component",
             longname:       "Component to use",
             title:          "title for mouse rollover",
             onchange:       function (evt) {
                 if (evt.target.value) {
+                    //fix this
                     (new EasyAjax('/workflow/component/methods')).add('process','Y').add('namespace',$('#humble-paradigm-config-process-external-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
-                        EasyEdits.populateSelectBox($E('humble-paradigm-config-process-external-method-&id&'),eval(response));
+                        EasyEdits.populateSelectBox($E('external-method'),eval(response));
                     }).post();
                 } 
             },
@@ -51,7 +52,7 @@
         },
         {
             active:		true,
-            id: 		"humble-paradigm-config-process-external-method-&id&",
+            name: 		"external-method",
             longname:		"Function/Method",
             title:		"The function to execute, or create a new function name here and hit enter",
             type:               "text",
@@ -78,7 +79,7 @@
         },
             {
                 active:			true,
-                id: 			"humble-paradigm-config-process-external-save-&id&",
+                name: 			"external-save",
                 longname:		"Configure Save",
                 title:			"Press to initially establish this workflow component",
                 type:                   "button",
@@ -87,8 +88,7 @@
                 value:                  "Save",
                 onclick:        function (evt) {
                     if (Edits['process_external-&id&'].validate()) {
-                        console.log($E('humble-paradigm-config-process-external-form-&id&'));
-                        $('#humble-paradigm-config-process-external-form-&id&').submit();
+                        $('#process-external-form-&id&').submit();
                     }
                 },
                 classname:		"settingsButton",

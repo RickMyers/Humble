@@ -40,14 +40,14 @@
 <table style='width: 100%; height: 100%;'>
     <tr>
         <td valign='middle'>
-            <form name='webservice-form' id='humble-paradigm-config-webservice-form-{$manager->getId()}' onsubmit='return false'>
-            <input type="hidden" name="window_id"        id="window-id-{$manager->getId()}" value="{$window_id}" />
-            <input type="hidden" name="id"              id="element-id-{$manager->getId()}" value="{$manager->getId()}" />
-            <input type="hidden" name="workflow_id"     id="workflow-id-{$manager->getId()}" value="" />
-            <input type='hidden' name='parameters'      id='webservice-parameters-{$manager->getId()}' value='' />
-            <input type='hidden' name='namespace'       id='webservice-namespace-{$manager->getId()}' value='' />
-            <input type='hidden' name='component'       id='webservice-component-{$manager->getId()}' value='Integration' />
-            <input type='hidden' name='method'          id='webservice-method-{$manager->getId()}' value='IEFBR14' />
+            <form name='webservice-form' id='form-{$manager->getId()}' onsubmit='return false'>
+            <input type="hidden" name="window_id"   value="{$window_id}" />
+            <input type="hidden" name="id"          value="{$manager->getId()}" />
+            <input type="hidden" name="workflow_id" value="" />
+            <input type='hidden' name='parameters'  value='' />
+            <input type='hidden' name='namespace'   value='' />
+            <input type='hidden' name='component'   value='Integration' />
+            <input type='hidden' name='method'      value='IEFBR14' />
             <div style='margin-left: auto; margin-right: auto; width: 545px; font-size: 2em; font-family: sans-serif; color: #333; border-bottom: 1px solid #777; margin-bottom: 6px'>
                 Initial Component Configuration
             </div>
@@ -67,9 +67,9 @@
                     </tr>
                     <tr>
                         <td>
-                            <input class='parameter-input-text' type='text' name='parameter' id='humble-paradigm-config-webservice-parameter-name-{$manager->getId()}' />
+                            <input class='parameter-input-text' type='text' name='parameter' />
                         <td>
-                            <select class='parameter-input-select' name='source' id='humble-paradigm-config-webservice-parameter-source-{$manager->getId()}'>
+                            <select class='parameter-input-select' name='source'>
                                 <option value='POST'>POST</option>
                                 <option value='GET'>GET</option>
                                 <option value='PUT'>PUT</option>
@@ -79,7 +79,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class='parameter-input-select' name='format' id='humble-paradigm-config-webservice-parameter-format-{$manager->getId()}'>
+                            <select class='parameter-input-select' name='format'>
                                 <option value='string'>String</option>
                                 <option value='int'>Integer</option>
                                 <option value='float'>Float</option>
@@ -103,7 +103,7 @@
                 <div class='form-field-description'>Inbound Parameters</div><br /><br />
                 <div>
                     <fieldset style="padding: 10px"><legend>Webservice Status</legend>
-                    <input type="checkbox" name="enabled" id="webservice-enabled-{$window_id}" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
+                    <input type="checkbox" name="enabled" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
                     </fieldset>
                 </div><br /><br />
                 <div id='humble-paradigm-config-webservice-security-nav-{$manager->getId()}'></div>
@@ -111,7 +111,7 @@
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
-                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='none'))}checked="checked"{/if} name='security-scheme' value='none' id='humble-paradigm-config-webservice-security-none-scheme-{$manager->getId()}' /> None (Passthru)<br /><br />
+                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='none'))}checked="checked"{/if} name='security-scheme' value='none' /> None (Passthru)<br /><br />
                             </td>
                         </tr>
                     </table>
@@ -120,7 +120,7 @@
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
-                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='session'))}checked="checked"{/if} name='security-scheme' value='session' id='humble-paradigm-config-webservice-security-none-scheme-{$manager->getId()}' /> Session ID (sessionId)<br /><br />
+                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='session'))}checked="checked"{/if} name='security-scheme' value='session' /> Session ID (sessionId)<br /><br />
                                 You must have authenticated previously and you are passing the Session ID in the variable "sessionId"
                             </td>
                         </tr>
@@ -130,15 +130,15 @@
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
-                                <input {if (isset($data['security-scheme']) && ($data['security-scheme']=='standard'))}checked="checked"{/if} type='radio' name='security-scheme' value='standard' id='humble-paradigm-config-webservice-security-standard-scheme-{$manager->getId()}' /><br /><br />
+                                <input {if (isset($data['security-scheme']) && ($data['security-scheme']=='standard'))}checked="checked"{/if} type='radio' name='security-scheme' value='standard' /><br /><br />
                             </td>
                         </tr>
 
                         <tr>
-                            <td>User Id: </td><td><input type='text' value="{if (isset($data['standard-userid']))}{$data['standard-userid']}{/if}" class='security-input-text' name='standard-userid' id='humble-paradigm-config-webservice-security-standard-userid-{$manager->getId()}' />
+                            <td>User Id: </td><td><input type='text' value="{if (isset($data['standard-userid']))}{$data['standard-userid']}{/if}" class='security-input-text' name='standard-userid' />
                         </tr>
                         <tr>
-                            <td>Password: </td><td><input type='text' value="{if (isset($data['standard-password']))}{$data['standard-password']}{/if}" class='security-input-text' name='standard-password' id='humble-paradigm-config-webservice-security-standard-password-{$manager->getId()}' />
+                            <td>Password: </td><td><input type='text' value="{if (isset($data['standard-password']))}{$data['standard-password']}{/if}" class='security-input-text' name='standard-password' />
                         </tr>
                     </table>
                 </div>
@@ -146,7 +146,7 @@
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
-                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='bearer'))}checked="checked"{/if} name='security-scheme' value='bearer' id='humble-paradigm-config-webservice-security-bearer-token-scheme-{$manager->getId()}' /><br /><br />
+                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='bearer'))}checked="checked"{/if} name='security-scheme' value='bearer'  /><br /><br />
                             </td>
                         </tr>
                     </table>
@@ -155,23 +155,23 @@
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
-                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='api'))}checked="checked"{/if} name='security-scheme' value='api' id='humble-paradigm-config-webservice-security-token-scheme-{$manager->getId()}' /><br /><br />
+                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='api'))}checked="checked"{/if} name='security-scheme' value='api' /><br /><br />
                             </td>
                         </tr>
                         <tr>
-                            <td>API Variable: </td><td><input type='text' class='security-input-text' name='token-variable' id='humble-paradigm-config-webservice-security-token-variable-{$manager->getId()}' />
+                            <td>API Variable: </td><td><input type='text' class='security-input-text' name='token-variable' />
                         </tr>
                         <tr>
-                            <td>API Token: </td><td><input type='text' class='security-input-text' name='token-value' id='humble-paradigm-config-webservice-security-token-value-{$manager->getId()}' />
+                            <td>API Token: </td><td><input type='text' class='security-input-text' name='token-value' />
                         </tr>
                     </table>
                 </div>
                 <div id='humble-paradigm-config-webservice-security-whitelist-tab-{$manager->getId()}' style='display: none; padding: 30px'>
                     <input type="checkbox" name="use-whitelist" id="humble-paradigm-config-webservice-security-use-whitelist-{$manager->getId()}" /> Whitelist?<br /><br />
-                    <textarea name="whitelist" id="humble-paradigm-config-webservice-security-whitelist-{$manager->getId()}" rows="5" cols="55" style="font-family: monospace; font-size: .9em"></textarea>
+                    <textarea name="whitelist" rows="5" cols="55" style="font-family: monospace; font-size: .9em"></textarea>
                 </div>
                 <div class='form-field-description'>Security Scheme</div><br />
-                <input type='submit' value=' Save ' style='background-color: #115883; color: white; border: 1px solid silver; padding: 2px 5px; border-radius: 2px' name='webservice-save' id='humble-paradigm-config-webservice-save-{$manager->getId()}' />
+                <input type='submit' value=' Save ' style='background-color: #115883; color: white; border: 1px solid silver; padding: 2px 5px; border-radius: 2px' name='webservice-save' />
                 <hr />
                 &copy; Humble Project, 2014-present, all rights reserved
             </div>

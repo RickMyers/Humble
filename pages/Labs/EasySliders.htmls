@@ -101,11 +101,11 @@
         }
 	slider2.setOnSlide(f);
         slider2.setInclusive(true).setSnap(false).setScale(0,100,10);
-//	slider2.addPointer("red_pointer","/pages/images/sliders/red_pointer.png",'red','arrowClass');
+	//slider2.addPointer("red_pointer","/pages/images/sliders/red_pointer.png",'red','arrowClass');
         slider2.addPointer("yellow_pointer","/pages/images/sliders/yellow_pointer.png",'yellow','arrowClass');
         slider2.addPointer("green_pointer","/pages/images/sliders/green_pointer.png",'green','arrowClass');
 	slider2.render();    
-      //  slider2.setPointer('red_pointer',100);
+       // slider2.setPointer('red_pointer',100);
         slider2.setPointer('yellow_pointer',85);
         slider2.setPointer('green_pointer',75);
         
@@ -119,7 +119,7 @@
 
 <br /><br />
 <b>Source Code</b>:
-<div widget="codeBox" widgetScroll="8%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Admin/web/js/Sliders.js" class="humble-code"></div>
+<div widget="codeBox" widgetScroll="8%" lang="js" lexicon="/web/js/ColorizerLanguages.json" style='height: 400px' source="/app/Code/Framework/Admin/web/js/EasySlider.js" class="humble-code"></div>
 
 
 

@@ -10,6 +10,12 @@
                 <parameter name="enabled" source="request" default="Y" />
             </entity>
         </action>   
-                         
+        
+        <!-- ######################################################################## -->
+        
+        <action name="slider" passalong='window_id'>
+            <description>Test page for working with sliders</description>
+        </action>
+        
     </actions>
 </controller>
