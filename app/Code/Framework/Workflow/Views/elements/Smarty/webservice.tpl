@@ -1,4 +1,6 @@
-{assign var=data value=$element->load()}
+{assign var=data      value=$element->load()}
+{assign var=id        value=$manager->getId()}
+{assign var=window_id value=$manager->getWindowId()}
 <style type='text/css'>
     .form-field-description {
         font-family: arial; font-size: .7em; letter-spacing: 2px
@@ -40,9 +42,9 @@
 <table style='width: 100%; height: 100%;'>
     <tr>
         <td valign='middle'>
-            <form name='webservice-form' id='form-{$manager->getId()}' onsubmit='return false'>
+            <form name='webservice-trigger-form' id='webservice-trigger-form' onsubmit='return false'>
             <input type="hidden" name="window_id"   value="{$window_id}" />
-            <input type="hidden" name="id"          value="{$manager->getId()}" />
+            <input type="hidden" name="id"          value="{$id}" />
             <input type="hidden" name="workflow_id" value="" />
             <input type='hidden' name='parameters'  value='' />
             <input type='hidden' name='namespace'   value='' />
@@ -57,7 +59,7 @@
             </div>
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
                 <img src='/images/paradigm/clipart/webservice2.png' style='float: right; height: 100px;' />
-                /esb/<input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" placeholder='your/URI/here' class='security-input-text' style='width: 265px' name='uri' id='humble-paradigm-config-webservice-uri-{$manager->getId()}' />
+                /esb/<input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" placeholder='your/URI/here' class='security-input-text' style='width: 265px' name='uri' />
                 <div class='form-field-description'>Webservice URI</div><br />
                 <table cellspacing='1' cellpadding='2'>
                     <tr>
@@ -96,7 +98,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan='4' id='humble-parameters-display-{$manager->getId()}'>
+                        <td colspan='4' id='humble-parameters-display'>
 
                         </td>
                 </table>
@@ -106,8 +108,8 @@
                     <input type="checkbox" name="enabled" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
                     </fieldset>
                 </div><br /><br />
-                <div id='humble-paradigm-config-webservice-security-nav-{$manager->getId()}'></div>
-                <div id='humble-paradigm-config-webservice-security-none-{$manager->getId()}' style='display: none; padding: 30px'>
+                <div id='humble-paradigm-config-webservice-security-nav'></div>
+                <div id='humble-paradigm-config-webservice-security-none' style='display: none; padding: 30px'>
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
@@ -116,7 +118,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id='humble-paradigm-config-webservice-security-session-{$manager->getId()}' style='display: none; padding: 30px'>
+                <div id='humble-paradigm-config-webservice-security-session' style='display: none; padding: 30px'>
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
@@ -126,7 +128,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id='humble-paradigm-config-webservice-security-standard-{$manager->getId()}' style='display: none; padding: 30px'>
+                <div id='humble-paradigm-config-webservice-security-standard' style='display: none; padding: 30px'>
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
@@ -142,7 +144,7 @@
                         </tr>
                     </table>
                 </div>
-                <div id='humble-paradigm-config-webservice-security-bearer-token-{$manager->getId()}' style='display: none; padding: 30px'>
+                <div id='humble-paradigm-config-webservice-security-bearer-token' style='display: none; padding: 30px'>
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
@@ -151,7 +153,7 @@
                         </tr>
                     </table>
                 </div>                        
-                <div id='humble-paradigm-config-webservice-security-token-{$manager->getId()}' style='display: none; padding: 30px'>
+                <div id='humble-paradigm-config-webservice-security-token' style='display: none; padding: 30px'>
                     <table cellspacing='1'>
                         <tr>
                             <td colspan='2'>
@@ -166,8 +168,8 @@
                         </tr>
                     </table>
                 </div>
-                <div id='humble-paradigm-config-webservice-security-whitelist-tab-{$manager->getId()}' style='display: none; padding: 30px'>
-                    <input type="checkbox" name="use-whitelist" id="humble-paradigm-config-webservice-security-use-whitelist-{$manager->getId()}" /> Whitelist?<br /><br />
+                <div id='humble-paradigm-config-webservice-security-whitelist-tab' style='display: none; padding: 30px'>
+                    <input type="checkbox" name="use-whitelist" id="humble-paradigm-config-webservice-security-use-whitelist" /> Whitelist?<br /><br />
                     <textarea name="whitelist" rows="5" cols="55" style="font-family: monospace; font-size: .9em"></textarea>
                 </div>
                 <div class='form-field-description'>Security Scheme</div><br />
@@ -180,20 +182,17 @@
     </tr>
 </table>
 <script type='text/javascript'>
-   // var ee = new EasyEdits(null,'webservice_{$manager->getId()}');
-   // ee.fetch('/edits/workflow/webservice');
-   // ee.process(ee.getJSON().replace(/&id&/g,'{$manager->getId()}').replace(/&window_id&/g,'{$manager->getWindowId()}'));
-    Form.intercept($('#humble-paradigm-config-webservice-form-{$manager->getId()}').get(),'{$manager->getId()}','/workflow/webservice/save');
-    var tabs = new EasyTab('humble-paradigm-config-webservice-security-nav-{$manager->getId()}');
-    tabs.add('None', null,'humble-paradigm-config-webservice-security-none-{$manager->getId()}');
-    tabs.add('Session', null,'humble-paradigm-config-webservice-security-session-{$manager->getId()}');
-    tabs.add('Standard', null,'humble-paradigm-config-webservice-security-standard-{$manager->getId()}');
-    tabs.add('API Token',null,'humble-paradigm-config-webservice-security-token-{$manager->getId()}');
-    tabs.add('Bearer Token',null,'humble-paradigm-config-webservice-security-bearer-token-{$manager->getId()}');
-    tabs.add('Whitelist',null,'humble-paradigm-config-webservice-security-whitelist-tab-{$manager->getId()}');
+    Form.intercept($('#webservice-trigger-form').get(),'{$id}','/workflow/webservice/save','{$window_id}');
+    var tabs = new EasyTab('humble-paradigm-config-webservice-security-nav');
+    tabs.add('None', null,'humble-paradigm-config-webservice-security-none');
+    tabs.add('Session', null,'humble-paradigm-config-webservice-security-session');
+    tabs.add('Standard', null,'humble-paradigm-config-webservice-security-standard');
+    tabs.add('API Token',null,'humble-paradigm-config-webservice-security-token');
+    tabs.add('Bearer Token',null,'humble-paradigm-config-webservice-security-bearer-token');
+    tabs.add('Whitelist',null,'humble-paradigm-config-webservice-security-whitelist-tab');
     tabs.tabClick(0);
-    $('#workflow-id-{$manager->getId()}').val(Paradigm.actions.get.mongoWorkflowId());
-    $('#webservice-namespace-{$manager->getId()}').val(Paradigm.actions.get.namespace());
+    $('#webservice-trigger-form [name=workflow_id]').val(Paradigm.actions.get.mongoWorkflowId());
+    $('#webservice-trigger-form [name=namespace]').val(Paradigm.actions.get.namespace());
 
     var WebserviceParameter = (function ($) {
         var parameters = '{$element->getParameters()}';
@@ -202,17 +201,17 @@
         } else {
             parameters = [];
         }
-        $('#webservice-parameters-{$manager->getId()}').val(JSON.stringify(parameters))
-        var display = $E('humble-parameters-display-{$manager->getId()}');
+        $('#webservice-parameters').val(JSON.stringify(parameters))
+        var display = $E('humble-parameters-display');
         return {
             add: function () {
                 parameters[parameters.length] = {
-                    "name":   $('#humble-paradigm-config-webservice-parameter-name-{$manager->getId()}').val(),
-                    "source": $('#humble-paradigm-config-webservice-parameter-source-{$manager->getId()}').val(),
-                    "format": $('#humble-paradigm-config-webservice-parameter-format-{$manager->getId()}').val()
+                    "name":   $('#webservice-trigger-form [name=parameter]').val(),
+                    "source": $('#webservice-trigger-form [name=source]').val(),
+                    "format": $('#webservice-trigger-form [name=format]').val()
                 }
-                $E('humble-paradigm-config-webservice-parameter-name-{$manager->getId()}').value='';
-                $('#webservice-parameters-{$manager->getId()}').val(JSON.stringify(parameters));
+                $('#webservice-trigger-form [name=parameter]').val('');
+                $('#webservice-trigger-form [name=parameters]').val(JSON.stringify(parameters));
                 WebserviceParameter.render();
             },
             remove: function (idx) {
@@ -223,7 +222,7 @@
                     }
                 }
                 parameters = parms;
-                $('#webservice-parameters-{$manager->getId()}').val(JSON.stringify(parameters));
+                $('#webservice-parameters').val(JSON.stringify(parameters));
                 WebserviceParameter.render();
             },
             render: function () {

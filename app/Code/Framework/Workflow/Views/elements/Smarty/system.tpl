@@ -39,48 +39,48 @@
             </div>
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
                 <form name='humble-paradigm-config-system-event-form' id='humble-paradigm-config-system-event-form-{$id}' onsubmit='return false'>
-                <input type="hidden" id="humble-paradigm-config-system-event-form-id-{$id}" name="id" value="{$id}" />
-                <input type="hidden" name="workflow_id" id="workflow_id-{$id}" value="" />
-                <input type="hidden" name="window_id" id="window_id-{$id}" value="{$window_id}" />
-                <input type="hidden" id="event_date-{$id}" name="event_date" value="{if (isset($data.event_date))}{$data.event_date}{/if}" />
-                <input type="hidden" id="event_time-{$id}" name="event_time" value="{if (isset($data.event_time))}{$data.event_time}{/if}" />
-                <div class='form-field-description'>Date and Time to launch workflow</div><br />
-                <div id="event-date-picker-{$id}" style="float: left"></div>
-                <select name="event_time_picker" id="event_time_picker-{$id}" style="margin-left: 4px; padding: 4px; font-size: 1.4em">
-                </select>
-                <div style="clear: both; margin-top: 10px;"><br /></div>
-                <div style="padding-bottom: 20px">
-                    <div style="width: 48%; display: inline-block">
-                        Date:
-                        <span id="event_date_display_{$id}">{if (isset($data.event_date))}{$data.event_date}{/if}
-                        </span>
-                    </div>
-                    <div style="width: 48%; display: inline-block">
-                    Time:
-                    <span id="event_time_display_{$id}">{if (isset($data.event_time))}{$data.event_time}{/if}</span>
-                    </div>
-                    
-                </div>
-                <input type="checkbox" value='Y' {if (isset($data.recurring_flag))} {if ($data.recurring_flag == 'Y')}checked{/if}{/if} name="recurring_flag" id="event_recurring_flag-{$id}" /> Repeatable Event
-                <input style='margin-left: 40px' type="checkbox" value='Y' {if (isset($data.active_flag))} {if ($data.active_flag == 'Y')}checked{/if}{/if} name="active_flag" id="event_active_flag-{$id}" /> Activate <br /><br />
-                <select name="period" id="recurring_event_period-{$id}">
-                    <option value=""></option>
-                    <option value="900">Every 15 Minutes</option>
-                    <option value="1800">Every 30 Minutes</option>
-                    <option value="3600">Every Hour</option>
-                    <option value="43200">Every 12 Hours</option>
-                    <option value="86400">Every Day</option>
-                    <option value="604800">Every Week</option>
-                    <option value="1209600">Bi-Weekly</option>
-                    <option value="monthly">Every Month</option>
-                    <option value="yearly">Every Year</option>
-                </select>
-                <div class='form-field-description'>Period Of Occurrence</div>
-                <br />
-                <br />
+                    <input type="hidden" id="humble-paradigm-config-system-event-form-id" name="id" value="{$id}" />
+                    <input type="hidden" name="workflow_id" id="workflow_id" value="" />
+                    <input type="hidden" name="window_id" id="window_id" value="{$window_id}" />
+                    <input type="hidden" id="event_date" name="event_date" value="{if (isset($data.event_date))}{$data.event_date}{/if}" />
+                    <input type="hidden" id="event_time" name="event_time" value="{if (isset($data.event_time))}{$data.event_time}{/if}" />
+                    <div class='form-field-description'>Date and Time to launch workflow</div><br />
+                    <div id="event-date-picker" style="float: left"></div>
+                    <select name="event_time_picker" id="event_time_picker" style="margin-left: 4px; padding: 4px; font-size: 1.4em">
+                    </select>
+                    <div style="clear: both; margin-top: 10px;"><br /></div>
+                    <div style="padding-bottom: 20px">
+                        <div style="width: 48%; display: inline-block">
+                            Date:
+                            <span id="event_date_display">{if (isset($data.event_date))}{$data.event_date}{/if}
+                            </span>
+                        </div>
+                        <div style="width: 48%; display: inline-block">
+                        Time:
+                        <span id="event_time_display">{if (isset($data.event_time))}{$data.event_time}{/if}</span>
+                        </div>
 
-                <input type="button" id="event_trigger-{$id}" name="event_trigger" value=" Set Event " />
-                <br />
+                    </div>
+                    <input type="checkbox" value='Y' {if (isset($data.recurring_flag))} {if ($data.recurring_flag == 'Y')}checked{/if}{/if} name="recurring_flag" id="event_recurring_flag" /> Repeatable Event
+                    <input style='margin-left: 40px' type="checkbox" value='Y' {if (isset($data.active_flag))} {if ($data.active_flag == 'Y')}checked{/if}{/if} name="active_flag" id="event_active_flag" /> Activate <br /><br />
+                    <select name="period" id="recurring_event_period">
+                        <option value=""></option>
+                        <option value="900">Every 15 Minutes</option>
+                        <option value="1800">Every 30 Minutes</option>
+                        <option value="3600">Every Hour</option>
+                        <option value="43200">Every 12 Hours</option>
+                        <option value="86400">Every Day</option>
+                        <option value="604800">Every Week</option>
+                        <option value="1209600">Bi-Weekly</option>
+                        <option value="monthly">Every Month</option>
+                        <option value="yearly">Every Year</option>
+                    </select>
+                    <div class='form-field-description'>Period Of Occurrence</div>
+                    <br />
+                    <br />
+
+                    <input type="button" id="event_trigger" name="event_trigger" value=" Set Event " />
+                    <br />
                 </form>
             </div>
         </td>
@@ -89,25 +89,23 @@
 <script type='text/javascript'>
     var id = '{$id}';
     var window_id   = '{$window_id}';    
-    var ee = new EasyEdits(null,'system_'+id);
-    ee.fetch('/edits/paradigm/system');
-    ee.process(ee.getJSON().replace(/&id&/g,id).replace(/&window_id&/g,window_id));
+    var ee = new EasyEdits('/edits/paradigm/system','system_'+id,{ '&id&': id, '&window_id&': window_id });
     Form.intercept($('#humble-paradigm-config-system-event-form-{$id}').get(),'{$manager->getId()}','/paradigm/system/save',window_id);
-    ((window_id)=> {
+    ((window_id) => {
         {if (isset($data.interval))}
-            $('#recurring_event_interval-{$id}').val('{$data.interval}');
+            $('#recurring_event_interval').val('{$data.interval}');
         {/if}
         {if (isset($data.period))}
-            $('#recurring_event_period-{$id}').val('{$data.period}');
+            $('#recurring_event_period').val('{$data.period}');
         {/if}
-        $('#workflow_id-{$id}').val(Paradigm.actions.get.mongoWorkflowId());
+        $('#workflow_id').val(Paradigm.actions.get.mongoWorkflowId());
         Desktop.window.list[window_id]._scroll(true);
         var now = new Date();
-        var y = new EasyCalendar('event-date-picker-{$id}');
+        var y = new EasyCalendar('event-date-picker');
         y.setWeekday('event-scheduler event-scheduler-weekday').setWeekend('event-scheduler event-scheduler-weekend').setDayNames('event-scheduler event-scheduler-daynames').setMonthName('event-scheduler event-scheduler-monthname');
         y.setArrows('/images/paradigm/previous.png','/images/paradigm/next.png','event-scheduler-arrows');
         y.build();
-        var timePicker = $E('event_time_picker-{$id}');
+        var timePicker = $E('event_time_picker');
         //var hours = [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0,1,2,3,4,5,6,7];
         var ints = ['00','15','30','45'];
         for (var i=0; i<24; i++) {
@@ -122,8 +120,8 @@
             }
         }
         let g = (evt) => {
-            $('#event_time-{$id}').val($(evt.target).val());
-            $('#event_time_display_{$id}').html($(evt.target).val());
+            $('#event_time').val($(evt.target).val());
+            $('#event_time_display').html($(evt.target).val());
         }
         $(timePicker).on('change',g);
         {if (isset($data.event_time))}
@@ -138,14 +136,14 @@
             mm++;
             this.reset();
             mm = (mm<10) ? '0'+mm : mm;
-            $('#event_date-{$id}').val(yyyy+'-'+mm+'-'+dd);
+            $('#event_date').val(yyyy+'-'+mm+'-'+dd);
             $('#'+this.xref['d_'+yyyy+mm+dd]).css('background-color','#333').css('color','white');
-            $('#event_date_display_{$id}').html(yyyy+'-'+mm+'-'+dd);
+            $('#event_date_display').html(yyyy+'-'+mm+'-'+dd);
         }
         y.setDayHandler(f);
         y.onMonthChange = (calendar) => {
-            if ($('#event_date-{$id}').val()) {
-                var dates = $('#event_date-{$id}').val().split('-');
+            if ($('#event_date').val()) {
+                var dates = $('#event_date').val().split('-');
                 if ((dates[1]-1 == calendar.thisMonth) && (dates[0]== calendar.thisYear)) {
                     $('#'+calendar.xref['d_'+dates[0]+(dates[1])+dates[2]]).css('background-color','#333').css('color','white');
                 }

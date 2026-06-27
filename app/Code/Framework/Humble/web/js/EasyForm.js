@@ -24,8 +24,6 @@ var Form = (function ($) {
                 if (event.data.preprocess) {
                     event.data.preprocess(this,event);
                 }
-//                console.log('form data');
-//                console.log(event.data.form[0]);
                 var form     = event.data.form[0];
                 if (!form) {
                     form = $E(event.data.form.id);
@@ -37,7 +35,6 @@ var Form = (function ($) {
                 var field    = '';
                 var formData = {};
                 var name     = ';'
-               //console.log(form.elements);
                 for (var i in form.elements) {
                     field    = form.elements[i];
                     if ((!field) || (!field.name) || (typeof(field) === "function")) {

@@ -1028,14 +1028,14 @@ function EasyEdits(source, ref, overrides)
                     easyField.baseFF		= document.getElementById(formField.id).currentStyle["fontFamily"];
                 }
                 if (easyField.value) {
-                    if ((easyField.type === "select") || (this.isCombo)) {
+                    if ((easyField.type === "select") || (isCombo)) {
                         if (typeof(easyField.value) === "object") {
                             formField.length = 0;
                             for (var ij = 0; ij < easyField.value.length; ij++) {
                                 formField[formField.length] = new Option(easyField.value[ij].text, easyField.value[ij].value);
                             }
                         } else {
-                            alert("Was expecting an object, got " + typeof(easyField.value));
+                            alert("Was expecting an object, got " + typeof(easyField.value) + ' ['+easyField.value+']');
                         }
                     } else {
                         formField.value = easyField.value;

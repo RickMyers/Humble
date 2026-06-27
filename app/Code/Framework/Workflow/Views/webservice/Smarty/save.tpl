@@ -6,10 +6,12 @@
     </tr>
 </table>
 <script type="text/javascript">
-    var tt = function () {
-        if (Desktop.window.list['{$webservice->getWindowId()}']) {
-            Desktop.window.list['{$webservice->getWindowId()}']._close();
+    (() => { 
+        var tt = function () {
+            if (Desktop.window.list['{$webservice->getWindowId()}']) {
+                Desktop.window.list['{$webservice->getWindowId()}']._close();
+            }
         }
-    }
-    window.setTimeout(tt,3000)
+        window.setTimeout(tt,3000)
+    })();
 </script>
