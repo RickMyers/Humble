@@ -50,9 +50,9 @@
         <td colspan="3" align="center" valign="middle">
             <!-- ########################## FORM SECTION ########################################-->
             <form name="config-file-trigger-form" id="config-file-trigger-form-{$data.id}" onsubmit="return false">
-                <input type="hidden" name="id" id="id_{$data.id}" value="{$data.id}" />                 <!-- Leave this As-Is -->
-                <input type="hidden" name="window_id" id="window_id_{$data.id}" value="{$window_id}" />    <!-- Leave this As-Is -->
-                <input type="hidden" name="workflow_id" id="workflow_id_{$data.id}" value="" />
+                <input type="hidden" name="id" value="{$data.id}" />                 <!-- Leave this As-Is -->
+                <input type="hidden" name="window_id" value="{$window_id}" />    <!-- Leave this As-Is -->
+                <input type="hidden" name="workflow_id" value="" />
                 <fieldset style="padding: 10px 0px 10px 0px; width: 600px; text-align: left"><legend>Instructions</legend>
                     <div style="padding: 10px 0px 30px 0px; font-family: sans-serif">
                         Here you set the directory to watch, and optionally the file type.  If you set the eventName, then that event will be thrown when a file is added to this directory, or a matching file is changed.
@@ -61,30 +61,30 @@
                     <table class="w-full" style="width: 100%">
                         <tr>
                             <td>Directory: </td>
-                            <td><input class='paradigm-config-form-field' type="text" name="directory" id="directory_{$data.id}" value="{if (isset($data.directory))}{$data.directory}{/if}" /></td>
+                            <td><input class='paradigm-config-form-field' type="text" name="directory" value="{if (isset($data.directory))}{$data.directory}{/if}" /></td>
                         </tr>
                         <tr>
                             <td>File Mask: </td>
-                            <td><input class='paradigm-config-form-field' type="text" name="file_mask" id="file_mask_{$data.id}" value="{if (isset($data.file_mask))}{$data.file_mask}{/if}" /></td>
+                            <td><input class='paradigm-config-form-field' type="text" name="file_mask" value="{if (isset($data.file_mask))}{$data.file_mask}{/if}" /></td>
                         </tr>
                         <tr>
                             <td>Event Field: </td>
-                            <td><input class='paradigm-config-form-field' type="text" name="field" id="field_{$data.id}" value="{if (isset($data.field))}{$data.field}{/if}" /></td>
+                            <td><input class='paradigm-config-form-field' type="text" name="field"  value="{if (isset($data.field))}{$data.field}{/if}" /></td>
                         </tr>
                         <tr><td colspan="2"><br /><hr /></td></tr>
                         <tr><td colspan="2"><br />Select the events to trigger on below:</td></tr>
                         <tr>
-                            <td colspan="2"><input type="checkbox" name="new_file_event" id="new_file_event_{$data.id}" {if (isset($data.new_file_event) && ($data.new_file_event=="Y" ))}checked{/if} value="Y" /> On New File </td>
+                            <td colspan="2"><input type="checkbox" name="new_file_event" {if (isset($data.new_file_event) && ($data.new_file_event=="Y" ))}checked{/if} value="Y" /> On New File </td>
                         </tr>
                         <tr> 
-                            <td colspan="2"><input type="checkbox" name="change_event" id="change_event_{$data.id}" {if (isset($data.change_event) && ($data.change_event=="Y" ))}checked{/if} value="Y" /> On Change </td>
+                            <td colspan="2"><input type="checkbox" name="change_event" {if (isset($data.change_event) && ($data.change_event=="Y" ))}checked{/if} value="Y" /> On Change </td>
                         </tr>                        
                         <tr>
-                            <td colspan="2"><input type="checkbox" name="delete_event" id="delete_event_{$data.id}" {if (isset($data.delete_event) && ($data.delete_event=="Y" ))}checked{/if} value="Y" /> On Delete </td>
+                            <td colspan="2"><input type="checkbox" name="delete_event" {if (isset($data.delete_event) && ($data.delete_event=="Y" ))}checked{/if} value="Y" /> On Delete </td>
                         </tr>                        
                     </table><br /><br />
                     <fieldset style="padding: 10px"><legend>File Trigger Status</legend>
-                        <input type="checkbox" name="active" id="active_{$data.id}" {if (isset($data.active) && ($data.active=="Y" ))}checked{/if} value="Y" />  - When this box is checked, the trigger is active
+                        <input type="checkbox" name="active" {if (isset($data.active) && ($data.active=="Y" ))}checked{/if} value="Y" />  - When this box is checked, the trigger is active
                     </fieldset>       
                     <br /><input type="submit" value=" Save " />
                 </fieldset>
@@ -97,6 +97,6 @@
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
     Form.intercept($('#config-file-trigger-form-{$data.id}').get(),'{$data.id}','/workflow/file/update',"{$window_id}");
-    $('#workflow_id_{$data.id}').val(Workflows.activeDiagram());
+    $('#config-file-trigger-form-{$data.id} [name=workflow_id]').val(Workflows.activeDiagram());
 </script>
 
