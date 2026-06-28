@@ -109,7 +109,7 @@
         <tr>
             <td colspan='2'>
                 <input type="button" onclick="configuration.status.quiesce.start()" value="QUIESCE" style="padding: 3px 10px; float: right; margin-right: 5px" />
-                <input type="button" onclick="configuration.status.save()" class="settingsButton" value=" Save " style="font-size: 1em; padding: 3px 10px" />
+                <input type="button" onclick="configuration.status.save()" class="" value=" Save " style="font-size: 1em; padding: 3px 10px" />
             </td>
         </tr>
     </table>

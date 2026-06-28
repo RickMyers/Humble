@@ -12,55 +12,56 @@
 	fields:
 	[
             {
-                active:			true,
-                name: 			"namespace",
-                longname:		"Namespace",
-                title:			"Choose a client or core for namespace",
-                onchange:       function (evt) {
-                        if (evt.target.value) {
-                            (new EasyAjax('/workflow/external/components')).add('namespace',evt.target.value).then((response) => {
-                                EasyEdits.populateSelectBox($E('humble-paradigm-config-external-decision-form-component-&id&'),eval(response));
-                            }).post();
-                        }
-                    },
-                    type:               "select",
-                    required:		true,
-                    force:		true,
-                    classname:		"",
-                    style:		"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+                active:		true,
+                name: 		"namespace",
+                longname:	"Namespace",
+                title:		"Choose a client or core for namespace",
+                type:           "select",
+                required:	true,
+                force:          true,
+                classname:	"",
+                style:          "border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf",
+                onchange:       (evt) => {
+                    if (evt.target.value) {
+                        (new EasyAjax('/workflow/external/components')).add('namespace',evt.target.value).then((response) => {
+                            EasyEdits.populateSelectBox($('#external-decision-form-&id& [name=component]').get()[0],eval(response));
+                        }).post();
+                    }
+                }                
             },
             {
                 active:		true,
                 name: 		"component",
-                longname:		"Component to use",
+                longname:	"Component to use",
                 title:		"The object component",
-                onchange:       function (evt) {
+                type:           "select",
+                required:	true,
+                force:		true,
+                classname:	"",
+                style:		"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf",
+                onchange:       (evt) => {
                     if (evt.target.value) {
-                        (new EasyAjax('/workflow/external/methods')).add('decision','Y').add('namespace',$('#humble-paradigm-config-external-decision-form-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
-                            EasyEdits.populateSelectBox($E('humble-paradigm-config-external-decision-form-method-&id&'),eval(response));
+                        (new EasyAjax('/workflow/external/methods')).add('decision','Y').add('namespace',$('#external-decision-form-&id& [name=namespace]').val()).add('component',evt.target.value).then((response) => {
+                            EasyEdits.populateSelectBox($('#external-decision-form-&id& [name=method]').get()[0],eval(response));
                         }).post();
                     }
-                },
-                type:               "select",
-                required:		true,
-                force:		true,
-                classname:		"",
-                style:		"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+                }                
             },
             {
                 active:		true,
                 name: 		"method",
-                longname:		"Function/Method",
+                longname:	"Function/Method",
                 title:		"The function to execute",
-                type:               "select",
-                required:		true,
+                type:           "select",
+                required:	true,
                 force:		true,
-                classname:		"",
-                onchange:       function (evt) {
+                classname:	"",
+                style:          "border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf",
+                onchange:       (evt) => {
                     if (evt.target.value) {
                         var ao = new EasyAjax('/workflow/component/comment');
-                        ao.add('namespace',$('#humble-paradigm-config-external-decision-form-namespace-&id&').val());
-                        ao.add('class',$('#humble-paradigm-config-external-decision-form-component-&id&').val());
+                        ao.add('namespace',$('#external-decision-form-&id& [name=namespace]').val());
+                        ao.add('class',$('#external-decision-form-&id& [name=component]').val());
                         ao.add('method',evt.target.value);
                         ao.then((response) => {
                             if (response) {
@@ -68,36 +69,35 @@
                             }
                         }).post();
                     }
-                },
-                style:			"border-radius: 3px; padding: 3px; width: 400px; border: 1px solid #aaf"
+                }                
             },
             {
                 active:		true,
                 name: 		"id",
-                longname:		"Decision ID",
+                longname:	"Decision ID",
                 title:		"",
-                type:               "hidden",
-                required:		true,
+                type:           "hidden",
+                required:	true,
                 force:		true,
-                classname:		"",
+                classname:	"",
                 style:		""
             },
             {
                 active:		true,
-                id: 		"humble-paradigm-config-external-decision-form-save-&id&",
-                longname:		"Configure Save",
+                name: 		"save-button",
+                longname:	"Configure Save",
                 title:		"Press to initially establish this workflow component",
-                type:               "button",
-                required:		false,
+                type:           "button",
+                required:	false,
                 force:		false,
-                value:              "Save",
-                classname:		"settingsButton",
-                onclick:        function (evt) {
+                value:          "Save",
+                classname:	"",
+                style:		"font-size: 1em; padding: 2px 5px",
+                onclick:        (evt) => {
                     if (Edits['decision_external_&id&'].validate()) {
-                        $('#humble-paradigm-config-external-decision-form-&id&').submit();
+                        $('#external-decision-form-&id&').submit();
                     }
-                },
-                style:		"font-size: 1em; padding: 2px 5px"
+                }                
             }
 	]
 })

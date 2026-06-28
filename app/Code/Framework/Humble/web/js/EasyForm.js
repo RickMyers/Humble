@@ -64,7 +64,7 @@ var Form = (function ($) {
             });
         },
         init: function () {
-            $.each(document.forms,function (f) {
+            $.each(document.forms, (f) => {
                 Form.intercept(document.forms[f]);
             });
         },

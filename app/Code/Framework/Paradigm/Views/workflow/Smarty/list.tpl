@@ -37,11 +37,11 @@
                     <center>
                         <table>
                             <tr>
-                                <td><input onclick="Workflows.previous()" type='button' class='settingsButton' style='font-size: .9em; font-family: sans-serif; padding: 1px 3px' value=' < ' /> </td>
-                                <td><input onclick="Workflows.first()" type='button' class='settingsButton' style='font-size: .9em; font-family: sans-serif; padding: 1px 3px' value='  <<  ' /> </td>
+                                <td><input onclick="Workflows.previous()" type='button' class='' style='font-size: .9em; font-family: sans-serif; padding: 1px 3px' value=' < ' /> </td>
+                                <td><input onclick="Workflows.first()" type='button' class='' style='font-size: .9em; font-family: sans-serif; padding: 1px 3px' value='  <<  ' /> </td>
                                 <td><input type='text' style='text-align: center; width: 50px; border: 0px' id='workflow-open-page-number' name='workflow-open-page-number' /> </td>
-                                <td><input onclick="Workflows.last()" type='button' class='settingsButton' style='font-size: .9em; font-family: sans-serif; padding: 1px 3px' value='  >>  ' /> </td>
-                                <td><input onclick="Workflows.next()" type='button' class='settingsButton' style='font-size: .9em; font-family: sans-serif; padding: 1px 3px' value=' > ' /> </td>
+                                <td><input onclick="Workflows.last()" type='button' class='' style='font-size: .9em; font-family: sans-serif; padding: 1px 3px' value='  >>  ' /> </td>
+                                <td><input onclick="Workflows.next()" type='button' class='' style='font-size: .9em; font-family: sans-serif; padding: 1px 3px' value=' > ' /> </td>
                             </tr>
                         </table>
                     </center>

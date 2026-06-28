@@ -20,9 +20,9 @@
             </div>
             <div id="process-internal-tab-{$id}" style='margin-left: auto; margin-right: auto; width: 545px'>
                 <form name='internal-process-form' id='internal-process-form-{$id}' onsubmit='return false'>
-                    <input type="hidden" name="id" value="{$id}" />
+                    <input type="hidden" name="id"        value="{$id}" />
                     <input type="hidden" name="window_id" value="{$window_id}" />   
-                    <input type="hidden" name="process" value="Y" />   
+                    <input type="hidden" name="process"   value="Y" />   
                     <img src='/images/paradigm/clipart/process.png' style='float: right' />
                     <div>
                         <div>
@@ -43,20 +43,20 @@
                         <div style='white-space: nowrap; position: relative'>
                             <select name='method' style="padding: 5px">
                                 <option value=''>Please choose from this list</option>
-                            </select><input type="text" placeholder='Select from below or create a new method' name="method" value="" />
+                            </select>
                                   <img id='view_code-{$id}' src='/images/workflow/view_code.png' title='View Code' style='height: 22px; position: relative; top:6px; margin-right: 4px; cursor: pointer; visibility: hidden' />
                         </div>
                         <div class='form-field-description'>Available Process Methods</div>
                     </div>
-                    <input type='button' name='save' style='display: inline-block' />
+                    <input type='button' name='save-button' style='display: inline-block' />
                     <div style='margin-top: 25px; width: 450px; height: 60px; overflow: auto; border: 1px solid #aaf; padding: 5px; background-color: #F0F0D0; border-radius: 5px ' id='config-component-comment-{$id}'></div>
                     <script type='text/javascript'>
-                        var ee = new EasyEdits('/edits/workflow/internalprocess','process_internal-{$id}',{ '&id&': '{$id}', '&window_id&': '{$window_id}' });
+                        new EasyEdits('/edits/workflow/internalprocess','process_internal-{$id}',{ '&id&': '{$id}', '&window_id&': '{$window_id}' });
                         Form.intercept($('#internal-process-form-{$id}').get(),'{$id}',false,'{$window_id}');
                         $('#view_code-{$id}').on('click',(evt)=>{
                             var win = Desktop.semaphore.checkout(true);
                             win = Desktop.semaphore.checkout(true);  //BECAUSE REASONS!!!!
-                            (new EasyAjax('/workflow/elements/explore')).add('window_id',win.id).packageForm('humble-paradigm-config-process-internal-form-{$id}').then((response) => {
+                            (new EasyAjax('/workflow/elements/explore')).add('window_id',win.id).packageForm('internal-process-form-{$id}').then((response) => {
                                 win._title('Model Explore')._scroll(false)._open(response);
                             }).post();
                         });
@@ -69,8 +69,8 @@
                     
                     <form name='external-process-form' id='external-process-form-{$id}' onsubmit='return false'>
                     <input type="hidden" name="window_id" value="{$window_id}" />
-                    <input type="hidden" name="id"  value="{$id}" />                      
-                    <input type="hidden" name="process" value="Y" />   
+                    <input type="hidden" name="id"        value="{$id}" />                      
+                    <input type="hidden" name="process"   value="Y" />   
                     <select name='namespace'>
                         <option value=''>Please choose from this list</option>
                         {foreach from=$externals item="dirs"}
@@ -89,12 +89,10 @@
                     <div class='form-field-description'>Available External Process Methods</div>
                     <br />
                     <div style='float: right; display: none; width: 470px; border: 1px solid #aaf; padding: 5px 10px; background-color: #F0F0D0; border-radius: 10px ' id='config-component-comment-{$id}'></div>
-                    <input type='button' name='decision-form-save' />
+                    <input type='button' name='save-button' />
                     </form>
                     <script>
-                        var ee = new EasyEdits(null,'process_external-{$id}');
-                        ee.fetch('/edits/workflow/externalprocess');
-                        ee.process(ee.getJSON().replace(/&id&/g,'{$id}').replace(/&window_id&/g,'{$window_id}'));
+                        new EasyEdits('/edits/workflow/externalprocess','process_external-{$id}',{ '&id&': '{$id}', '&window_id&': '{$window_id}' });
                         Form.intercept($('#humble-paradigm-config-process-external-form-{$id}').get(),'{$id}',false,'{$window_id}');                          
                     </script>
                 </div>                

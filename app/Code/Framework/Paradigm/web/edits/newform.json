@@ -55,7 +55,7 @@
             type:           "button",
             required:       false,
             value:          "Create",
-            classname:      "settingsButton",
+            classname:      "",
             style:          "width: 100px; font-size: 1.2em; font-weight: bold",
             onclick:        () => {
                 if (Edits['newDiagramForm'].validate()) {

@@ -1,7 +1,7 @@
 ({
     form:
     {
-        id: 		"process-external-form-&id&",
+        id: 		"external-process-form-&id&",
         drawme:		false,
         action:		"",
         onload:     function () {
@@ -14,33 +14,14 @@
     fields:
     [
         {
-            active:		true,
-            name: 		"namespace",
-            longname:		"Namespace",
-            title:		"Choose a client or core for namespace",
-            onchange:       function (evt) {
+            active:         true,
+            name:           "namespace",
+            longname:       "Namespace",
+            title:          "Choose a client or core for namespace",
+            onchange:       (evt) => {
                 if (evt.target.value) {
                     (new EasyAjax('/workflow/component/objects')).add('namespace',evt.target.value).then((response) => {
-                        EasyEdits.populateSelectBox($E('humble-paradigm-config-process-external-component-&id&'),eval(response));
-                    }).post();
-                } 
-            },
-            type:               "select",
-            required:		true,
-            force:		true,
-            classname:		"",
-            style:		"border-radius: 3px; padding: 6px; width: 400px; border: 1px solid #aaf"
-        },
-        {
-            active:         true,
-            name:           "component",
-            longname:       "Component to use",
-            title:          "title for mouse rollover",
-            onchange:       function (evt) {
-                if (evt.target.value) {
-                    //fix this
-                    (new EasyAjax('/workflow/component/methods')).add('process','Y').add('namespace',$('#humble-paradigm-config-process-external-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
-                        EasyEdits.populateSelectBox($E('external-method'),eval(response));
+                        EasyEdits.populateSelectBox($('#external-process-form-&id& [name=component]').get(0),eval(response));
                     }).post();
                 } 
             },
@@ -51,19 +32,38 @@
             style:          "border-radius: 3px; padding: 6px; width: 400px; border: 1px solid #aaf"
         },
         {
-            active:		true,
-            name: 		"external-method",
-            longname:		"Function/Method",
-            title:		"The function to execute, or create a new function name here and hit enter",
-            type:               "text",
-            required:		true,
-            force:		true,
-            onchange:       function (evt) {
+            active:         true,
+            name:           "component",
+            longname:       "Component to use",
+            title:          "title for mouse rollover",
+            onchange:       (evt) => {
+                if (evt.target.value) {
+                    //fix this
+                    (new EasyAjax('/workflow/component/methods')).add('process','Y').add('namespace',$('#external-process-form-&id& [name=namespace]').val()).add('component',evt.target.value).then((response) => {
+                        EasyEdits.populateSelectBox($('#external-process-form-&id& [name=method]').get(),eval(response));
+                    }).post();
+                } 
+            },
+            type:           "select",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border-radius: 3px; padding: 6px; width: 400px; border: 1px solid #aaf"
+        },
+        {
+            active:         true,
+            name:           "method",
+            longname:       "Function/Method",
+            title:          "The function to execute, or create a new function name here and hit enter",
+            type:           "text",
+            required:       true,
+            force:          true,
+            onchange:       (evt) => {
                 if (evt.target.value) {
                     $('#view_code-&id&').css('visibility','visible');
                     var ao = new EasyAjax('/workflow/component/comment');
-                    ao.add('namespace',$('#humble-paradigm-config-process-external-namespace-&id&').val());
-                    ao.add('class',$('#humble-paradigm-config-process-external-component-&id&').val());
+                    ao.add('namespace',$('#external-process-form-&id& [name=namespace]').val());
+                    ao.add('class',$('#external-process-form-&id& [name=component]').val());
                     ao.add('method',evt.target.value);
                     ao.then((response) => {
                         if (response) {
@@ -74,25 +74,25 @@
                     $('#view_code-&id&').css('visibility','hidden');
                 }
             },
-            classname:		"",
-            style:			"border-radius: 3px; padding: 6px; width: 400px; border: 1px solid #aaf"
+            classname:      "",
+            style:          "border-radius: 3px; padding: 6px; width: 400px; border: 1px solid #aaf"
         },
-            {
-                active:			true,
-                name: 			"external-save",
-                longname:		"Configure Save",
-                title:			"Press to initially establish this workflow component",
-                type:                   "button",
-                required:		false,
-                force:			false,
-                value:                  "Save",
-                onclick:        function (evt) {
-                    if (Edits['process_external-&id&'].validate()) {
-                        $('#process-external-form-&id&').submit();
-                    }
-                },
-                classname:		"settingsButton",
-                style:			"font-size: 1em; padding: 2px 5px"
-            }
+        {
+            active:         true,
+            name:           "save-button",
+            longname:       "Configure Save",
+            title:          "Press to initially establish this workflow component",
+            type:           "button",
+            required:       false,
+            force:          false,
+            value:          "Save",
+            onclick:        (evt) => {
+                if (Edits['process_external-&id&'].validate()) {
+                    $('#external-process-form-&id&').submit();
+                }
+            },
+            classname:      "",
+            style:          "font-size: 1em; padding: 2px 5px"
+        }
     ]
 })

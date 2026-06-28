@@ -77,7 +77,7 @@
             required:       false,
             force:          false,
             value:          "Save",
-            classname:      "settingsButton",
+            classname:      "",
             onclick:        () => {
                 if (Edits['actor_&id&'].validate()) {
                     $('#config-actor-form').submit();

@@ -65,6 +65,13 @@
         <timestamp_format>Y-m-d H:i:s</timestamp_format>        
         <local_cache_port>23113</local_cache_port>
     </default>
+    <external comment="List of directories outside of the Humble framework that are to be scanned for workflow components">
+        <!--
+        <directory alias="tools">/var/www/tools</directory>
+        <directory alias="laravel">/var/www/laravel</directory>
+        <directory alias="WordPress">/var/www/wordpress</directory>
+        -->
+    </external>      
     <api>
         <enabled>0</enabled>            <!-- Switch to 1 to enable access to the API but see https://humbleprogramming.com/pages/API.htmls for more information first -->
     </api>

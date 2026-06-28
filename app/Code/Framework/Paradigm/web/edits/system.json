@@ -72,7 +72,7 @@
             type:               "button",
             required:		false,
             force:		false,
-            classname:		"settingsButton",
+            classname:		"",
             onclick:            () => {
                 if (Edits['system_&id&'].validate()) {
                     $('#humble-paradigm-config-system-event-form-&id&').submit();

@@ -76,7 +76,7 @@
                     $('#humble-paradigm-config-notification-form-&id&').submit();
                 }
             },
-			classname:		"settingsButton",
+			classname:		"",
 			style:			"font-size: 1em; padding: 2px 5px"
 		}
 	]

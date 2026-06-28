@@ -46,7 +46,7 @@
             type:           "button",
 			required:		false,
             value:          "Save",
-			classname:		"settingsButton",
+			classname:		"",
 			style:			"width: 100px; font-size: 1em;",
             onclick:        function () {
                 if (Edits['saveWorkflow'].validate()) {

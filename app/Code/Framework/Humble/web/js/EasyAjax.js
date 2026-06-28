@@ -400,19 +400,20 @@ EasyAjax.prototype.getValue	= function (field,formName) {
 EasyAjax.prototype.packageEdits = function (edits) {
     EasyEdits.packageEdits(this,edits);
     return this;
-}
+};
 /* ----------------------------------------------------------------- */
-EasyAjax.prototype.packageForm = function(formName,edits) {
-    var form = $E(formName); var name = '';
+EasyAjax.prototype.packageForm = function(form,edits) {
+    form = (typeof form === 'string') ? document.getElementById(form) : form;
+    var name = '';
     if (form) {
         for (var j=0; j < form.length; j++) {
             var field = form[j];
-            if ((!field.id) || (!field.name)) {
+            if (!(field.id || !field.name)) {
                 continue;
             }
             name = (field.name) ? field.name : field.id;
-            if (field.type == 'file') {
-                this.addFiles(name,$E(field.id));
+            if (field.type === 'file') {
+                this.addFiles(name,document.getElementById(field.id));
             } else {
                 var val = this.getValue(field);
                 if (val !== null) {
