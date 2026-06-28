@@ -36,7 +36,7 @@
             onchange:       (evt) => {
                 if (evt.target.value) {
                     (new EasyAjax('/workflow/component/methods')).add('event','Y').add('namespace',$('#humble-paradigm-config-actor-form-namespace-&id&').val()).add('component',evt.target.value).then((response) => {
-                        EasyEdits.populateSelectBox($('#config-actor-form [name=method-]').get(0),eval(response));
+                        EasyEdits.populateSelectBox($('#config-actor-form [name=method]').get(0),eval(response));
                     }).post();
                 }
             },

@@ -59,10 +59,9 @@ class Trigger extends Model
             if ($data = json_decode($data,true)) {
                 $namespace      = $data['namespace'] ?? '';
                 $workflow_id    = $data['workflow_id'] ?? null;
-                $event          = $data['event'] ?? null;
+                $event          = $data['trigger'] ?? null;
                 $active         = $data['active'] ?? 'N';
-                Humble::entity('paradigm/event/listeners')->setNamespace($namespace)
-                        ->setWorkflowId($workflow_id)->setEvent($event)->setActive($active)->save();
+                $trigger_id     = Humble::entity('paradigm/event/listeners')->setNamespace($namespace)->setWorkflowId($workflow_id)->setEvent($event)->setActive($active)->save();
             }
         }
         

@@ -4,11 +4,13 @@
         font-family: arial; font-size: .7em; letter-spacing: 2px
     }
 </style>
-{if (isset($method))}
+{assign var=namespace   value=$manager->getNamespace()}    
+{assign var=id          value=$manager->getId()}
+{assign var=window_id   value=$manager->getWindowId()}    
+{assign var=data        value=$element->load()}   
+{if (isset($data.trigger))}
     
-    
-    
-{assign var=data value=$element->load()}    
+ 
 <style type="text/css">
     .paradigm-config-descriptor {
         font-size: .8em; font-family: serif; letter-spacing: 2px;
@@ -24,23 +26,23 @@
     <tr style="height: 30px">
         <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Type</div><div class="paradigm-config-field">&nbsp;</div></td>
         <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Shape</div><div class="paradigm-config-field">&nbsp;</div></td>
-        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Mongo ID</div><div class="paradigm-config-field">{$manager->getId()}</div></td>
+        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Mongo ID</div><div class="paradigm-config-field">{$id}</div></td>
     </tr>
     <tr style="height: 30px">
-        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Namespace</div><div class="paradigm-config-field">{$manager->getNamespace()}</div></td>
-        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Component</div><div class="paradigm-config-field">Event</div></td>
-        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Method</div><div class="paradigm-config-field">{$method}</div></td>
+        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Namespace</div><div class="paradigm-config-field">{$namespace}</div></td>
+        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Component</div><div class="paradigm-config-field">Trigger</div></td>
+        <td class="paradigm-config-cell"><div class="paradigm-config-descriptor">Event</div><div class="paradigm-config-field">{$data.trigger}</div></td>
 
     </tr>
     <tr>
         <td colspan="3" align="center" valign="middle">
-            <form id='trigger-form-{$manager->getId()}' name="trigger-form" onsubmit='return false'>
-                <input type="hidden" name="window_id"   value="{$manager->getWindowId()}" />
-                <input type="hidden" name="id"          value="{$manager->getId()}" />
+            <form id='config-trigger-form-{$id}' name="config-trigger-form" onsubmit='return false'>
+                <input type="hidden" name="window_id"   value="{$window_id}" />
+                <input type="hidden" name="id"          value="{$id}" />
                 <input type="hidden" name="component"   value="Event" />      
-                <input type="hidden" name="namespace"   value="{$manager->getNamespace()}" />      
-                <input type="hidden" name="event"       value="{$method}" />
-                <input type="hidden" name="workflow_id"  id='workflow_id-{$manager->getId()}' value="" />
+                <input type="hidden" name="namespace"   value="{$namespace}" />      
+                <input type="hidden" name="trigger"     value="{$data.trigger}" />
+                <input type="hidden" name="workflow_id" value="" />
                 <table>
                     <tr>
                         <td>
@@ -57,11 +59,11 @@
                                     <table>
                                         <tr>
                                             <td style="text-align: right; padding-right: 10px"><b>Namespace</b>: </td>
-                                            <td>{$manager->getNamespace()}</td>
+                                            <td>{$namespace}</td>
                                         </tr>
                                         <tr>
                                             <td style="text-align: right; padding-right: 10px"><b>Event</b>: </td>
-                                            <td>{$method}</td>
+                                            <td>{$data.trigger}</td>
                                         </tr>
                                         <tr>
                                             <td colspan="2" >&nbsp;</td>
@@ -71,7 +73,7 @@
                                             When this checkbox is checked, this event is active and can be triggered</td>
                                         </tr>                    
                                     </table>
-                                    <br /><br /><input type='submit' name='save' value=" Save " id='humble-paradigm-config-trigger-form-save' />
+                                    <br /><br /><input type='submit' name='save-button' value=" Save " />
                                 </div>
                             </fieldset>
                         </td>
@@ -82,14 +84,8 @@
     </tr>
 </table>
 <script type='text/javascript'>
-    $('#workflow_id-{$manager->getId()}').val(Paradigm.actions.get.currentDiagramId());
-   Form.intercept($('#trigger-form-{$manager->getId()}').get(),'{$manager->getId()}','/paradigm/trigger/save',false,false,false, (thing,event,data) => {
-       
-    Desktop.window.list['{$window_id}'].set('<table style="width: 100%; height: 100%"><tr><td align="center">Event Listener Saved</td></tr></table>');
-    var f = function () {
-        Desktop.window.list['{$window_id}']._close();
-    }
-    window.setTimeout(f,3000);
+    $('#config-trigger-form-{$id} [name=workflow_id]').val(Paradigm.actions.get.currentDiagramId());
+    Form.intercept($('#config-trigger-form-{$id}').get(),'{$id}','/paradigm/trigger/save','{$window_id}',false,false, (thing,event,data) => {
    });
 </script>    
    
@@ -97,10 +93,10 @@
 <table style='width: 100%; height: 100%;'>
     <tr>
         <td valign='middle'>
-            <form name='trigger-form' id='humble-paradigm-config-trigger-form-{$manager->getId()}' onsubmit='return false'>
-            <input type="hidden" name="window_id" id="window-id" value="{$manager->getWindowId()}" />
-            <input type="hidden" name="id" id="element-id" value="{$manager->getId()}" />
-            <input type="hidden" name="component" id="component-id" value="Event" />
+            <form name='config-trigger-form' id='config-trigger-form-{$id}' onsubmit='return false'>
+            <input type="hidden" name="window_id"  value="{$window_id}" />
+            <input type="hidden" name="id"         value="{$id}" />
+            <input type="hidden" name="component"  value="Event" />
             <div style='margin-left: auto; margin-right: auto; width: 545px; font-size: 2em; font-family: sans-serif; color: #333; border-bottom: 1px solid #777; margin-bottom: 6px'>
                 Initial Component Configuration
             </div>
@@ -111,7 +107,7 @@
             </div>
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
                 <img src='/images/paradigm/clipart/trigger.png' style='float: right' />
-                <select name='namespace' id='humble-paradigm-config-trigger-form-namespace-{$manager->getId()}'>
+                <select name='namespace'>
                     <option value=''>Please choose from this list</option>
                     {foreach from=$events->uniqueNamespaces() item="event"}
                         {if (!$event.namespace)}
@@ -123,23 +119,20 @@
                 </select>
                 <div class='form-field-description'>Available Object Collections</div>
                 <br />
-                <select name='method' id='humble-paradigm-config-trigger-form-events-{$manager->getId()}'>
+                <select name='trigger'>
                     <option value=''>Please choose from this list</option>
                 </select>
                 <div class='form-field-description'>Available Events</div><br />
                 <br />
                 <div style='float: right; display: none; width: 470px; border: 1px solid #aaf; padding: 5px 10px; background-color: #F0F0D0; border-radius: 10px ' id='config-component-comment'></div>
-                <input type='button' name='save' id='humble-paradigm-config-trigger-form-save-{$manager->getId()}' />
+                <input type='button' name='save-button' />
             </div>
             </form>
         </td>
     </tr>
 </table>
 <script type='text/javascript'>
-    var ee = new EasyEdits(null,'trigger_{$manager->getId()}');
-    ee.fetch('/edits/workflow/trigger');
-    ee.process(ee.getJSON().replace(/&id&/g,'{$manager->getId()}').replace(/&window_id&/g,'{$manager->getWindowId()}'));
-    Form.intercept($('#humble-paradigm-config-trigger-form-{$manager->getId()}').get(),'{$manager->getId()}',false,'{$manager->getWindowId()}',false,false, (thing,event,data) => {
-    });
+    new EasyEdits('/edits/workflow/trigger','trigger_{$id}',{ '&id&': '{$id}', '&window_id&': '{$window_id}'});
+    Form.intercept($('#config-trigger-form-{$id}').get(),'{$id}','/paradigm/trigger/save','{$window_id}');
 </script>
 {/if}

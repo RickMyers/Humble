@@ -19,7 +19,7 @@ var Form = (function ($) {
         intercept: function (formRef,id,URL,window_id,callback,preprocess,postprocess) {
             URL = (URL) ? URL : defaultURL;
             //element_id is the mongo ID for the element being configured
-            $(formRef).on('submit',{ "form": formRef, "element_id": id, "url": URL, "window_id": window_id, "callback": callback, "preprocess": preprocess, "postprocess": postprocess }, function (event) {
+            $(formRef).on('submit',{ "form": formRef, "element_id": id, "url": URL, "window_id": window_id, "callback": callback, "preprocess": preprocess, "postprocess": postprocess }, (event) => {
                 event.preventDefault();  //cease submission
                 if (event.data.preprocess) {
                     event.data.preprocess(this,event);
