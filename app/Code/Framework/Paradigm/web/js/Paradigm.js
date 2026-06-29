@@ -60,6 +60,10 @@ var Paradigm = (function () {
                 "src": "/images/paradigm/clipart/event3.png",
                 "ref": false
             },
+            "generator": {
+                "src": "/images/paradigm/clipart/generator.png",
+                "ref": false
+            },            
             "detector": {
                 "src": "/images/paradigm/clipart/detector2.png",
                 "ref": false
@@ -140,6 +144,10 @@ var Paradigm = (function () {
             system: {
                 label: 'System',
                 image: "/images/paradigm/clipart/cron.png"
+            },
+            generator: {
+                label: 'Generator',
+                image: '/images/paradigm/clipart/generator.png'
             },
             webservice: {
                 label: 'Web Service',
@@ -245,6 +253,12 @@ var Paradigm = (function () {
                 default: "",
                 description: "Fill out the text below and click OK to add a new element to the workflow, or click [Cancel] to abort adding an element"
             },
+            generator: {
+                title: "A generator takes in one event and produces one or more subsequent events",
+                image: "/images/paradigm/clipart/generator.png",
+                default: "",
+                description: "Fill out the text below and click OK to add a new element to the workflow, or click [Cancel] to abort adding an element"
+            },            
             detector: {
                 title: "Look for values present in the triggering event, possibly triggering other workflows",
                 image: "/images/paradigm/clipart/detector2.png",
@@ -541,9 +555,11 @@ var Paradigm = (function () {
                 case "webhook"  :
                 case "trigger"  :
                 case "file"     :
+                
                 case "actor"    :   return  function () { return false; };
                                     break;
                 case "adapter"  :
+                case "generator":
                 case "process"  :   return  function () { return false; };
                                     break;
                 case "decision" :   return  function () { return (this.connectors.E.begin && this.connectors.S.begin) && (this.connectors.N.end || this.connectors.W.end); };
@@ -1825,6 +1841,55 @@ var Paradigm = (function () {
                                 'E': { X: '', Y:'', begin: false, end: false},
                                 'W': { X: '', Y:'', begin: false, end: false},
                                 'S': { X: '', Y:'', begin: false, end: false}
+                            },
+                            X:  Paradigm.default.start.x,
+                            Y:  Paradigm.default.start.y,
+                            W:  120,
+                            H:  66,
+                            Z:  z+1,
+                            isClosed: function () {
+                                //a function to determine when a shape is closed, as in no more connections are allowed
+                                return false;
+                            },
+                            win: null
+                        };
+                        Paradigm.elements.connectors.set(Paradigm.elements.list[z]);
+                        Paradigm.elements.list[z].isClosed = Paradigm.closures(Paradigm.elements.list[z]);
+                        Paradigm.redraw();
+                    }).post();
+                }
+            },
+            generator:  {
+                add: function (text) {
+                    if (Paradigm.elements.creating) {
+                        return;
+                    }
+                    Paradigm.elements.creating = !Paradigm.elements.creating;                    
+                    (new EasyAjax('/paradigm/element/create')).add('shape','image').add('type','generator').then((response) => {
+                        Paradigm.elements.creating = !Paradigm.elements.creating;
+                        if (!response) {
+                            alert('Please try again, failed to create element');
+                            return;
+                        }
+                        var z = Paradigm.elements.list.length;
+                        Paradigm.objects[response] = Paradigm.elements.list[z] = {
+                            id: response,
+                            type: 'image',
+                            active: true,
+                            image: Paradigm.default.generator.image,
+                            element: 'generator',
+                            label: Paradigm.default.generator.label,
+                            text: Paradigm.console.add('Add [generator: &text&][ID:'+response+']',text,1),
+                            lines: {
+                                text: [],
+                                font: false,
+                                size: false,
+                                startX: false,
+                                startY: false
+                            },
+                            connectors: {
+                                'E': { X: '', Y:'', begin: false, end: false},
+                                'W': { X: '', Y:'', begin: false, end: false}
                             },
                             X:  Paradigm.default.start.x,
                             Y:  Paradigm.default.start.y,

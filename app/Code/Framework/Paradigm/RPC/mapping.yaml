@@ -119,6 +119,14 @@ processConfiguration  :
   method          : POST
   blocking        : false
   arguments       : [namespace,id,window_id,data,component,method]
+generatorConfiguration  :
+  url             : /workflow/elements/generator
+  api-key         :
+  api-var         :
+  secure          : true
+  method          : POST
+  blocking        : false
+  arguments       : [namespace,id,window_id,data,component,method]  
 alertsConfiguration  :
   url             : /workflow/notification/configuration
   api-key         :

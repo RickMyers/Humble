@@ -65,7 +65,7 @@
         </orm>
         <web>
             <edits>
-                <process>Workflow/web/edits/process.json</process>
+                <generator>Workflow/web/edits/generator.json</generator>
                 <actor>Workflow/web/edits/actor.json</actor>
                 <internaldecision>Workflow/web/edits/internaldecision.json</internaldecision>
                 <externaldecision>Workflow/web/edits/externaldecision.json</externaldecision>

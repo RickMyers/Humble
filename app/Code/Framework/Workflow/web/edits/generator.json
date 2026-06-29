@@ -1,0 +1,105 @@
+({
+    form:
+    {
+        id: 		"generator-form-&id&",
+        drawme:		false,
+        action:		"",
+        method:		"post",
+        style:		"",
+        onenterkey:	"send"
+    },
+    fields:
+    [
+        {
+            active:         true,
+            name:           "namespace",
+            longname:       "Namespace",
+            title:          "Choose a client or core for namespace",
+            type:           "select",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border-radius: 3px; padding: 5px; width: 400px; border: 1px solid #aaf",
+            onchange:       (evt) => {
+                if (evt.target.value) {
+                    (new EasyAjax('/workflow/component/objects')).add('namespace',evt.target.value).then((response) => {
+                        EasyEdits.populateSelectBox($('#generator-form-&id& [name=component]').get(0),eval(response));
+                    }).post();
+                } 
+            }            
+        },
+        {
+            active:         true,
+            name:           "component",
+            longname:       "Component to use",
+            title:          "title for mouse rollover",
+            type:           "select",
+            required:       true,
+            force:          true,
+            classname:      "",
+            style:          "border-radius: 3px; padding: 5px; width: 400px; border: 1px solid #aaf",
+            onchange:       (evt) => {
+                if (evt.target.value) {
+                    (new EasyAjax('/workflow/component/methods')).add('process','Y').add('namespace',$('#generator-form-&id& [name=namespace]').val()).add('component',evt.target.value).then((response) => {
+                        EasyEdits.populateSelectBox($('#generator-form-&id& [name=method]').get(0),eval(response));
+                    }).post();
+                } 
+            }            
+        },
+        {
+            active:         true,
+            name:           "method",
+            longname:       "Function/Method",
+            title:          "The function to execute, or create a new function name here and hit enter",
+            type:           "combo",
+            required:       true,
+            force:          true,
+            style:          "padding: 5px",
+            classname:      "",
+            style:          "border-radius: 3px; padding: 5px; width: 400px; border: 1px solid #aaf",
+            onchange:       (evt) => {
+                if (evt.target.value) {
+                    $('#view_code-&id&').css('visibility','visible');
+                    var ao = new EasyAjax('/workflow/component/comment');
+                    ao.add('namespace',$('#generator-form-&id& [name=namespace]').val());
+                    ao.add('class',$('#generator-form-&id& [name=component]').val());
+                    ao.add('method',evt.target.value);
+                    ao.then((response) => {
+                        if (response) {
+                            $('#config-component-comment-&id&').html(response);
+                        }
+                    }).post();
+                } else {
+                    $('#view_code-&id&').css('visibility','hidden');
+                }
+            },
+            onenterkey: (evt) => {
+                if (confirm('Would you like to create the method '+$(evt.target).val())) {
+                    let win = Desktop.semaphore.checkout(true);
+                    win = Desktop.semaphore.checkout(true);
+                    (new EasyAjax('/workflow/elements/newmethod')).add('type','process').add('window_id',win.id).addForm('generator-form-&id&').then((response) => {
+                        win._title('New Method')._scroll(false)._open(response);
+                    }).post();                        
+                }
+            }            
+        },
+        {
+            active:         true,
+            name:           "save-button",
+            longname:       "Configure Save",
+            title:          "Press to initially establish this workflow component",
+            type:           "button",
+            required:       false,
+            force:          false,
+            value:          "Save",
+            classname:      "",
+            style:          "font-size: 1em; padding: 2px 5px",
+            onclick:        (evt) => {
+                if (Edits['process_internal-&id&'].validate()) {
+                    $('#generator-form-&id&').submit();
+                }
+            }            
+        }
+    ]
+})
+

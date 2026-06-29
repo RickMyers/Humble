@@ -266,6 +266,9 @@ Copyright humbleprogramming.com, all rights reserved
                         case    "webservice"  :
                             Paradigm.elements.webservice.add($('#new-element-text').val());
                             break;
+                        case    "generator" :
+                            Paradigm.elements.generator.add($('#new-element-text').val());
+                            break;
                         case    "webhook"  :
                             Paradigm.elements.webhook.add($('#new-element-text').val());
                             break;                            
@@ -310,6 +313,7 @@ Copyright humbleprogramming.com, all rights reserved
                 },
                 prompt: function (whichOne) {
                     if (Workflows.active) {
+                        console.log(Paradigm.prompts);
                         if (Paradigm.prompts[whichOne]) {
                             var data = Paradigm.prompts[whichOne];
                             $('#lightbox').fadeIn();
@@ -317,7 +321,7 @@ Copyright humbleprogramming.com, all rights reserved
                             $('#new-element-type').val(whichOne);
                             window.setTimeout(function () { $('#new-element-text').focus(); },300);
                         } else {
-                            alert(whichOne);
+                            alert('No prompt for: '+whichOne);
                         }
                     }
                 },
@@ -599,11 +603,15 @@ Copyright humbleprogramming.com, all rights reserved
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/jsadapter.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('adapter')" /><br />
                             Adapter
-                       </div>                        
+                       </div>  
                         <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/decision.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('decision')" /><br />
                             Decision
                         </div>
+                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                            <img class='flowchartGlyph' src='/images/paradigm/clipart/generator.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('generator')" /><br />
+                            Generator
+                       </div>                             
                         <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/business-rule.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('rule')" /><br />
                             Rule

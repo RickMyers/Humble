@@ -30,6 +30,7 @@ class Generator extends Helper
     private $version            = '';
     private $trigger            = false;
     private $workflow           = "";
+    private $generators         = [];
     private $generated          = [];
     private $header             = <<<HDR
 <?php
@@ -72,6 +73,30 @@ HDR;
      */
     private function isExternal($namespace=false) {
         return ((strpos($namespace,'/') !== false) || (strpos($namespace,'\\') !== false));
+    }
+    
+    /**
+     * Adds one tab to the global tab string
+     * 
+     * @global \Code\Framework\Paradigm\Helpers\type $tabs
+     * @return \Code\Framework\Paradigm\Helpers\type
+     */
+    private function pushTabs() {
+        global $tabs;
+        $tabs = $tabs."\t";
+        return $tabs;
+    }
+    
+    /**
+     * Removes 1 tab char from the global tabs string, used for formatting
+     * 
+     * @global type $tabs
+     * @return string
+     */
+    private function popTabs() {
+        global $tabs;
+        $tabs = substr($tabs,0,strlen($tabs)-1);
+        return $tabs;
     }
     
     /**
@@ -171,31 +196,31 @@ HDR;
                 } else {        
                     $this->workflow .= $tabs.'if (Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";
                 }
-                $tabs .= "\t";
+                $this->pushTabs();
                 $this->workflow .= $tabs."goto label_".$node['connectors']['E']['begin']['to']['id'].";\n";
                 $this->traverse($this->components[$node['connectors']['E']['begin']['to']['id']]);
-                $tabs = substr($tabs,0,strlen($tabs)-1);
+                $this->popTabs();
                 $this->workflow .= $tabs."} else {\n";
-                $tabs .= "\t";
+                $this->pushTabs();
                 $this->workflow .= $tabs."goto label_".$node['connectors']['S']['begin']['to']['id'].";\n";
                 $this->traverse($this->components[$node['connectors']['S']['begin']['to']['id']]);
-                $tabs = substr($tabs,0,strlen($tabs)-1);
+                $this->popTabs();
                 $this->workflow .= $tabs."}\n";
                 break;
-            case "rule"     :
-                $this->workflow .= $tabs.'if (Humble::model("workflow/manager")->runRule(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";
-                $tabs .= "\t";
-                $this->workflow .= $tabs."goto label_".$node['connectors']['E']['begin']['to']['id'].";\n";
-                $this->traverse($this->components[$node['connectors']['E']['begin']['to']['id']]);
-                $tabs = substr($tabs,0,strlen($tabs)-1);
-                $this->workflow .= $tabs."} else {\n";
-                $tabs .= "\t";
-                $this->workflow .= $tabs."goto label_".$node['connectors']['S']['begin']['to']['id'].";\n";
-                $this->traverse($this->components[$node['connectors']['S']['begin']['to']['id']]);
-                $tabs = substr($tabs,0,strlen($tabs)-1);
-                $this->workflow .= $tabs."}\n";
-                break;                
+            case "generator":
+                $this->generators[] = $item = $this->_token();
+                $this->workflow .= $tabs.'foreach (Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'")) as $'.$item.') {'."\n";
+                $this->pushTabs();
+                $this->workflow .= $tabs.'if ($'.$item.' === null) {'."\n";
+                $this->workflow .= $tabs."\tbreak;\n";
+                $this->workflow .= $tabs."} \n";
+                break;
             case "terminus"     :
+                while (count($this->generators)) {
+                    $last = array_pop($this->generators);
+                    $this->popTabs();
+                    $this->workflow .= $tabs."}";
+                }
                 if (isset($cnf['cancel']) && ($cnf['cancel']=='Y')) {
                     $this->workflow .= $tabs.'$cancelBubble = true;'."\n";
                 } else {
@@ -205,6 +230,19 @@ HDR;
                 $this->workflow .= $tabs."goto label_".$this->_workflowId()."_THE_END;\n";
                 $this->workflow .= $tabs."//END OF WORKFLOW BRANCH\n";
                 break;
+            case "rule"     :
+                $this->workflow .= $tabs.'if (Humble::model("workflow/manager")->runRule(Event::set($EVENT,"'.$node['id'].'"))) {'."\n";
+                $this->pushTabs();
+                $this->workflow .= $tabs."goto label_".$node['connectors']['E']['begin']['to']['id'].";\n";
+                $this->traverse($this->components[$node['connectors']['E']['begin']['to']['id']]);
+                $tabs = substr($tabs,0,strlen($tabs)-1);
+                $this->workflow .= $tabs."} else {\n";
+                $this->pushTabs();
+                $this->workflow .= $tabs."goto label_".$node['connectors']['S']['begin']['to']['id'].";\n";
+                $this->traverse($this->components[$node['connectors']['S']['begin']['to']['id']]);
+                $tabs = substr($tabs,0,strlen($tabs)-1);
+                $this->workflow .= $tabs."}\n";
+                break;                     
             case "joiner"       :
                 //put stuff here
                 $this->workflow .= $tabs.'Humble::model("paradigm/workflow")->manage(Event::set($EVENT,"'.$node['id'].'"));'."\n";
@@ -231,7 +269,7 @@ HDR;
                 $this->trigger = $cnf;
             case "begin"        :
                 //do variable substitution stuff and print the header
-                $tabs .= "\t";   //lets indent it!
+                $this->pushTabs();   //lets indent it!
                 $includeBranch = false;  //No need to include the goto since I'm at the start
             case "operation"    :
                 //We have the namespace, method and component set in the operation.tpl configuration page
@@ -269,7 +307,7 @@ HDR;
     }
 
     /**
-     * Loads the workflow into a useable state in memory and fetches the currently configured state.
+     * Loads the workflow into a usable state in memory and fetches the currently configured state.
      * If there is an element that is not configured, this will return false and generation will stop
      *
      * @param boolean $workflow
