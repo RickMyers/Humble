@@ -14,7 +14,20 @@ use Humble;
 class Updater extends Installer
 {
 
-    private $customAnnotations = ['workflow'=>true,'use'=>true,'tags'=>true,'listen'=>true,'listener'=>true,'event'=>true,'auth'=>true,'authorization'=>true,'conf'=>true,'config'=>true,'cfg'=>true,'configuration'=>true];
+    private $customAnnotations = [
+        'workflow'      => true,
+        'use'           => true,
+        'tags'          => true,
+        'listen'        => true,
+        'listener'      => true,
+        'event'         => true,
+        'auth'          => true,
+        'authorization' => true,
+        'conf'          => true,
+        'config'        => true,
+        'cfg'           => true,
+        'configuration' => true
+    ];
     
     public function __construct()   {
         parent::__construct();
@@ -24,8 +37,7 @@ class Updater extends Installer
      *
      * @return system
      */
-    public function className()
-    {
+    public function className() {
         return __CLASS__;
     }
 
@@ -316,7 +328,7 @@ SQL;
                  'Postgres'  => true,
                  'SQLLite'   => true,
                  'SQLServer' => true];
-        $namespace  = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
+        $namespace          = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
         $models             = Humble::getModels($namespace);
         $workflowComponent  = Humble::entity('paradigm/workflow/components');
         $workflowComment    = Humble::entity('paradigm/workflow/comments');

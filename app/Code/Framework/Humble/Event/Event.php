@@ -55,7 +55,7 @@ class Event  {
         $this->_name($identifier);                          //what is my event name
         $this->_initiated(array('date'=>date('Y-m-d H:i:s'),'timestamp'=>time()));             //the event and the workflow are related, this records essentially when the workflow was kicked off
         $doc = $this->save();                               //initial save to get an ID
-        $this->_id($doc['_id'].$this->instance);            //assign generated id to Event ID
+        $this->_id($doc['_id'].'_'.$this->instance);        //assign generated id to Event ID
     }
 
     protected function underscoreToCamelCase($string, $first_char_caps=false) {
@@ -244,8 +244,8 @@ class Event  {
      * @param type $persist
      * @return $this
      */
-    public function attach($newData=[],$persist=false) {
-        $this->update($newData,$persist);
+    public function attach($newData=[],$allowOverride=false,$persist=false) {
+        $this->update($newData,$allowOverride,$persist);
         return $this;
     }
 
@@ -632,15 +632,34 @@ class Event  {
             \Log::console("Undefined Method: ".$name." invoked from ".$this->className().".");
         }
     }
-    public function clone() {
-        return clone $this;
+
+    /**
+     * For generators, a simplified mechanism for "cloning" events in a generator driven pipeline
+     * 
+     * @param array $newdata
+     * @param boolean $override
+     * @param boolean $persist
+     * @return \Code\Framework\Humble\Event\Event
+     */
+    public function clone($newdata=[],$override=false,$persist=false) {
+        $int = clone $this;
+        if ($newdata) {
+            $int->update($newdata,$override,$persist);
+        }
+        return $int;
     }
     
+    /**
+     * Returns a representation of the instance id
+     * 
+     * @return string
+     */
     public function instance() {
         return $this->_id.'_'.$this->instance;
     }
+    
     /**
-     * When we "clone" (or copy) an event, this method is called, and it lets us update the mongo_id so we dont get a duplicate while also maintaining a way to identify this events "parent"
+     * When we "clone" (or copy) an event, this method is called, and it lets us update the mongo_id so we don't get a duplicate while also maintaining a way to identify this events "parent"
      */
     public function __clone() {
         $this->instance = ++self::$instances;
