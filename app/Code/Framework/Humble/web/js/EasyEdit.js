@@ -626,8 +626,8 @@ function EasyEdits(source, ref, overrides)
                         $(formField).on("change",( (field,combo) => {
                             //watch out, this is a closure...
                             return () => {
-                                field.setAttribute('comboValue',$(field).val());
-                                combo.setAttribute('comboValue',$(field).val());
+                                field.setAttribute('combovalue',$(field).val());
+                                combo.setAttribute('combovalue',$(field).val());
                                 $(combo).val($(field).val());
                             }
                         })(formField,formField.combo));
@@ -639,7 +639,7 @@ function EasyEdits(source, ref, overrides)
                         $(formField.combo).on("change",((field,combo)=> {
                             return () => {
                                 $(field).val($(combo).val());
-                                combo.setAttribute('comboValue',$(combo).val());
+                                combo.setAttribute('combovalue',$(combo).val());
                             }
                         })(formField,formField.combo))
                     }
@@ -649,7 +649,7 @@ function EasyEdits(source, ref, overrides)
                             if (field.isCombo) {
                                 if (field.selectedIndex >= 0) {
                                     value = field[field.selectedIndex].text;
-                                    combo.setAttribute("comboValue", field[field.selectedIndex].value);
+                                    combo.setAttribute("combovalue", field[field.selectedIndex].value);
                                     $(combo).val(field[field.selectedIndex].value)
                                     //combo.onchange(evt,true);               //calledFromComboPair=true
                                 }
@@ -1104,7 +1104,7 @@ function EasyEdits(source, ref, overrides)
                 case "select"       :
                 case "select-one"	:
                     if (field.getAttribute && field.getAttribute("combo")) {
-                        val = $(this.formXref[field.easyKey+"_combo"]).val() ? $(this.formXref[field.easyKey+"_combo"]).val() : field.getAttribute("comboValue");
+                        val = $(this.formXref[field.easyKey+"_combo"]).val() ? $(this.formXref[field.easyKey+"_combo"]).val() : field.getAttribute("combovalue");
                     } else {
                         val = field[field.selectedIndex].value;
                     }
@@ -1354,7 +1354,7 @@ EasyEdits.populateSelectBox = function (selectBox, contents, map, leaveCombo) {
         if (selectBox.getAttribute("combo") == "yes") {
             if ($E($E(selectBox).id + "_combo") && (!(leaveCombo===true))) {
                 //$E($E(selectBox).id + "_combo").value = f_t;
-                $E($E(selectBox).id + "_combo").setAttribute("comboValue",f_v) ;
+                $E($E(selectBox).id + "_combo").setAttribute("combovalue",f_v) ;
             }
         }
     } else {

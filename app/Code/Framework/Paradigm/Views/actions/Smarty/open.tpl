@@ -580,38 +580,40 @@ Copyright humbleprogramming.com, all rights reserved
 
                     <fieldset style="display: inline-block; position: relative;  top: 2px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
                         <legend style="font-family: sans-serif; font-size: .6em">Connectors</legend>
-                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; ">
+                        <div style="float: left; width: 50px; height: 55px; text-align: center; font-size: .7em; padding-top: 5px; ">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/flowchart-arrow.gif' onclick="Paradigm.elements.connector.add()" style='height: 40px; cursor: pointer' /><br />
                                 Internal
                         </div>
-                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                        <div style="float: left; width: 50px; height: 55px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                                 <img class='flowchartGlyph' src='/images/paradigm/clipart/external.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('external')"/><br />
                                 External
                         </div>
-                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 10px; margin-left: 12px">
+                        <div style="float: left; width: 50px; height: 55px; text-align: center; font-size: .7em; padding-top: 8px; margin-left: 12px">
                                 <img class='flowchartGlyph' src='/images/paradigm/clipart/joiner.png' style='height: 36px; cursor: pointer' onclick="Paradigm.elements.joiner.add()"/><br />
                                 Joiner
                         </div>                        
                     </fieldset>
-
-                    <fieldset style="display: inline-block; white-space: nowrap;  position: relative; top: 2px; margin-left: 20px; padding: 0px 40px 0px 20px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
-                        <legend style="font-family: sans-serif; font-size: .6em">Components</legend>
-                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
-                            <img class='flowchartGlyph' src='/images/paradigm/clipart/process.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('process')" /><br />
-                            Process
-                       </div>
+                    <fieldset style="display: inline-block; white-space: nowrap;  position: relative; top: 2px; margin-left: 20px; padding: 0px 30px 0px 10px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
+                        <legend style="font-family: sans-serif; font-size: .6em">Dynamic Components</legend> 
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/jsadapter.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('adapter')" /><br />
                             Adapter
-                       </div>  
-                        <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
-                            <img class='flowchartGlyph' src='/images/paradigm/clipart/decision.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('decision')" /><br />
-                            Decision
-                        </div>
+                       </div>                          
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/generator.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('generator')" /><br />
                             Generator
                        </div>                             
+                    </fieldset>        
+                    <fieldset style="display: inline-block; white-space: nowrap;  position: relative; top: 2px; margin-left: 5px; padding: 0px 40px 0px 20px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
+                        <legend style="font-family: sans-serif; font-size: .6em">Flowchart Components</legend>
+                        <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                            <img class='flowchartGlyph' src='/images/paradigm/clipart/process.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('process')" /><br />
+                            Process
+                       </div>
+                        <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
+                            <img class='flowchartGlyph' src='/images/paradigm/clipart/decision.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('decision')" /><br />
+                            Decision
+                        </div>
                         <div style="float: left; width: 60px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px">
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/business-rule.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('rule')" /><br />
                             Rule

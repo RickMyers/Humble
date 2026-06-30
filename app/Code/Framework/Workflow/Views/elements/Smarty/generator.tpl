@@ -44,7 +44,7 @@
                             <select name='method' style="padding: 5px">
                                 <option value=''>Please choose from this list</option>
                             </select>
-                                  <img id='view_code-{$id}' src='/images/workflow/view_code.png' title='View Code' style='height: 22px; position: relative; top:6px; margin-right: 4px; cursor: pointer; visibility: hidden' />
+                             <img id='view_code-{$id}' src='/images/workflow/view_code.png' title='View Code' style='height: 22px; position: relative; top:6px; margin-right: 4px; cursor: pointer; visibility: hidden' />
                         </div>
                         <div class='form-field-description'>Available Process Methods</div>
                     </div>

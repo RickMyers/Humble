@@ -39,7 +39,7 @@ class Generator extends Model
     /**
      * Just a test to see if the cloning and yielding is working
      * 
-     * @workflow use(generator) config(workfow/field/generator)
+     * @workflow use(generator) config(workflow/field/generator)
      * @param type $EVENT
      */
     public function testGen($EVENT=false) {

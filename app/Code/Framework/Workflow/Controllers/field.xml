@@ -7,6 +7,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 -->
 <controller name="field" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="Off" response="true">
+        
         <action name="addamount" passalong="window_id">
             <description>Adds a certain amount to an indicated field</description>
             <mongo namespace="paradigm" class="elements" id='element'>
@@ -16,8 +17,12 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
-        <action name="generator">
+        <action name="generator" passalong="window_id">
             <description>A workflow generator test</description>
+            <mongo namespace="paradigm" class="elements" id='element'>
+                <parameter name='id' source='post' default='' />
+            </mongo>               
         </action>
+        
     </actions>
 </controller>

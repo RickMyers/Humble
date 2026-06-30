@@ -341,7 +341,7 @@ EasyAjax.prototype.getValue	= function (field,formName) {
                             alert("No form found");
                         } else {
                             var rbCtr   = 0;
-                            var rbArray = $E(parent.getAttribute("id")).elements[field.name];
+                            var rbArray = document.getElementById(parent.getAttribute("id")).elements[field.name];
                             if (rbArray.length) {
                                 while ((rbCtr < rbArray.length) && (!fieldValue)) {
                                     fieldValue = rbArray[rbCtr].checked ? rbArray[rbCtr].value : "";
@@ -356,7 +356,8 @@ EasyAjax.prototype.getValue	= function (field,formName) {
                         break;
                     case "select-one" :
                         if (field.getAttribute("combo") === "yes")	{
-                            fieldValue = $E(field.id+"_combo").getAttribute("comboValue");
+                            fieldValue = field.getAttribute("combovalue");
+                            fieldValue = document.getElementById(field.id+"_combo").getAttribute("combovalue");
                             //if (!fieldValue) {
                             //	fieldValue = $E(field.id+"_combo").value;
                             // }

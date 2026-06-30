@@ -352,6 +352,7 @@ HDR;
         $this->trigger  = false;
         $tabs           = '';  //Keeps track of indentation... the number of "tabs" to use...
         $diagram        = $this->getWorkflow();
+        //file_put_contents('diagram.txt',json_encode(json_decode($diagram), JSON_PRETTY_PRINT));
         $workflow       = Humble::entity("paradigm/workflows");
         $workflow->setId($this->getId());
         $data           = $workflow->load();

@@ -40,7 +40,7 @@
             style:          "border-radius: 3px; padding: 5px; width: 400px; border: 1px solid #aaf",
             onchange:       (evt) => {
                 if (evt.target.value) {
-                    (new EasyAjax('/workflow/component/methods')).add('process','Y').add('namespace',$('#generator-form-&id& [name=namespace]').val()).add('component',evt.target.value).then((response) => {
+                    (new EasyAjax('/workflow/component/methods')).add('generator','Y').add('namespace',$('#generator-form-&id& [name=namespace]').val()).add('component',evt.target.value).then((response) => {
                         EasyEdits.populateSelectBox($('#generator-form-&id& [name=method]').get(0),eval(response));
                     }).post();
                 } 
@@ -95,7 +95,7 @@
             classname:      "",
             style:          "font-size: 1em; padding: 2px 5px",
             onclick:        (evt) => {
-                if (Edits['process_internal-&id&'].validate()) {
+                if (Edits['generator-&id&'].validate()) {
                     $('#generator-form-&id&').submit();
                 }
             }            
