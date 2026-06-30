@@ -217,8 +217,8 @@ HDR;
             /*    foreach ($node['connectors'] as $dir => $conn) {
                     if (isset($connectors[$dir]['begin'])) {
                         $n = $node['connectors'][$dir]['begin']['to'];
-                }
-*/                $this->traverse($this->components[$node['connectors']['E']['begin']['to']]);
+                }*/
+                $this->traverse($this->components[$node['connectors']['E']['begin']['to']]);
                 $this->popTabs();
                 $this->workflow .= $tabs."}\n";
                 break;

@@ -374,7 +374,7 @@ Copyright humbleprogramming.com, all rights reserved
                                    diagram.workflow[i].fillStyle = Paradigm.gradient(diagram.workflow[i].X,diagram.workflow[i].Y,diagram.workflow[i].W,diagram.workflow[i].H);
                                }
                         }
-                        //console.log(diagram);
+                        console.log(diagram);
                         Paradigm.elements.list = diagram.workflow;
                         Paradigm.actions.set.generatedWorkflowId(diagram.generated_workflow_id);
                         Paradigm.actions.set.mongoWorkflowId(diagram.workflow_id);
@@ -399,6 +399,9 @@ Copyright humbleprogramming.com, all rights reserved
                         Desktop.window.list[Paradigm.actions.get.loadWindow()]._close();
                         Paradigm.redraw();
                         Workflows.enable();
+                        if (diagram.partial && (diagram.partial === 'Y')) {
+                            $('#paradigm-workflow-triggers').css('display','none');
+                        }
                         if (diagram.active === 'Y') {
                             $('#paradigm-quick-inactivate').css('visibility','visible').css('display','none');
                             $('#paradigm-quick-activate').css('visibility','visible').css('display','block');
@@ -546,7 +549,7 @@ Copyright humbleprogramming.com, all rights reserved
                         <div style="font-size: 1em; color: #555; letter-spacing: 6px; position: absolute; top: 55px; left: 80px; text-shadow: -1px 1px 1px #5A5A5A;">Workflow Editor</div>
                     </div>
                     <div style='display: inline-block; margin-left: auto; margin-right: auto; visibility: hidden' id="paradigm-workflow-components">
-                    <fieldset style="display: inline-block; position: relative; top: 2px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em">
+                    <fieldset style="display: inline-block; position: relative; top: 2px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em" id="paradigm-workflow-triggers">
                         <legend style="font-family: sans-serif; font-size: .6em">Triggers</legend>
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px" title='A recurring event, based on time'>
                             <img class='flowchartGlyph' src='/images/paradigm/clipart/cron.png' style='height: 40px; cursor: pointer' onclick="Workflows.prompt('system')" /><br />
