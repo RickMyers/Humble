@@ -31,22 +31,28 @@
             <form name="external-form" id="config-external-form-{$id}">
                 <input type="hidden" name="id" id="element-id-{$id}" value="{$id}" />
                 <input type="hidden" name="window_id" id="window-id-{$id}" value="{$window_id}" />
-                <input type='hidden' name='namespace'       id='webservice-namespace-{$manager->getId()}' value='Paradigm' />
-                <input type='hidden' name='component'       id='webservice-component-{$manager->getId()}' value='External' />
-                <input type='hidden' name='method'          id='webservice-method-{$manager->getId()}' value='Connector' />
-                <div style="padding: 40px 20px 0px 40px">
-                    <div style="">
-                        Available Workflows for Off Page Connectors
-                    </div>
-                    <ul>
-                        {foreach from=$available_partials->fetch() item=workflow}
+                <input type='hidden' name='namespace' value='Paradigm' />
+                <input type='hidden' name='component' value='External' />
+                <input type='hidden' name='method'    value='Connector' />
+                <div style="width: 660px; padding: 20px; margin-left: auto; margin-right: auto; border: 1px solid #333; border-radius: 10px; background-color: rgba(202,202,202,.2)">
+                    <fieldset style="padding: 20px 0px"><legend>Instructions</legend>
+                        From here you can choose an external, partial (no trigger), workflow.  You can choose to run the workflow "inline", or forked as an external process.
+                        Forking the workflow will disconnect the running of the workflow from the parent.  For more information, please see
+                        <a href="https://humbleprogramming.com/pages/ExternalWorfklows.htmls" target="_BLANK" style="color: blue">External Workflows</a>.
+                        <div style="padding-top: 30px">
+                            Available Workflows for Off Page Connectors
+                        </div>
+                        <ul>
+                            {foreach from=$available_partials->fetch() item=workflow}
 
-                            <div title="{$workflow.description}"><input type="radio" name="partial-workflow" id="partial-workflow-{$workflow.id}}" value="{$workflow.id}" {if (isset($data['partial-workflow']) && ($data['partial-workflow']==$workflow.id))}checked="checked"{/if} /> {$workflow.namespace} - {$workflow.title}</div>
+                                <div title="{$workflow.description}"><input type="radio" name="partial-workflow" id="partial-workflow-{$workflow.id}}" value="{$workflow.id}" {if (isset($data['partial-workflow']) && ($data['partial-workflow']==$workflow.id))}checked="checked"{/if} /> {$workflow.namespace} - {$workflow.title}</div>
 
-                        {/foreach}
-                        <br />
-                        <input type="submit" value="save" />
-                    </ul>
+                            {/foreach}
+                            <br /><br />
+                            <input type="checkbox" name="fork_it" value="Y" />Run in separate thread (see instructions)<br /><br />
+                            <input type="submit" value="save" />
+                        </ul>
+                    </fieldset>
                 </div>
 
             </form>
