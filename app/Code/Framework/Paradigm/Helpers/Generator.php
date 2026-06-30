@@ -30,7 +30,6 @@ class Generator extends Helper
     private $version            = '';
     private $trigger            = false;
     private $workflow           = "";
-    private $generators         = [];
     private $generated          = [];
     private $header             = <<<HDR
 <?php
@@ -208,19 +207,22 @@ HDR;
                 $this->workflow .= $tabs."}\n";
                 break;
             case "generator":
-                $this->generators[] = $item = $this->_token();
+                $item           = $this->_token();
                 $this->workflow .= $tabs.'foreach (Humble::model("'.$cnf['namespace'].'/'.$cnf['component'].'")->'.$cnf['method'].'(Event::set($EVENT,"'.$node['id'].'")) as $'.$item.') {'."\n";
                 $this->pushTabs();
                 $this->workflow .= $tabs.'if ($'.$item.' === null) {'."\n";
                 $this->workflow .= $tabs."\tbreak;\n";
                 $this->workflow .= $tabs."} \n";
+                $n = [];
+            /*    foreach ($node['connectors'] as $dir => $conn) {
+                    if (isset($connectors[$dir]['begin'])) {
+                        $n = $node['connectors'][$dir]['begin']['to'];
+                }
+*/                $this->traverse($this->components[$node['connectors']['E']['begin']['to']]);
+                $this->popTabs();
+                $this->workflow .= $tabs."}\n";
                 break;
             case "terminus"     :
-                while (count($this->generators)) {
-                    $last = array_pop($this->generators);
-                    $this->popTabs();
-                    $this->workflow .= $tabs."}";
-                }
                 if (isset($cnf['cancel']) && ($cnf['cancel']=='Y')) {
                     $this->workflow .= $tabs.'$cancelBubble = true;'."\n";
                 } else {
