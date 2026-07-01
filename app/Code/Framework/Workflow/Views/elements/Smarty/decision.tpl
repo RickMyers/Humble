@@ -48,7 +48,7 @@
                     </form>
                     <script>
                         (new EasyEdits('/edits/workflow/internaldecision','decision_internal_{$id}',{ '&id&': '{$id}','&window_id&': '{$manager->getWindowId()}' }));
-                        Form.intercept($('#internal-decision-form-{$id}').get(0),'{$id}',false,'{$window_id}');                        
+                        Form.intercept($('#internal-decision-form-{$id}').get(),'{$id}',false,'{$window_id}');                        
                     </script>
                 </div>
                 

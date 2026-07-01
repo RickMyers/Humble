@@ -59,8 +59,8 @@
                     onchange:   (evt) => {
                         if (evt.target.value) {
                             var ao = new EasyAjax('/workflow/component/comment');
-                            ao.add('namespace',$('#internal-decision-form [name=namespace]').val());
-                            ao.add('class',$('#internal-decision-form [name=component]').val());
+                            ao.add('namespace',$('#internal-decision-form-&id& [name=namespace]').val());
+                            ao.add('class',$('#internal-decision-form-&id& [name=component]').val());
                             ao.add('method',evt.target.value);
                             ao.then((response) => {
                                 if (response) {

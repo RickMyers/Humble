@@ -213,12 +213,7 @@ HDR;
                 $this->workflow .= $tabs.'if ($'.$item.' === null) {'."\n";
                 $this->workflow .= $tabs."\tbreak;\n";
                 $this->workflow .= $tabs."} \n";
-                $n = [];
-            /*    foreach ($node['connectors'] as $dir => $conn) {
-                    if (isset($connectors[$dir]['begin'])) {
-                        $n = $node['connectors'][$dir]['begin']['to'];
-                }*/
-                $this->traverse($this->components[$node['connectors']['E']['begin']['to']]);
+                $this->traverse($this->components[$node['connectors']['E']['begin']['to']['id']]);
                 $this->popTabs();
                 $this->workflow .= $tabs."}\n";
                 break;
