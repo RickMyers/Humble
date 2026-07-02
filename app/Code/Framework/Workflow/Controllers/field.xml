@@ -23,6 +23,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
                 <parameter name='id' source='post' default='' />
             </mongo>               
         </action>
+
+        <!-- ############################################################### -->
         
+        <action name="strip" passalong="window_id">
+            <description>A workflow generator test</description>
+            <mongo namespace="paradigm" class="elements" id='element'>
+                <parameter name='id' source='post' default='' />
+            </mongo>               
+        </action>                
     </actions>
 </controller>

@@ -52,4 +52,25 @@ class Field extends Model
             }
         }
     }
+    
+    /**
+     * Lets you select which characters to strip (remove) from a field
+     * 
+     * @workflow use(process) config(workflow/field/strip)
+     * @param type $EVENT
+     */
+    public function stripCharacters($EVENT=false) {
+        if ($EVENT) {
+            $data = $EVENT->load();
+            $cnfg = $EVENT->fetch();
+            $strp = '';
+            if (isset($data[$cnfg['field']]) && $data[$cnfg['field']]) {
+                $strp .= (isset($cnfg['tabs']) && ($cnfg['tabs'] == 'Y')) ? "\t" : "";
+                $strp .= (isset($cnfg['carriage_returns']) && ($cnfg['carriage_returns'] == 'Y')) ? "\r" : "";
+                $strp .= (isset($cnfg['new_lines']) && ($cnfg['new_lines'] == 'Y')) ? "\n" : "";
+                $result = [$cnfg['field'] => str_replace(str_split($strp),[''],$data[$cnfg['field']])];
+                $EVENT->update($result,true);
+            }
+        }
+    }
 }
