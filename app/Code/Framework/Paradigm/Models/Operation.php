@@ -46,8 +46,9 @@ class Operation extends Model
      */
     public function execute($EVENT=false) {
         if ($EVENT!==false) {
-            $data = $EVENT->load();
-            $cfg  = $EVENT->fetch();
+            $data    = $EVENT->load();
+            $cfg     = $EVENT->fetch();
+            $current = false;
             if (isset($cfg['program'])) {
                 $str = Humble::helper('paradigm/str');
                 $pgm = isset($cfg['program'])  ? $cfg['program'] : '';
@@ -57,8 +58,15 @@ class Operation extends Model
                 $fld = isset($cfg['event_field']) ? $cfg['event_field'] : false;
                 $args = $str->translate($arg,$data);
                 //@TODO: override segments of the arg list with values pulled from the event if %% is present
-                $exec_str = $lng.' '.$dir.$pgm.' '.$args;
+                $exec_str = $lng.' '.$pgm.' '.$args;
+                if ($dir) {
+                    $current = getcwd();
+                    chdir($dir);
+                }
                 $result = shell_exec($exec_str);
+                if ($current) {
+                    chdir($current);
+                }                
                 if ($fld) {
                     $EVENT->update([$fld=>$result]);
                 }

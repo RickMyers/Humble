@@ -139,7 +139,7 @@ class Event  {
      * @return type
      */
     public function fetch() {
-        return $this->_configurations[$this->_target()];
+        return $this->_configurations[$this->target()] ?? [];
     }
 
     /**
@@ -163,7 +163,7 @@ class Event  {
     public function deserialize($event=false) {
         if ($event) {
             $this->set($data['data']);
-            $this->_configurations[$this->_target()] = $data['config'];
+            $this->_configurations[$this->target()] = $data['config'];
         }
         return $this;
     }
@@ -339,9 +339,9 @@ class Event  {
      * @param type $data
      * @return type
      */
-    public function _configurations($data=false) {
+    public function configurations($data=false) {
         if ($data!==false) {
-            $this->_configurations[$this->_target()] = $data;
+            $this->_configurations[$this->target()] = $data;
             return $this;
         }
         return $this->_configurations;
@@ -353,12 +353,12 @@ class Event  {
      * @param type $id
      * @return type
      */
-    public function _target($id=false) {
+    public function target($id=false) {
         if ($id) {
-            $this->_target = $id;
+            $this->target = $id;
             return $this;
         }
-        return $this->_target;
+        return $this->target;
     }
 
     /**
@@ -366,7 +366,7 @@ class Event  {
      *
      * @param type $id
      */
-    public function _stages($id=false) {
+    public function stages($id=false) {
         if ($id!==false) {
             if ($x = count($this->_stages)) {
                 $this->_stages[$x-1]['finished'] = time();

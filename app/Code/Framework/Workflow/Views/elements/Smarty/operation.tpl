@@ -51,7 +51,7 @@
                                     <input type="radio" name="language" id="language-{$data.id}-js" value="js" /> JavaScript<br />
                                 </div>
                                 <div style="width: 48%; display: inline-block">
-                                    <input type="radio" name="language" id="language-{$data.id}-java" value="py" /> Python<br />
+                                    <input type="radio" name="language" id="language-{$data.id}-java" value="python3" /> Python<br />
                                     <input type="radio" name="language" id="language-{$data.id}-golan" value="go" /> Golang <br />
                                     <input type="radio" name="language" id="language-{$data.id}-rust" value="rust" /> Rust <br />
                                     <input type="radio" name="language" id="language-{$data.id}-zig" value="zig" /> Zig<br />

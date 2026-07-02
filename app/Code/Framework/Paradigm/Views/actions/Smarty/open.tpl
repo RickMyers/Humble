@@ -544,11 +544,12 @@ Copyright humbleprogramming.com, all rights reserved
             <div id="paradigm-header" style='position: relative; box-sizing: border-box; white-space: nowrap'>
                 <div style='display: block; box-sizing: border-box; padding-left: 15px; background-color: #e3e3e3; height: 100%; border-radius: 0px 0px 0px 0px; min-width: 1000px; width: 100%;  '>
                     <div style="float: left;">
-                        <img src='/images/humble/djikstra.png' align="top" style=' float: left; height: 76px; margin-right: 240px' />
-                        <div style="font-size: 3em; color: #333; letter-spacing: 8px; position: absolute; top: 0px; left: 75px; text-shadow: -1px 1px 1px #5A5A5A;">HUMBLE</div>
-                        <div style="font-size: 1em; color: #555; letter-spacing: 6px; position: absolute; top: 55px; left: 80px; text-shadow: -1px 1px 1px #5A5A5A;">Workflow Editor</div>
+                        <img src='/images/humble/djikstra.png' align="top" style=' float: left; height: 76px; margin-right: 205px' />
+                        <div style="font-size: .8em;  color: #333; letter-spacing: 3px;   position: absolute; top: 0px;  left: 75px; ">The Humble Framework</div>
+                        <div style="font-size: 2.4em; color: #333; letter-spacing: 4.5px; position: absolute; top: 10px; left: 75px; text-shadow: -1px 1px 1px #5A5A5A">Paradigm</div>
+                        <div style="font-size: 1em;   color: #555; letter-spacing: 5.5px; position: absolute; top: 55px; left: 80px">Workflow Editor</div>
                     </div>
-                    <div style='display: inline-block; margin-left: auto; margin-right: auto; visibility: hidden' id="paradigm-workflow-components">
+                    <div style='display: inline-block; visibility: hidden' id="paradigm-workflow-components">
                     <fieldset style="display: inline-block; position: relative; top: 2px; margin-left: 20px; padding: 0px 20px 0px 20px; padding: 0px; border-radius: 4px; font-family: sans-serif; font-size: .8em" id="paradigm-workflow-triggers">
                         <legend style="font-family: sans-serif; font-size: .6em">Triggers</legend>
                         <div style="float: left; width: 55px; height: 60px; text-align: center; font-size: .7em; padding-top: 5px; margin-left: 20px" title='A recurring event, based on time'>
