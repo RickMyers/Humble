@@ -10,7 +10,6 @@
 
         .login-card {
           padding: 40px;
-          width: 274px;
           background-color: #F7F7F7;
           border-radius: 2px 0px 0px 2px;
           box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
@@ -136,23 +135,26 @@
                 </tr>
                 <tr>
                     <td>
-                        <div id='card' class="login-card">
-                            <center>
-                            <img src='/web/images/djikstra.png'  height='100' /><br /><br />
-                            </center>
-                            <form name='login-form' id='login-form' onsubmit='return false'  action='/default/user/login' method='POST'>
-                              <input type="text" name="user_name" id='user_name' placeholder="Username">
-                              <input type="password" name="user_password" id='user_password' placeholder="Password">
-                              <input type="submit" name="login-submit" id='login-submit' class="login login-submit" value="login">
-                            </form>
-
-                            <div class="login-help">
-                              <a href="/humble/user/enrollForm" onclick="alert('Registration is suspended... for now.'); return false">Register</a> • <a href="/default/user/recoverForm" onclick="alert('Action suspended... for now.'); return false">Forgot Password</a>
+                        <div id='card' class="login-card" style="white-space: nowrap; font-family: sans-serif; background-color: #F7F7F7; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); box-sizing: border-box; padding-right: 5px">
+                            <div style="display: inline-block; width: 274px">
+                                <center>
+                                    <img src='/web/images/djikstra.png'  height='100' /><br /><br />
+                                </center>
+                                <form name='login-form' id='login-form' onsubmit='return false'  action='/default/user/login' method='POST'>
+                                  <input type="text" name="user_name" id='user_name' placeholder="Username"><br />
+                                  <input type="password" name="user_password" id='user_password' placeholder="Password"><br />
+                                  <input type="submit" name="login-submit" id='login-submit' class="login login-submit" value="login">
+                                </form>
+                                <div class="login-help">
+                                  <a href="/humble/user/enrollForm" onclick="alert('Registration is suspended... for now.'); return false">Register</a> • <a href="/default/user/recoverForm" onclick="alert('Action suspended... for now.'); return false">Forgot Password</a>
+                                </div>                                
                             </div>
+                            <div style="display: inline-block; vertical-align: top; padding: 50px 40px">
+                                <div style="font-size: 1.4em;  color: #333; letter-spacing: 3px">The</div>
+                                <div style="font-size: 4em; color: #333; letter-spacing: 4.5px; text-shadow: -1px 1px 1px #5A5A5A">Humble<br />Framework</div>
+                                <div style="font-size: 1.6em;   color: #555; letter-spacing: 5.5px; font-family: monospace">Paradigm Edition</div>
+                            </div>                        
                         </div>
-                    </td>
-                    <td id="slide" style="position: relative; width: 626px; background-color: #F7F7F7; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3); box-sizing: border-box; padding-right: 5px">
-                        <img src="/web/images/humble.png" style="width: 100%" />
                     </td>
                 </tr>
                 <tr>
