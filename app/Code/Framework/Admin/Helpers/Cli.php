@@ -86,10 +86,11 @@ class Cli extends Helper
             $this->setLinuxExample($struct['usage']['linux'] ?? 'N/A');
             $this->setWindowsExample($struct['usage']['windows'] ?? 'N/A');
             $this->setFunction($struct['function'] ?? 'N/A');
+            $this->setTitle($struct['title'] ?? 'N/A');
             $this->setDirective((isset($struct['directive']) && $struct['directive']) ? 'Yes' : 'No');
             $this->setExtendedDescription($struct['extended'] ?? 'N/A');
             $this->setDocumentation($struct['documentation'] ?? 'N/A');
-            $this->setYoutube($struct['youtube'] ?? 'N/A');
+            $this->setYouTube($struct['youtube'] ?? 'N/A');
             $this->setRequiredParameters($struct['parameters']['required'] ?? []);
             $this->setOptionalParameters($struct['parameters']['optional'] ?? []);
         }

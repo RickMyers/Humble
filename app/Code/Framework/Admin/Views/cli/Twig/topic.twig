@@ -1,13 +1,13 @@
 {% set structure = cli.parseCommandStructure(cli.commandStructure(command_menus)) %}
-<div id="cli_header_{{ category }}" class="pt-2 pb-2" style="background-color: #333; color: ghostwhite">
-    Command Line Invocation
+<div id="cli_header_{{ category }}" class="pt-2 pb-2 text-lg" style="background-color: #333; color: ghostwhite">
+    CLI: <b>{{ cli.getTitle() }}</b>
 </div>
 <div id="cli_body_{{ category }}" class="text-xl" style="overflow: auto">
     <form name="system_cli_form" id="system_cli_form_{{ window_id }}" onsubmit="return false">    
         <input type="hidden" name="category" value="{{ cli.getCategory() }}" />
         <input type="hidden" name="topic"    value="{{ cli.getTopic() }}" />
         <div style="padding: 20px 10px; background-color: rgba(202,202,202,.3)">
-            Category: <b>{{ category }}</b> [ {{ cli.parseTopic }} ] - {{ cli.getDescription() }}
+            Category: <b>{{ category }}</b> [ --{{ cli.parseTopic }} ] - {{ cli.getDescription() }}
         </div>
         <div style="border: 1px solid #333; border-radius: 5px" class="p-2">
             <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
@@ -58,10 +58,10 @@
                     Tutorial
                 </div>
                 <div style="padding: 5px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
-                    {% if (cli.getYoutube() != 'N/A') %}
-                        <a href="{{ cli.getYoutube() }}" target="_BLANK">Tutorial</a>
+                    {% if (cli.getYouTube() != 'N/A') %}
+                        <a href="{{ cli.getYouTube() }}" target="_BLANK">Tutorial</a>
                     {% else %}
-                        {{ cli.getYoutube() }}
+                        {{ cli.getYouTube() }}
                     {% endif %}
                 </div>
             </div>                
@@ -97,14 +97,15 @@
                 </div>
             </div>
         </div>        
-    </form>    
+    </form>
 </div>
 <div id="cli_footer_{{ category }}" class="pt-2 pb-2" style="background-color: #333; color: ghostwhite">
     <center>
-        <button style="background-color: #dedede; border: 1px solid black; padding: 4px 8px; border-radius: 2px; cursor: pointer; color: #333; font-weight: bolder">Run Command</button>
+        <button id="run_button-{{ window_id }}" style="background-color: #dedede; border: 1px solid black; padding: 4px 8px; border-radius: 2px; cursor: pointer; color: #333; font-weight: bolder">Run Command</button>
     </center>
     
 </div>
+    
 <script type="text/javascript">
     (() => {
         let win = Desktop.window.list['{{ window_id }}'];
@@ -113,8 +114,21 @@
                 $('#cli_body_{{ category }}').height(win.content.height() - $E('cli_header_{{ category }}').offsetHeight - $E('cli_footer_{{ category }}').offsetHeight - 2);
             }
         })(win));
-        
-        
+        let ee = new EasyEdits();
+        ee.new('system_cli_form_{{ window_id }}','form-{{ window_id }}',{ });
+        {% for param,desc in cli.getRequiredParameters() %}
+            {% set parm = cli.parseParameter(param) %}
+            ee.add('{{ parm }}',{ "required": true, "force": true, 'type': 'text' });
+        {% endfor %}
+        let f = () => {
+            if (Edits['form-{{ window_id }}'].validate()) {
+                alert('Validated');
+                (new EasyAjax('/admin/cli/run')).packageForm().then((response) => {
+                });
+            }
+        };
+        ee.execute();
+        $('#run_button-{{ window_id }}').on('click',f);
     })();
     //Form.intercept();
 </script>
