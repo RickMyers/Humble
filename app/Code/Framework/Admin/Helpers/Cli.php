@@ -60,6 +60,19 @@ class Cli extends Helper
         return $parsed;
     }
     
+    /**
+     * If there are aliases for a parameter/command, return only the first
+     * 
+     * @param type $command
+     * @return type
+     */
+    public function parseParameter($parameter=false) {
+        $parm='';
+        if ($parameter) {
+            $parm = explode('|',$parameter)[0];
+        }
+        return $parm;
+    }
     
     /**
      * Parse and prepare the command structure for presentation
@@ -76,7 +89,7 @@ class Cli extends Helper
             $this->setDirective((isset($struct['directive']) && $struct['directive']) ? 'Yes' : 'No');
             $this->setExtendedDescription($struct['extended'] ?? 'N/A');
             $this->setDocumentation($struct['documentation'] ?? 'N/A');
-            $this->setYoutube($struct['youtube'] ?? false);
+            $this->setYoutube($struct['youtube'] ?? 'N/A');
             $this->setRequiredParameters($struct['parameters']['required'] ?? []);
             $this->setOptionalParameters($struct['parameters']['optional'] ?? []);
         }
