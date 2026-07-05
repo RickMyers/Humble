@@ -69,37 +69,70 @@ function EasyEdits(source, ref, overrides)
             this.load(source);
         }
     }
+    this.parse = (response,overrides) => {
+        if (response)	{
+            for (var i in overrides) {
+                let f = new RegExp(i,'gi');
+                response = response.replace(f,overrides[i]);
+            }                
+            this.editsJSON	= response;
+            try {
+                this.edits	= eval("("+ me.editsJSON +")");
+            } catch (ex) {
+                console.error(ex);
+            }
+            this.execute();
+        }        
+    }
     /* ------------------------------------------------------------------------- */    
     this.load = (JSONsource) => {
         if (JSONsource)	{
             let me          = this;
             this.source	= JSONsource;
             (new EasyAjax(JSONsource)).then((response) => {
-                if (response)	{
-                    for (var i in me.overrides) {
-                        let f = new RegExp(i,'gi');
-                        response = response.replace(f,me.overrides[i]);
-                    }                
-                    this.editsJSON	= response;
-                    try {
-                        me.edits	= eval("("+ me.editsJSON +")");
-                    } catch (ex) {
-                        console.error(ex);
-                        console.error(JSONsource);
-                        console.error(me.editsJSON);
-                    }
-                    me.execute();
-                }
+                me.parse(response,me.overrides);
+
             }).get();
         }
-    }    
+    };
     /* ------------------------------------------------------------------------- */        
     this.clear	= () => {
         if (this.formNode) {
             this.formNode.innerHTML = "";
         }
         this.currentZoom = 100;
-    }
+    };
+    /* ------------------------------------------------------------------------- */            
+    this.new  = (form,alias,options) => {
+        this.edits = {
+            "form":     {},
+            "fields":   []
+        };
+        this.edits.form.id = form;
+        if (options) {
+            let i = false;
+            for (i in options) {
+                this.edits.form[i] = options[i];            
+            }
+        }
+        return Edits[alias] = this;
+    };
+    /* ------------------------------------------------------------------------- */     
+    this.add            = (field,options) => {
+        var field = {
+            "name": field,
+            "active": true
+        };
+        if (options) {
+            let i = '';
+            for (i in options) {
+                field[i] = options[i];
+            }
+        }
+        this.edits.fields[this.edits.fields.length] = field;
+        return this;
+    };
+    /* ------------------------------------------------------------------------- */
     this.registerError  = (field,edit,message,force) => {
         if (this.messages.indexOf(message) == -1) {
             this.messages[this.messages.length] = message;
