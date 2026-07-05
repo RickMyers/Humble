@@ -231,7 +231,7 @@
                         <li><a href="#" onclick="return false" >{{ category }}</a>
                             <ul>
                             {% for cmd,options in commands %}
-                                <li><a title="{{ options.description }}" href="#" onclick="Administration.cli.open('{{ category }}','{{ cmd }}'); return false">--{{ cmd }} {{ options.function }}</a></li>
+                                <li><a title="{{ options.description }}" href="#" onclick="Administration.cli.open('{{ category }}','{{ cmd }}'); return false">--{{ cli.parseCommand(cmd) }} {{ options.title }}</a></li>
                             {% endfor %}
                             </ul>
                         </li>

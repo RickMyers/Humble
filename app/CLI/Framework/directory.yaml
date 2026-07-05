@@ -1,5 +1,6 @@
 ---
 x|prefix : 
+    title: Prefix Check
     description: Check if a module prefix is available (deprecated)
     usage:
         linux:   sudo sh ./humble.sh --x prefix=desired_prefix
@@ -10,6 +11,7 @@ x|prefix :
             prefix|pre|px: The prefix value to check
         optional:         
 a|clean : 
+    title: Clean SQL Dump
     description: Remove AUTOINCREMENT=# from SQL dumps
     usage:
         linux:   sudo sh ./humble.sh --a ns=desired_namespace
@@ -20,6 +22,7 @@ a|clean :
             namespace|ns: A namespace to clean
         optional:         
 c|check : 
+    title: Namespace Availability
     description: Check for namespace availability
     usage:
         linux:   sudo sh ./humble.sh --c namespace=desired_namespace 
@@ -30,6 +33,7 @@ c|check :
             namespace|ns: A namespace to check
         optional:
 p|preserve : 
+    title: Preserve Path
     description: Preserve (copy) a directory off of the application path
     usage:
         linux:   sudo sh ./humble.sh --p dir=path_to_directory
@@ -40,6 +44,7 @@ p|preserve :
             directory|dir: The path to the directory to store/preserve
         optional:         
 v|ver|version : 
+    title: Show Framework/App Version
     description: Prints the framework version
     directive: true
     usage:
@@ -50,6 +55,7 @@ v|ver|version :
         required:
         optional:            
 r|restore : 
+    title: Restore Path
     description: Restore a directory that was previously preserved
     usage:
         linux:   sudo sh ./humble.sh --r dir=path_to_directory
@@ -60,6 +66,7 @@ r|restore :
             directory|dir: The path to the directory to store/preserve
         optional: 
 api|policy|update-policy : 
+    title: API Policy Update
     description: Creates or updates the API Policy JSON file
     usage:
         linux:   sudo sh ./humble.sh --policy
@@ -70,6 +77,7 @@ api|policy|update-policy :
         required:
         optional:    
 valid|validate : 
+    title: Framework CRC Validation
     description: Runs a CRC (MD5) Validation check against key parts of the framework
     usage:
         linux:   sudo sh ./humble.sh --validate
@@ -80,6 +88,7 @@ valid|validate :
         required:
         optional:           
 man|manual : 
+    title: Show Manual Entry
     description: Displays help manual information depending on topic
     documentation: https://humbleprogramming.com/pages/Manual.htmls 
     usage:
@@ -92,5 +101,4 @@ man|manual :
           tag: Name of tag to perform a manual look for
         optional:
           attr: Tag attribute to return information from the manual for
-           
-          
+

@@ -1,5 +1,6 @@
 ---
 b : 
+    title: Build Module
     description: Build a new module
     usage: 
         linux:   sudo sh ./humble.sh --b ns=newmod module=NewMod package=Main author="John Doe" email=johndoe@here.com
@@ -15,6 +16,7 @@ b :
             email|em: The authors email address
             main_module: Flag for marking this a the main module of an application
 i : 
+    title: Module Install
     description: Install a module
     usage:
         linux:   sudo sh ./humble.sh --i etc=path_to_config.xml or sudo sh ./humble.sh --i etc=path_to_config.xml
@@ -26,6 +28,7 @@ i :
             namespace|ns: You must specify the namespace of the module
         optional:          
 k : 
+    title: Uninstall (Kill) Module
     description: Uninstall (Kill) a module    
     usage:
         linux:   sudo sh ./humble.sh --k ns=module_namespace or sudo sh ./humble.sh --k ns=*
@@ -36,6 +39,7 @@ k :
             namespace|ns: You must specify the namespace of the module to uninstall, or an * to uninstall all non-required modules
         optional:  
 u : 
+    title: Module(s) Update
     description: Run the Update process on a module or group of modules
     usage: 
         linux:   sudo sh ./humble.sh --u ns=module_namespace or sudo sh ./humble.sh --u ns=*
@@ -47,6 +51,7 @@ u :
         optional:    
             workflow|w : A flag (Y/N) for whether to generate all workflows on update (default Y)
 e : 
+    title: Enable Module
     description: Enable a module
     usage:
         linux:   sudo sh ./humble.sh --e ns=module_namespace or sudo sh ./humble.sh --e ns=*
@@ -57,6 +62,7 @@ e :
             namespace|ns: You must specify the namespace of the module to enable, or an * to enable all modules
         optional:          
 d : 
+    title: Disable Module
     description: Disable a module
     usage:
         linux:   sudo sh ./humble.sh --d ns=module_namespace or sudo sh ./humble.sh --d ns=*
@@ -67,6 +73,7 @@ d :
             namespace|ns: You must specify the namespace of the module to disable, or an * to disable all non-required modules
         optional:          
 activate : 
+    title: Activate Module
     description: Build, Install and Enable (activate) a Module
     usage:
         linux:   sudo sh ./humble.sh --activate namespace=module_namespace package=directory_name module=module_name
@@ -79,6 +86,7 @@ activate :
             module|mod: The module name
         optional:     
 tailwind : 
+    title: Install Tailwind
     description: Enable tailwindcss support for a given module 
     extended: Tailwind should be enabled on a per module basis, see the tutorial here https://humblepgramming.com/pages/Tailwind.htmls
     usage:
@@ -89,7 +97,8 @@ tailwind :
         required:
             namespace|ns: The module namespace
         optional:
-clone-templates :
+clone|clone-templates :
+    title: Clone Templates
     description: Copies the component templates to the main modules lib/ directory
     extended: You can customize the base templates for controllers, models, helpers, and entities
     usage:
@@ -102,6 +111,7 @@ clone-templates :
         optional:
             namespace|ns: The module namespace to copy to
 cli : 
+    title: Enables/Disables CLI Access
     description: Toggles CLI access for a particular modules
     usage:
         linux:   sudo sh ./humble.sh --cli ns=module_namespace or sudo sh ./humble.sh --cli ns=*
@@ -112,6 +122,7 @@ cli :
             namespace|ns: You must specify the namespace of the module to grant CLI access to
         optional:
 admin-apps|apps :
+    title: Create Admin App
     description: Installs the Admin Apps XML file in the /etc folder
     usage:
         linux:   sudo sh ./humble.sh --admin-apps ns=module_namespace or sudo sh ./humble.sh --apps ns=*

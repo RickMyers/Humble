@@ -1,5 +1,6 @@
 ---
 #version|ver|v:
+#    title: Admin Menu Text
 #    description: Displays the version number of the framework or application depending on whether a parameter was passed
 #    usage:
 #        linux:   sudo sh ./humble.sh --version

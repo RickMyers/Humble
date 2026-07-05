@@ -1,5 +1,6 @@
 ---
 o : 
+    title: Toggle Application On/Off
     description: Toggles the application online or offline
     extended: Toggling the system offline will prevent most of the framework functionality from working
     usage: 
@@ -11,6 +12,7 @@ o :
         required:
         optional:
 l : 
+    title: Toggle Authentication
     description: Toggle local authentication vs SSO
     usage:
         linux:   sudo sh ./humble.sh --o
@@ -21,6 +23,7 @@ l :
         required:
         optional:
 s : 
+    title: Show Application Status
     description: Display/Return Application Status
     usage:
         linux:   sudo sh ./humble.sh --s
@@ -31,6 +34,7 @@ s :
         required:
         optional:
 ccc|controllers:
+    title: Clear Controllers
     description: Clear Controller Cache
     extended: This action deletes all of the compiled controllers forcing recompilation next time they are invoked
     usage:
@@ -42,6 +46,7 @@ ccc|controllers:
         required:
         optional:
 cvc|views:
+    title: Clear Views
     description: Clear Views Cache
     extended: This action deletes all of the generated views forcing regeneration next time they are viewed
     usage:
@@ -53,6 +58,7 @@ cvc|views:
         required:
         optional:          
 adduser : 
+    title: Add User
     description: Create a user in the humble user directory
     usage: 
         linux:   sudo sh ./humble.sh --adduser first=john last=doe user=jdoe pwd=bestpasswordever em=johndoe@gmail.com
@@ -67,6 +73,7 @@ adduser :
             password|pwd: The password for the user, or omit to have a password generated and it will be displayed
             email|em: Users email address
 use : 
+    title: Update Module with File
     description: Update a module using the relative location of a configuration file
     usage:
     function :
@@ -74,6 +81,7 @@ use :
         required:
         optional:    
 package : 
+    title: Create Archive
     description: Creates a new downloadable archive file of the framework
     extended: This process reads the Humble.manifest file in the 'app/' folder and builds a distro of the Humble Framework as a downloadable .zip file.  The version on the file is obtained by the application version in the /etc/application.xml' file
     usage: 
@@ -85,6 +93,7 @@ package :
         required:
         optional:
 increment|inc|+ : 
+    title: Increment Framework/App Version
     description: Increments the minor version of the framework by 1 rolling over if needed
     usage:
         linux:   sudo sh ./humble.sh --increment
@@ -95,6 +104,7 @@ increment|inc|+ :
         required:
         optional:    
 initialize|init : 
+    title: Initialize Project
     description: Initializes a new project based on the Humble Framework
     usage: 
         linux:   sudo sh ./humble.sh --init
@@ -105,6 +115,7 @@ initialize|init :
         required:
         optional:    
 export : 
+    title: Export Workflows
     description: Exports workflows to a pre-defined server/environment
     usage:
     function :
@@ -112,6 +123,7 @@ export :
         required:
         optional:    
 patch : 
+    title: Patch Framework
     description: Updates the Humble Base Framework files with any new updates respecting manifested files
     extended: The patch process will contact https://humbleprogramming.com to download the latest distro.  The distro will be unpacked and compared with your current distro.  If differences are found you will be prompted (yes/no) to update your current distro to the latest version    
     usage:
@@ -123,6 +135,7 @@ patch :
         required:
         optional:
 install : 
+    title: Install Cadence as Service
     description: For Linux users and Systemctl, will install the cadence utility as a service
     extended: Cadence is the module that monitors for events, file changes, and workflow triggers.  It needs to be running for the Paradigm engine to function.  Please go to https://humbleprogramming.com/pages/Cadence.htmls for detailed information
     usage:
@@ -135,6 +148,7 @@ install :
         optional:
             
 sync : 
+    title: Sync Framework
     description: Updates the core files (deprecated)
     usage:
         linux:   sudo sh ./humble --sync
@@ -145,6 +159,7 @@ sync :
         required:
         optional: 
 watch|cadence : 
+    title: Toggle Cadence
     description: Starts or stops the system watch program [Cadence.php]
     usage:
         linux:   ./humble.sh --cadence
@@ -155,6 +170,7 @@ watch|cadence :
         required:
         optional:              
 proxy : 
+    title: Toggle Command Proxy
     description: Toggles on/off the Command Proxy, must run at Super User [sudo] level
     usage:
         linux:   sudo ./humble.sh --proxy
@@ -165,6 +181,7 @@ proxy :
         required:
         optional:          
 hub : 
+    title: Toggle Message Hub
     description: Starts or stops the Node.js socket based message hub
     usage:
         linux:   sh ./humble.sh --hub
@@ -175,6 +192,7 @@ hub :
         required:
         optional:   
 aws :
+    title: Enable AWS Support
     description: Configures the AWS Secret Manager class for storing credentials
     usage:
         linux:   sh ./humble --aws region=East secret=mySecretCred value="{'userid':'someuid','password':'mypassword'}" 
@@ -187,6 +205,7 @@ aws :
           value  : JSON encoded secret containing userid and password
         optional:   
 local-cred :
+    title: AWS Local-Cred 
     description: Configures the AWS Secret Manager class for storing credentials
     usage:
         linux:   sh ./humble --aws region=East secret=mySecretCred value="{'userid':'someuid','password':'mypassword'}" 

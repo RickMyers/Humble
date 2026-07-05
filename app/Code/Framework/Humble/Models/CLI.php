@@ -75,6 +75,14 @@ class CLI extends Model
         return $available_commands;    
     }
 
+    public function parseCommand($command=false) {
+        $cmd = '';
+        if ($command) {
+            $cmd = explode('|',$command)[0];
+        }
+        return $cmd;
+    }
+    
     /**
      * Groups the base commands with custom commands and removes any non-global commands
      * 

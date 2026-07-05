@@ -1,5 +1,6 @@
 ---
 w : 
+    title: Register Workflow Components
     description: Examines and registers workflow components in a modules models
     extended: Model classes, and only Model classes, can have annotations that indicate methods that are used to build workflows, along with optional services that handle configuration.  This process scans either an individual file to find annotations, or it can scan all the files in the Models folder to register their annotations
     usage:
@@ -8,10 +9,11 @@ w :
     function : scan
     parameters:
         required:
-        optional:
             namespace|ns: The namespace of the module to scan, or * to scan all modules
-            file|fi: Relative path to the file you wnat to scan
+        optional:
+            file|fi: Relative path to the file you want to scan
 z : 
+    title: Generate Enabled Workflows
     description: Generate Workflows
     usage:
         linux:   sudo sh ./humble.sh --z ns=my_namespace or sh ./humble.sh --z ns=*
