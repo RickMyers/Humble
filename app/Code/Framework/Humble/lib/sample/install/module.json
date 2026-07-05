@@ -201,12 +201,12 @@
             "destination": "Code/&&PACKAGE&&/&&MODULE&&/etc/cadence.json"
         },
         {
-            "source": "/lib/sample/install/cli/CLIModule.php",
-            "destination": "cli/&&MODULE&&/&&MODULE&&.php"
+            "source": "/lib/sample/install/CLI/CLIModule.php",
+            "destination": "CLI/&&MODULE&&/&&MODULE&&.php"
         },
         {
-            "source": "/lib/sample/install/cli/directory.yaml",
-            "destination":  "cli/&&MODULE&&/directory.yaml" 
+            "source": "/lib/sample/install/CLI/directory.yaml",
+            "destination":  "CLI/&&MODULE&&/directory.yaml" 
         },
         {
             "source": "/lib/sample/install/includes/Constants.txt.php",
