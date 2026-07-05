@@ -1461,33 +1461,33 @@ EasyEdits.generateFormElementHTML	= function (edit) {
 EasyEdits.validDOB = function (evt) {
 	evt = (evt) ? evt : ((window.event) ? event : null);
 	if (this.value.trim() !== "") {
-		var dateFields = this.value.split('/');
-		var badDate = false;
-		var curYear = new Date().getFullYear();
-		badDate = (!dateFields[0] || !dateFields[1] || !dateFields[2])
-		if (!badDate) { badDate = (parseInt(dateFields[0], 10) > 12) };
-		if (!badDate) { badDate = (parseInt(dateFields[1], 10) < 1) || (parseInt(dateFields[1], 10) > 31 ) };
-		if (parseInt(dateFields[2]) < 100) {
-			if (parseInt(dateFields[2]) < 18)	{
-				dateFields[2] += "";
-				if (dateFields[2].length === 1) {
-					dateFields[2] = "0"+""+dateFields[2];
+            var dateFields = this.value.split('/');
+            var badDate = false;
+            var curYear = new Date().getFullYear();
+            badDate = (!dateFields[0] || !dateFields[1] || !dateFields[2])
+            if (!badDate) { badDate = (parseInt(dateFields[0], 10) > 12) };
+            if (!badDate) { badDate = (parseInt(dateFields[1], 10) < 1) || (parseInt(dateFields[1], 10) > 31 ) };
+            if (parseInt(dateFields[2]) < 100) {
+                if (parseInt(dateFields[2]) < 18)	{
+                    dateFields[2] += "";
+                    if (dateFields[2].length === 1) {
+                            dateFields[2] = "0"+""+dateFields[2];
+                    }
+                    dateFields[2] = "20"+""+dateFields[2];
+                } else {
+                    dateFields[2] = "19"+""+dateFields[2];
                 }
-				dateFields[2] = "20"+""+dateFields[2];
-			} else {
-				dateFields[2] = "19"+""+dateFields[2];
             }
-		}
-		if (!badDate) {
-			this.value = dateFields[0]+"/"+dateFields[1]+"/"+dateFields[2];
-        }
-		if (!badDate) { badDate = (parseInt(dateFields[2], 10) < 1900) || (parseInt(dateFields[2], 10) > curYear) };
-		if (badDate) {
-			alert("The date you have entered ("+ this.value +") is invalid.  Please enter a valid date in MM/DD/YYYY format.");
-			var thing = (evt.currentTarget.id) ? evt.currentTarget.id : evt.srcElement.id;
-			$E(thing).focus();
-			return false;
-		}
+            if (!badDate) {
+                this.value = dateFields[0]+"/"+dateFields[1]+"/"+dateFields[2];
+            }
+            if (!badDate) { badDate = (parseInt(dateFields[2], 10) < 1900) || (parseInt(dateFields[2], 10) > curYear) };
+            if (badDate) {
+                alert("The date you have entered ("+ this.value +") is invalid.  Please enter a valid date in MM/DD/YYYY format.");
+                var thing = (evt.currentTarget.id) ? evt.currentTarget.id : evt.srcElement.id;
+                $E(thing).focus();
+                return false;
+            }
 	}
 	return true;
 }
@@ -1528,27 +1528,27 @@ EasyEdits.stateList	= function (evt) {
 }
     /* ------------------------------------------------------------------------- */    
 EasyEdits.setSelectBoxByText	= function (selectBox,txt) {
-	if (typeof(selectBox)=="string") {
-		selectBox = $E(selectBox);
+    if (typeof(selectBox)=="string") {
+        selectBox = $E(selectBox);
     }
-	var found=false; var ctr = 0;
-	while ((!found) && (ctr<selectBox.length))	{
-		found = selectBox[ctr].selected = (txt == selectBox[ctr].text);
-		ctr++;
-	}
+    var found=false; var ctr = 0;
+    while ((!found) && (ctr<selectBox.length))	{
+        found = selectBox[ctr].selected = (txt == selectBox[ctr].text);
+        ctr++;
+    }
 }
     /* ------------------------------------------------------------------------- */    
 EasyEdits.getChildNodes	= function (nodes){
-	var nodeList = [];
-	for (var i=0; i<nodes.childNodes.length; i++)	{
-		nodeList[nodeList.length] = nodes.childNodes[i];
-		if (nodes.childNodes[i].childNodes) {
-			if (nodes.childNodes[i].childNodes.length > 0) {
-				nodeList.append(EasyEdits.getChildNodes(nodes.childNodes[i]));
+    var nodeList = [];
+    for (var i=0; i<nodes.childNodes.length; i++)	{
+        nodeList[nodeList.length] = nodes.childNodes[i];
+        if (nodes.childNodes[i].childNodes) {
+            if (nodes.childNodes[i].childNodes.length > 0) {
+                nodeList.append(EasyEdits.getChildNodes(nodes.childNodes[i]));
             }
         }
-	}
-	return nodeList;
+    }
+    return nodeList;
 }
     /* ------------------------------------------------------------------------- */    
 EasyEdits.sum		= function (evt) {
@@ -1557,16 +1557,16 @@ EasyEdits.sum		= function (evt) {
 	var sumField = this.getAttribute("sumfield");
 	var nodeList = [];
 	for (var i=0; i<this.childNodes.length; i++) {
-		if (this.childNodes[i].childNodes.length > 0) {
-			nodeList.append(EasyEdits.getChildNodes(this.childNodes[i]));
+            if (this.childNodes[i].childNodes.length > 0) {
+		nodeList.append(EasyEdits.getChildNodes(this.childNodes[i]));
+            }
         }
-    }
 	var sum = 0;
 	for (var i=0; i<nodeList.length; i++) {
-		if ((nodeList[i].className) && (nodeList[i].className == sumClass)) {
-			sum += +nodeList[i].value;
+            if ((nodeList[i].className) && (nodeList[i].className == sumClass)) {
+                sum += +nodeList[i].value;
+            }
         }
-    }
 	$E(sumField).value = sum;
 }
 EasyEdits.timepicker	= null;
@@ -1574,26 +1574,26 @@ EasyEdits.calendar		= null;
     /* ------------------------------------------------------------------------- */    
 EasyEdits.showTimePicker	= function (field,evt)
 {
-	var node = EasyEdits.timepicker.getNode();
-	node.style.left = EasyEdits.getAbsoluteX(field) + "px";
+    var node = EasyEdits.timepicker.getNode();
+    node.style.left = EasyEdits.getAbsoluteX(field) + "px";
 
-	node.style.top	= (+EasyEdits.getAbsoluteY(field) + +field.offsetHeight +2)+ "px";
-	TimePicker.field = field;
-	node.show();
+    node.style.top	= (+EasyEdits.getAbsoluteY(field) + +field.offsetHeight +2)+ "px";
+    TimePicker.field = field;
+    node.show();
 }
 EasyEdits.calendar		= null;
     /* ------------------------------------------------------------------------- */    
 EasyEdits.showCalendar	= function (field,evt)
 {
-	var node = EasyEdits.calendar.getNode();
-	var control = evt.target || evt.srcElement;
-	node.style.left = EasyEdits.getAbsoluteX(field) + "px";
+    var node = EasyEdits.calendar.getNode();
+    var control = evt.target || evt.srcElement;
+    node.style.left = EasyEdits.getAbsoluteX(field) + "px";
 
-	node.style.top	= (+EasyEdits.getAbsoluteY(field) + +field.offsetHeight +2)+ "px";
-	node.show();
-	var handler = new EasyEdits.dayHandler()
-	handler.setField(field);
-	EasyEdits.calendar.setDayHandler(handler.fire);
+    node.style.top	= (+EasyEdits.getAbsoluteY(field) + +field.offsetHeight +2)+ "px";
+    node.show();
+    var handler = new EasyEdits.dayHandler()
+    handler.setField(field);
+    EasyEdits.calendar.setDayHandler(handler.fire);
 }
     /* ------------------------------------------------------------------------- */    
 EasyEdits.hideCalendar = function ()
