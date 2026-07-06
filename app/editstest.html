@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/common" />
+        <script type="text/javascript" src="/js/humble-jquery"></script>
+        <script type="text/javascript" src="/js/common"></script>
+        <script type="text/javascript">
+            $(document).ready(() => {
+               let ee = new EasyEdits(null);
+               ee.new('my_test_form','test_form',{
+                    "onload": () => { /*alert('loaded');*/ } 
+               });
+               ee.add('field_1',{ "required": true});
+               ee.add('save_button',{
+                   "onclick": () => { console.log(this); alert('clicked'); }
+               });
+               ee.execute();
+               console.log(ee);
+            });
+        </script>
+    </head>
+    <body>
+        <h3>Test Form</h3>
+        <hr />
+        <form name="my_test_form" id="my_test_form" onsubmit="return false">
+            Field 1: <input type="text" name="field_1" value="" /><br /><br />
+            Field 2: <input type="text" name="field_2" value="" /><br /><br />
+            Field 3: <input type="text" name="field_3" value="" /><br /><br /><br />
+            <input type="button" name="save_button" value=" Test "/>
+        </form>
+    </body>
+</html>
+    
