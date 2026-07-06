@@ -9,9 +9,18 @@
                ee.new('my_test_form','test_form',{
                     "onload": () => { /*alert('loaded');*/ } 
                });
-               ee.add('field_1',{ "required": true});
+               ee.add('field_1',{ "required": true, 'active': 'true', 'type': 'text', 'force': true });
+               ee.add('field_2',{ "required": true, 'active': 'true', 'type': 'text', 'force': true });
+               ee.add('field_3',{ "required": true, 'active': 'true', 'type': 'text', 'force': true });
                ee.add('save_button',{
-                   "onclick": () => { console.log(this); alert('clicked'); }
+                   "type": 'button',
+                   "active": true,
+                   "onclick": () => { 
+                       if (Edits['test_form'].validate()) {
+                           alert('validated');
+                       }
+                       
+                   }
                });
                ee.execute();
                console.log(ee);

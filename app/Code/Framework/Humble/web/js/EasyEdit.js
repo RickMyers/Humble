@@ -118,10 +118,15 @@ function EasyEdits(source, ref, overrides)
         return Edits[alias] = this;
     };
     /* ------------------------------------------------------------------------- */     
+    this.element  = (field) => {
+        return $('#'+this.edits.form.id+' [name='+field+']').get()[0];
+    }
+    /* ------------------------------------------------------------------------- */     
     this.add            = (field,options) => {
         var field = {
             "name": field,
-            "active": true
+            "active": true,
+            'type': $(this.element(field)).attr('type')
         };
         if (options) {
             let i = '';
@@ -173,8 +178,8 @@ function EasyEdits(source, ref, overrides)
                     alert('disabled field');
                 }
                 if (formField)	{
+                    let longname = easyField.longname ? easyField.longname : easyField.easyKey;
                     fieldVal = this.getValue(this.form,formField,easyFields[formField.easyKey]);
-                    console.log(fieldVal);
                     if (fieldVal) {
                         this.hasContent = true;
                     }
@@ -189,21 +194,21 @@ function EasyEdits(source, ref, overrides)
                             }
                             if (inerror) {
                                 if (easyField.force) {
-                                    this.registerError(formField,easyField,(easyField.message ? easyField.message : easyField.longname+" is Required"),action);
+                                    this.registerError(formField,easyField,(easyField.message ? easyField.message : longname+" is Required"),action);
                                 } else {
-                                    this.registerError(formField,easyField,(easyField.message ? easyField.message : easyField.longname+" is Recommended"),action);
+                                    this.registerError(formField,easyField,(easyField.message ? easyField.message : longname+" is Recommended"),action);
                                 }
                             }
                         }
                     }
                     if (easyField.nozero) {
                         if (fieldVal === "0") {
-                            this.registerError(formField,easyField,easyField.longname+" is not allowed to be zero (0)",action);
+                            this.registerError(formField,easyField,longname+" is not allowed to be zero (0)",action);
                         }
                     }
                     if (easyField.verify) {
                         if (fieldVal !== $(this.formXref[easyField.verify]).val()) {
-                            this.registerError(formField,easyField,easyField.longname+" did not match",action);
+                            this.registerError(formField,easyField,longname+" did not match",action);
                         }
                     }
                     if ((fieldVal === "") && (easyField.defaultvalue) && (!this.flagged)) {
@@ -212,18 +217,18 @@ function EasyEdits(source, ref, overrides)
                     if ((easyField.range) && (!this.flagged)) {
                         var range	= easyField.range.split("..");
                         if ((+parseFloat(fieldVal) < +parseFloat(range[0]) || (+parseFloat(fieldVal) > +parseFloat(range[1])))) {
-                            this.registerError(formField,easyField,easyField.longname+" not within allowable Range ("+ range[0] +","+ range[1] +")",action);
+                            this.registerError(formField,easyField,longname+" not within allowable Range ("+ range[0] +","+ range[1] +")",action);
                         }
                     }
                     if ((easyField.values) && (!this.flagged)) {
                         var values	= (easyField.values.split(","));
                         if (values.indexOf(fieldVal) === -1) {
-                            this.registerError(formField,easyField,easyField.longname+" Contains an Invalid Value, valid values are "+ easyField.values,action);
+                            this.registerError(formField,easyField,longname+" Contains an Invalid Value, valid values are "+ easyField.values,action);
                         }
                     }
                     if (easyField.minlength) {
                         if ((fieldVal.length < easyField.minlength) && (fieldVal.length !== 0))	{
-                            this.registerError(formField,easyField,easyField.longname +" is only "+ fieldVal.length +" characters long.  A minimum of "+ easyField.minlength +" characters are Required",action);
+                            this.registerError(formField,easyField,longname +" is only "+ fieldVal.length +" characters long.  A minimum of "+ easyField.minlength +" characters are Required",action);
                         }
                     }
                     if (easyField.maxlength) {
@@ -262,7 +267,7 @@ function EasyEdits(source, ref, overrides)
                         if (formField.value) {
                             var regEx = new RegExp(easyField.format)
                             if (!regEx.test(fieldVal)) {
-                                this.registerError(formField,easyField,easyField.longname +" Format Error. "+ easyField.formaterr,action);
+                                this.registerError(formField,easyField,longname +" Format Error. "+ easyField.formaterr,action);
                             }
                         }
                     }
@@ -353,10 +358,8 @@ function EasyEdits(source, ref, overrides)
     }
     /* ------------------------------------------------------------------------- */        
     this.enable	= () => {
-        console.log('enabling');
         for (var i=0; i<this.edits.fields.length; i++)	{
             var formField = this.formXref[this.edits.fields[i].easyKey];
-            console.log(formField);
             if ((this.edits.fields[i].type === "text") || (this.edits.fields[i].type === "textarea")) {
                 formField.disabled = false;
             } else {
@@ -910,9 +913,9 @@ function EasyEdits(source, ref, overrides)
                                 formField.combo.title = easyField.title;
                             }
                         } else {
-                            formField.title	= easyField.longname;
+                            formField.title	= longname;
                             if (isCombo) {
-                                formField.combo.title = easyField.longname;
+                                formField.combo.title = longname;
                             }
                         }
                     }
@@ -1297,7 +1300,6 @@ EasyEdits.setFormNode	= function (easy,node) {
 }
     /* ------------------------------------------------------------------------- */    
 EasyEdits.populateSelectBox = function (selectBox, contents, map, leaveCombo) {
-    console.log(selectBox);
     map       = (map) ? map : false;
     leaveCombo = (leaveCombo) ? true : true; //Override for now... fixes a problem with some highly dynamic forms
     contents  = (typeof(contents)==='string') ? JSON.parse(contents) : contents;
