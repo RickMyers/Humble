@@ -91,7 +91,6 @@ function EasyEdits(source, ref, overrides)
             this.source	= JSONsource;
             (new EasyAjax(JSONsource)).then((response) => {
                 me.parse(response,me.overrides);
-
             }).get();
         }
     };
@@ -167,8 +166,9 @@ function EasyEdits(source, ref, overrides)
             easyFields[this.edits.fields[i].easyKey] = this.edits.fields[i];    //Reverse caching the edit fields by name instead of index for later lookup
         }
         for (var i=0; i<this.edits.fields.length; i++) {
-            formField = this.formXref[this.edits.fields[i].easyKey];
-            easyField   = this.edits.fields[i];            
+            formField    = this.formXref[this.edits.fields[i].easyKey];
+            easyField    = this.edits.fields[i];            
+            let longname = easyField.longname ? easyField.longname : easyField.easyKey;            
             if (this.edits.fields[i].active) {
                 try {
                     if (formField.disabled) {
@@ -178,7 +178,6 @@ function EasyEdits(source, ref, overrides)
                     alert('disabled field');
                 }
                 if (formField)	{
-                    let longname = easyField.longname ? easyField.longname : easyField.easyKey;
                     fieldVal = this.getValue(this.form,formField,easyFields[formField.easyKey]);
                     if (fieldVal) {
                         this.hasContent = true;
@@ -511,7 +510,7 @@ function EasyEdits(source, ref, overrides)
             }
         }
         //setup widgets (if any)
-        if (this.edits.form.widgets){
+        if (this.edits.form.widgets) {
             for (var widget in this.edits.form.widgets)	{
                 switch (widget)  {
                     case	"calendar" 	:   
@@ -575,6 +574,7 @@ function EasyEdits(source, ref, overrides)
             if (this.edits.fields[i].active)		{
                 //Here, switch to using the form element and name
                 easyKey                     = this.edits.fields[i].name || this.edits.fields[i].id;
+                let longname = this.edits.fields[i].longname ? this.edits.fields[i].longname : easyKey;
                 if (!easyKey) {
                     alert('An EasyEdit field definition is missing a name or id attribute, see console');
                     console.log(this.edits.fields[i]); 

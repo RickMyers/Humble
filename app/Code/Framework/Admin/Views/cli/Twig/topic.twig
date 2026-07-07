@@ -3,101 +3,108 @@
     CLI: <b>{{ cli.getTitle() }}</b>
 </div>
 <div id="cli_body_{{ category }}" class="text-xl" style="overflow: auto">
-    <form name="system_cli_form" id="system_cli_form_{{ window_id }}" onsubmit="return false">    
-        <input type="hidden" name="category" value="{{ cli.getCategory() }}" />
-        <input type="hidden" name="topic"    value="{{ cli.getTopic() }}" />
-        <div style="padding: 20px 10px; background-color: rgba(202,202,202,.3)">
-            Category: <b>{{ category }}</b> [ --{{ cli.parseTopic }} ] - {{ cli.getDescription() }}
-        </div>
-        <div style="border: 1px solid #333; border-radius: 5px" class="p-2">
-            <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
-                Extended Information
+    <div id="cli_nav_{{ category }}">
+    </div>
+    <div id="cli_tab_cmd_{{ category }}">
+        <form name="system_cli_form" id="system_cli_form_{{ window_id }}" onsubmit="return false">    
+            <input type="hidden" name="category" value="{{ cli.getCategory() }}" />
+            <input type="hidden" name="topic"    value="{{ cli.getTopic() }}" />
+            <div style="padding: 20px 10px; background-color: rgba(202,202,202,.3)">
+                Category: <b>{{ category }}</b> [ --{{ cli.parseTopic }} ] - {{ cli.getDescription() }}
             </div>
-            <div style="padding: 10px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
-            {{ cli.getExtendedDescription() }}
-            </div>
-        </div>
-        <div class="pl-2 pt-2 pb-2 text-base">
-            <div class="pt-1 pb-1">Usage Examples</div>
-            <div class="pl-2 pb-1">
-                <b>Windows</b>: <span class="text-mono text-l tracking-[2px]">{{ cli.getWindowsExample() }}</span><br />
-                <b>Linux</b>: <span class="text-mono text-l tracking-[2px]">{{ cli.getLinuxExample() }}</span>
-            </div>
-        </div>                
-        <div style="background-color: rgba(202,202,202,.5)" class="p-2">
-            <div style="display: inline-block; width: 49%">
+            <div style="border: 1px solid #333; border-radius: 5px" class="p-2">
                 <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
-                    Function
+                    Extended Information
                 </div>
-                <div style="padding: 5px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
-                {{ cli.getFunction() }}
-                </div>
-            </div>
-            <div style="display: inline-block; width: 49%">
-                <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
-                    Directive
-                </div>
-                <div style="padding: 5px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
-                {{ cli.getDirective() }}
+                <div style="padding: 10px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
+                {{ cli.getExtendedDescription() }}
                 </div>
             </div>
-            <div style="display: inline-block; width: 49%">
-                <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
-                    Documentation
-                </div>
-                <div style="padding: 5px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
-                    {% if (cli.getYoutube() != 'N/A') %}
-                        <a href="{{ cli.getDocumentation() }}" target="_BLANK">Documentation</a>
-                    {% else %}
-                        {{ cli.getDocumentation() }}
-                    {% endif %}                    
-                </div>
-            </div>
-            <div style="display: inline-block; width: 49%">
-                <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
-                    Tutorial
-                </div>
-                <div style="padding: 5px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
-                    {% if (cli.getYouTube() != 'N/A') %}
-                        <a href="{{ cli.getYouTube() }}" target="_BLANK">Tutorial</a>
-                    {% else %}
-                        {{ cli.getYouTube() }}
-                    {% endif %}
+            <div class="pl-2 pt-2 pb-2 text-base">
+                <div class="pt-1 pb-1">Usage Examples</div>
+                <div class="pl-2 pb-1">
+                    <b>Windows</b>: <span class="text-mono text-l tracking-[2px]">{{ cli.getWindowsExample() }}</span><br />
+                    <b>Linux</b>: <span class="text-mono text-l tracking-[2px]">{{ cli.getLinuxExample() }}</span>
                 </div>
             </div>                
-        </div>
-        <div style="padding: 20px 10px; background-color: rgba(202,202,202,.3)">
-            Parameters
-        </div>
-        <div class="w-full pl-2 pt-2; align-top" style="box-sizing: border-box">
-            <div class="w-1/3 inline-block align-top"> <span style="font-family: monospace; font-size: .9em">Required</span>
-                <div style="padding-top: 10px; padding-left: 20px" class="min-w-80">
-                {% for param,desc in cli.getRequiredParameters() %}
-                    <div style="font-family: sans-serif; font-size: .8em">
-                        {% set parm = cli.parseParameter(param) %}
-                        <input type="text" name="{{ parm }}" placeholder="{{ parm }}" value="" style="background-color: lightcyan; width: 100%; border: 1px solid #333; border-radius: 2px; padding: 2px" />
+            <div style="background-color: rgba(202,202,202,.5)" class="p-2">
+                <div style="display: inline-block; width: 49%">
+                    <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
+                        Function
                     </div>
-                    <div style="font-family: monospace; font-size: .7em; overflow: hidden; letter-spacing: 2px; padding-bottom: 20px"  class="no-wrap">
-                        {{ desc }}
+                    <div style="padding: 5px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
+                    {{ cli.getFunction() }}
                     </div>
-                {% endfor %}
                 </div>
-            </div>
-            <div class="inline-block w-1/3 align-top"> <span style="font-family: monospace; font-size: .9em">Optional</span>
-                <div style="padding-top: 10px; padding-left: 20px" class="min-w-80">
-                {% for param,desc in cli.getOptionalParameters() %}
-                    <div style="font-family: sans-serif; font-size: .8em">
-                        {% set parm = cli.parseParameter(param) %}
-                        <input type="text" name="{{ parm }}" placeholder="{{ parm }}" value="" style="background-color: lightcyan; width: 100%; border: 1px solid #333; border-radius: 2px; padding: 2px" />
+                <div style="display: inline-block; width: 49%">
+                    <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
+                        Directive
                     </div>
-                    <div style="font-family: monospace; font-size: .7em;letter-spacing: 2px; padding-bottom: 20px" class="no-wrap">
-                        {{ desc }}
+                    <div style="padding: 5px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
+                    {{ cli.getDirective() }}
                     </div>
-                {% endfor %}
                 </div>
+                <div style="display: inline-block; width: 49%">
+                    <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
+                        Documentation
+                    </div>
+                    <div style="padding: 5px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
+                        {% if (cli.getYoutube() != 'N/A') %}
+                            <a href="{{ cli.getDocumentation() }}" target="_BLANK">Documentation</a>
+                        {% else %}
+                            {{ cli.getDocumentation() }}
+                        {% endif %}                    
+                    </div>
+                </div>
+                <div style="display: inline-block; width: 49%">
+                    <div style="font-family: monospace; font-size: .7em; letter-spacing: 2px">
+                        Tutorial
+                    </div>
+                    <div style="padding: 5px 5px 5px 20px; font-family: sans-serif; font-size: .85em">
+                        {% if (cli.getYouTube() != 'N/A') %}
+                            <a href="{{ cli.getYouTube() }}" target="_BLANK">Tutorial</a>
+                        {% else %}
+                            {{ cli.getYouTube() }}
+                        {% endif %}
+                    </div>
+                </div>                
             </div>
-        </div>        
-    </form>
+            <div style="padding: 20px 10px; background-color: rgba(202,202,202,.3)">
+                Parameters
+            </div>
+            <div class="w-full pl-2 pt-2; align-top" style="box-sizing: border-box">
+                <div class="w-1/3 inline-block align-top"> <span style="font-family: monospace; font-size: .9em">Required</span>
+                    <div style="padding-top: 10px; padding-left: 20px" class="min-w-80">
+                    {% for param,desc in cli.getRequiredParameters() %}
+                        <div style="font-family: sans-serif; font-size: .8em">
+                            {% set parm = cli.parseParameter(param) %}
+                            <input type="text" name="{{ parm }}" placeholder="{{ parm }}" value="" style="background-color: lightcyan; width: 100%; border: 1px solid #333; border-radius: 2px; padding: 2px" />
+                        </div>
+                        <div style="font-family: monospace; font-size: .7em; overflow: hidden; letter-spacing: 2px; padding-bottom: 20px"  class="no-wrap">
+                            {{ desc }}
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="inline-block w-1/3 align-top"> <span style="font-family: monospace; font-size: .9em">Optional</span>
+                    <div style="padding-top: 10px; padding-left: 20px" class="min-w-80">
+                    {% for param,desc in cli.getOptionalParameters() %}
+                        <div style="font-family: sans-serif; font-size: .8em">
+                            {% set parm = cli.parseParameter(param) %}
+                            <input type="text" name="{{ parm }}" placeholder="{{ parm }}" value="" style="background-color: lightcyan; width: 100%; border: 1px solid #333; border-radius: 2px; padding: 2px" />
+                        </div>
+                        <div style="font-family: monospace; font-size: .7em;letter-spacing: 2px; padding-bottom: 20px" class="no-wrap">
+                            {{ desc }}
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>        
+        </form>
+    </div>
+    <div id="cli_tab_results_{{ category }}">
+        <textarea id='cli_results_display_{{ category }}' style="width: 100%; background-color: lightcyan; border: 1px solid #333; padding: 5px; font-family: monospace; font-size: .9em"></textarea>
+    </div>
 </div>
 <div id="cli_footer_{{ category }}" class="pt-2 pb-2" style="background-color: #333; color: ghostwhite">
     <center>
@@ -105,13 +112,18 @@
     </center>
     
 </div>
-    
 <script type="text/javascript">
     (() => {
         let win = Desktop.window.list['{{ window_id }}'];
+        let tabs = new EasyTab('cli_nav_{{ category }}',120);
+        tabs.add('Command',null,'cli_tab_cmd_{{ category }}');
+        tabs.add('Run Results',() => { win.resize(); },'cli_tab_results_{{ category }}');
+        tabs.tabClick(0);
         win.resize(((win) => {
             return (evt) => {
-                $('#cli_body_{{ category }}').height(win.content.height() - $E('cli_header_{{ category }}').offsetHeight - $E('cli_footer_{{ category }}').offsetHeight - 2);
+                let base = win.content.height()  - $E('cli_header_{{ category }}').offsetHeight - $E('cli_footer_{{ category }}').offsetHeight - 2;
+                $('#cli_results_display_{{ category }}').height(base - $E('cli_nav_{{ category }}').offsetHeight - 12);
+                $('#cli_body_{{ category }}').height(base);
             }
         })(win));
         let ee = new EasyEdits();
