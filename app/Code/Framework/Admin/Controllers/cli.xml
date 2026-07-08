@@ -19,5 +19,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
+        <action name="run" response="true" blocking="off">
+            <description>Runs a command at the CLI</description>
+            <model namespace="humble" class="cli" id="cli" method="run">
+                <parameter name="category" source="post" required="true" />
+                <parameter name="topic" source="post" required="true" />
+                <parameter name="*" source="post" />
+            </model>
+        </action>
+        
     </actions>
 </controller>

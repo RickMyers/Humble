@@ -105,30 +105,29 @@
                 $('#service-'+service_id+'-parameters').slideToggle();
             }
         }
-    }
+    };
     
-    var goHome = () => { Services.page.goto(1); }
+    var goHome = () => { Services.page.goto(1); };
     
     $('#hide_framework_services').on("click",goHome);
     $('#module_namespace').on("change", goHome);
     $("#services-prev").on("click", () => {
         Services.currentPage = Services.currentPage -1;
-        if (Services.currentPage<1) {
+        if (Services.currentPage < 1) {
             Services.currentPage = Services.pages;
         }
        Services.page.goto(Services.currentPage);
     });
     $("#services-first").on("click",goHome);
-    $("#services-last").on("click",function () {
+    $("#services-last").on("click", () => {
         Services.page.goto(Services.pages);
     });
-    $("#services-next").on("click",function () {
-        Services.currentPage = Services.currentPage +1;
+    $("#services-next").on("click", () => {
+        Services.currentPage = Services.currentPage + 1;
         if (Services.currentPage > Services.pages) {
-            Services.currentPage=1;
+            Services.currentPage = 1;
         }
         Services.page.goto(Services.currentPage);
     });
     goHome();
 </script>
-

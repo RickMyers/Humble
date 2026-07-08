@@ -12,8 +12,8 @@ bc :
             name|nm: Name of the controller
             action|ac: Name of the action
         optional:
-            description|desc: Long description of controller
-            title|tl: Short description of controller
+            description|desc: Description of controller
+            action_description|ad: Description for action
             templater|ts|use: The templater to use, if not specified will use default
 cm : 
     title: Create Component

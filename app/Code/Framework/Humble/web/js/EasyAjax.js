@@ -407,9 +407,9 @@ EasyAjax.prototype.packageForm = function(form,edits) {
     form = (typeof form === 'string') ? document.getElementById(form) : form;
     var name = '';
     if (form) {
-        for (var j=0; j < form.length; j++) {
-            var field = form[j];
-            if (!(field.id || !field.name)) {
+        for (var j=0; j < form.elements.length; j++) {
+            var field = form.elements[j];
+            if (!(field.id || field.name)) {
                 continue;
             }
             name = (field.name) ? field.name : field.id;

@@ -14,7 +14,6 @@ class Component extends CLI
         print($file."\n");
         $compiler   = \Environment::getCompiler();
         $compiler->compileFile($file);
-        return self;
     }
 
     /**
@@ -30,7 +29,6 @@ class Component extends CLI
         }
         $use_landing = $util->getLanding() ? true : false;
         $util->createController($use_landing,true);
-        return self;
     }
     
     /**

@@ -101,4 +101,44 @@ class CLI extends Model
         }
         return $commands;
     }
+
+    /**
+     * Manages the passed arguments to the CLI program
+     * 
+     * @param type $cli
+     * @return array
+     */
+    protected function arguments($cli=false) {
+        $arguments = [];
+        if ($cli) {
+            foreach (['required'=>true,'optional'=>true] as $category => $active) {
+                if (isset($cli['parameters'][$category])) {
+                    foreach ($cli['parameters'][$category] as $parm => $desc) {
+                        $method = 'get'.$this->underscoreToCamelCase($cmd = $this->parseCommand($parm),true);
+                        if ($val = $this->$method()) {
+                            $arguments[$cmd] = $val;
+                        }
+                    }
+                }
+            }
+        }
+        return $arguments;
+    }
+    
+    /**
+     * 
+     */
+    public function run() {
+        $output = '';
+        $cmds   = $this->commands();
+        if ($cli = $cmds[$this->getCategory()][$this->getTopic()]) {
+            $driver     = file_exists($d = \Environment::project('namespace')) ? $d : 'humble'; /* Is the driver the same as namespace? If not, just use the humble driver */
+            $command    = './'.$driver." --".$this->getTopic()." ";
+            foreach ($this->arguments($cli) as $parm => $val) {
+                $command .= $parm.'="'.$val.'" ';
+            }
+            $result = passthru($command);
+        }
+        $b = 4;
+    }
 }
