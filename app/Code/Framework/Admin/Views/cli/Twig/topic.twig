@@ -103,7 +103,7 @@
         </form>
     </div>
     <div id="cli_tab_results_{{ category }}">
-        <textarea id='cli_results_display_{{ category }}' style="width: 100%; background-color: lightcyan; border: 1px solid #333; padding: 5px; font-family: monospace; font-size: .9em"></textarea>
+        <textarea id='cli_results_display_{{ category }}' style="width: 100%; background-color: lightcyan; border: 1px solid #333; padding: 5px; font-family: monospace; font-size: .8em"></textarea>
     </div>
 </div>
 <div id="cli_footer_{{ category }}" class="pt-2 pb-2" style="background-color: #333; color: ghostwhite">
@@ -135,8 +135,9 @@
         let f = ((tabs) => {
             return () => {
                 if (Edits['form-{{ window_id }}'].validate()) {
+                    tabs.tabClick(1);
+                    $('#cli_results_display_{{ category }}').val('Working, Please Wait...');
                     (new EasyAjax('/admin/cli/run')).addForm('system_cli_form_{{ window_id }}').then((response) => {
-                        tabs.tabClick(1);
                         $('#cli_results_display_{{ category }}').val(response);
                     }).post();
                 }

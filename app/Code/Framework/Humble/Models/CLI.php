@@ -18,15 +18,15 @@ use Environment;
 class CLI extends Model
 {
 
-    private $global = false;
-    
+    private $global     = false;
+    private $project    = false;
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct();
-        $project = \Environment::project();
-        $this->global = ($project->name === 'humble');   //If global, list all commands, else restrict some
+        $this->project = \Environment::project();
+        $this->global = ($this->project->name === 'humble');   //If global, list all commands, else restrict some
     }
 
     /**
@@ -75,6 +75,12 @@ class CLI extends Model
         return $available_commands;    
     }
 
+    /**
+     * Returns just the first of the optional argument names
+     * 
+     * @param type $command
+     * @return type
+     */
     public function parseCommand($command=false) {
         $cmd = '';
         if ($command) {
@@ -129,16 +135,19 @@ class CLI extends Model
      * 
      */
     public function run() {
-        $output = '';
+        $output = [];
         $cmds   = $this->commands();
         if ($cli = $cmds[$this->getCategory()][$this->getTopic()]) {
-            $driver     = file_exists($d = \Environment::project('namespace')) ? $d : 'humble'; /* Is the driver the same as namespace? If not, just use the humble driver */
-            $command    = './'.$driver." --".$this->getTopic()." ";
+            $driver     = file_exists($this->project->namespace) ? $this->project->namespace : 'humble'; /* Is the driver the same as namespace? If not, just use the humble driver */
+            $command    = './'.$driver." --".$this->parseCommand($this->getTopic())." ";
             foreach ($this->arguments($cli) as $parm => $val) {
                 $command .= $parm.'="'.$val.'" ';
             }
-            $result = passthru($command);
+            $result = exec($command,$output);
+            foreach ($output as $idx => $row) {
+                $output[$idx] = $row."\n";
+            }
         }
-        $b = 4;
+        return array_merge(['Executing: '.$command."\n\n"],$output);
     }
 }
