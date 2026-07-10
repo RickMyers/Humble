@@ -20,13 +20,15 @@
         <div style="clear: both"></div>
     </div>
     <div class="entity_query_{{ window_id }}_{{ tab_id }} p-1">
-        <textarea class="p2 w-full h-[300] text-mono" style="background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
+        <textarea id='query_space_{{ window_id }}_{{ tab_id }}' class="p2 w-full h-[300] text-mono" style="background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
     </div>
-    <div class="entity_query_controls_{{ window_id }}_{{ tab_id }} p-1 text-white bg-[#333333] inline-block">
-        <img class="run_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/play.png" title="Run Query"/> 
-        <img class="save_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/save.png" title="Save Query"/> 
-    </div>
-    <div id='entity_query_nav_{{ window_id }}_{{ tab_id }}' class='inline-block' style='vertical-align: bottom'>
+    <div class='bg-[#333333]'>
+        <div class="entity_query_controls_{{ window_id }}_{{ tab_id }} p-1 text-white inline-block">
+            <img class="run_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/play.png" title="Run Query"/> 
+            <img class="save_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/save.png" title="Save Query"/> 
+        </div>
+        <div id='entity_query_nav_{{ window_id }}_{{ tab_id }}' class='inline-block' style='vertical-align: bottom'>
+        </div>
     </div>
     <div id='entity_list_{{ window_id }}_{{ tab_id }}' class="entity_list_{{ window_id }}_{{ tab_id }} overflow-auto">
         List
@@ -57,6 +59,13 @@
         let list        = $('.entity_list_{{ window_id }}_{{ tab_id }}').get()[0];
         let footer      = $('.entity_footer_{{ window_id }}_{{ tab_id }}').get()[0];  
         let results     = $('.entity_query_results_{{ window_id }}_{{ tab_id }}').get()[0];
+        let query_space = $('#query_space_{{ window_id }}_{{ tab_id }}').get()[0];
+        new ResizeObserver(()=> {
+            console.log('resizing');
+            let h = win.content.height() - header.offsetHeight - controls.offsetHeight - query.offsetHeight - footer.offsetHeight - $('#entity_explorer_nav_{{ window_id }}').height()-2;
+            $(list).height(h);
+            $(results).height(h);
+        }).observe(query_space);
         win._title('Entity Explorer').resize(()=> {
                 let h = win.content.height() - header.offsetHeight - controls.offsetHeight - query.offsetHeight - footer.offsetHeight - $('#entity_explorer_nav_{{ window_id }}').height()-2;
                 $(list).height(h);
