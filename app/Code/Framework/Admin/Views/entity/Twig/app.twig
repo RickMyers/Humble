@@ -16,18 +16,22 @@
                     {% endfor %}
                 </select>
         </div>
-        <img class="workspace_{{ window_id }}_{{ tab_id }}" src="/images/admin/workspace.png" class="cursor-pointer h-[24] inline-block" title="Save Workspace"/>  
+        <img class="workspace_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/workspace.png" title="Save Workspace"/>  
         <div style="clear: both"></div>
     </div>
     <div class="entity_query_{{ window_id }}_{{ tab_id }} p-1">
-        <textarea class="p1" style="width: 100%; height: 300px; font-family: monospace; background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
+        <textarea class="p2 w-full h-[300] text-mono" style="background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
     </div>
-    <div class="entity_query_controls_{{ window_id }}_{{ tab_id }} p-1 text-white bg-[#333333]">
-        <img class="run_query_{{ window_id }}_{{ tab_id }}" src="/images/admin/play.png" class="cursor-pointer h-[24] inline-block" title="Run Query"/> 
-        <img class="save_query_{{ window_id }}_{{ tab_id }}" src="/images/admin/save.png" class="cursor-pointer h-[24] inline-block" title="Save Query"/> 
+    <div class="entity_query_controls_{{ window_id }}_{{ tab_id }} p-1 text-white bg-[#333333] inline-block">
+        <img class="run_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/play.png" title="Run Query"/> 
+        <img class="save_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/save.png" title="Save Query"/> 
     </div>
-    <div class="entity_list_{{ window_id }}_{{ tab_id }} overflow-auto">
+    <div id='entity_query_nav_{{ window_id }}_{{ tab_id }}' class='inline-block' style='vertical-align: bottom'>
+    </div>
+    <div id='entity_list_{{ window_id }}_{{ tab_id }}' class="entity_list_{{ window_id }}_{{ tab_id }} overflow-auto">
         List
+    </div>
+    <div id='entity_query_results_{{ window_id }}_{{ tab_id }}' class="entity_query_results_{{ window_id }}_{{ tab_id }} overflow-auto">
     </div>
     <div class="entity_footer_{{ window_id }}_{{ tab_id }} p-1 bg-[#333333] text-white">
         <div class="float-left">
@@ -51,11 +55,18 @@
         let query       = $('.entity_query_{{ window_id }}_{{ tab_id }}').get()[0];
         let controls    = $('.entity_query_controls_{{ window_id }}_{{ tab_id }}').get()[0];
         let list        = $('.entity_list_{{ window_id }}_{{ tab_id }}').get()[0];
-        let footer      = $('.entity_footer_{{ window_id }}_{{ tab_id }}').get()[0];        
+        let footer      = $('.entity_footer_{{ window_id }}_{{ tab_id }}').get()[0];  
+        let results     = $('.entity_query_results_{{ window_id }}_{{ tab_id }}').get()[0];
         win._title('Entity Explorer').resize(()=> {
-                $(list).height(win.content.height() - header.offsetHeight - controls.offsetHeight - query.offsetHeight - footer.offsetHeight - $('#entity_explorer_nav_{{ window_id }}').height()-2);
+                let h = win.content.height() - header.offsetHeight - controls.offsetHeight - query.offsetHeight - footer.offsetHeight - $('#entity_explorer_nav_{{ window_id }}').height()-2;
+                $(list).height(h);
+                $(results).height(h);
             }
         ).resize();
+        let tabs = new EasyTab('entity_query_nav_{{ window_id }}_{{ tab_id }}',120);
+        tabs.add('Entities',null,'entity_list_{{ window_id }}_{{ tab_id }}');
+        tabs.add('Query Results',null,'entity_query_results_{{ window_id }}_{{ tab_id }}');
+        tabs.tabClick(0);
         Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
             template:   Humble.template('admin',"entity/list"),

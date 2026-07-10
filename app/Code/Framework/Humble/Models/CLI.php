@@ -132,7 +132,9 @@ class CLI extends Model
     }
     
     /**
+     * Constructs a CLI command and then runs it, trapping the output and returning it
      * 
+     * @return array
      */
     public function run() {
         $output = [];

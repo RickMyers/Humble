@@ -26,15 +26,18 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         <action name="app" blocking="Off" passalong='window_id,tab_id'>
             <description>Individual instance of entity explorer app</description>
             <entity namespace="admin" class="users" assign="entities" method="listEntities" orderby="TABLE_NAME=ASC">
-                
             </entity>
-            
         </action>
         
         <!-- ############################################################### -->
         
-        <action name="run" blocking="off">
+        <action name="run" blocking="off" response="true" output="JSON">
             <description>Runs one or more queries</description>
+            <model namespace="admin" class="entity" method="run">
+                <parameter name="query" source="request" required="true" />
+                <parameter name="rows"  source="request" optional="true" />
+                <parameter name="page"  source="request" optional="true" />
+            </model>
         </action>
         
         <!-- ############################################################### -->
