@@ -4,7 +4,7 @@
                 {{ header }} 
             </th>
         </tr>
-        <tr v-for="(entity,i) in entities" :key="i" class="whitespace-nowrap w-full cursor-pointer" >
+        <tr v-for="(entity,i) in entities" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row"  v-bind:title="entity.TABLE_NAME">
             <td v-for="(data,field) in entity" :key="field" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
                 {{ data }} 
             </td>

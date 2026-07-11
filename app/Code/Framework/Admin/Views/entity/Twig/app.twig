@@ -1,12 +1,18 @@
 <style type="text/css">
     .zebra-table tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }  
+      background-color: #dadada;
+    }
+    .zebra-row {
+         border: 1px solid transparent; opacity: .75
+    }
+    .zebra-row:hover {
+        opacity: 1.0; border: 1px solid #777
+    }
     .text-cell:hover {
         border: 1px solid #777
     }
 </style>
-<form nohref onsubmit="return false">
+<form nohref onsubmit="return false" id="entity_form_{{ window_id }}_{{ tab_id }}">
     <div class="entity_header_{{ window_id }}_{{ tab_id }} text-white align-right bg-[#333333] p-1">
         <div class="float-right">
         Context: <select name="context" class="text-gray-800 pt-1 pb-1">
@@ -37,10 +43,10 @@
     </div>
     <div class="entity_footer_{{ window_id }}_{{ tab_id }} p-1 bg-[#333333] text-white">
         <div class="float-left">
-            Row <span v-bind:id="fromRow">1</span> to <span v-bind:id="toRow">2</span> of <span v-bind:id="rows">100</span>
+            Row <span v-bind:id="fromRow"></span> to <span v-bind:id="toRow"></span> of <span v-bind:id="rows"></span>
         </div> 
         <div class="float-right">
-            Page <span v-bind:id="page">1</span> of <span v-bind:id="pages">10</span> 
+            Page <span v-bind:id="page"></span> of <span v-bind:id="pages"></span> 
         </div>         
         <div class="text-center">
             <button> << </button>
@@ -143,11 +149,12 @@
                             
                             app.headers = headers;
                             let p = ao.getPagination();
-                            //console.log(p);
+                            console.log(p);
                             app.pages       = p.pages.total;
                             app.fromRow     = p.rows.from;
                             app.toRow       = p.rows.to;
                             app.totalRows   = p.rows.total;
+                            console.log(app);
                         }
                     }).post();
                 },
