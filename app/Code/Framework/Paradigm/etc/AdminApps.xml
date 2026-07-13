@@ -26,5 +26,19 @@
             <uri>/paradigm/store/home</uri>
         </start>
     </app>
+    <app>
+        <name>Workflow Explorer App</name>
+        <description>Explore, enable, and disable workflows</description>
+        <icon>
+            <text>Workflow Explorer</text>
+            <image>
+                <desktop>/images/paradigm/workflow_explorer_app.png</desktop>
+                <minimized>/images/paradigm/workflow_explorer_app.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/paradigm/workflows/explore</uri>
+        </start>
+    </app>    
 </apps>
 

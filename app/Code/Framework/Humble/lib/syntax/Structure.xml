@@ -30,6 +30,7 @@
         <application />
         <exception />
         <abort />
+        <log />
         <header />
     </action>
     <chain description="">
@@ -98,6 +99,7 @@
         <exception />
         <abort />
         <header />        
+        <log />
         <parameter />
     </then>
     <else parent="if" description="">
@@ -120,6 +122,7 @@
         <exception />
         <abort />
         <header />
+        <log />
         <parameter />     
     </else>
     <switch description="">
@@ -148,6 +151,7 @@
         <exception />
         <abort />
         <header />  
+        <log />
         <assign />      
     </case>
     <default parent="switch,actions" description="">
@@ -171,6 +175,7 @@
         <exception />
         <abort />
         <header />
+        <log />
         <assign />        
     </default>
     <parameter parent="entity,model,helper,mongo" />

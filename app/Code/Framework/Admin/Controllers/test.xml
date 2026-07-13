@@ -75,6 +75,17 @@
             </model>
         </action>
         
+        <!-- ########################################################################################## -->
+        
+        <action name="log">
+            <description>Just to test the new XML log feature</description>
+            <log source="server" var='QUERY_STRING' />       
+            <entity namespace="humble" class="users" id="users">
+                  
+            </entity>
+            <log output="warning" id="users" method="fetch" />
+        </action>
+        
     </actions>
 
 

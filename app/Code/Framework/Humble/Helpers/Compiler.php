@@ -1158,6 +1158,39 @@ class Compiler extends Directory
     }
 
     /**
+     * From the XML, log either a super global, value from a method, or something else
+     * 
+     * @param object $node
+     */
+    private function processLog($node) {
+        $source = '';
+        $target = 'general';
+        if (isset($node['output'])) {
+            $target = $node['output'];
+        }
+        //now we try to figure out the "source" of the logged data
+        if (isset($node['source'])) {
+            $source = '$_'.strtoupper($node['source']);
+            if (isset($node['var'])) {
+                $source .= "['".$node['var']."']";
+            }        
+        } else {
+            if (isset($node['id'])) {
+                $source .= '$'.$node['id'];
+                if (isset($node['method'])) {
+                    $source .= '->'.$node['method'].'()';
+                }
+            }
+            if (isset($node['model']) || (isset($node['assign']))) {
+                $source .= ($node['model'] ?? $node['assign']);
+            }
+        }
+        if ($source && $target) {
+            print($this->tabs().'\Log::'.$target.'('.$source.");\n");
+        }
+    }
+    
+    /**
      * Punch out the assignment option code
      * 
      * @param type $node
@@ -1257,6 +1290,8 @@ class Compiler extends Directory
             case    "exception"     :   $this->processException($node);
                                         break;
             case    "abort"         :   $this->processAbort($node);
+                                        break;
+            case    "log"           :   $this->processLog($node);
                                         break;
             case    "assign"        :   $this->processAssign($node);
                                         break;

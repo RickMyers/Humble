@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+
+Listener actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="listener" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="Off" response="true">
+        
+        <action name="enable">
+            <description>Enable a workflow listener</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>
+
+        <!-- ############################################################### -->
+
+        <action name="disable">
+            <description>Disable a workflow listener</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>                
+
+    </actions>
+</controller>

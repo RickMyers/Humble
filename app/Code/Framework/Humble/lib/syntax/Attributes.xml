@@ -260,6 +260,36 @@
             <wrapper    required="false"  purpose="" default="" />  
         </attributes>      
     </helper>
+    <log taxonomy="utility">
+        <attributes>
+            <source     required="false" purpose="" default="request">
+                <values>
+                    <request />
+                    <post />
+                    <get />
+                    <put />
+                    <delete />
+                    <global />
+                    <assign />
+                    <model />
+                    <value />
+                    <server />
+                    <header />
+                </values>
+            </source>
+            <output   required="false" purpose="" default="general" alias="target">
+                <values>
+                    <general />
+                    <warning />
+                    <cadence />
+                    <critical />
+                </values>
+            </output>
+            <id     required="false" purpose="" default=""/>
+            <var    required="false" purpose="" default=""/>
+            <method required="false" purpose="" default=""/>
+        </attributes>
+    </log>
     <access taxonomy="authorization">
         <attributes>
             <namespace  required="false"  purpose="" default="Main Module Namespace" />

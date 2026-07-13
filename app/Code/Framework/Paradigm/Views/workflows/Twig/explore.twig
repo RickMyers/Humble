@@ -1,0 +1,20 @@
+<div id="win_{{window_id}}_header" class="" style="background-color: #333; color: ghostwhite; padding: 5px">
+    Header
+</div>
+<div id="win_{{window_id}}_body"   class="" style="">
+    Body
+</div>
+<div id="win_{{window_id}}_footer" class="" style="background-color: #333; color: ghostwhite; padding: 5px">
+    Footer
+</div>
+<script type="text/javascript">
+    (($) => {
+        let win    = Desktop.window.list['{{ window_id }}'];
+        let header = $('#win_{{ window_id }}_header').get();
+        let body   = $('#win_{{ window_id }}_body').get();
+        let footer = $('#win_{{ window_id }}_footer').get();
+        win.resize((evt) => {
+            $(body).height(win.content.height() - $(header).height() - $(footer).height() - 22);
+        });
+    })($);
+</script>
