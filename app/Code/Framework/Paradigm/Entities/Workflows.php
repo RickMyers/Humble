@@ -54,13 +54,16 @@ SQL;
             SELECT  a.id, a.workflow_id, a.major_version, a.minor_version, a.title, a.generated, a.generated_workflow_id, a.namespace, a.active,
                     b.namespace AS listener_namespace, b.component AS listener_component, b.method AS listener_method, b.active AS listener_active,
                     c.uri AS webservice_uri, c.active AS webservice_active,
-                    d.`first_name`, d.`last_name`
+                    d.*,
+                    e.`first_name`, e.`last_name`
               FROM  paradigm_workflows AS a
               LEFT  OUTER JOIN paradigm_workflow_listeners AS b
                 ON  a.workflow_id = b.`workflow_id`
               LEFT  OUTER JOIN paradigm_webservice_workflows AS c
                 ON  a.workflow_id = c.`workflow_id`
-              LEFT  OUTER JOIN humble_user_identification AS d
+              LEFT  OUTER JOIN paradigm_system_events AS D
+                ON  a.workflow_id = d.`workflow_id`
+              LEFT  OUTER JOIN humble_user_identification AS e
                 ON  a.creator = d.id
 SQL;
         return $this->query($query);

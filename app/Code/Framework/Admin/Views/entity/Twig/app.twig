@@ -12,8 +12,8 @@
         border: 1px solid #777
     }
 </style>
-<form nohref onsubmit="return false" id="entity_form_{{ window_id }}_{{ tab_id }}">
-    <div class="entity_header_{{ window_id }}_{{ tab_id }} text-white align-right bg-[#333333] p-1">
+<form nohref onsubmit="return false" class="explorer_form_{{ window_id }}_{{ tab_id }}">
+    <div class="header_{{ window_id }}_{{ tab_id }} text-white align-right bg-[#333333] p-1">
         <div class="float-right">
         Context: <select name="context" class="text-gray-800 pt-1 pb-1">
                     <option value=""> </option>
@@ -25,68 +25,92 @@
         <img class="workspace_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/workspace.png" title="Save Workspace"/>  
         <div style="clear: both"></div>
     </div>
-    <div class="entity_query_{{ window_id }}_{{ tab_id }} p-1">
+    <div class="query_{{ window_id }}_{{ tab_id }} p-1">
         <textarea id='query_space_{{ window_id }}_{{ tab_id }}' class="p2 w-full h-[300] text-mono" style="background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
     </div>
-    <div class='bg-[#333333]'>
-        <div class="entity_query_controls_{{ window_id }}_{{ tab_id }} p-1 text-white inline-block">
+    <div class='query_controls_{{ window_id }}_{{ tab_id }} bg-[#333333]'>
+        <div class="p-1 text-white inline-block">
             <img class="run_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/play.png" title="Run Query"/> 
             <img class="save_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/save.png" title="Save Query"/> 
         </div>
         <div id='entity_query_nav_{{ window_id }}_{{ tab_id }}' class='inline-block' style='vertical-align: bottom'>
         </div>
     </div>
-    <div id='entity_list_{{ window_id }}_{{ tab_id }}' class="entity_list_{{ window_id }}_{{ tab_id }} overflow-auto">
-        List
-    </div>
-    <div id='entity_query_results_{{ window_id }}_{{ tab_id }}' class="entity_query_results_{{ window_id }}_{{ tab_id }} overflow-auto">
-    </div>
-    <div class="entity_footer_{{ window_id }}_{{ tab_id }} p-1 bg-[#333333] text-white">
-        <div class="float-left">
-            Row <span v-bind:id="fromRow"></span> to <span v-bind:id="toRow"></span> of <span v-bind:id="rows"></span>
-        </div> 
-        <div class="float-right">
-            Page <span v-bind:id="page"></span> of <span v-bind:id="pages"></span> 
-        </div>         
-        <div class="text-center">
-            <button> << </button>
-            <button> < </button>
-            <input type="text" class="w-12" style="background-color: lightcyan" v-bind:id="page" />
-            <button> > </button>
-            <button> >> </button>
+    <div id='entity_tab_{{ window_id }}_{{ tab_id }}'>
+        <div id='entity_list_{{ window_id }}_{{ tab_id }}' class="entity_list_{{ window_id }}_{{ tab_id }} overflow-auto">
         </div>
+        <div class="entity_list_footer_{{ window_id }}_{{ tab_id }} p-1 bg-[#333333] text-white">
+            <div class="float-left">
+                Row <span id='entity_{{ window_id }}_{{ tab_id }}_from_row'></span> to <span id='entity_{{ window_id }}_{{ tab_id }}_to_row'></span> of <span id='entity_{{ window_id }}_{{ tab_id }}_rows'></span>
+            </div> 
+            <div class="float-right">
+                Page <span id='entity_{{ window_id }}_{{ tab_id }}_page'></span> of <span id='entity_{{ window_id }}_{{ tab_id }}_pages'></span> 
+            </div>         
+            <div class="text-center">
+                <button> << </button>
+                <button> < </button>
+                <input type="text" class="w-12" style="background-color: lightcyan" v-bind:id="page" />
+                <button> > </button>
+                <button> >> </button>
+            </div>
+        </div> 
+    </div>
+    <div id='query_results_tab_{{ window_id }}_{{ tab_id }}'>
+        <div id='query_results_{{ window_id }}_{{ tab_id }}' class="query_results_{{ window_id }}_{{ tab_id }} overflow-auto">
+        </div>
+        <div class="query_results_footer_{{ window_id }}_{{ tab_id }} p-1 bg-[#333333] text-white">
+            <div class="float-left">
+                Row <span id='results_{{ window_id }}_{{ tab_id }}_from_row'></span> to <span id='results_{{ window_id }}_{{ tab_id }}_to_row'></span> of <span id='results_{{ window_id }}_{{ tab_id }}_rows'></span>
+            </div> 
+            <div class="float-right">
+                Page <span id='results_{{ window_id }}_{{ tab_id }}_page'></span> of <span id='results_{{ window_id }}_{{ tab_id }}_pages'></span> 
+            </div>         
+            <div class="text-center">
+                <button> << </button>
+                <button> < </button>
+                <input type="text" class="w-12" style="background-color: lightcyan" v-bind:id="page" />
+                <button> > </button>
+                <button> >> </button>
+            </div>
+        </div>        
     </div>
 </form>
 <script type="text/javascript">
     ((win)=> {
-        let header      = $('.entity_header_{{ window_id }}_{{ tab_id }}').get()[0];
-        let query       = $('.entity_query_{{ window_id }}_{{ tab_id }}').get()[0];
-        let controls    = $('.entity_query_controls_{{ window_id }}_{{ tab_id }}').get()[0];
-        let list        = $('.entity_list_{{ window_id }}_{{ tab_id }}').get()[0];
-        let footer      = $('.entity_footer_{{ window_id }}_{{ tab_id }}').get()[0];  
-        let results     = $('.entity_query_results_{{ window_id }}_{{ tab_id }}').get()[0];
-        let query_space = $('#query_space_{{ window_id }}_{{ tab_id }}').get()[0];
-        new ResizeObserver(()=> {
-            console.log('resizing');
-            let h = win.content.height() - header.offsetHeight - controls.offsetHeight - query.offsetHeight - footer.offsetHeight - $('#entity_explorer_nav_{{ window_id }}').height()-2;
-            $(list).height(h);
-            $(results).height(h);
-        }).observe(query_space);
-        win._title('Entity Explorer').resize(()=> {
-                let h = win.content.height() - header.offsetHeight - controls.offsetHeight - query.offsetHeight - footer.offsetHeight - $('#entity_explorer_nav_{{ window_id }}').height()-2;
-                $(list).height(h);
-                $(results).height(h);
-            }
-        ).resize();
+        let explorer_form   = $('.explorer_form_{{ window_id }}_{{ tab_id }}').get(0);
+        let explorer_nav    = $('#entity_explorer_nav_{{ window_id }}').height();
+        let header          = $('.header_{{ window_id }}_{{ tab_id }}').get(0);
+        let query           = $('.query_{{ window_id }}_{{ tab_id }}').get(0);
+        let controls        = $('.query_controls_{{ window_id }}_{{ tab_id }}').get(0);
+        let entity_tab      = $('.entity_tab_{{ window_id }}_{{ tab_id }}').get(0);
+        let results_tab     = $('.query_results_tab_{{ window_id }}_{{ tab_id }}').get(0);     
+        
+        let entity_list     = $('.entity_list_{{ window_id }}_{{ tab_id }}').get(0);
+        let qry_results     = $('.query_results_{{ window_id }}_{{ tab_id }}').get(0);
+        
+        let entity_footer   = $('.entity_list_footer_{{ window_id }}_{{ tab_id }}').get(0);  
+        let results_footer  = $('.query_results_footer_{{ window_id }}_{{ tab_id }}').get(0);          
+        let query_space     = $('#query_space_{{ window_id }}_{{ tab_id }}').get(0);
+        let footer          = entity_footer.offsetHeight || results_footer.offsetHeight;
+        let sizer           = () => {
+            let h = win.content.height() - header.offsetHeight - controls.offsetHeight - query.offsetHeight - explorer_nav - 2;
+            let i = h - footer;
+            $(entity_tab).height(h);
+            $(results_tab).height(h);            
+            $(entity_list).height(i);
+            $(qry_results).height(i);
+        };
+        new ResizeObserver(sizer).observe(query_space);
+        win._title('Entity Explorer').resize(sizer).resize();
         let tabs = new EasyTab('entity_query_nav_{{ window_id }}_{{ tab_id }}',120);
-        tabs.add('Entities',null,'entity_list_{{ window_id }}_{{ tab_id }}');
-        tabs.add('Query Results',null,'entity_query_results_{{ window_id }}_{{ tab_id }}');
+        tabs.add('Entities',sizer,'entity_tab_{{ window_id }}_{{ tab_id }}');
+        tabs.add('Query Results',sizer,'query_results_tab_{{ window_id }}_{{ tab_id }}');
         tabs.tabClick(0);
         Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
             template:   Humble.template('admin',"entity/list"),
-            app:        $('.entity_list_{{ window_id }}_{{ tab_id }}').get()[0],
-            form:       $('#entity_explorer_form_{{ window_id }}_{{ tab_id }}').get(),
+            app:        entity_list,
+            form:       explorer_form,
             data() {
                 return {
                     win:        Desktop.window.list['{{ window_id }}'],
@@ -106,10 +130,10 @@
                         pages:  1
                     },
                     query:      query,
-                    footer:     footer,
+                    footer:     entity_footer,
                     header:     header,
                     controls:   controls,
-                    list:       list,
+                    list:       entity_tab,
                     window_id:  '{{ window_id }}',
                     tab_id:     '{{ tab_id }}',
                     entities:   [],
@@ -135,6 +159,30 @@
                     (new EasyAjax('/admin/entity/workspace')).add().add().then((response) => {
                     }).post();                    
                 },
+                first() {
+                    this.page = 1;
+                    this.listEntities();
+                },
+                prev() {
+                    this.page = 1;
+                    this.listEntities();                    
+                },
+                next() {
+                    this.page = 1;
+                    this.listEntities();                    
+                },
+                last() {
+                    this.page = 1;
+                    this.listEntities();                    
+                },
+                pagination(p) {
+                    console.log(p);
+                    $('#entity_'+this.window_id+'_'+this.tab_id+'_from_row').html(p.rows.from);
+                    $('#entity_'+this.window_id+'_'+this.tab_id+'_to_row').html(p.rows.to);
+                    $('#entity_'+this.window_id+'_'+this.tab_id+'_rows').html(p.rows.total);
+                    $('#entity_'+this.window_id+'_'+this.tab_id+'_pages').html(p.pages.total);
+                    $('#entity_'+this.window_id+'_'+this.tab_id+'_page').html(p.pages.current);
+                },
                 listEntities() {
                     let app = this;
                     var ao = new EasyAjax('/admin/entity/list') 
@@ -146,15 +194,8 @@
                             for (var i in entities[0]) {
                                 headers[headers.length] = i;
                             }
-                            
                             app.headers = headers;
-                            let p = ao.getPagination();
-                            console.log(p);
-                            app.pages       = p.pages.total;
-                            app.fromRow     = p.rows.from;
-                            app.toRow       = p.rows.to;
-                            app.totalRows   = p.rows.total;
-                            console.log(app);
+                            app.pagination(ao.getPagination());
                         }
                     }).post();
                 },

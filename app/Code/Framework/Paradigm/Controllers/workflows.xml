@@ -11,6 +11,9 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         <action name="explore" passalong="window_id">
             <description>The Explorer App</description>
             <!-- Entity, Helper, Model, Conditional declarations begin here -->
+            <entity namespace="paradigm" class="workflows" id="workflows">
+                
+            </entity>
         </action>
 
         <!-- ############################################################### -->
