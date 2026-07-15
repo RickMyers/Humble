@@ -36,26 +36,10 @@
         <div id='entity_query_nav_{{ window_id }}_{{ tab_id }}' class='inline-block' style='vertical-align: bottom'>
         </div>
     </div>
-    <div id='entity_tab_{{ window_id }}_{{ tab_id }}'>
-        <div id='entity_list_{{ window_id }}_{{ tab_id }}' class="entity_list_{{ window_id }}_{{ tab_id }} overflow-auto">
-        </div>
-        <div class="entity_list_footer_{{ window_id }}_{{ tab_id }} p-1 bg-[#333333] text-white">
-            <div class="float-left">
-                Row <span id='entity_{{ window_id }}_{{ tab_id }}_from_row'></span> to <span id='entity_{{ window_id }}_{{ tab_id }}_to_row'></span> of <span id='entity_{{ window_id }}_{{ tab_id }}_rows'></span>
-            </div> 
-            <div class="float-right">
-                Page <span id='entity_{{ window_id }}_{{ tab_id }}_page'></span> of <span id='entity_{{ window_id }}_{{ tab_id }}_pages'></span> 
-            </div>         
-            <div class="text-center">
-                <button> << </button>
-                <button> < </button>
-                <input type="text" class="w-12" style="background-color: lightcyan" v-bind:id="page" />
-                <button> > </button>
-                <button> >> </button>
-            </div>
-        </div> 
+    <div id='entity_tab_{{ window_id }}_{{ tab_id }}' class="entity_tab_{{ window_id }}_{{ tab_id }}">
+
     </div>
-    <div id='query_results_tab_{{ window_id }}_{{ tab_id }}'>
+    <div id='query_results_tab_{{ window_id }}_{{ tab_id }}' class="query_results_tab_{{ window_id }}_{{ tab_id }}">
         <div id='query_results_{{ window_id }}_{{ tab_id }}' class="query_results_{{ window_id }}_{{ tab_id }} overflow-auto">
         </div>
         <div class="query_results_footer_{{ window_id }}_{{ tab_id }} p-1 bg-[#333333] text-white">
@@ -85,31 +69,18 @@
         let entity_tab      = $('.entity_tab_{{ window_id }}_{{ tab_id }}').get(0);
         let results_tab     = $('.query_results_tab_{{ window_id }}_{{ tab_id }}').get(0);     
         
-        let entity_list     = $('.entity_list_{{ window_id }}_{{ tab_id }}').get(0);
         let qry_results     = $('.query_results_{{ window_id }}_{{ tab_id }}').get(0);
-        
-        let entity_footer   = $('.entity_list_footer_{{ window_id }}_{{ tab_id }}').get(0);  
         let results_footer  = $('.query_results_footer_{{ window_id }}_{{ tab_id }}').get(0);          
         let query_space     = $('#query_space_{{ window_id }}_{{ tab_id }}').get(0);
-        let footer          = entity_footer.offsetHeight || results_footer.offsetHeight;
-        let sizer           = () => {
-            let h = win.content.height() - header.offsetHeight - controls.offsetHeight - query.offsetHeight - explorer_nav - 2;
-            let i = h - footer;
-            $(entity_tab).height(h);
-            $(results_tab).height(h);            
-            $(entity_list).height(i);
-            $(qry_results).height(i);
-        };
-        new ResizeObserver(sizer).observe(query_space);
-        win._title('Entity Explorer').resize(sizer).resize();
+        win._title('Entity Explorer');
         let tabs = new EasyTab('entity_query_nav_{{ window_id }}_{{ tab_id }}',120);
-        tabs.add('Entities',sizer,'entity_tab_{{ window_id }}_{{ tab_id }}');
-        tabs.add('Query Results',sizer,'query_results_tab_{{ window_id }}_{{ tab_id }}');
+        tabs.add('Entities',null,'entity_tab_{{ window_id }}_{{ tab_id }}');
+        tabs.add('Query Results',null,'query_results_tab_{{ window_id }}_{{ tab_id }}');
         tabs.tabClick(0);
         Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
-            template:   Humble.template('admin',"entity/list"),
-            app:        entity_list,
+            template:   Humble.template('admin',"entity/list",true),
+            app:        null,
             form:       explorer_form,
             data() {
                 return {
@@ -130,10 +101,10 @@
                         pages:  1
                     },
                     query:      query,
-                    footer:     entity_footer,
+                    footer:     26,
                     header:     header,
                     controls:   controls,
-                    list:       entity_tab,
+                    list:       null,
                     window_id:  '{{ window_id }}',
                     tab_id:     '{{ tab_id }}',
                     entities:   [],
@@ -141,12 +112,20 @@
                 }
             },
             mounted() {
+                this.list   = 'entity_list_'+this.window_id+'_'+this.tab_id;
+                this.footer = 'entity_footer_'+this.window_id+'_'+this.tab_id;
                 this.listEntities();
+                this.win.resize(this.sizer).resize();
+                new ResizeObserver(this.sizer).observe(query_space);
             },
             unmounted() {
                 this.cleanup();
             },
             methods: {
+                sizer() {
+                    let h = this.win.content.height() - this.header.offsetHeight - this.controls.offsetHeight - this.query.offsetHeight - explorer_nav - $('#'+this.footer).height() - 4;
+                    $('#'+this.list).height(h);
+                },
                 runQuery() {
                     (new EasyAjax('/admin/entity/run')).add().add().then((response) => {
                     }).post();
@@ -164,29 +143,32 @@
                     this.listEntities();
                 },
                 prev() {
-                    this.page = 1;
+                    if (this.page-- < 1) {
+                        this.page = this.pages;
+                    }
                     this.listEntities();                    
                 },
                 next() {
-                    this.page = 1;
+                    if (this.page++ > this.pages) {
+                        this.page = 1;
+                    }
                     this.listEntities();                    
                 },
                 last() {
-                    this.page = 1;
+                    this.page = this.pages;
                     this.listEntities();                    
                 },
                 pagination(p) {
-                    console.log(p);
-                    $('#entity_'+this.window_id+'_'+this.tab_id+'_from_row').html(p.rows.from);
-                    $('#entity_'+this.window_id+'_'+this.tab_id+'_to_row').html(p.rows.to);
-                    $('#entity_'+this.window_id+'_'+this.tab_id+'_rows').html(p.rows.total);
-                    $('#entity_'+this.window_id+'_'+this.tab_id+'_pages').html(p.pages.total);
-                    $('#entity_'+this.window_id+'_'+this.tab_id+'_page').html(p.pages.current);
+                    this.totalRows  = p.rows.total;
+                    this.fromRow    = p.rows.from;
+                    this.toRow      = p.rows.to;
+                    this.page       = p.pages.current;
+                    this.pages      = p.pages.total;
                 },
                 listEntities() {
                     let app = this;
-                    var ao = new EasyAjax('/admin/entity/list') 
-                    ao.add('page',app.page).add('rows',app.rows).add('window_id',this.window_id).then((response)=>{
+                    var ao  = new EasyAjax('/admin/entity/list') ;
+                    ao.add('page',this.page).add('rows',this.rows).add('window_id',this.window_id).then((response)=>{
                         if (response) {
                             let entities = JSON.parse(response);
                             app.entities = entities;
@@ -204,6 +186,7 @@
                 }
             }          
         });
+        Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount(entity_tab);
     })(Desktop.window.list['{{ window_id }}']);
-    Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount($('.entity_list_{{ window_id }}_{{ tab_id }}').get()[0]);  
+      
 </script>
