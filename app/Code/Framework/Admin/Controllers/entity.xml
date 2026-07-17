@@ -52,5 +52,22 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             <description>Persists a workspace</description>
         </action>
         
+        <!-- ############################################################### -->
+        
+        <action name="content" blocking="off" response="true" output="JSON">
+            <description>Lists the contents of an entity</description>
+            <entity namespace="humble" class="controllers" method="fetch" rows="rows" page="page"></entity>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="edit" blocking="off" response="true" output="JSON">
+            <description>Edits a row in an entity</description>
+            <entity namespace="humble" class="users" method="load">
+                <parameter name="id" source="request" default="1" />
+            </entity>
+        </action>
+        
+        
     </actions>
 </controller>

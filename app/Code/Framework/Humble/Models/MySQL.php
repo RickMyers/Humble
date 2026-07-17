@@ -196,38 +196,40 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function calculateStats($query,&$results) {
         $rows = $this->query($query);
-        $this->unity()->rowCount($rows[0]['FOUND_ROWS']);
-        if ($this->unity()->rows()) {
-            if ($this->unity()->page()) {
-                if ($this->unity()->toRow() > $this->unity()->rowCount()) {
-                    $this->unity()->toRow($this->unity()->rowCount());
+        if (isset($rows[0])) {
+            $this->unity()->rowCount($rows[0]['FOUND_ROWS']);
+            if ($this->unity()->rows()) {
+                if ($this->unity()->page()) {
+                    if ($this->unity()->toRow() > $this->unity()->rowCount()) {
+                        $this->unity()->toRow($this->unity()->rowCount());
+                    }
+                    $this->unity()->fromRow($this->unity()->rows() * ($this->unity()->page()-1)+1);
+                    $this->unity()->headers(['pagination' => json_encode([
+                        'rows' => [
+                            'from'  => $this->unity()->fromRow(),
+                            'to'    => $this->unity()->toRow(),
+                            'total' => $this->unity()->rowCount()
+                        ],
+                        'pages' => [
+                            'current' => $this->unity()->page(),
+                            'total'   => $this->unity()->pages()
+                        ]
+                    ])]);
+                } else if ($this->unity()->cursor()) {
+                    $this->unity()->cursorId($results);
+                    $this->unity()->rowsReturned(count($results));
+                    $this->unity()->pages(floor($this->unity()->rowsReturned() / $this->unity()->rows()));
+                    $this->unity()->headers(['pagination' => json_encode([
+                        'cursor_id' => $this->unity()->cursor(),
+                        'pages' => [
+                            'total' => $this->unity()->pages()
+                        ],
+                        'rows' => [
+                            'returned' => $this->unity()->rowsReturned(),
+                            'total' => $this->unity()->rowCount()
+                        ]
+                    ])]);
                 }
-                $this->unity()->fromRow($this->unity()->rows() * ($this->unity()->page()-1)+1);
-                $this->unity()->headers(['pagination' => json_encode([
-                    'rows' => [
-                        'from'  => $this->unity()->fromRow(),
-                        'to'    => $this->unity()->toRow(),
-                        'total' => $this->unity()->rowCount()
-                    ],
-                    'pages' => [
-                        'current' => $this->unity()->page(),
-                        'total'   => $this->unity()->pages()
-                    ]
-                ])]);
-            } else if ($this->unity()->cursor()) {
-                $this->unity()->cursorId($results);
-                $this->unity()->rowsReturned(count($results));
-                $this->unity()->pages(floor($this->unity()->rowsReturned() / $this->unity()->rows()));
-                $this->unity()->headers(['pagination' => json_encode([
-                    'cursor_id' => $this->unity()->cursor(),
-                    'pages' => [
-                        'total' => $this->unity()->pages()
-                    ],
-                    'rows' => [
-                        'returned' => $this->unity()->rowsReturned(),
-                        'total' => $this->unity()->rowCount()
-                    ]
-                ])]);
             }
         }
         return $this->_unity;
@@ -259,13 +261,24 @@ class MySQL extends ORM implements ORMEngine  {
      */
     public function entities($namespace=false) {
         $namespace = ($namespace) ? $namespace : \Environment::project('namespace');
+        $entities  = [];
+        $this->unity()->orderBy('TABLE_NAME=ASC');
         $query = <<<QRY
             SELECT * 
             FROM information_schema.tables 
             WHERE table_schema = '{$namespace}' 
 QRY;
-   //     $query .= $this->$this->engine()->buildOrderByClause();
-        return $this->unity()->query($query);;
+        //$query .= $this->buildOrderByClause();
+        //We are going to "normalize" the results of this engine specific query so that there is a field called 'ENTITY' that has the table name, regardless of engine
+        $iterator = $this->unity()->query($query);
+        foreach ($iterator as $row) {
+            $n_row = ['ENTITY' => $row['TABLE_NAME']];
+            foreach ($row as $field => $value) {
+                $n_row[$field] = $value;
+            }
+            $entities[] = $n_row;
+        }
+        return $iterator->set($entities);
     }
     
     /**
@@ -276,7 +289,7 @@ QRY;
     public function listEntities() : array {
         $entities = [];
         foreach ($this->entities() as $entity) {
-            $entities[] = $entity['TABLE_NAME'];
+            $entities[] = $entity['ENTITY'];
         }
         return $entities;
     }

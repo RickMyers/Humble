@@ -61,6 +61,9 @@ function EasyTab(id,tabWidth,refreshTab)
         var tabWidth      = (tabWidth) ? tabWidth : this.midWidth;
         let createTab     = !tabId;
         let tab           = (!tabId ? document.createElement('div') : ((typeof tabId === "string") ? document.getElementById(tabId) : tabId));
+        if (!tab) {
+            alert('didnt find tab '+tabId);
+        }
         if (createTab) {
             this.node.after(tab);
         }

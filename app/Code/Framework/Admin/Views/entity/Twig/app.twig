@@ -26,7 +26,7 @@
         <div style="clear: both"></div>
     </div>
     <div class="query_{{ window_id }}_{{ tab_id }} p-1">
-        <textarea id='query_space_{{ window_id }}_{{ tab_id }}' class="p2 w-full h-[300] text-mono" style="background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
+        <textarea id='query_textarea_{{ window_id }}_{{ tab_id }}' class="query_textarea_{{ window_id }}_{{ tab_id }} p2 w-full h-[300] text-mono" style="background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
     </div>
     <div class='query_controls_{{ window_id }}_{{ tab_id }} bg-[#333333]'>
         <div class="p-1 text-white inline-block">
@@ -36,27 +36,11 @@
         <div id='entity_query_nav_{{ window_id }}_{{ tab_id }}' class='inline-block' style='vertical-align: bottom'>
         </div>
     </div>
-    <div id='entity_tab_{{ window_id }}_{{ tab_id }}' class="entity_tab_{{ window_id }}_{{ tab_id }}">
+    <div id='entity_area_{{ window_id }}_{{ tab_id }}' class="entity_area_{{ window_id }}_{{ tab_id }}">
 
     </div>
     <div id='query_results_tab_{{ window_id }}_{{ tab_id }}' class="query_results_tab_{{ window_id }}_{{ tab_id }}">
-        <div id='query_results_{{ window_id }}_{{ tab_id }}' class="query_results_{{ window_id }}_{{ tab_id }} overflow-auto">
-        </div>
-        <div class="query_results_footer_{{ window_id }}_{{ tab_id }} p-1 bg-[#333333] text-white">
-            <div class="float-left">
-                Row <span id='results_{{ window_id }}_{{ tab_id }}_from_row'></span> to <span id='results_{{ window_id }}_{{ tab_id }}_to_row'></span> of <span id='results_{{ window_id }}_{{ tab_id }}_rows'></span>
-            </div> 
-            <div class="float-right">
-                Page <span id='results_{{ window_id }}_{{ tab_id }}_page'></span> of <span id='results_{{ window_id }}_{{ tab_id }}_pages'></span> 
-            </div>         
-            <div class="text-center">
-                <button> << </button>
-                <button> < </button>
-                <input type="text" class="w-12" style="background-color: lightcyan" v-bind:id="page" />
-                <button> > </button>
-                <button> >> </button>
-            </div>
-        </div>        
+     
     </div>
 </form>
 <script type="text/javascript">
@@ -64,121 +48,160 @@
         let explorer_form   = $('.explorer_form_{{ window_id }}_{{ tab_id }}').get(0);
         let explorer_nav    = $('#entity_explorer_nav_{{ window_id }}').height();
         let header          = $('.header_{{ window_id }}_{{ tab_id }}').get(0);
-        let query           = $('.query_{{ window_id }}_{{ tab_id }}').get(0);
         let controls        = $('.query_controls_{{ window_id }}_{{ tab_id }}').get(0);
-        let entity_tab      = $('.entity_tab_{{ window_id }}_{{ tab_id }}').get(0);
-        let results_tab     = $('.query_results_tab_{{ window_id }}_{{ tab_id }}').get(0);     
-        
-        let qry_results     = $('.query_results_{{ window_id }}_{{ tab_id }}').get(0);
-        let results_footer  = $('.query_results_footer_{{ window_id }}_{{ tab_id }}').get(0);          
-        let query_space     = $('#query_space_{{ window_id }}_{{ tab_id }}').get(0);
+        let entity_area     = $('.entity_area_{{ window_id }}_{{ tab_id }}').get(0);
+        let query_textarea  = $('.query_textarea_{{ window_id }}_{{ tab_id }}').get(0);
+        let query_area      = $('.query_{{ window_id }}_{{ tab_id }}').get(0);
         win._title('Entity Explorer');
-        let tabs = new EasyTab('entity_query_nav_{{ window_id }}_{{ tab_id }}',120);
-        tabs.add('Entities',null,'entity_tab_{{ window_id }}_{{ tab_id }}');
-        tabs.add('Query Results',null,'query_results_tab_{{ window_id }}_{{ tab_id }}');
-        tabs.tabClick(0);
         Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
+        Humble.admin['query']  = (!Humble.admin['query'])  ? {} : Humble.admin['query'];
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
             template:   Humble.template('admin',"entity/list",true),
             app:        null,
             form:       explorer_form,
             data() {
                 return {
-                    win:        Desktop.window.list['{{ window_id }}'],
-                    page:       1,
-                    rows:       20,
-                    pages:      0,
-                    fromRow:    1,
-                    toRow:      1,
-                    totalRows:  1,
-                    context:    [],
-                    result:     {
-                        rows:   20,
-                        fromRow: 1,
-                        toRow: 1,
-                        totalRows: 1,
-                        page:   1,
-                        pages:  1
+                    window_id:      '{{ window_id }}',
+                    tab_id:         '{{ tab_id }}',
+                    win:            Desktop.window.list['{{ window_id }}'],
+                    tabs:           false,                    
+                    query:          query_area,
+                    header:         header,
+                    controls:       controls,
+                    footer:         0,
+                    list: {
+                        tab:        'list_tab_{{ window_id }}_{{ tab_id }}',
+                        area:       'entity_list_{{ window_id }}_{{ tab_id }}',                
+                        footer:     'entity_footer_{{ window_id }}_{{ tab_id }}',
+                        headers:    [],
+                        entities:   [],
+                        page:       1,
+                        pages:      0,
+                        rows:       20,
+                        fromRow:    1,
+                        toRow:      1,
+                        totalRows:  0
                     },
-                    query:      query,
-                    footer:     26,
-                    header:     header,
-                    controls:   controls,
-                    list:       null,
-                    window_id:  '{{ window_id }}',
-                    tab_id:     '{{ tab_id }}',
-                    entities:   [],
-                    headers:    false,                    
+                    econtent: {
+                        tab:        'content_tab_{{ window_id }}_{{ tab_id }}',
+                        area:       'content_area_{{ window_id }}_{{ tab_id }}',                
+                        footer:     'content_footer_{{ window_id }}_{{ tab_id }}',
+                        headers:    [],
+                        data:       [],
+                        page:       1,
+                        pages:      0,
+                        rows:       20,
+                        fromRow:    1,
+                        toRow:      1,
+                        totalRows:  0
+                    },
+                    edit: {
+                        tab:        'edit_tab_{{ window_id }}_{{ tab_id }}',
+                        footer:     'edit_footer_{{ window_id }}_{{ tab_id }}',
+                        area:       'edit_area_{{ window_id }}_{{ tab_id }}',
+                        fields:     []
+                    },                            
+                    context:        [],
+                    content:        []
                 }
             },
             mounted() {
-                this.list   = 'entity_list_'+this.window_id+'_'+this.tab_id;
-                this.footer = 'entity_footer_'+this.window_id+'_'+this.tab_id;
-                this.listEntities();
+                alert('mounted');
                 this.win.resize(this.sizer).resize();
-                new ResizeObserver(this.sizer).observe(query_space);
+                new ResizeObserver(this.sizer).observe(query_textarea);
+                /*
+                 * Now declare the tabs with easytab
+                 */
+                this.footer = ($('#'+this.list.footer).height() || $('#'+this.econtent.footer).height() || $('#'+this.edit.footer).height() )
+                this.tabs = new EasyTab('entity_query_nav_{{ window_id }}_{{ tab_id }}',120);
+                this.tabs.add('Entities',null,this.list.tab);
+                this.tabs.add('Content',null,this.econtent.tab);
+                this.tabs.add('Edit',null,this.edit.tab);
+                this.tabs.add('Query Results',null,'query_results_tab_{{ window_id }}_{{ tab_id }}');
+                this.tabs.tabClick(0);
+                this.entities();
             },
             unmounted() {
                 this.cleanup();
             },
             methods: {
                 sizer() {
-                    let h = this.win.content.height() - this.header.offsetHeight - this.controls.offsetHeight - this.query.offsetHeight - explorer_nav - $('#'+this.footer).height() - 4;
-                    $('#'+this.list).height(h);
-                },
-                runQuery() {
-                    (new EasyAjax('/admin/entity/run')).add().add().then((response) => {
-                    }).post();
-                },
-                saveQuery() {
-                    (new EasyAjax('/admin/entity/save')).add().add().then((response) => {
-                    }).post();                    
-                },
-                saveWorkspace() {
-                    (new EasyAjax('/admin/entity/workspace')).add().add().then((response) => {
-                    }).post();                    
+                    let h = this.win.content.height() - this.header.offsetHeight - this.controls.offsetHeight - this.query.offsetHeight - explorer_nav - this.footer - 4;
+                    $('#'+this.list.area).height(h);
+                    $('#'+this.econtent.area).height(h);
+                    $('#'+this.edit.area).height(h);
+                    //$('#'+this.list.footer).height()
                 },
                 first() {
-                    this.page = 1;
-                    this.listEntities();
+                    this.list.page = 1;
+                    this.entities();
                 },
                 prev() {
-                    if (this.page-- < 1) {
-                        this.page = this.pages;
+                    if (--this.list.page < 1) {
+                        this.list.page = this.list.pages;
                     }
-                    this.listEntities();                    
+                    this.entities();                    
                 },
                 next() {
-                    if (this.page++ > this.pages) {
-                        this.page = 1;
+                    if (++this.list.page > this.list.pages) {
+                        this.list.page = 1;
                     }
-                    this.listEntities();                    
+                    this.entities();                    
                 },
                 last() {
-                    this.page = this.pages;
-                    this.listEntities();                    
+                    this.list.page = this.list.pages;
+                    this.entities();                    
                 },
-                pagination(p) {
-                    this.totalRows  = p.rows.total;
-                    this.fromRow    = p.rows.from;
-                    this.toRow      = p.rows.to;
-                    this.page       = p.pages.current;
-                    this.pages      = p.pages.total;
-                },
-                listEntities() {
+                entityPagination(p) {
+                    this.list.totalRows  = p.rows.total;
+                    this.list.fromRow    = p.rows.from;
+                    this.list.toRow      = p.rows.to;
+                    this.list.page       = p.pages.current;
+                    this.list.pages      = p.pages.total;
+                },                    
+                contentPagination(p) {
+                    this.content.totalRows  = p.rows.total;
+                    this.content.fromRow    = p.rows.from;
+                    this.content.toRow      = p.rows.to;
+                    this.content.page       = p.pages.current;
+                    this.content.pages      = p.pages.total;
+                },                    
+                entities() {
                     let app = this;
                     var ao  = new EasyAjax('/admin/entity/list') ;
-                    ao.add('page',this.page).add('rows',this.rows).add('window_id',this.window_id).then((response)=>{
+                    ao.add('page',this.list.page).add('rows',this.list.rows).add('window_id',this.window_id).then((response)=>{
                         if (response) {
                             let entities = JSON.parse(response);
-                            app.entities = entities;
                             let headers  = [];
                             for (var i in entities[0]) {
                                 headers[headers.length] = i;
                             }
-                            app.headers = headers;
-                            app.pagination(ao.getPagination());
+                            app.list.headers  = headers;
+                            app.list.entities = entities;
+                            app.entityPagination(ao.getPagination());
                         }
+                    }).post();
+                },
+                expand(entity) {
+                    let app = this;
+                    this.tabs.tabClick(1);
+                    let ao = new EasyAjax('/admin/entity/content');
+                    ao.add('entity',entity).add('rows',this.econtent.rows).add('page',this.econtent.page).then((response) => {
+                        let rows     = JSON.parse(response);
+                        let headers  = [];
+                        for (var i in rows[0]) {
+                            headers[headers.length] = i;
+                        }
+                        app.econtent.headers = headers;
+                        app.econtent.data    = rows;
+                        app.contentPagination(ao.getPagination());
+                    }).post();
+                },
+                editRow(id) {
+                    let app = this;
+                    app.tabs.tabClick(2);
+                    (new EasyAjax('/admin/entity/edit')).add('id',1).then((response) => {
+                        app.edit.fields = JSON.parse(response);
                     }).post();
                 },
                 cleanup() {
@@ -186,7 +209,7 @@
                 }
             }          
         });
-        Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount(entity_tab);
+        Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount(entity_area);
     })(Desktop.window.list['{{ window_id }}']);
       
 </script>
