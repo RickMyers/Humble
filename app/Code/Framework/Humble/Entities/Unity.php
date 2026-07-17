@@ -1334,6 +1334,7 @@ SQL;
                    and a.entity    = '{$entity}'
 SQL;
             $primary    = $this->engine()->query($query);
+            //WE AREN"T DOING THIS ANYMORE!!!
             if (count($primary)===0) {
                 /*
                  * We haven't found any keys for this table, so it probably means that this table
@@ -1349,7 +1350,7 @@ SQL;
                        and a.entity     = '{$entity}'
 SQL;
                 $primary    = $this->engine()->query($query);
-                if (count($primary)!==0) {
+                if (count($primary) !== 0) {
                     $this->_namespace('humble');  //Mark that we got this from humble
                     $this->_prefix('humble_');
                 }
@@ -1367,6 +1368,7 @@ SQL;
             $this->_keys[$entity['key']]    = "";                   //register key
             $this->_autoinc[$entity['key']] = $entity['auto_inc'];  //register auto inc value
         }
+        return $this;
     }
 
     /**
@@ -1407,6 +1409,7 @@ SQL;
         foreach ($columns as $row => $entity) {
             $this->_column[$entity['column']]    = true;   //register column
         }
+        return $this;
     }
     
     /**

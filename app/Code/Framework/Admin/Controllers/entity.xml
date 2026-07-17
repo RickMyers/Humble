@@ -54,9 +54,11 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <!-- ############################################################### -->
         
-        <action name="content" blocking="off" response="true" output="JSON">
+        <action name="content" blocking="off" passalong="namespace,entity" output="JSON">
             <description>Lists the contents of an entity</description>
-            <entity namespace="humble" class="controllers" method="fetch" rows="rows" page="page"></entity>
+            <entity namespace="humble" class="entity" rows="rows" page="page" id="table">
+                
+            </entity>
         </action>
         
         <!-- ############################################################### -->

@@ -302,7 +302,7 @@ QRY;
      */
     public function query($qry)	{
         global $test_mode;
-        $test_mode  = $test_mode ?? false;
+    //    $test_mode  = $test_mode ?? false;
         $this->unity()->lastQuery($qry);
         $resultSet  = [];
         $status     = \Humble::cache('queryLogging');
@@ -316,7 +316,7 @@ QRY;
                 return $resultSet;
             } else {
                 $resultSet    = $this->_dbref->query($qry);
-                    $this->_state = $this->_dbref->sqlstate; 
+                $this->_state = $this->_dbref->sqlstate; 
                 if ($logQuery) {
                     \Log::query($qry."\n\nELAPSED TIME: ".(microtime(true)-$st)."\nSQL STATE: ".$this->_state."\nERROR: ".$this->_dbref->error."\n");
                 }

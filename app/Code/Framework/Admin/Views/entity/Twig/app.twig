@@ -205,12 +205,15 @@
                 },                    
                 expand(entity) {
                     if (entity) {
-                        this.econtent.entity;
+                        this.econtent.entity = entity;
                     }
                     let app = this;
+                    let parts = this.econtent.entity.split('_');
+                    let namespace = parts.shift();
+                    entity = parts.join('_');
                     this.tabs.tabClick(1);
                     let ao = new EasyAjax('/admin/entity/content');
-                    ao.add('entity',this.econtent.entity).add('rows',this.econtent.rows).add('page',this.econtent.page).then((response) => {
+                    ao.add('namespace',namespace).add('entity',entity).add('rows',this.econtent.rows).add('page',this.econtent.page).then((response) => {
                         let rows     = JSON.parse(response);
                         let headers  = [];
                         for (var i in rows[0]) {
