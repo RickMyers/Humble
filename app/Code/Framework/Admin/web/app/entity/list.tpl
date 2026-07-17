@@ -21,11 +21,11 @@
             Page <span v-bind:innerHTML="list.page"></span> of <span v-bind:innerHTML="list.pages"></span> 
         </div>         
         <div class="text-center">
-            <button v-on:click='first()' class='p-1 text-mono text-lg'> << </button>
-            <button v-on:click='prev()' class='p-1 mr-1 text-mono text-lg'> < </button>
+            <button v-on:click='entityFirst()' class='p-1 text-mono text-lg'> << </button>
+            <button v-on:click='entityPrev()' class='p-1 mr-1 text-mono text-lg'> < </button>
             <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="list.page" />
-            <button v-on:click='next()' class='p-1 ml-1 text-mono text-lg'> > </button>
-            <button v-on:click='last()'  class='p-1 text-mono text-lg'> >> </button>
+            <button v-on:click='entityNext()' class='p-1 ml-1 text-mono text-lg'> > </button>
+            <button v-on:click='entityLast()'  class='p-1 text-mono text-lg'> >> </button>
         </div>
     </div>       
 </div>
@@ -49,17 +49,17 @@
     </div>
     <div v-bind:id='econtent.footer' class="p-1 bg-[#333333] text-white">
         <div class="float-left align-middle text-lg">
-            Row <span v-bind:innerHTML="content.fromRow"></span> to <span v-bind:innerHTML="content.toRow"></span> of <span v-bind:innerHTML="content.totalRows"></span>
+            Row <span v-bind:innerHTML="econtent.fromRow"></span> to <span v-bind:innerHTML="econtent.toRow"></span> of <span v-bind:innerHTML="econtent.totalRows"></span>
         </div> 
         <div class="float-right align-middle text-lg">
-            Page <span v-bind:innerHTML="content.page"></span> of <span v-bind:innerHTML="content.pages"></span> 
+            Page <span v-bind:innerHTML="econtent.page"></span> of <span v-bind:innerHTML="econtent.pages"></span> 
         </div>         
         <div class="text-center">
-            <button v-on:click='first()' class='p-1 text-mono text-lg'> << </button>
-            <button v-on:click='prev()' class='p-1 mr-1 text-mono text-lg'> < </button>
-            <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="list.page" />
-            <button v-on:click='next()' class='p-1 ml-1 text-mono text-lg'> > </button>
-            <button v-on:click='last()'  class='p-1 text-mono text-lg'> >> </button>
+            <button v-on:click='contentFirst()' class='p-1 text-mono text-lg'> << </button>
+            <button v-on:click='contentPrev()' class='p-1 mr-1 text-mono text-lg'> < </button>
+            <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="econtent.page" />
+            <button v-on:click='contentNext()' class='p-1 ml-1 text-mono text-lg'> > </button>
+            <button v-on:click='contentLast()'  class='p-1 text-mono text-lg'> >> </button>
         </div>
     </div>  
 </div>
@@ -68,10 +68,13 @@
      ########################################################################### -->
 <div v-bind:id="edit.tab">
     <div v-bind:id='edit.area' class="overflow-auto" style="height: 200px">
-        <table class="zebra-table"> 
-            <tr v-for="(val,field) in edit.fields" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row">
+        <table class="zebra-table" style="width: 50%; margin-left: auto; margin-right: auto; min-width: 500px"> 
+            <tr v-for="(val,field) in edit.fields" :key="field" class="whitespace-nowrap w-full cursor-pointer zebra-row">
+                <td class="text-right text-bold mr-2">
+                    {{ field }}
+                </td>
                 <td>
-                   {{ field }}: {{ val }} 
+                    <input type="text" v-bind:name="field" v-bind:value="val" class="p-1 w-full" style="border: 1px solid #333; background-color: lightcyan" />
                 </td>
             </tr>
         </table>        

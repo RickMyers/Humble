@@ -83,6 +83,7 @@
                         totalRows:  0
                     },
                     econtent: {
+                        entity:     null,
                         tab:        'content_tab_{{ window_id }}_{{ tab_id }}',
                         area:       'content_area_{{ window_id }}_{{ tab_id }}',                
                         footer:     'content_footer_{{ window_id }}_{{ tab_id }}',
@@ -132,23 +133,23 @@
                     $('#'+this.edit.area).height(h);
                     //$('#'+this.list.footer).height()
                 },
-                first() {
+                entityFirst() {
                     this.list.page = 1;
                     this.entities();
                 },
-                prev() {
+                entityPrev() {
                     if (--this.list.page < 1) {
                         this.list.page = this.list.pages;
                     }
                     this.entities();                    
                 },
-                next() {
+                entityNext() {
                     if (++this.list.page > this.list.pages) {
                         this.list.page = 1;
                     }
                     this.entities();                    
                 },
-                last() {
+                entityLast() {
                     this.list.page = this.list.pages;
                     this.entities();                    
                 },
@@ -158,14 +159,7 @@
                     this.list.toRow      = p.rows.to;
                     this.list.page       = p.pages.current;
                     this.list.pages      = p.pages.total;
-                },                    
-                contentPagination(p) {
-                    this.content.totalRows  = p.rows.total;
-                    this.content.fromRow    = p.rows.from;
-                    this.content.toRow      = p.rows.to;
-                    this.content.page       = p.pages.current;
-                    this.content.pages      = p.pages.total;
-                },                    
+                },  
                 entities() {
                     let app = this;
                     var ao  = new EasyAjax('/admin/entity/list') ;
@@ -182,11 +176,41 @@
                         }
                     }).post();
                 },
+                contentFirst() {
+                    this.econtent.page = 1;
+                    this.expand();
+                },
+                contentPrev() {
+                    if (--this.econtent.page < 1) {
+                        this.econtent.page = this.econtent.pages;
+                    }
+                    this.expand();                    
+                },
+                contentNext() {
+                    if (++this.econtent.page > this.econtent.pages) {
+                        this.econtent.page = 1;
+                    }
+                    this.expand();                    
+                },
+                contentLast() {
+                    this.econtent.page = this.econtent.pages;
+                    this.expand();                    
+                },                
+                contentPagination(p) {
+                    this.econtent.totalRows  = p.rows.total;
+                    this.econtent.fromRow    = p.rows.from;
+                    this.econtent.toRow      = p.rows.to;
+                    this.econtent.page       = p.pages.current;
+                    this.econtent.pages      = p.pages.total;
+                },                    
                 expand(entity) {
+                    if (entity) {
+                        this.econtent.entity;
+                    }
                     let app = this;
                     this.tabs.tabClick(1);
                     let ao = new EasyAjax('/admin/entity/content');
-                    ao.add('entity',entity).add('rows',this.econtent.rows).add('page',this.econtent.page).then((response) => {
+                    ao.add('entity',this.econtent.entity).add('rows',this.econtent.rows).add('page',this.econtent.page).then((response) => {
                         let rows     = JSON.parse(response);
                         let headers  = [];
                         for (var i in rows[0]) {
