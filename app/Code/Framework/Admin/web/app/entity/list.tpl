@@ -40,7 +40,9 @@
         </div>
     </div>       
 </div>
+                
 <!-- ########################################################################### -->
+
 <div v-bind:id="econtent.tab">
     <div v-bind:id="econtent.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
         <div class="inline-block w-1/3">
@@ -83,29 +85,36 @@
         </div>
     </div>  
 </div>
+                
 <!-- ########################################################################### -->
+
 <div v-bind:id="edit.tab">
-    <div v-bind:id="edit.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
-        <div class="inline-block w-1/3">
-            Action: <span style="color: #DD0000">Edit Row {{ edit.id }}</span>
+    <form v-bind:id="edit.form" onsubmit="return false">
+        <!-- COMMENT: The 'ee' below is for 'Entity Explorer' -->
+        <input type="hidden" name="ee_namespace" v-bind:value="econtent.namespace" />
+        <input type="hidden" name="ee_entity"    v-bind:value="econtent.table" />
+        <div v-bind:id="edit.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
+            <div class="inline-block w-1/3">
+                Action: <span style="color: #DD0000">Edit Row {{ edit.id }}</span>
+            </div>        
+            <div class="inline-block w-2/3">
+                Entity: {{ econtent.namespace }}_{{ econtent.table }}
+            </div>
         </div>        
-        <div class="inline-block w-2/3">
-            Entity: {{ econtent.namespace }}_{{ econtent.table }}
+        <div v-bind:id='edit.area' class="overflow-auto" style="height: 200px">
+            <table class="zebra-table w-full"> 
+                <tr v-for="(val,field) in edit.fields" :key="field" class="whitespace-nowrap w-full cursor-pointer zebra-row">
+                    <td class="text-right text-bold mr-2 w-1/3">
+                        <b>{{ field }}</b>:&nbsp;
+                    </td>
+                    <td>
+                        <input type="text" v-bind:name="field" v-bind:value="screenIt(val)" class="p-1 w-full" style="border: 1px solid #333; background-color: lightcyan" />
+                    </td>
+                </tr>
+            </table>        
         </div>
-    </div>        
-    <div v-bind:id='edit.area' class="overflow-auto" style="height: 200px">
-        <table class="zebra-table w-full"> 
-            <tr v-for="(val,field) in edit.fields" :key="field" class="whitespace-nowrap w-full cursor-pointer zebra-row">
-                <td class="text-right text-bold mr-2 w-1/3">
-                    <b>{{ field }}</b>:&nbsp;
-                </td>
-                <td>
-                    <input type="text" v-bind:name="field" v-bind:value="screenIt(val)" class="p-1 w-full" style="border: 1px solid #333; background-color: lightcyan" />
-                </td>
-            </tr>
-        </table>        
-    </div>
-    <div v-bind:id='edit.footer' class="p-1 bg-[#333333] text-white text-center">
-        <button v-on:click='Save()' class='p-1 text-mono text-lg'> SAVE </button>
-    </div>     
+        <div v-bind:id='edit.footer' class="p-1 bg-[#333333] text-white text-center">
+            <input type="submit" value="  SAVE  " class='p-1 text-mono text-lg'/>
+        </div>  
+    </form>
 </div>

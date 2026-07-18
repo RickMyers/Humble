@@ -48,6 +48,15 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <!-- ############################################################### -->
         
+        <action name="updaterow" blocking="off" response="true">
+            <description>Updates a row in an entity</description>
+            <model namespace="admin" class="entity" method="updateRow">
+                <parameter name="data" source="request" default="{}" />
+            </model>
+        </action>
+        
+        <!-- ############################################################### -->
+        
         <action name="persist" blocking="off">
             <description>Persists a workspace</description>
         </action>

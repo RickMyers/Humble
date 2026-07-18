@@ -73,6 +73,7 @@
                     controls:       controls,
                     footer:         0,
                     title:          0,
+                    form:           null,
                     list: {
                         tab:        'list_tab_{{ window_id }}_{{ tab_id }}',
                         area:       'entity_list_{{ window_id }}_{{ tab_id }}',                
@@ -109,6 +110,7 @@
                         footer:     'edit_footer_{{ window_id }}_{{ tab_id }}',
                         area:       'edit_area_{{ window_id }}_{{ tab_id }}',
                         title:      'edit_title_{{ window_id }}_{{ tab_id }}',
+                        form:       'explorer_edit_form_{{ window_id }}_{{ tab_id }}',
                         fields:     [],
                         id:         0,
                     },                            
@@ -125,6 +127,8 @@
                  */
                 this.footer = ($('#'+this.list.footer).height() || $('#'+this.econtent.footer).height() || $('#'+this.edit.footer).height() );
                 this.title = ($('#'+this.list.title).height() || $('#'+this.econtent.title).height() || $('#'+this.edit.title).height());
+                this.form  = $('#'+this.edit.form).get();
+                console.log(this.form);
                 this.tabs = new EasyTab('entity_query_nav_{{ window_id }}_{{ tab_id }}',120);
                 this.tabs.add('Entities',null,this.list.tab);
                 this.tabs.add('Content',null,this.econtent.tab);
@@ -248,6 +252,9 @@
                     this.edit.id = id;
                     (new EasyAjax('/admin/entity/edit')).add('namespace',this.econtent.namespace).add('id',id).add('entity',this.econtent.table).then((response) => {
                         app.edit.fields = JSON.parse(response);
+                        //now set the form intercept
+                        //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
+                        Form.intercept($('#'+app.edit.form).get(),null,'/admin/entity/updaterow',null);                        
                     }).post();
                 },
                 cleanup() {

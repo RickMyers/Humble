@@ -72,4 +72,29 @@ class Entity extends Model
         $result    = Humble::entity($namespace.'/'.$entity)->setId($id)->load();
         return ($result) ? $result : $empty;
     }
+    
+    /**
+     * Dynamically updates a single row in a table/entity based on a passed in JSON object
+     * 
+     * @return int
+     */
+    public function updateRow() {
+        $row_id    = null;
+        $payload   = json_decode($this->getData());
+        $namespace = ($payload['ee_namespace'] ?? false);
+        $entity    = ($payload['ee_entity']    ?? false);
+        $id        = ($payload['id']           ?? false);
+        if ($namespace && $entity && $id) {
+            unset($payload['ee_namespace']);
+            unset($payload['ee_entity']);
+            unset($payload['id']);            
+            $e = Humble::entity($namespace.'/'.$entity)->setId($id);
+            foreach ($payload as $field => $val) {
+                $setter = 'set'.$this->underscoreToCamelCase($field,true);
+                $e->$setter($val);
+            }
+           // $row_id = $e->save();
+        }
+        return $row_id;
+    }
 }
