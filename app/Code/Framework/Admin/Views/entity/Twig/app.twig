@@ -40,8 +40,11 @@
 
     </div>
     <div id='query_results_tab_{{ window_id }}_{{ tab_id }}' class="query_results_tab_{{ window_id }}_{{ tab_id }}">
-     
+      Query Results Tab
     </div>
+    <div id='query_edit_tab_{{ window_id }}_{{ tab_id }}' class="query_edit_tab_{{ window_id }}_{{ tab_id }}">
+     Edit Query Results Tab
+    </div>    
 </form>
 <script type="text/javascript">
     ((win)=> {
@@ -69,10 +72,12 @@
                     header:         header,
                     controls:       controls,
                     footer:         0,
+                    title:          0,
                     list: {
                         tab:        'list_tab_{{ window_id }}_{{ tab_id }}',
                         area:       'entity_list_{{ window_id }}_{{ tab_id }}',                
                         footer:     'entity_footer_{{ window_id }}_{{ tab_id }}',
+                        title:      'entity_title_{{ window_id }}_{{ tab_id }}',
                         headers:    [],
                         entities:   [],
                         page:       1,
@@ -89,6 +94,7 @@
                         tab:        'content_tab_{{ window_id }}_{{ tab_id }}',
                         area:       'content_area_{{ window_id }}_{{ tab_id }}',                
                         footer:     'content_footer_{{ window_id }}_{{ tab_id }}',
+                        title:      'content_title_{{ window_id }}_{{ tab_id }}',
                         headers:    [],
                         data:       [],
                         page:       1,
@@ -102,7 +108,9 @@
                         tab:        'edit_tab_{{ window_id }}_{{ tab_id }}',
                         footer:     'edit_footer_{{ window_id }}_{{ tab_id }}',
                         area:       'edit_area_{{ window_id }}_{{ tab_id }}',
-                        fields:     []
+                        title:      'edit_title_{{ window_id }}_{{ tab_id }}',
+                        fields:     [],
+                        id:         0,
                     },                            
                     context:        [],
                     content:        []
@@ -110,17 +118,19 @@
             },
             mounted() {
                 //alert('mounted');
-                this.win.resize(this.sizer).resize();
-                new ResizeObserver(this.sizer).observe(query_textarea);
+                this.win.resize(this.sizeIt).resize();
+                new ResizeObserver(this.sizeIt).observe(query_textarea);
                 /*
                  * Now declare the tabs with easytab
                  */
-                this.footer = ($('#'+this.list.footer).height() || $('#'+this.econtent.footer).height() || $('#'+this.edit.footer).height() )
+                this.footer = ($('#'+this.list.footer).height() || $('#'+this.econtent.footer).height() || $('#'+this.edit.footer).height() );
+                this.title = ($('#'+this.list.title).height() || $('#'+this.econtent.title).height() || $('#'+this.edit.title).height());
                 this.tabs = new EasyTab('entity_query_nav_{{ window_id }}_{{ tab_id }}',120);
                 this.tabs.add('Entities',null,this.list.tab);
                 this.tabs.add('Content',null,this.econtent.tab);
                 this.tabs.add('Edit',null,this.edit.tab);
                 this.tabs.add('Query Results',null,'query_results_tab_{{ window_id }}_{{ tab_id }}');
+                this.tabs.add('Query Edit',null,'query_edit_tab_{{ window_id }}_{{ tab_id }}');
                 this.tabs.tabClick(0);
                 this.entities();
             },
@@ -128,8 +138,14 @@
                 this.cleanup();
             },
             methods: {
-                sizer() {
-                    let h = this.win.content.height() - this.header.offsetHeight - this.controls.offsetHeight - this.query.offsetHeight - explorer_nav - this.footer - 4;
+                screenIt(val) {
+                    if (typeof val == 'object') {
+                        val= JSON.stringify(val);
+                    }
+                    return val;
+                },
+                sizeIt() {
+                    let h = this.win.content.height() - this.header.offsetHeight - this.controls.offsetHeight - this.query.offsetHeight - explorer_nav - this.footer - this.title - 34;
                     $('#'+this.list.area).height(h);
                     $('#'+this.econtent.area).height(h);
                     $('#'+this.edit.area).height(h);
@@ -209,15 +225,13 @@
                     if (entity) {
                         this.econtent.entity = entity;
                     }
-                    let app = this;
-                    let parts = this.econtent.entity.split('_');
-                    let namespace = parts.shift();
-                    this.econtent.namespace = namespace;
-                    entity = parts.join('_');
-                    this.econtent.table   = entity;
+                    let app                 = this;
+                    let parts               = this.econtent.entity.split('_');
+                    this.econtent.namespace = parts.shift();
+                    this.econtent.table     = parts.join('_');
                     this.tabs.tabClick(1);
                     let ao = new EasyAjax('/admin/entity/content');
-                    ao.add('namespace',namespace).add('entity',entity).add('rows',this.econtent.rows).add('page',this.econtent.page).then((response) => {
+                    ao.add('namespace',this.econtent.namespace).add('entity',this.econtent.table).add('rows',this.econtent.rows).add('page',this.econtent.page).then((response) => {
                         let rows     = JSON.parse(response);
                         let headers  = [];
                         for (var i in rows[0]) {
@@ -231,6 +245,7 @@
                 editRow(id) {
                     let app = this;
                     app.tabs.tabClick(2);
+                    this.edit.id = id;
                     (new EasyAjax('/admin/entity/edit')).add('namespace',this.econtent.namespace).add('id',id).add('entity',this.econtent.table).then((response) => {
                         app.edit.fields = JSON.parse(response);
                     }).post();

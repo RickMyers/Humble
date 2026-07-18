@@ -1,4 +1,15 @@
 <div v-bind:id="list.tab">
+    <div v-bind:id="econtent.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
+        <div class="inline-block w-1/3">
+            Entity List
+        </div>
+        <div class="inline-block w-1/3">
+            
+        </div>
+        <div class="inline-block w-1/3">
+            
+        </div>
+    </div>       
     <div v-bind:id='list.area' class="overflow-auto" style="height: 200px">
         <table class="zebra-table"> 
             <tr class="text-white bg-[#333333] whitespace-nowrap w-full">
@@ -29,12 +40,21 @@
         </div>
     </div>       
 </div>
-<!-- ###########################################################################
-                        Will need to associate to a VUE element
-     ########################################################################### -->
+<!-- ########################################################################### -->
 <div v-bind:id="econtent.tab">
+    <div v-bind:id="econtent.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
+        <div class="inline-block w-1/3">
+            Namespace: {{ econtent.namespace }}
+        </div>
+        <div class="inline-block w-1/3">
+            Entity: {{ econtent.table }}
+        </div>
+        <div class="inline-block w-1/3">
+            Action: List Content
+        </div>
+    </div>    
     <div v-bind:id='econtent.area' class="overflow-auto" style="height: 200px">
-        <table class="zebra-table"> 
+        <table class="zebra-table w-full"> 
             <tr class="text-white bg-[#333333] whitespace-nowrap w-full">
                 <th v-for="(header,j) in econtent.headers" :key="j" class="p-1 w-32 text-center inline-block overflow-hidden font-mono text-sm">
                     {{ header }} 
@@ -63,18 +83,24 @@
         </div>
     </div>  
 </div>
-<!-- ###########################################################################
-                        Will need to associate to a VUE element
-     ########################################################################### -->
+<!-- ########################################################################### -->
 <div v-bind:id="edit.tab">
+    <div v-bind:id="edit.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
+        <div class="inline-block w-1/3">
+            Action: <span style="color: #DD0000">Edit Row {{ edit.id }}</span>
+        </div>        
+        <div class="inline-block w-2/3">
+            Entity: {{ econtent.namespace }}_{{ econtent.table }}
+        </div>
+    </div>        
     <div v-bind:id='edit.area' class="overflow-auto" style="height: 200px">
-        <table class="zebra-table" style="width: 50%; margin-left: auto; margin-right: auto; min-width: 500px"> 
+        <table class="zebra-table w-full"> 
             <tr v-for="(val,field) in edit.fields" :key="field" class="whitespace-nowrap w-full cursor-pointer zebra-row">
-                <td class="text-right text-bold mr-2">
-                    {{ field }}
+                <td class="text-right text-bold mr-2 w-1/3">
+                    <b>{{ field }}</b>:&nbsp;
                 </td>
                 <td>
-                    <input type="text" v-bind:name="field" v-bind:value="val" class="p-1 w-full" style="border: 1px solid #333; background-color: lightcyan" />
+                    <input type="text" v-bind:name="field" v-bind:value="screenIt(val)" class="p-1 w-full" style="border: 1px solid #333; background-color: lightcyan" />
                 </td>
             </tr>
         </table>        
