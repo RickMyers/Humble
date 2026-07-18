@@ -36,6 +36,12 @@ class Entity extends Model
         return __CLASS__;
     }
 
+    /**
+     * Dynamically runs one or more queries, on behalf of the Entity Explorer
+     * 
+     * @param type $query
+     * @return type
+     */
     public function run($query=false) {
         $results = [];
         if ($query = ($query) ? $query : $this->getQuery()) {
@@ -50,5 +56,20 @@ class Entity extends Model
             }
         }
         return $results;
+    }
+    
+    /**
+     * Will stage a call to a dynamically allocated entity
+     * 
+     * @param bool $field
+     * @return mixed
+     */
+    public function load($field=false) {
+        $empty     = json_encode([]);
+        $namespace = $this->getNamespace();
+        $id        = $this->getId();
+        $entity    = $this->getEntity();
+        $result    = Humble::entity($namespace.'/'.$entity)->setId($id)->load();
+        return ($result) ? $result : $empty;
     }
 }

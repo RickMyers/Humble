@@ -49,23 +49,41 @@ class HumbleException {
             $ac = Humble::_action();
             $rq = print_r($_REQUEST,true);
             $filename = '';
-            if (\Environment::application('exceptions')=='JSON') {
-                header('Content-Type: application/json');
-                $message = str_replace(["\n","\r","\t"],[' ',' ',' '],strip_tags($e->getMessage()));
-                $JSON = <<<JSON
+            $format = \Environment::application('exceptions');
+            switch (strtoupper(\Environment::application('exceptions'))) {
+                case 'JSON' :
+                    header('Content-Type: application/json');
+                    $message = str_replace(["\n","\r","\t"],[' ',' ',' '],strip_tags($e->getMessage()));
+                    $JSON = <<<JSON
 {
     "message": "{$message}",
-    "rc":      "{$e->getCode()}"
+    "rc":      "{$e->getCode()}",
+    "timestamp": "{$ts}"
 }   
 JSON;
-                print($JSON);
-            } else {
-                $rain = \Environment::getInternalTemplater('Code/Framework/Humble/Views/Exceptions/');
-                $rain->assign('ex',$e);
-                $rain->assign('title',$type);
-                $rain->assign('dump',htmlentities($e->getTraceAsString()));
-                $rain->assign('filename',($filename  = (method_exists($e,'getFileName')) ? $e->fileName() : "N/A"));
-                $rain->draw($template);
+                    print($JSON);
+                    break;
+                case 'XML'  :
+                    header('Content-Type: application/xml');
+                    $message = str_replace(["\n","\r","\t"],[' ',' ',' '],strip_tags($e->getMessage()));
+                    $XML = <<<XML
+<?xml version="1.0"?>                            
+<error>
+    <timestamp>{$ts}</timestamp>
+    <message>{$message}</message>
+    <rc>{$e->getCode()}</rc>
+</error>   
+XML;
+                    print($XML);
+                    break;
+                default     :
+                    $rain = \Environment::getInternalTemplater('Code/Framework/Humble/Views/Exceptions/');
+                    $rain->assign('ex',$e);
+                    $rain->assign('title',$type);
+                    $rain->assign('dump',htmlentities($e->getTraceAsString()));
+                    $rain->assign('filename',($filename  = (method_exists($e,'getFileName')) ? $e->fileName() : "N/A"));
+                    $rain->draw($template);                    
+                    break;
             }
             $exception = <<<ERRORTEXT
 --------------------------------------------------------------------------------

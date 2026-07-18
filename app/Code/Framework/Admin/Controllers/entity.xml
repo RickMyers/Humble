@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 
-Database tool controller
+Database tool controller   
 
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
@@ -65,9 +65,11 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="edit" blocking="off" response="true" output="JSON">
             <description>Edits a row in an entity</description>
-            <entity namespace="humble" class="users" method="load">
-                <parameter name="id" source="request" default="1" />
-            </entity>
+            <model namespace="admin" class="entity" method="load">
+                <parameter name="id" source="request" required="true" />
+                <parameter name="namespace" source="request" required="true" />
+                <parameter name="entity" source="request" required="true" />
+            </model>
         </action>
         
         

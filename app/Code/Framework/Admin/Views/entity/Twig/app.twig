@@ -84,6 +84,8 @@
                     },
                     econtent: {
                         entity:     null,
+                        table:      null,
+                        namespace:  null,
                         tab:        'content_tab_{{ window_id }}_{{ tab_id }}',
                         area:       'content_area_{{ window_id }}_{{ tab_id }}',                
                         footer:     'content_footer_{{ window_id }}_{{ tab_id }}',
@@ -107,7 +109,7 @@
                 }
             },
             mounted() {
-                alert('mounted');
+                //alert('mounted');
                 this.win.resize(this.sizer).resize();
                 new ResizeObserver(this.sizer).observe(query_textarea);
                 /*
@@ -210,7 +212,9 @@
                     let app = this;
                     let parts = this.econtent.entity.split('_');
                     let namespace = parts.shift();
+                    this.econtent.namespace = namespace;
                     entity = parts.join('_');
+                    this.econtent.table   = entity;
                     this.tabs.tabClick(1);
                     let ao = new EasyAjax('/admin/entity/content');
                     ao.add('namespace',namespace).add('entity',entity).add('rows',this.econtent.rows).add('page',this.econtent.page).then((response) => {
@@ -227,7 +231,7 @@
                 editRow(id) {
                     let app = this;
                     app.tabs.tabClick(2);
-                    (new EasyAjax('/admin/entity/edit')).add('id',1).then((response) => {
+                    (new EasyAjax('/admin/entity/edit')).add('namespace',this.econtent.namespace).add('id',id).add('entity',this.econtent.table).then((response) => {
                         app.edit.fields = JSON.parse(response);
                     }).post();
                 },

@@ -1473,8 +1473,10 @@ class Compiler extends Directory
                 case 'csv'      :   print($this->tabs()."header('content-type: text/csv');\n");
                                     break;
                 case 'xml'      :   print($this->tabs()."header('content-type: text/xml');\n");
+                                    print($this->tabs()."\Environment::application('exceptions',false,'XML');\n");                    
                                     break;
                 case 'json'     :   print($this->tabs()."header('content-type: application/json');\n");
+                                    print($this->tabs()."\Environment::application('exceptions',false,'JSON');\n");
                                     break;
                 case 'javascript':
                 case 'js'       :   print($this->tabs()."header('content-type: application/javascript');\n");

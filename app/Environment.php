@@ -594,7 +594,7 @@ class Environment {
         if ($dontUseCache) {
             return self::$application = json_decode(json_encode(self::applicationXML()));
         } else {
-            if (!self::$application = Humble::cache('application')) {
+            if (!self::$application = (self::$application !== false) ? self::$application : Humble::cache('application')) {
                 self::recacheApplication();
             }
             return self::$application;
@@ -826,6 +826,7 @@ class Environment {
     /**
      * Returns the contents of the project file of false if the project hasn't been created yet, or possibly a node of the project file if the node name is passed and is present
      *
+     * @TODO:  CACHE THIS!!!!  base it on how application works
      * @return object
      */
     public static function getProject($node=false) {
@@ -868,8 +869,11 @@ class Environment {
      * @param type $dontUseCache
      * @return type
      */
-    public static function application($node=false,$dontUseCache=false) {
+    public static function application($node=false,$dontUseCache=false,$override=false) {
         $app = self::loadApplicationMetaData($dontUseCache);
+        if ($override) {
+            self::$application->$node = $override;
+        }
         if ($node) {
             $app = is_array($node) ? self::recurse($app,$node) : (isset($app->$node) ? $app->$node : null);
         }
