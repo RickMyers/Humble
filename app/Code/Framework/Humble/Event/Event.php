@@ -332,7 +332,33 @@ class Event  {
         }
         return $this->_ref;
     }
-
+    /**
+     * If any data parameter value is marked as a secret, we attempt to retrieve that secret here and substitute the value
+     * 
+     * @TODO:  Maybe move this to event static factory so more things can call it directly
+     * @param array $call
+     * @return array
+     */
+    protected function processSecrets($data=[]) {
+        $manager = false;
+        foreach ($data as $key => $val) {
+            if (is_array($val)) {
+                $data[$key] = $this->processSecrets($val);
+            } else {
+                if ($val && strtolower(substr($val,0,5))==='sm://') {
+                    $manager    = ($manager) ? $manager : Humble::entity('humble/secrets/manager');  //speed up call by only instantiating the orm if a secret is found
+                    $len        = count($parts = explode('/',$secret = substr($val,5)));
+                    $namespace  = ($len==2) ? $parts[0] : $this->_namespace();
+                    $secret     = ($len==2) ? $parts[1] : $secret;
+                    if ($manager->reset()->setSecretName($secret)->setNamespace($namespace)->load(true)) {
+                        $data[$key] = $manager->decrypt(true)->getSecretValue();
+                    }
+                }
+            }
+        }
+        return $data;
+    }
+    
     /**
      * Gets the configurations values for the current element being processed in a workflow
      *
@@ -340,8 +366,8 @@ class Event  {
      * @return type
      */
     public function configurations($data=false) {
-        if ($data!==false) {
-            $this->_configurations[$this->target()] = $data;
+        if ($data !== false) {
+            $this->_configurations[$this->target()] = $this->processSecrets($data);
             return $this;
         }
         return $this->_configurations;
