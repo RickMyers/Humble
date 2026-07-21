@@ -17,11 +17,26 @@ Paradigm.console = (() => {
     let console_element = false;
     let console_test    = false;
     let speed           = 8;
+    let transaction     = {
+        mode:      'test',
+        method:    'POST',
+        element:   null,
+        arguments: {}
+    };
     let namespace       = '';
     function updateResponse(response) {
         return ((console_command) ? console_command+'\n' : '')+response;
     }
     return {
+        clear() {
+            transaction = {
+                mode:   'TEST',
+                method: 'POST',
+                element: null,
+                arguments: {
+                }
+            }
+        },
         app: () => {
             return console_app;
         },
@@ -279,6 +294,8 @@ Paradigm.console = (() => {
                             break;
                         case "format" :
                             Paradigm.console.add(Paradigm.console.service.format,'',1);
+                            break;
+                        default:
                             break;
                     }
                     break;

@@ -1,7 +1,12 @@
+<style type="text/css">
+    .secret_field_desc {
+        padding-bottom: 15px; font-family: monospace; font-size: .85em; letter-spacing: 1px
+    }
+</style>
 <script type="text/javascript"> 
     if (typeof review_secret_app === 'undefined') {
         let review_secret_app = Vue.createApp({
-            template: Humble.template('admin','secrets/review'),
+            template: Humble.template('admin','secrets/review',true),
             data: () => {
                 return {
                     namespaces: [
@@ -48,5 +53,4 @@
             };
         })(review_secret_app));
     }    
-
 </script>

@@ -1,1 +1,4 @@
-{$secret->decrypt(true)->getSecretValue()}
+{
+    "id": "",
+    "secret": "{$secret->decrypt(true)->getSecretValue()}"
+}
