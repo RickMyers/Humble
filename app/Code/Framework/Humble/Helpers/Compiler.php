@@ -736,6 +736,7 @@ class Compiler extends Directory
      * @param string $node
      */
     private function processOutput($node) {
+        //add encrypt/decrypt, id/method, assign and format options
         if (isset($node['text'])) {
             print($this->tabs()."Humble::response(\"".addslashes($node['text'])."\");\n");
         }

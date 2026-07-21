@@ -121,6 +121,7 @@
                     <yml />
                     <text />
                 </values>
+
             </output>
             <disposition required="false"  purpose="" default="" />
             <filename    required="false"  purpose="" default="" />
@@ -323,6 +324,11 @@
             <text       required="true"   purpose="" default="" />
             <request    required="false"   purpose="" default="" />
             <var        required="false"   purpose="" default="" />
+            <encrypt    required="false"   purpose="" default=""/>
+            <decrypt    required="false"   purpose="" default=""/>
+            <assign     required="false"   purpose="" default=""/>
+            <id         required="false"   purpose="" default=""/>
+            <method     required="false"   purpose="" default=""/>            
         </attributes>
     </output>
     <redirect taxonomy="response">
