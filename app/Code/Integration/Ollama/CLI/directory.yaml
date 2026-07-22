@@ -1,0 +1,15 @@
+---
+#version|ver|v:
+#    title: Admin Menu Text
+#    description: Displays the version number of the framework or application depending on whether a parameter was passed
+#    usage:
+#        linux:   sudo sh ./humble.sh --version
+#        windows: humble --version
+#    function : version
+#    documentation: https://humbleprogramming.com/pages/SomePage.htmls
+#    youtube: https://youtube.com?v=video_id
+#    global : true   # whether this is 'global' to all apps or just to the Framework
+#    parameters:
+#        required:
+#        optional: 
+#            app: Will display the application version instead of the framework

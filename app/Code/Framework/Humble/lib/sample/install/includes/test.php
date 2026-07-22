@@ -13,16 +13,21 @@
 Just a program for you to use for some dirty command line testing
 
  */
+$s = microtime(true);
 require "&&FACTORY&&.php"; 
 require "Environment.php";
 require "Log.php";
 require "Code/Framework/Humble/includes/Constants.php";
 require "Code/&&PACKAGE&&/&&MODULE&&/includes/Custom.php";
+print("\n------------------------------------------------------------------------------\n");
+print("- CURRENT ENVIRONMENT: ".Environment::state()."\n");
+print("------------------------------------------------------------------------------\n\n");
 try {
     //Do Stuff Here
 } catch (Exception $ex) {
-
+    print("Exception Ocurred\n");
+    print_r($ex);
 } finally {
-    die("An Error Has Occurred\n");
+    
 }
-
+print("\n\nDone: ".microtime(true)-$s."\n");

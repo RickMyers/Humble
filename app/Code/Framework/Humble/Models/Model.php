@@ -329,7 +329,7 @@ class Model implements HumbleComponent
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.12011-10-16");
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0");
 
         
         if ($method == "POST"){
@@ -483,7 +483,7 @@ class Model implements HumbleComponent
                 case "http" :   $opts['http'] = [
                                     'header' => $content_type,
                                     "method" => $method,
-                                    'user_agent' => "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.12011-10-16", /*whats a little spoofage between friends? */
+                                    'user_agent' => "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0", /*whats a little spoofage between friends? */
                                     'Content-Length' => strlen($content),
                                     'content' => $content
                                 ];
@@ -495,7 +495,7 @@ class Model implements HumbleComponent
         } else {
             $parms = ($content) ? '?'.$content : '';
         }
-
+        print_r($opts);
         $context = stream_context_create($opts);
         $hurl    = $URL.$parms;
         $fp      = fopen($hurl, 'rb', false, $context);
@@ -768,18 +768,21 @@ class Model implements HumbleComponent
         $retval = null;                                                         //Will only return a null if the RPC is not found
         if ($name && $this->_RPC()) {
             if (!\Singleton::mappings()) {
-               // if (!$default_mappings = Humble::cache('yaml-humble')) {
-               //     Humble::cache('yaml-humble',$default_mappings = yaml_parse(file_get_contents('Code/Framework/Humble/RPC/mapping.yaml')));
-               // }
-                \Singleton::mappings(yaml_parse(file_get_contents('Code/Framework/Humble/RPC/mapping.yaml'))); //default mappings
+                if (\Environment::isProduction()) {
+                    if (!$default_mappings = Humble::cache('yaml-humble')) {
+                        Humble::cache('yaml-humble',$default_mappings = yaml_parse(file_get_contents('Code/Framework/Humble/RPC/mapping.yaml')));
+                    }
+                } else {
+                    \Singleton::mappings(yaml_parse(file_get_contents('Code/Framework/Humble/RPC/mapping.yaml'))); //default mappings
+                }
             }
-            if (strtolower($this->_namespace()) !== 'humble') {
+            if (($ns = strtolower($this->_namespace())) !== 'humble') {
                 if ($me = Humble::module($this->_namespace())) {
                     $mappingFile = 'Code/'.$me['package'].'/'.str_replace('_','/',$me['rpc_mapping']).'/mapping.yaml';
                     if (file_exists($mappingFile)) {
-                        //In one line, if we already have mappings files, we merge them with the existing set of mappings, otherwise we initialize the mappings to the current mappings
-                        //@TODO: cache this
-                        if ($map      = yaml_parse(file_get_contents($mappingFile))) {
+                        //In one line, if we have a mapping file cached, we use it, otherwise load it from file
+                        //And then if we do have an active map, merge it with the global mapping array
+                        if ($map    = ($map = Humble::cache('yaml-'.$ns)) ? $map : yaml_parse(file_get_contents($mappingFile))) {
                             \Singleton::mappings(((\Singleton::mappings()) ? array_merge(\Singleton::mappings(),$map) : $map));
                         } else {
                             print("Problem parsing YaML file ".$mappingFile."\n\nPlease make sure it exists and that it is in correct format.\n");
