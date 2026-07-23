@@ -29,8 +29,8 @@
     ((win) => {
         Humble.admin['secrets_manager'] = Humble.admin['secrets_manager'] ?? {};
         Humble.admin['secrets_manager']['add'] = Vue.createApp({
-            template: Humble.template('admin','secrets/new',true),
-            data: () => {
+            template: Humble.template('admin','secrets/new'),
+            data() {
                 return {
                     namespaces: [
                         {
@@ -69,9 +69,11 @@
             };
         })(Humble.admin['secrets_manager']['add']));
         Humble.admin['secrets_manager']['review'] = Vue.createApp({
-            template: Humble.template('admin','secrets/review',true),
-            data: () => {
+            template: Humble.template('admin','secrets/review'),
+            data() {
                 return {
+                    visible: false,
+                    toggle_icon: false,
                     namespaces: [
                         {
                             "text": "",
@@ -85,10 +87,21 @@
                     ]
                 }
             },
-            mounted: () => {
+            mounted()  {
                new EasyEdits('/edits/admin/fetchsecret','fetch-secret');
+               this.toggle_icon = document.getElementById('toggle_hidden_switch');
             },
             methods: {
+                toggle(ref) {
+                    let icon = $('#fetch_secret_form [name=secret_value]').get(0);
+                    if (icon.type == 'password') {
+                        icon.type = 'text';
+
+                    } else {
+                        icon.type = 'password'
+                     }
+
+                },            
                 addSecret: async () => {
                     if (Edits['fetch-secret'].validate()) {
                         const form = document.querySelector('#new_secret_form');
