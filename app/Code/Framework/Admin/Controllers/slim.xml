@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+Test of Slim
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->  
+<controller name="slim" use="Slim" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="test" passalong="*">
+            <description>A test action</description>
+              
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

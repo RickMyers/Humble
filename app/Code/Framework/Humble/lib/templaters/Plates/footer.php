@@ -2,19 +2,16 @@
 function manageView($controller,$templater,$tpl) {
     global $models;
     global $module;
-    global $Slim;
-    global $response;
+    global $Plates;
 
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
     //
     
-    if ($Slim) {
-        $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.php';
-        if (file_exists($template)) { 
-            echo $Slim->render($response, $tpl.'.php', $models);
-        }
+    $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.tpl';
+    if (file_exists($template)) { 
+        echo $Plates->render($tpl.".twig", $models);
     }
 }
 //*******************************************************************************************

@@ -8,8 +8,10 @@ insert  into `humble_templaters`(`id`,`templater`,`extension`,`description`) val
 (5,'TBS','tbs','Tiny But Strong'),
 (6,'PHP','php','PHP'),
 (7,'PHPTal','phptal','PHP TAL'),
-(8,'DWOO','tpl','DWOO (deprecated?)',
+(8,'DWOO','tpl','DWOO (deprecated?)'),
 (9,'Mustache','mustache','Mustache'),
 (10,'Latte','latte','Latte'),
 (11,'Savant','savant','Savant'),
-(12,'Volt','phtml','Volt');
+(12,'Volt','phtml','Volt'),
+(13,'Slim','php','SlimPHP'),
+(14,'Plates','tpl','Plates');

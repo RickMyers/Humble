@@ -1510,53 +1510,59 @@ class Compiler extends Directory
         }
         //Handles options for the variables you want to "pass-along" to the view
         if (isset($action['passalong'])) {
-            $fields = explode(",",$action['passalong']);
+            if ((string)$action['passalong'] === '*') {
+                print($this->tabs().'foreach ($_REQUEST as $var => $val) {'."\n");
+                print($this->tabs(1).'$models[$var] = $val;'."\n");
+                print($this->tabs(-1)."}\n");
+            } else {
+                $fields = explode(",",$action['passalong']);
 
-            foreach ($fields as $field) {
-                $format = ''; $required = false; $default = ''; $value = $field; //Remember, "value" is the name of the field in the initial request object
-                if (strpos($field,':')!==false) {
-                    $f      = explode(':',$field);
-                    $field  = $f[0]; 
-                    $value  = $f[0];
-                    $ll     = count($f);
-                    for ($ii=1; $ii < $ll; $ii++) {
-                        $param  = $f[$ii];
-                        $optval = true;
-                        if (strpos($param,'=')) {
-                            $opt    = explode('=',$param);
-                            $param  = $opt[0];
-                            $optval = $opt[1];
-                        }
-                        switch (strtolower($param)) {
-                            case "format"   :
-                                $format = $optval;
-                                break;
-                            case "value"    :
-                                $value = $optval;
-                                break;
-                            case "default" :
-                                $default = $optval;
-                                break;
-                            case "required" :
-                                $required = $optval;
-                                break;
-                            default         : break;
+                foreach ($fields as $field) {
+                    $format = ''; $required = false; $default = ''; $value = $field; //Remember, "value" is the name of the field in the initial request object
+                    if (strpos($field,':')!==false) {
+                        $f      = explode(':',$field);
+                        $field  = $f[0]; 
+                        $value  = $f[0];
+                        $ll     = count($f);
+                        for ($ii=1; $ii < $ll; $ii++) {
+                            $param  = $f[$ii];
+                            $optval = true;
+                            if (strpos($param,'=')) {
+                                $opt    = explode('=',$param);
+                                $param  = $opt[0];
+                                $optval = $opt[1];
+                            }
+                            switch (strtolower($param)) {
+                                case "format"   :
+                                    $format = $optval;
+                                    break;
+                                case "value"    :
+                                    $value = $optval;
+                                    break;
+                                case "default" :
+                                    $default = $optval;
+                                    break;
+                                case "required" :
+                                    $required = $optval;
+                                    break;
+                                default         : break;
+                            }
                         }
                     }
-                }
-                if ($default) {
-                    if ($default = $this->processDefault($default,$format)) {
-                        print($this->tabs().'$_REQUEST["'.$field.'"] = $_REQUEST["'.$field.'"] ?? '.$default.";\n");
+                    if ($default) {
+                        if ($default = $this->processDefault($default,$format)) {
+                            print($this->tabs().'$_REQUEST["'.$field.'"] = $_REQUEST["'.$field.'"] ?? '.$default.";\n");
+                        }
+                    }                
+                    if ($required) {
+                        $this->processRequired($required,'$_REQUEST',$field);
                     }
-                }                
-                if ($required) {
-                    $this->processRequired($required,'$_REQUEST',$field);
-                }
-                if ($format) {
-                    $this->processFormat(strtolower($format),'$_REQUEST',$field,$required,$default);                            
-                }
+                    if ($format) {
+                        $this->processFormat(strtolower($format),'$_REQUEST',$field,$required,$default);                            
+                    }
 
-                print($this->tabs().'$models[\''.$value.'\'] = isset($_REQUEST[\''.$field.'\']) ? $_REQUEST[\''.$field.'\'] : '.($default ? $default : 'null').';'."\n");
+                    print($this->tabs().'$models[\''.$value.'\'] = isset($_REQUEST[\''.$field.'\']) ? $_REQUEST[\''.$field.'\'] : '.($default ? $default : 'null').';'."\n");
+                }
             }
         }
         if (isset($action['audit'])) {
