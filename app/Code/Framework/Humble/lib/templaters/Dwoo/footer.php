@@ -9,10 +9,14 @@ function manageView($controller,$templater,$tpl) {
     //***************************************************************************************
     //
     
-    if ($Plates) {
-        $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.php';
+    if ($Dwoo) {
+        $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.tpl';
         if (file_exists($template)) { 
-            echo $Dwoo->get($tpl, $models);
+            $data = new Dwoo\Data();
+            foreach ($models as $var => $val) {
+                $data->assign($var,$val);
+            }
+            echo $Dwoo->get($template, $data);
         }
     }
 }
