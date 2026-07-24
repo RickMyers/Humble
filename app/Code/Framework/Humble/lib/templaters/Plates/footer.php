@@ -9,9 +9,11 @@ function manageView($controller,$templater,$tpl) {
     //***************************************************************************************
     //
     
-    $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.tpl';
-    if (file_exists($template)) { 
-        echo $Plates->render($tpl.".twig", $models);
+    if ($Plates) {
+        $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.php';
+        if (file_exists($template)) { 
+            echo $Plates->render($tpl, $models);
+        }
     }
 }
 //*******************************************************************************************

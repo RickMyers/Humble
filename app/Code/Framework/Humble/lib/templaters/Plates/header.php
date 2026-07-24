@@ -24,8 +24,8 @@
             }
         }
         
-        //Renderer here
-        
+        $Plates = new League\Plates\Engine($template_dir);
+
         if (is_dir($optdir)) {    
            if (file_exists($optdir.'/Plugins.php')) {
                 require_once($optdir.'/Plugins.php');

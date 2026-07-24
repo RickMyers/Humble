@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+Plates Templating Test
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="plates" use="Plates" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        <action name="test" passalong="*">
+            <description>A test action</description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
