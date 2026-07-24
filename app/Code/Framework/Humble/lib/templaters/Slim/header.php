@@ -26,7 +26,8 @@
             }
         }
 
-        $response = Humble::model('humble/response');
+        //$response = Humble::model('humble/response');
+        $response = new Response();
 
         $Slim     = new PhpRenderer($template_dir);
     
