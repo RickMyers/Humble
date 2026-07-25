@@ -2,16 +2,17 @@
 function manageView($controller,$templater,$tpl) {
     global $models;
     global $module;
-    global $volt;
+    global $Volt;
 
     //***************************************************************************************
     //Look to see if that action has a "view" template (MVC), if so, throws the model at it *
     //***************************************************************************************
     //
-    
-    $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.phtml';
-    if (file_exists($template)) { 
-        echo $twig->render($tpl.".twig", $models);
+    if ($Volt) {
+        $template = 'Code/'.$module['package'].'/'.str_replace('_','/',$module["views"]).'/'.$controller.'/'.$templater.'/'.$tpl.'.phtml';
+        if (file_exists($template)) { 
+            echo $Volt->render($tpl.".phtl", $models);
+        }
     }
 }
 //*******************************************************************************************
