@@ -80,11 +80,10 @@
         <events>
 
         </events>
+        <edits>
+            <article>Blog/web/edits/article.json</article>
+        </edits>        
         <web>
-            <!-- Edits are used for separating form validation from the form -->
-            <edits>
-                <article>Blog/web/edits/article.json</article>
-            </edits>
             <humble-bootstrap>
                 <css>
                     <source>Blog/web/css/Blog.css</source>
