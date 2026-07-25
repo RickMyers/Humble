@@ -85,19 +85,19 @@
         </orm>
         <events>
         </events>
+        <edits>
+            <save>Paradigm/web/edits/save.json</save>
+            <new>Paradigm/web/edits/newform.json</new>
+            <namespaces>Paradigm/web/edits/namespaceList.json</namespaces>
+            <system>Paradigm/web/edits/system.json</system>
+            <token>Paradigm/web/edits/token.json</token>
+            <target>Paradigm/web/edits/target.json</target>
+            <targets>Paradigm/web/edits/targets.json</targets>
+            <sources>Paradigm/web/edits/sources.json</sources>
+            <jseditor>Admin/web/edits/jseditor.json</jseditor>
+            <newrule>Paradigm/web/edits/newrule.json</newrule>
+        </edits>        
         <web>
-            <edits>
-                <save>Paradigm/web/edits/save.json</save>
-                <new>Paradigm/web/edits/newform.json</new>
-                <namespaces>Paradigm/web/edits/namespaceList.json</namespaces>
-                <system>Paradigm/web/edits/system.json</system>
-                <token>Paradigm/web/edits/token.json</token>
-                <target>Paradigm/web/edits/target.json</target>
-                <targets>Paradigm/web/edits/targets.json</targets>
-                <sources>Paradigm/web/edits/sources.json</sources>
-                <jseditor>Admin/web/edits/jseditor.json</jseditor>
-                <newrule>Paradigm/web/edits/newrule.json</newrule>
-            </edits>
             <apptest>
                 <js>
                     <source>Paradigm/web/js/test.js</source>

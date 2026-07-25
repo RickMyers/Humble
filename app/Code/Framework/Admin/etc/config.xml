@@ -82,26 +82,27 @@
         <events>
 
         </events>
+        <edits>
+            <newmodule>Admin/web/edits/newmodule.json</newmodule>
+            <newcontroller>Admin/web/edits/newcontroller.json</newcontroller>
+            <newpackage>Admin/web/edits/newpackage.json</newpackage>
+            <newcomponent>Admin/web/edits/newcomponent.json</newcomponent>
+            <newsecret>Admin/web/edits/newsecret.json</newsecret>
+            <smtpsettings>Admin/web/edits/smtpsettings.json</smtpsettings>
+            <fetchsecret>Admin/web/edits/fetchsecret.json</fetchsecret>
+            <apitester>Admin/web/edits/apitester.json</apitester>
+            <testapi>Admin/web/edits/testapi.json</testapi>
+            <importdata>Admin/web/edits/importdata.json</importdata>
+            <installmodule>Admin/web/edits/installmodule.json</installmodule>
+            <login>Admin/web/edits/adminlogin.json</login>
+            <details>Admin/web/edits/userdetails.json</details>
+            <password>Admin/web/edits/adminpassword.json</password>
+            <roles>Admin/web/edits/newuserrole.json</roles>
+            <socketconfig>Admin/web/edits/socketconfig.json</socketconfig>
+            <uploadmodule>Admin/web/edits/uploadmodule.json</uploadmodule>
+            <restclient>Admin/web/edits/restclient.json</restclient>
+        </edits>        
         <web>
-            <edits>
-                <newmodule>Admin/web/edits/newmodule.json</newmodule>
-                <newcontroller>Admin/web/edits/newcontroller.json</newcontroller>
-                <newpackage>Admin/web/edits/newpackage.json</newpackage>
-                <newcomponent>Admin/web/edits/newcomponent.json</newcomponent>
-                <newsecret>Admin/web/edits/newsecret.json</newsecret>
-                <smtpsettings>Admin/web/edits/smtpsettings.json</smtpsettings>
-                <fetchsecret>Admin/web/edits/fetchsecret.json</fetchsecret>
-                <apitester>Admin/web/edits/apitester.json</apitester>
-                <testapi>Admin/web/edits/testapi.json</testapi>
-                <importdata>Admin/web/edits/importdata.json</importdata>
-                <installmodule>Admin/web/edits/installmodule.json</installmodule>
-                <login>Admin/web/edits/adminlogin.json</login>
-                <details>Admin/web/edits/userdetails.json</details>
-                <password>Admin/web/edits/adminpassword.json</password>
-                <roles>Admin/web/edits/newuserrole.json</roles>
-                <socketconfig>Admin/web/edits/socketconfig.json</socketconfig>
-                <uploadmodule>Admin/web/edits/uploadmodule.json</uploadmodule>
-            </edits>
             <admin>
                 <css>
                     <source>Admin/web/css/admin.css</source>

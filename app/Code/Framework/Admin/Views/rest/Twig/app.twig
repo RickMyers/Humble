@@ -1,0 +1,24 @@
+<script type="text/javascript">
+    ((win)=>{
+        Humble.admin['rest_client'] = (!Humble.admin['rest_client']) ? {} : Humble.admin['rest_client'];
+         
+         
+        Humble.admin['rest_client'] = Vue.createApp({
+            template:   Humble.template('admin',"rest/client",true),
+            app:        null,
+            data() {
+                return {
+                    arguments: []
+                }
+            },
+            mounted() {
+                new EasyEdit('/edits/admin/restclient','rest-client');
+            },
+            methods: {
+                
+            }
+        });
+        
+        Humble.admin['rest_client'].mount('#'+win.content.id);
+    })(Desktop.window.list['{{ window_id }}']);
+</script>

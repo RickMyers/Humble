@@ -110,6 +110,19 @@ Paradigm.console = (() => {
         active:     false,
         text:       "",
         command:    "",
+        query(text) {
+            alert('q');
+            if (text) {
+                (new EasyAjax('/paradigm/console/query')).add('text',text).then((response) => {
+                    console.log(this);
+                    let result = JSON.parse(response);
+                    response = (result.response) ? result.response : 'No result returned from query';
+                    Paradigm.console.add(response,'',1);
+                }).post();
+            } else {
+                Paradigm.console.add('No query found, aborting','',1);
+            }
+        },
         update: function (evt) {
             var key = evt.keyCode || evt.charCode || evt.which;
 
@@ -227,6 +240,11 @@ Paradigm.console = (() => {
                     (new EasyAjax('/paradigm/console/search')).add('term',text).then((response) => {
                         Paradigm.console.reply(response,'',1);
                     }).post();
+                    break;
+                case "ask"          :
+                case "prompt"       :
+                    Paradigm.console.add('Prompting... This could take a while...','',1);                    
+                    Paradigm.console.query(text);
                     break;
                 case "new"          :
                 case "init"         :

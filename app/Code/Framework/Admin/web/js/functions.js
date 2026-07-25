@@ -83,6 +83,16 @@ var Functions = (() => {
                             }).post();
                         }
                     },
+                    rest: {
+                        win: false,
+                        home() {
+                            console.log(this);
+                            Administration.rest.win = (Administration.rest.win = (Administration.rest.win ? Administration.rest.win : Desktop.semaphore.checkout(true)));
+                            (new EasyAjax('/admin/rest/app')).then((response) => {
+                                Administration.rest.win._title('Rest Client')._open(response);
+                            }).post();
+                        }
+                    },
                     users: {
                         starts_with: '',
                         search: (starts_with) => {

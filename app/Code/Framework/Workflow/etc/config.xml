@@ -63,21 +63,21 @@
                 <sms_carriers/>
             </entities>
         </orm>
+        <edits>
+            <generator>Workflow/web/edits/generator.json</generator>
+            <actor>Workflow/web/edits/actor.json</actor>
+            <internaldecision>Workflow/web/edits/internaldecision.json</internaldecision>
+            <externaldecision>Workflow/web/edits/externaldecision.json</externaldecision>
+            <internalprocess>Workflow/web/edits/internalprocess.json</internalprocess>
+            <externalprocess>Workflow/web/edits/externalprocess.json</externalprocess>                
+            <notification>Workflow/web/edits/notification.json</notification>
+            <email>Workflow/web/edits/mail.json</email>
+            <trigger>Workflow/web/edits/trigger.json</trigger>
+            <io>Workflow/web/edits/io.json</io>
+            <exception>Workflow/web/edits/exception.json</exception>
+            <adhocexception>Workflow/web/edits/adhocexception.json</adhocexception>
+        </edits>        
         <web>
-            <edits>
-                <generator>Workflow/web/edits/generator.json</generator>
-                <actor>Workflow/web/edits/actor.json</actor>
-                <internaldecision>Workflow/web/edits/internaldecision.json</internaldecision>
-                <externaldecision>Workflow/web/edits/externaldecision.json</externaldecision>
-                <internalprocess>Workflow/web/edits/internalprocess.json</internalprocess>
-                <externalprocess>Workflow/web/edits/externalprocess.json</externalprocess>                
-                <notification>Workflow/web/edits/notification.json</notification>
-                <email>Workflow/web/edits/mail.json</email>
-                <trigger>Workflow/web/edits/trigger.json</trigger>
-                <io>Workflow/web/edits/io.json</io>
-                <exception>Workflow/web/edits/exception.json</exception>
-                <adhocexception>Workflow/web/edits/adhocexception.json</adhocexception>
-            </edits>
             <common>
                 <css>Workflow/web/css/compiled.css</css>
             </common>

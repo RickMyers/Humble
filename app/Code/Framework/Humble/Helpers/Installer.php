@@ -472,12 +472,10 @@ SQL;
     /**
      *
      */
-    protected function registerWebEdits($web)    {
-        if (isset($web->edits)) {
-            foreach ($web->edits as $node => $edits) {
-                foreach ($edits as $form => $editFile) {
-                    $this->registerWebEdit($this->namespace,$form,str_replace('_','/',$editFile));
-                }
+    protected function registerWebEdits($edits)    {
+        foreach ($edits as $node => $list) {
+            foreach ($list as $form => $editFile) {
+                $this->registerWebEdit($this->namespace,$form,str_replace('_','/',$editFile));
             }
         }
         return $this;
@@ -510,7 +508,6 @@ SQL;
                 }
             }
         }
-        $this->registerWebEdits($web);
         $this->output('WEB','Done Registering Web Components');
         return $this;
     }
@@ -599,6 +596,9 @@ SQL;
                 //  if (isset($contents->events)) {
                 //     $this->registerEvents($contents->events);  //can't do this on install, since paradigm won't exist yet.  after install, run update
                 //  }
+                    if (isset($contents->edits)) {
+                        $this->registerWebEdits($contents->edits);
+                    }
                     $install_file  = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnInstall.php";
                     $install_class = "Code\\".(string)$contents->module->package."\\".str_replace(["_","/"],["\\","\\"],(string)$contents->structure->models->source)."\\OnInstall";
                     if (file_exists($install_file) && class_exists($install_class)) {
