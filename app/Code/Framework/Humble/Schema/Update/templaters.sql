@@ -14,4 +14,5 @@ insert  into `humble_templaters`(`id`,`templater`,`extension`,`description`) val
 (11,'Savant','savant','Savant'),
 (12,'Volt','phtml','Volt'),
 (13,'Slim','php','SlimPHP'),
-(14,'Plates','tpl','Plates');
+(14,'Plates','tpl','Plates'),
+(15,'Pug','pug','Pug PHP');
