@@ -34,4 +34,32 @@ class Client extends \Code\Framework\Admin\Helpers\Helper
         return __CLASS__;
     }
 
+    /**
+     * Returns a list of controllers 
+     * 
+     * @param type $namespace
+     * @return type
+     */
+    public function listControllers($namespace=false) {
+        $controllers = [];
+        if ($module = Humble::module(($namespace = ($namespace) ? $namespace : ($this->getNamespace() ? $this->getNamespace() : false)))) {
+            $dir = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']);
+            $dh  = dir($dir);
+            while ($entry = $dh->read()) {
+                if (($entry == '.') || ($entry == '..') || ($entry === 'Cache')) {
+                    continue;
+                }
+                if (strpos($entry,'.xml')) {
+                    $controllers[] = $entry;
+                }
+            }
+        }
+        return $controllers;
+    }
+    
+    public function listActions($namespace=false,$controller=false) {
+        $actions = [];
+        
+        return $actions;
+    }
 }

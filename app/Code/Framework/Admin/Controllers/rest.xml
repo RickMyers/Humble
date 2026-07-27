@@ -10,21 +10,24 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="app" passalong="window_id">
             <description>Main app page</description>
-        </action>
+        </action>    
 
         <!-- ############################################################### -->
 
-        <action name="namespaces">
+        <action name="namespaces" response="true" output='JSON'>
             <description>Lists active namespaces for the rest client</description>
-            <entity namespace='humble' class='modules' fields='namespace'>
+            <entity namespace='humble' class='modules' fields="namespace" method="fetch" orderby="namespace=ASC">   
                 <parameter name="enabled" source="request" default='Y' />
             </entity>
         </action>
         
         <!-- ############################################################### -->
         
-        <action name="controllers">
+        <action name="controllers" output="JSON" response="true">
             <description>Gets a list of controllers within a certain namespace</description>
+            <helper namespace="admin" class="rest/client" method="listControllers" wrapper="json_encode">
+                <parameter name="namespace" source="request" required="true" />
+            </helper>
         </action>
         
         <!-- ############################################################### -->

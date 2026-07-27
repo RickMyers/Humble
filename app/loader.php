@@ -126,9 +126,9 @@ function secureCheck($file=[]) {
             $module = \Humble::module($_GET['n']);
             if ($module && secureCheck($data)) {
                 $file = 'Code/'.$module['package'].'/'.$orm->getSource();
-                if (file_exists($file)) {
+                if (file_exists($file) && !is_dir($file)) {
                     if (!$production) {
-                        print("\n\n// ***************** $file *************\n//\n\n");
+                  //      print("\n\n// ***************** $file *************\n//\n\n");
                     }                    
                     print(file_get_contents($file));
                 } else {

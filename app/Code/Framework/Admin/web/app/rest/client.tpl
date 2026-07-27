@@ -10,6 +10,7 @@
             <div class="">
                 <select v-on:change="fetchControllers()" name="namespace" class="">
                     <option value=""> </option>
+                    <option v-for="(result,i) in namespaces" v-bind:value="result.namespace" :key="i" class=""> {{ result.namespace }} </option>
                 </select>
             </div>
             <div class="">
@@ -20,6 +21,7 @@
             <div class="">
                 <select v-on:change="fetchControllerActions()" name="controller" class="">
                     <option value=""> </option>
+                    <option v-for="(controller,j) in controllers" v-bind:value="controller" :key="j" class=""> {{ controller }} </option>
                 </select>                
             </div>
             <div class="">

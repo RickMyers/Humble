@@ -789,6 +789,10 @@ SQL;
                     if (isset($contents->web)) {
                         $this->registerWebComponents($contents->web);
                     }
+                    $this->deRegisterWebEdits($this->namespace);                                            
+                    if (isset($contents->edits)) {
+                        $this->registerWebEdits($contents->edits);
+                    }                    
                     if (isset($contents->structure->frontend)) {
                        // $this->moveFrontEnd($contents->structure->frontend->source);
                     }
