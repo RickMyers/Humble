@@ -8,17 +8,44 @@
             app:        null,
             data() {
                 return {
-                    arguments: []
+                    arguments: {},
+                    namespaces: {},
+                    controllers: {},
+                    actions: {}
                 }
             },
             mounted() {
-                new EasyEdit('/edits/admin/restclient','rest-client');
+                //  new EasyEdits('/edits/admin/restclient','rest-client');
+                win.resize(()=>{ 
+                   $('#rest_client_body').height(win.content.height() - $('#rest_client_header').height() - $('#rest_client_footer').height()); 
+                });
+                let app = this;
+                (new EasyAjax('/admin/rest/namespaces')).then((response) {
+                    app.namespaces = JSON.parse(response);
+                }).get();
             },
             methods: {
-                
+                fetchControllers() {
+                    let app = this;
+                    (new EasyAjax('/admin/rest/controllers')).add('namespace','').then((response) {
+                       app.controllers = JSON.parse(response); 
+                    }).get();
+                },
+                fetchControllerActions() {
+                    let app = this;
+                    (new EasyAjax('/admin/rest/actions')).add('namespace','').then((response) {
+                        app.actions = JSON.parse(response);
+                    }).get();
+                },
+                fetchActionParameters() {
+                    let app = this;
+                    (new EasyAjax('/admin/rest/parameters')).add('namespace','').then((response) {
+                        app.parameters = JSON.parse(response);
+                    }).get();
+                }
             }
         });
         
         Humble.admin['rest_client'].mount('#'+win.content.id);
     })(Desktop.window.list['{{ window_id }}']);
-</script>
+</script> 

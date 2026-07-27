@@ -44,5 +44,18 @@
                 <parameter name='term' source='request' optional='true' />
             </helper>
         </action>
+        
+        <!-- ################################################################################################# -->
+        
+        <action name="query" blocking="off" output='JSON'>
+            <description>Hit the local AI with a prompt</description>
+            <model assign="result" namespace="llama" class="model" id="ai">
+                <parameter name="prompt" value="text" source="request" required="true" />
+                <parameter name="stream" source="request" default='false' />
+                <parameter name="model"  source="request" optional="true" />
+            </model>
+            <output var="result" /> 
+        </action>
+        
     </actions>
 </controller>

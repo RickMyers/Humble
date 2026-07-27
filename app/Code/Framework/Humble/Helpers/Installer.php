@@ -414,7 +414,28 @@ FIELD;
     }
 
     /**
-     *
+     * Remove existing web edits per namespace
+     * 
+     * @param type $namespace
+     * @return $this
+     */
+    protected function deRegisterWebEdits($namespace=false) {
+        if ($namespace) {
+            $query = <<<SQL
+                delete from humble_edits
+                 where namespace = '{$namespace}'
+SQL;
+            $this->_db->query($query); 
+        }
+        return $this;
+    }
+    
+    /**
+     * Remove web components prior to reinstalling them
+     * 
+     * @param type $namespace
+     * @param type $package
+     * @return $this
      */
     protected function deRegisterWebComponents($namespace,$package=false)    {
         $clause = '';
@@ -433,11 +454,6 @@ SQL;
                {$clause}
 SQL;
         $this->_db->query($query); //remove CSS
-        $query = <<<SQL
-            delete from humble_edits
-             where namespace = '{$namespace}'
-SQL;
-        $this->_db->query($query); 
         return $this;
     }
 
@@ -596,6 +612,7 @@ SQL;
                 //  if (isset($contents->events)) {
                 //     $this->registerEvents($contents->events);  //can't do this on install, since paradigm won't exist yet.  after install, run update
                 //  }
+                    $this->deRegisterWebEdits($namespace);
                     if (isset($contents->edits)) {
                         $this->registerWebEdits($contents->edits);
                     }

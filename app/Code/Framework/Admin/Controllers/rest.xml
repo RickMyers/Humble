@@ -6,7 +6,7 @@ REST Testing App
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
 <controller name="rest" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
-    <actions blocking="ON" response="false">
+    <actions blocking="off" response="false">
         
         <action name="app" passalong="window_id">
             <description>Main app page</description>
@@ -14,5 +14,30 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
 
         <!-- ############################################################### -->
 
+        <action name="namespaces">
+            <description>Lists active namespaces for the rest client</description>
+            <entity namespace='humble' class='modules' fields='namespace'>
+                <parameter name="enabled" source="request" default='Y' />
+            </entity>
+        </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="controllers">
+            <description>Gets a list of controllers within a certain namespace</description>
+        </action>
+        
+        <!-- ############################################################### -->
+
+        <action name="actions">
+            <description>Gets a list of actions within a controller</description>
+        </action>
+
+        <!-- ############################################################### -->
+        
+        <action name="parameters">
+            <description>Gets a list of parameters used by an action</description>
+        </action>
+        
     </actions>
 </controller>

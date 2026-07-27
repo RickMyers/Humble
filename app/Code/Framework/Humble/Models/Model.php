@@ -495,7 +495,6 @@ class Model implements HumbleComponent
         } else {
             $parms = ($content) ? '?'.$content : '';
         }
-        print_r($opts);
         $context = stream_context_create($opts);
         $hurl    = $URL.$parms;
         $fp      = fopen($hurl, 'rb', false, $context);
@@ -598,8 +597,8 @@ class Model implements HumbleComponent
         if (isset($call['arguments']) && $call['arguments']) {
             foreach ($call['arguments'] as $var => $val) {
                 if (!is_numeric($var)) {
-                    if ($val && (trim($val) != '')) {
-                        $args[$var] = $val;
+                    if ($val && (trim($val) != '') && (!isset($this->_data[$var]))) {
+                        $args[$var] = $val;         //this handles default processing
                     } else {
                         $method = 'get'.$this->underscoreToCamelCase($var,true);
                         $args[$var] = $this->$method();

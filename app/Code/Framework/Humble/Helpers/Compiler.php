@@ -188,7 +188,13 @@ class Compiler extends Directory
                     break;
                 case 'CURRENTDAYOFWEEK':
                     $default = 'date("D")';
-                    break;  
+                    break;
+                case 'TRUE' :
+                    $default = true;
+                    break;
+                case 'FALSE' :
+                    $default = false;
+                    break;
                 default:
                     break;
             }
@@ -404,6 +410,9 @@ class Compiler extends Directory
         }
         if (($source == '$_GET') || ($source == '$_POST')) {
             $this->parameters[$source][] = $field;
+        }
+        if ( ($default === true) || ($default === false)) {
+            $default = ($default) ? 'true' : 'false';
         }
         if ((string)$parameter['name'] === '*') {
             print('

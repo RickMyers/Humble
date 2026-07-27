@@ -1,1 +1,83 @@
+{
+    "form":
+    {
+        "id":                   "rest_client_form",
+        "drawme":		false,
+        "action":		"",
+        "method":		"post",
+        "style":		"",
+        "onenterkey":           "send"
+    },
+    "fields":
+    [
+        {
+            "active":		true,
+            "name": 		"namespace",
+            "longname":		"Service Namespace",
+            "title":            "Namespace containing the service",
+            "type":		"select",
+            "required":		true,
+            "force":		true,
+            "onchange":         function (evt) {
+                if ($(evt.target).val()) {
+                    (new EasyAjax('/admin/rest/controllers')).add('namespace',$(evt.target).val()).then((response) => {
+                        console.log(response);
+                    }).get();
+                }
+            },
+            "style":            "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+        },      
+        {
+            "active":		true,
+            "name": 		"controller",
+            "longname":		"Controller Name",
+            "title":            "",
+            "type":		"select",
+            "required":		true,
+            "force":		true,
+            "onchange":         function (evt) {
+                if ($(evt.target).val()) {
+                    (new EasyAjax('/admin/rest/actions')).add('namespace',$('#form [name=namespace]').val()).add('controller',$(evt.target).val()).then((response) => {
+                        console.log(response);
+                    }).get();
+                }
+            },
+            "style":            "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+        },      
+        {
+            "active":		true,
+            "name": 		"action",
+            "longname":		"Action Name",
+            "title":            "Action",
+            "type":		"select",
+            "required":		true,
+            "force":		true,
+            onchange:           function () {
+                
+            },
+            "style":            "padding: 2px; border-radius: 3px; border: 1px solid transparent; width: 275px"
+        },      
+        
+        {
+            "active":		true,
+            "name":		"upload_module_submit",
+            "longname":		"Submit Button",
+            "type":		"button",
+            "style":            "font-family: sans-serif; font-size: .9em; padding: 2px 5px; color: #333",
+            "classname":        "",
+            "value":            "",
+            "onclick":          function () {
+                if (Edits['rest_client'].validate()) {
+                    (new EasyAjax('/admin/module/upload')).packageForm('upload_new_module_form').then((response) => {
+                        alert(response);
+                        window.location.reload();
+                    }).post();
+                }
+            }
+        }
+    ]
+}
+
+
+
 

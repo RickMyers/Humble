@@ -1,10 +1,4 @@
 ---
-currentWeather  :
-  url             : http://weather.yahooapis.com/forecastrss #this is a sample
-  api-key         : 1234
-  api-var         : api_key
-  arguments       : [p]
-  method          : GET
 modelTags       :
   url[DEVELOPMENT]: http://humble_ollama:11434/api/tags
   api-key         : 
@@ -18,9 +12,10 @@ askOllama       :
   api-var         : 
   format          : JSON
  # CURL            : true
+  transform       : JSON   
   arguments       : 
     model       : qwen3.5:latest
-    stream      : 0
+    stream      : false
     prompt      :
   method          : POST
   
