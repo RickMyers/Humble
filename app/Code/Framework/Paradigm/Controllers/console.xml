@@ -54,8 +54,13 @@
                 <parameter name="stream" source="request" default='false' />
                 <parameter name="model"  source="request" optional="true" />
             </model>
-            <output var="result" /> 
         </action>
         
+        <!-- ################################################################################################# -->
+        
+        <action name="tags" blocking="off" output="JSON" response="true">
+            <description>Displays available Ollama Models</description>
+            <model namespace="llama" class="ollama" method="modelTags" />
+        </action>
     </actions>
 </controller>

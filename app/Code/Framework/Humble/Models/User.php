@@ -195,7 +195,7 @@ class User extends Model {
                     $valid_password = $data[$node][$cnfg['password_field']] ?? false;
                     $salt           = $data[$node][$cnfg['salt_field']] ?? false;
                     if ($valid_password && $salt) {
-                        $x = crypt($valid_password,$salt);
+                        //$x = crypt($valid_password,$salt);
                         $success = ($valid_password === crypt($password,$salt));
                     }
                 }
