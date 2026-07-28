@@ -1,13 +1,14 @@
 <script type="text/javascript">
     ((win)=>{
         Humble.admin['rest_client'] = (!Humble.admin['rest_client']) ? {} : Humble.admin['rest_client'];
-         
-         
         Humble.admin['rest_client'] = Vue.createApp({
             template:   Humble.template('admin',"rest/client",true),
             app:        null,
             data() {
                 return {
+                    namespace: false,
+                    controller: false,
+                    action: false,
                     arguments: {},
                     namespaces: {},
                     controllers: {},
@@ -15,7 +16,7 @@
                 }
             },
             mounted() {
-                alert('mounted');
+                //alert('mounted');
                 new EasyEdits('/edits/admin/restclient','rest-client');
                 win.resize(()=>{ 
                    $('#rest_client_body').height(win.content.height() - $('#rest_client_header').height() - $('#rest_client_footer').height()); 
@@ -26,27 +27,29 @@
                 }).get();
             },
             methods: {
-                /*fetchControllers() {
+                fetchControllers(event) {
                     let app = this;
-                    (new EasyAjax('/admin/rest/controllers')).add('namespace','').then((response) {
+                    this.namespace = event.target.value;
+                    (new EasyAjax('/admin/rest/controllers')).add('namespace',this.namespace).then((response) => {
                        app.controllers = JSON.parse(response); 
                     }).get();
                 },
-                fetchControllerActions() {
+                fetchControllerActions(event) {
                     let app = this;
-                    (new EasyAjax('/admin/rest/actions')).add('namespace','').then((response) {
+                    this.controller = event.target.value;
+                    (new EasyAjax('/admin/rest/actions')).add('namespace',this.namespace).add('controller',this.controller).then((response) => {
                         app.actions = JSON.parse(response);
                     }).get();
                 },
-                fetchActionParameters() {
+                fetchActionParameters(event) {
                     let app = this;
-                    (new EasyAjax('/admin/rest/parameters')).add('namespace','').then((response) {
-                        app.parameters = JSON.parse(response);
+                    this.action = event.target.value;
+                    (new EasyAjax('/admin/rest/parameters')).add('namespace',this.namespace).add('controller',this.controller).add('action',this.action).then((response) => {
+                        app.arguments = JSON.parse(response);
                     }).get();
-                }*/
+                }
             }
         });
-        
         Humble.admin['rest_client'].mount('#'+win.content.id);
     })(Desktop.window.list['{{ window_id }}']);
 </script> 

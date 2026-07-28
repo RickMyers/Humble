@@ -11,7 +11,7 @@ askOllama       :
   api-key         : 
   api-var         : 
   format          : JSON
- # CURL            : true
+  CURL            : true
   transform       : JSON   
   arguments       : 
     model       : qwen3.5:latest

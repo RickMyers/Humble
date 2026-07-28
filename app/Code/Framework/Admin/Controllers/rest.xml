@@ -32,14 +32,24 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <!-- ############################################################### -->
 
-        <action name="actions">
+        <action name="actions" output='JSON' response='true'>
             <description>Gets a list of actions within a controller</description>
+            <helper namespace="admin" class="rest/client" method="listActions" wrapper="json_encode">
+                <parameter name="namespace" source="request"  required="true" />
+                <parameter name="controller" source="request" required="true" />
+            </helper>            
         </action>
 
         <!-- ############################################################### -->
         
-        <action name="parameters">
+        <action name="parameters" output='JSON' response='true'>
             <description>Gets a list of parameters used by an action</description>
+            <helper namespace="admin" class="rest/client" method="listParameters" wrapper="json_encode">
+                <parameter name="namespace"  source="request" required="true" />
+                <parameter name="controller" source="request" required="true" />
+                <parameter name="action"     source="request" required="true" />
+            </helper>            
+            
         </action>
         
     </actions>

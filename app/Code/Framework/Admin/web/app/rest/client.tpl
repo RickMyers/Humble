@@ -1,47 +1,73 @@
 <form name="rest_client_form" id="rest_client_form" onsubmit="return false">
-    <div id="rest_client_header" class="bg-[#333333] pr-2" style="color: ghostwhite; text-align: right">
-        Header
+    <div id="rest_client_header" class="bg-[#333333] pr-2 text-xl" style="color: ghostwhite; text-align: right">
+        <br />
+        Rest Client
+        <br /><br />
     </div>
-    <div id="rest_client_body">
-        <div class="">
-            To test 
+    <div id="rest_client_body" class="pl-6">
+        <div class="py-3 font-mono text-base">
+            This application allows you test your exposed services.  Please select from below the module Namespace, Controller containing the action, and then the Action to test.
+            A list of parameters will show up available for you to assign values.  You may also add any additional parameters you may need to complete your testing.  Hit the run
+            button on the bottom of the app to give it a go...
         </div>
-        <div class="">
+        <div class="float-left pr-6">
             <div class="">
-                <select v-on:change="fetchControllers()" name="namespace" class="">
-                    <option value=""> </option>
-                    <option v-for="(result,i) in namespaces" v-bind:value="result.namespace" :key="i" class=""> {{ result.namespace }} </option>
-                </select>
+                <div class="">
+                    <select v-on:change="fetchControllers($event)" name="namespace" class="p-1 w-64">
+                        <option value=""> </option>
+                        <option v-for="(result,i) in namespaces" v-bind:value="result.namespace" :key="i" class=""> {{ result.namespace }} </option>
+                    </select>
+                </div>
+                <div class="text-mono text-base tracking-wide pb-2">
+                    Namespace
+                </div>
             </div>
             <div class="">
-                Namespace
+                <div class="">
+                    <select v-on:change="fetchControllerActions($event)" name="controller" class="p-1 w-64">
+                        <option value=""> </option>
+                        <option v-for="(controller,j) in controllers" v-bind:value="controller" :key="j" class=""> {{ controller }} </option>
+                    </select>                
+                </div>
+                <div class="text-mono text-base tracking-wide pb-2">
+                    Controller
+                </div>
+            </div>
+            <div class="">
+                <div class="">
+                    <select v-on:change="fetchActionParameters($event)" name="action" class="p-1 w-64">
+                        <option value=""> </option>
+                        <option v-for="(action,k) in actions" v-bind:value="action.name" v-bind:title="action.description" :key="k" class=""> {{ action.name }} </option>
+                    </select>                
+                </div>
+                <div class="text-mono text-base tracking-wide pb-2">
+                    Action/Method
+                </div>
             </div>
         </div>
-        <div class="">
+        <div class="inline-block w-1/3 pl-4 pt-2">
             <div class="">
-                <select v-on:change="fetchControllerActions()" name="controller" class="">
-                    <option value=""> </option>
-                    <option v-for="(controller,j) in controllers" v-bind:value="controller" :key="j" class=""> {{ controller }} </option>
-                </select>                
-            </div>
+                <div class="">
+                    <input type="radio" name="mime_type" value="application/x-www-form-urlencoded" checked="checked"/> Default
+                    <input type="radio" name="mime_type" value="multipart/form-data" /> Multipart
+                    <input type="radio" name="mime_type" value="application/json" /> JSON
+                </div>
+                <div class="text-mono text-base tracking-wide pb-2">
+                    Mime Type
+                </div>
+            </div> 
             <div class="">
-                Controller
-            </div>
-        </div>
-        <div class="">
-            <div class="">
-                <select v-on:change="fetchActionParameters()" name="action" class="">
-                    <option value=""> </option>
-                </select>                
-            </div>
-            <div class="">
-                Action/Method
-            </div>
-        </div>
-        <div class=""> 
+                <div class="text-mono text-base tracking-wide pb-2">
+                    <input type="radio" name="execution_mode" value="Test" checked="checked"/> TEST
+                    <input type="radio" name="execution_mode" value="Live" /> LIVE
+                </div>
+                <div class="">
+                    Mode
+                </div>
+            </div>               
         </div>
     </div>
     <div id="rest_client_footer" class="bg-[#333333] pr-2" style="color: ghostwhite; text-align: right""> 
-        &copy; Humbleprogramming.com, 2007-Present
+       <br /><br /> &copy; Humbleprogramming.com, 2007-Present
     </div>
 </form> 

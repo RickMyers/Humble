@@ -89,7 +89,7 @@ var Functions = (() => {
                             console.log(this);
                             Administration.rest.win = (Administration.rest.win = (Administration.rest.win ? Administration.rest.win : Desktop.semaphore.checkout(true)));
                             (new EasyAjax('/admin/rest/app')).add('window_id',Administration.rest.win.id).then((response) => {
-                                //Administration.rest.win._title('Rest Client')._open(response);
+                                Administration.rest.win._title('Rest Client')._open(response);
                             }).post();
                         }
                     },
