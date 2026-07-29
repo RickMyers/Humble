@@ -75,7 +75,7 @@
                 </th>
             </tr>
             <tr v-for="(parameter,i) in parameters" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row">
-                <td v-for="(data,field) in parameter" :key="k" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
+                <td v-for="(data,field) in parameter" :key="field" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
                     {{ data }} 
                 </td>
             </tr>
