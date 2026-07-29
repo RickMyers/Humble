@@ -8,8 +8,9 @@
                 return {
                     namespace: false,
                     controller: false,
+                    parameters: {},
                     action: false,
-                    arguments: {},
+                    headers: {},
                     namespaces: {},
                     controllers: {},
                     actions: {}
@@ -45,7 +46,20 @@
                     let app = this;
                     this.action = event.target.value;
                     (new EasyAjax('/admin/rest/parameters')).add('namespace',this.namespace).add('controller',this.controller).add('action',this.action).then((response) => {
-                        app.arguments = JSON.parse(response);
+                        let parameters = JSON.parse(response);
+                         if (parameters) {
+                            let headers = [];
+                            for (var row in parameters) {
+                                for (var i in parameters[row]) {
+                                    headers[headers.length] = i;
+                                }
+                                break;
+                            }
+                            app.headers = headers;
+                        } else {
+                            app.headers = {};
+                        }
+                        app.parameters = parameters;
                     }).get();
                 }
             }

@@ -10,12 +10,12 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 
        <!-- ############################################################### -->
         
-        <action name='testaction'>
+        <action name='testaction' passalong="window_id:required=true,tab_id:type=int">
             <description>Used to test service directory</description>
             <model namespace='humble' class='user' method='fetch'>
                 <parameter name="user_id" value="uid" source="session" required="true" />
                 <parameter name="first_name" source="request" default='' />
-                <parameter name="last_name" source="request" default='' />
+                <parameter name="last_name"  source="request" default='' />
             </model>
         </action>
         

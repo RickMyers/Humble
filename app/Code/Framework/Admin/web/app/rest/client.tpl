@@ -66,6 +66,23 @@
                 </div>
             </div>               
         </div>
+        <div style="clear: both"></div>
+        <div class="">
+        <table class="zebra-table"> 
+            <tr class="text-white bg-[#333333] whitespace-nowrap w-full">
+                <th v-for="(header,j) in headers" :key="j" class="p-1 w-32 text-center inline-block overflow-hidden font-mono text-sm">
+                    {{ header }} 
+                </th>
+            </tr>
+            <tr v-for="(parameter,i) in parameters" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row">
+                <td v-for="(data,field) in parameter" :key="k" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
+                    {{ data }} 
+                </td>
+            </tr>
+        </table>               
+            
+            
+        </div>
     </div>
     <div id="rest_client_footer" class="bg-[#333333] pr-2" style="color: ghostwhite; text-align: right""> 
        <br /><br /> &copy; Humbleprogramming.com, 2007-Present
