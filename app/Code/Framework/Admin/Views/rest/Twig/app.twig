@@ -6,14 +6,22 @@
             app:        null,
             data() {
                 return {
-                    namespace: false,
+                    window_id:  "{{ window_id }}",
+                    edits:      false,
+                    tabs:       false,
+                    namespace:  false,
                     controller: false,
                     parameters: {},
-                    action: false,
-                    headers: {},
+                    action:     false,
+                    headers:    {},
                     namespaces: {},
                     controllers: {},
-                    actions: {}
+                    actions:    {},
+                    response_text: '',
+                    request_text: '',
+                    request_text_id: 'some_id',
+                    response_fields: [],
+                    response_headers: []
                 }
             },
             mounted() {
@@ -26,6 +34,12 @@
                 (new EasyAjax('/admin/rest/namespaces')).then((response) => {
                     app.namespaces = JSON.parse(response);
                 }).get();
+                this.tabs = new EasyTab('rest_client_nav',120);
+                this.tabs.add('Parameters',false,'rest_client_parameters');
+                this.tabs.add('Request',false,'rest_client_request');
+                this.tabs.add('Response',false,'rest_client_response');
+                this.tabs.add('Render',false,'rest_client_render');
+                this.tabs.tabClick(0);
             },
             methods: {
                 fetchControllers(event) {
@@ -63,6 +77,9 @@
                     }).get();
                 }
             }
+        });
+        win.close(() => {
+           Humble.admin['rest_client'].unmount();
         });
         Humble.admin['rest_client'].mount('#'+win.content.id);
     })(Desktop.window.list['{{ window_id }}']);
