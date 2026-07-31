@@ -91,7 +91,7 @@
         <action name="flag">
             <description>A test for the new flag feature</description>
             <flag name="myflag" default="baz" assign="myflag" cache="false" />
-            <if assign="myflag" eq="Y">
+            <if assign="myflag" eq="true">
                 <then>
                     <output text="It was a Y" />
                 </then>

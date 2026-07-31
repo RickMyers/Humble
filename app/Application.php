@@ -19,6 +19,22 @@ class Application {
     private   static $loaded    = false;
     public    static $flags     = [];
     private   static $useCache  = true;
+    private   static $trueish   = [
+        'Y'     => true,
+        'TRUE'  => true,
+        'ON'    => true,
+        'YES'   => true,
+        '1'     => true,
+        1       => true
+    ];    
+    private   static $falseish  = [
+        'N'     => true,
+        'FALSE' => true,
+        'OFF'   => true,
+        'NO'    => true,
+        '0'     => true,
+        0       => true
+    ];
     
     /**
      * Constructor
@@ -27,6 +43,22 @@ class Application {
         //nop
     }
 
+    /**
+     * A quick function to determine if a booleanish [Y,YES,TRUE,ON,1,N,NO,FALSE,OFF,0] value was passed
+     * 
+     * @param type $value
+     * @return type
+     */
+    private static function boolish($value=false) {
+        if (isset(self::$trueish[(string)strtoupper($value)])) {
+            $value = true;
+        } else if (isset(self::$falseish[(string)strtoupper($value)])) {
+            $value = false;
+        }
+        return $value;
+    }
+        
+    
     /**
      * Primes the flags array, possibly getting values from cache first
      * 
@@ -93,6 +125,6 @@ class Application {
                 $flag = self::$flags->$name ?? null;
             }
         }
-        return $flag;
+        return self::boolish($flag);
     }
 }
