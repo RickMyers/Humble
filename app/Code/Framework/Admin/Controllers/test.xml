@@ -73,7 +73,7 @@
                 <parameter name='subject' source='request' default='Standard email test message' />
                 <parameter name='message' source='request' default='Just a test message' />
             </model>
-        </action>
+        </action>   
         
         <!-- ########################################################################################## -->
         
@@ -84,6 +84,21 @@
                   
             </entity>
             <log output="warning" id="users" method="fetch" />
+        </action>
+        
+        <!-- ########################################################################################## -->
+        
+        <action name="flag">
+            <description>A test for the new flag feature</description>
+            <flag name="myflag" default="baz" assign="myflag" cache="false" />
+            <if assign="myflag" eq="Y">
+                <then>
+                    <output text="It was a Y" />
+                </then>
+                <else>
+                    <output text="No it wasn't" />
+                </else>
+            </if>
         </action>
         
     </actions>

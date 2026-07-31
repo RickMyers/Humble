@@ -725,6 +725,8 @@ SQL;
         Humble::cache('application',\Environment::application());
         Humble::cache('api_policy',json_decode(file_get_contents('Code/'.$project->package.'/'.$project->module.'/etc/api_policy.json')));
         Humble::cache('project',json_decode(file_get_contents('../Humble.project')));
+        $flag_source = 'Code/'.$project->package.'/'.$project->module.'/etc/flags.xml';
+        Humble::cache('application_flags',json_decode(json_encode(simplexml_load_file($flag_source))));
         return $this;
     }
     

@@ -96,6 +96,7 @@
         <chain />
         <cache />
         <flag />
+        <output />
         <project />
         <application />
         <exception />
@@ -120,6 +121,7 @@
         <chain />
         <cache />
         <flag />
+        <output />
         <project />
         <application />
         <exception />

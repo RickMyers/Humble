@@ -34,7 +34,7 @@ class Application {
      */
     private static function loadFlags() {
         if (self::$useCache) {
-            self::$loaded = ((self::$flags = \Humble::cache('application-flags')) !== null);
+            self::$loaded = ((self::$flags = \Humble::cache('application_flags')) !== null);
         }
         if (!self::$flags || !self::$useCache) {
             self::reload();
@@ -63,7 +63,7 @@ class Application {
             if ($module = \Humble::module($namespace)) {
                 if (file_exists($source = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['configuration']).'/flags.xml')) {
                     if (self::$flags    = json_decode(json_encode(simplexml_load_file($source)))) {
-                        \Humble::cache('application-flags',self::$flags);
+                        \Humble::cache('application_flags',self::$flags);
                         self::$loaded   = true;
                     }
                 }

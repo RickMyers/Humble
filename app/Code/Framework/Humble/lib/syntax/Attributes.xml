@@ -390,12 +390,23 @@
             <default   required="true"   purpose="" default="" />            
         </attributes>        
     </cache>
-    <flag name="" assign="" default="" />
     <flag taxonomy="metadata">
         <attributes>
-            <name      required="true"   purpose="" default="" />
+            <name      required="true"    purpose="" default="" />
             <assign    required="false"   purpose="" default="" />
-            <default   required="false"   purpose="" default="" />            
+            <default   required="false"   purpose="" default="" />
+            <cache     required="false"   purpose="" default="">
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                     
+                </values>                
+            </cache>
         </attributes>        
     </flag>    
     <view taxonomy="control">
