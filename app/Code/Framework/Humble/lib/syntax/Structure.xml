@@ -26,6 +26,7 @@
         <switch />
         <chain />
         <cache />
+        <flag />
         <project />
         <application />
         <exception />
@@ -94,6 +95,7 @@
         <switch />
         <chain />
         <cache />
+        <flag />
         <project />
         <application />
         <exception />
@@ -117,6 +119,7 @@
         <switch />
         <chain />
         <cache />
+        <flag />
         <project />
         <application />
         <exception />
@@ -146,6 +149,7 @@
         <switch />
         <chain />
         <cache />
+        <flag />
         <project />
         <application />
         <exception />
@@ -170,6 +174,7 @@
         <switch />
         <chain />
         <cache />
+        <flag />
         <project />
         <application />
         <exception />

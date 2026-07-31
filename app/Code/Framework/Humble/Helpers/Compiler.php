@@ -895,6 +895,22 @@ class Compiler extends Directory
     }
     
     /**
+     * Adds the ability to directly interact with the flag feature through the controller XML
+     * 
+     * @TODO: Get the DEFAULT option to work!!!
+     * @param type $node
+     */
+    private function processFlag($node) {
+        $assign     = (isset($node['assign']))  ? $node['assign']  : false;
+        $value      = (isset($node['value']))   ? $node['value']   : false;
+        $default    = (isset($node['default'])) ? $node['default'] : false;
+        if ($assign) {
+            print($this->tabs().'$'.$assign.' = ');
+        }
+        print('$models["'.$assign.'"] = \Application::flag("'.$node['name'].'");'."\n");
+
+    }    
+    /**
      * Adds the ability to directly query values from the Humble.project file
      * 
      * @param type $node
@@ -1309,6 +1325,8 @@ class Compiler extends Directory
                                         break;
             case    "cache"         :   $this->processCache($node);
                                         break;
+            case    "flag"          :   $this->processFlag($node);
+                                        break;                                    
             case    "project"       :   $this->processProject($node);
                                         break;
             case    "application"   :   $this->processApplication($node);

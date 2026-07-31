@@ -23,12 +23,12 @@
         <attributes>
             <throttle   required="false"  purpose="Globally Limits the number of concurrent threads for every action in this controller" default="" >
                 <values>
-                    <ip format='#' />
-                    <ipaddress format='#' /> 
+                    <ip         format='#' />
+                    <ipaddress  format='#' /> 
                     <ip_address format='#' />
-                    <uid format='#'/>
-                    <userid format='#' /> 
-                    <user_id format='#' />
+                    <uid        format='#'/>
+                    <userid     format='#' /> 
+                    <user_id    format='#' />
                 </values>
             </throttle>    
             <blocking   required="false"  purpose="" default="TRUE" >
@@ -72,12 +72,12 @@
             </request>
             <throttle   required="false"  purpose="Limit the number of concurrent threads" default="" >
                 <values>
-                    <ip format='#' />
-                    <ipaddress format='#' /> 
+                    <ip         format='#' />
+                    <ipaddress  format='#' /> 
                     <ip_address format='#' />
-                    <uid format='#'/>
-                    <userid format='#' /> 
-                    <user_id format='#' />
+                    <uid        format='#'/>
+                    <userid     format='#' /> 
+                    <user_id    format='#' />
                 </values>
             </throttle>            
             <audit      required="false"  purpose="" default="" />
@@ -179,13 +179,13 @@
                     <desc />
                 </options>
             </orderby>
-            <distinct   required="false"  purpose="" default="" />
-            <fields     required="false"  purpose="" default="" /> 
-            <condition  required="false"  purpose="" default="" />
-            <conditionvar required="false"  purpose="" default="" />
-            <retain       required="false"  purpose="" default="" />
-            <argument     required="false"  purpose="" default="" />
-            <transformer  required="false"  purpose="" default="" >
+            <distinct       required="false"  purpose="" default="" />
+            <fields         required="false"  purpose="" default="" /> 
+            <condition      required="false"  purpose="" default="" />
+            <conditionvar   required="false"  purpose="" default="" />
+            <retain         required="false"  purpose="" default="" />
+            <argument       required="false"  purpose="" default="" />
+            <transformer    required="false"  purpose="" default="" >
                 <values>
                     <csv />
                     <pdf />
@@ -193,13 +193,13 @@
                     <html />
                 </values>
             </transformer>
-            <defaultRows required="false"  purpose="" default="" />
-            <defaultPage required="false"  purpose="" default="" />
-            <class      required="true"   purpose="" default="" alias="resource" />
-            <assign     required="false"  purpose="" default="" />
-            <use        required="false"  purpose="" default="" />
-            <method     required="false"  purpose="" default="" />
-            <response   required="false"  purpose="" default="" >
+            <defaultRows    required="false"  purpose="" default="" />
+            <defaultPage    required="false"  purpose="" default="" />
+            <class          required="true"   purpose="" default="" alias="resource" />
+            <assign         required="false"  purpose="" default="" />
+            <use            required="false"  purpose="" default="" />
+            <method         required="false"  purpose="" default="" />
+            <response       required="false"  purpose="" default="" >
                 <values>
                     <off />
                     <on />
@@ -390,6 +390,14 @@
             <default   required="true"   purpose="" default="" />            
         </attributes>        
     </cache>
+    <flag name="" assign="" default="" />
+    <flag taxonomy="metadata">
+        <attributes>
+            <name      required="true"   purpose="" default="" />
+            <assign    required="false"   purpose="" default="" />
+            <default   required="false"   purpose="" default="" />            
+        </attributes>        
+    </flag>    
     <view taxonomy="control">
         <attributes>
             <name    required="true"   purpose="" default="" />            
@@ -489,7 +497,7 @@
         </attributes>        
     </parameter>
     <description taxonomy="documentation" />
-    <comment taxonomy="documentation" />
+    <comment     taxonomy="documentation" />
     <default parent="actions" taxonomy="control" >
         <attributes parent="chain">
             <name       required="true"   purpose="" default="" />

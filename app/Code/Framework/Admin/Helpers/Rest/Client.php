@@ -34,6 +34,36 @@ class Client extends \Code\Framework\Admin\Helpers\Helper
         return __CLASS__;
     }
 
+    
+    /**
+     * This array represents all the possible attributes available to a parameter statement, including on the "passalong" attribute
+     * 
+     * @return array
+     */
+    private function parameterRow() {
+        return [
+            'name'      => '',
+            'user_value' => '',
+            'source'    => 'request',
+            'required'  => false,
+            'optional'  => false,            
+            'default'   => '',
+            'value'     => '',
+            'type'      => '',            
+            'format'    => '',
+            'encrypt'   => false,
+            'decrypt'   => false,
+            'range'     => false,
+            'min'       => false,
+            'max'       => false,
+            'encode'    => false,
+            'decode'    => false,
+            'escape'    => false,
+            'unescape'  => false,
+            'upper'     => false,
+            'lower'     => false
+        ];
+    }
     /**
      * Returns a list of controllers 
      * 
@@ -83,36 +113,6 @@ class Client extends \Code\Framework\Admin\Helpers\Helper
             }
         }
         return $actions;
-    }
-
-    /**
-     * This array represents all the possible attributes available to a parameter statement, including on the "passalong" attribute
-     * 
-     * @return array
-     */
-    private function parameterRow() {
-        return [
-            'name'      => '',
-            'user_value' => '',
-            'required'  => false,
-            'default'   => '',
-            'value'     => '',
-            'format'    => '',
-            'encrypt'   => false,
-            'decrypt'   => false,
-            'source'    => 'request',
-            'optional'  => false,
-            'type'      => '',
-            'range'     => false,
-            'min'       => false,
-            'max'       => false,
-            'encode'    => false,
-            'decode'    => false,
-            'escape'    => false,
-            'unescape'  => false,
-            'upper'     => false,
-            'lower'     => false
-        ];
     }
     
     /**
