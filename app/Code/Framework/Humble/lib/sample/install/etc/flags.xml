@@ -1,18 +1,17 @@
 <?xml version="1.0"?>
-<comment>
-    In this file you can place application level flags.
+<flags comment="
+        In this file you can place application level flags.
 
-    To read the flag use:
+        To read the flag use:
 
-        $flag = \Application::flag('myFlag');
+            $flag = \Application::flag('myFlag');
 
-    To override a flag setting for the duration of the request, pass the new value as the second argument.
-    Note that the new value will only be valid for the duration of the request:
+        To override a flag setting for the duration of the request, pass the new value as the second argument.
+        Note that the new value will only be valid for the duration of the request:
 
-        \Application::flag('myFlag','New Flag Value');
+            \Application::flag('myFlag','New Flag Value');
 
-    For more information, see https://humbleprogramming.com/page/Flags.htmls 
-</comment>
-<flags>
+        For more information, see https://humbleprogramming.com/page/Flags.htmls 
+    ">
     <foo comment="this is a sample flag, retrieved by Environment::flag('foo');">bar</foo>
 </flags>

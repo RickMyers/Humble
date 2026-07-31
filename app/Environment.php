@@ -662,6 +662,7 @@ class Environment {
         return self::truthyOrFalsey($value);
     }
     
+    
     /**
      * Returns if caching is enabled.  Caching is no longer a soft requirement. Trying to make it selectable will lead to infinite loops
      *

@@ -33,12 +33,12 @@ class Application {
      * @return bool
      */
     private static function loadFlags() {
-        if (self::useCache) {
-            self::$loaded = ((self::$flags = \Environment::cache('application-flags')) !== null);
+        if (self::$useCache) {
+            self::$loaded = ((self::$flags = \Humble::cache('application-flags')) !== null);
         }
-        if (!self::$flags || !self::useCache) {
+        if (!self::$flags || !self::$useCache) {
             self::reload();
-        }
+        } 
         return self::$loaded;
     }
     
@@ -59,11 +59,11 @@ class Application {
      * @return bool
      */
     public static function reload() {
-        if ($namespace  = Environment::project('namespace')) {
-            if ($module = Humble::module($namespace)) {
+        if ($namespace  = \Environment::project('namespace')) {
+            if ($module = \Humble::module($namespace)) {
                 if (file_exists($source = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['configuration']).'/flags.xml')) {
-                    if (self::$flags    = simplexml_load_file($source)) {
-                        \Environment::cache('application-flags',self::$flags);
+                    if (self::$flags    = json_decode(json_encode(simplexml_load_file($source)))) {
+                        \Humble::cache('application-flags',self::$flags);
                         self::$loaded   = true;
                     }
                 }
@@ -86,11 +86,11 @@ class Application {
                 self::loadFlags();
             }
             if ($value !== null) {
-                if (isset(self::$flags[$name])) {
-                    self::$flags[$name] = $value;
+                if (isset(self::$flags->$name)) {
+                    self::$flags->$name = $value;
                 }
             } else {
-                $flag = self::$flags[$name] ?? null;
+                $flag = self::$flags->$name ?? null;
             }
         }
         return $flag;
