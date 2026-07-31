@@ -903,7 +903,12 @@ class Compiler extends Directory
     private function processFlag($node) {
         $assign     = (isset($node['assign']))  ? $node['assign']  : false;
         $value      = (isset($node['value']))   ? $node['value']   : false;
+        $cache      = (isset($node['cache']))   ? $this->trueish($node['cache']) : true;
         $default    = (isset($node['default'])) ? $node['default'] : false;
+        //If no cache attributed is found, we will by default use the cache, otherwise set according to value in attribute
+        if ($cache === false) {
+            print($this->tabs().'\Application::cache(false);'."\n");
+        }
         if ($assign) {
             print($this->tabs().'$'.$assign.' = ');
         }
