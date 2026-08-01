@@ -910,17 +910,19 @@ class Compiler extends Directory
         if ($cache === false) {
             print($this->tabs().'\Module::cache(false);'."\n");
         }
+        if ($namespace) {
+            print($this->tabs().'\Module::namespace("'.$node['namespace'].'");'."\n");  
+        }
         if ($assign) {
             print($this->tabs().'$'.$assign.' = ');
         }
         if ($namespace) {
-            print('\Module::namespace("'.$node['namespace'].'");'."\n");            
             print('$models["'.$assign.'"] = \Module::flag("'.$node['name'].'");'."\n");
         } else {
             print('$models["'.$assign.'"] = \Application::flag("'.$node['name'].'");'."\n");
         }
         if ($default) {
-            print($this->tabs().'if (!$models["'.$assign.'"] {'."\n");
+            print($this->tabs().'if ($models["'.$assign.'"] === null) {'."\n");
             print($this->tabs(1).'$models["'.$assign.'"] = "'.$default.'";'."\n");
             print($this->tabs(-1)."}\n");
         }
@@ -1101,10 +1103,12 @@ class Compiler extends Directory
             $op = ' <= '; $val = $node['lte'];
         } else if (isset($node['gte'])) {
             $op = ' >= '; $val = $node['gte'];
-        } else if (isset($node['eqs'])) {
-            $op = ' === '; $val = $node['eqs'];
+        } else if (isset($node['seq'])) {
+            $op = ' === '; $val = $node['seq'];
         }  else if (isset($node['ne'])) {
             $op = ' != '; $val = $node['ne'];
+        }  else if (isset($node['sne'])) {
+            $op = ' !== '; $val = $node['sne'];
         }
         if (!((strtoupper($val) === 'TRUE') || (strtoupper($val) === 'FALSE'))) {
             $val = '"'.$val.'"';

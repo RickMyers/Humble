@@ -81,7 +81,7 @@
             <description>Just to test the new XML log feature</description>
             <log source="server" var='QUERY_STRING' />       
             <entity namespace="humble" class="users" id="users">
-                  
+                     
             </entity>
             <log output="warning" id="users" method="fetch" />
         </action>
@@ -100,7 +100,22 @@
                 </else>
             </if>
         </action>
+    
+        <!-- ########################################################################################## -->
         
+        <action name="mflag">   
+            <description>A test for the new module level flag feature</description>
+            <flag name="flag_test2" namespace="llama" default="baz" assign="test" cache="false" />
+            <if assign="test" seq="true">
+                <then>
+                    <output text="Module flag was true" />
+                </then>
+                <else>
+                    <output text="No, module, wasn't" />
+                    <output var="test" />
+                </else>
+            </if>
+        </action>            
     </actions>
 
 

@@ -357,7 +357,8 @@
            <lt      required="false"  purpose="Less Than" default="" />
            <gte     required="false"  purpose="Greater Than Or Equal" default="" />
            <lte     required="false"  purpose="Less Than Or Equal" default="" />
-           <eqs     required="false"  purpose="Strictly Equal" default="" />
+           <seq     required="false"  purpose="Strictly Equal" default="" />
+           <sne     required="false"  purpose="Strictly Not Equal" default="" />
            <ne      required="false"  purpose="Not Equal" default="" />
            <arguments required="false"  purpose="Variables to pass to a function" default="" />
            <id      required="false"  purpose="ID of previously allocated object" default="" />
@@ -395,7 +396,7 @@
             <name      required="true"    purpose="" default="" />
             <assign    required="false"   purpose="" default="" />
             <default   required="false"   purpose="" default="" />
-            <default   required="namespace"   purpose="" default="" />
+            <namespace required="false"   purpose="" default="" />
             <cache     required="false"   purpose="Whether to use a cached copy, if available, or to force reload from disk" default="">
                 <values>
                     <off />
