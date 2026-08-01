@@ -133,5 +133,19 @@
         <start>
             <uri>/admin/live/app</uri>
         </start>
-    </app>         
+    </app>  
+    <app>
+        <name>Rest Client</name>
+        <description>Light weight REST client for testing routes</description>
+        <icon>
+            <text>REST</text>
+            <image>
+                <desktop>/images/admin/rest_client_app.png</desktop>
+                <minimized>/images/admin/rest_client_app.png</minimized>
+            </image>
+        </icon>
+        <start>
+            <uri>/admin/rest/app</uri>
+        </start>
+    </app>                 
 </apps>
