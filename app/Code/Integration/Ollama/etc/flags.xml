@@ -4,15 +4,16 @@
 
         To read the flag use:
 
-            $flag = \Application::flag('myFlag');
+            $flag = \Module::flag('myFlag');
 
         To override a flag setting for the duration of the request, pass the new value as the second argument.
         Note that the new value will only be valid for the duration of the request:
 
-            \Application::flag('myFlag','New Flag Value');
+            \Module::flag('myFlag','New Flag Value');
 
         For more information, see https://humbleprogramming.com/page/Flags.htmls 
     ">
-    <foo comment="this is a sample flag, retrieved by Application::flag('foo');">bar</foo>
+    <foo comment="this is a sample flag, retrieved by Module::flag('foo');">bar</foo>
     <myflag>true</myflag>
 </flags>
+

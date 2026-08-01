@@ -395,7 +395,8 @@
             <name      required="true"    purpose="" default="" />
             <assign    required="false"   purpose="" default="" />
             <default   required="false"   purpose="" default="" />
-            <cache     required="false"   purpose="" default="">
+            <default   required="namespace"   purpose="" default="" />
+            <cache     required="false"   purpose="Whether to use a cached copy, if available, or to force reload from disk" default="">
                 <values>
                     <off />
                     <on />

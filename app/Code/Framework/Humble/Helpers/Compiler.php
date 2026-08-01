@@ -895,7 +895,7 @@ class Compiler extends Directory
     }
     
     /**
-     * Adds the ability to directly interact with the flag feature through the controller XML
+     * Adds the ability to directly interact with the Application/Module flag feature through the controller XML
      * 
      * @TODO: Get the DEFAULT option to work!!!
      * @param type $node
@@ -905,14 +905,20 @@ class Compiler extends Directory
         $value      = (isset($node['value']))   ? $node['value']   : false;
         $cache      = (isset($node['cache']))   ? $this->trueish($node['cache']) : true;
         $default    = (isset($node['default'])) ? $node['default'] : false;
+        $namespace  = (isset($node['namespace'])) ? $node['namespace'] : false;
         //If no cache attributed is found, we will by default use the cache, otherwise set according to value in attribute
         if ($cache === false) {
-            print($this->tabs().'\Application::cache(false);'."\n");
+            print($this->tabs().'\Module::cache(false);'."\n");
         }
         if ($assign) {
             print($this->tabs().'$'.$assign.' = ');
         }
-        print('$models["'.$assign.'"] = \Application::flag("'.$node['name'].'");'."\n");
+        if ($namespace) {
+            print('\Module::namespace("'.$node['namespace'].'");'."\n");            
+            print('$models["'.$assign.'"] = \Module::flag("'.$node['name'].'");'."\n");
+        } else {
+            print('$models["'.$assign.'"] = \Application::flag("'.$node['name'].'");'."\n");
+        }
         if ($default) {
             print($this->tabs().'if (!$models["'.$assign.'"] {'."\n");
             print($this->tabs(1).'$models["'.$assign.'"] = "'.$default.'";'."\n");
