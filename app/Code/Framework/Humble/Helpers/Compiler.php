@@ -913,6 +913,11 @@ class Compiler extends Directory
             print($this->tabs().'$'.$assign.' = ');
         }
         print('$models["'.$assign.'"] = \Application::flag("'.$node['name'].'");'."\n");
+        if ($default) {
+            print($this->tabs().'if (!$models["'.$assign.'"] {'."\n");
+            print($this->tabs(1).'$models["'.$assign.'"] = "'.$default.'";'."\n");
+            print($this->tabs(-1)."}\n");
+        }
 
     }    
     /**

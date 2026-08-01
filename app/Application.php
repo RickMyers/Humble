@@ -57,7 +57,6 @@ class Application {
         }
         return $value;
     }
-        
     
     /**
      * Primes the flags array, possibly getting values from cache first
