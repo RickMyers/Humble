@@ -47,17 +47,15 @@
     </div>    
 </form>
 <script type="text/javascript">
+    Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
+    Humble.admin['query']  = (!Humble.admin['query'])  ? {} : Humble.admin['query'];
     ((win)=> {
+        win._title('Entity Explorer');        
         let explorer_form   = $('.explorer_form_{{ window_id }}_{{ tab_id }}').get(0);
         let explorer_nav    = $('#entity_explorer_nav_{{ window_id }}').height();
         let header          = $('.header_{{ window_id }}_{{ tab_id }}').get(0);
         let controls        = $('.query_controls_{{ window_id }}_{{ tab_id }}').get(0);
         let entity_area     = $('.entity_area_{{ window_id }}_{{ tab_id }}').get(0);
-        let query_textarea  = $('.query_textarea_{{ window_id }}_{{ tab_id }}').get(0);
-        let query_area      = $('.query_{{ window_id }}_{{ tab_id }}').get(0);
-        win._title('Entity Explorer');
-        Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
-        Humble.admin['query']  = (!Humble.admin['query'])  ? {} : Humble.admin['query'];
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
             template:   Humble.template('admin',"entity/list",true),
             app:        null,
@@ -264,5 +262,74 @@
         });
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount(entity_area);
     })(Desktop.window.list['{{ window_id }}']);
-      
+    ((win) => {
+        let query_textarea  = $('.query_textarea_{{ window_id }}_{{ tab_id }}').get(0);
+        let query_area      = $('.query_{{ window_id }}_{{ tab_id }}').get(0);        
+        Humble.admin['query']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({  
+            template:   Humble.template('admin',"entity/query",true),
+            app:        null,            
+            data() {
+                return {
+                    window_id:      '{{ window_id }}',
+                    tab_id:         '{{ tab_id }}',
+                    win:            Desktop.window.list['{{ window_id }}'],
+                    pagination:     {},
+                    tab:            'list_tab_{{ window_id }}_{{ tab_id }}',
+                    area:           'entity_list_{{ window_id }}_{{ tab_id }}',                
+                    footer:         'query_footer_{{ window_id }}_{{ tab_id }}',
+                    title:          'query_title_{{ window_id }}_{{ tab_id }}',
+                    headers:        [],
+                    resultset:      [],
+                    page:           1,
+                    pages:          0,
+                    rows:           20,
+                    fromRow:        1,
+                    toRow:          1,
+                    totalRows:      0
+                }
+            },
+            mounted() {
+                alert('Q Mounted');
+            },
+            methods: {
+                run() {
+                    let app                 = this;
+                    //get a reference to the tabs array from EasyTabs[]
+                    //this.tabs.tabClick(1);
+                    let ao = new EasyAjax('/admin/entity/runquery');
+                    ao.add('context',fromContextDropdown).add('rows',this.rows).add('page',this.page).then((response) => {
+                        let rows     = JSON.parse(response);
+                        let headers  = [];
+                        for (var i in rows[0]) {
+                            headers[headers.length] = i;
+                        }
+                        app.headers      = headers;
+                        app.resultset    = rows;
+                        app.pagination(ao.getPagination());
+                    }).post();                    
+                },
+                first() {
+                    this.page = 1;
+                    this.run()                    
+                },
+                next() {
+                    if (++this.page > this.pages) {
+                        this.page = 1;
+                    }
+                    this.run();                      
+                },
+                prev() {
+                    if (--this.page < 1) {
+                        this.page = this.pages;
+                    }
+                    this.run();                   
+                },
+                last() {
+                    this.page = this.pages;
+                    this.run();                         
+                }
+            }
+        });
+        Humble.admin['query']['{{ window_id }}_{{ tab_id }}'].mount(query_area);
+    })(Desktop.window.list['{{ window_id }}']);
 </script>
