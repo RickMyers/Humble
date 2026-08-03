@@ -1,7 +1,7 @@
 <form nohref onsubmit="return false" v-bind:id="explorer_form">
     <div v-bind:id="elements.header" class="text-white align-right bg-[#333333] p-1">
         <div class="float-right">
-        Context: <select name="context" v-bind:id="elements.context" v-on:change="editContext($event)" class="text-gray-800 pt-1 pb-1 w-48">
+        Context: <select name="context" v-bind:id="elements.context" v-on:change="setEditContext($event)" class="text-gray-800 pt-1 pb-1 w-48">
                     <option value=""> </option>
                     <option v-for="(entity,jj) in context" :key="jj" v-bind:value="entity"> {{ entity }} </option>
                 </select>
@@ -181,7 +181,10 @@
 
     <div v-bind:id='query.edittab'>
         <div v-bind:id="query.edittitle" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
-            <div class="inline-block w-1/3">
+            <div class="inline-block w-full">
+                <div class="float-right mr-1">
+                    Context: <span style="font-size: .8em; font-family: monospace; letter-spacing: 2px" v-bind:innerHTML="edit_context"></span>
+                </div>
                 Edit Query Row
             </div>
         </div> 

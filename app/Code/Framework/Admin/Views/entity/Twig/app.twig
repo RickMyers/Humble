@@ -36,6 +36,7 @@
                     query_text:     false,
                     query_area:     false,
                     context:        {},
+                    edit_context:   false,
                     footer:         0,
                     title:          0,
                     elements: {
@@ -234,11 +235,13 @@
                     this.expand();                    
                 },                
                 contentPagination(p) {
-                    this.econtent.totalRows  = p.rows.total;
-                    this.econtent.fromRow    = p.rows.from;
-                    this.econtent.toRow      = p.rows.to;
-                    this.econtent.page       = p.pages.current;
-                    this.econtent.pages      = p.pages.total;
+                    if (p) {
+                        this.econtent.totalRows  = p.rows.total;
+                        this.econtent.fromRow    = p.rows.from;
+                        this.econtent.toRow      = p.rows.to;
+                        this.econtent.page       = p.pages.current;
+                        this.econtent.pages      = p.pages.total;
+                    }
                 },                    
                 expand(entity) {
                     if (entity) {
@@ -273,32 +276,36 @@
                     }).post();
                 },
                 queryPagination(p) {
-                    console.log(p);
-                    this.query.totalRows  = p.rows.total;
-                    this.query.fromRow    = p.rows.from;
-                    this.query.toRow      = p.rows.to;
-                    this.query.page       = p.pages.current;
-                    this.query.pages      = p.pages.total;
+                    if (p) {
+                        this.query.totalRows  = p.rows.total;
+                        this.query.fromRow    = p.rows.from;
+                        this.query.toRow      = p.rows.to;
+                        this.query.page       = p.pages.current;
+                        this.query.pages      = p.pages.total;
+                    }
                 },                  
                 queryFirst() {
                     this.query.page = 1;
-                    this.run()                    
+                    this.runQuery();
                 },
                 queryNext() {
                     if (++this.query.page > this.query.pages) {
                         this.query.page = 1;
                     }
-                    this.run();                      
+                    this.runQuery();                      
                 },
                 queryPrev() {
                     if (--this.query.page < 1) {
                         this.query.page = this.query.pages;
                     }
-                    this.run();                   
+                    this.runQuery();                   
                 },
                 queryLast() {
                     this.query.page = this.query.pages;
-                    this.run();                         
+                    this.runQuery();                         
+                },
+                setEditContext(evt) {
+                    this.edit_context = evt.target.value;
                 },
                 runQuery() {
                     let app          = this;
@@ -315,6 +322,8 @@
                         app.query.headers      = headers;
                         app.query.resultset    = rows;
                         app.queryPagination(ao.getPagination());
+
+                        
                     }).post();                    
                 },
 		editQueryRow(id) {
