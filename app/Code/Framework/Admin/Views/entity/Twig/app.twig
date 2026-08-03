@@ -12,63 +12,37 @@
         border: 1px solid #777
     }
 </style>
-<form nohref onsubmit="return false" class="explorer_form_{{ window_id }}_{{ tab_id }}">
-    <div class="header_{{ window_id }}_{{ tab_id }} text-white align-right bg-[#333333] p-1">
-        <div class="float-right">
-        Context: <select name="context" class="text-gray-800 pt-1 pb-1">
-                    <option value=""> </option>
-                    {% for entity in entities %}
-                        <option value="{{ entity }}"> {{ entity }} </option>
-                    {% endfor %}
-                </select>
-        </div>
-        <img class="workspace_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/workspace.png" title="Save Workspace"/>  
-        <div style="clear: both"></div>
-    </div>
-    <div class="query_{{ window_id }}_{{ tab_id }} p-1">
-        <textarea id='query_textarea_{{ window_id }}_{{ tab_id }}' class="query_textarea_{{ window_id }}_{{ tab_id }} p2 w-full h-[300] text-mono" style="background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
-    </div>
-    <div class='query_controls_{{ window_id }}_{{ tab_id }} bg-[#333333]'>
-        <div class="p-1 text-white inline-block">
-            <img class="run_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/play.png" title="Run Query"/> 
-            <img class="save_query_{{ window_id }}_{{ tab_id }} cursor-pointer h-[24] inline-block" src="/images/admin/save.png" title="Save Query"/> 
-        </div>
-        <div id='entity_query_nav_{{ window_id }}_{{ tab_id }}' class='inline-block' style='vertical-align: bottom'>
-        </div>
-    </div>
-    <div id='entity_area_{{ window_id }}_{{ tab_id }}' class="entity_area_{{ window_id }}_{{ tab_id }}">
-
-    </div>
-</form>
+<div id='entity_area_{{ window_id }}_{{ tab_id }}' class="entity_area_{{ window_id }}_{{ tab_id }}">
+</div>        
 <script type="text/javascript">
     Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
     Humble.admin['query']  = (!Humble.admin['query'])  ? {} : Humble.admin['query'];
     ((win)=> {
         win._title('Entity Explorer');        
-        let explorer_form   = $('.explorer_form_{{ window_id }}_{{ tab_id }}').get(0);
         let explorer_nav    = $('#entity_explorer_nav_{{ window_id }}').height();
-        let query_textarea  = $('.query_textarea_{{ window_id }}_{{ tab_id }}').get(0);
-        let query_area      = $('.query_{{ window_id }}_{{ tab_id }}').get(0);          
-        let header          = $('.header_{{ window_id }}_{{ tab_id }}').get(0);
-        let controls        = $('.query_controls_{{ window_id }}_{{ tab_id }}').get(0);
         let entity_area     = $('.entity_area_{{ window_id }}_{{ tab_id }}').get(0);
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
             template:   Humble.template('admin',"entity/list",true),
             app:        null,
-            form:       explorer_form,
             data() {
                 return {
                     window_id:      '{{ window_id }}',
                     tab_id:         '{{ tab_id }}',
                     win:            Desktop.window.list['{{ window_id }}'],
-                    tabs:           false,                    
-                    nav:            'entity_query_nav_{{ window_id }}_{{ tab_id }}',
-                    header:         header,
-                    query:          query_area,
-                    controls:       controls,
+                    explorer_form:  'entity_explorer_form_{{ window_id }}_{{ tab_id }}',
+                    tabs:           false,
+                    header:         false,
+                    controls:       false,
+                    query_text:     false,
                     footer:         0,
                     title:          0,
-                    form:           null,
+                    elements: {
+                        header:         'header_{{ window_id }}_{{ tab_id }}',
+                        controls:       'query_controls_{{ window_id }}_{{ tab_id }}',                
+                        query:          'query_{{ window_id }}_{{ tab_id }}',
+                        nav:            'entity_query_nav_{{ window_id }}_{{ tab_id }}',
+                        query_text:     'query_textarea_{{ window_id }}_{{ tab_id }}'
+                    },
                     list: {
                         tab:        'list_tab_{{ window_id }}_{{ tab_id }}',
                         area:       'entity_list_{{ window_id }}_{{ tab_id }}',                
@@ -111,9 +85,10 @@
                     }, 
                     query: {
                         tab:        'query_tab_{{ window_id }}_{{ tab_id }}',
-                        edittab:    'query_edit_tab_{{ window_id }}_{{ tab_id }}',
                         area:       'query_area_{{ window_id }}_{{ tab_id }}',                
                         footer:     'query_footer_{{ window_id }}_{{ tab_id }}',
+                        title:      'query_title_{{ window_id }}_{{ tab_id }}',
+                        edittab:    'query_edit_tab_{{ window_id }}_{{ tab_id }}',                        
                         headers:    [],
                         resultset:  [],
                         page:       1,
@@ -123,18 +98,23 @@
                         toRow:      1,
                         totalRows:  0
                     },                    
-                    context:        [],
+                    context:        {},
                     content:        []
                 }
             },
             mounted() {
                 //alert('mounted');
-                this.win.resize(this.sizeIt).resize();
-                new ResizeObserver(this.sizeIt).observe(query_textarea);
-                this.footer = ($('#'+this.list.footer).height() || $('#'+this.econtent.footer).height() || $('#'+this.edit.footer).height() );
-                this.title  = ($('#'+this.list.title).height()  || $('#'+this.econtent.title).height()  || $('#'+this.edit.title).height());
-                this.form   = $('#'+this.edit.form).get();
-                this.tabs   = new EasyTab(this.nav,120);
+                this.footer     = ($('#'+this.list.footer).height() || $('#'+this.econtent.footer).height() || $('#'+this.edit.footer).height() || $('#'+this.query.footer).height()  );
+                this.title      = ($('#'+this.list.title).height()  || $('#'+this.econtent.title).height()  || $('#'+this.edit.title).height() || $('#'+this.query.title).height());
+                this.form       = document.getElementById(this.edit.form);
+                this.header     = document.getElementById(this.elements.header);
+                this.controls   = document.getElementById(this.elements.controls); 
+                this.query_text = document.getElementById(this.elements.query_text);
+                this.query_nav  = document.getElementById(this.elements.nav);
+                this.query      = document.getElementById(this.elements.query);
+                new ResizeObserver(this.sizeIt).observe(this.query_text);
+                this.win.resize(this.sizeIt).resize();                
+                this.tabs       = new EasyTab(this.elements.nav,120);                
                 this.tabs.add('Entities'      ,null,this.list.tab);
                 this.tabs.add('Content'       ,null,this.econtent.tab);
                 this.tabs.add('Edit'          ,null,this.edit.tab);
@@ -142,11 +122,15 @@
                 this.tabs.add('Query Edit'    ,null,this.query.edittab);
                 this.tabs.tabClick(0);
                 this.entities();
+                this.contexts();
             },
             unmounted() {
                 this.cleanup();
             },
             methods: {
+                saveWorkspace(event) {
+                    alert('saving workspace');
+                },
                 screenIt(val) {
                     if (typeof val == 'object') {
                         val= JSON.stringify(val);
@@ -158,6 +142,7 @@
                     $('#'+this.list.area).height(h);
                     $('#'+this.econtent.area).height(h);
                     $('#'+this.edit.area).height(h);
+                    $('#'+this.query.area).height(h);
                     //$('#'+this.list.footer).height()
                 },
                 entityFirst() {
@@ -187,6 +172,21 @@
                     this.list.page       = p.pages.current;
                     this.list.pages      = p.pages.total;
                 },  
+                contexts() {
+                    let app = this;
+                    (new EasyAjax('/admin/entity/contexts')).then((response) => {
+                        if (response) {
+                            let entities = JSON.parse(response);
+                            let list  = [];
+                            if (entities) {
+                                for (let i=0; i<entities.length; i++) {
+                                    list[list.length] = entities[i].namespace+'_'+entities[i].entity;
+                                }
+                            }
+                            app.context = list;
+                        }
+                    }).get();
+                },
                 entities() {
                     let app = this;
                     var ao  = new EasyAjax('/admin/entity/list') ;
@@ -294,7 +294,7 @@
                     //get a reference to the tabs array from EasyTabs[]
                     //this.tabs.tabClick(1);
                     let ao = new EasyAjax('/admin/entity/runquery');
-                    ao.add('context',fromContextDropdown).add('query',$(this.query_textarea).val()).add('rows',this.rows).add('page',this.page).then((response) => {
+                    ao.add('context','').add('query',$(this.query_text).val()).add('rows',this.rows).add('page',this.page).then((response) => {
                         let rows     = JSON.parse(response);
                         let headers  = [];
                         for (var i in rows[0]) {
@@ -305,7 +305,7 @@
                         app.pagination(ao.getPagination());
                     }).post();                    
                 },
-		edit(id) {
+		editQueryRow(id) {
                     let app = this;
                     app.tabs.tabClick(5);
                     this.edit.id = id;
@@ -322,5 +322,9 @@
             }          
         });
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount(entity_area);
+        /*win._close(() => {
+            alert('closing!');
+            //Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].unmount();
+        });*/
     })(Desktop.window.list['{{ window_id }}']);
 </script>

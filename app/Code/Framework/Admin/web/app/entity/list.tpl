@@ -1,98 +1,118 @@
-<div v-bind:id="list.tab">
-    <div v-bind:id="econtent.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
-        <div class="inline-block w-1/3">
-            Entity List
+<form nohref onsubmit="return false" v-bind:id="explorer_form">
+    <div v-bind:id="elements.header" class="text-white align-right bg-[#333333] p-1">
+        <div class="float-right">
+        Context: <select name="context" class="text-gray-800 pt-1 pb-1 w-48">
+                    <option value=""> </option>
+                    <option v-for="(entity,jj) in context" :key="jj" v-bind:value="entity"> {{ entity }} </option>
+                </select>
         </div>
-        <div class="inline-block w-1/3">
-            
-        </div>
-        <div class="inline-block w-1/3">
-            
-        </div>
-    </div>       
-    <div v-bind:id='list.area' class="overflow-auto" style="height: 200px">
-        <table class="zebra-table"> 
-            <tr class="text-white bg-[#333333] whitespace-nowrap w-full">
-                <th v-for="(header,j) in list.headers" :key="j" class="p-1 w-32 text-center inline-block overflow-hidden font-mono text-sm">
-                    {{ header }} 
-                </th>
-            </tr>
-            <tr v-for="(entity,i) in list.entities" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row"  v-bind:title="entity.TABLE_NAME">
-                <td v-for="(data,field) in entity" :key="field" v-on:click="expand(entity.TABLE_NAME)" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
-                    {{ data }} 
-                </td>
-            </tr>
-        </table>        
+        <img v-on:click="saveWorkspace($event)" class="cursor-pointer h-[24] inline-block" src="/images/admin/workspace.png" title="Save Workspace"/>  
+        <div style="clear: both"></div>
     </div>
-    <div v-bind:id='list.footer' class="p-1 bg-[#333333] text-white">
-        <div class="float-left align-middle text-lg">
-            Row <span v-bind:innerHTML="list.fromRow"></span> to <span v-bind:innerHTML="list.toRow"></span> of <span v-bind:innerHTML="list.totalRows"></span>
-        </div> 
-        <div class="float-right align-middle text-lg">
-            Page <span v-bind:innerHTML="list.page"></span> of <span v-bind:innerHTML="list.pages"></span> 
-        </div>         
-        <div class="text-center">
-            <button v-on:click='entityFirst()' class='p-1 text-mono text-lg'> << </button>
-            <button v-on:click='entityPrev()' class='p-1 mr-1 text-mono text-lg'> < </button>
-            <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="list.page" />
-            <button v-on:click='entityNext()' class='p-1 ml-1 text-mono text-lg'> > </button>
-            <button v-on:click='entityLast()'  class='p-1 text-mono text-lg'> >> </button>
-        </div>
-    </div>       
-</div>
-                
-<!-- ########################################################################### -->
-
-<div v-bind:id="econtent.tab">
-    <div v-bind:id="econtent.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
-        <div class="inline-block w-1/3">
-            Namespace: {{ econtent.namespace }}
-        </div>
-        <div class="inline-block w-1/3">
-            Entity: {{ econtent.table }}
-        </div>
-        <div class="inline-block w-1/3">
-            Action: List Content
-        </div>
-    </div>    
-    <div v-bind:id='econtent.area' class="overflow-auto" style="height: 200px">
-        <table class="zebra-table w-full"> 
-            <tr class="text-white bg-[#333333] whitespace-nowrap w-full">
-                <th v-for="(header,j) in econtent.headers" :key="j" class="p-1 w-32 text-center inline-block overflow-hidden font-mono text-sm">
-                    {{ header }} 
-                </th>
-            </tr>
-            <tr v-for="(row,i) in econtent.data" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row">
-                <td v-for="(data,field) in row" :key="field" v-on:click="editRow(row.id)" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
-                    {{ data }} 
-                </td>
-            </tr>
-        </table>        
+    <div v-bind:id="elements.query" class="p-1">
+        <textarea v-bind:id='elements.query_text' class="p2 w-full h-[300] text-mono" style="background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
     </div>
-    <div v-bind:id='econtent.footer' class="p-1 bg-[#333333] text-white">
-        <div class="float-left align-middle text-lg">
-            Row <span v-bind:innerHTML="econtent.fromRow"></span> to <span v-bind:innerHTML="econtent.toRow"></span> of <span v-bind:innerHTML="econtent.totalRows"></span>
-        </div> 
-        <div class="float-right align-middle text-lg">
-            Page <span v-bind:innerHTML="econtent.page"></span> of <span v-bind:innerHTML="econtent.pages"></span> 
-        </div>         
-        <div class="text-center">
-            <button v-on:click='contentFirst()' class='p-1 text-mono text-lg'> << </button>
-            <button v-on:click='contentPrev()' class='p-1 mr-1 text-mono text-lg'> < </button>
-            <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="econtent.page" />
-            <button v-on:click='contentNext()' class='p-1 ml-1 text-mono text-lg'> > </button>
-            <button v-on:click='contentLast()'  class='p-1 text-mono text-lg'> >> </button>
+    <div v-bind:id="elements.controls" class='bg-[#333333]'>
+        <div class="p-1 text-white inline-block">
+            <img v-on:click="runQuery($event)" class="cursor-pointer h-[24] inline-block" src="/images/admin/play.png" title="Run Query"/> 
+            <img v-on:click="saveQuery($event)" class="cursor-pointer h-[24] inline-block" src="/images/admin/save.png" title="Save Query"/> 
         </div>
-    </div>  
-</div>
-                
-<!-- ########################################################################### -->
+        <div v-bind:id='elements.nav' class='inline-block' style='vertical-align: bottom'>
+        </div>
+    </div>
 
-<div v-bind:id="edit.tab">
-    <form v-bind:id="edit.form" onsubmit="return false">
+    <div v-bind:id="list.tab">
+        <div v-bind:id="econtent.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
+            <div class="inline-block w-1/3">
+                Entity List
+            </div>
+            <div class="inline-block w-1/3">
+
+            </div>
+            <div class="inline-block w-1/3">
+
+            </div>
+        </div>       
+        <div v-bind:id='list.area' class="overflow-auto" style="height: 200px">
+            <table class="zebra-table"> 
+                <tr class="text-white bg-[#333333] whitespace-nowrap w-full">
+                    <th v-for="(header,j) in list.headers" :key="j" class="p-1 w-32 text-center inline-block overflow-hidden font-mono text-sm">
+                        {{ header }} 
+                    </th>
+                </tr>
+                <tr v-for="(entity,i) in list.entities" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row"  v-bind:title="entity.TABLE_NAME">
+                    <td v-for="(data,field) in entity" :key="field" v-on:click="expand(entity.TABLE_NAME)" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
+                        {{ data }} 
+                    </td>
+                </tr>
+            </table>        
+        </div>
+        <div v-bind:id='list.footer' class="p-1 bg-[#333333] text-white">
+            <div class="float-left align-middle text-lg">
+                Row <span v-bind:innerHTML="list.fromRow"></span> to <span v-bind:innerHTML="list.toRow"></span> of <span v-bind:innerHTML="list.totalRows"></span>
+            </div> 
+            <div class="float-right align-middle text-lg">
+                Page <span v-bind:innerHTML="list.page"></span> of <span v-bind:innerHTML="list.pages"></span> 
+            </div>         
+            <div class="text-center">
+                <button v-on:click='entityFirst()' class='p-1 text-mono text-lg'> << </button>
+                <button v-on:click='entityPrev()' class='p-1 mr-1 text-mono text-lg'> < </button>
+                <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="list.page" />
+                <button v-on:click='entityNext()' class='p-1 ml-1 text-mono text-lg'> > </button>
+                <button v-on:click='entityLast()'  class='p-1 text-mono text-lg'> >> </button>
+            </div>
+        </div>       
+    </div>
+                
+    <!-- ########################################################################### -->
+
+    <div v-bind:id="econtent.tab">
+        <div v-bind:id="econtent.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
+            <div class="inline-block w-1/3">
+                Namespace: {{ econtent.namespace }}
+            </div>
+            <div class="inline-block w-1/3">
+                Entity: {{ econtent.table }}
+            </div>
+            <div class="inline-block w-1/3">
+                Action: List Content
+            </div>
+        </div>    
+        <div v-bind:id='econtent.area' class="overflow-auto" style="height: 200px">
+            <table class="zebra-table w-full"> 
+                <tr class="text-white bg-[#333333] whitespace-nowrap w-full">
+                    <th v-for="(header,j) in econtent.headers" :key="j" class="p-1 w-32 text-center inline-block overflow-hidden font-mono text-sm">
+                        {{ header }} 
+                    </th>
+                </tr>
+                <tr v-for="(row,i) in econtent.data" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row">
+                    <td v-for="(data,field) in row" :key="field" v-on:click="editRow(row.id)" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
+                        {{ data }} 
+                    </td>
+                </tr>
+            </table>        
+        </div>
+        <div v-bind:id='econtent.footer' class="p-1 bg-[#333333] text-white">
+            <div class="float-left align-middle text-lg">
+                Row <span v-bind:innerHTML="econtent.fromRow"></span> to <span v-bind:innerHTML="econtent.toRow"></span> of <span v-bind:innerHTML="econtent.totalRows"></span>
+            </div> 
+            <div class="float-right align-middle text-lg">
+                Page <span v-bind:innerHTML="econtent.page"></span> of <span v-bind:innerHTML="econtent.pages"></span> 
+            </div>         
+            <div class="text-center">
+                <button v-on:click='contentFirst()' class='p-1 text-mono text-lg'> << </button>
+                <button v-on:click='contentPrev()' class='p-1 mr-1 text-mono text-lg'> < </button>
+                <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="econtent.page" />
+                <button v-on:click='contentNext()' class='p-1 ml-1 text-mono text-lg'> > </button>
+                <button v-on:click='contentLast()'  class='p-1 text-mono text-lg'> >> </button>
+            </div>
+        </div>  
+    </div>
+                
+    <!-- ########################################################################### -->
+
+    <div v-bind:id="edit.tab">
         <!-- COMMENT: The 'ee' below is for 'Entity Explorer' -->
-        <input type="hidden" name="ee_namespace" v-bind:value="econtent.namespace" />
-        <input type="hidden" name="ee_entity"    v-bind:value="econtent.table" />
         <div v-bind:id="edit.title" class="w-full bg-[#333333] p-3 text-xl" style="color: ghostwhite; font-weight: bolder">
             <div class="inline-block w-1/3">
                 Action: <span style="color: #DD0000">Edit Row {{ edit.id }}</span>
@@ -116,46 +136,46 @@
         <div v-bind:id='edit.footer' class="p-1 bg-[#333333] text-white text-center">
             <input type="submit" value="  SAVE  " class='p-1 text-mono text-lg'/>
         </div>  
-    </form>
-</div>
-
-<!-- ########################################################################### -->                    
-
-<div v-bind:id='query.tab'>
-    <div v-bind:id='query.area' class="overflow-auto" style="height: 200px">
-        <table class="zebra-table w-full"> 
-            <tr class="text-white bg-[#333333] whitespace-nowrap w-full">
-                <th v-for="(header,j) in query.headers" :key="j" class="p-1 w-32 text-center inline-block overflow-hidden font-mono text-sm">
-                    {{ header }} 
-                </th>
-            </tr>
-            <tr v-for="(row,i) in query.resultset" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row">
-                <td v-for="(data,field) in row" :key="field" v-on:click="edit(row.id)" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
-                    {{ data }} 
-                </td>
-            </tr>
-        </table>        
     </div>
-    <div v-bind:id='query.footer' class="p-1 bg-[#333333] text-white">
-        <div class="float-left align-middle text-lg">
-            Row <span v-bind:innerHTML="query.fromRow"></span> to <span v-bind:innerHTML="query.toRow"></span> of <span v-bind:innerHTML="query.totalRows"></span>
-        </div> 
-        <div class="float-right align-middle text-lg">
-            Page <span v-bind:innerHTML="query.page"></span> of <span v-bind:innerHTML="query.pages"></span> 
-        </div>         
-        <div class="text-center">
-            <button v-on:click='first()' class='p-1 text-mono text-lg'> << </button>
-            <button v-on:click='prev()' class='p-1 mr-1 text-mono text-lg'> < </button>
-            <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="query.page" />
-            <button v-on:click='next()' class='p-1 ml-1 text-mono text-lg'> > </button>
-            <button v-on:click='last()'  class='p-1 text-mono text-lg'> >> </button>
-        </div>
-    </div>  
-</div>
-                
-<!-- ########################################################################### -->                
 
-<div v-bind:id='query.edittab'>
- Edit Query Results Tab
-</div>                     
-                    
+    <!-- ########################################################################### -->                    
+
+    <div v-bind:id='query.tab'>
+        <div v-bind:id='query.area' class="overflow-auto" style="height: 200px">
+            <table class="zebra-table w-full"> 
+                <tr class="text-white bg-[#333333] whitespace-nowrap w-full">
+                    <th v-for="(header,j) in query.headers" :key="j" class="p-1 w-32 text-center inline-block overflow-hidden font-mono text-sm">
+                        {{ header }} 
+                    </th>
+                </tr>
+                <tr v-for="(row,i) in query.resultset" :key="i" class="whitespace-nowrap w-full cursor-pointer zebra-row">
+                    <td v-for="(data,field) in row" :key="field" v-on:click="editQueryRow(row.id)" class="w-32 text-center inline-block p-1 overflow-hidden font-mono text-sm text-cell" style="border: 1px solid transparent"> 
+                        {{ data }} 
+                    </td>
+                </tr>
+            </table>        
+        </div>
+        <div v-bind:id='query.footer' class="p-1 bg-[#333333] text-white">
+            <div class="float-left align-middle text-lg">
+                Row <span v-bind:innerHTML="query.fromRow"></span> to <span v-bind:innerHTML="query.toRow"></span> of <span v-bind:innerHTML="query.totalRows"></span>
+            </div> 
+            <div class="float-right align-middle text-lg">
+                Page <span v-bind:innerHTML="query.page"></span> of <span v-bind:innerHTML="query.pages"></span> 
+            </div>         
+            <div class="text-center">
+                <button v-on:click='first()' class='p-1 text-mono text-lg'> << </button>
+                <button v-on:click='prev()' class='p-1 mr-1 text-mono text-lg'> < </button>
+                <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="query.page" />
+                <button v-on:click='next()' class='p-1 ml-1 text-mono text-lg'> > </button>
+                <button v-on:click='last()'  class='p-1 text-mono text-lg'> >> </button>
+            </div>
+        </div>  
+    </div>
+                
+    <!-- ########################################################################### -->                
+
+    <div v-bind:id='query.edittab'>
+     Edit Query Results Tab
+    </div>                     
+                 
+</form>

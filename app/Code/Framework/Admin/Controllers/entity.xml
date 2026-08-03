@@ -14,7 +14,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         </action>
 
         <!-- ############################################################### -->
+        <action name="contexts" output="JSON" response="true" passalong="window_id">
+            <description>Lists the entities in our database</description>
+            <entity namespace='humble' class="entities" method="fetch" fields="namespace,entity" orderby='namespace=asc,entity=asc'>
+            </entity>
+        </action>       
 
+        <!-- ############################################################### -->
+        
         <action name="list" output="JSON" response="true" passalong="window_id">
             <description>Lists the entities in our database</description>
             <entity namespace='admin' rows='rows' page='page' class="users" method="entities" id="something" orderby='TABLE_NAME=DESC'>
