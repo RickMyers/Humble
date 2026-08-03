@@ -54,6 +54,9 @@ class Entity extends Model
                 }
                 $results['results_'.$idx] = $entity->_normalize(true)->query($qry);
             }
+        /*    foreach ($entity->headers() as $header => $val) {
+                header($header.': '.(is_array($val) ? json_encode($val) : $val));
+            }*/
         }
         return $results;
     }

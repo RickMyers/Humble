@@ -34,13 +34,16 @@
                     header:         false,
                     controls:       false,
                     query_text:     false,
+                    query_area:     false,
+                    context:        {},
                     footer:         0,
                     title:          0,
                     elements: {
+                        context:        'context_{{ window_id }}_{{ tab_id }}',
                         header:         'header_{{ window_id }}_{{ tab_id }}',
-                        controls:       'query_controls_{{ window_id }}_{{ tab_id }}',                
-                        query:          'query_{{ window_id }}_{{ tab_id }}',
+                        controls:       'query_controls_{{ window_id }}_{{ tab_id }}',  
                         nav:            'entity_query_nav_{{ window_id }}_{{ tab_id }}',
+                        query:          'query_{{ window_id }}_{{ tab_id }}',
                         query_text:     'query_textarea_{{ window_id }}_{{ tab_id }}'
                     },
                     list: {
@@ -85,10 +88,14 @@
                     }, 
                     query: {
                         tab:        'query_tab_{{ window_id }}_{{ tab_id }}',
-                        area:       'query_area_{{ window_id }}_{{ tab_id }}',                
                         footer:     'query_footer_{{ window_id }}_{{ tab_id }}',
                         title:      'query_title_{{ window_id }}_{{ tab_id }}',
-                        edittab:    'query_edit_tab_{{ window_id }}_{{ tab_id }}',                        
+                        results:    'query_results_{{ window_id }}_{{ tab_id }}',
+                        area:       'query_area_{{ window_id }}_{{ tab_id }}',
+                        edittab:    'query_edit_tab_{{ window_id }}_{{ tab_id }}',   
+                        edittitle:  'query_edit_title_{{ window_id }}_{{ tab_id }}',   
+                        editarea:   'query_edit_area_{{ window_id }}_{{ tab_id }}',
+                        editfooter: 'query_edit_footer_{{ window_id }}_{{ tab_id }}',
                         headers:    [],
                         resultset:  [],
                         page:       1,
@@ -98,7 +105,6 @@
                         toRow:      1,
                         totalRows:  0
                     },                    
-                    context:        {},
                     content:        []
                 }
             },
@@ -111,7 +117,8 @@
                 this.controls   = document.getElementById(this.elements.controls); 
                 this.query_text = document.getElementById(this.elements.query_text);
                 this.query_nav  = document.getElementById(this.elements.nav);
-                this.query      = document.getElementById(this.elements.query);
+                this.query_area = document.getElementById(this.elements.query);
+                this.results_area = document.getElementById(this.query.results);
                 new ResizeObserver(this.sizeIt).observe(this.query_text);
                 this.win.resize(this.sizeIt).resize();                
                 this.tabs       = new EasyTab(this.elements.nav,120);                
@@ -138,11 +145,14 @@
                     return val;
                 },
                 sizeIt() {
-                    let h = this.win.content.height() - this.header.offsetHeight - this.controls.offsetHeight - this.query.offsetHeight - explorer_nav - this.footer - this.title - 34;
+                 //   console.log(this.header.offsetHeight,this.controls.offsetHeight,this.query_area.offsetHeight,this.results_area.offsetHeight,this.footer,this.title,explorer_nav);
+                    let h = this.win.content.height() - this.header.offsetHeight - this.controls.offsetHeight - this.query_area.offsetHeight - explorer_nav - this.footer - this.title - 34;
+                  //  console.log(h);
                     $('#'+this.list.area).height(h);
                     $('#'+this.econtent.area).height(h);
                     $('#'+this.edit.area).height(h);
-                    $('#'+this.query.area).height(h);
+                    $('#'+this.query.results).height(h);
+                    $('#'+this.query.editarea).height(h);
                     //$('#'+this.list.footer).height()
                 },
                 entityFirst() {
@@ -263,6 +273,7 @@
                     }).post();
                 },
                 queryPagination(p) {
+                    console.log(p);
                     this.query.totalRows  = p.rows.total;
                     this.query.fromRow    = p.rows.from;
                     this.query.toRow      = p.rows.to;
@@ -289,20 +300,21 @@
                     this.query.page = this.query.pages;
                     this.run();                         
                 },
-                run() {
+                runQuery() {
                     let app          = this;
-                    //get a reference to the tabs array from EasyTabs[]
-                    //this.tabs.tabClick(1);
-                    let ao = new EasyAjax('/admin/entity/runquery');
-                    ao.add('context','').add('query',$(this.query_text).val()).add('rows',this.rows).add('page',this.page).then((response) => {
+                    let ao = new EasyAjax('/admin/entity/run');
+                    
+//                    console.log(this.query);
+                    ao.add('context',$('#'+this.elements.context).val()).add('query',$(this.query_text).val()).add('rows',this.query.rows).add('page',this.query.page).then((response) => {
+                        app.tabs.tabClick(3);
                         let rows     = JSON.parse(response);
                         let headers  = [];
                         for (var i in rows[0]) {
                             headers[headers.length] = i;
                         }
-                        app.headers      = headers;
-                        app.resultset    = rows;
-                        app.pagination(ao.getPagination());
+                        app.query.headers      = headers;
+                        app.query.resultset    = rows;
+                        app.queryPagination(ao.getPagination());
                     }).post();                    
                 },
 		editQueryRow(id) {
