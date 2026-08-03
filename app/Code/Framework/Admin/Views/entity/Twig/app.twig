@@ -39,12 +39,6 @@
     <div id='entity_area_{{ window_id }}_{{ tab_id }}' class="entity_area_{{ window_id }}_{{ tab_id }}">
 
     </div>
-    <div id='query_results_tab_{{ window_id }}_{{ tab_id }}' class="query_results_tab_{{ window_id }}_{{ tab_id }}">
-      Query Results Tab
-    </div>
-    <div id='query_edit_tab_{{ window_id }}_{{ tab_id }}' class="query_edit_tab_{{ window_id }}_{{ tab_id }}">
-     Edit Query Results Tab
-    </div>    
 </form>
 <script type="text/javascript">
     Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
@@ -68,6 +62,7 @@
                     tab_id:         '{{ tab_id }}',
                     win:            Desktop.window.list['{{ window_id }}'],
                     tabs:           false,                    
+                    nav:            'entity_query_nav_{{ window_id }}_{{ tab_id }}',
                     header:         header,
                     query:          query_area,
                     controls:       controls,
@@ -113,7 +108,21 @@
                         form:       'explorer_edit_form_{{ window_id }}_{{ tab_id }}',
                         fields:     [],
                         id:         0,
-                    },                            
+                    }, 
+                    query: {
+                        tab:        'query_tab_{{ window_id }}_{{ tab_id }}',
+                        edittab:    'query_edit_tab_{{ window_id }}_{{ tab_id }}',
+                        area:       'query_area_{{ window_id }}_{{ tab_id }}',                
+                        footer:     'query_footer_{{ window_id }}_{{ tab_id }}',
+                        headers:    [],
+                        resultset:  [],
+                        page:       1,
+                        pages:      0,
+                        rows:       20,
+                        fromRow:    1,
+                        toRow:      1,
+                        totalRows:  0
+                    },                    
                     context:        [],
                     content:        []
                 }
@@ -122,18 +131,15 @@
                 //alert('mounted');
                 this.win.resize(this.sizeIt).resize();
                 new ResizeObserver(this.sizeIt).observe(query_textarea);
-                /*
-                 * Now declare the tabs with easytab
-                 */
                 this.footer = ($('#'+this.list.footer).height() || $('#'+this.econtent.footer).height() || $('#'+this.edit.footer).height() );
                 this.title  = ($('#'+this.list.title).height()  || $('#'+this.econtent.title).height()  || $('#'+this.edit.title).height());
                 this.form   = $('#'+this.edit.form).get();
-                this.tabs   = new EasyTab('entity_query_nav_{{ window_id }}_{{ tab_id }}',120);
-                this.tabs.add('Entities',null,this.list.tab);
-                this.tabs.add('Content',null,this.econtent.tab);
-                this.tabs.add('Edit',null,this.edit.tab);
-                this.tabs.add('Query Results',null,'query_results_tab_{{ window_id }}_{{ tab_id }}');
-                this.tabs.add('Query Edit',null,'query_edit_tab_{{ window_id }}_{{ tab_id }}');
+                this.tabs   = new EasyTab(this.nav,120);
+                this.tabs.add('Entities'      ,null,this.list.tab);
+                this.tabs.add('Content'       ,null,this.econtent.tab);
+                this.tabs.add('Edit'          ,null,this.edit.tab);
+                this.tabs.add('Query Results' ,null,this.query.tab);
+                this.tabs.add('Query Edit'    ,null,this.query.edittab);
                 this.tabs.tabClick(0);
                 this.entities();
             },
@@ -256,44 +262,35 @@
                         Form.intercept($('#'+app.edit.form).get(),null,'/admin/entity/updaterow',null);                        
                     }).post();
                 },
-                cleanup() {
-                    //maybe do something?
-                }
-            }          
-        });
-        Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount(entity_area);
-    })(Desktop.window.list['{{ window_id }}']);
-    ((win) => {
-        let query_textarea  = $('.query_textarea_{{ window_id }}_{{ tab_id }}').get(0);
-        let query_area      = $('.query_{{ window_id }}_{{ tab_id }}').get(0);        
-        Humble.admin['query']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({  
-            template:   Humble.template('admin',"entity/query",true),
-            app:        null,            
-            data() {
-                return {
-                    window_id:      '{{ window_id }}',
-                    tab_id:         '{{ tab_id }}',
-                    win:            Desktop.window.list['{{ window_id }}'],
-                    tab:            'list_tab_{{ window_id }}_{{ tab_id }}',
-                    area:           'entity_list_{{ window_id }}_{{ tab_id }}',                
-                    footer:         'query_footer_{{ window_id }}_{{ tab_id }}',
-                    title:          'query_title_{{ window_id }}_{{ tab_id }}',
-                    headers:        [],
-                    resultset:      [],
-                    page:           1,
-                    pages:          0,
-                    rows:           20,
-                    fromRow:        1,
-                    toRow:          1,
-                    totalRows:      0
-                }
-            },
-            mounted() {
-                alert('Q Mounted');
-            },
-            methods: {
+                queryPagination(p) {
+                    this.query.totalRows  = p.rows.total;
+                    this.query.fromRow    = p.rows.from;
+                    this.query.toRow      = p.rows.to;
+                    this.query.page       = p.pages.current;
+                    this.query.pages      = p.pages.total;
+                },                  
+                queryFirst() {
+                    this.query.page = 1;
+                    this.run()                    
+                },
+                queryNext() {
+                    if (++this.query.page > this.query.pages) {
+                        this.query.page = 1;
+                    }
+                    this.run();                      
+                },
+                queryPrev() {
+                    if (--this.query.page < 1) {
+                        this.query.page = this.query.pages;
+                    }
+                    this.run();                   
+                },
+                queryLast() {
+                    this.query.page = this.query.pages;
+                    this.run();                         
+                },
                 run() {
-                    let app                 = this;
+                    let app          = this;
                     //get a reference to the tabs array from EasyTabs[]
                     //this.tabs.tabClick(1);
                     let ao = new EasyAjax('/admin/entity/runquery');
@@ -308,7 +305,7 @@
                         app.pagination(ao.getPagination());
                     }).post();                    
                 },
-				edit(id) {
+		edit(id) {
                     let app = this;
                     app.tabs.tabClick(5);
                     this.edit.id = id;
@@ -318,36 +315,12 @@
                         //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
                         //Form.intercept($('#'+app.edit.form).get(),null,'/admin/entity/updaterow',null);                        
                     }).post();				
-				},
-                pagination(p) {
-                    this.totalRows  = p.rows.total;
-                    this.fromRow    = p.rows.from;
-                    this.toRow      = p.rows.to;
-                    this.page       = p.pages.current;
-                    this.pages      = p.pages.total;
-                },                  
-                first() {
-                    this.page = 1;
-                    this.run()                    
-                },
-                next() {
-                    if (++this.page > this.pages) {
-                        this.page = 1;
-                    }
-                    this.run();                      
-                },
-                prev() {
-                    if (--this.page < 1) {
-                        this.page = this.pages;
-                    }
-                    this.run();                   
-                },
-                last() {
-                    this.page = this.pages;
-                    this.run();                         
+		},                
+                cleanup() {
+                    //maybe do something?
                 }
-            }
+            }          
         });
-        Humble.admin['query']['{{ window_id }}_{{ tab_id }}'].mount(query_area);
-    }); //(Desktop.window.list['{{ window_id }}']);
+        Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount(entity_area);
+    })(Desktop.window.list['{{ window_id }}']);
 </script>

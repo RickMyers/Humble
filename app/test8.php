@@ -21,13 +21,14 @@ try {
             $attrs[$tag][$prop] = $attr; 
         }
     }
-    print_r($attrs);
-    die();
     foreach ($struct as $tag => $properties) {
         $tags[$tag] = isset($tags[$tag]) ? $tags[$tag] : [ 'attributes' => [], 'children'=>[]];
-        foreach ($properties as $x => $y) {
-            $tags[$tag]['children'][$x] = [];
+        if ($attr       = $properties->attributes()) {
+            $tags[$tag]['attributes'] = $attr;
         }
+//        foreach ($properties as $x => $y) {
+ //           $tags[$tag]['children'][$x] = isset($attrs[$tag]) ? $attrs[$tag] : [];
+  //      }
     }
     print_r($tags);
 } catch (Exception $ex) {
