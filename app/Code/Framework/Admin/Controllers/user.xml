@@ -177,5 +177,6 @@
                 <parameter name="email" source="request" default="" />
             </model>
         </action>
+        
     </actions>
 </controller>

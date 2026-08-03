@@ -119,6 +119,11 @@
                 <parameter name="id" value="user_id" source="request" required="true" />
             </entity>
         </action> 
-            
+        <!-- ############################################################### -->
+        
+        <action name="recoverForm">
+            <description>A bogus password recover form for scrapers</description>
+        </action>
+                    
     </actions>
 </controller>
