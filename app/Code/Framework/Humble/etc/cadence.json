@@ -75,6 +75,13 @@
                     "launchWorkflows": true
                 },
                 "multiple": 2
+            },
+            "flags": {
+                "callbacks": {
+                    "applicationFlags": true,
+                    "moduleFlags": true
+                },
+                "multiple": 5
             }
         }           
     }

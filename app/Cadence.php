@@ -24,6 +24,10 @@ $first_time                 = [
     'configs'               => true,
     'system'                => true    
 ];
+$flags                      = [
+    "application"           => [],
+    "module"                => [],
+];
 $cadence_ctr                = 0;                                                //Lets count the beat
 $cadence                    = [];                                               //The JSON stored instructions for what to run and when
 $compiler                   = false;                                            //Singleton reference to the controller compiler
@@ -176,6 +180,28 @@ function recurseDirectory($dir=[]) {
         logMessage($dir.' was unreadable');
     }
     return $list;
+}
+//------------------------------------------------------------------------------
+function applicationFlags() {
+    global $flags, $project;
+}
+//------------------------------------------------------------------------------
+function moduleFlags() {
+    global $flags, $modules, $project;
+    foreach ($modules as $module) {
+        if ($project->namespace !== $module['namespace']) {
+            if (file_exists($file = 'Code/'.$module['package'].'/'.$module['module'].'/etc/flags.xml')) {
+                $file_time = filemtime($file);
+                $namespace = $module['namespace'];
+                $flags['modules'][$namespace] = isset($flags['modules'][$namespace]) ? $flags['modules'][$namespace] : $file_time;
+                if ($flags['modules'][$namespace] !== $file_time) {
+                    \Humble::cache('module_'.$namespace.'_flags',json_decode(json_encode(simplexml_load_file($file))));
+                    logMessage('Caching module '.$namespace.' flags');
+                    $flags['modules'][$module['namespace']] = $file_time;
+                }
+            }
+        }
+    }
 }
 //------------------------------------------------------------------------------
 function scanModel($file=false,$namespace=false) {
