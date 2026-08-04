@@ -100,4 +100,17 @@ class Entity extends Model
         }
         return $row_id;
     }
+    
+    /**
+     * Saves a query, someway, somewhere, somehow...
+     * 
+     * @param string $query
+     * @return $this
+     */
+    public function save($query=false) {
+        if ($query = ($query) ? $query : ($this->getQuery() ? $this->getQuery() : false)) {
+            
+        }
+        return $this;
+    }
 }

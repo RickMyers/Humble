@@ -10,7 +10,7 @@
         <div style="clear: both"></div>
     </div>
     <div v-bind:id="elements.query" class="p-1">
-        <textarea v-bind:id='elements.query_text' class="p2 w-full h-[300] text-mono" style="background-color: lightcyan; border: 1px solid #333; color: #333; font-size: .9em"></textarea>
+        <textarea v-bind:id='elements.query_text' class="p-2 w-full h-[300] text-mono text-lg" style="background-color: lightcyan; border: 1px solid #333; color: #333"></textarea>
     </div>
     <div v-bind:id="elements.controls" class='bg-[#333333]'>
         <div class="p-1 text-white inline-block">
@@ -56,9 +56,9 @@
             </div>         
             <div class="text-center">
                 <button v-on:click='entityFirst()' class='p-1 text-mono text-lg'> << </button>
-                <button v-on:click='entityPrev()' class='p-1 mr-1 text-mono text-lg'> < </button>
-                <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="list.page" />
-                <button v-on:click='entityNext()' class='p-1 ml-1 text-mono text-lg'> > </button>
+                <button v-on:click='entityPrev()'  class='p-1 mr-1 text-mono text-lg'> < </button>
+                <input v-on:change="entityJump($event)" type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="list.page" />
+                <button v-on:click='entityNext()'  class='p-1 ml-1 text-mono text-lg'> > </button>
                 <button v-on:click='entityLast()'  class='p-1 text-mono text-lg'> >> </button>
             </div>
         </div>       
@@ -101,9 +101,9 @@
             </div>         
             <div class="text-center">
                 <button v-on:click='contentFirst()' class='p-1 text-mono text-lg'> << </button>
-                <button v-on:click='contentPrev()' class='p-1 mr-1 text-mono text-lg'> < </button>
-                <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="econtent.page" />
-                <button v-on:click='contentNext()' class='p-1 ml-1 text-mono text-lg'> > </button>
+                <button v-on:click='contentPrev()'  class='p-1 mr-1 text-mono text-lg'> < </button>
+                <input v-on:change="contentJump($event)" type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="econtent.page" />
+                <button v-on:click='contentNext()'  class='p-1 ml-1 text-mono text-lg'> > </button>
                 <button v-on:click='contentLast()'  class='p-1 text-mono text-lg'> >> </button>
             </div>
         </div>  
@@ -170,7 +170,7 @@
             <div class="text-center">
                 <button v-on:click='queryFirst()' class='p-1 text-mono text-lg'> << </button>
                 <button v-on:click='queryPrev()'  class='p-1 mr-1 text-mono text-lg'> < </button>
-                <input type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="query.page" />
+                <input v-on:change="queryJump($event)" type="text" class="w-12 text-black text-center" style="background-color: lightcyan" v-bind:value="query.page" />
                 <button v-on:click='queryNext()'  class='p-1 ml-1 text-mono text-lg'> > </button>
                 <button v-on:click='queryLast()'  class='p-1 text-mono text-lg'> >> </button>
             </div>

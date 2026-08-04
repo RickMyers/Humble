@@ -35,6 +35,7 @@ app/composer.json
 app/filelaunch.php
 app/autoload.php
 app/launch.php
+app/Application.php
 app/AuthorizationEngine.php
 app/Cadence.php
 app/Curator.php

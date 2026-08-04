@@ -306,6 +306,14 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             </model>
         </action>
 
-
+        <!-- ############################################################### -->v
+        
+        <action name="genericdecision" blocking="off">
+            <description>Configuration for a generic placeholding decision workflow component</description>
+            <mongo namespace="paradigm" class="elements" id='element'>
+                <parameter name='id' source='post' default='' />
+            </mongo>            
+        </action>
+        
     </actions>
 </controller>

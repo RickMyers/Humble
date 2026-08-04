@@ -51,6 +51,11 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         
         <action name="save" blocking="off">
             <description>Saves a working query</description>
+            <model namespace="admin" class="entity" method="save">
+                <parameter name="query"     source="request" required="true" />
+                <parameter name="tab_id"    source="request" required="true" />
+                <parameter name="window_id" source="request" required="true" />
+            </model>
         </action>
         
         <!-- ############################################################### -->

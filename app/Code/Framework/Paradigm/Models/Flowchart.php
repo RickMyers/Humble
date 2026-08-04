@@ -98,4 +98,32 @@ class Flowchart extends Model
         }
         return $outcome;
     }
+    
+    /**
+     * A generic decision element
+     * 
+     * @workflow use(decision) configuration(/paradigm/workflow/genericdecision
+     * @param type $EVENT
+     * @return bool
+     */
+    public function genericDecision($EVENT=false) {
+        $result = false;
+        if ($EVENT) {
+            $data = $EVENT->load();
+            $cnfg = $EVENT->fetch();
+            
+            
+        }
+        
+        return $result;
+    }
+    /**
+     * A generic workflow process that does nothing
+     * 
+     * @workflow use(process)
+     * @param type $EVENT
+     */
+    public function stub($EVENT=false) {
+        
+    }
 }

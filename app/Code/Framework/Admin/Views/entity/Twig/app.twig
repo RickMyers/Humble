@@ -146,15 +146,12 @@
                     return val;
                 },
                 sizeIt() {
-                 //   console.log(this.header.offsetHeight,this.controls.offsetHeight,this.query_area.offsetHeight,this.results_area.offsetHeight,this.footer,this.title,explorer_nav);
                     let h = this.win.content.height() - this.header.offsetHeight - this.controls.offsetHeight - this.query_area.offsetHeight - explorer_nav - this.footer - this.title - 34;
-                  //  console.log(h);
                     $('#'+this.list.area).height(h);
                     $('#'+this.econtent.area).height(h);
                     $('#'+this.edit.area).height(h);
                     $('#'+this.query.results).height(h);
                     $('#'+this.query.editarea).height(h);
-                    //$('#'+this.list.footer).height()
                 },
                 entityFirst() {
                     this.list.page = 1;
@@ -176,6 +173,13 @@
                     this.list.page = this.list.pages;
                     this.entities();                    
                 },
+                entityJump(evt) {
+                    let page = evt.target.value;
+                    if (page) {
+                        this.list.page = ((page > 0) ? (page < this.list.pages ? page : this.list.pages) : 1);
+                        this.entities();
+                    }
+                },                
                 entityPagination(p) {
                     this.list.totalRows  = p.rows.total;
                     this.list.fromRow    = p.rows.from;
@@ -233,6 +237,13 @@
                 contentLast() {
                     this.econtent.page = this.econtent.pages;
                     this.expand();                    
+                },
+                contentJump(evt) {
+                    let page = evt.target.value;
+                    if (page) {
+                        this.econtent.page = ((page > 0) ? (page < this.econtent.pages ? page : this.econtent.pages) : 1);
+                        this.expand();
+                    }
                 },                
                 contentPagination(p) {
                     if (p) {
@@ -304,14 +315,19 @@
                     this.query.page = this.query.pages;
                     this.runQuery();                         
                 },
+                queryJump(evt) {
+                    let page = evt.target.value;
+                    if (page) {
+                        this.query.page = ((page > 0) ? (page < this.query.pages ? page : this.query.pages) : 1);
+                        this.runQuery();
+                    }
+                },
                 setEditContext(evt) {
                     this.edit_context = evt.target.value;
                 },
                 runQuery() {
-                    let app          = this;
-                    let ao = new EasyAjax('/admin/entity/run');
-                    
-//                    console.log(this.query);
+                    let app = this;
+                    let ao  = new EasyAjax('/admin/entity/run');
                     ao.add('context',$('#'+this.elements.context).val()).add('query',$(this.query_text).val()).add('rows',this.query.rows).add('page',this.query.page).then((response) => {
                         app.tabs.tabClick(3);
                         let rows     = JSON.parse(response);
@@ -325,6 +341,11 @@
 
                         
                     }).post();                    
+                },
+                saveQuery() {
+                    (new EasyAjax('/admin/entity/save')).add('window_id',this.window_id).add('tab_id',this.tab_id).add('query',$('#'+this.query_text).val()).then((response) => {
+                        console.log(response);
+                    }).post();
                 },
 		editQueryRow(id) {
                     let app = this;
