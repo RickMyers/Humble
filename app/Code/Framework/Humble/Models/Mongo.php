@@ -31,6 +31,8 @@ class Mongo  {
     private $_data          = [];
     private $_prefix        = null;
     private $_isVirtual     = null;
+    private $_page          = 1;
+    private $_rows          = 0;
 
     /**
      * Constructor, allows for the setting of mongoDB, otherwise uses default
@@ -49,6 +51,22 @@ class Mongo  {
         }
     }
 
+    public function rows($num=false) {
+        if ($num === false) {
+            return $this->_rows;
+        }
+        $this->_rows = $num;
+        return $this;
+    }
+
+    public function page($num=false) {
+        if ($num === false) {
+            return $this->_page;
+        }
+        $this->_page = $num;
+        return $this;
+    }
+    
     /**
      * Cute routine to convert the next letter after an underscore to uppercase while removing the underscore
      *
@@ -129,6 +147,9 @@ class Mongo  {
                     case "find"     :
                     case "read"     :
                         $rows   = [];
+                        if ($this->rows()) {
+                            
+                        }
                         foreach ($this->_collection->find($doc) as $row) {
                             $rows[] = $this->_map($row);
                         }
