@@ -1,0 +1,49 @@
+<style type="text/css">
+    .zebra-table tr:nth-child(even) {
+      background-color: #dadada;
+    }
+    .zebra-row {
+         border: 1px solid transparent; opacity: .75
+    }
+    .zebra-row:hover {
+        opacity: 1.0; border: 1px solid #777
+    }
+    .text-cell:hover {
+        border: 1px solid #777
+    }
+</style>
+<div id='data_dictionary_{{ window_id }}' class="data_dictionary_{{ window_id }}">
+</div>        
+<script type="text/javascript">
+    Humble.admin['dd'] = (!Humble.admin['dd']) ? {} : Humble.admin['dd'];
+    ((win)=> {
+        win._title('Data Dictionary');        
+        Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
+            template:   Humble.template('admin',"dd/home",true),
+            app:        null,
+            data() {
+                return {
+                    window_id:      '{{ window_id }}',
+                    win:            Desktop.window.list['{{ window_id }}'],
+                }
+            },
+            mounted() {
+                alert('mounted');
+            },
+            unmounted() {
+                this.cleanup();
+            },
+            methods: {
+                cleanup() {
+                    //maybe do something?
+                }
+            }          
+        });
+        Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'].mount(entity_area);
+        win._close(() => {
+            alert('closing!');
+            Humble.admin['dd']['{{ window_id }'].unmount();
+        });
+    })(Desktop.window.list['{{ window_id }}']);
+</script>
+

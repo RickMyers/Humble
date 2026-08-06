@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+Data Dictionary actions
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="dd" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="Off" response="true">
+        
+        <action name="home" passalong="window_id">
+            <description>The main page</description>
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
