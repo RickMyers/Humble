@@ -215,7 +215,7 @@ trait Base {
                 return $this->_unset($token);
             } else {
                 if ($this->is()==='model') {
-                    if (($retval = $this->_remoteProcedureCall($name)) === null) {
+                    if (($retval = $this->_remoteProcedureCall($name,$arguments)) === null) {
                         \Log::console("Undefined Method: ".$name." invoked from ".$this->className().".");
                     }
                     return $retval;

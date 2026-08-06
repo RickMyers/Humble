@@ -764,7 +764,7 @@ class Model implements HumbleComponent
      * @param type $name
      * @return varied
      */
-    protected function _remoteProcedureCall($name=false) {
+    protected function _remoteProcedureCall($name=false,$argument_list=null) {
         $retval = null;                                                         //Will only return a null if the RPC is not found
         if ($name && $this->_RPC()) {
             if (!\Singleton::mappings()) {
@@ -815,6 +815,9 @@ class Model implements HumbleComponent
                 } else {
                     if (isset($call['method']) && (strtoupper($call['method'])!=='SOAP')) {
                         $this->SOAP = Humble::model('humble/SOAP');
+                        if (isset($call['map']) && $call['map'] && $argument_list) {
+                            //map to the arguments list
+                        }
                         if (is_string($call['arguments']) && (substr($call['url'],strlen($call['url'])-1,1)=='+')) {  //this is special handling for those APIs that tack the arguments onto the end of the URI, like dictionary.com does
                             $method      = 'get'.ucfirst($call['arguments']);
                             $call['url'] = substr($call['url'],0,strlen($call['url'])-1).'/'.$this->$method();

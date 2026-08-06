@@ -3,6 +3,7 @@
     <url />
     <api-key />
     <api-var />
+    <map comment="any arguments passed will be passed to the arguments list" />
     <wsdl />
     <version /> 
     <operation /> 
