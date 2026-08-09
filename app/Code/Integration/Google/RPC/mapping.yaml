@@ -1,6 +1,7 @@
 ---
 geocodeLookup   :
   url             : https://maps.googleapis.com/maps/api/geocode/json
+  map             : address
   secure          : true
   api-key         : SM://geocodeApiKey
   api-var         : key

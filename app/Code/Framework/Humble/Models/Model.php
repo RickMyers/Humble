@@ -592,33 +592,32 @@ class Model implements HumbleComponent
      * @return array Processed args
      */
     protected function _processArguments($call) {
-        $args = [];
         $rpc  = $this->_RPC();  //capture current RPC state
         $this->_RPC(false);     //turn off RPC or might fall into an infinite loop
-        if (isset($call['arguments']) && $call['arguments']) {
+        if (isset($call['arguments']) && is_array($call['arguments'])) {
             foreach ($call['arguments'] as $var => $val) {
                 if (!is_numeric($var)) {
                     if ($val && (trim($val) != '') && (!isset($this->_data[$var]))) {
-                        $args[$var] = $val;         //this handles default processing
+                        $call['arguments'][$var] = $val;         //this handles default processing
                     } else {
                         $method = 'get'.$this->underscoreToCamelCase($var,true);
-                        $args[$var] = $this->$method();
+                        $call['arguments'][$var] = $this->$method();
                     }
                 } else {
                     $method = 'get'.$this->underscoreToCamelCase($val,true);
-                    $args[$val] = $this->$method();
+                    $call['arguments'][$val] = $this->$method();
                 }
             }
         }
         if (isset($call['templates'])) {
-            foreach ($args as $var => $val) {
+            foreach ($call['arguments'] as $var => $val) {
                 if (isset($call['templates'][$var])) {
-                    $args[$var] = $this->templateSubstitution($call['templates'][$var],$args);
+                    $call['arguments'][$var] = $this->templateSubstitution($call['templates'][$var],$call['arguments']);
                 }
             }
         }
         $this->_RPC($rpc);  //restore RPC state
-        return $args;
+        return $call;
     }
 
     /**
@@ -757,6 +756,36 @@ class Model implements HumbleComponent
         return $call;
     }
 
+    /**
+     * If you passed any arguments, potentially map those argument values to the arguments array of the RPC 
+     * 
+     * @param array $call
+     * @param mixed $argument_list
+     * @return array
+     */
+    protected function processMappedArguments($call=false,$argument_list=false) {
+        if ($call && $argument_list && count($argument_list)) {
+            $parms = [];
+            if (is_string($call['map'])) {
+                foreach (explode(',',$call['map']) as $idx => $var) {
+                    $parms[$var] = null;
+                }
+            } else if (is_array($call['map'])) {
+                $ctx = 0;
+                foreach ($call['map'] as $v1 => $v2) {
+                    $parms[is_int($v1) ? $v2 : $v1] = $argument_list[$ctx++] ?? null;
+                }
+            }
+            if (isset($call['arguments'])) {
+                foreach ($call['arguments'] as $var => $val) {
+                    if (isset($parms[$var])) {
+                        $call['arguments'][$var] = $parms[$var];
+                    }
+                }
+            }
+        }
+        return $call;
+    }
     
     /**
      * Identifies if a call is available and pre-processes the call options
@@ -792,7 +821,7 @@ class Model implements HumbleComponent
             }
             if (isset(\Singleton::mappings()[$name])) {
                 $retval  = false;                                               //RPC call found, so we set default return value to false
-                $call    = $this->processSecrets($this->processEnvironmentSpecificOptions(\Singleton::mappings()[$name]));
+                $call    = $this->processSecrets($this->processEnvironmentSpecificOptions($this->processMappedArguments(\Singleton::mappings()[$name], $argument_list)));
                 if ($this->_DEBUG = (isset($call['DEBUG']) && ($call['DEBUG']===true))) {
                     $this->addToDebugReport([
                         'call' => [
@@ -801,7 +830,6 @@ class Model implements HumbleComponent
                         ]
                     ]);
                 }
-                $args    = [];
                 if (isset($call['authentication'])) {
                     switch (strtoupper($call['authentication'])) {
                         case "OAUTH"    :
@@ -813,16 +841,12 @@ class Model implements HumbleComponent
                         default         :   break;
                     }
                 } else {
-                    if (isset($call['method']) && (strtoupper($call['method'])!=='SOAP')) {
-                        $this->SOAP = Humble::model('humble/SOAP');
-                        if (isset($call['map']) && $call['map'] && $argument_list) {
-                            //map to the arguments list
-                        }
+                    if (isset($call['method']) && (strtoupper($call['method']) !== 'SOAP')) {
                         if (is_string($call['arguments']) && (substr($call['url'],strlen($call['url'])-1,1)=='+')) {  //this is special handling for those APIs that tack the arguments onto the end of the URI, like dictionary.com does
                             $method      = 'get'.ucfirst($call['arguments']);
                             $call['url'] = substr($call['url'],0,strlen($call['url'])-1).'/'.$this->$method();
                         } else {
-                            $args        = array_merge($args,$this->_processArguments($call));
+                            $call        = $this->_processArguments($call);
                         }
                         $userid = (isset($call['userid'])   && $call['userid'])     ? $call['userid']   : false;
                         $passwd = (isset($call['password']) && $call['password'])   ? $call['password'] : false;
@@ -839,17 +863,19 @@ class Model implements HumbleComponent
                                     Humble::cacheEngine($engine);
                                 }
                             }
-                            if ($retval = $this->pullFromCache($this->_namespace(),$name,$args)) {
+                            if ($retval = $this->pullFromCache($this->_namespace(),$name,$call['arguments'])) {
                                 return $retval;                                 //this ain't the way m8
                             }
                         }
-                        $retval = (isset($call['CURL']) && ($call['CURL'])) ? $this->_curl($call,$args,$secure,$userid,$passwd) : $this->_hurl($call['url'],$args,$call,$secure,$userid,$passwd);
+                        //print_r($call);die("bd\n");
+                        $retval = (isset($call['CURL']) && ($call['CURL'])) ? $this->_curl($call,$call['arguments'],$secure,$userid,$passwd) : $this->_hurl($call['url'],$call['arguments'],$call,$secure,$userid,$passwd);
                         if (isset($call['cache'])) {
-                            $this->pushToCache($this->_namespace(),$name,$args,$expire,$retval);
+                            $this->pushToCache($this->_namespace(),$name,$call['arguments'],$expire,$retval);
                         }
                         $retval = ($retval === null) ? false : $retval;         //Only return null when the call wasn't found in the mapping file, otherwise return false
                     } else {
                         //lather it up...
+                        $this->SOAP = Humble::model('humble/SOAP');
                         $secure     = (isset($call['secure'])   && $call['secure'])     ? $call['secure']    : false;
                         $wsdl       = (isset($call['wsdl'])     && $call['wsdl'])       ? $call['wsdl']      : false;
                         $url        = (isset($call['url'])      && $call['url'])        ? $call['url']       : false;
@@ -861,19 +887,19 @@ class Model implements HumbleComponent
                         //generateWSSecurityHeader
                         $options = ['cache_wsdl'=>WSDL_CACHE_NONE, 'trace'=>1, 'debug'=> 1, 'exceptions'=>0];
                         if ($url) {
-                            $options['location']    =   $url;
+                            $options['location']      =   $url;
                         }
                         if ($version) {
-                            $options['soap_version']    =   $version;
+                            $options['soap_version']  =   $version;
                         }
-                        if (isset($call['username']) && ($call['username'])) {
-                            $options['username'] = $call['username'];
+                        if (isset($call['username'])  && ($call['username'])) {
+                            $options['username']      = $call['username'];
                         }
                         if ((isset($call['password']) && $call['password'])) {
-                            $options['password'] = $call['password'];
+                            $options['password']      = $call['password'];
                         }
                         //
-                        $headers = [];
+                        $headers = []; $client = false;
                         if (isset($call['method']) && (strtoupper($call['method']==='SOAP'))) {
                             if (isset($call['client']) && ($call['client'])) {
                                 $client = Humble::getClass($call['client'].'/SoapClient')->init($wsdl,$options);
@@ -886,7 +912,7 @@ class Model implements HumbleComponent
                             if (isset($call['header']) && count($call['header'])) {
                                 foreach ($call['header'] as $hdr => $hdropts) {
                                     $understand = (isset($hdropts['understand']) && $hdropts['understand']);
-                                    $headers[] = new \SoapHeader($hdropts['namespace'],
+                                    $headers[]  = new \SoapHeader($hdropts['namespace'],
                                         $hdr,
                                         $hdropts['value'],
                                         $understand);
@@ -900,12 +926,11 @@ class Model implements HumbleComponent
                                 $client->__setSoapHeaders($headers);
                             }
 
-                            $args   = $this->SOAP->_processSoapArguments($call['arguments'],(isset($call['uc-first']) && $call['uc-first']));
-
+                            $call['arguments']   = $this->SOAP->_processSoapArguments($call['arguments'],(isset($call['uc-first']) && $call['uc-first']));
                             if (isset($call['url']) && $call['url']) {
-                                $retval = $client->__soapCall($call['operation'],$args);
+                                $retval = $client->__soapCall($call['operation'],$call['arguments']);
                             } else {
-                                $retval = $client->{$call['operation']}($args);
+                                $retval = $client->{$call['operation']}($call['arguments']);
                             }
                             //uncomment this next line to help in debugging
                             //$this->SOAP->writeSoapHeaders($client,$call['operation'],$retval);
