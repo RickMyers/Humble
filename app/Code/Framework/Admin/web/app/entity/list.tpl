@@ -190,7 +190,7 @@
         </div> 
         <div v-bind:id='query.editarea' class="overflow-auto" style="height: 200px">
             <table class="zebra-table w-full"> 
-                <tr v-for="(val,field) in edit.fields" :key="field" class="whitespace-nowrap w-full cursor-pointer zebra-row">
+                <tr v-for="(val,field) in query.edit.row" :key="field" class="whitespace-nowrap w-full cursor-pointer zebra-row">
                     <td class="text-right text-bold mr-2 w-1/3">
                         <b>{{ field }}</b>:&nbsp;
                     </td>

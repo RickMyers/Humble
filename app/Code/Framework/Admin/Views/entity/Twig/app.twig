@@ -99,6 +99,9 @@
                         editfooter: 'query_edit_footer_{{ window_id }}_{{ tab_id }}',
                         headers:    [],
                         resultset:  [],
+                        edit: {
+                            row:     []
+                        },
                         page:       1,
                         pages:      0,
                         rows:       20,
@@ -348,15 +351,19 @@
                     }).post();
                 },
 		editQueryRow(id) {
-                    let app = this;
-                    app.tabs.tabClick(5);
-                    this.edit.id = id;
-                    (new EasyAjax('/admin/entity/queryedit')).add('id',id).add('entity',getTableFromContext).then((response) => {
-                        app.fields = JSON.parse(response);
-                        //now set the form intercept
-                        //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-                        //Form.intercept($('#'+app.edit.form).get(),null,'/admin/entity/updaterow',null);                        
-                    }).post();				
+                    let app      = this;                    
+                    if (this.edit_context) {
+                        app.edit.id = id;
+                        app.tabs.tabClick(4);
+                        (new EasyAjax('/admin/entity/loadrow')).add('id',id).add('entity',this.edit_context).then((response) => {
+                            app.query.edit.row = JSON.parse(response);
+                            //now set the form intercept
+                            //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
+                            //Form.intercept($('#'+app.edit.form).get(),null,'/admin/entity/updaterow',null);                        
+                        }).post();		
+                    } else {
+                        alert('You must set the context by choosing the entity up in the top right corner that this applies to');
+                    }
 		},                
                 cleanup() {
                     //maybe do something?

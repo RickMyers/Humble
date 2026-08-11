@@ -113,4 +113,23 @@ class Entity extends Model
         }
         return $this;
     }
-}
+    
+    /**
+     * Returns a single row for editing
+     * 
+     * @param string $entity
+     * @param int $id
+     * @return mixed
+     */
+    public function loadRow($entity=false,$id=false) {
+        $entity    = ($entity)    ? $entity     : ($this->getEntity()    ? $this->getEntity()    : false);
+        $id        = ($id)        ? $id         : ($this->getId()        ? $this->getId()        : false);
+        $result    = [];
+        if ($entity && $id) {
+            $parts  = explode('/',str_replace('_','/',$entity));
+            $ns     = array_shift($parts);
+            $result = Humble::entity($ns.'/'.implode('/',$parts))->setId($id)->load();
+        }
+        return $result;
+    }
+} 

@@ -14,6 +14,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
         </action>
 
         <!-- ############################################################### -->
+        
         <action name="contexts" output="JSON" response="true" passalong="window_id">
             <description>Lists the entities in our database</description>
             <entity namespace='humble' class="entities" method="fetch" fields="namespace,entity" orderby='namespace=asc,entity=asc'>
@@ -93,6 +94,15 @@ For Controller reference, please see "Anatomy of a Controller" at https://www.hu
             </model>
         </action>
         
+        <!-- ############################################################### -->
+        
+        <action name="loadrow" blocking="off" response="true" output="JSON">
+            <description>Edit a row from a query</description>
+            <model namespace="admin" class="entity" id="entity" method="loadRow">
+                <parameter name="entity"    source="request" required="true" />
+                <parameter name="id"        source="request" required="true" />
+            </model>
+        </action>
         
     </actions>
 </controller>
