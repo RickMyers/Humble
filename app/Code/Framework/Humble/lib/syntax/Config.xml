@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<config> 
+    <namespace>
+        <version format="version" />
+        <title type="string" />
+        <description type="string" />
+        <author>
+            <name  type="string" />
+            <email format="email" />
+        </author>
+        <module>
+            <name/>
+            <weight   type="int" />
+            <required type="boolean" />
+            <workflow type="boolean" />
+            <package  type="string" />
+            <use      type="string" options="Smarty,Twig,Latte,Blade,TBS,PHP,PHPTal,Rain3,Savant3,Slim,Mustache,Dwoo,Volt,Plates,Pug" />
+        </module> 
+        <structure>     
+            <models>
+                <source type="string" />
+            </models>
+            <config>
+                <source type="string" />
+            </config>
+            <helpers>
+                <source type="string" />
+            </helpers>
+            <controllers>
+                <source type="string" />
+                <cache  type="string" />
+            </controllers>
+            <schema>
+                <install type="string" />
+                <update  type="string" />
+                <layout  type="string" />
+            </schema>
+            <configuration>
+                <source type="string" />
+            </configuration>
+            <views>
+                <source type="string" />
+                <cache  type="string" />
+            </views>
+            <images>
+                <source type="string" />
+                <cache  type="string" />
+            </images>
+            <entities>
+                <source type="string" />
+            </entities>
+            <resources>
+                <sql type="string" />
+                <js  type="string" />
+                <templates type="string" />
+            </resources>
+            <RPC>
+                <source type="string" />
+            </RPC>
+        </structure>
+        <orm>
+            <prefix   type="string" />
+            <mongodb  type="string" />
+            <entities repeats="true"  type="node" attributes="polyglot:type=boolean,alias:type=string,database:type=string" />
+        </orm>
+        <events   repeats="true" type="node" />
+        <webhooks repeats="true" type="node" />
+        <edits    repeats="true" type="string" />
+        <web      repeats="true" type="node" children="css,js" />
+    </namespace>
+</config>
