@@ -54,6 +54,17 @@ g  :
     parameters:
         required:
         optional:
+cnfg  : 
+    title: Workflow Configuration Template
+    description: Create a workflow configuration template
+    usage:
+        linux:   sudo sh ./humble.sh --cnfg uri=namespace/controller/template
+        windows: humble --cnfg uri=namespace/controller/template        
+    function : componentConfigurationTemplate
+    parameters:
+        required: 
+          uri: URI pointing to configuration page
+        optional:          
 sc|syntax  : 
     title: Controller Syntax Check
     description: Syntax check a controller

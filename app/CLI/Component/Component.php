@@ -405,4 +405,39 @@ class Component extends CLI
             
         }
     }
+    
+    /**
+     * Checks for the existence of a controller, creating it if need be
+     * 
+     * @param array $module
+     * @param array $uri
+     * @return boolean
+     */
+    protected static function controllerExistsCheck($module=[],$uri=[]) {
+        if (!file_exists($controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$uri[1].'.xml')) {
+            $cmd = 'php CLI.php --bc ns='.$uri[0].' nm='.$uri[1].' ac='.$uri[2];
+            $results = exec($cmd);
+            //create controller, add the element
+        }
+        return file_exists($controller);
+    }
+    
+    public static function componentConfigurationTemplate($URI=false) {
+        $args = self::arguments();
+        if (isset($args['uri'])) {
+            $parts = explode('/',(substr($args['uri'],0,1)=='/') ? substr($args['uri'],1) : $args['uri']);
+            print_r($parts);
+            if ($module = \Humble::module($parts[0])) {
+                if (self::controllerExistsCheck($module,$parts)) {
+                    print("Doing tailor now\n");
+                } else {
+                    die("Error while creating controller [".$parts[1]."]\n");
+                }
+            } else {
+                die("Invalid Namespace [".$parts[0]."]\n");
+            }
+        } else {
+            die("Minimum arguments were not passed [uri]\n");
+        }
+    }
 }
