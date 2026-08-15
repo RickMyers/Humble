@@ -132,4 +132,5 @@ User-agent: YandexAdditional
 User-agent: YandexAdditionalBot
 User-agent: YouBot
 User-agent: ZanistaBot
+User-agent: *
 Disallow: /
