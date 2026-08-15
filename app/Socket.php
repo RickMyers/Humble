@@ -25,10 +25,13 @@ class Socket {
         $ctr    = 0;
         while ($run) {
             socket_listen($this->socket);
-            $this->client = socket_accept($this->socket);
-            $linger = ['l_linger' => 0, 'l_onoff' => 1];
+            $this->client  = socket_accept($this->socket);
+            $linger        = [
+                'l_linger' => 0,
+                'l_onoff'  => 1
+            ];
             socket_set_option($this->client, SOL_SOCKET, SO_LINGER, $linger);        
-            $data   = socket_read($this->client, 1024);
+            $data          = socket_read($this->client, 1024);
             if (($data === false) || ($data === '')) {
                 die('End of data encountered, terminating'."\n");
             }
