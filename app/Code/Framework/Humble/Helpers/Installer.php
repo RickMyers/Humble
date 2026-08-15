@@ -289,7 +289,11 @@ SQL;
     }
     
     /**
-     *
+     * 
+     * 
+     * @param object $orm
+     * @param string $prefix
+     * @return $this
      */
     protected function storeEntities($orm,$prefix=false)    {
       $environment  = \Singleton::getEnvironment();
@@ -302,12 +306,13 @@ SQL;
             $data     = $entity->attributes();
             $polyglot = isset($data['polyglot']) ? $data['polyglot'] : 'N';
             $actual   = isset($data['actual'])   ? $data['actual']   : null;
+            $database = isset($data['database']) ? $data['database'] : null;
             $alias    = isset($data['alias'])    ? $data['alias']    : '';
             $query    = <<<SQL
                     insert into humble_entities
-                        (namespace, entity, actual, polyglot, `alias`)
+                        (namespace, entity, actual, `database`, polyglot, `alias`)
                     values
-                        ('{$this->namespace}','{$name}','{$actual}','{$polyglot}','{$alias}')
+                        ('{$this->namespace}','{$name}','{$actual}','{$database}','{$polyglot}','{$alias}')
 SQL;
             $this->_db->query($query);
             $table     = ($actual) ? $actual : $prefix.$name;
@@ -317,16 +322,17 @@ SQL;
             $results   = $this->_db->query($query);
             if ($results) {
                 foreach ($results as $rKey => $row) {
-                    $col   = $row['Column_name'];
-                    $query = <<<SQL
-                            SELECT extra FROM  information_schema.COLUMNS WHERE table_schema = '{$environment->getDatabase()}' AND TABLE_NAME = '{$table}' AND column_name = '{$col}'
+                    $col      = $row['Column_name'];
+                    $database = ($database) ? $database : $environment->getDatabase();
+                    $query    = <<<SQL
+                            SELECT extra FROM  information_schema.COLUMNS WHERE table_schema = '{$database}' AND TABLE_NAME = '{$table}' AND column_name = '{$col}'
     SQL;
-                    $data  = $this->_db->query($query);
-                    $inc   = 'N';
+                    $data     = $this->_db->query($query);
+                    $inc      = 'N';
                     if (isset($data[0]['extra'])) {
-                        $inc = ($data[0]['extra']=="auto_increment") ? 'Y' : 'N';
+                        $inc  = ($data[0]['extra']=="auto_increment") ? 'Y' : 'N';
                     }
-                    $query = <<<SQL
+                    $query    = <<<SQL
                            insert into humble_entity_keys
                               (namespace,entity,`key`,auto_inc)
                            values
@@ -335,7 +341,7 @@ SQL;
                         $this->_db->query($query);
                     }
                     //now get a list of columns that are non-key.  If you try to save a field that isn't in this list, it will get redirected to a mongodb collection
-                    $query = <<<SQL
+                    $query    = <<<SQL
                         SHOW COLUMNS IN {$table} WHERE `Key` != 'PRI'
     SQL;
                     $results = $this->_db->query($query);
