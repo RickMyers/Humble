@@ -429,6 +429,15 @@ class Component extends CLI
             print_r($parts);
             if ($module = \Humble::module($parts[0])) {
                 if (self::controllerExistsCheck($module,$parts)) {
+                    $project = \Environment::project();
+                    $mod     = Humble::module($project['namespace']);
+                    $file    = file_exists($file = 'Code/'.$mod['package'].'/'.$mod['module'].'/etc/template.tpl') ? $file : 'Code/Framework/Humble/etc/template.tpl';
+                    $dest    = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$parts[1].'/Smarty/'.$parts[2].'.tpl';
+                    //must make sure directory exists...  
+                    copy($file,);
+                    //Look for template in project etc folder (or lib?)
+                    //if not found, use the one from Humble
+                    //Tailor the controller to include the mongo code necessary to support component configuration
                     print("Doing tailor now\n");
                 } else {
                     die("Error while creating controller [".$parts[1]."]\n");
