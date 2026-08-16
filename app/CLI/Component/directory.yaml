@@ -5,7 +5,7 @@ bc :
     usage:
         linux:   sudo sh ./humble.sh --bc ns=humble nm=test ac=page use=smarty3
         windows: humble --bc file=path_to_file        
-    function : build
+    function : buildController
     parameters:
         required:
             namespace|ns: Namespace of module is required
@@ -14,7 +14,7 @@ bc :
         optional:
             description|desc: Description of controller
             action_description|ad: Description for action
-            templater|ts|use: The templater to use, if not specified will use default
+            engine|templater|ts|use: The templater to use, if not specified will use default
 cm : 
     title: Create Component
     description: Creates a Component (Model Helper Entity)

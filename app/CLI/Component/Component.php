@@ -21,7 +21,7 @@ class Component extends CLI
      * 
      * @return type
      */
-    public static function build() {
+    public static function buildController() {
         $util = Humble::model('admin/utility',true);
         foreach (self::arguments() as $field => $value) {
             $method  = 'set'.self::underscoreToCamelCase($field,true);
@@ -415,30 +415,34 @@ class Component extends CLI
      */
     protected static function controllerExistsCheck($module=[],$uri=[]) {
         if (!file_exists($controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$uri[1].'.xml')) {
-            $cmd = 'php CLI.php --bc ns='.$uri[0].' nm='.$uri[1].' ac='.$uri[2];
+            $cmd = 'php CLI.php --bc ns='.$uri[0].' nm='.$uri[1].' ac='.$uri[2].' use=Smarty';
             $results = exec($cmd);
             //create controller, add the element
         }
         return file_exists($controller);
     }
-    
+
+    /**
+     * 
+     * @param string $URI (optional);
+     */
     public static function componentConfigurationTemplate($URI=false) {
         $args = self::arguments();
-        if (isset($args['uri'])) {
-            $parts = explode('/',(substr($args['uri'],0,1)=='/') ? substr($args['uri'],1) : $args['uri']);
-            print_r($parts);
+        if ($uri  = isset($args['uri']) ? $args['uri'] : ($URI ? $URI : false)) {
+            $parts = explode('/',(substr($uri,0,1) === '/') ? substr($uri,1) : $uri);
             if ($module = \Humble::module($parts[0])) {
                 if (self::controllerExistsCheck($module,$parts)) {
-                    $project = \Environment::project();
-                    $mod     = Humble::module($project['namespace']);
-                    $file    = file_exists($file = 'Code/'.$mod['package'].'/'.$mod['module'].'/etc/template.tpl') ? $file : 'Code/Framework/Humble/etc/template.tpl';
-                    $dest    = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$parts[1].'/Smarty/'.$parts[2].'.tpl';
-                    //must make sure directory exists...  
-                    copy($file,);
-                    //Look for template in project etc folder (or lib?)
-                    //if not found, use the one from Humble
+                    $project    = \Environment::project();
+                    $mod        = Humble::module($project->namespace);
+                    $file       = file_exists($file = 'Code/'.$mod['package'].'/'.$mod['module'].'/etc/template.tpl') ? $file : 'Code/Framework/Humble/etc/template.tpl';
+                    if (!is_dir($dir        = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$parts[1].'/Smarty')) {
+                        mkdir($dir,0775,true);    
+                    }
+                    copy($file,$dir.'/'.$parts[2].'.tpl');
+                    if (file_exists($controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$parts[1].'.xml')) {
+                        print("Doing tailor now\n");
+                    }
                     //Tailor the controller to include the mongo code necessary to support component configuration
-                    print("Doing tailor now\n");
                 } else {
                     die("Error while creating controller [".$parts[1]."]\n");
                 }

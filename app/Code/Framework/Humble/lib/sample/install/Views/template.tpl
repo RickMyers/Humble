@@ -49,12 +49,14 @@
     <tr>
         <td colspan="3" align="center" valign="middle">
             <!-- ########################## FORM SECTION ########################################-->
-            <form name="config-form-{$data.id}" id="config-form-{$data.id}" onsubmit="return false">
+            <form name="form-{$data.id}" id="form-{$data.id}" onsubmit="return false">
                 <input type="hidden" name="id" value="{$data.id}" />             <!-- Leave this As-Is -->
                 <input type="hidden" name="window_id" value="{$window_id}" />    <!-- Leave this As-Is -->
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
                     <!--
                         PUT YOUR CONFIGURATION INSTRUCTIONS HERE
+                    
+                        Tutorial: https://humbleprogramming.com/pages/ComponentConfiguration.htmls
                     -->
                     Field 1: <input class='paradigm-config-form-field' type="text" name="field_1_name"  value="{if (isset($data.field_1_name))}{$data.field_1_name}{/if}" /><br /><br >
                     Field 2: <input class='paradigm-config-form-field' type="text" name="field_2_name"  value="{if (isset($data.field_2_name))}{$data.field_2_name}{/if}" /><br /><br >
@@ -77,5 +79,5 @@
 <script type="text/javascript">
     //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
     //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    Form.intercept($('#config-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+    Form.intercept($('#form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
 </script>
