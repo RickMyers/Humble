@@ -407,6 +407,54 @@ class Component extends CLI
     }
     
     /**
+     * Creates and returns a parameter tag
+     * 
+     * @param type $dom
+     * @return type
+     */
+    private static function injectParameterTag($dom) {
+        $parameter = $dom->createElement('parameter');
+        foreach ([ 'name' => 'id', 'source' => 'post', 'default' => '' ] as $attr => $value) {
+            $parm        = $dom->createAttribute($attr);
+            $parm->value = $value;
+            $parameter->appendChild($parm);                                
+        }        
+        return $parameter;
+    }
+    
+    /**
+     * Creates and return the mongo ORM tag, adding in the parameter tag
+     * 
+     * @param type $dom
+     * @return type
+     */
+    protected static function injectMongoTag($dom) {
+        $mongo = $dom->createElement('mongo');
+        foreach ([ 'namespace' => 'paradigm', 'class' => 'elements', 'id' => 'element' ] as $attr => $value) {
+            $parm        = $dom->createAttribute($attr);
+            $parm->value = $value;
+            $mongo->appendChild($parm);                                
+        }
+        $mongo->append(self::injectParameterTag($dom));
+        return $mongo;
+    }
+    
+    protected static function recurseNodes(&$nodeList,$dom,$action=false) {
+        foreach ($nodeList->childNodes as $node) {
+            if ($node->localName == 'action') {
+                foreach ($node->attributes as $var => $val) {
+                    if (($var === 'name') && ($val->nodeValue === $action)) {
+                        $node->append(self::injectMongoTag($dom));
+                    }
+                }
+            }
+            if ($node && $node->hasChildNodes()) {
+                self::recurseNodes($node,$dom,$action);
+            }              
+        }
+    }
+    
+    /**
      * Checks for the existence of a controller, creating it if need be
      * 
      * @param array $module
@@ -440,6 +488,17 @@ class Component extends CLI
                     }
                     copy($file,$dir.'/'.$parts[2].'.tpl');
                     if (file_exists($controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$parts[1].'.xml')) {
+                        $xml = new DOMDocument('1.0');
+                        $xml->preserveWhiteSpace = true;
+                        $xml->formatOutput = true; 
+                        $xml->load($controller); 
+                        foreach ($xml->childNodes as $node) {
+                            if ($node && $node->hasChildNodes()) {
+                                self::recurseNodes($node,$xml,$parts[2]);
+                            }  
+                        }
+                        $dest   = 'Code/Framework/Admin/Controllers/testie2.xml';
+                        $xml->save($dest);                        
                         print("Doing tailor now\n");
                     }
                     //Tailor the controller to include the mongo code necessary to support component configuration
