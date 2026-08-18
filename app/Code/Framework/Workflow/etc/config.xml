@@ -76,6 +76,7 @@
             <io>Workflow/web/edits/io.json</io>
             <exception>Workflow/web/edits/exception.json</exception>
             <adhocexception>Workflow/web/edits/adhocexception.json</adhocexception>
+            <webservice>Workflow/web/edits/webservice.json</webservice>
         </edits>        
         <web>
             <common>

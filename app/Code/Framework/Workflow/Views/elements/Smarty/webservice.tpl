@@ -42,7 +42,7 @@
 <table style='width: 100%; height: 100%;'>
     <tr>
         <td valign='middle'>
-            <form name='webservice-trigger-form' id='webservice-trigger-form' onsubmit='return false'>
+            <form name='webservices-form' id='webservices-form-{$id}' onsubmit='return false'>
             <input type="hidden" name="window_id"   value="{$window_id}" />
             <input type="hidden" name="id"          value="{$id}" />
             <input type="hidden" name="workflow_id" value="" />
@@ -59,7 +59,15 @@
             </div>
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
                 <img src='/images/paradigm/clipart/webservice2.png' style='float: right; height: 100px;' />
-                /esb/<input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" placeholder='your/URI/here' class='security-input-text' style='width: 265px' name='uri' />
+                /esb/
+                <select name="webservice">
+                    <option value=""></option>
+                    {foreach from=$webservices->fetch() item=service}
+                        <option value="{$service.id}">{$service.webservice}</option>
+                    {/foreach}
+                </select>
+                
+                <input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" placeholder='your/URI/here' class='security-input-text' style='width: 265px' name='uri' />
                 <div class='form-field-description'>Webservice URI</div><br />
                 <table cellspacing='1' cellpadding='2'>
                     <tr>
@@ -182,7 +190,7 @@
     </tr>
 </table>
 <script type='text/javascript'>
-    Form.intercept($('#webservice-trigger-form').get(),'{$id}','/workflow/webservice/save','{$window_id}');
+    Form.intercept($('#webservice-form-{$id}').get(),'{$id}','/workflow/webservice/save','{$window_id}');
     var tabs = new EasyTab('humble-paradigm-config-webservice-security-nav');
     tabs.add('None', null,'humble-paradigm-config-webservice-security-none');
     tabs.add('Session', null,'humble-paradigm-config-webservice-security-session');
@@ -227,7 +235,7 @@
             },
             render: function () {
                 var html = '<ul>';
-                html += '<div><div class="webservice-parameter-header">Variable</div><div class="webservice-parameter-header">Source</div><div class="webservice-parameter-header">Format</div></div><div style="clear: both"></div>';
+;                html += '<div><div class="webservice-parameter-header">Variable</div><div class="webservice-parameter-header">Source</div><div class="webservice-parameter-header">Format</div></div><div style="clear: both"></div>';
                 for (var i=0; i<parameters.length; i++) {
                     html += '<div class="webservice-parameter-cell"><a class="webservice-parameter-remove" href="#" onclick="WebserviceParameter.remove('+i+'); return false">X</a>'+parameters[i].name+'</div>'+
                             '<div class="webservice-parameter-cell">'+parameters[i].source+'</div>'+
@@ -240,4 +248,5 @@
         }
     })($);
     WebserviceParameter.render();
+    new EasyEdits('/edits/workflow/webservice','workflow-webservice',{'&&id&&': '{$id}'});
 </script>

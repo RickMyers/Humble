@@ -277,8 +277,8 @@
                 <parameter name='decision' source='request' default='Y' />
                 <parameter name='namespace' source='post' required='true' default='' />
             </entity>
-            <entity namespace="paradigm" class="webservices" id="webservice" method="nonkeysload">
-                <parameter name='webservice_id' value="id" source='post' required='true' default='' />
+            <entity namespace="paradigm" class="webservices" id="webservice" method="nonkeysload" orderby="webservice=ASC">
+                <!--parameter name='webservice_id' value="id" source='post' required='true' default='' /-->
             </entity>
         </action>
         
