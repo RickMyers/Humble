@@ -1,3 +1,6 @@
+#########################################################################################################
+#this is just kept for historical purposes, it isn't actually being used, or at least should not be used
+#########################################################################################################
 Order allow,deny
 DirectoryIndex /pages/Main.htmls index.html
 Allow from all
@@ -24,12 +27,12 @@ RewriteRule ^css/([^/\.]+)? /loader.php?type=css&package=$1 [QSA,L]
 RewriteRule ^edits/([^/\.]+)/([^/\.]+)? /loader.php?type=edits&n=$1&f=$2 [QSA,L]
 RewriteRule ^ckeditor/(.*)? /app/Code/Framework/Paradigm/web/js/ckeditor/$1 [QSA,L]
 RewriteRule ^ace/(.*)? /app/Code/Framework/Paradigm/web/js/ace/$1 [QSA,L]
-RewriteRule ^api/([^/\.]+)/([^/\.]+)/(.*)?$ /api.php?n=$1&t=$2&m=$3 [QSA,L]
-RewriteRule ^api/([^/\.]+)/([^/\.]+)?$ /api.php?n=$1&t=$2 [QSA,L]
-RewriteRule ^hook/([^/\.]+)/([^/\.]+)? /hapi.php?n=$1&hook=$2 [QSA,L]
-RewriteRule ^mapi/([^/\.]+)/([^/\.]+)/(.*)?$ /mapi.php?n=$1&t=$2&m=$3 [QSA,L]
-RewriteRule ^mapi/([^/\.]+)/([^/\.]+)?$ /mapi.php?n=$1&t=$2 [QSA,L]
-RewriteRule ^esb/(.*)? /iapi.php?uri=$1 [QSA,L]
+RewriteRule ^api/([^/\.]+)/([^/\.]+)/(.*)?$ /app/api.php?n=$1&t=$2&m=$3 [QSA,L]
+RewriteRule ^api/([^/\.]+)/([^/\.]+)?$ /app/api.php?n=$1&t=$2 [QSA,L]
+RewriteRule ^hook/([^/\.]+)/([^/\.]+)? /app/hapi.php?n=$1&hook=$2 [QSA,L]
+RewriteRule ^mapi/([^/\.]+)/([^/\.]+)/(.*)?$ /app/mapi.php?n=$1&t=$2&m=$3 [QSA,L]
+RewriteRule ^mapi/([^/\.]+)/([^/\.]+)?$ /app/mapi.php?n=$1&t=$2 [QSA,L]
+RewriteRule ^esb/(.*)? /app/esb.php?uri=$1&from=front_controller [QSA,L]
 RewriteRule ^([^/\.]+)/([^/\.]+)/(.*)?$ /index.php?humble_framework_namespace=$1&humble_framework_controller=$2&humble_framework_action=$3 [QSA,L]
 RedirectMatch 404 app/Code/Framework/Humble/etc/public_routes.json
 RedirectMatch 404 \.(xml|yaml|yml|project)$

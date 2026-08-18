@@ -1,13 +1,16 @@
 <?php
 /**
-       ____      __                        __  _                ___    ____  ____
-      /  _/___  / /____  ____ __________ _/ /_(_)___  ____     /   |  / __ \/  _/
-      / // __ \/ __/ _ \/ __ `/ ___/ __ `/ __/ / __ \/ __ \   / /| | / /_/ // /
-    _/ // / / / /_/  __/ /_/ / /  / /_/ / /_/ / /_/ / / / /  / ___ |/ ____// /
-   /___/_/ /_/\__/\___/\__, /_/   \__,_/\__/_/\____/_/ /_/  /_/  |_/_/   /___/
-                      /____/
-
-    Supports client/partner integration
+       ______      __                       _           
+      / ____/___  / /____  _________  _____(_)_______   
+     / __/ / __ \/ __/ _ \/ ___/ __ \/ ___/ / ___/ _ \  
+    / /___/ / / / /_/  __/ /  / /_/ / /  / (__  )  __/  
+   /_____/_/ /_/\__/\___/_/  / .___/_/  /_/____/\___/   
+  / ___/___  ______   __(_)_/_/___     / __ )__  _______
+  \__ \/ _ \/ ___/ | / / / ___/ _ \   / __  / / / / ___/
+ ___/ /  __/ /   | |/ / / /__/  __/  / /_/ / /_/ (__  ) 
+/____/\___/_/    |___/_/\___/\___/  /_____/\__,_/____/  
+                                                        
+    Sure, YNOT?
  */
 /*
  * Brings in the workflow if it exists
@@ -115,8 +118,8 @@ function createWorkflowEvent($criteria) {
 require_once('Humble.php');
 require_once('Environment.php');
 ob_start();
-$project        = \Environment::project();
 
+$project        = \Environment::project();
 
 $session_expire = 300;                  //Expire the session after five minutes#
 $workflowRC     = false;
@@ -128,14 +131,23 @@ if (file_exists('Code/'.$project->package.'/'.$project->module.'/etc/Constants.p
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, PUT');
 header('Access-Control-Allow-Headers: HTTP_X_REQUESTED_WITH');
-
+if (!isset($_GET['from']) || ($_GET['from'] !== 'front_controller')) {
+    header("HTTP/1.1 400 Bad Request");
+    header('Content-Type: application/json');
+    \Humble::response(json_encode([
+        "RC" => "16",
+        "message" => "Invalid Request"
+    ],JSON_PRETTY_PRINT));    
+    outputResponse();
+    die();
+}
 $request_method  = strtolower($_SERVER['REQUEST_METHOD']);
 $error           = false;
 $results         = false;
 try {
     $URI         = isset($_GET['uri']) ? $_GET['uri'] : false;
     if ($URI) {
-        $webservice = Humble::entity('paradigm/webservices')->setUri($URI)->load(true);
+        $webservice = Humble::entity('paradigm/webservices')->setWebservice($URI)->setActive('Y')->load(true);
         if ($webservice) {
             if ($webservice['active']==='Y') {
                 $criteria        = Humble::collection('paradigm/elements')->setId($webservice['webservice_id'])->load();
