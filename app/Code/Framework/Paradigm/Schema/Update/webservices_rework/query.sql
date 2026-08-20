@@ -3,6 +3,7 @@
             (
 		id INT NOT NULL AUTO_INCREMENT,
 		webservice CHAR(128) DEFAULT NULL,
+		component_id CHAR(38) DEFAULT NULL,
 		`active` CHAR(01) DEFAULT 'N',
 		modified DATETIME DEFAULT CURRENT_TIMESTAMP,
 		PRIMARY KEY (id),

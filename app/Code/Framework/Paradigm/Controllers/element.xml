@@ -17,10 +17,10 @@
         <action name="configure" passalong="window_id">
             <description>Generates the configuration screen for a component</description>
             <model namespace='paradigm' class='manager' id='manager'>
-                <parameter name='id'        source='post' required='true' default='' />
-                <parameter name='type'      source='post' required='true' default='' />
-                <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='window_id' source='post' required='true' default='' />
+                <parameter name='id'        source='request' required='true' default='' />
+                <parameter name='type'      source='request' required='true' default='' />
+                <parameter name='namespace' source='request' required='true' default='' />
+                <parameter name='window_id' source='request' required='true' default='' />
             </model>
         </action>
 

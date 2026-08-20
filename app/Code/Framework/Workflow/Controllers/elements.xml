@@ -263,23 +263,26 @@
         <action name="webservice" passalong="window_id">
             <description>If an element has yet to been configured, this will generate the selection criteria for what this element can be</description>
             <entity namespace='humble' class='modules' id='modules'>
-                <parameter name='enabled' source='post' default='Y' />
+                <parameter name='enabled' source='request' default='Y' />
             </entity>
             <model namespace="workflow" class='manager' id='manager'>
-                <parameter name='namespace' source='post' required='true' default='' />
-                <parameter name='window_id' source='post' required='true' default='' />
-                <parameter name='id'        source='post' required='true' default='' />
+                <parameter name='namespace' source='request' required='true' default='' />
+                <parameter name='window_id' source='request' required='true' default='' />
+                <parameter name='id'        source='request' required='true' default='' />
             </model>
             <mongo namespace="paradigm" class="elements" id="element">
-                <parameter name='id'        source='post' required='true' default='' />
+                <parameter name='id'        source='request' required='true' default='' />
             </mongo>
             <entity namespace="humble" class="workflow/components" id="components">
                 <parameter name='decision' source='request' default='Y' />
-                <parameter name='namespace' source='post' required='true' default='' />
+                <parameter name='namespace' source='request' required='true' default='' />
             </entity>
-            <entity namespace="paradigm" class="webservices" id="webservice" method="nonkeysload" orderby="webservice=ASC">
-                <!--parameter name='webservice_id' value="id" source='post' required='true' default='' /-->
+            <entity namespace="paradigm" class="webservices" id="webservices" method="nonkeysload" orderby="webservice=ASC">
+                
             </entity>
+            <entity namespace="paradigm" class="webservices" id="webservice" method="load">
+                <parameter name='webservice_id' value="id" source='request' required='true' default='' />
+            </entity>            
         </action>
         
         <!-- ################################################################################################# -->

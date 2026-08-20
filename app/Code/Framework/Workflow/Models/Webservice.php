@@ -43,10 +43,10 @@ class Webservice extends Model
      *
      */
     private function registerWebServiceIntegrationPoint($id,$data) {
-        $integration_point = Humble::entity('paradigm/webservice_workflows');
+        $integration_point = Humble::entity('paradigm/webservice/workflows');
         $integration_point->setWebserviceId($id);
         $integration_point->setWorkflowId($data['workflow_id']);
-        $integration_point->setUri($data['uri']);
+        //$integration_point->setUri($data['uri']);
         $integration_point->save();
     }
 
@@ -61,10 +61,11 @@ class Webservice extends Model
         $component->setData($this->getData());
         $component->saveComponent();
         $webservice     = Humble::entity('paradigm/webservices');
-        $webservice->setUri($data['uri']);
-        $webservice->setWebserviceId($data['id']);
+        $webservice->setWebservice($data['uri']);
+        $webservice->setComponentId($data['id']);
         $webservice->setActive($data['enabled']);
-        $id = $webservice->save();
-        $this->registerWebServiceIntegrationPoint($id,$data);
+        if ($id = $webservice->save()) {
+            $this->registerWebServiceIntegrationPoint($id,$data);
+        }
     }
 }

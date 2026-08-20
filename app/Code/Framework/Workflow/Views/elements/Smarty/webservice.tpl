@@ -248,5 +248,5 @@
         }
     })($);
     WebserviceParameter.render();
-    new EasyEdits('/edits/workflow/webservice','workflow-webservice',{'&&id&&': '{$id}'});
+  //  new EasyEdits('/edits/workflow/webservice','workflow-webservice',{ '&&id&&': '{$id}' });
 </script>

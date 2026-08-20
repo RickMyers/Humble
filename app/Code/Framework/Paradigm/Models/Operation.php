@@ -45,23 +45,27 @@ class Operation extends Model
      * @param event $EVENT
      */
     public function execute($EVENT=false) {
-        if ($EVENT!==false) {
+        if ($EVENT !== false) {
             $data    = $EVENT->load();
             $cfg     = $EVENT->fetch();
             $current = false;
             if (isset($cfg['program'])) {
-                $str = Humble::helper('paradigm/str');
-                $pgm = isset($cfg['program'])  ? $cfg['program'] : '';
-                $dir = isset($cfg['directory']) ? $cfg['directory'] : '';
-                $arg = isset($cfg['arguments']) ? $cfg['arguments'] : '';
-                $lng = isset($cfg['language'])  ? $cfg['language'] : '';
-                $fld = isset($cfg['event_field']) ? $cfg['event_field'] : false;
-                $args = $str->translate($arg,$data);
+                $str    = Humble::helper('paradigm/str');
+                $pgm    = isset($cfg['program'])  ? $cfg['program'] : '';
+                $dir    = isset($cfg['directory']) ? $cfg['directory'] : '';
+                $arg    = isset($cfg['arguments']) ? $cfg['arguments'] : '';
+                $lng    = isset($cfg['language'])  ? $cfg['language'] : '';
+                $fld    = isset($cfg['event_field']) ? $cfg['event_field'] : false;
+                $args   = $str->translate($arg,$data);
                 //@TODO: override segments of the arg list with values pulled from the event if %% is present
                 $exec_str = $lng.' '.$pgm.' '.$args;
                 if ($dir) {
                     $current = getcwd();
-                    chdir($dir);
+                    if (is_dir($dir)) {
+                        chdir($dir);
+                    } else {
+                        
+                    }
                 }
                 $result = shell_exec($exec_str);
                 if ($current) {
