@@ -42,7 +42,7 @@
 <table style='width: 100%; height: 100%;'>
     <tr>
         <td valign='middle'>
-            <form name='webservices-form' id='webservices-form-{$id}' onsubmit='return false'>
+            <form name='webservice-form' id='webservice-form-{$id}' onsubmit='return false'>
             <input type="hidden" name="window_id"   value="{$window_id}" />
             <input type="hidden" name="id"          value="{$id}" />
             <input type="hidden" name="workflow_id" value="" />
@@ -60,14 +60,14 @@
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
                 <img src='/images/paradigm/clipart/webservice2.png' style='float: right; height: 100px;' />
                 /esb/
-                <select name="webservice">
+                <select name="webservice" placeholder='your/URI/here' class='security-input-text' style='width: 265px'>
                     <option value=""></option>
                     {foreach from=$webservices->fetch() item=service}
                         <option value="{$service.id}">{$service.webservice}</option>
                     {/foreach}
                 </select>
                 
-                <input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" placeholder='your/URI/here' class='security-input-text' style='width: 265px' name='uri' />
+                <!--input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" name='uri' /-->
                 <div class='form-field-description'>Webservice URI</div><br />
                 <table cellspacing='1' cellpadding='2'>
                     <tr>
@@ -199,8 +199,8 @@
     tabs.add('Bearer Token',null,'humble-paradigm-config-webservice-security-bearer-token');
     tabs.add('Whitelist',null,'humble-paradigm-config-webservice-security-whitelist-tab');
     tabs.tabClick(0);
-    $('#webservice-trigger-form [name=workflow_id]').val(Paradigm.actions.get.mongoWorkflowId());
-    $('#webservice-trigger-form [name=namespace]').val(Paradigm.actions.get.namespace());
+    $('#webservice-form [name=workflow_id]').val(Paradigm.actions.get.mongoWorkflowId());
+    $('#webservice-form [name=namespace]').val(Paradigm.actions.get.namespace());
 
     var WebserviceParameter = (function ($) {
         var parameters = '{$element->getParameters()}';
@@ -210,16 +210,16 @@
             parameters = [];
         }
         $('#webservice-parameters').val(JSON.stringify(parameters))
-        var display = $E('humble-parameters-display');
+        var display = document.getElementById('humble-parameters-display');
         return {
             add: function () {
                 parameters[parameters.length] = {
-                    "name":   $('#webservice-trigger-form [name=parameter]').val(),
-                    "source": $('#webservice-trigger-form [name=source]').val(),
-                    "format": $('#webservice-trigger-form [name=format]').val()
+                    "name":   $('#webservice-form-{$id} [name=parameter]').val(),
+                    "source": $('#webservice-form-{$id} [name=source]').val(),
+                    "format": $('#webservice-form-{$id} [name=format]').val()
                 }
-                $('#webservice-trigger-form [name=parameter]').val('');
-                $('#webservice-trigger-form [name=parameters]').val(JSON.stringify(parameters));
+                $('#webservice-form-{$id} [name=parameter]').val('');
+                $('#webservice-form-{$id} [name=parameters]').val(JSON.stringify(parameters));
                 WebserviceParameter.render();
             },
             remove: function (idx) {
@@ -229,24 +229,22 @@
                         parms[parms.length] = parameters[i];
                     }
                 }
-                parameters = parms;
-                $('#webservice-parameters').val(JSON.stringify(parameters));
+                $('#webservice-form-{$id} [name=parameters]').val(JSON.stringify(parms));
                 WebserviceParameter.render();
             },
             render: function () {
                 var html = '<ul>';
-;                html += '<div><div class="webservice-parameter-header">Variable</div><div class="webservice-parameter-header">Source</div><div class="webservice-parameter-header">Format</div></div><div style="clear: both"></div>';
+                html += '<div><div class="webservice-parameter-header">Variable</div><div class="webservice-parameter-header">Source</div><div class="webservice-parameter-header">Format</div></div><div style="clear: both"></div>';
                 for (var i=0; i<parameters.length; i++) {
                     html += '<div class="webservice-parameter-cell"><a class="webservice-parameter-remove" href="#" onclick="WebserviceParameter.remove('+i+'); return false">X</a>'+parameters[i].name+'</div>'+
                             '<div class="webservice-parameter-cell">'+parameters[i].source+'</div>'+
                             '<div class="webservice-parameter-cell">'+parameters[i].format+"</div>";
                     html += '<div style="clear: both"></div>';
                 }
-                html += '</ul>';
-                display.innerHTML = html;
+                display.innerHTML = html+'</ul>';
             }
         }
     })($);
     WebserviceParameter.render();
-  //  new EasyEdits('/edits/workflow/webservice','workflow-webservice',{ '&&id&&': '{$id}' });
+    new EasyEdits('/edits/workflow/webservice','workflow-webservice',{ '&id&': '{$id}' });
 </script>

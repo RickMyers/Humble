@@ -611,7 +611,7 @@ function EasyEdits(source, ref, overrides)
                         //#a10f0a
                         //formField.style.border	= "1px solid "+this.requiredColor;
                         formField.style.backgroundColor	= this.defaults.required['background-color'];
-                        formField.setAttribute("required","Y");
+                        //formField.setAttribute("required","Y");
                     }
                     /* -- mask Overriding Style			-- */
                     if (easyField.style && easyField.style.trim())	{
@@ -893,6 +893,9 @@ function EasyEdits(source, ref, overrides)
                     }
                     if (easyField.placeholder) {
                         formField.setAttribute('placeholder',easyField.placeholder);
+                         if (isCombo) {
+                            formField.combo.setAttribute('placeholder',easyField.placeholder);
+                        }            
                     }
                     if (easyField.disabled === true) {
                         if (isCombo) {
