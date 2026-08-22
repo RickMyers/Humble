@@ -181,7 +181,7 @@
                     <textarea name="whitelist" rows="5" cols="55" style="font-family: monospace; font-size: .9em"></textarea>
                 </div>
                 <div class='form-field-description'>Security Scheme</div><br />
-                <input type='submit' value=' Save ' style='background-color: #115883; color: white; border: 1px solid silver; padding: 2px 5px; border-radius: 2px' name='webservice-save' />
+                <input type='submit' name='webservice-save-button' value=' Save ' style='background-color: #115883; color: white; border: 1px solid silver; padding: 2px 5px; border-radius: 2px' name='webservice-save' />
                 <hr />
                 &copy; Humble Project, 2014-present, all rights reserved
             </div>
