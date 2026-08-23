@@ -648,7 +648,7 @@ function EasyEdits(source, ref, overrides)
                             c.value = '';
                             formField.after(c);
                         }
-                        formField.combo   = $("#"+this.edits.form.id+" [name='"+formField.easyKey+"_combo']").get()[0]
+                        this.formXref[formField.easyKey+'_combo'] = formField.combo   = $("#"+this.edits.form.id+" [name='"+formField.easyKey+"_combo']").get()[0];
                         if (!formField.combo) {
                             alert('Combination Field not found... looking for '+formField.easyKey+"_combo");
                         }

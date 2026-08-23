@@ -12,17 +12,32 @@
     [
         {
             active:         true,
-            name:           "webservice",
+            name:           "uri",
             longname:       "Webservice URI",
             title:          "Exposed URI of webservice",
             type:           "combo",
-            placeholder:    "/your/URI/here",
+            placeholder:    "your/URI/here",
             required:       true,
             force:          true,
             classname:      "",
             style:          "border-radius: 3px; padding: 5px; width: 400px; border: 1px solid #aaf",
             onchange:       (evt) => {
             }            
+        },
+        {
+            active:         true,
+            name:           "webservice-save-button",
+            longname:       "Webservice Save",
+            title:          "Webservice Save/Create Button",
+            type:           "button",
+            classname:      "",
+            style:          "background-color: #115883; color: white; border: 1px solid silver; padding: 2px 5px; border-radius: 2px",
+            onclick:       (evt) => {
+                if (Edits['workflow-webservice'].validate()) {
+                    alert('validated');
+                }
+                return false;
+            }           
         }
     ]
 })

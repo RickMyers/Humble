@@ -60,7 +60,7 @@
             <div style='margin-left: auto; margin-right: auto; width: 545px'>
                 <img src='/images/paradigm/clipart/webservice2.png' style='float: right; height: 100px;' />
                 /esb/
-                <select name="webservice" placeholder='your/URI/here' class='security-input-text' style='width: 265px'>
+                <select name="uri" placeholder='your/URI/here' class='security-input-text' style='width: 265px'>
                     <option value=""></option>
                     {foreach from=$webservices->fetch() item=service}
                         <option value="{$service.id}">{$service.webservice}</option>
@@ -181,7 +181,7 @@
                     <textarea name="whitelist" rows="5" cols="55" style="font-family: monospace; font-size: .9em"></textarea>
                 </div>
                 <div class='form-field-description'>Security Scheme</div><br />
-                <input type='submit' name='webservice-save-button' value=' Save ' style='background-color: #115883; color: white; border: 1px solid silver; padding: 2px 5px; border-radius: 2px' name='webservice-save' />
+                <input type='submit' name='webservice-save-button' value=' Save ' style='' name='webservice-save' />
                 <hr />
                 &copy; Humble Project, 2014-present, all rights reserved
             </div>
