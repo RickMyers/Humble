@@ -43,148 +43,148 @@
     <tr>
         <td valign='middle'>
             <form name='webservice-form' id='webservice-form-{$id}' onsubmit='return false'>
-            <input type="hidden" name="window_id"   value="{$window_id}" />
-            <input type="hidden" name="id"          value="{$id}" />
-            <input type="hidden" name="workflow_id" value="" />
-            <input type='hidden' name='parameters'  value='' />
-            <input type='hidden' name='namespace'   value='' />
-            <input type='hidden' name='component'   value='Integration' />
-            <input type='hidden' name='method'      value='IEFBR14' />
-            <div style='margin-left: auto; margin-right: auto; width: 545px; font-size: 2em; font-family: sans-serif; color: #333; border-bottom: 1px solid #777; margin-bottom: 6px'>
-                Initial Component Configuration
-            </div>
-            <div style='margin-left: auto; margin-right: auto; width: 545px; margin-bottom: 25px'>
-                Initial element configuration.  To begin configuring this webservice element, please set the URI that will trigger
-                the workflow, and then choose how you'd like to manage the security settings
-            </div>
-            <div style='margin-left: auto; margin-right: auto; width: 545px'>
-                <img src='/images/paradigm/clipart/webservice2.png' style='float: right; height: 100px;' />
-                /esb/
-                <select name="uri" placeholder='your/URI/here' class='security-input-text' style='width: 265px'>
-                    <option value=""></option>
-                    {foreach from=$webservices->fetch() item=service}
-                        <option value="{$service.id}">{$service.webservice}</option>
-                    {/foreach}
-                </select>
-                
-                <!--input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" name='uri' /-->
-                <div class='form-field-description'>Webservice URI</div><br />
-                <table cellspacing='1' cellpadding='2'>
-                    <tr>
-                        <th style='text-align: left'>Name</th>
-                        <th style='text-align: left'>Source</th>
-                        <th style='text-align: left' colspan='2'>Type</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class='parameter-input-text' type='text' name='parameter' />
-                        <td>
-                            <select class='parameter-input-select' name='source'>
-                                <option value='POST'>POST</option>
-                                <option value='GET'>GET</option>
-                                <option value='PUT'>PUT</option>
-                                <option value='DELETE'>DELETE</option>
-                                <option value='FILE'>FILE</option>
-                                <option value='REQUEST'>REQUEST</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select class='parameter-input-select' name='format'>
-                                <option value='string'>String</option>
-                                <option value='int'>Integer</option>
-                                <option value='float'>Float</option>
-                                <option value='boolean'>Boolean</option>
-                                <option value='password'>Password</option>
-                                <option value='json'>JSON</option>
-                                <option value='isodate'>ISO Date [yyyy-mm-dd]</option>
-                                <option value='displaydate'>Display Date [mm/dd/yyyy]</option>
-                                <option value='*'>Any (*)</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input onclick='WebserviceParameter.add()' type='button' onclick='return false;' value='+' style='background-color: #115883; color: white; font-weight: bold; font-size: 1.3em; border: 1px solid silver; width: 25px; height: 24px'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan='4' id='humble-parameters-display'>
+                <input type="hidden" name="window_id"   value="{$window_id}" />
+                <input type="hidden" name="id"          value="{$id}" />
+                <input type="hidden" name="workflow_id" value="" />
+                <input type='hidden' name='parameters'  value='' />
+                <input type='hidden' name='namespace'   value='' />
+                <input type='hidden' name='component'   value='Integration' />
+                <input type='hidden' name='method'      value='IEFBR14' />
+                <div style='margin-left: auto; margin-right: auto; width: 545px; font-size: 2em; font-family: sans-serif; color: #333; border-bottom: 1px solid #777; margin-bottom: 6px'>
+                    Initial Component Configuration
+                </div>
+                <div style='margin-left: auto; margin-right: auto; width: 545px; margin-bottom: 25px'>
+                    Initial element configuration.  To begin configuring this webservice element, please set the URI that will trigger
+                    the workflow, and then choose how you'd like to manage the security settings
+                </div>
+                <div style='margin-left: auto; margin-right: auto; width: 545px; position: relative'>
+                    <img src='/images/paradigm/clipart/webservice2.png' style='float: right; height: 100px;' />
+                    /esb/
+                    <select name="uri" class='security-input-text' style='width: 265px'>
+                        <option value=""></option>
+                        {foreach from=$webservices->fetch() item=service}
+                            <option value="{$service.id}">{$service.webservice}</option>
+                        {/foreach}
+                    </select>
 
-                        </td>
-                </table>
-                <div class='form-field-description'>Inbound Parameters</div><br /><br />
-                <div>
-                    <fieldset style="padding: 10px"><legend>Webservice Status</legend>
-                    <input type="checkbox" name="enabled" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
-                    </fieldset>
-                </div><br /><br />
-                <div id='humble-paradigm-config-webservice-security-nav'></div>
-                <div id='humble-paradigm-config-webservice-security-none' style='display: none; padding: 30px'>
-                    <table cellspacing='1'>
+                    <!--input type='text' value="{if (isset($data.uri))}{$data.uri}{/if}" name='uri' /-->
+                    <div class='form-field-description'>Webservice URI</div><br />
+                    <table cellspacing='1' cellpadding='2'>
                         <tr>
-                            <td colspan='2'>
-                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='none'))}checked="checked"{/if} name='security-scheme' value='none' /> None (Passthru)<br /><br />
+                            <th style='text-align: left'>Name</th>
+                            <th style='text-align: left'>Source</th>
+                            <th style='text-align: left' colspan='2'>Type</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class='parameter-input-text' type='text' name='parameter' />
+                            <td>
+                                <select class='parameter-input-select' name='source'>
+                                    <option value='POST'>POST</option>
+                                    <option value='GET'>GET</option>
+                                    <option value='PUT'>PUT</option>
+                                    <option value='DELETE'>DELETE</option>
+                                    <option value='FILE'>FILE</option>
+                                    <option value='REQUEST'>REQUEST</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class='parameter-input-select' name='format'>
+                                    <option value='string'>String</option>
+                                    <option value='int'>Integer</option>
+                                    <option value='float'>Float</option>
+                                    <option value='boolean'>Boolean</option>
+                                    <option value='password'>Password</option>
+                                    <option value='json'>JSON</option>
+                                    <option value='isodate'>ISO Date [yyyy-mm-dd]</option>
+                                    <option value='displaydate'>Display Date [mm/dd/yyyy]</option>
+                                    <option value='*'>Any (*)</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input onclick='WebserviceParameter.add()' type='button' onclick='return false;' value='+' style='background-color: #115883; color: white; font-weight: bold; font-size: 1.3em; border: 1px solid silver; width: 25px; height: 24px'
                             </td>
                         </tr>
-                    </table>
-                </div>
-                <div id='humble-paradigm-config-webservice-security-session' style='display: none; padding: 30px'>
-                    <table cellspacing='1'>
                         <tr>
-                            <td colspan='2'>
-                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='session'))}checked="checked"{/if} name='security-scheme' value='session' /> Session ID (sessionId)<br /><br />
-                                You must have authenticated previously and you are passing the Session ID in the variable "sessionId"
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div id='humble-paradigm-config-webservice-security-standard' style='display: none; padding: 30px'>
-                    <table cellspacing='1'>
-                        <tr>
-                            <td colspan='2'>
-                                <input {if (isset($data['security-scheme']) && ($data['security-scheme']=='standard'))}checked="checked"{/if} type='radio' name='security-scheme' value='standard' /><br /><br />
-                            </td>
-                        </tr>
+                            <td colspan='4' id='humble-parameters-display'>
 
-                        <tr>
-                            <td>User Id: </td><td><input type='text' value="{if (isset($data['standard-userid']))}{$data['standard-userid']}{/if}" class='security-input-text' name='standard-userid' />
-                        </tr>
-                        <tr>
-                            <td>Password: </td><td><input type='text' value="{if (isset($data['standard-password']))}{$data['standard-password']}{/if}" class='security-input-text' name='standard-password' />
-                        </tr>
-                    </table>
-                </div>
-                <div id='humble-paradigm-config-webservice-security-bearer-token' style='display: none; padding: 30px'>
-                    <table cellspacing='1'>
-                        <tr>
-                            <td colspan='2'>
-                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='bearer'))}checked="checked"{/if} name='security-scheme' value='bearer'  /><br /><br />
                             </td>
-                        </tr>
                     </table>
-                </div>                        
-                <div id='humble-paradigm-config-webservice-security-token' style='display: none; padding: 30px'>
-                    <table cellspacing='1'>
-                        <tr>
-                            <td colspan='2'>
-                                <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='api'))}checked="checked"{/if} name='security-scheme' value='api' /><br /><br />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>API Variable: </td><td><input type='text' class='security-input-text' name='token-variable' />
-                        </tr>
-                        <tr>
-                            <td>API Token: </td><td><input type='text' class='security-input-text' name='token-value' />
-                        </tr>
-                    </table>
-                </div>
-                <div id='humble-paradigm-config-webservice-security-whitelist-tab' style='display: none; padding: 30px'>
-                    <input type="checkbox" name="use-whitelist" id="humble-paradigm-config-webservice-security-use-whitelist" /> Whitelist?<br /><br />
-                    <textarea name="whitelist" rows="5" cols="55" style="font-family: monospace; font-size: .9em"></textarea>
-                </div>
-                <div class='form-field-description'>Security Scheme</div><br />
-                <input type='submit' name='webservice-save-button' value=' Save ' style='' name='webservice-save' />
-                <hr />
+                    <div class='form-field-description'>Inbound Parameters</div><br /><br />
+                    <div>
+                        <fieldset style="padding: 10px"><legend>Webservice Status</legend>
+                        <input type="checkbox" name="enabled" {if ($webservice->getActive()=="Y")}checked{/if} value="Y" />  - When this box is checked, the webservice is available
+                        </fieldset>
+                    </div><br /><br />
+                    <div id='humble-paradigm-config-webservice-security-nav'></div>
+                    <div id='humble-paradigm-config-webservice-security-none' style='display: none; padding: 30px'>
+                        <table cellspacing='1'>
+                            <tr>
+                                <td colspan='2'>
+                                    <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='none'))}checked="checked"{/if} name='security-scheme' value='none' /> None (Passthru)<br /><br />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id='humble-paradigm-config-webservice-security-session' style='display: none; padding: 30px'>
+                        <table cellspacing='1'>
+                            <tr>
+                                <td colspan='2'>
+                                    <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='session'))}checked="checked"{/if} name='security-scheme' value='session' /> Session ID (sessionId)<br /><br />
+                                    You must have authenticated previously and you are passing the Session ID in the variable "sessionId"
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id='humble-paradigm-config-webservice-security-standard' style='display: none; padding: 30px'>
+                        <table cellspacing='1'>
+                            <tr>
+                                <td colspan='2'>
+                                    <input {if (isset($data['security-scheme']) && ($data['security-scheme']=='standard'))}checked="checked"{/if} type='radio' name='security-scheme' value='standard' /><br /><br />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>User Id: </td><td><input type='text' value="{if (isset($data['standard-userid']))}{$data['standard-userid']}{/if}" class='security-input-text' name='standard-userid' />
+                            </tr>
+                            <tr>
+                                <td>Password: </td><td><input type='text' value="{if (isset($data['standard-password']))}{$data['standard-password']}{/if}" class='security-input-text' name='standard-password' />
+                            </tr>
+                        </table>
+                    </div>
+                    <div id='humble-paradigm-config-webservice-security-bearer-token' style='display: none; padding: 30px'>
+                        <table cellspacing='1'>
+                            <tr>
+                                <td colspan='2'>
+                                    <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='bearer'))}checked="checked"{/if} name='security-scheme' value='bearer'  /><br /><br />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>                        
+                    <div id='humble-paradigm-config-webservice-security-token' style='display: none; padding: 30px'>
+                        <table cellspacing='1'>
+                            <tr>
+                                <td colspan='2'>
+                                    <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='api'))}checked="checked"{/if} name='security-scheme' value='api' /><br /><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>API Variable: </td><td><input type='text' class='security-input-text' name='token-variable' />
+                            </tr>
+                            <tr>
+                                <td>API Token: </td><td><input type='text' class='security-input-text' name='token-value' />
+                            </tr>
+                        </table>
+                    </div>
+                    <div id='humble-paradigm-config-webservice-security-whitelist-tab' style='display: none; padding: 30px'>
+                        <input type="checkbox" name="use-whitelist" id="humble-paradigm-config-webservice-security-use-whitelist" /> Whitelist?<br /><br />
+                        <textarea name="whitelist" rows="5" cols="55" style="font-family: monospace; font-size: .9em"></textarea>
+                    </div>
+                    <div class='form-field-description'>Security Scheme</div><br />
+                    <input type='submit' name='webservice-save-button' value=' Save ' style='' name='webservice-save' />
+                    <hr />
                 &copy; Humble Project, 2014-present, all rights reserved
-            </div>
+                </div>
             </form>
         </td>
     </tr>
@@ -209,7 +209,7 @@
         } else {
             parameters = [];
         }
-        $('#webservice-parameters').val(JSON.stringify(parameters))
+        $('#webservice-form-{$id} [name=parameters]').val(JSON.stringify(parameters));
         var display = document.getElementById('humble-parameters-display');
         return {
             add: function () {
@@ -217,7 +217,7 @@
                     "name":   $('#webservice-form-{$id} [name=parameter]').val(),
                     "source": $('#webservice-form-{$id} [name=source]').val(),
                     "format": $('#webservice-form-{$id} [name=format]').val()
-                }
+                };
                 $('#webservice-form-{$id} [name=parameter]').val('');
                 $('#webservice-form-{$id} [name=parameters]').val(JSON.stringify(parameters));
                 WebserviceParameter.render();

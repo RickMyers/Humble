@@ -34,7 +34,7 @@
             style:          "background-color: #115883; color: white; border: 1px solid silver; padding: 2px 5px; border-radius: 2px",
             onclick:       (evt) => {
                 if (Edits['workflow-webservice'].validate()) {
-                    alert('validated');
+                    $('#webservice-form-&id&').submit();
                 }
                 return false;
             }           

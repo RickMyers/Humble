@@ -53,7 +53,8 @@ class Manager extends Model {
                 $this->setWindowId($val);
                 continue;
             }            
-            $method = 'set'.ucfirst($var);
+            
+            $method = 'set'.$this->underscoreToCamelCase($var,true);
             $this->$method($val);
             $element->$method($val);
         }

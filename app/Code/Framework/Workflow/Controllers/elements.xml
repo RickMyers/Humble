@@ -277,10 +277,10 @@
                 <parameter name='decision' source='request' default='Y' />
                 <parameter name='namespace' source='request' required='true' default='' />
             </entity>
-            <entity namespace="paradigm" class="webservices" id="webservices" assign="ws" method="nonkeysload" orderby="webservice=ASC">
+            <entity namespace="paradigm" class="webservices" id="webservices" orderby="webservice=ASC">
                 
             </entity>
-            <entity namespace="paradigm" class="webservices" id="webservice" method="load">
+            <entity namespace="paradigm" class="webservices" id="webservice">
                 <parameter name='webservice_id' value="id" source='request' required='true' default='' />
             </entity>            
         </action>

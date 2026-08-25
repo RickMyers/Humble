@@ -229,36 +229,32 @@ CREATE TABLE `paradigm_webhooks` (
   UNIQUE KEY `webhook` (`webhook`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Table structure for table `paradigm_webservice_workflows` */
+/*Table structure for table `paradigm_webservice_uris` */
 
-DROP TABLE IF EXISTS `paradigm_webservice_workflows`;
+drop table if exists paradigm_webservice_uris;
 
-CREATE TABLE `paradigm_webservice_workflows` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `webservice_id` int(11) NOT NULL,
-  `workflow_id` char(32) DEFAULT NULL,
-  `uri` char(128) DEFAULT NULL,
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `paradigm_webservice_workflows_uidx` (`workflow_id`,`uri`),
-  KEY `paradigm_webservice_workflows_uri_idx` (`uri`),
-  KEY `paradigm_webservice_workflows_wid_idx` (`workflow_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE paradigm_webservice_uris
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	uri CHAR(128) DEFAULT NULL,
+	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE KEY (uri)
+);
 
 /*Table structure for table `paradigm_webservices` */
+drop table if exists paradigm_webservices;
 
-DROP TABLE IF EXISTS `paradigm_webservices`;
-
-CREATE TABLE `paradigm_webservices` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uri` char(64) DEFAULT '',
-  `webservice_id` char(32) DEFAULT '' COMMENT 'The MongoDB Id for the object containing the service information',
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `active` char(1) DEFAULT 'N',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `paradigm_webservices_idx` (`uri`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+CREATE TABLE paradigm_webservices
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	uri_id INT DEFAULT NULL,
+	workflow_id INT DEFAULT NULL,
+	`active` CHAR(01) DEFAULT 'N',
+	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE KEY (uri_id,workflow_id)
+);
 /*Table structure for table `paradigm_workflow_comments` */
 
 DROP TABLE IF EXISTS `paradigm_workflow_comments`;
