@@ -239,6 +239,13 @@
             </response>     
         </attributes>
     </resource>
+    <php>
+        <attributes>
+            <id         required="false"  purpose="" default="" />
+            <namespace  required="false"  purpose="" default="Main Module Namespace" />
+            <resource   required="false" purpose="" default="" />
+        </attributes>        
+    </php>
     <helper taxonomy="allocation">
         <attributes>
             <id         required="false"  purpose="" default="Generated ID" />

@@ -574,7 +574,7 @@ class Compiler extends Directory
     /**
      * We are going to translate JSON input into the super global variables
      * 
-     * @param type $node
+     * @param object $node
      */
     private function handleJSONRequest($node=[]) {
         $target = isset($node['method']) && (strtoupper($node['method'])=='GET') ? '$_GET' : '$_POST'; 
@@ -588,7 +588,7 @@ class Compiler extends Directory
     /**
      * A transformer is something that is going to convert the iterator into another format, like CSV, XML, etc
      * 
-     * @param type $node
+     * @param object $node
      * @param type $method_str
      * @return string
      */
@@ -846,7 +846,7 @@ class Compiler extends Directory
 
     /**
      *
-     * @param type $node
+     * @param object $node
      */
     private function processChain($node) {
         //nop
@@ -858,7 +858,7 @@ class Compiler extends Directory
 
     /**
      * 
-     * @param type $node
+     * @param object $node
      */
     private function processHeader($node) {
         $name   = (isset($node['name']))    ? $node['name']  : false;
@@ -871,7 +871,7 @@ class Compiler extends Directory
     /**
      * Adds the ability to directly interact with the caching mechanism through the controller XML
      * 
-     * @param type $node
+     * @param object $node
      */
     private function processCache($node) {
         $assign     = (isset($node['assign']))  ? $node['assign']  : false;
@@ -898,7 +898,7 @@ class Compiler extends Directory
      * Adds the ability to directly interact with the Application/Module flag feature through the controller XML
      * 
      * @TODO: Get the DEFAULT option to work!!!
-     * @param type $node
+     * @param object $node
      */
     private function processFlag($node) {
         $assign     = (isset($node['assign']))  ? $node['assign']  : false;
@@ -931,7 +931,7 @@ class Compiler extends Directory
     /**
      * Adds the ability to directly query values from the Humble.project file
      * 
-     * @param type $node
+     * @param object $node
      */
     private function processProject($node) {
         $assign     = (isset($node['assign']))  ? $node['assign']  : false;
@@ -945,7 +945,7 @@ class Compiler extends Directory
     /**
      * Adds the ability to directly query values from the Humble.project file
      * 
-     * @param type $node
+     * @param object $node
      */
     private function processApplication($node) {
         $assign     = (isset($node['assign']))  ? $node['assign']  : false;
@@ -983,7 +983,7 @@ class Compiler extends Directory
     /**
      * Process the various redirect options
      * 
-     * @param type $node
+     * @param object $node
      */
     private function processRedirect($node) {
         $redirect = "";
@@ -1041,7 +1041,7 @@ class Compiler extends Directory
     /**
      * Punches out the code that will throw a user defined exception
      * 
-     * @param type $node
+     * @param object $node
      */
     private function processException($node) {
         if (isset($node['message']) && isset($node['code'])) {
@@ -1052,7 +1052,7 @@ class Compiler extends Directory
     /**
      * Punches out the code that creates a switch statement...
      *
-     * @param type $node
+     * @param object $node
      */
     private function processSwitch($node) {
         if (isset($node['id'])) {
@@ -1089,7 +1089,7 @@ class Compiler extends Directory
     /**
      * Punches out the code for if/then/else statements
      *
-     * @param type $nodes
+     * @param object $nodes
      */
     private function processIf($node) {
         $op = '';$val = '';
@@ -1172,7 +1172,7 @@ class Compiler extends Directory
     /**
      * We are going to hold off on this (for now)
      * 
-     * @param type $node
+     * @param object $node
      */
     private function processResource($node) {
         if (isset($node['type'])) {
@@ -1193,9 +1193,17 @@ class Compiler extends Directory
     }
     
     /**
+     * Punches out the code for handling in-line PHP
+     * 
+     * @param object $node
+     */
+    private function processPhp($node) {
+    }
+    
+    /**
      * Punches out the code that signals to abort processing...
      *
-     * @param type $node
+     * @param object $node
      */
     private function processAbort($node) {
         $val = $node['value'] ?? 'TRUE';
@@ -1239,7 +1247,7 @@ class Compiler extends Directory
     /**
      * Punch out the assignment option code
      * 
-     * @param type $node
+     * @param object $node
      */
     private function processAssign($node) {
         if (isset($node['value'])) {
@@ -1352,6 +1360,8 @@ class Compiler extends Directory
             case    "application"   :   $this->processApplication($node);
                                         break;         
             case    "access"        :   $this->processAccessControl($node);
+                                        break;
+            case    "php"           :   $this->processPhp($node);
                                         break;
             default                 :   break;
 
