@@ -165,7 +165,7 @@ class Module {
                         break;
                     case 'php'  :
                         if (file_exists($file = 'Code/'.$module['package'].'/'.$module['module'].'/Resources/php/'.$resource.'.php')) {
-                            $result = rtrim(file_get_contents($file));
+                            $result     = rtrim(file_get_contents($file));
                             if ($stripTags) {
                                 $result = explode("\n",$result);
                                 if (trim($result[0]) == '<?php') {
@@ -181,6 +181,8 @@ class Module {
                     case 'sql'  :
                         break;
                     case 'template' : 
+                        break;
+                    default     :
                         break;
                 }
             }
