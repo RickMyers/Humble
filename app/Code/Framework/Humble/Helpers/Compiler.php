@@ -626,7 +626,7 @@ class Compiler extends Directory
             $node['id'] = 'E_'.$this->_uniqueId();
         }
         print($this->tabs().'$currentModel = $'.$node['id'].' = $models["'.$node['id'].'"] = \Humble::entity("'.$namespace.'/'.$node['class'].'");'."\n");
-        if ($resource = $node['resource']??false) {
+        if ($resource = $node['resource'] ?? false) {
             print($this->tabs().'$'.$node['id'].'->_resource("'.$node['resource'].'");'."\n");
         }        
         if (isset($node['json']) && $this->trueish($node['json'])) {
@@ -1197,7 +1197,14 @@ class Compiler extends Directory
      * 
      * @param object $node
      */
-    private function processPhp($node) {
+    private function processPhp($node=false) {
+        print ($this->tabs()."?><?php\n");
+        if ($code = (isset($node['namespace']) && isset($node['resource'])) ?  \Module::resource('php',$node['namespace'],$node['resource'],[],true) : (isset($node[0]) ? $node[0] : '')) {
+            foreach (explode("\n",$code) as $line) {
+                print($this->tabs().$line."\n");
+            }
+        }
+        print ($this->tabs()."?><?php\n");
     }
     
     /**

@@ -52,8 +52,12 @@ class Component extends CLI
         if (isset($validator->$node)) {                                         //We need to find the correct syntax scheme to compare the attribute to, since some have multiple schemes depending on parent
             foreach ($validator->$node->attributes as $idx => $schema) {
                 $attr = $schema->attributes();
-                if (isset($attr->parent) && ((string)$attr->parent==$parent)) {
+                //what am i doing here?
+                if (isset($attr->parent) && ((string)$attr->parent == $parent)) {
                     break;
+                }
+                if (isset($attr->requires)) {
+                    
                 }
             }
             foreach ($attributes as $attribute => $value) {

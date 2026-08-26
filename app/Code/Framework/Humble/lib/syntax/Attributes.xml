@@ -242,8 +242,8 @@
     <php>
         <attributes>
             <id         required="false"  purpose="" default="" />
-            <namespace  required="false"  purpose="" default="Main Module Namespace" />
-            <resource   required="false" purpose="" default="" />
+            <namespace  required="false"  purpose="" default="Main Module Namespace" requires="resource" />
+            <resource   required="false"  purpose="" default="" requires="namespace" />
         </attributes>        
     </php>
     <helper taxonomy="allocation">

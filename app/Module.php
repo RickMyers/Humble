@@ -145,4 +145,46 @@ class Module {
         }
         return self::boolish($flag);
     }
+    
+    /**
+     * Returns the contents of a resource file...
+     * 
+     * @TODO: Add an array that can be used for substitution
+     * @param string $type
+     * @param string $namespace
+     * @param string $resource
+     * @param bool $stripTags
+     * @return string
+     */
+    public static function resource($type=false,$namespace=false,$resource=false,$substitution=[],$stripTags=false) {
+        $result = '';
+        if ($type && $namespace && $resource) {
+            if ($module = Humble::module((string)$namespace)) {
+                switch (strtolower($type)) {
+                    case 'js'   :
+                        break;
+                    case 'php'  :
+                        if (file_exists($file = 'Code/'.$module['package'].'/'.$module['module'].'/Resources/php/'.$resource.'.php')) {
+                            $result = rtrim(file_get_contents($file));
+                            if ($stripTags) {
+                                $result = explode("\n",$result);
+                                if (trim($result[0]) == '<?php') {
+                                   array_shift($result);
+                                   if (trim($result[count($result)-1]) == '?>') {
+                                       array_pop($result);
+                                   }
+                                }
+                                $result = implode("\n",$result);
+                            }
+                        }
+                        break;
+                    case 'sql'  :
+                        break;
+                    case 'template' : 
+                        break;
+                }
+            }
+        }
+        return $result;
+    }
 }
