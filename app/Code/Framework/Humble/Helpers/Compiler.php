@@ -1785,8 +1785,7 @@ class Compiler extends Directory
             } else {
                 print($this->tabs()."default :\n");
                 print($this->tabs(1)."\HumbleException::standard(new Exception('Can Not Route Request, Undefined Action',12),'Request Error','routing');\n");
-                print($this->tabs().'$sapi_type = php_sapi_name();'."\n");
-                print($this->tabs().'if (substr($sapi_type, 0, 3) == "cgi") {'."\n");
+                print($this->tabs().'if (substr(php_sapi_name(), 0, 3) == "cgi") {'."\n");
                 print($this->tabs(1).'header("Status: 400 Bad Request");'."\n");
                 print($this->tabs(-1)."} else {\n");
                 print($this->tabs(1).'header("HTTP/1.1 400 Bad Request");'."\n");

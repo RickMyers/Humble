@@ -3,6 +3,26 @@ require_once 'CLI/CLI.php';
 class Component extends CLI 
 {
  
+    
+    private static $trueish  = [
+        'Y' => true,
+        'TRUE' => true,
+        'ON' => true,
+        'YES' => true,
+        '1' => true,
+        1 => true
+    ];
+    
+    /**
+     * A quick function to determine if a trueish [Y,YES,TRUE,ON,1] value was passed
+     * 
+     * @param type $value
+     * @return type
+     */
+    private static function trueish($value=false) {
+        return isset(self::$trueish[(string)strtoupper($value)]);
+    }
+    
     /**
      * Compiles a controller
      * 
@@ -49,16 +69,30 @@ class Component extends CLI
      * @return string
      */
     private static function tagAttributeCheck($parent,$node,$attributes,$validator,$lineNumber,$errors) {
-        if (isset($validator->$node)) {                                         //We need to find the correct syntax scheme to compare the attribute to, since some have multiple schemes depending on parent
+        if (isset($validator->$node)) {                                
             foreach ($validator->$node->attributes as $idx => $schema) {
-                $attr = $schema->attributes();
-                //what am i doing here?
-                if (isset($attr->parent) && ((string)$attr->parent == $parent)) {
+                //first check for required attributes, or when one attribute requires another
+                foreach ($schema as $var => $opts) {
+                    $attr = $opts->attributes();
+                    if (isset($attr->required) && (self::trueish($attr->required))) {
+                        if (!isset($attributes[$var])) {
+                            $errors[] = $var." is a required attribute on line number ".$lineNumber; 
+                        }
+                    }
+                    if (isset($attr->requires) && ($attr->requires)) {
+                        foreach (explode(",",$attr->requires) as $require) {
+                            if (!isset($attributes[$require])) {
+                                $errors[] = $require." is a required attribute when ".$var." is present on line number ".$lineNumber;                                
+                            }
+                        }
+                    }                    
+                }
+                //We need to find the correct syntax scheme to compare the attribute to, since some have multiple schemes depending on parent
+                //Still not sure what I am doing here... for a future me to figure out
+                if (isset($schema->parent) && ((string)$schema->parent == $parent)) {
                     break;
                 }
-                if (isset($attr->requires)) {
-                    
-                }
+
             }
             foreach ($attributes as $attribute => $value) {
                 if (!isset($schema->$attribute)) {
@@ -157,7 +191,7 @@ class Component extends CLI
                 foreach (explode(',',$val) as $required) {
                     $found = false;
                     foreach ($children as $child => $status) {
-                        $found = $found || ($child==$required);
+                        $found = $found || ($child == $required);
                     } 
                     if (!$found) {
                         $errors[] = 'On line '.$lineNumber.', '.strtoupper($required).' is a required child for '.strtoupper($tag).' but was not found';
