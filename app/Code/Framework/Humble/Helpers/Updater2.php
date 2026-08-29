@@ -306,6 +306,14 @@ SQL;
             if (count($parts  = explode('/',$uri))==3) {
                 if ($module   = Humble::module($parts[0])) {
                     $mod_path = 'Code/'.$module['package'].'/'.$module['views'].'/'.$parts[1].'/Smarty/'.$parts[2].'.tpl';
+                    $cnt_path = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$parts[1].'.xml';
+                    if (!file_exists($cnt_path)) {
+                        $cmd  = 'php CLI.php --cnfg uri="'.$uri.'"';
+                        print('Executing: '.$cmd."\n");
+                        $result = shell_exec($cmd);
+                        print("\n\n".$result."\n\n");
+                        die($cnt_path."\n");
+                    }
                     if (!file_exists($mod_path)) {
                         $base       = Humble::module(\Environment::namespace());
                         $tpl_path   = file_exists('Code/'.$base['package'].'/'.$base['module'].'/etc/template.tpl') ? 'Code/'.$base['package'].'/'.$base['module'].'/etc/template.tpl' : 'Code/Framework/Humble/etc/template.tpl';
