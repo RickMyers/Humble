@@ -10,7 +10,7 @@
  * 
  */
 interface CLIInterface {
-    public function run($command,$arguments);
+    public static function run($command,$arguments);
 }
 
 class CLI 
