@@ -1,6 +1,6 @@
 <?php
 require_once 'CLI/CLI.php';
-class Module extends CLI 
+class Module extends CLI implements CLIInterface
 {
 
     /**
@@ -318,6 +318,19 @@ TEXT;
         
     } 
 
+    /**
+     * For when you want to call it from a method instead of the CLI
+     * 
+     * @param string $command
+     * @param array $arguments
+     * @return string
+     */
+    public static function run($command,$arguments) {
+        if ($command && $arguments) {
+            self::arguments($arguments);
+            return self::$command();
+        }
+    } 
 }
 
 

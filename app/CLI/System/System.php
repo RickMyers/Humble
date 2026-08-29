@@ -2,7 +2,7 @@
 require_once 'CLI/CLI.php';
 require_once 'Humble.php';
 require_once 'Environment.php';
-class System extends CLI 
+class System extends CLI implements CLIInterface
 {
     
     /**
@@ -389,6 +389,20 @@ class System extends CLI
         $util->clone();
         print("\nTemplates Cloned... they are in lib/ directory of your main module\n\n");
     }
+    
+    /**
+     * For when you want to call it from a method instead of the CLI
+     * 
+     * @param string $command
+     * @param array $arguments
+     * @return string
+     */
+    public static function run($command,$arguments) {
+        if ($command && $arguments) {
+            self::arguments($arguments);
+            return self::$command();
+        }
+    }     
 }
 
 

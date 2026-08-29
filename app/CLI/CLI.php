@@ -9,6 +9,10 @@
  * Common methods go here
  * 
  */
+interface CLIInterface {
+    public function run($command,$arguments);
+}
+
 class CLI 
 {
     

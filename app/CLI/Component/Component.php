@@ -1,6 +1,6 @@
 <?php
 require_once 'CLI/CLI.php';
-class Component extends CLI 
+class Component extends CLI implements CLIInterface
 {
  
     
@@ -397,6 +397,20 @@ class Component extends CLI
             return self::syntaxCheck();
         }
     }
+
+    /**
+     * For when you want to call it from a method instead of the CLI
+     * 
+     * @param string $command
+     * @param array $arguments
+     * @return string
+     */
+    public static function run($command,$arguments) {
+        if ($command && $arguments) {
+            self::arguments($arguments);
+            return self::$command();
+        }
+    }    
     
     /**
      * Creates the basic form edits JSON template
@@ -533,9 +547,9 @@ class Component extends CLI
                     }
                     copy($file,$dir.'/'.$parts[2].'.tpl');
                     if (file_exists($controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$parts[1].'.xml')) {
-                        $xml = new DOMDocument('1.0');
+                        $xml    = new DOMDocument('1.0');
                         $xml->preserveWhiteSpace = true;
-                        $xml->formatOutput = true; 
+                        $xml->formatOutput       = true; 
                         $xml->load($controller); 
                         foreach ($xml->childNodes as $node) {
                             if ($node && $node->hasChildNodes()) {
