@@ -323,9 +323,7 @@ SQL;
                     $mod_path = 'Code/'.$module['package'].'/'.$module['views'].'/'.$parts[1].'/Smarty/'.$parts[2].'.tpl';
                     $cnt_path = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$parts[1].'.xml';
                     if (!file_exists($cnt_path)) {
-                        $cmd  = 'php CLI.php --cnfg uri="'.$uri.'"';
-                        print('Executing: '.$cmd."\n");
-                        $result = shell_exec($cmd);
+                        $result = Humble::exec('Component','componentConfigurationTemplate',['uri' => $uri]);
                         print("\n\n".$result."\n\n");
                         die($cnt_path."\n");
                     }

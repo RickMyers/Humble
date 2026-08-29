@@ -304,7 +304,7 @@ class Utility extends Model
         $templates[]    = 'Code'.$main['package'].''.DIRECTORY_SEPARATOR.$main['module'].'/lib/sample/component/controller.xml';
         $templates[]    = 'Code/Framework/Humble/lib/sample/component/controller.xml';
         $template       = $this->resolveLocation($templates);
-        
+
         if (!$module    = Humble::module($this->getNamespace(),$override)) {
             return "The ".$this->getNamespace()." module is disabled or does not exist";
         }
@@ -314,6 +314,7 @@ class Utility extends Model
             header('RC: 8');
             return "A controller with that name already exists [".$dest."]";
         }
+
         $srch           = array(
             '&&NAME&&',
             '&&ENGINE&&',
@@ -332,7 +333,6 @@ class Utility extends Model
             $this->getActionDescription(),
             $this->getAction()
         );
-        
         $newDir = str_replace('_','/','Code'.DIRECTORY_SEPARATOR.$module['package'].''.DIRECTORY_SEPARATOR.$module['views'].''.DIRECTORY_SEPARATOR.$this->getName().''.DIRECTORY_SEPARATOR.$engine);
         @mkdir($newDir,0775,true);
         if (isset($exts[$engine])) {

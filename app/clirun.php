@@ -17,7 +17,7 @@ print("-------------------------------------------------------------------------
 
 try {
     Component::run("componentConfigurationTemplate",['uri'=>'workflow/generator/splitter']);
-;
+
 } catch (Exception $ex) {
     print("Exception Ocurred\n");
     print_r($ex);

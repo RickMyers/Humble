@@ -43,6 +43,13 @@
         private static $cacheEngine = 'MEMCACHE';
         private static $workflow    = [
         ];
+        private static $libraries = [
+            'Component' => true,
+            'Framework' => true,
+            'Module'    => true,
+            'System'    => true,
+            'Workflow'  => true
+        ];
 
         /**
          *
@@ -60,6 +67,26 @@
             return __CLASS__;
         }
 
+        /**
+         * Lets you run a CLI command without using 'exec' or 'shell_exec'
+         * 
+         * @param string $lib
+         * @param string $cmd
+         * @param array  $arguments
+         * @return string
+         */
+        public static function exec($lib=false,$cmd='',$arguments=[]) {
+            $retval = '';
+            if (isset(self::$libraries[$lib])) {
+                require_once 'CLI/'.$lib.'/'.$lib.'.php';
+            } else {
+                if ($module = self::module($lib)) {
+                    require_once 'Code/'.$module['package'].'/'.$module['module'].'/CLI/'.$lib.'.php';
+                }
+            }
+            return $lib::run($cmd,$arguments);
+        }
+        
         /**
          * Abstract reference, useful in Twig templates since they can't handle static classes... you can assign to a variable this way
          *

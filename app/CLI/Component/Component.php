@@ -397,20 +397,6 @@ class Component extends CLI implements CLIInterface
             return self::syntaxCheck();
         }
     }
-
-    /**
-     * For when you want to call it from a method instead of the CLI
-     * 
-     * @param string $command
-     * @param array $arguments
-     * @return string
-     */
-    public static function run($command,$arguments) {
-        if ($command && $arguments) {
-            self::arguments($arguments);
-            return self::$command();
-        }
-    }    
     
     /**
      * Creates the basic form edits JSON template
@@ -522,8 +508,8 @@ class Component extends CLI implements CLIInterface
      */
     protected static function controllerExistsCheck($module=[],$uri=[]) {
         if (!file_exists($controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$uri[1].'.xml')) {
-            $cmd = 'php CLI.php --bc ns='.$uri[0].' nm='.$uri[1].' ac='.$uri[2].' use=Smarty';
-            $results = exec($cmd);
+            $arguments = ['namespace' => $uri[0],'name' => $uri[1], 'action' => $uri[2], 'engine' => 'Smarty'];          
+            print(Humble::exec('Component','buildController',$arguments)."\n");
             //create controller, add the element
         }
         return file_exists($controller);
@@ -558,7 +544,6 @@ class Component extends CLI implements CLIInterface
                         }
                         $dest   = 'Code/Framework/Admin/Controllers/testie2.xml';
                         $xml->save($dest);                        
-                        print("Doing tailor now\n");
                     }
                     //Tailor the controller to include the mongo code necessary to support component configuration
                 } else {
@@ -571,4 +556,18 @@ class Component extends CLI implements CLIInterface
             die("Minimum arguments were not passed [uri]\n");
         }
     }
+
+    /**
+     * For when you want to call it from a method instead of the CLI
+     * 
+     * @param string $command
+     * @param array $arguments
+     * @return string
+     */
+    public static function run($command,$arguments) {
+        if ($command && $arguments) {
+            self::arguments($arguments);
+            return self::$command();
+        }
+    }       
 }
