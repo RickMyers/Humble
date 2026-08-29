@@ -223,6 +223,12 @@ SQL;
         return $this;
     }
 
+    /**
+     * Generates the active workflows per namespace, but just because they are generated doesn't mean they are executable because the listener needs to be active as well
+     * 
+     * @param string $namespace
+     * @return $this
+     */
     public function generateWorkflows($namespace=false) {
         @mkdir('Workflows',0775);
         $this->output('WORKFLOWS','Generating workflows for Namespace '.$namespace);
@@ -287,6 +293,15 @@ SQL;
         return $components;
     }
     
+    /**
+     * sure y not?
+     * 
+     * @param type $namespace
+     * @param type $class
+     * @param type $listener
+     * @param type $events
+     * @return $this
+     */
     public function registerMethodListeners($namespace,$class,$listener,$events) {
         $method_listener = Humble::entity('paradigm/method/listeners');
         foreach (explode(',',$events) as $event) {

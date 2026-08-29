@@ -477,6 +477,13 @@ class Component extends CLI
         return $mongo;
     }
     
+    /**
+     * We are going to look for the correct action to inject the required workflow component management object
+     * 
+     * @param nodelist $nodeList
+     * @param object $dom
+     * @param string $action
+     */
     protected static function recurseNodes(&$nodeList,$dom,$action=false) {
         foreach ($nodeList->childNodes as $node) {
             if ($node->localName == 'action') {

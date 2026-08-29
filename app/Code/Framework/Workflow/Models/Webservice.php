@@ -55,14 +55,15 @@ class Webservice extends Model
      *
      */
     public function save() {
-        $data           = json_decode($this->getData(),true);
+        $d = $this->getData();
+        $data           = json_decode($d,true);
         $this->setWindowId($data['window_id']);  //now I need a shower...
         $component      = Humble::model('workflow/manager');
-        $component->setData($this->getData());
-        $component->saveComponent();
+        $data['uri']    = $data['uri'] ?? $data['uri_combo'];
+        $component->setData($d);
+        $c = $component->saveComponent();
         $webservice     = Humble::entity('paradigm/webservices');
         $webservice->setWebservice($data['uri']);
-        $webservice->setComponentId($data['id']);
         $webservice->setActive($data['enabled']);
         if ($id = $webservice->save()) {
             $this->registerWebServiceIntegrationPoint($id,$data);
