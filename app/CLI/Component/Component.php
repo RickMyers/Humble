@@ -500,54 +500,39 @@ class Component extends CLI implements CLIInterface
     }
     
     /**
-     * Checks for the existence of a controller, creating it if need be
+     * o Must figure out if template already exists
+     * o Don't update controller if the controller already exists at start of process
      * 
-     * @param array $module
-     * @param array $uri
-     * @return boolean
-     */
-    protected static function controllerExistsCheck($module=[],$uri=[]) {
-        if (!file_exists($controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$uri[1].'.xml')) {
-            $arguments = ['namespace' => $uri[0],'name' => $uri[1], 'action' => $uri[2], 'engine' => 'Smarty'];          
-            print(Humble::exec('Component','buildController',$arguments)."\n");
-            //create controller, add the element
-        }
-        return file_exists($controller);
-    }
-
-    /**
      * 
      * @param string $URI (optional);
      */
     public static function componentConfigurationTemplate($URI=false) {
-        $args = self::arguments();
-        if ($uri  = isset($args['uri']) ? $args['uri'] : ($URI ? $URI : false)) {
-            $parts = explode('/',(substr($uri,0,1) === '/') ? substr($uri,1) : $uri);
+        $args       = self::arguments();
+        if ($uri    = isset($args['uri']) ? $args['uri'] : ($URI ? $URI : false)) {
+            $parts  = explode('/',(substr($uri,0,1) === '/') ? substr($uri,1) : $uri);
             if ($module = \Humble::module($parts[0])) {
-                if (self::controllerExistsCheck($module,$parts)) {
-                    $project    = \Environment::project();
-                    $mod        = Humble::module($project->namespace);
-                    $file       = file_exists($file = 'Code/'.$mod['package'].'/'.$mod['module'].'/etc/template.tpl') ? $file : 'Code/Framework/Humble/etc/template.tpl';
-                    if (!is_dir($dir        = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$parts[1].'/Smarty')) {
-                        mkdir($dir,0775,true);    
+                $controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$parts[1].'.xml';
+                if (!$exists = file_exists($controller)) {
+                    print(Humble::exec('Component','buildController',['namespace' => $parts[0],'name' => $parts[1], 'action' => $parts[2], 'engine' => 'Smarty'])."\n");
+                }
+                $project    = \Environment::project();
+                $mod        = Humble::module($project->namespace);
+                $file       = file_exists($file = 'Code/'.$mod['package'].'/'.$mod['module'].'/etc/template.tpl') ? $file : 'Code/Framework/Humble/etc/template.tpl';
+                if (!is_dir($dir        = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$parts[1].'/Smarty')) {
+                    mkdir($dir,0775,true);    
+                }
+                copy($file,$dir.'/'.$parts[2].'.tpl');
+                if (!$exists) {
+                    $xml    = new DOMDocument('1.0');
+                    $xml->preserveWhiteSpace = true;
+                    $xml->formatOutput       = true; 
+                    $xml->load($controller); 
+                    foreach ($xml->childNodes as $node) {
+                        if ($node && $node->hasChildNodes()) {
+                            self::recurseNodes($node,$xml,$parts[2]);
+                        }  
                     }
-                    copy($file,$dir.'/'.$parts[2].'.tpl');
-                    if (file_exists($controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$parts[1].'.xml')) {
-                        $xml    = new DOMDocument('1.0');
-                        $xml->preserveWhiteSpace = true;
-                        $xml->formatOutput       = true; 
-                        $xml->load($controller); 
-                        foreach ($xml->childNodes as $node) {
-                            if ($node && $node->hasChildNodes()) {
-                                self::recurseNodes($node,$xml,$parts[2]);
-                            }  
-                        }
-                        $dest   = 'Code/Framework/Admin/Controllers/testie2.xml';
-                        $xml->save($dest);                        
-                    }
-                    //Tailor the controller to include the mongo code necessary to support component configuration
-                } else {
-                    die("Error while creating controller [".$parts[1]."]\n");
+                    $xml->save($controller);                        
                 }
             } else {
                 die("Invalid Namespace [".$parts[0]."]\n");
