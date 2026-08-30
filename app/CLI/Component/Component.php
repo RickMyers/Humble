@@ -513,7 +513,7 @@ class Component extends CLI implements CLIInterface
             if ($module = \Humble::module($parts[0])) {
                 $controller = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$parts[1].'.xml';
                 if (!$exists = file_exists($controller)) {
-                    print(Humble::exec('Component','buildController',['namespace' => $parts[0],'name' => $parts[1], 'action' => $parts[2], 'engine' => 'Smarty'])."\n");
+                    Humble::exec('Component','buildController',['namespace' => $parts[0],'name' => $parts[1], 'action' => $parts[2], 'engine' => 'Smarty']);
                 }
                 $project    = \Environment::project();
                 $mod        = Humble::module($project->namespace);

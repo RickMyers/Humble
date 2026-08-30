@@ -324,8 +324,6 @@ SQL;
                     $cnt_path = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['controllers']).'/'.$parts[1].'.xml';
                     if (!file_exists($cnt_path)) {
                         $result = Humble::exec('Component','componentConfigurationTemplate',['uri' => $uri]);
-                        print("\n\n".$result."\n\n");
-                        die($cnt_path."\n");
                     }
                     if (!file_exists($mod_path)) {
                         $base       = Humble::module(\Environment::namespace());

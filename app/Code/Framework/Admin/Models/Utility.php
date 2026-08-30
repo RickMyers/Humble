@@ -329,8 +329,8 @@ class Utility extends Model
             $engine,
             $data['email']??'',
             ($user['first_name'] ?? '').' '.($user['last_name'] ?? ''),
-            $this->getDescription(),
-            $this->getActionDescription(),
+            $this->getDescription()??'[Insert Controller Description Here]',
+            $this->getActionDescription()??'<!-- Insert Action Description Here -->',
             $this->getAction()
         );
         $newDir = str_replace('_','/','Code'.DIRECTORY_SEPARATOR.$module['package'].''.DIRECTORY_SEPARATOR.$module['views'].''.DIRECTORY_SEPARATOR.$this->getName().''.DIRECTORY_SEPARATOR.$engine);
@@ -343,10 +343,14 @@ class Utility extends Model
             }
         }
         if (file_put_contents(str_replace('_','/',$dest),str_replace($srch,$repl,file_get_contents($template)))) {
-            header('RC: 0');
+            if (!headers_sent()) {
+                header('RC: 0');
+            }
             return "Ok";
         } else {
-            header('RC: 16');
+            if (!headers_sent()) {
+                header('RC: 16');
+            }
             return "Unable to create the controller";
         }
     }
