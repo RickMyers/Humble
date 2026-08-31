@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS `account_registrations`;
-
 CREATE TABLE `account_registrations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `serial_number` char(20) DEFAULT NULL,
@@ -14,3 +12,11 @@ CREATE TABLE `account_registrations` (
   UNIQUE KEY `serial_number` (`serial_number`),
   KEY `serial_number_2` (`serial_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+create table `account_users` like `humble_users`;
+
+create table `account_user_identification` like `humble_user_identification`;
+
+alter table `account_users` add `serial_number` char(20) default null after `id`;
+
+create unique index `account_users_idx` on `account_users` (serial_number,user_name);
