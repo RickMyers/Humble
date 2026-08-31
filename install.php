@@ -659,6 +659,7 @@ switch ($method) {
         print('Admin App Results: '.$rc."\n");
         
         print_r($results);
+        print("\n".'Done with installation'."\n");
         ?>
         <script>
             window.location.href = '/index.html?message=Installation Completed, Please Login...';
