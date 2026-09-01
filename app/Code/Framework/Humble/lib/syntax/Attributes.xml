@@ -389,13 +389,13 @@
     </case>
     <cache taxonomy="metadata">
         <attributes>
-            <assign    required="true"   purpose="" default="" />
-            <var       required="true"   purpose="" default="" />
+            <assign    required="false"  purpose="" default="" />
+            <var       required="false"  purpose="" default="" />
             <set       required="false"  purpose="" default="" />
             <get       required="false"  purpose="" default="" />
             <value     required="false"  purpose="" default="" />
             <const     required="false"  purpose="" default="" />
-            <default   required="true"   purpose="" default="" />            
+            <default   required="false"  purpose="" default="" />            
         </attributes>        
     </cache>
     <flag taxonomy="metadata">
