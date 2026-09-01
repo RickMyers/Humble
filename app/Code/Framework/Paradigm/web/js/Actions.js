@@ -58,7 +58,7 @@ Paradigm.actions = (function () {
         workflows: {
             manage: function () {
                 let win = (manageWindow) ? manageWindow : (mangeWindow = Desktop.semaphore.checkout(true));
-                win._static(true)._title('Manage Destinations');
+                win.static(true).title('Manage Destinations');
                 (new EasyAjax('/paradigm/workflow/exporthome')).add('window_id',win.id).then((response) => {
                     win._open(response);
                 }).post();
@@ -129,7 +129,7 @@ Paradigm.actions = (function () {
         new: function () {
             if (!newDiagramWindow) {
                 newDiagramWindow = Desktop.semaphore.checkout();
-                Desktop.window.list[newDiagramWindow]._title('New Workflow Diagram');
+                Desktop.window.list[newDiagramWindow].title('New Workflow Diagram');
                 Desktop.window.list[newDiagramWindow].open = function (stuff) {
                     //console.log(stuff);
                 }
@@ -141,7 +141,7 @@ Paradigm.actions = (function () {
         list: function () {
             if (!loadWindow) {
                 loadWindow = Desktop.semaphore.checkout();
-                Desktop.window.list[loadWindow]._title('Load Workflow');
+                Desktop.window.list[loadWindow].title('Load Workflow');
                 Desktop.window.list[loadWindow].open = function (stuff) {
 
                 }
@@ -153,7 +153,7 @@ Paradigm.actions = (function () {
         details: function () {
             if (!saveWindow) {
                 saveWindow = Desktop.semaphore.checkout();
-                Desktop.window.list[saveWindow]._title('Save');
+                Desktop.window.list[saveWindow].title('Save');
                 Desktop.window.list[saveWindow].open = function (stuff) {
                     console.log(stuff);
                 }
@@ -218,7 +218,7 @@ Paradigm.actions = (function () {
             Paradigm.console.reply('Generating...','',1);
             (new EasyAjax('/paradigm/workflow/generate')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',generateWindow).add('workflow',JSON.stringify(Paradigm.elements.list)).add('id',currentDiagramId).add('image',Paradigm.canvas.toDataURL()).then((response) => {
                 generating = false;
-                Desktop.window.list[generateWindow]._title('Workflow Generation | Paradigm');
+                Desktop.window.list[generateWindow].title('Workflow Generation | Paradigm');
                 Desktop.window.list[generateWindow].set(response);
             }).post();
         },
@@ -232,7 +232,7 @@ Paradigm.actions = (function () {
         import: function () {
             var win = Desktop.semaphore.checkout(true);
             (new EasyAjax('/paradigm/workflow/import')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',win.id).add('workflow',JSON.stringify(Paradigm.elements.list)).add('id',currentDiagramId).add('image',Paradigm.canvas.toDataURL()).then((response) => {
-                win._title('Workflow Import | Paradigm');
+                win.title('Workflow Import | Paradigm');
                 win._open(response);
             }).post();
         },
@@ -243,7 +243,7 @@ Paradigm.actions = (function () {
                     currentDiagramId = response.trim();
                     Paradigm.console.reply("Saved prior to export.",'',1);
                     (new EasyAjax('/paradigm/workflow/exportlist')).add('window_id',win.id).add('id',currentDiagramId).then((response) => {
-                        win._title('Workflow Export | Paradigm');
+                        win.title('Workflow Export | Paradigm');
                         win._open(response);
                     }).post();
                 }
@@ -252,7 +252,7 @@ Paradigm.actions = (function () {
         sync: function () {
             var win = Desktop.semaphore.checkout(true);
             (new EasyAjax('/paradigm/workflow/synclist')).add('window_id',win.id).then((response) => {
-                win._title('Workflow Sync | Paradigm');
+                win.title('Workflow Sync | Paradigm');
                 win._open(response);
             }).post();
         }

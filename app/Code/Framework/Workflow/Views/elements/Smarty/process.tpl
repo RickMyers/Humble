@@ -57,7 +57,7 @@
                             var win = Desktop.semaphore.checkout(true);
                             win = Desktop.semaphore.checkout(true);  //BECAUSE REASONS!!!!
                             (new EasyAjax('/workflow/elements/explore')).add('window_id',win.id).packageForm('internal-process-form-{$id}').then((response) => {
-                                win._title('Model Explore')._scroll(false)._open(response);
+                                win.title('Model Explore').scroll(false)._open(response);
                             }).post();
                         });
                     </script>                

@@ -138,11 +138,11 @@ function DesktopWindow(icon,refId) {
         w:      0,
         h:      0
     };
-    this._scroll    = function (scroll) {
+    this.scroll    = function (scroll) {
         this.content.style.overflow = (scroll) ? 'auto' : 'hidden';
         return this;
     }
-    this._title     = function (title) {
+    this.title     = function (title) {
         if (title) {
             var project = ParadigmConfig.desktop.window.name ? ParadigmConfig.desktop.window.name : ParadigmConfig.desktop.default.window.name;
             this.title.innerHTML = this.titleText = title + ' | '+project;
@@ -188,7 +188,7 @@ function DesktopWindow(icon,refId) {
         }
         return this;
     };
-    this._static     = function (boolean) {
+    this.static     = function (boolean) {
         this.static = boolean;
         return this;
     };
@@ -300,9 +300,9 @@ function DesktopWindow(icon,refId) {
         this.resize = null;
         this.close  = null;
         this.open   = null;
-        this._title('');
-        this._scroll(false);
-        return this._static(false);
+        this.title('');
+        this.scroll(false);
+        return this.static(false);
     }
     this.dock   = function (where) {
         var w = window.innerWidth;
@@ -793,7 +793,7 @@ var Desktop = {
                 var win  = Desktop.semaphore.checkout(true);
                 if (icon.data.url) {
                     (new EasyAjax(icon.data.url)).add('window_id',win.id).then((response) => {
-                        win._open(response)._title(icon.data.app);
+                        win._open(response).title(icon.data.app);
                     }).get();
                 }
             };
@@ -1213,7 +1213,7 @@ Desktop.minimized.windows.renderer((function () {
         var html = '';
         for (var win_id in Desktop.minimized.windows.list) {
             if (Desktop.minimized.windows.list[win_id].state === 1) {
-                html += '<img onclick="Desktop.minimized.windows.restore([\''+win_id+'\'])" style="float: left; position: relative; top: -35px; height: 55px; margin: 0px 5px 0px 5px; cursor: pointer" src="/images/paradigm/window.png"  title="'+Desktop.minimized.windows.list[win_id]._title()+'" />';
+                html += '<img onclick="Desktop.minimized.windows.restore([\''+win_id+'\'])" style="float: left; position: relative; top: -35px; height: 55px; margin: 0px 5px 0px 5px; cursor: pointer" src="/images/paradigm/window.png"  title="'+Desktop.minimized.windows.list[win_id].title()+'" />';
             }
         };
         $('#minimized_windows_tray').html(html);

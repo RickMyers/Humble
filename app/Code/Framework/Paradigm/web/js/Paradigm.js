@@ -1144,7 +1144,7 @@ var Paradigm = (function () {
                     if (!element.win) {
                         element.win = Desktop.semaphore.checkout();
                     }
-                    Desktop.window.list[element.win]._title(element.label+' ['+element.text+'] | Paradigm');
+                    Desktop.window.list[element.win].title(element.label+' ['+element.text+'] | Paradigm');
                     Desktop.window.list[element.win]._open("<table style='width: 100%; height: 100%'><tr><td align='center' valign='middle'><img src='/images/paradigm/clipart/loading_indicator.gif' /></td></tr></table>");
                     (new EasyAjax('/paradigm/element/configure')).add('namespace',Paradigm.actions.get.namespace()).add('window_id',element.win).add('id',element.id).add('type',element.element).then((response) => {
                         Desktop.window.list[element.win]._open(response);

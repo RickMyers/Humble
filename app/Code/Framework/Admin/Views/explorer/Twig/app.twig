@@ -49,13 +49,13 @@
             browseFile(file) {
                 let win = Desktop.semaphore.checkout(true);
                 (new EasyAjax('/admin/explorer/browse')).add('window_id',win.id).add('directory',$('#explorer_path').val()).add('file',file).then((response) => {
-                    win._title('Browse '+file)._open(response);
+                    win.title('Browse '+file)._open(response);
                 }).post();
             },
             editFile(file) {
                 let win = Desktop.semaphore.checkout(true);
                 (new EasyAjax('/admin/explorer/edit')).add('window_id',win.id).add('directory',$('#explorer_path').val()).add('file',file).then((response) => {
-                    win._title('Edit '+file)._open(response);
+                    win.title('Edit '+file)._open(response);
                 }).post();           
             },
             deleteFile(file) {

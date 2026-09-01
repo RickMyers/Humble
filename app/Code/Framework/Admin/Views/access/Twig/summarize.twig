@@ -74,7 +74,7 @@
         $('.host-summarize-field').on('click',(evt)=>{
            let win  = Desktop.semaphore.checkout(true);
            let host = $(evt.target).attr('host');
-           win._title(host+' Whois')._open();
+           win.title(host+' Whois')._open();
            (new EasyAjax('/admin/access/whois')).add('window_id',win.id).add('host',host).then((response) => {
                win.set(response);
            }).post();

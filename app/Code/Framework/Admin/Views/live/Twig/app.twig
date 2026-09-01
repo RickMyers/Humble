@@ -10,7 +10,7 @@
             return true;
         });
         
-        win._static(true)._title('Admin Live!')._scroll(true);
+        win.static(true).title('Admin Live!').scroll(true);
         win.resize(function () {
                 $('#admin_live-{{ window_id }}').height(win.content.height()-2);
          })._resize();

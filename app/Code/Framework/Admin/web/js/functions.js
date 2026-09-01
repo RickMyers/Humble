@@ -22,8 +22,8 @@ var Functions = (() => {
                             open: () => {
                                 let win = Desktop.semaphore.checkout(true);
                                 (new EasyAjax('/admin/menu/form')).add('window_id',win.id).then((response) => {
-                                    win._static(true)._title('Menu Management')._open(response);
-                                    win._scroll(true).resize((win)=>{
+                                    win.static(true).title('Menu Management')._open(response);
+                                    win.scroll(true).resize((win)=>{
                                         $('#menu_management_area').height(win.content.height());
                                     });
                                 }).post();                                
@@ -35,7 +35,7 @@ var Functions = (() => {
                         open: (category,topic) => {
                             let win = Administration.cli.windows[category] = (Administration.cli.windows[category]) ? Administration.cli.windows[category] : Desktop.semaphore.checkout(true); 
                             (new EasyAjax('/admin/cli/topic')).add('window_id',win.id).add('category',category).add('topic',topic).then((response) => {
-                                win._title('CLI UI: '+topic)._static(true)._open(response);
+                                win.title('CLI UI: '+topic).static(true)._open(response);
                             }).post();
                         },
                         run: (data) => {
@@ -68,7 +68,7 @@ var Functions = (() => {
                     code: {
                         explore: (namespace, type, resource) => {
                             let win = Desktop.semaphore.checkout(true);
-                            win._title('Code Explorer')._scroll(true)._open();
+                            win.title('Code Explorer').scroll(true)._open();
                             (new EasyAjax('/admin/code/explorer')).add('window_id',win.id).add('namespace',namespace).add('type',type).add('resource',resource).then((response) => {
                                 win.set(response);
                                 Colorizer.scan(win.content);
@@ -83,13 +83,31 @@ var Functions = (() => {
                             }).post();
                         }
                     },
+                    support: {
+                        win: false,
+                        home() {
+                            let win = (Administration.support.win) ? Administration.support.win : (Administration.support.win = Desktop.semaphore.checkout(true));
+                            (new EasyAjax('/admin/support/home')).then((response) => {
+                                win.static(true).title('Support Contact')._open(response);
+                            }).get();
+                        }
+                    },
+                    contact: {
+                        win: false,
+                        home() {
+                            let win = (Administration.contact.win) ? Administration.contact.win : (Administration.contact.win = Desktop.semaphore.checkout(true));
+                            (new EasyAjax('/admin/contact/home')).then((response) => {
+                                win.static(true).title('Contact')._open(response);
+                            }).get();                            
+                        }
+                    },
                     rest: {
                         win: false,
                         home() {
                             console.log(this);
                             Administration.rest.win = (Administration.rest.win = (Administration.rest.win ? Administration.rest.win : Desktop.semaphore.checkout(true)));
                             (new EasyAjax('/admin/rest/app')).add('window_id',Administration.rest.win.id).then((response) => {
-                                Administration.rest.win._title('Rest Client')._open(response);
+                                Administration.rest.win.title('Rest Client')._open(response);
                             }).post();
                         }
                     },
@@ -116,7 +134,7 @@ var Functions = (() => {
                         view: (user_id) => {
                             var win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/user/info')).add('user_id',user_id).add('window_id',win.id).then((response) => {
-                                win._title('User Profile')._open(response);
+                                win.title('User Profile')._open(response);
                             }).post();                
                         },    
                         list:   () => {
@@ -129,7 +147,7 @@ var Functions = (() => {
                         install: () => {
                             let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/socket/config')).add('window_id',win.id).then((response)=>{
-                                win._title('Server Install')._open(response);
+                                win.title('Server Install')._open(response);
                             }).post();
                         },
                         start: () => {
@@ -169,7 +187,7 @@ var Functions = (() => {
                             open: () => {
                                 let win = Desktop.semaphore.checkout(true);
                                 (new EasyAjax('/admin/password/form')).add('window_id',win.id).then((response) => {
-                                    win._static(true)._title('Admin Password Change')._open(response);
+                                    win.static(true).title('Admin Password Change')._open(response);
                                 }).post();                                
                             }
                         }
@@ -195,7 +213,7 @@ var Functions = (() => {
                             form: () => {
                                 let win = Desktop.semaphore.checkout(true);
                                 (new EasyAjax('/admin/user/form')).add('window_id',win.id).then((response) => {
-                                    win._static(true)._title('New General User')._open(response);
+                                    win.static(true).title('New General User')._open(response);
                                 }).post();
                             }
                         },
@@ -203,7 +221,7 @@ var Functions = (() => {
                             form: () => {
                                 let win = Desktop.semaphore.checkout(true);
                                 (new EasyAjax('/admin/administrator/form')).add('window_id',win.id).then((response) => {
-                                    win._static(true)._title('New Administrator')._open(response);
+                                    win.static(true).title('New Administrator')._open(response);
                                 }).post();
                             }
                         }
@@ -212,7 +230,7 @@ var Functions = (() => {
                         users: () => {
                              let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/user/home')).add('window_id',win.id).then((response) => {
-                                win._static(true)._scroll(true)._title('Manage Users')._open(response);
+                                win.static(true).scroll(true).title('Manage Users')._open(response);
                             }).post();
                         }
                     },
@@ -220,7 +238,7 @@ var Functions = (() => {
                         win: false,
                         tune: () => {
                             let win = (Administration.cadence.win) ? Administration.cadence.win : Desktop.semaphore.checkout(true);
-                            win._title('Cadence Tuning')._static(false)._scroll(false);
+                            win.title('Cadence Tuning').static(false).scroll(false);
                             (new EasyAjax('/admin/cadence/tune')).add('window_id',win.id).then((response) => {
                                 win.set(response)._open();
                             }).post();                            
@@ -265,7 +283,7 @@ var Functions = (() => {
                     api: {
                         win: false,
                         home: () => {
-                            var win = (Administration.api.win = Administration.api.win ? Administration.api.win : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("API Test");
+                            var win = (Administration.api.win = Administration.api.win ? Administration.api.win : Desktop.semaphore.checkout(true)).static(true).scroll(true).title("API Test");
                             (new EasyAjax('/admin/test/home')).then((response) => {
                                 win._open(response);
                             }).get();                              
@@ -276,7 +294,7 @@ var Functions = (() => {
                         import: (namespace) => {
                             let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/actions/importpage')).add('namespace',namespace).then((response) => {
-                                win._open(response)._scroll(true)._title('Import Data');
+                                win._open(response).scroll(true).title('Import Data');
                             }).post();
                         },
                         export:(namespace) => {
@@ -287,32 +305,32 @@ var Functions = (() => {
                         install: (namespace) => {
                             let win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/module/install')).add('namespace',namespace).then((response) => {
-                                win._open(response)._scroll(true)._title('Install Module');
+                                win._open(response).scroll(true).title('Install Module');
                             }).post();                            
                         },
                         form: (pkg) => {
                             let win = Administration.module.uploadwin = Administration.module.uploadwin ? Administration.module.uploadwin : Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/module/form')).add('package',pkg).add('window_id',win.id).then((response) => {
-                                win._static(true)._open(response)._title('Add New Module');
+                                win.static(true)._open(response).title('Add New Module');
                             }).post();  
                         }
                     },
                     secrets: {
                         win: false,
                         app: () => {
-                            var win = (Administration.secrets.win = (Administration.secrets.win ? Administration.secrets.win : Desktop.semaphore.checkout(true)))._static(true)._scroll(true)._title("Secrets Manager");
+                            var win = (Administration.secrets.win = (Administration.secrets.win ? Administration.secrets.win : Desktop.semaphore.checkout(true))).static(true).scroll(true).title("Secrets Manager");
                             (new EasyAjax('/admin/secrets/app')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                              
                         },
                         add: () => {
-                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Secret");
+                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true)).static(true).scroll(true).title("New Secret");
                             (new EasyAjax('/admin/secrets/form')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                              
                         },
                         review: () => {
-                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("Review Secret");
+                            var win = (Administration.create.win.sec = Administration.create.win.sec ? Administration.create.win.sec : Desktop.semaphore.checkout(true)).static(true).scroll(true).title("Review Secret");
                             (new EasyAjax('/admin/secrets/review')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                              
@@ -321,7 +339,7 @@ var Functions = (() => {
                     tests: {
                         win: false,
                         home: () => {
-                            let win = (Administration.tests.win = Administration.tests.win ? Administration.tests.win : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("Unit Test Harness");
+                            let win = (Administration.tests.win = Administration.tests.win ? Administration.tests.win : Desktop.semaphore.checkout(true)).static(true).scroll(true).title("Unit Test Harness");
                             (new EasyAjax('/admin/unittests/home')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                              
@@ -353,28 +371,28 @@ var Functions = (() => {
                             }
                         },                           
                         package: () => {
-                            var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Package");
+                            var win = (Administration.create.win.pak = Administration.create.win.pak ? Administration.create.win.pak : Desktop.semaphore.checkout(true)).static(true).scroll(true).title("New Package");
                             (new EasyAjax('/admin/actions/package')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();
                         },
                         module: () => {
-                            var win = (Administration.create.win.mod = Administration.create.win.mod ? Administration.create.win.mod : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Module");
+                            var win = (Administration.create.win.mod = Administration.create.win.mod ? Administration.create.win.mod : Desktop.semaphore.checkout(true)).static(true).scroll(true).title("New Module");
                             (new EasyAjax('/admin/actions/module')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                            
                         },
                         component: () => {
-                            var win = (Administration.create.win.com = Administration.create.win.com ? Administration.create.win.com : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Component");
+                            var win = (Administration.create.win.com = Administration.create.win.com ? Administration.create.win.com : Desktop.semaphore.checkout(true)).static(true).scroll(true).title("New Component");
                             (new EasyAjax('/admin/actions/component')).add('window_id',win.id).then((response) => {
                                 win._open(response);
-                                win._scroll(true).resize((win)=>{
+                                win.scroll(true).resize((win)=>{
                                     $('#new_component_area').height(win.content.height());
                                 });                                
                             }).get();                            
                         },
                         controller: () => {
-                            var win = (Administration.create.win.con = Administration.create.win.con ? Administration.create.win.con : Desktop.semaphore.checkout(true))._static(true)._scroll(true)._title("New Controller");
+                            var win = (Administration.create.win.con = Administration.create.win.con ? Administration.create.win.con : Desktop.semaphore.checkout(true)).static(true).scroll(true).title("New Controller");
                             (new EasyAjax('/admin/actions/controller')).add('window_id',win.id).then((response) => {
                                 win._open(response);
                             }).get();                            
@@ -385,7 +403,7 @@ var Functions = (() => {
                         run: () => {
                             if (confirm("Are you sure you want to run the docs?  It could take a while...")) {
                                 let win = Desktop.semaphore.checkout(true);
-                                win._title('API Generation')._scroll(true)._open();
+                                win.title('API Generation').scroll(true)._open();
                                 (new EasyAjax('/admin/documentation/generate')).add('window_id',win.id).then((response) => {
                                     win.set(response);
                                 }).post();
@@ -393,14 +411,14 @@ var Functions = (() => {
                         },
                         review: () => {
                             let win = Desktop.semaphore.checkout(true);
-                            win._title('API Generation')._open('<h3>Generating Documentation, please wait (it could be a while...</h3>');
+                            win.title('API Generation')._open('<h3>Generating Documentation, please wait (it could be a while...</h3>');
                             (new EasyAjax('/admin/documentation/review')).add('window_id',win.id).then((response) => {
                                 win.set(response);
                             }).post();
                         },
                         home: () => {
                             let win = Administration.documentation.win ? Administration.documentation.win : Desktop.semaphore.checkout(true);
-                            win._static(true)._title('Documentation')._open();
+                            win.static(true).title('Documentation')._open();
                             (new EasyAjax('/admin/documentation/review')).then((response) => {
                                 win.set(response);
                             }).get();
@@ -410,7 +428,7 @@ var Functions = (() => {
                         directory: {
                             index: () => {
                                 servicesWindow = (servicesWindow) ? servicesWindow : Desktop.semaphore.checkout(true);
-                                servicesWindow._title("Index of Services")._static(true)._scroll(true)._open();
+                                servicesWindow.title("Index of Services").static(true).scroll(true)._open();
                                 (new EasyAjax('/admin/directory/index')).add('all','Y').then((response) => {
                                     servicesWindow.set(response);
                                     servicesWindow.resize = () => {
@@ -436,7 +454,7 @@ var Functions = (() => {
                         form: () => {
                             var win = (Administration.upload.win) ? Administration.upload.win : Administration.upload.win = Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/upload/form')).then((response) => {
-                                win._title('File Upload')._open(response);
+                                win.title('File Upload')._open(response);
                             }).post();
                         }
                     },
@@ -445,7 +463,7 @@ var Functions = (() => {
                             win: false,
                             open: () =>  {
                                 let win = Administration.smtp.settings.win = Administration.smtp.settings.win ? Administration.smtp.settings.win : Desktop.semaphore.checkout(true);
-                                win._static(true)._scroll(true)._title('SMTP Settings');
+                                win.static(true).scroll(true).title('SMTP Settings');
                                 (new EasyAjax('/admin/smtp/settings')).then((response) => {
                                     win._open(response);
                                 }).get();
@@ -456,7 +474,7 @@ var Functions = (() => {
                         win: false,
                         home: () => {
                                 let win = Administration.cache.win = Administration.cache.win ? Administration.cache.win : Desktop.semaphore.checkout(true);
-                                win._static(true)._scroll(true)._title('Cache Management');
+                                win.static(true).scroll(true).title('Cache Management');
                                 (new EasyAjax('/admin/system/cache')).then((response) => {
                                     win._open(response);
                                 }).get();
@@ -519,7 +537,7 @@ var Functions = (() => {
                             win._open();
                             (new EasyAjax('/admin/events/open')).add('window_id',win.id).then((response) => {
                                 win.set(response);
-                                win._title('Event Viewer');
+                                win.title('Event Viewer');
                             }).get();
                         },
                         fetch: function (page,rows,win) {
@@ -571,7 +589,7 @@ var Functions = (() => {
                             win._open();
                             (new EasyAjax('/admin/events/open')).add('window_id',win.id).then((response) => {
                                 win.set(response);
-                                win._title('Event Viewer');
+                                win.title('Event Viewer');
                             }).get();
                         }
                     },
@@ -621,7 +639,7 @@ var Functions = (() => {
                         details: () => {
                             let win = Administration.user.win = (Administration.user.win) ? Administration.user.win : Desktop.semaphore.checkout(true);
                             (new EasyAjax('/admin/user/details')).then((response) => {
-                                win._static(true)._scroll(true)._open(response);
+                                win.static(true).scroll(true)._open(response);
                             }).get();
                         }
                     },
@@ -817,7 +835,7 @@ var Functions = (() => {
                             },
                             fetch: function (user_id,user_name) {
                                 var win = Desktop.semaphore.checkout(true);
-                                win._title(user_name+' Log')._open();
+                                win.title(user_name+' Log')._open();
                                 (new EasyAjax('/admin/log/users')).add('log','user').add('user_id',user_id).then((response) => {
                                     win.set(response);
                                 }).post();
@@ -826,7 +844,7 @@ var Functions = (() => {
                         open: function (log) {
                             if (!Administration.logs.windows[log]) {
                                 Administration.logs.windows[log] = Desktop.semaphore.checkout(true);
-                                Administration.logs.windows[log]._title(log+ ' Log')._scroll(false)._static(true);
+                                Administration.logs.windows[log].title(log+ ' Log').scroll(false).static(true);
                             }
                             var win = Administration.logs.windows[log]._open();
                             (new EasyAjax('/admin/actions/log')).add('log',log.toLowerCase()).add('window_id',win.id).then((response) => {

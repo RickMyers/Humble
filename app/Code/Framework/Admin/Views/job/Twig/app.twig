@@ -77,7 +77,7 @@
         }
     });
     var win = Desktop.window.list['{{ window_id }}'];
-    win._title('Job Monitor');
+    win.title('Job Monitor');
     Humble.admin['job']['{{ window_id }}'].mount('#'+win.content.id);
     win.resize(() => {
         $('#jobs_list').height(win.content.height() - $E('jobs_header').offsetHeight - $E('jobs_footer').offsetHeight - 2);

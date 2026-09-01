@@ -18,7 +18,7 @@
     Humble.admin['entity'] = (!Humble.admin['entity']) ? {} : Humble.admin['entity'];
     Humble.admin['query']  = (!Humble.admin['query'])  ? {} : Humble.admin['query'];
     ((win)=> {
-        win._title('Entity Explorer');        
+        win.title('Entity Explorer');        
         let explorer_nav    = $('#entity_explorer_nav_{{ window_id }}').height();
         let entity_area     = $('.entity_area_{{ window_id }}_{{ tab_id }}').get(0);
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
@@ -51,7 +51,7 @@
                         tab:        'list_tab_{{ window_id }}_{{ tab_id }}',
                         area:       'entity_list_{{ window_id }}_{{ tab_id }}',                
                         footer:     'entity_footer_{{ window_id }}_{{ tab_id }}',
-                        title:      'entity_title_{{ window_id }}_{{ tab_id }}',
+                        title:      'entitytitle_{{ window_id }}_{{ tab_id }}',
                         headers:    [],
                         entities:   [],
                         page:       1,
@@ -68,7 +68,7 @@
                         tab:        'content_tab_{{ window_id }}_{{ tab_id }}',
                         area:       'content_area_{{ window_id }}_{{ tab_id }}',                
                         footer:     'content_footer_{{ window_id }}_{{ tab_id }}',
-                        title:      'content_title_{{ window_id }}_{{ tab_id }}',
+                        title:      'contenttitle_{{ window_id }}_{{ tab_id }}',
                         headers:    [],
                         data:       [],
                         page:       1,
@@ -82,7 +82,7 @@
                         tab:        'edit_tab_{{ window_id }}_{{ tab_id }}',
                         footer:     'edit_footer_{{ window_id }}_{{ tab_id }}',
                         area:       'edit_area_{{ window_id }}_{{ tab_id }}',
-                        title:      'edit_title_{{ window_id }}_{{ tab_id }}',
+                        title:      'edittitle_{{ window_id }}_{{ tab_id }}',
                         form:       'explorer_edit_form_{{ window_id }}_{{ tab_id }}',
                         fields:     [],
                         id:         0,
@@ -90,11 +90,11 @@
                     query: {
                         tab:        'query_tab_{{ window_id }}_{{ tab_id }}',
                         footer:     'query_footer_{{ window_id }}_{{ tab_id }}',
-                        title:      'query_title_{{ window_id }}_{{ tab_id }}',
+                        title:      'querytitle_{{ window_id }}_{{ tab_id }}',
                         results:    'query_results_{{ window_id }}_{{ tab_id }}',
                         area:       'query_area_{{ window_id }}_{{ tab_id }}',
                         edittab:    'query_edit_tab_{{ window_id }}_{{ tab_id }}',   
-                        edittitle:  'query_edit_title_{{ window_id }}_{{ tab_id }}',   
+                        edittitle:  'query_edittitle_{{ window_id }}_{{ tab_id }}',   
                         editarea:   'query_edit_area_{{ window_id }}_{{ tab_id }}',
                         editfooter: 'query_edit_footer_{{ window_id }}_{{ tab_id }}',
                         headers:    [],

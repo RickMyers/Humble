@@ -78,7 +78,7 @@
                     let win = Desktop.semaphore.checkout(true);
                     win = Desktop.semaphore.checkout(true);
                     (new EasyAjax('/workflow/elements/newmethod')).add('type','process').add('window_id',win.id).addForm('generator-form-&id&').then((response) => {
-                        win._title('New Method')._scroll(false)._open(response);
+                        win.title('New Method').scroll(false)._open(response);
                     }).post();                        
                 }
             }            

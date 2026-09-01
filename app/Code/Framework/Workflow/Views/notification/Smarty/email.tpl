@@ -89,5 +89,5 @@
         }})(CKEDITOR.replace('email-editor-{$data.id}'))
     );
     Form.intercept($('#email-management-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
-    Desktop.window.list['{$window_id}']._scroll(true);
+    Desktop.window.list['{$window_id}'].scroll(true);
 </script>

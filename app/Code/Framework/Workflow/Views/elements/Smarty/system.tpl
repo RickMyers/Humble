@@ -99,7 +99,7 @@
             $('#recurring_event_period').val('{$data.period}');
         {/if}
         $('#workflow_id').val(Paradigm.actions.get.mongoWorkflowId());
-        Desktop.window.list[window_id]._scroll(true);
+        Desktop.window.list[window_id].scroll(true);
         var now = new Date();
         var y = new EasyCalendar('event-date-picker');
         y.setWeekday('event-scheduler event-scheduler-weekday').setWeekend('event-scheduler event-scheduler-weekend').setDayNames('event-scheduler event-scheduler-daynames').setMonthName('event-scheduler event-scheduler-monthname');

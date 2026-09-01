@@ -67,7 +67,7 @@
         }
     });
     var win = Desktop.window.list['{{ window_id }}'];
-    win._title('Process Monitor');
+    win.title('Process Monitor');
     Humble.admin['monitor']['{{ window_id }}'].mount('#'+win.content.id);
     win.resize(() => {
         $('#monitor_processes').height(win.content.height() - $E('monitor_status').offsetHeight - $E('monitor_footer').offsetHeight - 2);

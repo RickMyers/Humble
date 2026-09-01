@@ -63,7 +63,7 @@ Paradigm.console = (() => {
             console_prompt = $E('paradigm_console_prompt');
             console_input  = $E('paradigm_console_input');
             console_cmd    = $E('paradigm_console_cmd');
-            app._scroll(false);
+            app.scroll(false);
             app.resize = () => {
                 if (app.content.offsetHeight) {
                     $(console_output).height(app.content.offsetHeight - console_prompt.offsetHeight - console_input.offsetHeight-2);
@@ -87,7 +87,7 @@ Paradigm.console = (() => {
         initialize:       () => {
             if (!console_app) {
                 console_app = Desktop.semaphore.checkout(true);
-                console_app._title('Console')._scroll(false).close = (function (app) {
+                console_app.title('Console').scroll(false).close = (function (app) {
                     return () => {
                         app.lastState           = app.state;
                         app.state               = 0;
@@ -325,7 +325,7 @@ Paradigm.console = (() => {
                             var winId = Desktop.semaphore.checkout();
                             var win   = Desktop.window.list[winId];
                             win.content.style.overflow = 'auto';
-                            win._title('OUTPUT | Paradigm');
+                            win.title('OUTPUT | Paradigm');
                             win.set('<textarea width="100%" height="100%">'+response+'</textarea>');
                             win._open();
                         });
@@ -345,7 +345,7 @@ Paradigm.console = (() => {
                         ao.then((response) => {
                             var winId = Desktop.semaphore.checkout();
                             var win   = Desktop.window.list[winId];
-                            win._title('OUTPUT | Paradigm');
+                            win.title('OUTPUT | Paradigm');
                             win.content.style.overflow = 'auto';
                             win.set('<textarea width="100%" height="100%">'+response+'</textarea>');
                             win._open();

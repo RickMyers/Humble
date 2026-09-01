@@ -32,7 +32,7 @@
             open: function () {
                 var win = Landing.semaphore.checkout(true);
                 win._open();
-                win._title('Test Harness');
+                win.title('Test Harness');
                 (new EasyAjax('/humble/unittests/open')).add('window_id',win.id).then((response) => {
                     win.set(response);
                 }).get();

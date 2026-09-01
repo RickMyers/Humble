@@ -3,7 +3,7 @@
 <script>
     (() => {
         var win = Desktop.window.list['{{ window_id }}'];
-        win._title('{{ directory }}/{{ file }}').inject(
+        win.title('{{ directory }}/{{ file }}').inject(
                 '<input type="checkbox" class="mr-4" title="Use elevated permissions on save" value="Y" id="elevated_save-{{ window_id }}" />'+
                 '<button class="bg-gray-300 border-2 rounded-md pr-1 pl-1 text-black" onclick="Administration.code.save(\'{{ window_id }}\'); ">Save</button>'
                 );

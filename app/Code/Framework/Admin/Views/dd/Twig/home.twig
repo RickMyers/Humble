@@ -17,7 +17,7 @@
 <script type="text/javascript">
     Humble.admin['dd'] = (!Humble.admin['dd']) ? {} : Humble.admin['dd'];
     ((win)=> {
-        win._title('Data Dictionary');        
+        win.title('Data Dictionary');        
         Humble.admin['entity']['{{ window_id }}_{{ tab_id }}'] = Vue.createApp({
             template:   Humble.template('admin',"dd/home",true),
             app:        null,

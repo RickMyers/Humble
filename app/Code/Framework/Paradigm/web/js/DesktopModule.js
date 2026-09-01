@@ -145,11 +145,11 @@ function DesktopWindow(icon,refId) {
         w:      0,
         h:      0
     };
-    this._scroll    = function (scroll) {
+    this.scroll    = function (scroll) {
         this.content.style.overflow = (scroll) ? 'auto' : 'hidden';
         return this;
     }
-    this._title     = function (title) {
+    this.title     = function (title) {
         if (title) {
             var project = ParadigmConfig.desktop.window.name ? ParadigmConfig.desktop.window.name : ParadigmConfig.desktop.default.window.name;
             this.title.innerHTML = this.titleText = title + ' | '+project;
@@ -235,7 +235,7 @@ function DesktopWindow(icon,refId) {
         }
         return this;
     };
-    this._static     = function (boolean) {
+    this.static     = function (boolean) {
         this.static = boolean;
         return this;
     };
@@ -366,9 +366,9 @@ function DesktopWindow(icon,refId) {
         this.resize = null;
         this.close  = null;
         this.open   = null;
-        this._title('');
-        this._scroll(false);
-        return this._static(false);
+        this.title('');
+        this.scroll(false);
+        return this.static(false);
     }
     this.dock   = function (where) {
         var w  = window.innerWidth;
@@ -808,7 +808,7 @@ var Functions = {
                 var win  = Desktop.semaphore.checkout(true);
                 if (icon.data.url) {
                     (new EasyAjax(icon.data.url)).add('window_id',win.id).then((response) => {
-                        win._open(response)._title(icon.name);
+                        win._open(response).title(icon.name);
                     }).post();
                 }
             };
