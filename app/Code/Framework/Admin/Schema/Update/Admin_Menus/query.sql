@@ -12,18 +12,48 @@ MySQL - 5.7.44 : Database - humble
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*Table structure for table `admin_menu_categories` */
+
+DROP TABLE IF EXISTS `admin_menu_categories`;
+
+CREATE TABLE `admin_menu_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` char(32) DEFAULT NULL,
+  `seq` int(11) DEFAULT NULL,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
 /*Data for the table `admin_menu_categories` */
-truncate admin_menu_categories;
+
 insert  into `admin_menu_categories`(`id`,`category`,`seq`,`modified`) values 
 (1,'Places',1,'2023-12-22 16:45:31'),
 (2,'Documentation',2,'2023-12-22 16:45:38'),
 (3,'Services',3,'2023-12-22 16:45:42'),
 (4,'Tools',4,'2023-12-22 16:45:47'),
 (5,'Environment',6,'2023-12-22 16:57:21'),
-(6,'Users',5,'2023-12-22 17:36:05');
+(6,'Users',5,'2023-12-22 17:36:05'),
+(7,'Support',7,'2026-09-01 14:42:17');
+
+/*Table structure for table `admin_menus` */
+
+DROP TABLE IF EXISTS `admin_menus`;
+
+CREATE TABLE `admin_menus` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `menu` char(48) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `function` char(255) DEFAULT NULL,
+  `href` char(96) DEFAULT NULL,
+  `target` char(32) DEFAULT NULL,
+  `seq` int(11) DEFAULT NULL,
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
 
 /*Data for the table `admin_menus` */
-truncate admin_menus;
+
 insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`href`,`target`,`seq`,`modified`) values 
 (1,'Administration',NULL,1,NULL,'/admin','_BLANK',1,'2023-12-22 16:58:07'),
 (2,'Workflow Editor',NULL,1,NULL,'/paradigm/actions/open','_BLANK',2,'2023-12-22 17:00:15'),
@@ -39,7 +69,7 @@ insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`hre
 (12,'Create',NULL,4,NULL,NULL,NULL,1,'2023-12-22 17:23:19'),
 (13,'Utilities',NULL,4,NULL,NULL,NULL,2,'2023-12-22 17:23:44'),
 (14,'System',NULL,4,NULL,NULL,NULL,3,'2023-12-22 17:24:03'),
-(15,'Secrets Manager',NULL,4,NULL,NULL,NULL,4,'2023-12-22 17:24:23'),
+(15,'Secrets Manager',NULL,4,'Administration.secrets.app()',NULL,NULL,4,'2023-12-22 17:24:23'),
 (16,'Workflows',NULL,4,NULL,NULL,NULL,5,'2023-12-22 17:24:35'),
 (17,'New Package',12,NULL,'Administration.create.package()',NULL,NULL,1,'2023-12-22 17:26:09'),
 (18,'New Module',12,NULL,'Administration.create.module()',NULL,NULL,2,'2023-12-22 17:26:29'),
@@ -58,8 +88,6 @@ insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`hre
 (31,'Reload',25,NULL,'Administration.cadence.action(\"reload\")',NULL,NULL,3,'2023-12-22 17:32:49'),
 (32,'Clear PID',25,NULL,'Administration.cadence.action(\"clear\")',NULL,NULL,4,'2023-12-22 17:33:08'),
 (33,'Tune...',25,NULL,'Administration.cadence.tune()',NULL,NULL,5,'2023-12-22 17:33:30'),
-(36,'Add New Secret',15,NULL,'Administration.secrets.add()',NULL,NULL,1,'2023-12-22 17:37:58'),
-(37,'Review/Update Secret',15,NULL,'Administration.secrets.review()',NULL,NULL,2,'2023-12-22 17:38:21'),
 (38,'Add Export Target',16,NULL,'Administration.workflows.add.exportTarget()',NULL,NULL,1,'2023-12-22 17:38:56'),
 (39,'Add Import Token',16,NULL,'Administration.workflows.add.importToken()',NULL,NULL,2,'2023-12-22 17:39:18'),
 (40,'Query Logging',NULL,5,NULL,NULL,NULL,3,'2023-12-22 17:39:44'),
@@ -79,7 +107,9 @@ insert  into `admin_menus`(`id`,`menu`,`parent_id`,`category_id`,`function`,`hre
 (56,'Install',55,NULL,'Administration.socket.install()',NULL,NULL,1,'2025-01-06 15:36:50'),
 (57,'Start',55,NULL,'Administration.socket.start()',NULL,NULL,2,'2025-01-06 15:37:31'),
 (58,'Stop',55,NULL,'Administration.socket.stop()',NULL,NULL,3,'2025-01-06 15:37:45'),
-(59,'Restart',55,NULL,'Administration.socket.restart()',NULL,NULL,4,'2025-01-06 15:38:02');
+(59,'Restart',55,NULL,'Administration.socket.restart()',NULL,NULL,4,'2025-01-06 15:38:02'),
+(60,'Contact',NULL,7,'Administration.support.home()',NULL,NULL,NULL,'2026-09-01 14:42:57'),
+(61,'About',NULL,7,'Administration.about.home()',NULL,NULL,NULL,'2026-09-01 14:43:14');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
