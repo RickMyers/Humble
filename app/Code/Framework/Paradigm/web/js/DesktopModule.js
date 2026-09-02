@@ -101,7 +101,7 @@ function DesktopWindow(icon,refId) {
     this.title          = $E(this.id+"-title");
     this.titleText      = this.title.innerHTML;
     this.content        = $E(this.id+"-content");
-    this.static         = false;  //if true, the window handle won't be returned to the semaphore
+    this._static         = false;  //if true, the window handle won't be returned to the semaphore
     this.handlers       = {
         "open":     [],
         "close":    [],
@@ -236,7 +236,7 @@ function DesktopWindow(icon,refId) {
         return this;
     };
     this.static     = function (boolean) {
-        this.static = boolean;
+        this._static = boolean;
         return this;
     };
     this._close      = function (evt) {
@@ -262,7 +262,7 @@ function DesktopWindow(icon,refId) {
                 };                
             }
         }
-        if (!this.static) {
+        if (!this._static) {
             Desktop.semaphore.checkin(this.id);
         }
         return this;
@@ -457,6 +457,15 @@ var Functions = {
                 }
                 ctr++;
             }
+        },
+        fetch: function (win_id) {
+            let win = null;
+            if (!win_id) {
+                alert('Trying to get an empty window from the semaphore');
+            } else {
+                win = Desktop.semaphore.list[win_id] ? Desktop.semaphore.list[win_id] : null;
+            }
+            return win;
         },
         checkout: function (win) {
             var max     = Desktop.semaphore.list.length;

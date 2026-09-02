@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <!--
 
-Support related actions
+Contact Support Actions
 
 For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
 -->
-<controller name="support" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+<controller name="contact" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions blocking="ON" response="false">
-        <action name="home" passalong="window_id">
-            <description>The main support page</description>
+        <action name="home" passalong="window_id" >
+            <description>The main page</description>
+            <project var="serial_number" assign="serial_number" />
             <!-- Entity, Helper, Model, Conditional declarations begin here -->
         </action>
 

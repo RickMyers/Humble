@@ -83,11 +83,20 @@ var Functions = (() => {
                             }).post();
                         }
                     },
+                    about: {
+                        win: false,
+                        home() {
+                            let win = (Administration.about.win) ? Administration.about.win : (Administration.about.win = Desktop.semaphore.checkout(true));
+                            (new EasyAjax('/admin/about/home')).add('window_id',win.id).then((response) => {
+                                win.static(true).title('About...')._open(response);
+                            }).get();
+                        }                        
+                    },
                     support: {
                         win: false,
                         home() {
                             let win = (Administration.support.win) ? Administration.support.win : (Administration.support.win = Desktop.semaphore.checkout(true));
-                            (new EasyAjax('/admin/support/home')).then((response) => {
+                            (new EasyAjax('/admin/support/home')).add('window_id',win.id).then((response) => {
                                 win.static(true).title('Support Contact')._open(response);
                             }).get();
                         }
@@ -96,7 +105,7 @@ var Functions = (() => {
                         win: false,
                         home() {
                             let win = (Administration.contact.win) ? Administration.contact.win : (Administration.contact.win = Desktop.semaphore.checkout(true));
-                            (new EasyAjax('/admin/contact/home')).then((response) => {
+                            (new EasyAjax('/admin/contact/home')).add('window_id',win.id).then((response) => {
                                 win.static(true).title('Contact')._open(response);
                             }).get();                            
                         }
