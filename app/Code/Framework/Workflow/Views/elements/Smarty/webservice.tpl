@@ -159,6 +159,9 @@
                                     <input type='radio' {if (isset($data['security-scheme']) && ($data['security-scheme']=='bearer'))}checked="checked"{/if} name='security-scheme' value='bearer'  /><br /><br />
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan="2">Authentication URI: <input type="text" name="auth_uri" value="" /></td>
+                            </tr>
                         </table>
                     </div>                        
                     <div id='humble-paradigm-config-webservice-security-token' style='display: none; padding: 30px'>

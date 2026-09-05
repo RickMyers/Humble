@@ -38,7 +38,6 @@ function EasyAjax(targetUrl) {
         this.xmlHttp = new XMLHttpRequest();
         this.xmlHttp.overrideMimeType("text/plain");
     }
-    this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
     this.xmlHttp.onreadystatechange = function () {
         EasyAjax.ajaxHandler(me);
     };
@@ -210,6 +209,7 @@ EasyAjax.prototype.get = function(async) {
             async = (async === false) ? false : true;
             var fullGetUrl = this.targetUrl + (this.targetUrl.indexOf("?") >= 0 ? "&" : "?") + this.queryString + ((this.cacheBuster()) ? "&cachebust=" + new Date().getTime() : '');
             this.xmlHttp.open("GET", fullGetUrl, async);
+            this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');            
             this.xmlHttp.setRequestHeader("Content-type", this.contentType());            
             this.xmlHttp.send(this.queryString);
             if (!this.async && (this.callbackFunction.length)) {
@@ -233,6 +233,7 @@ EasyAjax.prototype.post = function(async) {
         if (this.targetUrl) {
             async = (async === false) ? false : true;
             this.xmlHttp.open("POST", this.targetUrl, async);
+            this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
             this.xmlHttp.setRequestHeader("Content-type", this.contentType());            
             if (this.formData) {
                 for (var i in this.vars) {
@@ -253,6 +254,7 @@ EasyAjax.prototype.put = function(async) {
     } else {
         async = (async === false) ? false : true;
         this.xmlHttp.open("PUT", this.targetUrl, async);
+        this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
         this.xmlHttp.setRequestHeader("Content-type", this.contentType());
         if (this.formData) {
             for (var i in this.vars) {
@@ -272,6 +274,7 @@ EasyAjax.prototype.delete = function(async) {
     } else {    
         async = (async === false) ? false : true;
         this.xmlHttp.open("DELETE", this.targetUrl, async);
+        this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
         this.xmlHttp.setRequestHeader("Content-type", this.contentType());
         if (this.formData) {
             for (var i in this.vars ) {
