@@ -11,6 +11,9 @@ function EasyAjax(targetUrl) {
     this.keepAlive      = false;
     this.targetUrl	= targetUrl;
     this._contentType   = "application/x-www-form-urlencoded";
+    this._cacheBuster   = false;
+    this._fetch         = false;
+    this._method        = 'POST';    
     this.queryString	= "";
     this.xmlHttp	= null;
     this.showResponse	= false;
@@ -18,7 +21,6 @@ function EasyAjax(targetUrl) {
     this.async		= true;
     this.isIE		= false;
     this.isMoz		= false;
-    this._cacheBuster   = false;
     this.vars           = { };
     this.queryString    = '';
     if (navigator.appName.indexOf("Microsoft") >= 0) {
@@ -36,7 +38,8 @@ function EasyAjax(targetUrl) {
         this.xmlHttp = new XMLHttpRequest();
         this.xmlHttp.overrideMimeType("text/plain");
     }
-    this.xmlHttp.onreadystatechange = function() {
+    this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
+    this.xmlHttp.onreadystatechange = function () {
         EasyAjax.ajaxHandler(me);
     };
     this.callbackFunction = [];
@@ -63,6 +66,26 @@ function EasyAjax(targetUrl) {
             return this;
         }
         return this._cacheBuster;
+    }
+    this.fetch = function (bool) {
+        if (typeof(bool) == 'undefined') {
+            return this._fetch;
+        }
+        this._fetch = bool;
+        return this;
+    }
+    this.fetchAPI = async function () {
+        const response = await fetch(this.targetUrl, {
+            method: this._method,
+            body: JSON.stringify(this.vars)
+        });
+        let text       = await response.text();
+        //alert(text);
+        if (this.callbackFunction.length) {
+            for (var i=0; i<this.callbackFunction.length; i++) {
+                this.callbackFunction[i](text);
+            }
+        }
     }
     return this;
 }
@@ -109,10 +132,10 @@ EasyAjax.prototype.then = function(f) {
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.add = function(paramName, paramValue) {
     this.vars[paramName] = paramValue;
-	if (this.queryString && (this.queryString.length > 0)) {
-            this.queryString += "&";
-	}
-	this.queryString += encodeURI(paramName) + "=" + encodeURIComponent(paramValue);
+    if (this.queryString && (this.queryString.length > 0)) {
+        this.queryString += "&";
+    }
+    this.queryString += encodeURI(paramName) + "=" + encodeURIComponent(paramValue);
     return this;
 };
 /* ----------------------------------------------------------------- */
@@ -181,19 +204,22 @@ EasyAjax.prototype.setAsync = function(async) {
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.get = function(async) {
     if (this.targetUrl) {
-        async = (async === false) ? false : true;
-        var fullGetUrl = this.targetUrl + (this.targetUrl.indexOf("?") >= 0 ? "&" : "?") + this.queryString + ((this.cacheBuster()) ? "&cachebust=" + new Date().getTime() : '');
-        this.xmlHttp.open("GET", fullGetUrl, async);
-        this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
-        this.xmlHttp.setRequestHeader("Content-type", this.contentType());
-        this.xmlHttp.send(this.queryString);
-        if (!this.async && (this.callbackFunction.length)) {
-            if ((!this.isIE) && (!this.completed))	{
-                for (var i=0; i<this.callbackFunction.length; i++)
-                this.callbackFunction[i](this.getResponse());
-            }
-            if (!this.keepAlive) {
-                delete this; //garbage collection
+        if (this.fetch()) {
+            this._method = 'GET'; this.fetchAPI();
+        } else {
+            async = (async === false) ? false : true;
+            var fullGetUrl = this.targetUrl + (this.targetUrl.indexOf("?") >= 0 ? "&" : "?") + this.queryString + ((this.cacheBuster()) ? "&cachebust=" + new Date().getTime() : '');
+            this.xmlHttp.open("GET", fullGetUrl, async);
+            this.xmlHttp.setRequestHeader("Content-type", this.contentType());            
+            this.xmlHttp.send(this.queryString);
+            if (!this.async && (this.callbackFunction.length)) {
+                if ((!this.isIE) && (!this.completed))	{
+                    for (var i=0; i<this.callbackFunction.length; i++)
+                    this.callbackFunction[i](this.getResponse());
+                }
+                if (!this.keepAlive) {
+                    delete this; //garbage collection
+                }
             }
         }
     }
@@ -201,10 +227,32 @@ EasyAjax.prototype.get = function(async) {
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.post = function(async) {
-    if (this.targetUrl) {
+    if (this.fetch()) {
+        this._method = 'POST'; this.fetchAPI();    
+    } else {
+        if (this.targetUrl) {
+            async = (async === false) ? false : true;
+            this.xmlHttp.open("POST", this.targetUrl, async);
+            this.xmlHttp.setRequestHeader("Content-type", this.contentType());            
+            if (this.formData) {
+                for (var i in this.vars) {
+                    this.formData.append(i,this.vars[i]);
+                }
+                this.xmlHttp.send(this.formData);
+            } else {
+                this.xmlHttp.send(this.queryString);
+            }
+        }
+    }
+    return this;
+};
+/* ----------------------------------------------------------------- */
+EasyAjax.prototype.put = function(async) {
+    if (this.fetch()) {
+        this._method = 'PUT'; this.fetchAPI();    
+    } else {
         async = (async === false) ? false : true;
-        this.xmlHttp.open("POST", this.targetUrl, async);
-        this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
+        this.xmlHttp.open("PUT", this.targetUrl, async);
         this.xmlHttp.setRequestHeader("Content-type", this.contentType());
         if (this.formData) {
             for (var i in this.vars) {
@@ -212,40 +260,27 @@ EasyAjax.prototype.post = function(async) {
             }
             this.xmlHttp.send(this.formData);
         } else {
-            this.xmlHttp.send(this.queryString);
-        }
-    }
-    return this;
-};
-/* ----------------------------------------------------------------- */
-EasyAjax.prototype.put = function(async) {
-    async = (async === false) ? false : true;
-    this.xmlHttp.open("PUT", this.targetUrl, async);
-    this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
-    this.xmlHttp.setRequestHeader("Content-type", this.contentType());
-    if (this.formData) {
-        for (var i in this.vars) {
-            this.formData.append(i,this.vars[i]);
-        }
-        this.xmlHttp.send(this.formData);
-    } else {
-        this.xmlHttp.send(JSON.stringify(this.queryString));
+            this.xmlHttp.send(JSON.stringify(this.queryString));
+        }   
     }
     return this;
 };
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.delete = function(async) {
-    async = (async === false) ? false : true;
-    this.xmlHttp.open("DELETE", this.targetUrl, async);
-    this.xmlHttp.setRequestHeader('HTTP_X_REQUESTED_WITH','xmlhttprequest');
-    this.xmlHttp.setRequestHeader("Content-type", this.contentType());
-    if (this.formData) {
-        for (var i in this.vars ) {
-            this.formData.append(i,this.vars[i]);
+    if (this.fetch()) {
+        this._method = 'PUT'; this.fetchAPI();    
+    } else {    
+        async = (async === false) ? false : true;
+        this.xmlHttp.open("DELETE", this.targetUrl, async);
+        this.xmlHttp.setRequestHeader("Content-type", this.contentType());
+        if (this.formData) {
+            for (var i in this.vars ) {
+                this.formData.append(i,this.vars[i]);
+            }
+            this.xmlHttp.send(this.formData);
+        } else {
+            this.xmlHttp.send(this.queryString);
         }
-        this.xmlHttp.send(this.formData);
-    } else {
-        this.xmlHttp.send(this.queryString);
     }
     return this;
 };

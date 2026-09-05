@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+
+PHP Stuff      
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="php" use="Twig" author="Rick Myers" email="rick@humbleprogramming.com">
+    <actions blocking="ON" response="false">
+        
+        <action name="test">    
+            <description>A test</description>
+            <php>  
+                require "CLI/Component/Component.php";
+                Component::check('admin','php');                  
+            </php>      
+        </action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>

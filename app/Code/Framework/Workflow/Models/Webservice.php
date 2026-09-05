@@ -56,6 +56,13 @@ class Webservice extends Model
      */
     public function save() {
         $d = $this->getData();
+        $uris = Humble::entity('paradigm/webservice/uris');
+        if ($uri_id = Humble::entity('paradigm/webservice/uris')->setUri($d['uri'])->save()) {
+            
+        }
+        
+        
+        
         $data           = json_decode($d,true);
         $this->setWindowId($data['window_id']);  //now I need a shower...
         $component      = Humble::model('workflow/manager');

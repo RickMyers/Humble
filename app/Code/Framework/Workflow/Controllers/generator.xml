@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+
+[Insert Controller Description Here]
+
+For Controller reference, please see "Anatomy of a Controller" at https://www.humbleprogramming.com/pages/Controllers.htmls
+-->
+<controller name="generator" use="Smarty" author=" " email="">
+    <actions blocking="ON" response="false">
+        <action name="splitter">
+            <description><!-- Insert Action Description Here --></description>
+            <!-- Entity, Helper, Model, Conditional declarations begin here -->
+        <mongo namespace="paradigm" class="elements" id="element"><parameter name="id" source="post" default=""/></mongo></action>
+
+        <!-- ############################################################### -->
+
+    </actions>
+</controller>
