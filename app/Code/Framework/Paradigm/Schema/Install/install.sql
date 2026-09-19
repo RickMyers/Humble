@@ -231,15 +231,16 @@ CREATE TABLE `paradigm_webhooks` (
 
 /*Table structure for table `paradigm_webservice_uris` */
 
-drop table if exists paradigm_webservice_uris;
+DROP TABLE paradigm_webservice_uris;
 
 CREATE TABLE paradigm_webservice_uris
 (
 	id INT NOT NULL AUTO_INCREMENT,
-	uri CHAR(128) DEFAULT NULL,
+	`namespace` CHAR(32) DEFAULT NULL,
+	uri CHAR(64) DEFAULT NULL,
 	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (id),
-	UNIQUE KEY (uri)
+	UNIQUE KEY (namespace,uri)
 );
 
 /*Table structure for table `paradigm_webservices` */
@@ -250,10 +251,12 @@ CREATE TABLE paradigm_webservices
 	id INT NOT NULL AUTO_INCREMENT,
 	uri_id INT DEFAULT NULL,
 	workflow_id INT DEFAULT NULL,
+        component_id char(32) default null,
 	`active` CHAR(01) DEFAULT 'N',
 	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (id),
-	UNIQUE KEY (uri_id,workflow_id)
+	UNIQUE KEY (uri_id,workflow_id),
+        unique key (component_id)
 );
 /*Table structure for table `paradigm_workflow_comments` */
 

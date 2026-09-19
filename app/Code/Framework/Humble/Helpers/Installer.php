@@ -42,26 +42,12 @@ class Installer extends Directory
      */
     public function __construct()    {
         parent::__construct();
-        $this->_db  = Humble::connection($this);
+        $this->_db  = Humble::connection($this);                                //Installer is permitted to have a raw connection to the DB
         $project    = Environment::project();
         if ($project->namespace) {
-            @mkdir('../../logs/'.$project->namespace,0777,true);   //added this later
+            @mkdir('../../logs/'.$project->namespace,0777,true);                //Lets create the root directory for application logs
         }
         $this->init = $this->lastTime = time();
-    }
-
-    public function reset() {
-        return $this;
-    }
-    
-    public function output($stage='',$message='') {
-        $now = time();
-        if ($stage !== $this->lastStage) {
-            $this->lastStage = $stage;
-            $this->lastTime  = $now;
-        }
-        print('['.str_pad($stage,16," ",STR_PAD_RIGHT).']['.date('H:i:s').'] '.str_pad(substr($message,0,80),80," ",STR_PAD_RIGHT)."[".str_pad($now - $this->lastTime,4,0,STR_PAD_LEFT)."][".str_pad($now-$this->init,4,0,STR_PAD_LEFT)."]\n");
-        return $this;
     }
     
     /**
@@ -70,6 +56,32 @@ class Installer extends Directory
      */
     public function className()   {
         return __CLASS__;
+    }
+    
+    /**
+     * Does nothing (for now)
+     * 
+     * @return $this
+     */
+    public function reset() {
+        return $this;
+    }
+
+    /**
+     * Just formats output during the installation process
+     * 
+     * @param string $stage
+     * @param string $message
+     * @return $this
+     */
+    public function output($stage='',$message='') {
+        $now = time();
+        if ($stage !== $this->lastStage) {
+            $this->lastStage = $stage;
+            $this->lastTime  = $now;
+        }
+        print('['.str_pad($stage,16," ",STR_PAD_RIGHT).']['.date('H:i:s').'] '.str_pad(substr($message,0,80),80," ",STR_PAD_RIGHT)."[".str_pad($now - $this->lastTime,4,0,STR_PAD_LEFT)."][".str_pad($now-$this->init,4,0,STR_PAD_LEFT)."]\n");
+        return $this;
     }
 
     /**
@@ -91,7 +103,8 @@ class Installer extends Directory
     }
     
     /**
-     *
+     * Removes a modules information
+     * 
      * @param type $namespace
      * @param type $controller
      */
@@ -107,7 +120,8 @@ SQL;
     }
 
     /**
-     *
+     * Removes any entity data prior to reloading it
+     * 
      * @param type $namespace
      */
     protected function unInstallEntities($namespace=false)    {
@@ -131,7 +145,8 @@ SQL;
     }
 
     /**
-     *
+     * Runs through the Install SQL statements
+     * 
      * @param type $source
      * @param type $package
      */
@@ -184,6 +199,7 @@ SQL;
         $resourcesSql   = (string)$structure->resources->sql;
         $resourcesJs    = (string)$structure->resources->js;
         $resourcesTpl   = (string)$structure->resources->templates;
+        $resourcesPhp   = (string)$structure->resources->php;
         $RPC            = isset($structure->RPC) ? (string)$structure->RPC->source : "";
         $images         = $structure->images->source;
         if (is_dir('Code/'.$package.'/'.str_replace('_','/',$images))) {

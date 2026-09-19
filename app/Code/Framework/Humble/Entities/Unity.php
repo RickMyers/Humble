@@ -58,6 +58,7 @@ class Unity
     protected $_bulk          = false;
     protected $_rowsAffected  = 0;
     public    $_lastResult    = [];
+    protected $_queryLogging  = false;
 
     /**
      * Initial constructor
@@ -186,6 +187,19 @@ class Unity
         return $this;
     }
     
+    /**
+     * Set the query logging flag
+     * 
+     * @param boolean $logging
+     * @return $this
+     */
+    public function queryLogging($logging=null) {
+        if ($logging===null) {
+            return $this->_queryLogging;
+        }
+        $this->_queryLogging = $logging;
+        return $this;
+    }
     
     /**
      * Returns a list of the entities in the current 
@@ -197,10 +211,17 @@ class Unity
         return $this->engine()->listEntities();
     }
 
+    /**
+     * List of entities (tables) being managed by whatever the engine is
+     * 
+     * @param type $namespace
+     * @return type
+     */
     public function entities($namespace=false) {
         $namespace = ($namespace) ? $namespace : \Environment::project('namespace');
         return $this->engine()->entities($namespace);
-    }    
+    }
+    
     /**
      * What is the actual table name?  Use this for when you want to use Unity on a table that doesn't follow the standard convention
      * 

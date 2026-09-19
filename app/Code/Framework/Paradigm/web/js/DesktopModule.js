@@ -98,8 +98,8 @@ function DesktopWindow(icon,refId) {
     this.body           = false;
     this.ajax           = null;
     this.frame          = $E(this.id+"-frame");
-    this.title          = $E(this.id+"-title");
-    this.titleText      = this.title.innerHTML;
+    this.titleBar       = $E(this.id+"-title");
+    this.titleText      = this.titleBar.innerHTML;
     this.content        = $E(this.id+"-content");
     this._static         = false;  //if true, the window handle won't be returned to the semaphore
     this.handlers       = {
@@ -152,7 +152,7 @@ function DesktopWindow(icon,refId) {
     this.title     = function (title) {
         if (title) {
             var project = ParadigmConfig.desktop.window.name ? ParadigmConfig.desktop.window.name : ParadigmConfig.desktop.default.window.name;
-            this.title.innerHTML = this.titleText = title + ' | '+project;
+            this.titleBar.innerHTML = this.titleText = title + ' | '+project;
             return this;
         } else {
             return this.titleText;
@@ -744,14 +744,14 @@ var Functions = {
             }
             f1();
         } 
-
+        console.log(ParadigmConfig);
         
         let windows = [];
         for (var i=0; i<100; i++) {
             windows[windows.length] = {
                 "id":       "paradigm-window-"+i,
                 "image":    "",
-                "text":     "Website | Paradigm",
+                "text":     (ParadigmConfig.desktop.default.window.name) ? ParadigmConfig.desktop.default.window.name : "Website | Paradigm",
                 "namespace":"paradigm",
                 "security": "public",
                 "top":      false,

@@ -179,6 +179,18 @@
                     <desc />
                 </options>
             </orderby>
+            <logging>
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                     
+                </values>                
+            </logging>
             <distinct       required="false"  purpose="" default="" />
             <fields         required="false"  purpose="" default="" /> 
             <condition      required="false"  purpose="" default="" />

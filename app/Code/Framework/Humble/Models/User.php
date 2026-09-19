@@ -143,17 +143,28 @@ class User extends Model {
     }
 
     /**
+     * Test for a user defined event invocation
+     * 
+     * @workflow use(EVENT) 
+     * @param type $EVENT
+     */
+    public function testLogin($EVENT=null) {
+       $data = $EVENT->load();
+       $cnfg = $EVENT->fetch();
+    }
+    
+    /**
      * For authentication from remote sources, this method will return your current session information including session token for use in performing a certain set of allowable actions from a remote host
      *
      * @return JSON
      */
     public function outputSessiondata() {
-        $data = ['sessionId'=>false, 'RC'=>16, 'time'=>null, 'user'=> null];
-        if ($uid = Environment::whoAmI()) {
+        $data     = ['sessionId'=>false, 'RC'=>16, 'time'=>null, 'user'=> null];
+        if ($uid  = Environment::whoAmI()) {
             $data = [
                 'sessionId' => session_id(),
-                'RC' => 0,
-                'user' => Humble::entity('default/user/identification')->setId($uid)->load()
+                'RC'        => 0,
+                'user'      => Humble::entity('default/user/identification')->setId($uid)->load()
             ];
         }
         return json_encode($data);
@@ -166,7 +177,7 @@ class User extends Model {
      * @param type $EVENT
      */
     public function redirect($EVENT=false) {
-        if ($EVENT!==false) {
+        if ($EVENT !== false) {
              $mydata = $EVENT->fetch();
              $data   = $EVENT->load();
              if (isset($mydata['url'])) {
@@ -187,13 +198,13 @@ class User extends Model {
      */
     public function userLoggedInSuccessfully($EVENT=false) {
         $success    = false;
-        if ($EVENT!==false) {
+        if ($EVENT !== false) {
             $data   = $EVENT->load();
             $cnfg   = $EVENT->fetch();
             if ($password = (isset($data[$cnfg['password_field']])) ? $data[$cnfg['password_field']] : false) {
                 if ($node = (isset($data[$cnfg['data_node']]))? $cnfg['data_node']: false) {
                     $valid_password = $data[$node][$cnfg['password_field']] ?? false;
-                    $salt           = $data[$node][$cnfg['salt_field']] ?? false;
+                    $salt           = $data[$node][$cnfg['salt_field']]     ?? false;
                     if ($valid_password && $salt) {
                         //$x = crypt($valid_password,$salt);
                         $success = ($valid_password === crypt($password,$salt));
@@ -410,7 +421,7 @@ class User extends Model {
         $confirm  = $this->getConfirm();
         $token    = $this->getResetPasswordToken();
         $email    = $this->getEmail();
-        $user     = Humble::entity('default/users')->setEmail($email)->setResetPasswordToken($token);
+        $user     = Humble::entity('users')->setEmail($email)->setResetPasswordToken($token);
         if (count($user->load(true)) && $password && ($password == $confirm)) {
             $user->setPassword($password);
             $user->setResetPasswordToken(null);

@@ -46,9 +46,9 @@ class Updater extends Installer
      * @param type $source
      */
     public function install($source = false) {
-        //nulling these out so can't be used
+        //nulling this out so can't be used
     }
-
+    
     /**
      * Validates (CRC/MD5) the key components of the framework
      * 
@@ -56,18 +56,15 @@ class Updater extends Installer
      */
     public function validate() {
         require "CLI/Framework/Framework.php";
-        $framework = new Framework();
-        return $framework->validate();
+        return (new Framework())->validate();
     }
     
     /**
-     *
-     * @param type $source
+     * Pulls values out of parameters
+     * 
+     * @param type $attr
+     * @return type
      */
-    public function refresh($source = false) {
-        //nulling these out so can't be used
-    }
-    
     private function extractParameterOptions($attr) {
         $options = [];
         foreach ($attr as $key => $value) {
@@ -142,11 +139,9 @@ class Updater extends Installer
      * Removes all named events related to the namespace being installed
      */
     protected function deRegisterEvents() {
-        $query = <<<SQL
-            delete from paradigm_events
-             where namespace = '{$this->namespace}'
-SQL;
-        $this->_db->query($query);
+        if ($this->namespace) {
+            Humble::entity('paradigm/events')->setNamespace($this->namespace)->delete(true);
+        }
         return $this;
     }
 
@@ -156,16 +151,10 @@ SQL;
     protected function registerEvents($event_node = false) {
         $this->deRegisterEvents();
         if ($event_node) {
+            $event = Humble::entity('paradigm/events');
             foreach ($event_node as $events) {
                 foreach ($events as $event => $data) {
-                    $event_comment = addslashes($data->attributes()->comment);
-                    $query = <<<SQL
-                        insert into paradigm_events
-                            (namespace,event,comment)
-                        values
-                            ('{$this->namespace}','{$event}','{$event_comment}')
-SQL;
-                    $this->_db->query($query);
+                    $event->reset()->setNamespace($this->namespace)->setEvent($event)->setComment(addslashes($data->attributes()->comment))->save();
                 }
             }
         }
@@ -201,9 +190,11 @@ SQL;
      * @return $this
      */
     protected function deRegisterListeners($namespace=false) {
-        if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
-            $listeners = Humble::entity('paradigm/method/listeners');
-            $listeners->setNamespace($namespace);
+        if ($eventType = Humble::entity('paradigm/event/types')->setEvent('METHOD_LISTENER')->load(true)) {
+            $listeners = Humble::entity('paradigm/events')->setEventTypeId($eventType['id']);
+            if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
+                $listeners->setNamespace($namespace);
+            }
             $listeners->delete(true);
         }
         return $this;

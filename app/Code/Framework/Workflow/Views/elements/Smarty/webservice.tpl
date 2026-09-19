@@ -47,17 +47,25 @@
                 <input type="hidden" name="id"          value="{$id}" />
                 <input type="hidden" name="workflow_id" value="" />
                 <input type='hidden' name='parameters'  value='' />
-                <input type='hidden' name='namespace'   value='' />
+                <!--input type='hidden' name='namespace'   value='' /-->
                 <input type='hidden' name='component'   value='Integration' />
                 <input type='hidden' name='method'      value='IEFBR14' />
-                <div style='margin-left: auto; margin-right: auto; width: 545px; font-size: 2em; font-family: sans-serif; color: #333; border-bottom: 1px solid #777; margin-bottom: 6px'>
-                    Initial Component Configuration
+                <div style='margin-left: auto; margin-right: auto; width: 585px; font-size: 2em; font-family: sans-serif; color: #333; border-bottom: 1px solid #777; margin-bottom: 6px'>
+                    Initial Component Configuration <span style="font-size: .7em; font-family: monospace">[{$id}]</span>
                 </div>
                 <div style='margin-left: auto; margin-right: auto; width: 545px; margin-bottom: 25px'>
                     Initial element configuration.  To begin configuring this webservice element, please set the URI that will trigger
                     the workflow, and then choose how you'd like to manage the security settings
                 </div>
                 <div style='margin-left: auto; margin-right: auto; width: 545px; position: relative'>
+                    <select name="namespace" style="width: 265px">
+                        <option value=""> </option>
+                        {foreach from=$namespaces->fetch() item=namespace}
+                            <option value="{$namespace.namespace}">{$namespace.namespace|ucfirst}</option>
+                        {/foreach}
+                    </select>
+                    <div class='form-field-description'>Namespace (Optional)</div><br />
+                    <br />
                     <img src='/images/paradigm/clipart/webservice2.png' style='float: right; height: 100px;' />
                     /esb/
                     <select name="uri" class='security-input-text' style='width: 265px'>
@@ -204,7 +212,7 @@
     tabs.tabClick(0);
     $('#webservice-form [name=workflow_id]').val(Paradigm.actions.get.mongoWorkflowId());
     $('#webservice-form [name=namespace]').val(Paradigm.actions.get.namespace());
-
+    alert(Paradigm.actions.get.namespace());
     var WebserviceParameter = (function ($) {
         var parameters = '{$element->getParameters()}';
         if (parameters) {

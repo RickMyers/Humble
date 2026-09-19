@@ -81,7 +81,7 @@
                 <workflow_comments/>
                 <designer_forms/>
                 <import_tokens/>
-            </entities>
+            <event_types/></entities>
         </orm>
         <events>
         </events>

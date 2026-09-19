@@ -443,7 +443,7 @@ class Compiler extends Directory
                 print($this->tabs().'$value = trim($value);'."\n");
             }
             print($this->tabs().$source.'["'.$field.'"] = $value;'."\n");       //if modified...
-            print($this->tabs().'$method = "set".underscoreToCamelCase($name);'."\n");
+            print($this->tabs().'$method = "set".underscoreToCamelCase($name,true);'."\n");
             print($this->tabs().'$'.$node['id'].'->$method($value);'."\n");
             print($this->tabs(-1).'}'."\n");
         } else if ((string)$parameter['name']=='_id') {
@@ -676,6 +676,10 @@ class Compiler extends Directory
         if (isset($node['orderby'])) {
             print($this->tabs().'$'.$node['id'].'->orderBy(\''.$node['orderby'].'\');'."\n");
         }
+        if (isset($node['logging'])) {
+            print($this->tabs().'$'.$node['id'].'->queryLogging(\''.$this->trueish($node['logging']).'\');'."\n");
+        }
+
         if (isset($node['distinct']) && (strtolower($node['distinct'])==='true')) {
             print($this->tabs().'$'.$node['id'].'->_distinct(true);'."\n");
         }
@@ -1654,7 +1658,7 @@ class Compiler extends Directory
             //might need to add the action model to the list of models for the view... what are the pros and cons?  DEBATE!
             print($this->tabs().'foreach ($models as $mdl => $val) {'."\n");
             $this->tabs(1);
-            print($this->tabs().'$mthd = "set".underscoreToCamelCase($mdl);'."\n");
+            print($this->tabs().'$mthd = "set".underscoreToCamelCase($mdl,true);'."\n");
             print($this->tabs().'$v_'.$id.'->$mthd($val);'."\n");
             $this->tabs(-1);
             print($this->tabs()."}\n");
@@ -1664,30 +1668,19 @@ class Compiler extends Directory
          * IF the 'event' flag was set on the action, then create a new trigger event and pass in all of the data this action received
          */
         if (isset($action['event'])) {
-            $trigger = \Humble::entity('paradigm/workflow/components');
-            $trigger->setNamespace($this->namespace);
-            $trigger->setComponent(ucfirst($this->component));
-            $trigger->setMethod($action['name']);
-            $trigger->setEvent('Y');
-            $trigger->save();
+            //first we register the event
+            //then we trigger it
+            $eventType = \Humble::entity('paradigm/event/types')->setEvent('ACTION')->load(true);
             $e = \Humble::entity('paradigm/events');
             $e->setEvent($action['event']);
             $e->setComment($action['comment']);
-            $e->setNamespace($this->namespace);
-            $e->save();
-            if (isset($action['comment'])) {
-                $comment = \Humble::entity('paradigm/workflow/comments');
-                $comment->setNamespace($this->namespace);
-                $comment->setClass($this->component);
-                $comment->setMethod($action['name']);
-                $comment->setComment($action['comment']);
-                $comment->save();
+            if ($this->_namespace()) {
+                $e->setNamespace($this->_namespace());
             }
+            $e->setEventTypeId($eventType['id']);
+            $e->save();
             $id      = $this->helper->_uniqueId();
-            print($this->tabs().'$TRIGGER_'.$id.' = Event::getTrigger();'."\n");
-            print($this->tabs().'$TRIGGER_'.$id.'->_namespace("'.$this->namespace.'");'."\n");
-            print($this->tabs().'$TRIGGER_'.$id.'->_controller("'.$this->component.'");'."\n");
-            print($this->tabs().'$TRIGGER_'.$id.'->_method("'.$action['name'].'");'."\n");
+            print($this->tabs().'$TRIGGER_'.$id.' = \Event::getTrigger();'."\n");
             if (isset($action['passalong'])) {
                 $fields = explode(",",$action['passalong']);
                 foreach ($fields as $field) {

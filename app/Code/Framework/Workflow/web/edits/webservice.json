@@ -12,6 +12,19 @@
     [
         {
             active:         true,
+            name:           "namespace",
+            longname:       "URI Namespace",
+            title:          "Optional Namespace of Webservice",
+            type:           "select",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          "border-radius: 3px; padding: 5px; width: 400px; border: 1px solid #aaf; background-color: lightcyan; border: 1px solid #333",
+            onchange:       (evt) => {
+            }            
+        },
+        {
+            active:         true,
             name:           "uri",
             longname:       "Webservice URI",
             title:          "Exposed URI of webservice",
@@ -24,6 +37,20 @@
             onchange:       (evt) => {
             }            
         },
+        {
+            active:         true,
+            name:           "auth_uri",
+            longname:       "Authentication URI",
+            title:          "URI to route to when authentication is necessary",
+            type:           "text",
+            placeholder:    "/valid/uri/here",
+            required:       false,
+            force:          false,
+            classname:      "",
+            style:          "padding: 2px; border-radius: 2px",
+            onchange:       (evt) => {
+            }            
+        },        
         {
             active:         true,
             name:           "webservice-save-button",

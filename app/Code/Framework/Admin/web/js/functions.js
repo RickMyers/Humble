@@ -853,7 +853,7 @@ var Functions = (() => {
                         open: function (log) {
                             if (!Administration.logs.windows[log]) {
                                 Administration.logs.windows[log] = Desktop.semaphore.checkout(true);
-                                Administration.logs.windows[log].title(log+ ' Log').scroll(false).static(true);
+                                Administration.logs.windows[log].title(log.charAt(0).toUpperCase() + log.slice(1)+" Log").scroll(false).static(true);
                             }
                             var win = Administration.logs.windows[log]._open();
                             (new EasyAjax('/admin/actions/log')).add('log',log.toLowerCase()).add('window_id',win.id).then((response) => {
