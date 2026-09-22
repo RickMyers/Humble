@@ -677,7 +677,7 @@ class Compiler extends Directory
             print($this->tabs().'$'.$node['id'].'->orderBy(\''.$node['orderby'].'\');'."\n");
         }
         if (isset($node['logging'])) {
-            print($this->tabs().'$'.$node['id'].'->queryLogging(\''.$this->trueish($node['logging']).'\');'."\n");
+            print($this->tabs().'$'.$node['id'].'->queryLogging('.$this->trueish($node['logging']).');'."\n");
         }
 
         if (isset($node['distinct']) && (strtolower($node['distinct'])==='true')) {
@@ -952,12 +952,13 @@ class Compiler extends Directory
      * @param object $node
      */
     private function processApplication($node) {
+        $cache      = (isset($node['cache']))   ? !$this->trueish($node['cache']) : 0;
         $assign     = (isset($node['assign']))  ? $node['assign']  : false;
         $var        = (isset($node['var']))     ? $node['var']     : false;
         if ($assign) {
             print($this->tabs().'$'.$assign.' = ');
         }
-        print('$models["'.$assign.'"] = \Environment::application("'.$var.'");'."\n");
+        print('$models["'.$assign.'"] = \Environment::application("'.$var.'",'.$cache.');'."\n");
     }    
     
     /**

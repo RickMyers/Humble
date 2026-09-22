@@ -194,7 +194,7 @@ class Unity
      * @return $this
      */
     public function queryLogging($logging=null) {
-        if ($logging===null) {
+        if ($logging === null) {
             return $this->_queryLogging;
         }
         $this->_queryLogging = $logging;
@@ -1339,13 +1339,17 @@ SQL;
     
     /**
      * We need to get those fields that are the keys, because they are treated differently than normal columns
+     * 
+     * @param bool $useCache
+     * @return $this
      */
     public function loadEntityKeys($useCache=true)  {
         $namespace = $this->_namespace();
         $entity    = $this->_entity();
         $this->_module(Humble::module($namespace));
-        $primary   = ($useCache) ? Humble::cache('entity_keys-'.$namespace.'/'.$entity) : false;
+        $primary   = ($useCache) ? Humble::cache('entity_keys-'.$namespace.'/'.$entity) : [];
         if (!$primary) {
+            //I do hate inline-SQL, but what can ya do sometimes  ¯\(ツ)/¯
             $query = <<<SQL
                 select a.key, a.auto_inc, b.polyglot, b.actual from humble_entity_keys as a
                  inner join humble_entities as b
@@ -1354,78 +1358,40 @@ SQL;
                  where a.namespace = '{$namespace}'
                    and a.entity    = '{$entity}'
 SQL;
-            $primary    = $this->engine()->query($query);
-            //WE AREN"T DOING THIS ANYMORE!!!
-            if (count($primary)===0) {
-                /*
-                 * We haven't found any keys for this table, so it probably means that this table
-                 *  is an optional table.  If so, we go to look for a humble table of the same name
-                 *  and load that one instead
-                 */
-                $query = <<<SQL
-                    select * from humble_entity_keys as a
-                     inner join humble_entities as b
-                        on a.namespace  = b.namespace
-                       and a.entity     = b.entity
-                     where a.namespace  = 'humble'
-                       and a.entity     = '{$entity}'
-SQL;
-                $primary    = $this->engine()->query($query);
-                if (count($primary) !== 0) {
-                    $this->_namespace('humble');  //Mark that we got this from humble
-                    $this->_prefix('humble_');
-                }
+            if ($primary    = $this->engine()->query($query)) {
+                Humble::cache('entity_keys-'.$namespace.'/'.$entity,$primary);
             }
-            Humble::cache('entity_keys-'.$namespace.'/'.$entity,$primary);
         }
         if (isset($primary[0]['actual']) && $primary[0]['actual']) {
             $this->_actual($primary[0]['actual']);
         }
-        $poly = true; //why am I making everything polyglot?
         foreach ($primary as $row => $entity) {
-            if ($poly) {
-                $this->_polyglot($entity['polyglot']);
-            }
-            $this->_keys[$entity['key']]    = "";                   //register key
-            $this->_autoinc[$entity['key']] = $entity['auto_inc'];  //register auto inc value
+            $this->_polyglot($entity['polyglot']);
+            $this->_keys[$entity['key']]    = "";                               //register key
+            $this->_autoinc[$entity['key']] = $entity['auto_inc'];              //register auto inc value
         }
         return $this;
     }
 
     /**
-     *
+     * Get the columns that are not primary keys
+     * 
+     * @param bool $useCache
+     * @return $this
      */
     public function loadEntityColumns($useCache=true) {
         $namespace = $this->_namespace();
         $entity    = $this->_entity();
-        $columns   = ($useCache) ? Humble::cache('entity_columns-'.$namespace.'/'.$entity) : false;
+        $columns   = ($useCache) ? Humble::cache('entity_columns-'.$namespace.'/'.$entity) : [];
         if (!$columns) {
             $query = <<<SQL
                 select * from humble_entity_columns
                  where namespace = '{$namespace}'
                    and entity    = '{$entity}'
 SQL;
-            $columns    = $this->engine()->query($query);
-            if (count($columns)===0) {
-                /*
-                 * We haven't found any fields for this table, so it probably means that this table
-                 *  is an optional table.  If so, we go to look for a humble table of the same name
-                 *  and load that one instead.
-                 *
-                 * Not sure if this is a good idea yet...
-                 */
-                $query = <<<SQL
-                    select * from humble_entity_columns
-                     where namespace = 'humble'
-                       and entity    = '{$entity}'
-SQL;
-                $columns    = $this->engine()->query($query);
-                if (count($columns)!==0) {
-                    $this->_namespace('humble');  //Mark that we got this from humble
-                    $this->_prefix('humble_');
-                }
+            if ($columns    = $this->engine()->query($query)) {
+                Humble::cache('entity_columns-'.$namespace.'/'.$entity,$columns);
             }
-            Humble::cache('entity_columns-'.$namespace.'/'.$entity,$columns);
         }
         foreach ($columns as $row => $entity) {
             $this->_column[$entity['column']]    = true;   //register column
@@ -1434,8 +1400,10 @@ SQL;
     }
     
     /**
-     *
+     * Removes and entry from a vector
+     * 
      * @param type $field
+     * @return $this
      */
     protected function remove($field)  {
         if (isset($this->_fields[$field])) {
@@ -1447,7 +1415,10 @@ SQL;
     }
 
     /**
-     *
+     * Saves off the very last query
+     * 
+     * @param string $query
+     * @return $this
      */
     public function lastQuery($query=false) {
         if ($query === false) {

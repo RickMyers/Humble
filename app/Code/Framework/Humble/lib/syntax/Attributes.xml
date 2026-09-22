@@ -361,6 +361,18 @@
         <attributes>
             <assign    required="true"   purpose="" default="" />
             <var       required="true"   purpose="" default="" />
+            <cache     required="false"  purpose="" default="" >
+                <values>
+                    <off />
+                    <on />
+                    <true />
+                    <false />
+                    <yes />
+                    <no />
+                    <y />
+                    <n />                     
+                </values>
+            </cache>              
         </attributes>
     </application>
     <project taxonomy="metadata">

@@ -868,6 +868,7 @@ class Model implements HumbleComponent
                             }
                         }
                         //print_r($call);die("bd\n");
+                        $call['arguments'] = isset($call['arguments']) ? (count($call['arguments']) ? $call['arguments'] : []) : [];
                         $retval = (isset($call['CURL']) && ($call['CURL'])) ? $this->_curl($call,$call['arguments'],$secure,$userid,$passwd) : $this->_hurl($call['url'],$call['arguments'],$call,$secure,$userid,$passwd);
                         if (isset($call['cache'])) {
                             $this->pushToCache($this->_namespace(),$name,$call['arguments'],$expire,$retval);

@@ -22,15 +22,20 @@ use Log;
  * @since      File available since Version 1.0.1
  */
 class Trigger  {
+    
     use \Code\Framework\Humble\Traits\EventHandler;
 
-    private $_arguments  = [];
-    private $_data       = [];
-    private $_name       = null;
-    private $_namespace  = null;
-    private $_controller = null;
-    private $_method     = null;
+    private $_arguments     = [];
+    private $_data          = [];
+    private $_name          = null;
+    private $_namespace     = null;
+    private $_controller    = null;
+    private $_method        = null;
+    private $_event_type_id = null;
 
+    public function __construct($eventTypeId=false) {
+        $this->_event_type_id = ($eventTypeId) ? $eventTypeId : null;
+    }
 
     /**
      * For debugging purposes, this needs to be in every class but entities

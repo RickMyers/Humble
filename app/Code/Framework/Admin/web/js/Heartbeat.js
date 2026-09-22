@@ -81,12 +81,12 @@ var Heartbeat = (($) => {
             }
             beats[id] = {
                 "namespace": namespace,
-                "element":  element,
-                "resource": resource,
-                "callback": callback,
-                "interval": interval,
+                "element":   element,
+                "resource":  resource,
+                "callback":  callback,
+                "interval":  interval,
                 "arguments": (arguments ? arguments : [])
-            }
+            };
             
         },
         skip:   function () {
@@ -123,24 +123,24 @@ var Heartbeat = (($) => {
                     }
                 } catch (ex) {
                     console.log(beats[i]);
-                }
+                };
                 if (count >= 100) {
                     count = 0;                                                  //not necessary to do more math than needed
-                }
+                };
                 if (count % beats[i].interval !== 0) {
                     continue;                                                   //not time for you yet
-                }
+                };
                 ctr++;
                 transport[i] = {
                     "id":   i,
                     "namespace": beats[i].namespace,
                     "resource": beats[i].resource
-                }
+                };
                 if (beats[i].arguments) {
                     for (var variable in beats[i].arguments ) {
                         args[args.length] = beats[i].arguments[variable];
                     }
-                }
+                };
             }
             if (ctr>0) {
                 if (indicator) {
@@ -175,7 +175,7 @@ var Heartbeat = (($) => {
                 period = val;
             } else {
                 return period;
-            }
+            };
         }
-    }
+    };
 })($);

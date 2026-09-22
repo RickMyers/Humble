@@ -12,7 +12,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <description>The Home Page</description>
             <model class="dummy" id="admin">
                 <parameter name="admin_id" source="session" value="admin_id" />
-            </model>  
+            </model>     
             <cache set="cacheStatus" const="He is dead Jim" />
             <switch id="admin" method="getAdminId">
                 <case value="TRUE">
@@ -20,6 +20,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
                     <project var="hub_host" assign="hub_host" />
                     <project var="hub_port" assign="hub_port" />
                     <project var="serial_number" assign="serial_number" />
+                    <application assign="polling" var="status['polling']" cache="false" /> 
                     <model namespace="humble"  class="CLI"          assign="command_menus" method="commands" id="cli" />
                     <entity namespace='humble' class='modules'      id='available_modules' orderby='package=ASC,namespace=ASC' />
                     <model  namespace='admin'  class='menus'        id="menus" />
