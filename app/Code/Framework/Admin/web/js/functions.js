@@ -14,6 +14,7 @@ var Functions = (() => {
                     return text.replace(/[A-Za-z0-9]/g, translate)
                 }
                 return {
+                    polling: false,
                     socketIO: () => {
                         return socketio;
                     },
@@ -763,7 +764,9 @@ var Functions = (() => {
                         Heartbeat.register('admin',true,'socketStatus',i,2,{});
                         Heartbeat.register('admin',true,'proxyStatus',j,2,{});
                         Heartbeat.register('admin',true,'criticalErrors',k,2,{});
-                        //Heartbeat.init();
+                        if (Administration.polling) {
+                            Heartbeat.init();
+                        }
                         Humble.init();
                     },
                     action: function (action,pkg,module) {
@@ -884,8 +887,7 @@ var Functions = (() => {
                 }
             })();
 export function DigitalClock (divId,hour,minute) {
-
-    var me					= this;
+    var me				= this;
     this.refId				= Math.round(Math.random()*10000);
     this.timer				= null;
     this.node				= ($E(divId)) ? $E(divId) : null;

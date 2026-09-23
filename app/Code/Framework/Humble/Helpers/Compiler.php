@@ -955,10 +955,17 @@ class Compiler extends Directory
         $cache      = (isset($node['cache']))   ? !$this->trueish($node['cache']) : 0;
         $assign     = (isset($node['assign']))  ? $node['assign']  : false;
         $var        = (isset($node['var']))     ? $node['var']     : false;
+        $cast       = (isset($node['cast']))    ? $node['cast']     : false;
+        if (strpos($var,'.')) {
+            $parts = explode('.',$var);
+            $var = "['".$parts[0]."'=>'".$parts[1]."']";
+        } else {
+            $var = "'".$var."'";
+        }
         if ($assign) {
             print($this->tabs().'$'.$assign.' = ');
         }
-        print('$models["'.$assign.'"] = \Environment::application("'.$var.'",'.$cache.');'."\n");
+        print('$models["'.$assign.'"] = '.($cast ? '('.$cast.')' : '').'\Environment::application('.$var.','.$cache.');'."\n");
     }    
     
     /**

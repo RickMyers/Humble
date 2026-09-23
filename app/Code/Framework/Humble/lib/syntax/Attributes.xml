@@ -372,7 +372,15 @@
                     <y />
                     <n />                     
                 </values>
-            </cache>              
+            </cache> 
+            <cast      required="false"  purpose="" default="" >
+                <values>
+                    <bool />
+                    <int />
+                    <char />
+                    <string />
+                </values>
+            </cast>                           
         </attributes>
     </application>
     <project taxonomy="metadata">
