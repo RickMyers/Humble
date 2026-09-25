@@ -337,4 +337,17 @@ class Workflow extends Model
             }
         }
     }
+    
+    /**
+     * Allows you to dump the contents of an event to a file for inspection
+     * 
+     * @workflow use(PROCESS) config(workflow/event/inspect)
+     * @param type $EVENT
+     */
+    public function inspect($EVENT=false) {
+        if ($EVENT) {
+            $data = $EVENT->load();
+            $cnfg = $EVENT->fetch();
+        }
+    }
 }

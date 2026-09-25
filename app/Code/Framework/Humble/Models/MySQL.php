@@ -302,7 +302,6 @@ QRY;
      */
     public function query($qry)	{
         global $test_mode;
-    //    $test_mode  = $test_mode ?? false;
         $this->unity()->lastQuery($qry);
         $resultSet  = [];
         $status     = \Humble::cache('queryLogging');
@@ -315,6 +314,9 @@ QRY;
                 \Log::query("Test Mode Enabled.\n\nQuery I Would Have Executed:\n\n".$qry);
                 return $resultSet;
             } else {
+                if ($this->unity()->queryLogging()) {
+                    \Log::query($qry);
+                }
                 $resultSet    = $this->_dbref->query($qry);
                 $this->_state = $this->_dbref->sqlstate; 
                 if ($logQuery) {

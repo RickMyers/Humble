@@ -125,5 +125,15 @@ class Data extends Helper
         return $this;
     }
 
+    /**
+     * Just tests to see if a file was successfully uploaded
+     */
+    public function uploadTest() {
+        $file = $this->getUploadedFile();
+        
+        foreach ($file as $part) {
+            print($part."\n");
+        }
+    }
 }
 ?>

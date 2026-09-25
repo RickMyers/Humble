@@ -51,5 +51,20 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <description>Just a test trigger</description>
         </action>
         
+        <!-- ############################################################### -->
+        
+        <action name="uploadform">
+            <description>A test upload form for both standard post and ajax</description>
+        </action>
+        
+        <!-- ############################################################### -->        
+        
+        <action name="upload" blocking="off" response="true">
+            <description>Test the upload of a file</description>
+            <helper namespace="paradigm" class="data" id="uploader" method="uploadTest">
+                <parameter name="uploaded_file" source="file" required="true" />
+            </helper>
+        </action>
+        
     </actions>
 </controller>

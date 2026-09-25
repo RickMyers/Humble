@@ -60,7 +60,7 @@
                 <div style='margin-left: auto; margin-right: auto; width: 545px; position: relative'>
                     <select name="namespace" style="width: 265px">
                         <option value=""> </option>
-                        {foreach from=$namespaces->fetch() item=namespace}
+                        {foreach from=$namespaces item=namespace}
                             <option value="{$namespace.namespace}">{$namespace.namespace|ucfirst}</option>
                         {/foreach}
                     </select>
@@ -201,6 +201,9 @@
     </tr>
 </table>
 <script type='text/javascript'>
+    {foreach from=$data item=s key=k}
+        console.log('{$k}={$s}');
+    {/foreach}
     Form.intercept($('#webservice-form-{$id}').get(),'{$id}','/workflow/webservice/save','{$window_id}');
     var tabs = new EasyTab('humble-paradigm-config-webservice-security-nav');
     tabs.add('None', null,'humble-paradigm-config-webservice-security-none');
@@ -210,9 +213,10 @@
     tabs.add('Bearer Token',null,'humble-paradigm-config-webservice-security-bearer-token');
     tabs.add('Whitelist',null,'humble-paradigm-config-webservice-security-whitelist-tab');
     tabs.tabClick(0);
-    $('#webservice-form [name=workflow_id]').val(Paradigm.actions.get.mongoWorkflowId());
-    $('#webservice-form [name=namespace]').val(Paradigm.actions.get.namespace());
-    alert(Paradigm.actions.get.namespace());
+    var ns = '{$data.namespace}' ? '{$data.namespace}' : Paradigm.actions.get.namespace();
+    $('#webservice-form-{$id} [name=workflow_id]').val(Paradigm.actions.get.mongoWorkflowId());
+    $('#webservice-form-{$id} [name=namespace]').val(ns);
+    //alert(Paradigm.actions.get.namespace());
     var WebserviceParameter = (function ($) {
         var parameters = '{$element->getParameters()}';
         if (parameters) {
