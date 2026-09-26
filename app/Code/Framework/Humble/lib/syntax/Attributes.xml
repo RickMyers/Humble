@@ -159,6 +159,8 @@
                 </values>
             </response>     
             <wrapper    required="false"  purpose="" default="" />
+            <argument   required="false"  purpose="" default="" />
+            <var        required="false"  purpose="" default="" />
         </attributes>
     </model>
     <entity taxonomy="allocation">

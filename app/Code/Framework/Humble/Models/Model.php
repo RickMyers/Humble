@@ -179,6 +179,28 @@ class Model implements HumbleComponent
     }
     
     /**
+     * Returns for display a set global variables, or all if no subset is specified
+     * 
+     * @param type $whichOne
+     * @return type
+     */
+    public function dumpGlobals($whichOne=null) {
+        $whichOne = ($whichOne) ? strtoupper($whichOne) : false;
+        $list     = [
+          'GLOBALS'  => $GLOBALS,
+          '_SERVER'  => $_SERVER,
+          '_GET'     => $_GET,
+          '_POST'    => $_POST,
+          '_FILES'   => $_FILES,
+          '_COOKIE'  => $_COOKIE,
+          '_SESSION' => $_SESSION,
+          '_REQUEST' => $_REQUEST,
+          '_ENV'     => $_ENV            
+        ];
+        return ($whichOne && isset($list[$whichOne])) ? $list[$whichOne] : $list;
+    }
+    
+    /**
      * Everything is set...
      *
      * @param type $name

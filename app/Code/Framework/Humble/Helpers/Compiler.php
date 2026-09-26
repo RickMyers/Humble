@@ -516,20 +516,30 @@ class Compiler extends Directory
         $x = array_pop($this->elements);
         if (isset($node['method'])) {
             $assign_str = '';
+            $argument   = '';
+            $arg_str    = '';
+            $var_str    = '';
             if (isset($node['assign'])) {
                 $assign_str = '$'."models['".$node['assign']."'] = ".'$'.$node['assign'].' = ';
             }            
+            if (isset($node['argument'])) {
+                $arg_str   = "'".$node['argument']."'";
+            }
+            if (isset($node['var'])) {
+                $var_str = '$_REQUEST'."['".$node['var']."']";
+            }
+            $argument        = $arg_str ? $arg_str : ($var_str ? $var_str : ''); 
             if ((isset($node['response']) && ($this->trueish($node['response']))) || (($this->response()) && !(isset($node['response']) && (!$this->trueish($node['response']))))) {
                 if (isset($node['wrapper'])) {
-                    print($this->tabs().'Humble::response('.$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'()));'."\n");
+                    print($this->tabs().'Humble::response('.$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'('.$argument.')));'."\n");
                 } else {
-                    print($this->tabs().'Humble::response('.$assign_str.'$'.$node['id'].'->'.$node['method'].'());'."\n");
+                    print($this->tabs().'Humble::response('.$assign_str.'$'.$node['id'].'->'.$node['method'].'('.$argument.'));'."\n");
                 }
             } else {
                 if (isset($node['wrapper'])) {
-                    print($this->tabs().$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'());'."\n");
+                    print($this->tabs().$assign_str.$node['wrapper'].'($'.$node['id'].'->'.$node['method'].'('.$argument.'));'."\n");
                 } else {
-                    print($this->tabs().$assign_str.'$'.$node['id'].'->'.$node['method'].'();'."\n");
+                    print($this->tabs().$assign_str.'$'.$node['id'].'->'.$node['method'].'('.$argument.');'."\n");
                 }
             }
         }
