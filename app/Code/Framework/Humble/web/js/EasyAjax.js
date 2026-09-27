@@ -160,6 +160,7 @@ EasyAjax.prototype.addFiles     = function(key,fileField) {
     }
     return this;
 };
+EasyAjax.prototype.addFile = EasyAjax.prototype.addFiles;
 /* ----------------------------------------------------------------- */
 EasyAjax.prototype.addRequestParameters     = function (args) { //takes in an array of json style objects
     for (var key in args) {

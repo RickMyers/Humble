@@ -131,7 +131,7 @@ class Log {
      *
      * @param mixed $message
      */
-    public static function query($message) {
+    public static function query($message=null) {
         $project = self::getProject();
         $file    = '../../logs/'.$project->namespace.'/query.log';
         if ($message) {
