@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/common" />
+        <style type="text/css">
+            input {
+                background-color: lightcyan; padding: 4px; border-radius: 4px; border: 1px solid #333
+            }
+            button {
+                padding: 10px 25px; border-radius: 10px;  background-color: royalblue; color: ghostwhite; font-weight: bold; font-family: monospace; font-size: 1.5em
+            }
+            .instructions {
+                font-family: sans-serif; font-size: 1em; padding: 10px
+            }
+        </style>
+        <script src="/js/humble-jquery"></script>
+        <script src="/js/common"></script>
+        <script type="text/javascript">
+            $(document).ready(()=> {
+                alert('here');
+                $('#ajax_submit').on('click',function () {
+                    var ao = new EasyAjax('/paradigm/test/upload');
+                    console.log($('#ajax_upload_form [name=uploaded_file]').get());
+                    ao.addForm('ajax_upload_form').then((response) => {
+                        alert(response);
+                    }).post();
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <table style="width: 100%; height: 100%">
+            <tr>
+                <td>
+                    
+                    <div style="margin-left: auto; margin-right: auto; background-color: ghostwhite; padding: 10px; border: 1px solid #333; border-radius: 10px; width: 700px">
+                        <div class="instructions">
+                            This form is used to test the Humble &trade; frameworks handling of uploaded files
+                        </div>
+                        <form name="post_upload_form" id="post_upload_form" action="/paradigm/test/upload" enctype="multipart/form-data" method="post">
+                            <fieldset><legend>Standard Post</legend>
+                                <input type="text" name="dummy" id="post_dummy" value="Dummy Post Field" /><br />
+                                <span class="field-label">Post Field</span><br /><br />
+                                <input type="file" name="uploaded_file" value="" /><br />
+                                <span class="field-label">Post Field</span><br /><br />
+                                <input type="submit" value="Post Upload" style=" padding: 10px 25px; border-radius: 10px;  background-color: royalblue; color: ghostwhite; font-weight: bold; font-family: monospace; font-size: 1.5em" />
+                            </fieldset>
+                        </form>
+                        <br /><hr /><br />
+                        <form name="ajax_upload_form" id="ajax_upload_form" onsubmit="return false">
+                            <fieldset><legend>Ajax Upload</legend>
+                                <input type="text" name="dummy" value="Dummy Post Field" /><br />
+                                <span class="field-label">Post Field</span><br /><br />
+                                <input type="file" name="uploaded_file" id="uploaded_file" value="" /><br />
+                                <span class="field-label">Post Field</span><br /><br />
+                                <button id="ajax_submit">AJAX Upload</button>
+                            </fieldset>
+                        </form>                        
+                    </div>
+                    
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

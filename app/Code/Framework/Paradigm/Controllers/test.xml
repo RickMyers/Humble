@@ -50,7 +50,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="program" event="testProgramExecution" comment="Will be used to test the program execution" response="true">
             <description>Just a test trigger</description>
         </action>
-        
+           
         <!-- ############################################################### -->
         
         <action name="uploadform">
@@ -62,9 +62,17 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         <action name="upload" blocking="off" response="true">
             <description>Test the upload of a file</description>
             <helper namespace="paradigm" class="data" id="uploader" method="uploadTest">
-                <parameter name="uploaded_file" source="file" required="true" />
+                <parameter name="uploaded_file" source="file" />
             </helper>
         </action>
         
+        <!-- ############################################################### -->
+        
+        <action name="globals" blocking="off">
+            <description>Dumps a block of globals for display</description>  
+            <model assign="globals" namespace="humble" class="somedumbclass" id="model" method="dumpGlobals" var="global">
+            </model>
+        </action>
+            
     </actions>
 </controller>

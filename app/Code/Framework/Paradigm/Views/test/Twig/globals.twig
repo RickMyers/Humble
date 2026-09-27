@@ -1,0 +1,24 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <div style="">Global Dump</div>
+        <hr />
+        <br />
+        <ul>
+        {% for key,item in globals %}
+            {% if item is iterable %}
+                <li> {{ key }} =
+                    <ul>
+                    {% for a,b in item %}
+                        <li> {{ a }} = {{ b }} </li>
+                    {% endfor %}
+                    </ul>
+                </li>
+                {% else %}
+                    <li> {{ key }} = {{ item }} </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </body>
+</html>
