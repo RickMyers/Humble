@@ -70,15 +70,16 @@ CREATE TABLE `paradigm_event_log` (
 
 DROP TABLE IF EXISTS `paradigm_events`;
 
-CREATE TABLE `paradigm_events` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `namespace` char(32) DEFAULT NULL,
-  `event` char(128) DEFAULT NULL,
-  `comment` varchar(255) DEFAULT NULL,
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `paradigm_events_uidx` (`namespace`,`event`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE paradigm_events (
+    id INT NOT NULL AUTO_INCREMENT,
+    `namespace` CHAR(32) DEFAULT NULL,
+    `event` CHAR(64) DEFAULT NULL,
+    event_type_id INT DEFAULT NULL,
+    `comment` CHAR(255) DEFAULT NULL,
+    modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY (`namespace`,`event`,`event_type_id`)
+);
 
 /*Table structure for table `paradigm_export_targets` */
 

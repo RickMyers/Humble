@@ -73,6 +73,13 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
             <model assign="globals" namespace="humble" class="somedumbclass" id="model" method="dumpGlobals" var="global">
             </model>
         </action>
+        
+        <!-- ############################################################### -->
+        
+        <action name="event" event="randomEvent" comment="A random Event">
+            <description>A test event, for some purpose</description>
             
+        </action>
+        
     </actions>
 </controller>

@@ -432,6 +432,8 @@ class Updater extends Installer
                             case "configuration"    :   $workflowComponent->setConfiguration($value);
                                                         $this->configurationInitializationCheck($value);
                                                         break;
+                            case "namespace"        : 
+                                                        break;
                             default                 :   break;
                         }
                     }

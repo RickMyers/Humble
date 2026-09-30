@@ -60,8 +60,8 @@ class Webservice extends Model
         $data['uri']    = $data['uri'] ?? $data['uri_combo'];        
         $uris = Humble::entity('paradigm/webservice/uris');
         if ($uri_id = Humble::entity('paradigm/webservice/uris')->setUri($data['uri'])->save()) {
-            if ($id = Humble::entity('paradigm/webservices')->setUriId($uri_id)->setWorkflowId('')->setEnabled($data['enabled'])->save()) {
-                $this->registerWebServiceIntegrationPoint($id,$data);
+            if ($id = Humble::entity('paradigm/webservices')->setUriId($uri_id)->setWorkflowId($data['workflow_id'])->setEnabled($data['enabled'])->save()) {
+            //    $this->registerWebServiceIntegrationPoint($id,$data);
             }            
         }
         

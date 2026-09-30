@@ -690,4 +690,19 @@ class Event  {
     public function __clone() {
         $this->instance = ++self::$instances;
     }
+    
+    /**
+     * Returns the current complete state of the event
+     * 
+     * @return array
+     */
+    public function debug() {
+        return [
+            "name" => $this->_name,
+            "data" => $this->_data,
+            "configurations" => $this->_configurations,
+            "stages" => $this->_stages,
+            "instance" => $this->instance
+        ];
+    }
 }

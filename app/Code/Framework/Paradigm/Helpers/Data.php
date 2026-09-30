@@ -130,7 +130,7 @@ class Data extends Helper
      */
     public function uploadTest() {
         $file = $this->getUploadedFile();
-        
+        $headers = getallheaders();
         foreach ($file as $part) {
             print($part."\n");
         }

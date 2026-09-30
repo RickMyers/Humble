@@ -13,3 +13,11 @@ define('NEW_FILE_JOB','L');
 define('JOB_EXECUTING','E');
 define('JOB_COMPLETED','C');
 define('JOB_FAILED','F');
+
+//#######################################################
+//Event Types
+define('CUSTOM_EVENT',1);
+define('TIME_EVENT',2);
+define('FILE_EVENT',3);
+define('ACTION_EVENT',4);
+define('LISTENER',5);

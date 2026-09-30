@@ -133,7 +133,7 @@
             </input>
             <passalong  required="false"  purpose="" default="" />
             <class      required="false"  purpose="" default="" />
-            <namespace  required="false"  purpose="" default="" />
+            <namespace  required="false"  purpose="for use with the event/comment feature, if you want to namespace this event" default="" />
             <event      required="false"  purpose="" default="" />
             <comment    required="false"  purpose="" default="" />
         </attributes>

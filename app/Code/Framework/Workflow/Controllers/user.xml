@@ -7,7 +7,15 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
 -->
 <controller name="user" use="Smarty" author="Rick Myers" email="rick@humbleprogramming.com">
     <actions>
-
+        
+        <action name="test" response="true" output="json">
+            <description>Just a test</description>
+            <entity namespace="humble" class="modules" orderby="namespace" id="namespaces" logging="true">   
+                <parameter name="enabled" source="request" default='Y' />
+            </entity>            
+        </action>
+        
+        
         <action name="tries" passalong="window_id">
             <description>Set number of tries before locking account</description>
             <mongo namespace='paradigm' class='elements' id='element'>

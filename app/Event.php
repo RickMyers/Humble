@@ -33,11 +33,8 @@ class Event {
      * @return type
      */
     public static function set($EVENT,$mongoId) {
-        $exclude = array('shape'=>true,'type'=>'true','configured'=>true,'_id'=>true,'id'=>true); //this is unnecessary stuff to save
-        $mongo   = Humble::collection('paradigm/elements');
-        $mongo->setId($mongoId);
-        
-        $data    = $mongo->load();
+        $exclude = ['shape'=>true,'type'=>'true','configured'=>true,'_id'=>true,'id'=>true]; //this is unnecessary stuff to save
+        $data    = Humble::collection('paradigm/elements')->setId($mongoId)->load();
         $cnf     = [];
         foreach ($data as $var => $val) {
             if (isset($exclude[$var])) {
@@ -77,8 +74,8 @@ class Event {
      *
      * @return \Code\Framework\Humble\Event\Trigger
      */
-    public static function getTrigger() {
-        return new \Code\Framework\Humble\Event\Trigger();
+    public static function getTrigger($eventTypeId=false) {
+        return new \Code\Framework\Humble\Event\Trigger($eventTypeId);
     }
 
     /**
@@ -99,14 +96,13 @@ class Event {
     /**
      * Checks to see if an event has already been created by that event name
      *
-     * @param string $namespace
      * @param string $eventName
      * @return type boolean
      */
-    public static function isRegistered($namespace=false,$eventName=false) {
+    public static function isRegistered($eventName=false,$namespace=null) {
         $event_registered = false;
         if ($eventName) {
-            $event = Humble::entity('humble/events')->setEvent($eventName);
+            $event            = Humble::entity('paradigm/events')->setEvent($eventName);
             if ($namespace) {
                 $event->setNamespace($namespace);
             }
@@ -121,16 +117,19 @@ class Event {
      * @param string $namespace
      * @param string $eventName
      * @param string $comment
+     * @param string $eventType
      * @return int
      */
-    public static function register($namespace=false,$eventName=false,$comment=false) {
+    public static function register($namespace=null,$eventName=false,$comment=false,$eventType='CUSTOM') {
         $id = false;
         if ($eventName && $comment) {
-            $event_library = Humble::entity('humble/events')->setEvent($eventName)->setComment($comment);
-            if ($namespace) {
-                $event_library->setNamespace($namespace);
-            }
-            $id = $event_library->save();
+            if ($eventType     = Humble::entity('paradigm/event/types')->setEvent($eventType)->load(true)) {
+                $event = Humble::entity('paradigm/events')->setEvent($eventName)->setEventTypeId($eventType['id'])->setComment($comment);
+                if ($namespace) {
+                    $event->setNamespace($namespace);
+                }
+                $id = $event->save();
+            };
         }
         return $id;
     }

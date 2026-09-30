@@ -17,9 +17,9 @@
 
         <action name="documentation">
             <description>Will regenerate the API documentation</description>
-                <model namespace="humble" class="utility" id="apigen" method="generateDocumentation" >
-                    <parameter name="admin_id" source="session" required="default" />
-                </model>
+            <model namespace="humble" class="utility" id="apigen" method="generateDocumentation" >
+                <parameter name="admin_id" source="session" required="true" />
+            </model>
         </action>
 
         <!-- ############################################################### -->
