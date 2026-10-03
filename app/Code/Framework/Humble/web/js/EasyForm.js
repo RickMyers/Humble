@@ -63,6 +63,14 @@ var Form = (function ($) {
                 }).post();
             });
         },
+        populate: function (frm,vals) {
+            let form = $('#'+frm).get();
+            if (form) {
+                for (let i in form.elements) {
+                    console.log(i);
+                }
+            }
+        },
         init: function () {
             $.each(document.forms, (f) => {
                 Form.intercept(document.forms[f]);

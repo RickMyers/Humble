@@ -296,7 +296,7 @@ class Updater extends Installer
     public function registerMethodListeners($namespace,$class,$listener,$events) {
         $method_listener = Humble::entity('paradigm/method/listeners');
         foreach (explode(',',$events) as $event) {
-            $this->output("WORKFLOW","     Registering Method Trigger ".$event." on ".$listener);
+            $this->output("WORKFLOW","\tRegistering Method Trigger ".$event." on ".$listener);
             $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
         }
         return $this;

@@ -42,7 +42,7 @@
 <table style='width: 100%; height: 100%;'>
     <tr>
         <td valign='middle'>
-            <form name='webservice-form' id='webservice-form-{$id}' onsubmit='return false'>
+            <form name='config-form' id='config-form-{$data.id}' onsubmit='return false'>
                 <input type="hidden" name="window_id"   value="{$window_id}" />
                 <input type="hidden" name="id"          value="{$id}" />
                 <input type="hidden" name="workflow_id" value="" />
@@ -201,10 +201,28 @@
     </tr>
 </table>
 <script type='text/javascript'>
-    {foreach from=$data item=s key=k}
-        console.log('{$k}={$s}');
-    {/foreach}
-    Form.intercept($('#webservice-form-{$id}').get(),'{$id}','/workflow/webservice/save','{$window_id}');
+    Form.intercept($('#config-form-{$id}').get(),'{$id}','/workflow/webservice/save','{$window_id}');
+    ( () => {
+        let values = {};
+        {foreach from=$data item=s key=k}
+            values['{$k}'] = '{$s}';
+        {/foreach}
+       // Form.intercept($('#config-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+        console.log(values);
+        //Form.populate('config_form_{$id}',values);
+            var frm = 'config-form-{$data.id}';
+            let form = $('#'+frm).get();
+            console.log(form);
+            if (form) {
+                console.log(form[0].elements);
+                for (let i in form.elements) {
+                    console.log(i);
+                }
+            } else {
+                alert('form not found');
+            }    
+        
+    })();
     var tabs = new EasyTab('humble-paradigm-config-webservice-security-nav');
     tabs.add('None', null,'humble-paradigm-config-webservice-security-none');
     tabs.add('Session', null,'humble-paradigm-config-webservice-security-session');
@@ -214,8 +232,8 @@
     tabs.add('Whitelist',null,'humble-paradigm-config-webservice-security-whitelist-tab');
     tabs.tabClick(0);
     var ns = '{$data.namespace}' ? '{$data.namespace}' : Paradigm.actions.get.namespace();
-    $('#webservice-form-{$id} [name=workflow_id]').val(Paradigm.actions.get.mongoWorkflowId());
-    $('#webservice-form-{$id} [name=namespace]').val(ns);
+    $('#config-form-{$id} [name=workflow_id]').val(Paradigm.actions.get.mongoWorkflowId());
+    $('#config-form-{$id} [name=namespace]').val(ns);
     //alert(Paradigm.actions.get.namespace());
     var WebserviceParameter = (function ($) {
         var parameters = '{$element->getParameters()}';
@@ -224,17 +242,17 @@
         } else {
             parameters = [];
         }
-        $('#webservice-form-{$id} [name=parameters]').val(JSON.stringify(parameters));
+        $('#config-form-{$id} [name=parameters]').val(JSON.stringify(parameters));
         var display = document.getElementById('humble-parameters-display');
         return {
             add: function () {
                 parameters[parameters.length] = {
-                    "name":   $('#webservice-form-{$id} [name=parameter]').val(),
-                    "source": $('#webservice-form-{$id} [name=source]').val(),
-                    "format": $('#webservice-form-{$id} [name=format]').val()
+                    "name":   $('#config-form-{$id} [name=parameter]').val(),
+                    "source": $('#config-form-{$id} [name=source]').val(),
+                    "format": $('#config-form-{$id} [name=format]').val()
                 };
-                $('#webservice-form-{$id} [name=parameter]').val('');
-                $('#webservice-form-{$id} [name=parameters]').val(JSON.stringify(parameters));
+                $('#config-form-{$id} [name=parameter]').val('');
+                $('#config-form-{$id} [name=parameters]').val(JSON.stringify(parameters));
                 WebserviceParameter.render();
             },
             remove: function (idx) {
@@ -244,7 +262,7 @@
                         parms[parms.length] = parameters[i];
                     }
                 }
-                $('#webservice-form-{$id} [name=parameters]').val(JSON.stringify(parms));
+                $('#config-form-{$id} [name=parameters]').val(JSON.stringify(parms));
                 WebserviceParameter.render();
             },
             render: function () {

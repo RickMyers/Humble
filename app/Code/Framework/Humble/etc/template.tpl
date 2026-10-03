@@ -1,4 +1,16 @@
 {assign var=data value=$element->load()}
+
+
+<!-- 
+
+ADD SOME ELABORATE JS TO DYNAMICALLY SET VALUES
+
+MAKE IT EVEN SIMPLER TO CREATE CONFIGURATION PANELS
+
+-->
+
+
+
 <!--
     INSTRUCTIONS:
 
@@ -73,7 +85,25 @@
     </tr>
 </table>
 <script type="text/javascript">
-    //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
-    //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
-    Form.intercept($('#config_form_{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+    (() => {
+        //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
+        //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
+        let values = {};
+        {foreach from=$data item=s key=k}
+            values['{$k}'] = '{$s}';
+        {/foreach}
+        Form.intercept($('#config_form_{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+        console.log(values);
+        //Form.populate('config_form_{$data.id}',values);
+            var frm = 'config_form_{$data.id}';
+            let form = $('#'+frm).get();
+            if (form) {
+                console.log(form.elements);
+                for (let i in form.elements) {
+                    console.log(i);
+                }
+            } else {
+                alert('form not found');
+            }
+    })();
 </script>

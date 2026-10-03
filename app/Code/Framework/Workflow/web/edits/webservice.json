@@ -1,7 +1,7 @@
 ({
     form:
     {
-        id: 		"webservice-form-&id&",
+        id: 		"config-form-&id&",
         drawme:		false,
         action:		"",
         method:		"post",
