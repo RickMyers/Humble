@@ -6,6 +6,10 @@
         <framework>0.8.0.6.2</framework>
         <app>0.0.0.1</app>
     </version>
+    <files comment="After a copy using framework files, the owner and permission of the files will be set to the following">
+        <mode  comment="Numeric permissions, 755,775,etc..">775</mode>
+        <owner comment="Set to system id that owns the files">www-data</owner>
+    </files>
     <state comment="switch to current">DEVELOPMENT</state>
     <stages>
         <QA order="3"/>

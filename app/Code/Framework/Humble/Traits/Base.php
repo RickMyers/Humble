@@ -12,11 +12,49 @@ trait Base {
     protected $_isLinux     = false;
     protected $_decrypt     = false;
     protected $_encrypt     = false;   
-    protected $_iv          = 'Humble Framework';                             //encryption initialization vector      
+    protected $_iv          = 'Humble Framework';                             //encryption initialization vector  
     
+    /**
+     * Returns the current class name
+     *
+     * @return string The name of the current class
+     */
+    public function className() {
+        return __CLASS__;
+    }
+        
+    /**
+     * Ubiquitous function for conforming to naming conventions
+     * 
+     * @param string $string
+     * @param bool $first_char_caps
+     * @return string
+     */
     function underscoreToCamelCase( $string, $first_char_caps = false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }
+    
+    /**
+     * Converts a dot notation string into a nested array, useful for some config file processing
+     * 
+     * @param type $string
+     * @return mixed
+     */
+    public function dotsToArray($string=false) {
+        if (strpos($string,'.')) {
+            $base = ''; $ctr=0; $prev = '';
+            foreach (array_reverse(explode('.',$string)) as $part) {
+                eval('$'.$part.' = [];');
+                if ($prev) {
+                    eval('$'.$part.' = ["'.$prev.'" =>  '.'$'.$prev.'];');
+                }
+                $prev = $part;                    
+            }
+            eval('$string = ["'.$part.'" => $'.$prev.'];');
+        }  
+        return $string;        
+    }
+    
     /**
      * Confirm or return what type of component this class is
      * 
@@ -29,40 +67,6 @@ trait Base {
         }
         return $this->whatAmI;
     }
-    
-    /**
-     * Returns true if this is a virtual class (not a physical one)
-     * 
-     * @TODO: Review This! Since false is a valid value, the logic here might be off
-     * 
-     * @param type $virtual
-     * @return $this
-     */
-    public function _isVirtual($virtual=false) {
-        if ($virtual) {
-            $this->_isVirtual = $virtual;
-            return $this;
-        } else {
-            return $this->_isVirtual;
-        }
-    }
-    
-    /**
-     * Returns the current class name
-     *
-     * @return string The name of the current class
-     */
-    public function className() {
-        return __CLASS__;
-    }
-    
-    public function _isLinux() {
-        return $this->_isLinux;
-    }
-
-    public function _isWindows() {
-        return $this->_isWindows;
-    }    
     
     /**
      * Sets the flag on whether something should be encrypted before being set
@@ -99,6 +103,53 @@ trait Base {
         }
         return $this->_iv;
     }
+    
+    /**
+     * Just a wrapper for standard PHP File Copy that also sets mode and owner
+     * 
+     * @param string $src
+     * @param string $dest
+     * @param string $mod
+     * @return bool
+     */
+    public function copy($src=false,$dest=false,$mod=false) {
+        $copied = false; $owned = false;
+        if ($src && $dest) {
+            $owner = \Environment::application('files.owner') ?? false;
+            $mode  = \Environment::application('files.owner') ?? '755';
+            if ($owner && $mode) {
+                if ($copied = copy($src,$dest,$mode)) {
+                    $owned = chown($dest,$owner);
+                }
+            }
+        }
+        return ($copied && $owned);
+    }
+    
+    /**
+     * Returns true if this is a virtual class (not a physical one)
+     * 
+     * @TODO: Review This! Since false is a valid value, the logic here might be off
+     * 
+     * @param type $virtual
+     * @return $this
+     */
+    public function _isVirtual($virtual=false) {
+        if ($virtual) {
+            $this->_isVirtual = $virtual;
+            return $this;
+        } else {
+            return $this->_isVirtual;
+        }
+    }
+    
+    public function _isLinux() {
+        return $this->_isLinux;
+    }
+
+    public function _isWindows() {
+        return $this->_isWindows;
+    }    
     
     /**
      * Returns a timestamp.  If the timestamp isn't set yet, it sets and stores it.
@@ -142,6 +193,60 @@ trait Base {
     protected function _unset($name=false) {
         if (($name) && isset($this->_data[$name])) {
             unset($this->_data[$name]);
+        }
+        return $this;
+    }
+    
+    /**
+     * Can set or get a timestamp.
+     *
+     * If you pass in a value, it stores that value as the stamp, otherwise it
+     * returns what ever value is currently stored as the stamp
+     *
+     * @param timestamp $timestamp A timestamp to use
+     * @return string The current timestamp
+     */
+    public function _timestamp($ts=false) {
+        if ($ts) {
+            $this->_timestamp = $ts;
+            return $this;
+        } else {
+            return $this->_timestamp;
+        }
+    }
+
+    /**
+     * Can set or get namespace being used by the current class.
+     *
+     * If you pass in a value, it stores that value as the namespace, otherwise it
+     * returns what ever value is currently stored as the namespace
+     *
+     * @param timestamp $arg A namespace to use
+     * @return string The current namespace
+     */
+    public function _namespace($arg=false) {
+        if ($arg) {
+            $this->_namespace = $arg;
+            return $this;
+        } else {
+            return $this->_namespace;
+        }
+    }
+
+    /**
+     * Can set or get db prefix being used by the current namespace
+     *
+     * If you pass in a value, it stores that value as the DB prefix, otherwise it
+     * returns what ever value is currently stored as the DB prefix
+     *
+     * @param string $arg A prefix to use
+     * @return string The current DB prefix
+     */
+    public function _prefix($arg=false) {
+        if ($arg) {
+            $this->_prefix = $arg;
+        } else {
+            return $this->_prefix;
         }
         return $this;
     }
@@ -224,61 +329,5 @@ trait Base {
                 }
             }
         }
-    }
-    
-
-    /**
-     * Can set or get a timestamp.
-     *
-     * If you pass in a value, it stores that value as the stamp, otherwise it
-     * returns what ever value is currently stored as the stamp
-     *
-     * @param timestamp $timestamp A timestamp to use
-     * @return string The current timestamp
-     */
-    public function _timestamp($ts=false) {
-        if ($ts) {
-            $this->_timestamp = $ts;
-            return $this;
-        } else {
-            return $this->_timestamp;
-        }
-    }
-
-    /**
-     * Can set or get namespace being used by the current class.
-     *
-     * If you pass in a value, it stores that value as the namespace, otherwise it
-     * returns what ever value is currently stored as the namespace
-     *
-     * @param timestamp $arg A namespace to use
-     * @return string The current namespace
-     */
-    public function _namespace($arg=false) {
-        if ($arg) {
-            $this->_namespace = $arg;
-            return $this;
-        } else {
-            return $this->_namespace;
-        }
-    }
-
-    /**
-     * Can set or get db prefix being used by the current namespace
-     *
-     * If you pass in a value, it stores that value as the DB prefix, otherwise it
-     * returns what ever value is currently stored as the DB prefix
-     *
-     * @param string $arg A prefix to use
-     * @return string The current DB prefix
-     */
-    public function _prefix($arg=false) {
-        if ($arg) {
-            $this->_prefix = $arg;
-            return $this;
-        } else {
-            return $this->_prefix;
-        }
-        return $this;
-    }
+    }    
 }

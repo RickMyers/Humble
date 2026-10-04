@@ -8,6 +8,10 @@
         an Initial Vector (iv).  Changing the Serial Number or IV will make your secrets useless and will fully invalidate your cache.
         It is expected that the Serial Number or IV will be shared for all developers of the application.
     </comment>
+    <files comment="After a copy using framework files, the owner and permission of the files will be set to the following">
+        <mode  comment="Numeric permissions, 755,775,etc..">775</mode>
+        <owner comment="Set to system id that owns the files">www-data</owner>
+    </files>
     <version>
         <framework>{$version}</framework>
         <app>0.0.0.1</app>
@@ -23,10 +27,10 @@
              Please read the documentation at https://humbleprogramming.com/pages/Proxy.htmls for how/why you should use the eleveated command proxy
         </comment>
         <host default="127.0.0.1">0.0.0.0</host>
+        <port comment="Set to port where the proxy is listening">0</port>        
         <util options="ufw,iptables,firewalld"></util>        
-        <port>0</port>
         <services options="service,systemctl"></services>
-    </proxy>  
+    </proxy> 
     <msa>
         <router>0</router>              <!-- Switch to 1 to make this node the router for a MSA based application (NOT FULLY IMPLEMENTED!)-->
         <strategy>
@@ -63,7 +67,7 @@
         <date_format>Y-m-d</date_format>
         <time_format>H:i:s</time_format>
         <timestamp_format>Y-m-d H:i:s</timestamp_format>        
-        <local_cache_port>23113</local_cache_port>
+        <local_cache_port>0</local_cache_port>
     </default>
     <external comment="List of directories outside of the Humble framework that are to be scanned for workflow components">
         <!--
@@ -85,7 +89,7 @@
         <command options="php PHPDoc2.phar,apigen.phar app/Code --output Docs">php PHPDoc2.phar</command>
         <source  options="https://humbleprogramming.com/dist/phpdoc.php ,https://humbleprogramming.com/dist/apigen.php">https://humbleprogramming.com/dist/phpdoc.php</source>
     </documentation>
-    <flags>
+    <flags comment="Application/System level flags, see the https://humbleprogramming.com/pages/Flags.htmls for more information">
         <!-- You can insert custom flags here, and query them at runtime -->
         <display_mysql_errors comment="Mysql error are always logged but do you want them displayed on the page as well?">0</display_mysql_errors>
     </flags>    

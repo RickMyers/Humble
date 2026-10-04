@@ -51,6 +51,21 @@ class Environment {
         return (isset($_SESSION['uid']) ? $_SESSION['uid'] : false);
     }
 
+    private static function dotsToArray($string) {
+        if (strpos($string,'.')) {
+            $base = ''; $ctr=0; $prev = '';
+            foreach (array_reverse(explode('.',$string)) as $part) {
+                eval('$'.$part.' = [];');
+                if ($prev) {
+                    eval('$'.$part.' = ["'.$prev.'" =>  '.'$'.$prev.'];');
+                }
+                $prev = $part;                    
+            }
+            eval('$string = ["'.$part.'" => $'.$prev.'];');
+        }  
+        return $string;
+    }
+    
     /**
      * Stores the PID in a file in the PIDs directory
      * 
@@ -855,9 +870,9 @@ class Environment {
      * @param type $nodes
      * @return type
      */
-    private static function recurse($struct=false,$nodes=false) {
+    private static function recurse($app=false,$nodes=false) {
         foreach ($nodes as $field => $node) {
-            $app = isset($struct->$field) ? $struct->$field : false;
+            $app = isset($app->$field) ? $app->$field : false;
             $app = ($app && is_array($node)) ? self::recurse($app,$node) : (isset($app->$node) ? $app->$node : false);
         }
         return $app;
@@ -870,12 +885,12 @@ class Environment {
      * @param type $dontUseCache
      * @return type
      */
-    public static function application($node=false,$dontUseCache=false,$override=false) {
-        $app = self::loadApplicationMetaData($dontUseCache);
-        if ($override) {
+    public static function application($node=false,$dontUseCache=false,$override=null) {
+        $app     = self::loadApplicationMetaData($dontUseCache);
+        if ($override !== null) {
             self::$application->$node = $override;
         }
-        if ($node) {
+        if ($node = self::dotsToArray($node)) {
             $app = is_array($node) ? self::recurse($app,$node) : (isset($app->$node) ? $app->$node : null);
         }
         return $app;
