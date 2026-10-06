@@ -109,7 +109,7 @@ class FileManager extends Model
             $cnf  = $EVENT->fetch();
             if (isset($cnf['field'])) {
                 if (file_exists($cnf['field'])) {
-                    $saved = copy($cnf['field'],$cnf['destination']);
+                    $saved =$this->copy($cnf['field'],$cnf['destination']);
                     $EVENT->update(['save_file'=>[ 'source' => $cnf['field'],
                                     'destination_file' => $cnf['destination'],
                                     'save_result' => $saved]]);
@@ -177,7 +177,7 @@ class FileManager extends Model
                 $file     = $source.DIRECTORY_SEPARATOR.$filename;
                 $target   = $destination.DIRECTORY_SEPARATOR.$filename;
                 print($file."==>".$target."\n");
-                if ($copied = copy($file,$target)) {
+                if ($copied =$this->copy($file,$target)) {
                    @unlink($file);
                 }
                 $result['moved'] = true;

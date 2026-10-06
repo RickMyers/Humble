@@ -177,7 +177,7 @@ class Helper {
             $fileData = $this->$fileData();
             if ($fileData) {
                 if (isset($fileData['tmp_name']) && isset($fileData['name'])) {
-                    $moved = copy($fileData['tmp_name'],$whereTo.'/'.$fileData['name']);
+                    $moved =$this->copy($fileData['tmp_name'],$whereTo.'/'.$fileData['name']);
                 }
             }
         }

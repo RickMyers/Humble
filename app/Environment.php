@@ -52,7 +52,7 @@ class Environment {
     }
 
     private static function dotsToArray($string) {
-        if (strpos($string,'.')) {
+        if (!is_array($string) && strpos($string,'.')) {
             $base = ''; $ctr=0; $prev = '';
             foreach (array_reverse(explode('.',$string)) as $part) {
                 eval('$'.$part.' = [];');

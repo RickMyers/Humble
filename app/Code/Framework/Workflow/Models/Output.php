@@ -61,4 +61,16 @@ class Output extends Model
             }
         }
     }
+    
+    /**
+     * Tests changes to configuration form
+     * 
+     * @workflow use(PROCESS) config(workflow/test/configform)
+     * @param type $EVENT
+     */
+    public function configTest($EVENT=false) {
+        $data = $EVENT->load();
+        $cnfg = $EVENT->fetch();
+        
+    }
 }

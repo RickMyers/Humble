@@ -202,27 +202,6 @@
 </table>
 <script type='text/javascript'>
     Form.intercept($('#config-form-{$id}').get(),'{$id}','/workflow/webservice/save','{$window_id}');
-    ( () => {
-        let values = {};
-        {foreach from=$data item=s key=k}
-            values['{$k}'] = '{$s}';
-        {/foreach}
-       // Form.intercept($('#config-form-{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
-        console.log(values);
-        //Form.populate('config_form_{$id}',values);
-            var frm = 'config-form-{$data.id}';
-            let form = $('#'+frm).get();
-            console.log(form);
-            if (form) {
-                console.log(form[0].elements);
-                for (let i in form.elements) {
-                    console.log(i);
-                }
-            } else {
-                alert('form not found');
-            }    
-        
-    })();
     var tabs = new EasyTab('humble-paradigm-config-webservice-security-nav');
     tabs.add('None', null,'humble-paradigm-config-webservice-security-none');
     tabs.add('Session', null,'humble-paradigm-config-webservice-security-session');

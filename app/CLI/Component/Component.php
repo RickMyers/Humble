@@ -521,6 +521,7 @@ class Component extends CLI implements CLIInterface
                 if (!is_dir($dir        = 'Code/'.$module['package'].'/'.str_replace('_','/',$module['views']).'/'.$parts[1].'/Smarty')) {
                     mkdir($dir,0775,true);    
                 }
+                //@TODO: replace this copy with something like helper::copy
                 copy($file,$dir.'/'.$parts[2].'.tpl');
                 if (!$exists) {
                     $xml    = new DOMDocument('1.0');

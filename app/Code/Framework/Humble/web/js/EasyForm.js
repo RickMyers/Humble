@@ -3,6 +3,7 @@
  */
 var Form = (function ($) {
     var defaultURL;
+    var ref = null;
     return {
         set: {
             defaultURL: function (arg) {
@@ -19,8 +20,10 @@ var Form = (function ($) {
         intercept: function (formRef,id,URL,window_id,callback,preprocess,postprocess) {
             URL = (URL) ? URL : defaultURL;
             //element_id is the mongo ID for the element being configured
+            ref = formRef;
             $(formRef).on('submit',{ "form": formRef, "element_id": id, "url": URL, "window_id": window_id, "callback": callback, "preprocess": preprocess, "postprocess": postprocess }, (event) => {
                 event.preventDefault();  //cease submission
+                alert('submitting');
                 if (event.data.preprocess) {
                     event.data.preprocess(this,event);
                 }
@@ -62,8 +65,12 @@ var Form = (function ($) {
                     }
                 }).post();
             });
+            return this;
         },
-        populate: function (frm,vals) {
+        populate: function (vals) {
+            console.log(vals);
+            console.log(ref);
+            return null;
             let form = $('#'+frm).get();
             if (form) {
                 for (let i in form.elements) {

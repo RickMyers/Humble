@@ -446,6 +446,7 @@ function scanForNewImages() {
             $target                  = $deployed.'/'.$image;
             if (!file_exists($target)) {
                 logMessage('Copying missing image '.$source_image.' to '.$target);
+                //Replace copy with helper::copy or something like that
                 copy($source_image,$target);
             } else {
                 /*

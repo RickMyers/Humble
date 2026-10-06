@@ -73,7 +73,7 @@ class Directory extends File
                   //  print('Notice: skipping '.$d." since it is present in destination\n");
                 } else {
                 //    print('copying: '.$s.' to '.$d."\n");
-                    copy($s,$d);
+                   $this->copy($s,$d);
                 }
             }
         }
@@ -181,7 +181,7 @@ class Directory extends File
                 $d = $destination.'/'.$entry;
                 if (!file_exists($d)) {
                     \Log::console('copying: '.$s.' to '.$d."\n");
-                    copy($s,$d);
+                   $this->copy($s,$d);
                 } else {
                     \Log::console('Skipping copy of '.$d);
                 }

@@ -74,7 +74,7 @@ class Actions extends Model
         if ($namespace = ($namespace) ? $namespace : ($this->getNamespace() ? $this->getNamespace() : false)) {
             if ($data_file = $this->getDataFile()) {
                 @mkdir('import',0775);
-                copy($data_file['path'],'import/'.$data_file['name']);
+               $this->copy($data_file['path'],'import/'.$data_file['name']);
                 $archive = new \ZipArchive();
                 if ($archive->open('import/'.$data_file['name'])) {
                     for ($i=0; $i<count($archive); $i++) {
@@ -109,7 +109,7 @@ class Actions extends Model
         if ($namespace = ($namespace) ? $namespace : ($this->getNamespace() ? $this->getNamespace() : false)) {
             if ($module = $this->getModule()) {
                 @mkdir('install',0775);
-                copy($module['path'],'import/'.$module['name']);
+               $this->copy($module['path'],'import/'.$module['name']);
                 $archive = new \ZipArchive();
                 if ($archive->open('import/'.$module['name'])) {
                     for ($i=0; $i<count($archive); $i++) {
