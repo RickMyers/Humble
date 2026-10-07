@@ -79,7 +79,8 @@
                     <userid     format='#' /> 
                     <user_id    format='#' />
                 </values>
-            </throttle>            
+            </throttle> 
+            <idempotent required="false"  purpose="" default="" />           
             <audit      required="false"  purpose="" default="" />
             <name       required="true"   purpose="" default="" />
             <blocking   required="false"  purpose="" default="" >

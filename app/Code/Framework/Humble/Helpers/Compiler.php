@@ -1508,8 +1508,47 @@ class Compiler extends Directory
         return $this;
     }
     
+    /**
+     * Handles detecting idempotent value and returns previous result if this is a duplicate
+     * 
+     * @param string $key
+     */
+    private function processInitialIdempotent($key=false) {
+        if ($key) {
+            print($this->tabs().'if ($idempotent = (isset($_REQUEST[$key]) && $_REQUEST[$key])) {'."\n");
+            print($this->tabs(1).'$result = Humble::cache("idempotent-".$key);'."\n");
+            print($this->tabs().'if ($result) {'."\n");
+            print($this->tabs(1).'print($result); //lots could go wrong here... should it be returned instead?'."\n");
+            print($this->tabs().'\Log::warning("Idemptotent issue encountered, key=[\'.$key.\']");'."\n");
+            print($this->tabs().'die(); //?'."\n");
+            print($this->tabs(-1).'} else {'."\n");
+            print($this->tabs(1).'Humble::cache("idempotent-".$key,"In Progress");'."\n");
+            print($this->tabs().'ob_start();'."\n");
+            print($this->tabs(-1).'}'."\n");
+            print($this->tabs(-1).'}'."\n");
+        }
+        return $this;
+    }
+    
+    /**
+     * if an Idempotent is active, handles capturing the result so we can return it later without duplicate processing
+     * 
+     * @param string $key
+     */
+    private function processFinalizedIdempotent($key=false) {
+        if ($key) {
+            print($this->tabs().'if ($idempotent) {'."\n");
+            print($this->tabs(1).'if ($result = ob_get_flush()) {'."\n");
+            print($this->tabs(1).'\Humble::cache("idempotent-".$key,$result);'."\n");
+            print($this->tabs(-1).'}'."\n");
+            print($this->tabs(-1).'}'."\n");
+        }
+        return $this;
+    }
+    
     private function processActionNode($tag2,$action,$init) {
-        $throttle = false;
+        $throttle = false; 
+        $idempotent = isset($action['idempotent']) ? $action['idempotent'] : false;
         if (isset($action['response'])) {
             $this->response($this->trueish($action['response']));
         }
@@ -1537,6 +1576,7 @@ class Compiler extends Directory
             // If the attribute 'method' isn't specified, the default method will be 'authorize()'
             // Primarily for when building REST APIs
         }
+        $this->processInitialIdempotent($idempotent);
         if (isset($action['map'])) {
             $map = explode('/',$action['map']);
             foreach ($map as $idx => $varname) {
@@ -1731,6 +1771,7 @@ class Compiler extends Directory
             $line = '$TRIGGER_'.$id.'->emit("'.$action['event'].'")';
             print($this->tabs().($this->response() ? 'Humble::response('.$line.')' : $line).";\n"); 
         }
+        $this->processFinalizedIdempotent($idempotent);
         //-----------------------------------------------------------------------
         if ($throttle) {
             $this->cleanupThrottle($action['throttle']);
@@ -1773,6 +1814,7 @@ class Compiler extends Directory
             print($this->tabs().'global $abort;'."\n");
             print($this->tabs().'global $uid;'."\n");
             print($this->tabs().'global $ip_address;'."\n");
+            print($this->tabs().'global $idempotent;'."\n");
             print($this->tabs()."ob_start();\n");
             print($this->tabs().'switch ($method) {'."\n");
             $attr = $actions->attributes();
@@ -1868,7 +1910,7 @@ SQL;
             $source          = $this->getFile();
             $controller      = explode("/",$source);
             $controller      = $controller[count($controller)-1];
-            $this->component = $controller = substr($controller,0,strpos($controller,'.xml'));
+            $this->component = $controller     = substr($controller,0,strpos($controller,'.xml'));
         } else {
             $data            = explode('/',$identifier);
             $this->namespace = $namespace      = $data[0];

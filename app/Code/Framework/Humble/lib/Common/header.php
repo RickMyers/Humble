@@ -18,6 +18,7 @@ $skipView           = false;
 $chainActions       = [];
 $chainControllers   = [];
 $abort              = false;
+$idempotent         = false;
 $ajaxUpload         = false;
 //################### REMOVE BEFORE GOING TO PRODUCTION ########################
 //error_reporting(E_ALL);
@@ -96,9 +97,11 @@ function parseAjaxUpload() {
 }
 //------------------------------------------------------------------------------
 //Detects if what has been posted is a raw feed of mulipart data
+//
+//Maybe only do this if method=POST?
 //------------------------------------------------------------------------------
 foreach ($_POST as $var => $value) {
-    if (strpos($var,'Content-Disposition:')!==false) {
+    if (strpos($var,'Content-Disposition:') !== false) {
         parseAjaxUpload();
         $ajaxUpload = true;
     }
