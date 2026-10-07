@@ -1515,14 +1515,14 @@ class Compiler extends Directory
      */
     private function processInitialIdempotent($key=false) {
         if ($key) {
-            print($this->tabs().'if ($idempotent = (isset($_REQUEST[$key]) && $_REQUEST[$key])) {'."\n");
-            print($this->tabs(1).'$result = Humble::cache("idempotent-".$key);'."\n");
+            print($this->tabs().'if ($idempotent = (isset($_REQUEST[\''.$key.'\']) && $_REQUEST[\''.$key.'\'])) {'."\n");
+            print($this->tabs(1).'$result = Humble::cache("idempotent-'.$key.');'."\n");
             print($this->tabs().'if ($result) {'."\n");
             print($this->tabs(1).'print($result); //lots could go wrong here... should it be returned instead?'."\n");
-            print($this->tabs().'\Log::warning("Idemptotent issue encountered, key=[\'.$key.\']");'."\n");
+            print($this->tabs().'\Log::warning("Idemptotent issue encountered, key=[\''.$key.'\']");'."\n");
             print($this->tabs().'die(); //?'."\n");
             print($this->tabs(-1).'} else {'."\n");
-            print($this->tabs(1).'Humble::cache("idempotent-".$key,"In Progress");'."\n");
+            print($this->tabs(1).'Humble::cache("idempotent-'.$key.',"In Progress");'."\n");
             print($this->tabs().'ob_start();'."\n");
             print($this->tabs(-1).'}'."\n");
             print($this->tabs(-1).'}'."\n");
