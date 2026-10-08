@@ -85,7 +85,7 @@ For Controller reference, please see "Anatomy of a Controller" at https://humble
         
         <action name="idempotent" output="json" idempotent="dup_key" blocking="off" response="true">
             <description>Tests idempotentcy</description>
-            <entity class="controllers">
+            <entity class="controllers" method="load">
                 <parameter name="id" required="true" source="request" />
             </entity>
         </action>        

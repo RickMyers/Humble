@@ -1515,14 +1515,20 @@ class Compiler extends Directory
      */
     private function processInitialIdempotent($key=false) {
         if ($key) {
+            print($this->tabs().'$idem_value = "";'."\n");     
+            print($this->tabs().'if (!isset($_REQUEST["'.$key.'"])) {'."\n");
+            print($this->tabs(1)."throw new \Exceptions\IdempotentException('Idempotent variable <i style=\'color: red\'>".$key."</i> is missing',16);\n");
+            print($this->tabs()."die();\n");
+            print($this->tabs(-1)."}\n");
             print($this->tabs().'if ($idempotent = (isset($_REQUEST[\''.$key.'\']) && $_REQUEST[\''.$key.'\'])) {'."\n");
-            print($this->tabs(1).'$result = Humble::cache("idempotent-'.$key.');'."\n");
+            print($this->tabs(1).'$idem_value = $_REQUEST["'.$key.'"];'."\n");
+            print($this->tabs().'$result = Humble::cache("idempotent-'.$key.'-".$idem_value);'."\n");
             print($this->tabs().'if ($result) {'."\n");
             print($this->tabs(1).'print($result); //lots could go wrong here... should it be returned instead?'."\n");
             print($this->tabs().'\Log::warning("Idemptotent issue encountered, key=[\''.$key.'\']");'."\n");
             print($this->tabs().'die(); //?'."\n");
             print($this->tabs(-1).'} else {'."\n");
-            print($this->tabs(1).'Humble::cache("idempotent-'.$key.',"In Progress");'."\n");
+            print($this->tabs(1).'Humble::cache("idempotent-'.$key.'","In Progress");'."\n");
             print($this->tabs().'ob_start();'."\n");
             print($this->tabs(-1).'}'."\n");
             print($this->tabs(-1).'}'."\n");
@@ -1539,7 +1545,7 @@ class Compiler extends Directory
         if ($key) {
             print($this->tabs().'if ($idempotent) {'."\n");
             print($this->tabs(1).'if ($result = ob_get_flush()) {'."\n");
-            print($this->tabs(1).'\Humble::cache("idempotent-".$key,$result);'."\n");
+            print($this->tabs(1).'\Humble::cache("idempotent-'.$key.'-".$idem_value,$result);'."\n");
             print($this->tabs(-1).'}'."\n");
             print($this->tabs(-1).'}'."\n");
         }
