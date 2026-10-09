@@ -1528,7 +1528,7 @@ class Compiler extends Directory
             print($this->tabs().'\Log::warning("Idemptotent issue encountered, key=[\''.$key.'\']");'."\n");
             print($this->tabs().'die(); //?'."\n");
             print($this->tabs(-1).'} else {'."\n");
-            print($this->tabs(1).'Humble::cache("idempotent-'.$key.'","In Progress");'."\n");
+            print($this->tabs(1).'Humble::cache("idempotent-'.$key.'-".$idem_value,"In Progress",300);'."\n");
             print($this->tabs().'ob_start();'."\n");
             print($this->tabs(-1).'}'."\n");
             print($this->tabs(-1).'}'."\n");
@@ -1544,8 +1544,8 @@ class Compiler extends Directory
     private function processFinalizedIdempotent($key=false) {
         if ($key) {
             print($this->tabs().'if ($idempotent) {'."\n");
-            print($this->tabs(1).'if ($result = ob_get_flush()) {'."\n");
-            print($this->tabs(1).'\Humble::cache("idempotent-'.$key.'-".$idem_value,$result);'."\n");
+            print($this->tabs(1).'if ($result = ("'.$this->response().'" ? Humble::response() : ob_get_flush())) {'."\n");
+            print($this->tabs(1).'\Humble::cache("idempotent-'.$key.'-".$idem_value,$result,300);'."\n");
             print($this->tabs(-1).'}'."\n");
             print($this->tabs(-1).'}'."\n");
         }
