@@ -116,14 +116,15 @@ trait Base {
         $copied = false; $owned = false;
         if ($src && $dest) {
             $owner = \Environment::application('files.owner') ?? false;
-            $mode  = \Environment::application('files.owner') ?? '755';
-            if ($owner && $mode) {
-                if ($copied = copy($src,$dest,$mode)) {
+            $mode  = \Environment::application('files.mode') ?? '755';
+            if (file_exists($src) && $owner && $mode) {
+                if ($copied = copy($src,$dest)) {
+                    $mode  = chmod($dest,octdec($mode));
                     $owned = chown($dest,$owner);
                 }
             }
         }
-        return ($copied && $owned);
+        return ($copied && $mode && $owned);
     }
     
     /**

@@ -1,4 +1,16 @@
 {assign var=data value=$element->load()}
+
+
+<!-- 
+
+ADD SOME ELABORATE JS TO DYNAMICALLY SET VALUES
+
+MAKE IT EVEN SIMPLER TO CREATE CONFIGURATION PANELS
+
+-->
+
+
+
 <!--
     INSTRUCTIONS:
 
@@ -51,14 +63,21 @@
                 <input type="hidden" name="id" value="{$data.id}" />                 <!-- Leave this As-Is -->
                 <input type="hidden" name="window_id"  value="{$window_id}" />    <!-- Leave this As-Is -->
                 <fieldset style="padding: 10px; width: 600px; text-align: left"><legend>Instructions</legend>
-                    Just a configuration form for testing some new features for auto populating fields in configuration forms<br /><br />
-                    
-                    Field 1: <input class='paradigm-config-form-field' type="text" name="field_1" /><br /><br >
-                    Field 2: <input class='paradigm-config-form-field' type="text" name="field_2" /><br /><br >
-                    Checkbox Flag: <input type="checkbox" name="checkbox_field" value="Y" /><br /><br />
-                    Radio Options: <input type="radio" name="radio_field" value="Y" /> Yes
-                                   <input type="radio" name="radio_field" value="N" /> No<br /><br />
-                    <input type="submit" value=" Save " />
+                    <!--
+                        PUT YOUR CONFIGURATION INSTRUCTIONS HERE
+                    -->
+                    Field 1: <input class='paradigm-config-form-field' type="text" name="field_1_name" value="{if (isset($data.field_1_name))}{$data.field_1_name}{/if}" /><br /><br >
+                    Field 2: <input class='paradigm-config-form-field' type="text" name="field_2_name" value="{if (isset($data.field_2_name))}{$data.field_2_name}{/if}" /><br /><br >
+                    Checkbox Flag: <input type="checkbox" name="checkbox_field" value="Y"
+                           {if (isset($data.checkbox_field) && ($data.checkbox_field == "Y"))}
+                                   checked
+                           {/if}
+                    /><br />
+                    Radio Options: <input type="radio" name="radio_field" id="radio_field_yes_{$data.id}" value="Y" 
+                                          {if (isset($data.radio_field) && ($data.radio_field=='Y'))}checked="checked"{/if} /> Yes
+                                   <input type="radio" name="radio_field" id="radio_field_no_{$data.id}" value="N" 
+                                          {if (isset($data.radio_field) && ($data.radio_field=='N'))}checked="checked"{/if} /> No<br />
+                    <br /><input type="submit" value=" Save " />
                 </fieldset>
             </form>
             <!-- ########################## END FORM SECTION ####################################-->                
@@ -67,20 +86,24 @@
 </table>
 <script type="text/javascript">
     (() => {
+        //Example of intercepting the save event and redirecting to a specified URL.  This does the form magic.
+        //Form.intercept(Form Reference,MongoDB ID,optional URL or just FALSE,Dynamic WindowID to Close After Saving);
         let values = {};
         {foreach from=$data item=s key=k}
             values['{$k}'] = '{$s}';
         {/foreach}
-        Form.intercept($('#config_form_{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");                    
-        let form = $('#config_form_{$data.id}').get();
-        if (form) {
-//            console.log(form[0].elements);
-            for (let i in form[0].elements) {
-                console.log(form[0].elements[i]);
+        Form.intercept($('#config_form_{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
+        console.log(values);
+        //Form.populate('config_form_{$data.id}',values);
+            var frm = 'config_form_{$data.id}';
+            let form = $('#'+frm).get();
+            if (form) {
+                console.log(form.elements);
+                for (let i in form.elements) {
+                    console.log(i);
+                }
+            } else {
+                alert('form not found');
             }
-        } else {
-            alert('form not found');
-        }    
-        
     })();
 </script>
