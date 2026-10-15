@@ -1524,7 +1524,7 @@ class Compiler extends Directory
             print($this->tabs(1).'$idem_value = $_REQUEST["'.$key.'"];'."\n");
             print($this->tabs().'$result = Humble::cache("idempotent-'.$key.'-".$idem_value);'."\n");
             print($this->tabs().'if ($result) {'."\n");
-            print($this->tabs(1).'print($result); //lots could go wrong here... should it be returned instead?'."\n");
+            print($this->tabs(1).'print((is_array($result) ? json_encode($result) : $result));'."\n");
             print($this->tabs().'\Log::warning("Idemptotent issue encountered, key=[\''.$key.'\']");'."\n");
             print($this->tabs().'die(); //?'."\n");
             print($this->tabs(-1).'} else {'."\n");

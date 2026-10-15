@@ -66,17 +66,21 @@ MAKE IT EVEN SIMPLER TO CREATE CONFIGURATION PANELS
                     <!--
                         PUT YOUR CONFIGURATION INSTRUCTIONS HERE
                     -->
-                    Field 1: <input class='paradigm-config-form-field' type="text" name="field_1_name" value="{if (isset($data.field_1_name))}{$data.field_1_name}{/if}" /><br /><br >
-                    Field 2: <input class='paradigm-config-form-field' type="text" name="field_2_name" value="{if (isset($data.field_2_name))}{$data.field_2_name}{/if}" /><br /><br >
+                    Menu: <select name="my_menu" style="background-color: lightcyan; width: 150px; padding: 2px; border-radius: 2px; border: 1px solid #aaf">
+                        <option value=""> </option>
+                        <option value="1"> One </option> 
+                        <option value="2"> Two </option> 
+                        <option value="3"> Three </option> 
+                          </select><br /><br />
+                    Field 1: <input class='paradigm-config-form-field' type="text" name="field_1" value="" /><br /><br >
+                    Field 2: <input class='paradigm-config-form-field' type="text" name="field_2" value="" /><br /><br >
                     Checkbox Flag: <input type="checkbox" name="checkbox_field" value="Y"
                            {if (isset($data.checkbox_field) && ($data.checkbox_field == "Y"))}
                                    checked
                            {/if}
                     /><br />
-                    Radio Options: <input type="radio" name="radio_field" id="radio_field_yes_{$data.id}" value="Y" 
-                                          {if (isset($data.radio_field) && ($data.radio_field=='Y'))}checked="checked"{/if} /> Yes
-                                   <input type="radio" name="radio_field" id="radio_field_no_{$data.id}" value="N" 
-                                          {if (isset($data.radio_field) && ($data.radio_field=='N'))}checked="checked"{/if} /> No<br />
+                    Radio Options: <input type="radio" name="radio_field" value="Y"  /> Yes
+                                   <input type="radio" name="radio_field" value="N" /> No <br />
                     <br /><input type="submit" value=" Save " />
                 </fieldset>
             </form>
@@ -92,18 +96,6 @@ MAKE IT EVEN SIMPLER TO CREATE CONFIGURATION PANELS
         {foreach from=$data item=s key=k}
             values['{$k}'] = '{$s}';
         {/foreach}
-        Form.intercept($('#config_form_{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}");
-        console.log(values);
-        //Form.populate('config_form_{$data.id}',values);
-            var frm = 'config_form_{$data.id}';
-            let form = $('#'+frm).get();
-            if (form) {
-                console.log(form.elements);
-                for (let i in form.elements) {
-                    console.log(i);
-                }
-            } else {
-                alert('form not found');
-            }
+        Form.intercept($('#config_form_{$data.id}').get(),'{$data.id}','/paradigm/element/update',"{$window_id}").populate(values);
     })();
 </script>

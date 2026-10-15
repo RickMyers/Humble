@@ -68,15 +68,23 @@ var Form = (function ($) {
             return this;
         },
         populate: function (vals) {
-            console.log(vals);
-            console.log(ref);
-            return null;
-            let form = $('#'+frm).get();
+            let form = $(ref).get();
             if (form) {
-                for (let i in form.elements) {
-                    console.log(i);
+                let elem = null;
+                for (let i in form[0].elements) {
+                    elem = form[0].elements[i];
+                    if (elem.name) {
+                        if (vals[elem.name]) {
+                            if (elem.type === 'radio') {
+                                $("#"+form[0].getAttribute('id')+" [name="+elem.name+"][value=" + vals[elem.name] + "]").prop('checked', true);
+                            } else {
+                                $(form[0].elements[elem.name]).val(vals[elem.name]);
+                            }
+                        }
+                    }
                 }
             }
+            return this;
         },
         init: function () {
             $.each(document.forms, (f) => {
@@ -84,7 +92,7 @@ var Form = (function ($) {
             });
         },
         render: (fields) => {
-            
+            //someday
         }
     }
 })($);
