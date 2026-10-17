@@ -120,9 +120,19 @@ class Event {
      * @param string $eventType
      * @return int
      */
-    public static function register($namespace=null,$eventName=false,$comment=false,$eventType='CUSTOM') {
+    public static function register($eventName=false,$comment='Custom Event',$eventType='CUSTOM') {
+        $namespace = null; $event = null;
+        $parts     = explode('/',$eventName);
+        if (count($parts) > 1) {
+            if ($valid = count(Humble::entity('humble/modules')->setNamespace($namespace = $parts[0])->load(true))) {
+                $eventName = $parts[1] ?? null;
+            } else {
+                throw new \Exceptions\InvalidNamespaceException('The namespace ['.$namespace.'] is invalid',16);
+                die();
+            }
+        }
         $id = false;
-        if ($eventName && $comment) {
+        if ($eventName) {
             if ($eventType     = Humble::entity('paradigm/event/types')->setEvent($eventType)->load(true)) {
                 $event = Humble::entity('paradigm/events')->setEvent($eventName)->setEventTypeId($eventType['id'])->setComment($comment);
                 if ($namespace) {
