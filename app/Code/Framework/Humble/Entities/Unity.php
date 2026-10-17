@@ -1879,8 +1879,7 @@ SQL;
             return $this;
         }
         //method couldn't be handled
-        throw new \Exceptions\MethodNotFound("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->className(),16);
-        return null;
+        throw new \Exceptions\MethodNotFoundException("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->className(),16);
     }
 
 }

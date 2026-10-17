@@ -1888,7 +1888,7 @@ SQL;
      * Does a check to make sure the controller syntax is valid
      * 
      * @param type $identifier
-     * @throws \Exceptions\InvalidControllerSyntax
+     * @throws \Exceptions\InvalidControllerSyntaxException
      */
     public function syntaxCheck($identifier=false) {
         $parts    = explode('/',$identifier);
@@ -1897,7 +1897,7 @@ SQL;
         exec($cmd,$output,$rc);
         if (count($output)) {
             $message = implode("\n",$output);
-            throw new \Exceptions\InvalidControllerSyntax($message,12);
+            throw new \Exceptions\InvalidControllerSyntaxException($message,12);
             die();
         }
         return true;

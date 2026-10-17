@@ -20,14 +20,15 @@ namespace Exceptions;
  * @version    1.0.1
  *
  */
-class PSR4ClassNotFound extends \Exception {
+class InvalidNamespaceException extends \Exception {
 
-    private $simple = 'Class Not Found';
+    private $simple = 'A namespace specified is not valid';
     
     public function __construct($message, $code=0, Exception $previous = null) {
         $message = \Environment::isProduction() ? $this->simple : $message;
         parent::__construct($message, $code, $previous);
     }
+
 
     public function className() {
         return __CLASS__;
@@ -36,11 +37,10 @@ class PSR4ClassNotFound extends \Exception {
     public function __toString() {
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
-    
+
     public function fileName() {
         return "";
     }
-
+    
 }
 ?>
-

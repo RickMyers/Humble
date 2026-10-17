@@ -317,6 +317,7 @@ trait Base {
             } elseif (substr($name,0,3)=='get') {
                 return $this->__get($token);
             } elseif (substr($name,0,5)=='unset') {
+                //@TODO: Should this be underscoretocamelcase?
                 $token      = lcfirst(substr($name,5));
                 return $this->_unset($token);
             } else {
@@ -326,7 +327,7 @@ trait Base {
                     }
                     return $retval;
                 } else {
-                    throw new \Exceptions\MethodNotFound("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->className(),16);                    
+                    throw new \Exceptions\MethodNotFoundException("Method not found: (".$name.") from (".($this->_isVirtual() ? 'Virtual' : 'Real').')'.$this->className(),16);                    
                 }
             }
         }

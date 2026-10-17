@@ -20,9 +20,9 @@ namespace Exceptions;
  * @version    1.0.1
  *
  */
-class InvalidControllerSyntax extends \Exception {
+class PSR4ClassNotFoundException extends \Exception {
 
-    private $simple = 'Controller contains invalid syntax';
+    private $simple = 'Class Not Found';
     
     public function __construct($message, $code=0, Exception $previous = null) {
         $message = \Environment::isProduction() ? $this->simple : $message;
@@ -36,7 +36,7 @@ class InvalidControllerSyntax extends \Exception {
     public function __toString() {
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
-
+    
     public function fileName() {
         return "";
     }

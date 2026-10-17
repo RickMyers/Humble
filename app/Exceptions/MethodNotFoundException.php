@@ -20,7 +20,7 @@ namespace Exceptions;
  * @version    1.0.1
  *
  */
-class MethodNotFound extends \Exception {
+class MethodNotFoundException extends \Exception {
 
     private $simple = 'Method Not Found';
     

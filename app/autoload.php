@@ -20,7 +20,7 @@
                 if (file_exists($classLocation.".php")) {
                     require_once($classLocation.".php");
                 } else {
-                    throw new \Exceptions\PSR4ClassNotFound($className.' Not Found [PSR4]',12);
+                    throw new \Exceptions\PSR4ClassNotFoundException($className.' Not Found [PSR4]',12);
                 }
             }
         }
