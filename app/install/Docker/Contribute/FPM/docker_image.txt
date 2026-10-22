@@ -30,23 +30,23 @@ RUN apt install -y redis-server
 RUN apt install -y mysql-client
 RUN apt install -y libapache2-mod-dnssd
 RUN apt install -y npm
-RUN apt install -y php8.2
-RUN apt install -y php8.2-fpm
-RUN apt install -y php8.2-mysql
-RUN apt install -y php8.2-mongodb
-RUN apt install -y php8.2-mbstring
-RUN apt install -y php8.2-xml
-RUN apt install -y php8.2-yaml
-RUN apt install -y php8.2-zip
-RUN apt install -y php8.2-memcached 
-RUN apt install -y php8.2-memcache
-RUN apt install -y php8.2-redis
-RUN apt install -y php8.2-xdebug
-RUN apt install -y php8.2-curl
-RUN apt install -y php8.2-gd
-RUN apt install -y php8.2-bz2
-RUN apt install -y php8.2-soap
-RUN apt install -y php8.2-dev
+RUN apt install -y php8.4
+RUN apt install -y php8.4-fpm
+RUN apt install -y php8.4-mysql
+RUN apt install -y php8.4-mongodb
+RUN apt install -y php8.4-mbstring
+RUN apt install -y php8.4-xml
+RUN apt install -y php8.4-yaml
+RUN apt install -y php8.4-zip
+RUN apt install -y php8.4-memcached 
+RUN apt install -y php8.4-memcache
+RUN apt install -y php8.4-redis
+RUN apt install -y php8.4-xdebug
+RUN apt install -y php8.4-curl
+RUN apt install -y php8.4-gd
+RUN apt install -y php8.4-bz2
+RUN apt install -y php8.4-soap
+RUN apt install -y php8.4-dev
 RUN apt install -y nala
 RUN apt install -y mkcert
 RUN apt install -y xdg-utils
@@ -78,7 +78,7 @@ COPY ports.conf /etc/apache2/ports.conf
 RUN apt update
 RUN apt upgrade -y
 COPY delay_launch.php /var/www/delay_launch.php
-COPY php.ini /etc/php/8.2/fpm/php.ini
+COPY php.ini /etc/php/8.4/fpm/php.ini
 COPY start.sh /var/www/start.sh
 #COPY humble /var/www/html/humble
 RUN chmod +x /var/www/start.sh
