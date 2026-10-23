@@ -136,5 +136,14 @@ admin-apps|apps :
             use|u: The name of the templating engine to use
         values:         
             use|u: Twig,Smarty,Latte,Blade,Savant,TBS,PHP,PHPTAL,Rain,Mustache
-               
- 
+rpcx :               
+    title: Syntax checks RPC Mapping file
+    description: 
+    usage:
+        linux:   sudo sh ./humble.sh --rpcx ns=module_namespace or sudo sh ./humble.sh --cli ns=*
+        windows: humble --rpcx ns=module_namespace or humble --rpcx ns=*
+    function : rpcSyntaxCheck
+    parameters:
+        required:
+            namespace|ns: You must specify the namespace of the module with the RPC Mapping file to syntax check 
+        optional: 

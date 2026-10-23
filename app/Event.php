@@ -112,33 +112,45 @@ class Event {
     }
 
     /**
-     * Dynamically register an event, must specify at a minimum the event name and comment
+     * Dynamically register an event
      *
-     * @param string $namespace
-     * @param string $eventName
+     * @param string $eventName, namespace/myEvent, namespace is optional
      * @param string $comment
      * @param string $eventType
+     * @param string $class, namespace/class, namespace is optional and will use whatever current namespace is if not specified
+     * @param string $method
      * @return int
      */
-    public static function register($eventName=false,$comment='Custom Event',$eventType='CUSTOM') {
-        $namespace = null; $event = null;
-        $parts     = explode('/',$eventName);
-        if (count($parts) > 1) {
-            if ($valid = count(Humble::entity('humble/modules')->setNamespace($namespace = $parts[0])->load(true))) {
-                $eventName = $parts[1] ?? null;
-            } else {
-                throw new \Exceptions\InvalidNamespaceException('The namespace ['.$namespace.'] is invalid',16);
-                die();
+    public static function register($eventName=false,$comment='Custom Event',$eventTypeId=null,$class=false,$method=false) {
+        $namespace   = null; $event = null; $id = false; $classes = [];
+        $eventTypeId = $eventTypeId ? $eventTypeId : CUSTOM_EVENT;
+        if ($eventName) {        
+            $parts     = explode('/',$eventName);
+            if (count($parts) > 1) {
+                if ($valid = count(Humble::entity('humble/modules')->setNamespace($namespace = $parts[0])->load(true))) {
+                    $eventName = $parts[1] ?? null;
+                } else {
+                    throw new \Exceptions\InvalidNamespaceException('The namespace ['.$namespace.'] is invalid',16);
+                    die();
+                }
             }
-        }
-        $id = false;
-        if ($eventName) {
-            if ($eventType     = Humble::entity('paradigm/event/types')->setEvent($eventType)->load(true)) {
-                $event = Humble::entity('paradigm/events')->setEvent($eventName)->setEventTypeId($eventType['id'])->setComment($comment);
+            if (count($eventType = Humble::entity('paradigm/event/types')->setId($eventTypeId)->load(true))) {
+                $event = Humble::entity('paradigm/events')->setEvent($eventName)->setEventTypeId($eventType['id'])->setComment($comment);                
                 if ($namespace) {
                     $event->setNamespace($namespace);
                 }
+                if ($class && $method) {
+                    print("Doing classes\n");
+                    $classes = ($classes = $event->getClasses()) ? $classes : [];
+                    $classes[$class] = isset($classes[$class])   ? $classes[$class] : [];
+                    $classes[$class][$method] = true;
+                    $event->_polyglot(true)->setClasses($classes);
+                }
                 $id = $event->save();
+                print("ID: $id\n");
+            } else {
+                throw new \Exceptions\InvalidEventTypeException('The event type ['.$eventTypeId.'] is invalid',16);
+                die();                
             };
         }
         return $id;
@@ -150,4 +162,3 @@ class Event {
     public function __clone()        {        }
     public function __wakeup()       {        }
 }
-?>

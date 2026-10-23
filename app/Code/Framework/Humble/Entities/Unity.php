@@ -1600,7 +1600,10 @@ SQL;
     }
     
     /**
-     *
+     * Is this a polyglot action, or just a single data source
+     * 
+     * @param type $arg
+     * @return $this
      */
     public function _polyglot($arg=null) {
         if ($arg!==null) {
@@ -1609,6 +1612,16 @@ SQL;
             return $this->_polyglot;
         }
         return $this;
+    }
+    
+    /**
+     * Relay, because I forget whether this is an underscore function or not
+     * 
+     * @param type $arg
+     * @return type
+     */
+    public function polyglot($arg) {
+        return $this->_polyglot($arg);
     }
 
     /**

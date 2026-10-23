@@ -6,13 +6,17 @@
     <map comment="any arguments passed will be passed to the arguments list" />
     <wsdl />
     <version /> 
-    <operation /> 
-    <ws-addressing>
-        <Namespace />
-        <Action />
-        <ReplyTo />
-        <To />
-    </ws-addressing>
+    <operation />
+    <extensions> 
+        <ws-addressing>
+            <Namespace />
+            <Action />
+            <ReplyTo />
+            <To />
+        </ws-addressing>
+        <ws-security>
+        </ws-security>
+    </extensions>
     <transform values="XML2JSON,JSON2XML" />
     <arguments />
     <method value="GET,POST,PUT,DELETE,HISTORY,SOAP" />

@@ -61,7 +61,7 @@
             <entities>
                 <api_projects/>
                 <api_tests/>
-                <events/>
+                <events polyglot='Y' />
                 <event_listeners/>
                 <event_log/>
                 <export_targets/>

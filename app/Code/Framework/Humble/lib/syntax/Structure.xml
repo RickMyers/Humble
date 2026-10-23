@@ -15,6 +15,7 @@
         <model />
         <helper />
         <entity />
+        <broker />
         <access />
         <if />
         <mongo />
@@ -35,57 +36,64 @@
         <header />
         <php />
     </action>
-    <chain description="">
+    <chain description="Chains a sequence of actions together">
         <comment />
         <action parent="chain" />
         <if />
         <switch />
     </chain>
-    <comment  description=""/>
-    <model description="">
+    <comment  description="Can pretty much be placed anywhere, and is encouraged to do so"/>
+    <model description="A model, or business logic, class">
         <comment />
         <parameter/>
         <if />
         <switch />        
     </model>
-    <helper description="">
+    <helper description="A utility class, note that it is allocated statically">
         <comment />
         <parameter/>
         <if />
         <switch />         
     </helper>
-    <entity description="">
+    <entity description="A reference to a Unity table or collection">
         <comment />                
         <parameter/>
         <if />
         <switch />        
     </entity>
-    <access description="">
+    <broker description="A data source, usually a file, to be brokered">
+        <comment />                
+        <parameter/>
+        <if />
+        <switch />        
+    </broker>    
+    <access description="A class controlling access to an action.  If returns true, then access is granted">
         <comment/>                
         <parameter/>
     </access>
-    <mongo description="">
+    <mongo description="A direct reference to a mongo collection, bypassing Unity">
         <comment />
         <parameter/>
         <if />
         <switch />        
     </mongo>
-    <resource description="">
+    <resource description="A generic data resource, could be template or SQL statement">
         <comment />
         <parameter/>
         <if />
         <switch />        
     </resource>
-    <if description="">
+    <if description="Simple control block">
         <comment />
         <then />
         <else />
     </if>
-    <then parent="if" description="">
+    <then parent="if" description="Part of an IF control block">
         <comment />
         <model />
         <helper />
         <entity />
+        <broker />
         <access />
         <if />
         <mongo />
@@ -106,11 +114,12 @@
         <log />
         <php />
     </then>
-    <else parent="if" description="">
+    <else parent="if" description="Second part of an IF control block">
         <comment />
         <model />
         <helper />
         <entity />
+        <broker />
         <access />
         <if />
         <mongo />
@@ -131,17 +140,18 @@
         <log />
         <php /> 
     </else>
-    <switch description="">
+    <switch description="Another control block">
         <comment />
         <case />
         <default />        
     </switch>
-    <case parent="switch" description="">
+    <case parent="switch" description="Part of the SWITCH control block">
         <comment />
         <description />
         <model />
         <helper />
         <entity />
+        <broker />
         <access />
         <if />
         <mongo />
@@ -162,12 +172,13 @@
         <assign />    
         <php />  
     </case>
-    <default parent="switch,actions" description="">
+    <default parent="switch,actions" description="A default option, used for actions and SWITCH control block">
         <comment />
         <description />
         <model />
         <helper />
         <entity />
+        <broker />
         <access />
         <if />
         <mongo />
@@ -188,5 +199,5 @@
         <assign />        
         <php />
     </default>
-    <parameter parent="entity,model,helper,mongo" />
+    <parameter parent="entity,broker,resource,model,helper,mongo" />
 </tags>

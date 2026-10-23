@@ -753,6 +753,10 @@ class Compiler extends Directory
         }
     }
 
+    private function processBroker($node) {
+        
+    }
+    
     /**
      * Process the various output (direct response) options
      * 
@@ -1351,6 +1355,8 @@ class Compiler extends Directory
             case    "entity"        :   $this->processEntity($node);
                                         break;
             case    "resource"      :   $this->processResource($node);
+                                        break;
+            case    "broker"        :   $this->processBroker($node);
                                         break;
             case    "output"        :   $this->processOutput($node);
                                         break;

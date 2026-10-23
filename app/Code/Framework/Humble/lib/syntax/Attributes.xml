@@ -229,6 +229,28 @@
             <wrapper    required="false"  purpose="" default="" />
         </attributes>
     </entity>
+    <broker taxonomy="allocation">
+        <attributes>
+            <namespace  required="false"  purpose="" default="" />
+            <resource   required="false"  purpose="" default="" />
+            <extension  required="false"  purpose="" default="" />
+            <newest     required="false"  purpose="" default="" conflicts="oldest" />
+            <oldest     required="false"  purpose="" default="" conflicts="newest" />
+            <fields     required="false"  purpose="" default="" />
+            <xref       required="false"  purpose="" default="" />
+            <exclude    required="false"  purpose="" default="" />
+            <page       required="false"  purpose="" default="" />
+            <rows       required="false"  purpose="" default="" />            
+            <type>
+                <values>
+                    <delimited />
+                    <pdf />
+                    <csv />
+                    <html />
+                </values>
+            </type>
+        </attributes>
+    </broker>
     <resource taxonomy="allocation">
         <attributes>
             <id         required="false"  purpose="" default="" />

@@ -66,6 +66,7 @@ class Trigger  {
         $EVENT->_namespace($this->_namespace());
         $EVENT->_component($this->_controller());
         $EVENT->_method($this->_method());
+        //@TODO: should use underscoretocamelcase?
         $action = 'set'.ucfirst($name);
         $EVENT->$action($this->_arguments);
         return $this->notify($EVENT,$name);

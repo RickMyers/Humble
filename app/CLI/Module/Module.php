@@ -331,6 +331,10 @@ TEXT;
             return self::$command();
         }
     } 
+    
+    public static function rpcSyntaxCheck($command,$arguments) {
+        
+    }
 }
 
 
