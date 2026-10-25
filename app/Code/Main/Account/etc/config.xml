@@ -58,13 +58,13 @@
                 <source>Account/web/app</source>
             </frontend>
         </structure>
-        <orm>
+        <unity>
             <prefix>account_</prefix>
             <mongodb>account</mongodb>
             <entities>
                 <registrations polyglot="Y"/>
             <user_identification/><users/></entities>
-        </orm>
+        </unity>
         <events>
 
         </events>

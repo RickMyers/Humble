@@ -68,10 +68,10 @@ class Manager extends Model
 
     protected function updateConfig($project) {
         $xml = simplexml_load_file('Code/'.$project->package.'/'.$project->module.'/etc/config.xml');
-        if (!isset($xml->{$project->namespace}->orm->entities->users)) {
-            $xml->{$project->namespace}->orm->entities->addChild('users');
-            $xml->{$project->namespace}->orm->entities->addChild('user_identification');
-            $xml->{$project->namespace}->orm->entities->user_identification->addAttribute('polyglot','Y');
+        if (!isset($xml->{$project->namespace}->unity->entities->users)) {
+            $xml->{$project->namespace}->unity->entities->addChild('users');
+            $xml->{$project->namespace}->unity->entities->addChild('user_identification');
+            $xml->{$project->namespace}->unity->entities->user_identification->addAttribute('polyglot','Y');
         }
         return file_put_contents('Code/'.$project->package.'/'.$project->module.'/etc/config.xml',$xml->asXML());
     }

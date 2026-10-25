@@ -58,7 +58,7 @@
                 <source>Humble/RPC</source>
             </RPC>
         </structure>
-        <orm>
+        <unity>
             <prefix>humble_</prefix>
             <mongodb>humble</mongodb>
             <entities>
@@ -79,7 +79,7 @@
                 <templaters/>
                 <entity_keys/>
             </entities>
-        </orm>
+        </unity>
         <events>
 
         </events>

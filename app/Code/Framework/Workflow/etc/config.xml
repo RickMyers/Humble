@@ -56,13 +56,13 @@
                 <source>Workflow/RPC</source>
             </RPC>
         </structure>
-        <orm>
+        <unity>
             <prefix>workflow_</prefix>
             <mongodb>workflow</mongodb>
             <entities>
                 <sms_carriers/>
             </entities>
-        </orm>
+        </unity>
         <edits>
             <generator>Workflow/web/edits/generator.json</generator>
             <actor>Workflow/web/edits/actor.json</actor>

@@ -68,7 +68,7 @@
                 <source>Blog/web/app</source>
             </frontend>
         </structure>
-        <orm>
+        <unity>
             <prefix>blog_</prefix>
             <mongodb>blog</mongodb>
             <entities>
@@ -76,7 +76,7 @@
                 <whatsnew_lexicons polyglot="Y"/>
                 <whatsnew polyglot="Y"/>
             <whatsnew_languages/></entities>
-        </orm>
+        </unity>
         <events>
 
         </events>

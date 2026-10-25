@@ -68,14 +68,14 @@
                 <source>Contrive/web/app</source>
             </frontend>
         </structure>
-        <orm>
+        <unity>
             <prefix>contrive_</prefix>
             <mongodb>contrive</mongodb>
          
             <entities>
 
             </entities>
-        </orm>
+        </unity>
         <events>
 
         </events>

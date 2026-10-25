@@ -73,7 +73,7 @@
             <models>1</models>
             <entities>1</entities>
         </extend>     
-        <orm>
+        <unity>
             <prefix>llama_</prefix>
             <mongodb>llama</mongodb>
             <!--
@@ -86,7 +86,7 @@
             <entities>
 
             </entities>
-        </orm>
+        </unity>
         <events>
 
         </events>

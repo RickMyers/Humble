@@ -68,7 +68,7 @@
                 <source>Admin/web/app</source>
             </frontend>
         </structure>
-        <orm>
+        <unity>
             <prefix>admin_</prefix>
             <mongodb>admin</mongodb>
             <entities>
@@ -78,7 +78,7 @@
                 <users/>
                 <user_identification/>
             </entities>
-        </orm>
+        </unity>
         <events>
 
         </events>

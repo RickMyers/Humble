@@ -149,7 +149,7 @@ class Updater extends Installer
      * Registers all of events, and their comments, from the events section of the configuration file
      */
     protected function registerEvents($event_node = false) {
-        $this->deRegisterEvents();
+   /*     $this->deRegisterEvents();
         if ($event_node) {
             $event = Humble::entity('paradigm/events');
             foreach ($event_node as $events) {
@@ -157,7 +157,7 @@ class Updater extends Installer
                     $event->reset()->setNamespace($this->namespace)->setEvent($event)->setComment(addslashes($data->attributes()->comment))->save();
                 }
             }
-        }
+        }*/
         return $this;
     }
 
@@ -783,10 +783,10 @@ class Updater extends Installer
                     if (isset($contents->structure->schema) && (isset($contents->structure->schema->update))) {
                         $this->updateSchema($package,$namespace,$contents->structure->schema->update);
                     }
-                    if (isset($contents->orm)){
-                        $this->mongodb      = (isset($contents->orm->mongodb)) ? $contents->orm->mongodb : '';
-                        $this->prefix       = $contents->orm->prefix;
-                        $this->storeEntities($contents->orm,$this->prefix);
+                    if (isset($contents->unity)){
+                        $this->mongodb      = (isset($contents->unity->mongodb)) ? $contents->unity->mongodb : '';
+                        $this->prefix       = $contents->unity->prefix;
+                        $this->storeEntities($contents->unity,$this->prefix);
                     }
                     if (isset($contents->structure)) {
                         $this->updateStructure($namespace,$contents->structure,$contents->module);
@@ -796,7 +796,7 @@ class Updater extends Installer
                         }
                     }
                     if (isset($contents->structure->schema) && (isset($contents->structure->schema->layout))) {
-                       // $this->generateLayoutSchema($this->package,$this->namespace,$contents->structure->schema->layout,$contents->orm->entities);
+                       // $this->generateLayoutSchema($this->package,$this->namespace,$contents->structure->schema->layout,$contents->unity->entities);
                     }
                     if (isset($contents->structure->images)) {
                         $this->updateImages($this->prefix,$contents->structure,$contents->module);

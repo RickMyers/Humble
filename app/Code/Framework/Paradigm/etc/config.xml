@@ -55,13 +55,13 @@
                 <source>Paradigm/RPC</source>
             </RPC>
         </structure>
-        <orm>
+        <unity>
             <prefix>paradigm_</prefix>
             <mongodb>paradigm</mongodb>
             <entities>
                 <api_projects/>
                 <api_tests/>
-                <events polyglot='Y' />
+                <events polyglot="Y"/>
                 <event_listeners/>
                 <event_log/>
                 <export_targets/>
@@ -81,9 +81,14 @@
                 <workflow_comments/>
                 <designer_forms/>
                 <import_tokens/>
-            <event_types/><webservice_workflows/></entities>
-        </orm>
+                <event_types/>
+                <webservice_workflows/>
+            </entities>
+        </unity>
         <events>
+            <testWorkflowEvent1/>
+            <testWorkflowEvent2/>
+            <testWorkflowEvent12/>
         </events>
         <edits>
             <save>Paradigm/web/edits/save.json</save>

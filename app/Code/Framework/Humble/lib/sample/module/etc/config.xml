@@ -65,16 +65,8 @@
             <RPC>
                 <source>&&MODULE&&/RPC</source>
             </RPC>
-            <frontend comment="will probably deprecate this...">
-                <source>&&MODULE&&/web/app</source>
-            </frontend>
         </structure>
-        <extend comment="Means whether to look up the Module hierarchy if a specific class is not found (if not found in current module, perhaps the class is in a parent module)">
-            <helpers>1</helpers>
-            <models>1</models>
-            <entities>1</entities>
-        </extend>     
-        <orm>
+        <unity>
             <prefix>&&PREFIX&&</prefix>
             <mongodb>&&NAMESPACE&&</mongodb>
             <!--
@@ -87,16 +79,15 @@
             <entities>
 
             </entities>
-        </orm>
+        </unity>
         <events>
 
         </events>
         <edits comment="If you dont know what these are... dont worry about it...">
+            <!-- Edits are used for separating form validation from the form -->
             <edits_example>&&MODULE&&/web/edits/edits_example.json</edits_example>
         </edits>        
         <web>
-            <!-- Edits are used for separating form validation from the form -->
-
             <hook>
                 <!-- #################################################
                      This is where the JS lives for your module

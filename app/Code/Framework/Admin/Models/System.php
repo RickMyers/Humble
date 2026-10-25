@@ -328,7 +328,7 @@ class System extends Model
                     }
                 }
                 $config = \Humble::config($module['namespace']);
-                foreach ($config->orm->entities as $entities) {
+                foreach ($config->unity->entities as $entities) {
                     foreach ($entities as $entity => $options) {
                         $stats['entities']['keys']['count']++;
                         $stats['entities']['cols']['count']++;

@@ -294,8 +294,8 @@ SQL;
             if (file_exists($config = 'Code'.DIRECTORY_SEPARATOR.$module['package'].DIRECTORY_SEPARATOR.$module['configuration'].DIRECTORY_SEPARATOR.'config.xml')) {
                 $xml = simplexml_load_file($config);
                 foreach ($this->moduleEntities($prefix = $namespace.'_') as $entity) {
-                    if (!isset($xml->{$namespace}->orm->entities->{$entity})) {
-                        $xml->{$namespace}->orm->entities->addChild($entity);
+                    if (!isset($xml->{$namespace}->unity->entities->{$entity})) {
+                        $xml->{$namespace}->unity->entities->addChild($entity);
                     }
                  }
                  file_put_contents($config,$xml->asXML());
@@ -604,8 +604,8 @@ SQL;
                     $this->weight       =  (isset($contents->weight)) ? $contents->weight : 99;
                     $this->package      = $contents->module->package;
                     $base               = 'Code/'.$this->package.'/';
-                    $this->mongodb      = isset($contents->orm->mongodb) ? $contents->orm->mongodb : "";
-                    $this->prefix       = $contents->orm->prefix;                    
+                    $this->mongodb      = isset($contents->unity->mongodb) ? $contents->unity->mongodb : "";
+                    $this->prefix       = $contents->unity->prefix;                    
                     foreach ($contents->structure as $what => $data) {
                         foreach ($data as $file) {
                             if (isset($file->source)) {
@@ -622,11 +622,11 @@ SQL;
                     if (isset($contents->structure)) {
                         $this->storeStructure($this->prefix,$contents->structure,$contents->module);
                     }  
-                    if (isset($contents->orm)){
-                        $this->storeEntities($contents->orm,$this->prefix);
+                    if (isset($contents->unity)){
+                        $this->storeEntities($contents->unity,$this->prefix);
                     }
                     if (isset($contents->structure->schema) && (isset($contents->structure->schema->layout))) {
-                      //  $this->generateLayoutSchema($this->package,$this->namespace,$contents->structure->schema->layout,$contents->orm->entities,$contents->module);
+                      //  $this->generateLayoutSchema($this->package,$this->namespace,$contents->structure->schema->layout,$contents->unity->entities,$contents->module);
                     }
                     if (isset($contents->structure->images)) {
                         $this->installImages($this->prefix,$contents->structure,$contents->module);
@@ -703,10 +703,10 @@ SQL;
                                         $modules[$entry][$candidate]['author']          = $contents->author->name;
                                         $modules[$entry][$candidate]['email']           = $contents->author->email;
                                         $modules[$entry][$candidate]['weight']          = (isset($contents->weight)) ? $contents->weight : 'N/A';
-                                        if (isset($contents->orm)){
-                                            $modules[$entry][$candidate]['prefix']      = $contents->orm->prefix;
-                                            $modules[$entry][$candidate]['mongodb']     = (isset($contents->orm->mongodb)) ? $contents->orm->mongodb : '' ;
-                                            //$modules[$entry][$candidate]['entitylist']= $contents->orm->entities;
+                                        if (isset($contents->unity)){
+                                            $modules[$entry][$candidate]['prefix']      = $contents->unity->prefix;
+                                            $modules[$entry][$candidate]['mongodb']     = (isset($contents->unity->mongodb)) ? $contents->unity->mongodb : '' ;
+                                            //$modules[$entry][$candidate]['entitylist']= $contents->unity->entities;
                                         } else {
                                             $modules[$entry][$candidate]['prefix']      = '';
                                             $modules[$entry][$candidate]['mongodb']     = '';

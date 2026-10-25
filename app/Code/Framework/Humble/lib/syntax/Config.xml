@@ -58,11 +58,11 @@
                 <source type="string" />
             </RPC>
         </structure>
-        <orm>
+        <unity>
             <prefix   type="string" />
             <mongodb  type="string" />
             <entities repeats="true"  type="node" attributes="polyglot:type=boolean,alias:type=string,database:type=string" />
-        </orm>
+        </unity>
         <events   repeats="true" type="node" />
         <webhooks repeats="true" type="node" />
         <edits    repeats="true" type="string" />
