@@ -3,14 +3,22 @@ require_once 'CLI/CLI.php';
 class Component extends CLI implements CLIInterface
 {
  
-    
+    //The following models break database connectivity if scanned using reflection so that's why they are here
+    private static $skip    = [
+        'MySQL'     => true,
+        'SQLServer' => true,
+        'PostGres'  => true,
+        'SQLLite'   => true
+    ];
+
+    //If one of these values are present in a field on the XML, it is considered "True", otherwise value is considered false
     private static $trueish  = [
-        'Y' => true,
-        'TRUE' => true,
-        'ON' => true,
-        'YES' => true,
-        '1' => true,
-        1 => true
+        'Y'         => true,
+        'TRUE'      => true,
+        'ON'        => true,
+        'YES'       => true,
+        '1'         => true,
+        1           => true
     ];
     
     /**
@@ -555,5 +563,23 @@ class Component extends CLI implements CLIInterface
             self::arguments($arguments);
             return self::$command();
         }
-    }       
+    }   
+
+    
+    /**
+     * Looks for workflow components in either an entire namespace or just a class in that namespace
+     */
+    public static function workflow() {
+        $args       = self::arguments();
+        $namespace  = $args['namespace'] ?? false;
+        $model      = $args['model']     ?? false;
+        if ($namespace) {
+            if ($valid = \Validator::namespace($namespace)) {
+               foreach (($models = (($model) ? [$model] : \Module::resources($namespace,true))) as $model) {
+                   print($model."\n");
+               }
+            }
+        }
+        print_r($args);die();
+    }
 }

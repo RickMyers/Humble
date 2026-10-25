@@ -63,4 +63,29 @@ class Validator {
         return $result;
     }
     
+    /**
+     * Will verify that a namespace exists and/or is enabled
+     * 
+     * @param string $ns
+     * @throws \Exceptions\InvalidNamespaceException
+     */
+    public static function namespace($ns=false) {
+        $error  = 'Empty namespace encountered';
+        if ($ns) {
+            if ($data = \Humble::entity('humble/modules')->setNamespace($ns)->load(true)) {
+                if ($data['enabled'] !== 'Y') {
+                    $error = 'Namespace '.$ns.' Is Not Enabled';
+                } else {
+                    $error = '';
+                }
+            } else {
+                $error = 'Invalid Namespace ['.$ns.']';
+            }
+        }
+        if ($error) {
+            throw new \Exceptions\InvalidNamespaceException($error,16);
+        }
+        return ($error === '');
+    }
+    
 }

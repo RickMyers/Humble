@@ -1,0 +1,51 @@
+<?php
+namespace Code\Framework\Paradigm\Models;
+use Humble;
+use Log;
+use Environment;
+/**
+ *
+ * Tester
+ *
+ * taerae
+ *
+ * PHP version 7.0+
+ *
+ * @category   Logical Model
+ * @package    Framework
+ * @author     Rick <rick@humbleprogramming.com>
+ */
+class Tester extends Model
+{
+
+    use \Code\Framework\Humble\Traits\EventHandler;
+	
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        parent::__construct();
+    }
+
+    /**
+     * Required for Helpers, Models, and Events, but not Entities
+     *
+     * @return system
+     */
+    public function className() {
+        return __CLASS__;
+    }
+
+    /**
+     * Just a test event for listener processing
+     * 
+     * @listener event(myTestEvent)
+     * @param type $EVENT
+     */
+    public function myFunc($EVENT=false) {
+        if ($EVENT) {
+            $data = $EVENT->load();
+            $cnfg = $EVENT->fetch();
+        }
+    }
+}

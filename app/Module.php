@@ -189,4 +189,111 @@ class Module {
         }
         return $result;
     }
+    
+    /**
+     * 992nd implementation of directory recursing function... yada yada yada -RGM
+     * 
+     * @param type $directory
+     * @return string
+     */
+    protected static function contents($directory='.',$hash=false) {
+        $contents   = [];
+        if (is_dir($directory)) {
+            $dh     = dir($directory);
+            while ($entry = $dh->read()) {
+                if (($entry === '.') || ($entry === '..') || ($entry === 'Cache')) {
+                    continue;
+                }
+                if (is_dir($directory.'/'.$entry)) {
+                    $contents = array_merge($contents,self::contents($directory.'/'.$entry,$hash));
+                } else {
+                    if ($hash) {
+                        $contents[$directory.'/'.$entry] = $directory.'/'.$entry;
+                    } else {
+                        $contents[] = $directory.'/'.$entry;
+                    }
+                }
+            }
+            
+        }
+        return $contents;
+    }
+    
+    /**
+     * Returns a list of all models belonging to a namespace
+     * 
+     * @param string $namespace
+     * @return array
+     */
+    public static function models($namespace=false,$hash=false) {
+        if ($valid = \Validator::namespace($namespace)) {
+            $module = \Humble::module($namespace);
+            return self::contents('Code/'.$module['package'].'/'.$module['models'],$hash);
+        }
+    }
+    
+    /**
+     * Returns a list of all helpers belonging to a namespace
+     * 
+     * @param string $namespace
+     * @return array
+     */
+    public static function helpers($namespace=false,$hash=false) {
+        if ($valid = \Validator::namespace($namespace)) {
+            $module = \Humble::module($namespace);
+            return self::contents('Code/'.$module['package'].'/'.$module['helpers'],$hash);
+        }        
+    }
+
+    /**
+     * Returns a list of all entities belonging to a namespace
+     * 
+     * @param string $namespace
+     * @return array
+     */    
+    public static function entities($namespace=false,$hash=false) {
+        if ($valid = \Validator::namespace($namespace)) {
+            $module = \Humble::module($namespace);
+            return self::contents('Code/'.$module['package'].'/'.$module['entities'],$hash);
+        }        
+    }
+
+    /**
+     * Returns a list of all controllers belonging to a namespace
+     * 
+     * @param string $namespace
+     * @return array
+     */    
+    public static function controllers($namespace=false,$hash=false) {
+        if ($valid = \Validator::namespace($namespace)) {
+            $module = \Humble::module($namespace);
+            return self::contents('Code/'.$module['package'].'/'.$module['controllers'],$hash);
+        }        
+    }
+    
+    /**
+     * Returns a list of all views belonging to a namespace
+     * 
+     * @param string $namespace
+     * @return array
+     */    
+    public static function views($namespace=false,$hash=false) {
+        if ($valid = \Validator::namespace($namespace)) {
+            $module = \Humble::module($namespace);
+            return self::contents('Code/'.$module['package'].'/'.$module['views'],$hash);
+        }        
+    }  
+    
+    /**
+     * Returns a list of all resources belonging to a namespace
+     * 
+     * @param string $namespace
+     * @return array
+     */    
+    public static function resources($namespace=false,$hash=false) {
+        if ($valid = \Validator::namespace($namespace)) {
+            $module = \Humble::module($namespace);
+            return self::contents('Code/'.$module['package'].'/'.$module['module'].'/Resources',$hash);
+        }        
+    }      
 }

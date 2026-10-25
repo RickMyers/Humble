@@ -103,4 +103,16 @@ ed|edit|edits  :
             fm|form: Form name that the edits applies to
             al|alias: Alias of the output JSON file
         optional:            
+wk|flow|workflow  : 
+    title: Scan for workflow elements
+    description: Finds all of the workflow components in a namespace or model
+    usage:
+        linux:   sudo sh ./humble.sh --wk ns=namespace model=class
+        windows: humble --wk ns=namespace model=class
+    function : workflow
+    parameters:
+        required:
+            namespace|ns: Namespace of module containing model classes
+        optional:            
+            model|md: Name of a class in the module referenced by the namespace
             
