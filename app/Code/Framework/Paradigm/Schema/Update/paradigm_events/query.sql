@@ -16,3 +16,5 @@ INSERT  INTO `paradigm_event_types`(`id`,`event_type`,`description`,`modified`) 
 (3,'FILE','An event watching for new/update/deletes of files','2026-09-05 18:12:32'),
 (4,'ACTION','An event defined on a controller action','2026-09-05 18:12:51'),
 (5,'LISTENER','Trigger a method when event is encountered','2026-09-05 18:15:07');
+(6,'WEBHOOK','Trigger when a webhook is reached','2026-09-05 18:15:07');
+(7,'SERVICE','Trigger when a web service is reached','2026-09-05 18:15:07');

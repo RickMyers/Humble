@@ -573,11 +573,14 @@ class Component extends CLI implements CLIInterface
         $args       = self::arguments();
         $namespace  = $args['namespace'] ?? false;
         $model      = $args['model']     ?? false;
+        $scanner    = \Humble::model('paradigm/scanner');
         if ($namespace) {
             if ($valid = \Validator::namespace($namespace)) {
-               foreach (($models = (($model) ? [$model] : \Module::resources($namespace,true))) as $model) {
-                   print($model."\n");
-               }
+                $models = \Module::models($namespace,true);
+                foreach (($model) ? (isset($models[ucfirst($model).'.php']) ? [$models[ucfirst($model).'.php']] : []) : $models as $mod) {
+                    $scanner->reset()->setNamespace($namespace)->scan($mod);
+                    print("Scanning model ".$mod."\n");
+                };
             }
         }
         print_r($args);die();

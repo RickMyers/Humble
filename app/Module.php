@@ -208,7 +208,7 @@ class Module {
                     $contents = array_merge($contents,self::contents($directory.'/'.$entry,$hash));
                 } else {
                     if ($hash) {
-                        $contents[$directory.'/'.$entry] = $directory.'/'.$entry;
+                        $contents[$entry] = $directory.'/'.$entry;
                     } else {
                         $contents[] = $directory.'/'.$entry;
                     }

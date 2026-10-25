@@ -37,7 +37,7 @@ class Model implements HumbleComponent
     use \Code\Framework\Humble\Traits\Base;  
     
     protected           $_data          = [];
-    protected static    $_mappings      = null;
+    protected static    $_mappings      = null;                                 //should this be set to an empty array?
     protected           $_modules       = false;
     protected           $_farmServer    = '';
     protected           $_mongoServer   = '';
@@ -53,6 +53,20 @@ class Model implements HumbleComponent
         $this->_isLinux   = !$this->_isWindows;
     }
 
+    /**
+     * Resets specific state variables
+     * 
+     * @return $this
+     */
+    public function reset() {
+        $this->_data        = [];
+        $this->_mappings    = null;
+        $this->_RPC         = true;
+        $this->_modules     = [];
+        $this->_DEBUG       = false;
+        $this->_REPORT      = [];
+        return $this;
+    }
     /**
      * Returns just one element of the model if passed in, or nothing null if not passed in or not present in model
      * 
