@@ -577,12 +577,11 @@ class Component extends CLI implements CLIInterface
         if ($namespace) {
             if ($valid = \Validator::namespace($namespace)) {
                 $models = \Module::models($namespace,true);
-                foreach (($model) ? (isset($models[ucfirst($model).'.php']) ? [$models[ucfirst($model).'.php']] : []) : $models as $mod) {
-                    $scanner->reset()->setNamespace($namespace)->scan($mod);
-                    print("Scanning model ".$mod."\n");
+                //print_r($models); die();
+                foreach (($model) ? (isset($models[ucfirst($model).'.php']) ? [ucfirst($model).'.php' => $models[ucfirst($model).'.php']] : []) : $models as $class_name => $model_location) {
+                    $scanner->reset()->registerWorkflowComponents($class_name,$namespace);
                 };
             }
         }
-        print_r($args);die();
     }
 }
