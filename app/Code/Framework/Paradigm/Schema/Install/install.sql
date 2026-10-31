@@ -81,6 +81,17 @@ CREATE TABLE paradigm_events (
     UNIQUE KEY (`namespace`,`event`,`event_type_id`)
 );
 
+DROP TABLE paradigm_event_types;
+
+CREATE TABLE IF NOT EXISTS paradigm_event_types (
+    id INT NOT NULL AUTO_INCREMENT,
+    `event_type` CHAR(64) DEFAULT NULL,
+    `description` CHAR(255) DEFAULT NULL,
+    modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY (event_type)
+);
+
 /*Table structure for table `paradigm_export_targets` */
 
 DROP TABLE IF EXISTS `paradigm_export_targets`;
@@ -261,45 +272,29 @@ CREATE TABLE paradigm_webservices
 );
 /*Table structure for table `paradigm_workflow_comments` */
 
-DROP TABLE IF EXISTS `paradigm_workflow_comments`;
+CREATE TABLE paradigm_workflow_components
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	`namespace` CHAR(32) DEFAULT NULL,
+	`component` CHAR(64) DEFAULT NULL,
+	`component_type_id` INT DEFAULT NULL,
+	`method`    CHAR(128) DEFAULT NULL,
+	`event_name` CHAR(64) DEFAULT NULL,
+	`configuration` CHAR(128) DEFAULT NULL,
+	`comment`  VARCHAR(1024) DEFAULT NULL,
+	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE KEY (`namespace`, `component`, `component_type_id`, `method`)
+);
 
-CREATE TABLE `paradigm_workflow_comments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `namespace` char(196) DEFAULT '',
-  `class` char(64) DEFAULT '',
-  `method` char(64) DEFAULT '',
-  `comment` varchar(1024) DEFAULT '',
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `namespace` (`namespace`,`class`,`method`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Table structure for table `paradigm_workflow_components` */
-
-DROP TABLE IF EXISTS `paradigm_workflow_components`;
-
-CREATE TABLE `paradigm_workflow_components` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `namespace` char(196) NOT NULL,
-  `component` char(64) NOT NULL,
-  `method` char(128) NOT NULL,
-  `event` char(1) DEFAULT 'N',
-  `process` char(1) DEFAULT 'N',
-  `decision` char(1) DEFAULT 'N',
-  `rule` char(1) DEFAULT 'N',
-  `sensor` char(1) DEFAULT 'N',
-  `program` char(1) DEFAULT 'N',
-  `input` char(1) DEFAULT 'N',
-  `service` char(1) DEFAULT 'N',
-  `notification` char(1) DEFAULT 'N',
-  `report` char(1) DEFAULT 'N',
-  `authorization` char(1) DEFAULT 'N',
-  `event_name` char(64) DEFAULT NULL,
-  `configuration` char(64) DEFAULT NULL,
-  `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `paradigm_workflow_components_uidx` (`namespace`,`component`,`method`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE paradigm_workflow_component_types
+(
+	id INT NOT NULL AUTO_INCREMENT,
+	`component` CHAR(64) DEFAULT NULL,
+	modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE KEY (`component`)
+);
 
 /*Table structure for table `paradigm_workflow_listeners` */
 

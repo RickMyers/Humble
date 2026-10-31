@@ -1,14 +1,3 @@
-DROP TABLE paradigm_event_types;
-
-CREATE TABLE IF NOT EXISTS paradigm_event_types (
-    id INT NOT NULL AUTO_INCREMENT,
-    `event_type` CHAR(64) DEFAULT NULL,
-    `description` CHAR(255) DEFAULT NULL,
-    modified DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
-    UNIQUE KEY (event_type)
-);
-
 
 INSERT  INTO `paradigm_event_types`(`id`,`event_type`,`description`,`modified`) VALUES 
 (1,'CUSTOM','Any custom event defined in code by a user','2026-09-05 18:11:59'),
