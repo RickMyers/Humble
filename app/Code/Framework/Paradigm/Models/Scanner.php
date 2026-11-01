@@ -132,7 +132,7 @@ class Scanner extends Model
      * @param Object $method
      * @return array
      */
-    protected function processDocAnnotations($reflection_method=false) {
+    protected function fetchCustomAnnotations($reflection_method=false) {
         $components = [];
         try {
             $annotations = explode("\n",$reflection_method->getDocComment());
@@ -149,10 +149,9 @@ class Scanner extends Model
       
     protected function processAnnotations($reflection_method=false,$public_method=false,$namespace=false,$model=false) {
         if ($reflection_method && $public_method && $namespace && $model) {
-            $customAnnotations      = $this->processDocAnnotations($reflection_method);
             $authorization          = false;
             $listener               = false;
-            foreach ($customAnnotations as $annotation) {
+            foreach ($this->fetchCustomAnnotations($reflection_method) as $annotation) {
                 $this->component->reset()->setNamespace($namespace)->setComponent($model)->setMethod($public_method->name);                 
                 $clauses   = explode(' ',$annotation);
                 foreach ($clauses as $clause) {

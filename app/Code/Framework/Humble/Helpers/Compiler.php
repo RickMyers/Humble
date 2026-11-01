@@ -278,13 +278,14 @@ class Compiler extends Directory
      * @throws \Exceptions\ControllerParameterException
      */
     private function processParameter($parameter)  {
-        $node   = $this->elements[count($this->elements)-1];
-        $source = '$_REQUEST'; $custom = false;
-        $isFile = false;
-        $func   = false;
-        $cast   = '';
-        $source = strtoupper($parameter['source']);
-        switch ($source) {
+        $node       = $this->elements[count($this->elements)-1];
+        $custom     = false;
+        $isFile     = false;
+        $func       = false;
+        $cast       = '';
+        $source     = '$_REQUEST';
+        $field      = (isset($parameter['value']) ? (string)$parameter['value'] : (string)$parameter['name']);        
+        switch (strtoupper($parameter['source'])) {
             case    "GET"       :   $source = '$_GET';
                                     break;
             case    "POST"      :   $source = '$_POST';
@@ -311,13 +312,17 @@ class Compiler extends Directory
             case    "JSON"      :   $source = '$_JSON';
                                     break;
             case    "LOCAL"     :   $source = '$_REQUEST';
-                                    print("\n".$this->tabs().'$_REQUEST["'.(string)$parameter['name'] .'"] = $'.(string)$parameter['name'].";\n");
+                                    print("\n".$this->tabs().'$_REQUEST["'.(string)$parameter['name'] .'"] = $'.$field.";\n");
+                                    break;
+            case    "CONSTANT"  :   
+            case    "CONSTANTS" :   $source = '$_REQUEST';
+                                    print("\n".$this->tabs().'$_REQUEST["'.(string)$parameter['name'] .'"] = constant("'.$field.'");'."\n");
+                                    $field  = isset($parameter['name']) ? (string)$parameter['name'] : $field;
                                     break;
             default             :   $source = '$models';
                                     $custom = true;
                                     break;
         }
-        $field      = (isset($parameter['value']) ? (string)$parameter['value'] : (string)$parameter['name']);
         if (!isset($this->arguments[$source])) {
             $this->arguments[$source] = [];
         }
@@ -325,8 +330,7 @@ class Compiler extends Directory
         $format     = isset($parameter['format'])   ? strtolower((string)$parameter['format']) : false;
         $minlength  = isset($parameter['min'])      ? (int)$parameter['min'] : false;
         $maxlength  = isset($parameter['max'])      ? (int)$parameter['max'] : false;
-        $default    = (isset($parameter['default']) ? (($parameter['default']!='') ? '"'.$parameter['default'].'"' : 'null') : 'null');
-        $default    = $this->processDefault($default,$format);
+        $default    = $this->processDefault((isset($parameter['default']) ? (($parameter['default'] != '') ? '"'.$parameter['default'].'"' : 'null') : 'null'),$format);
         $timestamp  = $datestamp = $time = false;        
 /*        if ($default && (strtolower($default) == '"now"') && ($format)) {
             $timestamp = ($format   == 'timestamp') ? 1 : 0;
@@ -345,6 +349,7 @@ class Compiler extends Directory
         $decode     = (isset($parameter['decode'])  ? strtolower((string)$parameter['decode']) : false);
         $range      = (isset($parameter['range']))  ? (string)$parameter['range'] : false;
         $unescape   = (isset($parameter['unescape'])? strtolower((string)$parameter['unescape']) : false);
+        $constant   = (isset($parameter['constant']));
         $type       = (isset($parameter['type']) ? strtolower((string)$parameter['type']) : false);
         if ($type) {
             switch ($type) {
@@ -471,6 +476,9 @@ class Compiler extends Directory
                     print($this->tabs().$source.'["'.$field.'"] = htmlspecialchars('.$source.'["'.$field.'"]);'."\n");    
                 } else if ($unescape) {
                     print($this->tabs().$source.'["'.$field.'"] = htmlspecialchars_decode('.$source.'["'.$field.'"]);'."\n");
+                }   
+                if ($constant) {
+                    print($this->tabs().$source.'["'.$field.'"] = defined('.$source.'["'.$field.'"]) ? constant('.$source.'["'.$field.'"]) : null;'."\n");
                 }                
                 if ($trim) {
                     print($this->tabs().$source.'["'.$field.'"] = trim('.$source.'["'.$field.'"]);'."\n");

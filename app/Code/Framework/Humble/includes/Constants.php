@@ -20,9 +20,9 @@ define('CUSTOM_EVENT',1);
 define('TIME_EVENT',2);
 define('FILE_EVENT',3);
 define('ACTION_EVENT',4);
-define('LISTENER',5);
-define('WEBHOOK',6);
-define('SERVICE',7);
+define('LISTENER_EVENT',5);
+define('WEBHOOK_EVENT',6);
+define('SERVICE_EVENT',7);
 
 //#######################################################
 //Workflow Component Types
