@@ -146,14 +146,15 @@ class Scanner extends Model
         }
         return $components;
     }
-      
+    
     protected function processAnnotations($reflection_method=false,$public_method=false,$namespace=false,$model=false) {
         if ($reflection_method && $public_method && $namespace && $model) {
             $authorization          = false;
             $listener               = false;
             foreach ($this->fetchCustomAnnotations($reflection_method) as $annotation) {
                 $this->component->reset()->setNamespace($namespace)->setComponent($model)->setMethod($public_method->name);                 
-                $clauses   = explode(' ',$annotation);
+                $component_type_id  = null;
+                $clauses            = explode(' ',$annotation);                
                 foreach ($clauses as $clause) {
                     $value = '';
                     if (strpos($clause,'(') && (strpos($clause,')'))) {
@@ -167,22 +168,20 @@ class Scanner extends Model
                     switch ($token) {
                         case "workflow"         :   //nop
                                                     break;
-                        case "use"              :   $uses = explode(',',$value);
+                        case "use"              :   $uses = explode(',',strtoupper($value));
                                                     $this->output("WORKFLOW","     Registering Workflow Element ".$public_method->name);
                                                     foreach ($uses as $use) {
-                                                        $use = 'set'.ucfirst(strtolower($use));
-                                                        $this->component->$use('Y');
+                                                        $id = defined($use) ? constant($use) : false;
+                                                        $this->component->setComponentTypeId(defined($use) ? constant($use) : null);
                                                     }
                                                     break;
                         case "tags"             :
                                                     break;
                         case "listen"           :
-                        case "listener"         :   $listener = true;
+                        case "listener"         :   $this->componentTypeId(constant('LISTENER'));
                                                     break;  
-                        case "event"            :   if ($listener) {
-                                                        $this->registerMethodListeners($namespace,$model,$public_method->name,$value);
-                                                    }
-                                                    break 2;              //this is different from a component so just skip to the next one
+                        case "event"            :   $this->setEventName($value);
+                                                    break;
                         case "auth"             :
                         case "authorization"    :   if (strtolower($value) == 'true') {
                                                         $authorization = true;
@@ -191,6 +190,7 @@ class Scanner extends Model
                                                     } else {
                                                         //throw an exception and stop processing
                                                     }
+                                                    //what am I actually doing here?
                                                     $this->component->setAuthorization((($authorization) ? 'Y' : 'N'));
                                                     break;
                         case "conf"             :
@@ -199,12 +199,12 @@ class Scanner extends Model
                         case "configuration"    :   $this->component->setConfiguration($value);
                                                     $this->configurationInitializationCheck($value);
                                                     break;
-                        case "namespace"        : 
+                        case "namespace"        :   $this->component->setNamespace($value);
                                                     break;
                         default                 :   break;
                     }
                 }
-                //$this->component->save();
+                $this->component->save();
             }
         }
         return $this;
