@@ -1,6 +1,4 @@
 <?php
-
-
 /*  ____                                      
    / __ \_________  ____ __________ _____ ___ 
   / /_/ / ___/ __ \/ __ `/ ___/ __ `/ __ `__ \
@@ -15,6 +13,7 @@
  We are going to get a JSON object with program information,
  record the PID, and then run the program outlined
  */
+require_once 'Humble.php';
 
 $data = $argv;
 ob_start();

@@ -1,6 +1,6 @@
 <?php
 
-require "Humble.php";
+require_once 'Humble.php';
 
 $faker = Humble::fake();
 

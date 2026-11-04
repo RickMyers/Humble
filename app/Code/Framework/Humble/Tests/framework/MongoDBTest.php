@@ -9,7 +9,7 @@
  Version 1.0
 
  */
-require "Humble.php";
+require_once 'Humble.php';
 
 use PHPUnit\Framework\TestCase;
 

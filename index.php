@@ -69,7 +69,7 @@ $bypass                 = false;                                                
 $home                   = '/index.html';
 $login_message          = '?message=Please Log In';
 $request_handled        = false;
-//$headers                = getallheaders(); //not needed in all cases
+$headers                = getallheaders(); //not needed in all cases
 $useragent              = $_SERVER['HTTP_USER_AGENT'] ?? false;
 $mobile_support         = false;
 $USE_CONNECTION_POOL    = false;                                                //Set to true in your CUSTOM.php to use persistent SQL connection
@@ -278,9 +278,11 @@ if (!$request_handled) {
     } 
 
     //###########################################################################
-    if (file_exists('Code/'.$project->package.'/'.$project->module.'/includes/Constants.php')) {
+    require_once 'Code/Framework/Humble/includes/Constants.php';
+    if (($project->project_name !== 'Humble') && file_exists('Code/'.$project->package.'/'.$project->module.'/includes/Constants.php')) {
         require_once 'Code/'.$project->package.'/'.$project->module.'/includes/Constants.php';            //Enumeration type stuff
     }
+    //###########################################################################
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {   
         if (file_exists("Code/'.$project->package.'/'.$project->module.'/includes/Compatibility.php")){
             require_once "Code/'.$project->package.'/'.$project->module.'/includes/Compatibility.php";        //This is for handling function that windows PHP is missing

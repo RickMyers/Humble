@@ -12,8 +12,7 @@
   Just drives the periodic check for files
           arriving in folders
  */
-require "Humble.php";
-require "Constants.php";
+require_once "Humble.php";
 Main:
     ob_start();
     $spooler = Humble::model('paradigm/system');

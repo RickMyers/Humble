@@ -16,7 +16,7 @@
  * A command line wrapper for triggering events
  */
 
-require "Humble.php";
+require_once 'Humble.php';
 
 $program    = array_shift($argv);
 $event_name = array_shift($argv);

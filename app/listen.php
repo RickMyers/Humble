@@ -2,7 +2,7 @@
 <?php
 
 $s = microtime(true);
-require "Humble.php";
+require_once 'Humble.php';
 require "Environment.php";
 require "Code/Framework/Humble/includes/Constants.php";
 require "Code/Framework/Humble/includes/Custom.php";

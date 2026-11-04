@@ -1,4 +1,5 @@
 <?php
+require_once 'Humble.php';
 /**
  * Manages singleton classes
  *

@@ -13,7 +13,7 @@
 Allows for shorter names for routes
  
  */
-require "Humble.php";
+require_once 'Humble.php';
 require "Environment.php";
 
 $project    = Environment::project();

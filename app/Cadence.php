@@ -9,9 +9,8 @@
 Let's just do something every so often...
  
  */
-
 require_once "Humble.php";
-require_once('Code/Framework/Humble/includes/Constants.php');
+
 require_once("CLI/Component/Component.php");
 
 $queryFlag                  = false;

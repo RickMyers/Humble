@@ -22,7 +22,7 @@ interface HarnessStandup{
     public function execute();
 }
 
-require "Humble.php";
+require_once "Humble.php";
 
 /*------------------------------------------------------------------------------
  * Global Variables

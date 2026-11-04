@@ -15,7 +15,7 @@
  *
  */
 
-require "Humble.php";
+require_once 'Humble.php';
 require "Code/Framework/Humble/includes/Constants.php";
 ob_start();
 print("Launcher fired at ".date("H:i:s")."\n");

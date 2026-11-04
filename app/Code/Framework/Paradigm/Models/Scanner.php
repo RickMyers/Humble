@@ -172,13 +172,14 @@ class Scanner extends Model
                                                     $this->output("WORKFLOW","     Registering Workflow Element ".$public_method->name);
                                                     foreach ($uses as $use) {
                                                         $id = defined($use) ? constant($use) : false;
-                                                        $this->component->setComponentTypeId(defined($use) ? constant($use) : null);
+                                                        print($use."\n");
+                                                        $this->component->setComponentTypeId(defined($use) ? constant($use) : 99);
                                                     }
                                                     break;
                         case "tags"             :
                                                     break;
                         case "listen"           :
-                        case "listener"         :   $this->componentTypeId(constant('LISTENER'));
+                        case "listener"         :   $this->setComponentTypeId(constant('LISTENER'));
                                                     break;  
                         case "event"            :   $this->setEventName($value);
                                                     break;
@@ -219,6 +220,7 @@ class Scanner extends Model
             $model     = str_replace('.php','',$class_name);
             if (!(($namespace === 'humble') && (isset($this->skip[$model])))) {   //skips these because they will cause an error when reflection class is instantiated
                 print("Scanning ".$namespace.'/'.$model."\n");
+                print_r(get_defined_constants());
                 if (method_exists($class = Humble::model($namespace.'/'.$model), 'className')) {
                     $reflection = new \ReflectionClass($class->className());
                     $ctr = 0;

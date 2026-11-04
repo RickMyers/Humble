@@ -1,13 +1,12 @@
 <?php
 print("again\n");
 print('Starting'."\n");
-require "Humble.php";
+require_once 'Humble.php';
 
-$helper = Humble::helper('admin/file/explorer');
+//$helper = Humble::helper('admin/file/explorer');
 
-$helper->save('/var/www/html/maint.html','some stuff here');
+//$helper->save('/var/www/html/maint.html','some stuff here');
 
-die();
 /*print("Caching Enabled: ".\Environment::cachingEnabled()."\n");
 $x = Humble::entity('humble/users');
 print_r($x);
@@ -25,6 +24,8 @@ for ($i=0; $i<$loops; $i++) {
 print('PHP Ini ['.$loops.']: '.microtime(true) - $t."\n");
 
 */
+print($x = Environment::application(['status'=>'polling'],true));
+/*
 $src = 'Code/Framework/Humble/Controllers/user.xml';
 $data = file_get_contents($src);
 
@@ -36,3 +37,5 @@ foreach ($dom->childNodes as $tag => $node) {
     print($tag."\n");
     print_r($node);
 }
+ * 
+ */

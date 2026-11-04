@@ -14,6 +14,8 @@
  * @version    1.0.1
  * @since      File available since Version 1.0.1
  */
+require_once "Humble.php";
+
 class Environment {
 
     private static $isAjax      = false;

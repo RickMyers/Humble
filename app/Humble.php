@@ -10,9 +10,6 @@
 
     ############################################################################ */
     require_once 'autoload.php';
-    function underscoreToCamelCase($string, $first_char_caps=false) {
-        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
-    }    
     /**
      * Static factory used for all object creation
      *
