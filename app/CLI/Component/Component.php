@@ -550,21 +550,6 @@ class Component extends CLI implements CLIInterface
             die("Minimum arguments were not passed [uri]\n");
         }
     }
-
-    /**
-     * For when you want to call it from a method instead of the CLI
-     * 
-     * @param string $command
-     * @param array $arguments
-     * @return string
-     */
-    public static function run($command,$arguments) {
-        if ($command && $arguments) {
-            self::arguments($arguments);
-            return self::$command();
-        }
-    }   
-
     
     /**
      * Looks for workflow components in either an entire namespace or just a class in that namespace
@@ -584,4 +569,19 @@ class Component extends CLI implements CLIInterface
             }
         }
     }
+    
+    /**
+     * For when you want to call it from a method instead of the CLI
+     * 
+     * @param string $command
+     * @param array $arguments
+     * @return string
+     */
+    public static function run($command,$arguments) {
+        if ($command && $arguments) {
+            self::arguments($arguments);
+            return self::$command();
+        }
+    }   
+    
 }

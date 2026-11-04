@@ -95,9 +95,9 @@ class Scanner extends Model
      * @return string
      */
     protected function processDocComments($reflection_method=false,$public_method=false,$namespace,$model) {
+        $comments   = [];
         if ($reflection_method && $public_method) {
             $skip       = ['/**'=>true, '/'=>true, '*/'=>true, ''=>true, '/**/'=>true];
-            $comments   = [];
             try {
                 $docComments = explode("\n",$reflection_method->getDocComment());
                 foreach ($docComments as $comment) {
@@ -113,16 +113,16 @@ class Scanner extends Model
             } catch (\ReflectionException $ex) {
              //  \Log::console($ex);
             }
-            if ($comments) {
+/*            if ($comments) {
                 $this->comment->reset();
                 $this->comment->setNamespace($namespace);
                 $this->comment->setClass($model);
                 $this->comment->setMethod($public_method->name);
                 $this->comment->setComment($comments);
                // $this->comment->save();
-            }        
+            }        */
         }
-        return $this;
+        return implode("\n",$comments);
     }
         
     /**
@@ -147,12 +147,12 @@ class Scanner extends Model
         return $components;
     }
     
-    protected function processAnnotations($reflection_method=false,$public_method=false,$namespace=false,$model=false) {
+    protected function processAnnotations($reflection_method=false,$public_method=false,$namespace=false,$model=false,$comments='') {
         if ($reflection_method && $public_method && $namespace && $model) {
             $authorization          = false;
             $listener               = false;
             foreach ($this->fetchCustomAnnotations($reflection_method) as $annotation) {
-                $this->component->reset()->setNamespace($namespace)->setComponent($model)->setMethod($public_method->name);                 
+                $this->component->reset()->setNamespace($namespace)->setComponent($model)->setMethod($public_method->name)->setComment($comments);                 
                 $component_type_id  = null;
                 $clauses            = explode(' ',$annotation);                
                 foreach ($clauses as $clause) {
@@ -221,16 +221,20 @@ class Scanner extends Model
                 print("Scanning ".$namespace.'/'.$model."\n");
                 if (method_exists($class = Humble::model($namespace.'/'.$model), 'className')) {
                     $reflection = new \ReflectionClass($class->className());
+                    $ctr = 0;
+                    
                     foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $public_method) {
                         $method            = new \ReflectionMethod($class,$public_method->name);
                         $declaring_class   = $method->getDeclaringClass();
                         $reflection_method = $reflection->getMethod($public_method->name);
-                        if ($declaring_class->name !== $class_name) {
+                        if ((string)$declaring_class->name !== $reflection->name) {
                             continue; //this skips any methods belonging to the parent class
                         }
-                        $this->processDocComments($reflection_method,$public_method,$namespace,$model);
-                        $this->processAnnotations($reflection_method,$public_method,$namespace,$model);
+                        $comments = $this->processDocComments($reflection_method,$public_method,$namespace,$model);
+                        $this->processAnnotations($reflection_method,$public_method,$namespace,$model,$comments);
                     }
+                } else {
+                    die("No classname method\n");
                 }
             }
         }
