@@ -52,7 +52,7 @@
                     <helper namespace='humble' class='installer'    id='installer' />
                     <helper namespace='humble' class='admin'        id='directory' />
                     <helper namespace='humble' class='directory'    id='packages' />
-                    <cache get='queryLogging' assign='queryLogging' />
+                    <cache var='queryLogging' assign='queryLogging' default="false" />
                 </case>
                 <default>
                     <redirect href='/admin/login/form' />
