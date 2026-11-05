@@ -1,4 +1,17 @@
 <?php
+/*
+              ________    ____          
+            / ____/ /   /  _/          
+           / /   / /    / /            
+          / /___/ /____/ /             
+    ______\____/_____/___/             
+   / ____/__  ____ _/ /___  __________ 
+  / /_  / _ \/ __ `/ __/ / / / ___/ _ \
+ / __/ /  __/ /_/ / /_/ /_/ / /  /  __/
+/_/    \___/\__,_/\__/\__,_/_/   \___/ 
+                                       
+    Get yours before the Christmas Rush!
+ */
 require_once 'CLI/CLI.php';
 class Framework extends CLI implements CLIInterface
 {

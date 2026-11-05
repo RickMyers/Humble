@@ -112,7 +112,7 @@ class Users extends Entity
         $data = $this->load(true);
         if ($data) {
             $this->setLoginAttempts(0);
-            $this->setAccountStatus(USER_ACCOUNT_UNLOCKED);
+            $this->setAccountStatus(HUMBLE_USER_ACCOUNT_UNLOCKED);
             $this->setResetPasswordToken(null);
             $this->save();
         }

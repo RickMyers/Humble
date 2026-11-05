@@ -1,6 +1,5 @@
 <?php
 /*
- * 
  *     __  __                __    __        ________    ____
  *    / / / /_  ______ ___  / /_  / /__     / ____/ /   /  _/
  *   / /_/ / / / / __ `__ \/ __ \/ / _ \   / /   / /    / /  
@@ -15,6 +14,7 @@ if (!class_exists('Humble')) {
     //let's make sure we only include/define these once
     require_once('Humble.php');
 }
+
 //--------------------------------------------------------------------------
 // Tries to retrieve what command you are trying to get processed
 //--------------------------------------------------------------------------

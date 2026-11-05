@@ -328,7 +328,7 @@ class User extends Model {
             $data   = $EVENT->load();
             if (isset($data['user_name'])) {
                 $user   = Humble::entity('default/users')->setUserName($data['user_name'])->load(true);
-                $locked = ($user['account_status']===USER_ACCOUNT_LOCKED);
+                $locked = ($user['account_status']===HUMBLE_USER_ACCOUNT_LOCKED);
             } else {
                 //throw an exception for insufficient data
             }
@@ -351,7 +351,7 @@ class User extends Model {
             if (isset($data['user_name'])) {
                 $user   = Humble::entity('default/users')->setUserName($data['user_name']);
                 $user->load(true);
-                $user->setAccountStatus(USER_ACCOUNT_LOCKED);
+                $user->setAccountStatus(HUMBLE_USER_ACCOUNT_LOCKED);
                 $user->save();
             } else {
                 $EVENT->_error('Could not lock account due to lack of login id or user name');
@@ -375,7 +375,7 @@ class User extends Model {
             if (isset($data['user_name'])) {
                 $user   = Humble::entity('default/users')->setUserName($data['user_name']);
                 $user->load(true);
-                $user->setStatus(USER_ACCOUNT_UNLOCKED);
+                $user->setStatus(HUMBLE_USER_ACCOUNT_UNLOCKED);
                 $user->save();
             } else {
                 //throw an exception for insufficient data
@@ -425,7 +425,7 @@ class User extends Model {
         if (count($user->load(true)) && $password && ($password == $confirm)) {
             $user->setPassword($password);
             $user->setResetPasswordToken(null);
-            $user->setAccountStatus(USER_ACCOUNT_UNLOCKED);
+            $user->setAccountStatus(HUMBLE_USER_ACCOUNT_UNLOCKED);
             $user->setLoginAttempts(0);
             $user->save();
             $changed = true;

@@ -9,6 +9,7 @@
             require_once 'Code/'.$project->package.'/'.$project->module.'/includes/Constants.php';            //Enumeration type stuff
         }
     }
+    load_framework_constants();
     function underscoreToCamelCase($string, $first_char_caps=false) {
         return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
     }    
