@@ -54,7 +54,7 @@ g  :
     parameters:
         required:
         optional:
-cnfg  : 
+cnfg|config  : 
     title: Workflow Configuration Template
     description: Create a workflow configuration template
     usage:

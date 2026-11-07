@@ -171,9 +171,8 @@ class Scanner extends Model
                         case "use"              :   $uses = explode(',',strtoupper($value));
                                                     $this->output("WORKFLOW","     Registering Workflow Element ".$public_method->name);
                                                     foreach ($uses as $use) {
-                                                        $id = defined($use) ? constant($use) : false;
-                                                        print($use."\n");
-                                                        $this->component->setComponentTypeId(defined($use) ? constant($use) : 99);
+                                                        $id = defined('HUMBLE_'.$use) ? constant('HUMBLE_'.$use) : false;
+                                                        $this->component->setComponentTypeId(defined('HUMBLE_'.$use) ? constant('HUMBLE_'.$use) : 99);
                                                     }
                                                     break;
                         case "tags"             :

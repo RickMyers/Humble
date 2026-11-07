@@ -1,4 +1,18 @@
-DROP TABLE IF EXISTS `admin_menu_categories`;
+/*
+SQLyog Community v13.3.1 (64 bit)
+MySQL - 5.7.44 : Database - humble
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*Table structure for table `admin_menu_categories` */
 
 CREATE TABLE `admin_menu_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -9,8 +23,6 @@ CREATE TABLE `admin_menu_categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Table structure for table `admin_menus` */
-
-DROP TABLE IF EXISTS `admin_menus`;
 
 CREATE TABLE `admin_menus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -27,8 +39,6 @@ CREATE TABLE `admin_menus` (
 
 /*Table structure for table `admin_system_monitor` */
 
-DROP TABLE IF EXISTS `admin_system_monitor`;
-
 CREATE TABLE `admin_system_monitor` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cpu` int(11) DEFAULT NULL,
@@ -44,15 +54,13 @@ CREATE TABLE `admin_system_monitor` (
 
 /*Table structure for table `admin_user_identification` */
 
-DROP TABLE IF EXISTS `admin_user_identification`;
-
 CREATE TABLE `admin_user_identification` (
   `id` int(11) NOT NULL,
   `first_name` char(96) DEFAULT NULL,
   `last_name` char(96) DEFAULT NULL,
   `middle_name` char(96) DEFAULT NULL,
-  `first_name_metaphone` char(32) default null,
-  `last_name_metaphone` char(32) default null,
+  `first_name_metaphone` char(32) DEFAULT NULL,
+  `last_name_metaphone` char(32) DEFAULT NULL,
   `name_suffix` char(36) DEFAULT NULL,
   `gender` char(3) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
@@ -61,8 +69,6 @@ CREATE TABLE `admin_user_identification` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `admin_users` */
-
-DROP TABLE IF EXISTS `admin_users`;
 
 CREATE TABLE `admin_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -80,3 +86,8 @@ CREATE TABLE `admin_users` (
   `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

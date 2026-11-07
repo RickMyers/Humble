@@ -69,6 +69,20 @@ class Environment {
     }
     
     /**
+     * Checks to see if an object is a valid event
+     * 
+     * @param \Code\Framework\Humble\Event\Event $event
+     * @return bool
+     */
+    private static function isEvent($event=null) {
+        $valid = false;
+        if ($event) {
+            $valid = $event instanceof \Code\Framework\Humble\Event\Event;
+        }
+        return $valid;
+    }
+    
+    /**
      * Stores the PID in a file in the PIDs directory
      * 
      * @param string $file

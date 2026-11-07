@@ -1748,7 +1748,7 @@ class Compiler extends Directory
         if (isset($action['event'])) {
             //first we register the event
             //then we trigger it
-            $eventType = \Humble::entity('paradigm/event/types')->setEventType('ACTION')->load(true);
+            $eventType = \Humble::entity('paradigm/event/types')->setEventType('HUMBLE_ACTION_EVENT')->load(true);
             $e = \Humble::entity('paradigm/events');
             $e->setEvent($action['event']);
             $e->setComment($action['comment']);
