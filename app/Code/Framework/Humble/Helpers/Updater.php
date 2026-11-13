@@ -28,6 +28,7 @@ class Updater extends Installer
         'cfg'           => true,
         'configuration' => true
     ];
+    private $event_orm  = false;
     
     public function __construct()   {
         parent::__construct();
@@ -136,53 +137,21 @@ class Updater extends Installer
     }
 
     /**
-     * Removes all named events related to the namespace being installed
-     */
-    protected function deRegisterEvents() {
-        if ($this->namespace) {
-            Humble::entity('paradigm/events')->setNamespace($this->namespace)->delete(true);
-        }
-        return $this;
-    }
-
-    /**
      * Registers all of events, and their comments, from the events section of the configuration file
      */
-    protected function registerEvents($event_node = false) {
-   /*     $this->deRegisterEvents();
-        if ($event_node) {
-            $event = Humble::entity('paradigm/events');
+    protected function registerEvents($event_node=false,$namespace=null) {
+        if ($event_node) {        
+            $orm    = $this->event_orm ? $this->event_orm : ($this->event_orm = Humble::entity('paradigm/events'));
             foreach ($event_node as $events) {
                 foreach ($events as $event => $data) {
-                    $event->reset()->setNamespace($this->namespace)->setEvent($event)->setComment(addslashes($data->attributes()->comment))->save();
+                    $this->output('WORKFLOWS','Registering Event ['.$namespace.'/'.$event.']');
+                    $orm->reset()->setNamespace($namespace)->setEvent($event)->setEventTypeId(HUMBLE_CUSTOM_EVENT)->setComment(addslashes($data->attributes()->comment))->save();
                 }
             }
-        }*/
-        return $this;
-    }
-
-    //What exactly am i doing here?
-    protected function deRegisterWebHooks($namespace=false) {
-        if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
-            Humble::entity('paradigm/webhooks')->setNamespace($namespace)->delete(true);
         }
         return $this;
     }
-    
-    /**
-     * Something something dark-side
-     * 
-     * @param type $hook_node
-     * @return $this
-     */
-    protected function registerWebHooks($hook_node = false) {
-        $this->deRegisterWebHooks(); //maybe do this elsewhere
-        if ($hook_node) {
-            
-        }
-        return $this;
-    }
-    
+   
     /**
      * Removes information about a namespace's components and component comments so that they can be re-retistered
      * 
@@ -190,7 +159,7 @@ class Updater extends Installer
      * @return $this
      */
     protected function deRegisterListeners($namespace=false) {
-        if ($eventType = Humble::entity('paradigm/event/types')->setEvent('METHOD_LISTENER')->load(true)) {
+        if ($eventType = Humble::entity('paradigm/event/types')->setEvent('HUMBLE_LISTENER_EVENT')->load(true)) {
             $listeners = Humble::entity('paradigm/events')->setEventTypeId($eventType['id']);
             if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
                 $listeners->setNamespace($namespace);
@@ -209,7 +178,6 @@ class Updater extends Installer
     protected function deRegisterWorkflowComponents($namespace=false) {
         if ($namespace = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null)) {
             Humble::entity('paradigm/workflow/components')->setNamespace($namespace)->delete(true);
-            Humble::entity('paradigm/workflow/comments')->setNamespace($namespace)->delete(true);
         }
         return $this;
     }
@@ -285,24 +253,6 @@ class Updater extends Installer
     }
     
     /**
-     * sure y not?
-     * 
-     * @param type $namespace
-     * @param type $class
-     * @param type $listener
-     * @param type $events
-     * @return $this
-     */
-    public function registerMethodListeners($namespace,$class,$listener,$events) {
-        $method_listener = Humble::entity('paradigm/method/listeners');
-        foreach (explode(',',$events) as $event) {
-            $this->output("WORKFLOW","\tRegistering Method Trigger ".$event." on ".$listener);
-            $method_listener->reset()->setNamespace($namespace)->setClass($class)->setMethod($listener)->setEvent($event)->save();
-        }
-        return $this;
-    } 
-
-    /**
      * Checks to see if the configuration page exists, and if not, creates the page using a template
      * 
      * @param string $uri
@@ -341,7 +291,6 @@ class Updater extends Installer
         $namespace          = ($namespace) ? $namespace : (($this->namespace) ? $this->namespace : null);
         $models             = Humble::getModels($namespace);
         $workflowComponent  = Humble::entity('paradigm/workflow/components');
-        $workflowComment    = Humble::entity('paradigm/workflow/comments');
         $this->output("WORKFLOW","Processing Namespace [".$namespace."]...");
         foreach ($models as $model) { 
             if ($namespace === 'humble') {
@@ -374,14 +323,6 @@ class Updater extends Installer
                     continue;
                 }
                 $comments               = trim($this->processDocComments($reflection->getMethod($method->name),$method));
-                if ($comments) {
-                    $workflowComment->reset();
-                    $workflowComment->setNamespace($namespace);
-                    $workflowComment->setClass($model);
-                    $workflowComment->setMethod($method->name);
-                    $workflowComment->setComment($comments);
-                    $workflowComment->save();
-                }
                 $customAnnotations      = $this->processDocAnnotations($reflection->getMethod($method->name),$method);
                 $authorization          = false;
                 $listener               = false;
@@ -413,7 +354,7 @@ class Updater extends Installer
                             case "listener"         :   $listener = true;
                                                         break;  
                             case "event"            :   if ($listener) {
-                                                            $this->registerMethodListeners($namespace,$model,$method->name,$value);
+                                                           // $this->registerMethodListeners($namespace,$model,$method->name,$value);
                                                         }
                                                         break 2;              //this is different from a component so just skip to the next one
                             case "auth"             :
@@ -802,7 +743,7 @@ class Updater extends Installer
                         $this->updateImages($this->prefix,$contents->structure,$contents->module);
                     }
                     if (isset($contents->events)) {
-                        $this->registerEvents($contents->events);
+                        $this->registerEvents($contents->events,$namespace);
                     }
                     if (isset($contents->web)) {
                         $this->registerWebComponents($contents->web);

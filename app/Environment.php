@@ -14,8 +14,6 @@
  * @version    1.0.1
  * @since      File available since Version 1.0.1
  */
-require_once "Humble.php";
-
 class Environment {
 
     private static $isAjax      = false;
@@ -74,7 +72,7 @@ class Environment {
      * @param \Code\Framework\Humble\Event\Event $event
      * @return bool
      */
-    private static function isEvent($event=null) {
+    public static function isEvent($event=null) {
         $valid = false;
         if ($event) {
             $valid = $event instanceof \Code\Framework\Humble\Event\Event;
@@ -162,7 +160,7 @@ class Environment {
      * @return string
      */
     public static function securityToken() {
-        return Humble::helper('humble/tool')->encrypt(true)->setToken(self::application('serial_number'))->getToken();
+        return \Humble::helper('humble/tool')->encrypt(true)->setToken(self::application('serial_number'))->getToken();
     }
     
     /**
@@ -314,7 +312,7 @@ class Environment {
         $result = false;
         $project = ($project) ? $project : self::project();
         if (file_exists($alias_file = 'Code/'.$project->package.'/'.$project->module.'/etc/route_aliases.json')){
-            Humble::cache('humble_route_aliases',json_decode(file_get_contents($alias_file),true));
+            \Humble::cache('humble_route_aliases',json_decode(file_get_contents($alias_file),true));
             $result = true;
         }
         return $result;
@@ -329,7 +327,7 @@ class Environment {
     public static function getRoot($namespace=false) {
         $root = false;
         if ($namespace) {
-            $module = Humble::module($namespace);
+            $module = \Humble::module($namespace);
             if ($module) {
                 $name = (strpos($module['models'],"_")) ? explode('_',$module['models']) : explode('/',$module['models']);
                 $root = 'Code/'.$module['package'].'/'.$name[0];
@@ -500,7 +498,7 @@ class Environment {
     public static function logAdminIn() {
         $logged_in = false;
         if ($user  = self::session('user')) {
-            if ($data = Humble::entity('default/users')->setUserName($user['user_name'])->load(true)) {
+            if ($data = \Humble::entity('default/users')->setUserName($user['user_name'])->load(true)) {
                 self::session('uid',$data['id']);
                 self::session('user',$data);
                 $logged_in = true;
@@ -613,7 +611,7 @@ class Environment {
      */
     public static function recacheApplication() {
         self::$application = json_decode(json_encode(self::applicationXML()));
-        Humble::cache('application',self::$application);        
+        \Humble::cache('application',self::$application);        
     }
     
     /**
@@ -625,7 +623,7 @@ class Environment {
         if ($dontUseCache) {
             return self::$application = json_decode(json_encode(self::applicationXML()));
         } else {
-            if (!self::$application = (self::$application !== false) ? self::$application : Humble::cache('application')) {
+            if (!self::$application = (self::$application !== false) ? self::$application : \Humble::cache('application')) {
                 self::recacheApplication();
             }
             return self::$application;
@@ -815,7 +813,7 @@ class Environment {
     public static function whoIs($id=false) {
         $user = false;
         if ($id) {
-            $user = Humble::entity('default/user/identification')->setId($id)->load();
+            $user = \Humble::entity('default/user/identification')->setId($id)->load();
         }
         return $user;
     }

@@ -207,9 +207,9 @@
                     'resource'  => str_replace('_','/',substr($resource,$sep+1))
                 ];
             } else {
-                //Should this be Environment::namespace() or self::_namespace()?
+                //Should this be \Environment::namespace() or self::_namespace()?
                 $resource = [
-                    'namespace' => Environment::namespace(),
+                    'namespace' => \Environment::namespace(),
                     'resource'  => str_replace('_','/',$resource)
                 ];
             }
@@ -564,7 +564,7 @@
             } else {
                 if (\Environment::cachingEnabled()) {
                     if (!self::$cache && !self::$cacheFailed) {
-                        if ($cache_server = ($REDIS ? 'localhost:6379' : Environment::settings()->getCacheHost())) {
+                        if ($cache_server = ($REDIS ? 'localhost:6379' : \Environment::settings()->getCacheHost())) {
                             if (self::$cache = (($REDIS) ? new \Redis() : new \Memcache())) {
                                 $cache_server = explode(':',$cache_server);
                                 if (!@self::$cacheConn = self::$cache->connect($cache_server[0],$cache_server[1])) {
@@ -573,7 +573,7 @@
                             }
                         }
                     }
-                    $serialNumber = Environment::serialNumber();
+                    $serialNumber = \Environment::serialNumber();
                     if (!self::$cacheFailed) {
                         $retval = ($value !== null) ? (($REDIS) ? self::$cache->set($serialNumber.'-'.$key,$value) : self::$cache->set($serialNumber.'-'.$key,$value,false,$expire)) : (($value === null) && ($args > 1) ? self::$cache->delete($serialNumber.'-'.$key) : self::$cache->get($serialNumber.'-'.$key) );
                     }
@@ -592,7 +592,7 @@
          */
         public static function push($eventName,$data=[]) {
             $success = false;
-            $project = Environment::project();
+            $project = \Environment::project();
             $event   = [];
             if ($project->hub_host && $project->hub_port) {
                 //change to read from Humble.project file

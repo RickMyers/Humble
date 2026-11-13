@@ -64,7 +64,7 @@ class Event {
         $event->$name($data);
         //DO I NEED THIS BELOW?
 /*        foreach ($data as $key => $val) {
-            $method = 'set'.ucfirst($key);
+            $method = 'set'.underscoreToCamelCase($key,true);
             $event->$method($val);
         }*/
         return $event;
@@ -100,10 +100,16 @@ class Event {
      * @param string $eventName
      * @return type boolean
      */
-    public static function isRegistered($eventName=false,$namespace=null) {
+    public static function isRegistered($eventName=false) {
         $event_registered = false;
+        $namespace        = null;
         if ($eventName) {
-            $event            = Humble::entity('paradigm/events')->setEvent($eventName);
+            $parts     = explode('/',$eventName);
+            if (count($parts) > 1) {
+                $namespace = $parts[0] ?? null;
+                $eventName = $parts[1] ?? null;
+            }            
+            $event         = Humble::entity('paradigm/events')->setEvent($eventName);
             if ($namespace) {
                 $event->setNamespace($namespace);
             }
@@ -124,7 +130,7 @@ class Event {
      */
     public static function register($eventName=false,$comment='Custom Event',$eventTypeId=null,$class=false,$method=false) {
         $namespace   = null; $event = null; $id = false; $classes = [];
-        $eventTypeId = $eventTypeId ? $eventTypeId : CUSTOM_EVENT;
+        $eventTypeId = $eventTypeId ? $eventTypeId : HUMBLE_CUSTOM_EVENT;
         if ($eventName) {        
             $parts     = explode('/',$eventName);
             if (count($parts) > 1) {
@@ -136,19 +142,14 @@ class Event {
                 }
             }
             if (count($eventType = Humble::entity('paradigm/event/types')->setId($eventTypeId)->load(true))) {
-                $event = Humble::entity('paradigm/events')->setEvent($eventName)->setEventTypeId($eventType['id'])->setComment($comment);                
-                if ($namespace) {
-                    $event->setNamespace($namespace);
-                }
+                $event = Humble::entity('paradigm/events')->setNamespace($namespace)->setEvent($eventName)->setEventTypeId($eventType['id'])->setComment($comment);                
                 if ($class && $method) {
-                    print("Doing classes\n");
                     $classes = ($classes = $event->getClasses()) ? $classes : [];
                     $classes[$class] = isset($classes[$class])   ? $classes[$class] : [];
                     $classes[$class][$method] = true;
                     $event->_polyglot(true)->setClasses($classes);
                 }
                 $id = $event->save();
-                print("ID: $id\n");
             } else {
                 throw new \Exceptions\InvalidEventTypeException('The event type ['.$eventTypeId.'] is invalid',16);
                 die();                

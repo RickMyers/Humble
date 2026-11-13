@@ -339,6 +339,20 @@ class Workflow extends Model
     }
     
     /**
+     * Just tests to see if the listener feature is working
+     * 
+     * @listen event(listenerTestEvent) configuration(paradigm/test/listener)
+     * @param type $EVENT
+     */
+    public function myListenerTest($EVENT=null) {
+        if ($EVENT && \Environment::isEvent($EVENT)) {
+            $data = $EVENT->load();
+            $cnfg = $EVENT->fetch();
+            file_put_contents('listenertest.txt',print_r($data,true));
+        }
+    }
+    
+    /**
      * Allows you to dump the contents of an event to a file for inspection
      * 
      * @workflow use(PROCESS) config(workflow/event/inspect)

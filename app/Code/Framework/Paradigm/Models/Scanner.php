@@ -25,11 +25,24 @@ class Scanner extends Model
                             'Postgres'  => true,
                             'SQLLite'   => true,
                             'SQLServer' => true];
-	
-    private $report    = false;
-    private $status    = [];
-    private $component = null;
-    private $comment   = null;
+    private $customAnnotations = [
+        'workflow'      => true,
+        'use'           => true,
+        'tags'          => true,
+        'listen'        => true,
+        'listener'      => true,
+        'event'         => true,
+        'auth'          => true,
+        'authorization' => true,
+        'conf'          => true,
+        'config'        => true,
+        'cfg'           => true,
+        'configuration' => true
+    ];	
+    private $report     = false;
+    private $status     = [];
+    private $component  = null;
+    private $comment    = null;
     
     /**
      * Constructor
@@ -37,7 +50,6 @@ class Scanner extends Model
     public function __construct() {
         parent::__construct();
         $this->component  = Humble::entity('paradigm/workflow/components');
-        $this->comment    = Humble::entity('paradigm/workflow/comments');        
     }
 
     /**
@@ -113,14 +125,6 @@ class Scanner extends Model
             } catch (\ReflectionException $ex) {
              //  \Log::console($ex);
             }
-/*            if ($comments) {
-                $this->comment->reset();
-                $this->comment->setNamespace($namespace);
-                $this->comment->setClass($model);
-                $this->comment->setMethod($public_method->name);
-                $this->comment->setComment($comments);
-               // $this->comment->save();
-            }        */
         }
         return implode("\n",$comments);
     }

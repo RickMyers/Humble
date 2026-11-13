@@ -134,13 +134,25 @@ class Trigger  {
         global $cancelBubble;
         $ok         = true;
         $uid        = \Environment::whoAmI();
+        $output     = '';
+        if ($cleanEvent = Event::get($eventName,$arguments)) {
+            foreach (\Humble::entity('paradigm/events')->setEvent($eventName)->eventTypeIdIn([HUMBLE_CUSTOM_EVENT, HUMBLE_ACTION_EVENT, HUMBLE_LISTENER_EVENT])->fetch() as $event) {
+                $a = $event;
+            }
+        }
+        return $output;
+        
+        
+        $uid        = \Environment::whoAmI();
         $cleanEvent = Event::get($eventName);
         $results    = [];
         $action     = 'set'.underscoreToCamelCase($eventName,true);
         $cleanEvent->$action(array_merge($this->_arguments,$arguments));
-        $output     = '';
+        
         if (!$uid) {
             //if no user id, see if this is the login event, and if so, find user based on username
+            
+            //If event_name = 'userLogin' maybe? instead of UID check?
             if ($user_name = $cleanEvent->data('user_name')) {
                 $user   = Humble::entity('default/users')->setUserName($user_name)->load(true);
                 $uid    = isset($user['uid']) ? $user['uid'] : 0;  

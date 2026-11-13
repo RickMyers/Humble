@@ -2,31 +2,36 @@
     spl_autoload_register(['Humble_Autoloader_PSR_4_Compliant','handler']); //Our Autoloader
     require_once('vendor/autoload.php');                                    //Their Autoloader
     //###########################################################################
-    function load_framework_constants() {
-        require_once 'Code/Framework/Humble/includes/Constants.php';
-        $project                = \Environment::getProject();
-        if (($project->project_name !== 'Humble') && file_exists('Code/'.$project->package.'/'.$project->module.'/includes/Constants.php')) {
-            require_once 'Code/'.$project->package.'/'.$project->module.'/includes/Constants.php';            //Enumeration type stuff
-        }
-    }
-    load_framework_constants();
-    function underscoreToCamelCase($string, $first_char_caps=false) {
-        return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
-    }    
     
+    if (!function_exists('underscoreToCamelCase')) {
+        function underscoreToCamelCase($string, $first_char_caps=false) {
+            return preg_replace_callback('/_([a-z])/', function ($c) { return strtoupper($c[1]); }, (($first_char_caps === true) ? ucfirst($string) : $string));
+        }    
+    }
     //----------------------------------------------------------------------------------------------------------------------
     //Autoloader, assumes you are in the 'app' directory.  If not, this will blow up like the reactor at Fukishima...
     //----------------------------------------------------------------------------------------------------------------------
     class Humble_Autoloader_PSR_4_Compliant {
 
+        private static $constantsLoaded = false;
+        private static $project         = false;
+        
         public static function handler($className) {
+               if (!self::$constantsLoaded) {
+                require_once 'Environment.php';
+                require_once 'Code/Framework/Humble/includes/Constants.php';
+                self::$project          = \Environment::project();
+                if ((self::$project->project_name !== 'Humble') && file_exists('Code/'.self::$project->package.'/'.self::$project->module.'/includes/Constants.php')) {
+                    require_once 'Code/'.self::$project->package.'/'.self::$project->module.'/includes/Constants.php';            //Enumeration type stuff
+                }                
+                self::$constantsLoaded = true;
+            }
             if ($className === 'Settings') {
-                $project = \Environment::project();
-                if (!file_exists('../../Settings/'.$project->namespace.'/Settings.php')) {
+                if (!file_exists('../../Settings/'.self::$project->namespace.'/Settings.php')) {
                     header('Location: /install.php');
                     die();
                 }
-                require_once('../../Settings/'.$project->namespace.'/Settings.php');
+                require_once('../../Settings/'.self::$project->namespace.'/Settings.php');
             } else {
                 $classLocation = str_replace('\\',DIRECTORY_SEPARATOR,$className);
                 if (file_exists($classLocation.".php")) {
